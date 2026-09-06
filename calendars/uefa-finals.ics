@@ -1,0 +1,31 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//football-rules//calendar generator//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:UEFA finals - tickets
+X-PUBLISHED-TTL:PT12H
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+BEGIN:VEVENT
+UID:uefa-final-ballot-2027@football.local
+DTSTAMP:20260906T160807Z
+SEQUENCE:0
+DTSTART;VALUE=DATE:20270316
+DTEND;VALUE=DATE:20270317
+SUMMARY:[?] UEFA finals public ballot window
+DESCRIPTION:Account created well before. Applying inside the window is a lo
+ ttery - day one gives no advantage.\nClub: UEFA (finals)\nDerivation: 2026
+ : general sales opened 16 March\, Europa League deadline 11:00 CET 20 Marc
+ h. Imported document says February - treat as the earlier bound.\n\nDate s
+ ource: inferred.\nThis date was reasoned from a pattern\, not published. V
+ erify before acting.\nGenerated from football-rules.json. Edit the JSON\, 
+ not the calendar.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER;RELATED=START:-P21D
+DESCRIPTION:Check whether this window has been announced. The date below is
+  an estimate\, not a published one. [?] UEFA finals public ballot window
+END:VALARM
+END:VEVENT
+END:VCALENDAR

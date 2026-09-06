@@ -1,0 +1,29 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//football-rules//calendar generator//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Italy - tickets
+X-PUBLISHED-TTL:PT12H
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+BEGIN:VEVENT
+UID:milan-derby-sale-nov@football.local
+DTSTAMP:20260906T160807Z
+SEQUENCE:0
+DTSTART;VALUE=DATE:20261001
+DTEND;VALUE=DATE:20261002
+SUMMARY:[?] Milan home derby sale phases open
+DESCRIPTION:Cuore Rossonero card must already be active. Check acmilan.com.
+ \nClub: AC Milan\nDerivation: Approx one month before the 1 Nov fixture.\n
+ \nDate source: inferred.\nThis date was reasoned from a pattern\, not publ
+ ished. Verify before acting.\nGenerated from football-rules.json. Edit the
+  JSON\, not the calendar.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER;RELATED=START:-P30D
+DESCRIPTION:Check whether this window has been announced. The date below is
+  an estimate\, not a published one. [?] Milan home derby sale phases open
+END:VALARM
+END:VEVENT
+END:VCALENDAR

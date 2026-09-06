@@ -1,0 +1,31 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//football-rules//calendar generator//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Admin - verification tasks
+X-PUBLISHED-TTL:PT12H
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+BEGIN:VEVENT
+UID:uefa-age-check@football.local
+DTSTAMP:20260906T160807Z
+SEQUENCE:0
+DTSTART;VALUE=DATE:20270201
+DTEND;VALUE=DATE:20270202
+SUMMARY:[?] VERIFY whether UEFA ballot applicants must be 18+
+DESCRIPTION:If the 18+ rule is real\, the father must be the applicant with
+  the user named on the ticket. Getting this wrong costs the Frankfurt fina
+ l. Check UEFA.com terms well before the window.\nClub: UEFA (finals)\nPrio
+ rity: highest\n\nDate source: inferred.\nThis date was reasoned from a pat
+ tern\, not published. Verify before acting.\nGenerated from football-rules
+ .json. Edit the JSON\, not the calendar.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER;RELATED=START:-P30D
+DESCRIPTION:Check whether this window has been announced. The date below is
+  an estimate\, not a published one. [?] VERIFY whether UEFA ballot applica
+ nts must be 18+
+END:VALARM
+END:VEVENT
+END:VCALENDAR
