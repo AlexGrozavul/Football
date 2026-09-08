@@ -8,10 +8,11 @@ X-PUBLISHED-TTL:PT12H
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 BEGIN:VEVENT
 UID:derby-madonnina-0@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20261101
 DTEND;VALUE=DATE:20261102
+TRANSP:TRANSPARENT
 SUMMARY:Derby della Madonnina - Inter v Milan
 DESCRIPTION:Two European giants sharing one stadium\, both curve building t
  ifos facing each other. New ground\, and closer than Turin - the Allianz S
@@ -19,20 +20,14 @@ DESCRIPTION:Two European giants sharing one stadium\, both curve building t
  ine\nStatus: open\nNote: Cuore Rossonero phase then free sale. Card needed
   well in advance.\n\nDate source: confirmed.\nGenerated from football-rule
  s.json. Edit the JSON\, not the calendar.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-ACTION:DISPLAY
-TRIGGER;RELATED=START:-P0D
-DESCRIPTION:Buy now. (No leadTimeDays in the JSON - alarm set to the day it
- self.) Derby della Madonnina - Inter v Milan
-END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:sudwest-derby@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20270129
 DTEND;VALUE=DATE:20270201
+TRANSP:TRANSPARENT
 SUMMARY:[?] Karlsruher SC v 1. FC Kaiserslautern
 DESCRIPTION:Closest big derby available. Fills the derby gap and\, via the 
  away end\, the away-end gap in one trip.\nVenue: Wildparkstadion\nDistance
@@ -42,21 +37,14 @@ DESCRIPTION:Closest big derby available. Fills the derby gap and\, via the
  source: inferred.\nThis date was reasoned from a pattern\, not published. 
  Verify before acting.\nGenerated from football-rules.json. Edit the JSON\,
   not the calendar.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-ACTION:DISPLAY
-TRIGGER;RELATED=START:-P0D
-DESCRIPTION:Check whether this window has been announced. The date below is
-  an estimate\, not a published one. (No leadTimeDays in the JSON - alarm s
- et to the day itself.) [?] Karlsruher SC v 1. FC Kaiserslautern
-END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:frankenderby@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20270130
 DTEND;VALUE=DATE:20270202
+TRANSP:TRANSPARENT
 SUMMARY:[?] Frankenderby - 1. FC Nürnberg v Greuther Fürth
 DESCRIPTION:Neighbouring cities\, over a century of open contempt\, treated
   by police as one of Germany's highest-risk fixtures regardless of divisio
@@ -67,22 +55,14 @@ DESCRIPTION:Neighbouring cities\, over a century of open contempt\, treated
  tually exclusive.\n\nDate source: inferred.\nThis date was reasoned from a
   pattern\, not published. Verify before acting.\nGenerated from football-r
  ules.json. Edit the JSON\, not the calendar.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-ACTION:DISPLAY
-TRIGGER;RELATED=START:-P0D
-DESCRIPTION:Check whether this window has been announced. The date below is
-  an estimate\, not a published one. (No leadTimeDays in the JSON - alarm s
- et to the day itself.) [?] Frankenderby - 1. FC Nürnberg v Greuther Fürt
- h
-END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:derby-madonnina-1@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20270214
 DTEND;VALUE=DATE:20270215
+TRANSP:TRANSPARENT
 SUMMARY:Derby della Madonnina - Inter v Milan
 DESCRIPTION:Two European giants sharing one stadium\, both curve building t
  ifos facing each other. New ground\, and closer than Turin - the Allianz S
@@ -90,20 +70,14 @@ DESCRIPTION:Two European giants sharing one stadium\, both curve building t
  ine\nStatus: open\nNote: Phase 1\, open worldwide\, primo anello rosso/ara
  ncio.\n\nDate source: confirmed.\nGenerated from football-rules.json. Edit
   the JSON\, not the calendar.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-ACTION:DISPLAY
-TRIGGER;RELATED=START:-P0D
-DESCRIPTION:Buy now. (No leadTimeDays in the JSON - alarm set to the day it
- self.) Derby della Madonnina - Inter v Milan
-END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:el-final-2027@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20270526
 DTEND;VALUE=DATE:20270527
+TRANSP:TRANSPARENT
 SUMMARY:UEFA Europa League final
 DESCRIPTION:First genuine final above national-cup level. Two hours away\, 
  inside the Whitsun holidays (18-29 May 2027). The cheapest European final 
@@ -112,12 +86,5 @@ DESCRIPTION:First genuine final above national-cup level. Two hours away\,
  efa\nPractical: Wednesday\, 21:00 kick-off ending near 23:00. Overnight or
   no realistic train home.\n\nDate source: confirmed.\nGenerated from footb
  all-rules.json. Edit the JSON\, not the calendar.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-ACTION:DISPLAY
-TRIGGER;RELATED=START:-P0D
-DESCRIPTION:Buy now. (No leadTimeDays in the JSON - alarm set to the day it
- self.) UEFA Europa League final
-END:VALARM
 END:VEVENT
 END:VCALENDAR

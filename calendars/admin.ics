@@ -8,10 +8,11 @@ X-PUBLISHED-TTL:PT12H
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 BEGIN:VEVENT
 UID:uefa-age-check@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20270201
 DTEND;VALUE=DATE:20270202
+TRANSP:TRANSPARENT
 SUMMARY:[?] VERIFY whether UEFA ballot applicants must be 18+
 DESCRIPTION:If the 18+ rule is real\, the father must be the applicant with
   the user named on the ticket. Getting this wrong costs the Frankfurt fina
@@ -19,7 +20,6 @@ DESCRIPTION:If the 18+ rule is real\, the father must be the applicant with
  rity: highest\n\nDate source: inferred.\nThis date was reasoned from a pat
  tern\, not published. Verify before acting.\nGenerated from football-rules
  .json. Edit the JSON\, not the calendar.
-TRANSP:TRANSPARENT
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER;RELATED=START:-P30D

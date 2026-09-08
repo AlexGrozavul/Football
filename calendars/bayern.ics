@@ -8,17 +8,17 @@ X-PUBLISHED-TTL:PT12H
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 BEGIN:VEVENT
 UID:pokal-draw-2027@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20270605
 DTEND;VALUE=DATE:20270606
+TRANSP:TRANSPARENT
 SUMMARY:[?] DFB-Pokal first round draw
 DESCRIPTION:Draw is at the start of June\, giving roughly ten weeks' notice
  . Watch the amateur host's site 2-3 weeks after.\nClub: FC Bayern München
  \n\nDate source: inferred.\nThis date was reasoned from a pattern\, not pu
  blished. Verify before acting.\nGenerated from football-rules.json. Edit t
  he JSON\, not the calendar.
-TRANSP:TRANSPARENT
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER;RELATED=START:-P14D
@@ -28,17 +28,17 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:fcb-away-window-2026@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20270727
 DTEND;VALUE=DATE:20270728
+TRANSP:TRANSPARENT
 SUMMARY:[?] Bayern away request window closes
 DESCRIPTION:Check tickets.fcbayern.com from early July 2027. Request every 
  away fixture in one sitting.\nClub: FC Bayern München\nStatus: missed\n\n
  Date source: inferred.\nThis date was reasoned from a pattern\, not publis
  hed. Verify before acting.\nGenerated from football-rules.json. Edit the J
  SON\, not the calendar.
-TRANSP:TRANSPARENT
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER;RELATED=START:-P21D

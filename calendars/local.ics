@@ -8,17 +8,17 @@ X-PUBLISHED-TTL:PT12H
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 BEGIN:VEVENT
 UID:vfb-presale-active@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20261130
 DTEND;VALUE=DATE:20261201
+TRANSP:TRANSPARENT
 SUMMARY:[?] VfB presale right activates (3 months after joining)
 DESCRIPTION:Confirm the exact activation date on joining and correct this e
  ntry.\nClub: VfB Stuttgart\nDepends on: date of joining\n\nDate source: in
  ferred.\nThis date was reasoned from a pattern\, not published. Verify bef
  ore acting.\nGenerated from football-rules.json. Edit the JSON\, not the c
  alendar.
-TRANSP:TRANSPARENT
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER;RELATED=START:-P7D
@@ -29,10 +29,11 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:ksc-fck-sale@football.local
-DTSTAMP:20260906T160807Z
-SEQUENCE:0
+DTSTAMP:20260908T132236Z
+SEQUENCE:1
 DTSTART;VALUE=DATE:20261215
 DTEND;VALUE=DATE:20261216
+TRANSP:TRANSPARENT
 SUMMARY:[?] Karlsruhe v Kaiserslautern ticket release
 DESCRIPTION:Decide home end or away end FIRST. Away end requires FCK member
  ship arranged before release.\nClub: Karlsruher SC\nDerivation: Sales for 
@@ -40,7 +41,6 @@ DESCRIPTION:Decide home end or away end FIRST. Away end requires FCK member
  erred.\nThis date was reasoned from a pattern\, not published. Verify befo
  re acting.\nGenerated from football-rules.json. Edit the JSON\, not the ca
  lendar.
-TRANSP:TRANSPARENT
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER;RELATED=START:-P30D
