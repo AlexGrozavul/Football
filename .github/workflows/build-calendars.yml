@@ -1,9 +1,9 @@
 name: Build calendars
 
-# Two jobs in one run:
-#   1. fetch fixtures from football-data.org into data/fixtures-api.json
+# Two things in one run:
+#   1. fetch fixtures from football-data.org into data/fixtures/
 #   2. rebuild calendars/*.ics from the hand-written files
-# Both commit only when something actually changed.
+# Commits only when something actually changed.
 
 on:
   schedule:
@@ -37,8 +37,8 @@ jobs:
 
       - name: Fetch fixtures from football-data.org
         # Skipped on push: editing the CSV or the rules file should not
-        # spend API calls. Runs on the daily schedule and when you press
-        # Run workflow. Never blocks the calendar build if it fails.
+        # spend API calls. Runs on the daily schedule and on Run workflow.
+        # Never blocks the calendar build if it fails.
         if: github.event_name != 'push'
         continue-on-error: true
         env:
@@ -102,8 +102,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add calendars/
-          if [ -f data/fixtures-api.json ]; then
-            git add data/fixtures-api.json
+          if [ -d data/fixtures ]; then
+            git add data/fixtures/
           fi
 
           if git diff --cached --quiet; then
@@ -114,7 +114,7 @@ jobs:
           echo "Changed files:"
           git diff --cached --name-only
 
-          git commit -m "chore: rebuild calendars ($(date -u +%Y-%m-%d))"
+          git commit -m "chore: rebuild calendars and fixtures ($(date -u +%Y-%m-%d))"
 
           # Retry once: a hand edit pushed while this job was running would
           # otherwise make the push fail outright.
