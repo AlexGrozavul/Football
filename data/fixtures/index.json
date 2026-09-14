@@ -1,0 +1,90 @@
+{
+ "source": "football-data.org v4",
+ "note": "One file per competition in this folder. Map and app only.",
+ "competitions": {
+  "BL1": {
+   "name": "Bundesliga",
+   "matches": 306,
+   "teams": 18,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "BSA": {
+   "name": "Campeonato Brasileiro Série A",
+   "matches": 380,
+   "teams": 20,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "CL": {
+   "name": "UEFA Champions League",
+   "matches": 144,
+   "teams": 36,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "DED": {
+   "name": "Eredivisie",
+   "matches": 306,
+   "teams": 18,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "EC": {
+   "name": "European Championship",
+   "matches": 51,
+   "teams": 24,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "ELC": {
+   "name": "Championship",
+   "matches": 552,
+   "teams": 24,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "FL1": {
+   "name": "Ligue 1",
+   "matches": 306,
+   "teams": 18,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "PD": {
+   "name": "Primera Division",
+   "matches": 380,
+   "teams": 20,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "PL": {
+   "name": "Premier League",
+   "matches": 380,
+   "teams": 20,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "PPL": {
+   "name": "Primeira Liga",
+   "matches": 306,
+   "teams": 18,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "SA": {
+   "name": "Serie A",
+   "matches": 380,
+   "teams": 20,
+   "seasonStart": null,
+   "seasonEnd": null
+  },
+  "WC": {
+   "name": "FIFA World Cup",
+   "matches": 104,
+   "teams": 48,
+   "seasonStart": null,
+   "seasonEnd": null
+  }
+ }
+}
