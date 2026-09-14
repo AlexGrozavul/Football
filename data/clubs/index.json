@@ -1,0 +1,19 @@
+{
+ "source": "Wikidata",
+ "countries": {
+  "DE": {
+   "name": "Germany",
+   "onMap": 0,
+   "byTier": {},
+   "withVenueName": 0,
+   "withCapacity": 0
+  },
+  "RO": {
+   "name": "Romania",
+   "onMap": 0,
+   "byTier": {},
+   "withVenueName": 0,
+   "withCapacity": 0
+  }
+ }
+}

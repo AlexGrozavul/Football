@@ -1,0 +1,7 @@
+{
+ "source": "Wikidata",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "DE",
+ "countryName": "Germany",
+ "clubs": []
+}
