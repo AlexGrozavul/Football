@@ -1,0 +1,85 @@
+name: Build club layer
+
+# Fetches clubs from Wikidata for the configured countries and commits
+# data/clubs/. Weekly, because clubs move division once a season, not
+# once a day.
+#
+# Also runs whenever you edit data/league-tiers.csv, which is the file
+# that decides which clubs appear on the map at all.
+
+on:
+  schedule:
+    # 04:23 UTC every Sunday.
+    - cron: "23 4 * * 0"
+  push:
+    branches: [main]
+    paths:
+      - "data/league-tiers.csv"
+      - "tools/fetch_clubs.py"
+      - ".github/workflows/build-clubs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-clubs
+  cancel-in-progress: false
+
+jobs:
+  clubs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Fetch clubs from Wikidata
+        run: |
+          python3 tools/fetch_clubs.py | tee /tmp/clubs.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Club layer"
+            echo
+            echo '```'
+            cat /tmp/clubs.log 2>/dev/null || echo "fetch did not run"
+            echo '```'
+            if [ -f data/clubs/unmapped-leagues.csv ]; then
+              echo
+              echo "<details><summary>Unmapped leagues — paste the ones you want into data/league-tiers.csv</summary>"
+              echo
+              echo '```'
+              head -n 60 data/clubs/unmapped-leagues.csv
+              echo '```'
+              echo
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit only if the output changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -d data/clubs ]; then
+            git add data/clubs/
+          fi
+
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+
+          echo "Changed files:"
+          git diff --cached --name-only
+
+          git commit -m "chore: rebuild club layer ($(date -u +%Y-%m-%d))"
+
+          git push || {
+            echo "Push rejected, rebasing onto origin and retrying."
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }
