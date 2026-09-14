@@ -1,8 +1,9 @@
 name: Build calendars
 
-# Rebuilds calendars/*.ics from data/football-rules.json and commits the
-# result, but only when something actually changed. The generator is
-# deterministic, so a day with no data edits produces no commit.
+# Two jobs in one run:
+#   1. fetch fixtures from football-data.org into data/fixtures-api.json
+#   2. rebuild calendars/*.ics from the hand-written files
+# Both commit only when something actually changed.
 
 on:
   schedule:
@@ -15,6 +16,7 @@ on:
       - "data/football-rules.json"
       - "data/fixtures-manual.csv"
       - "tools/build_calendars.py"
+      - "tools/fetch_fixtures.py"
       - ".github/workflows/build-calendars.yml"
   workflow_dispatch:
 
@@ -32,6 +34,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
+
+      - name: Fetch fixtures from football-data.org
+        # Skipped on push: editing the CSV or the rules file should not
+        # spend API calls. Runs on the daily schedule and when you press
+        # Run workflow. Never blocks the calendar build if it fails.
+        if: github.event_name != 'push'
+        continue-on-error: true
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+        run: |
+          python3 tools/fetch_fixtures.py | tee /tmp/fetch.log
 
       - name: Validate the JSON before touching anything
         run: |
@@ -53,7 +66,6 @@ jobs:
           PY
 
       - name: Build the calendars
-        id: build
         run: |
           python3 tools/build_calendars.py | tee /tmp/build.log
 
@@ -74,6 +86,14 @@ jobs:
               echo
               echo "</details>"
             fi
+            if [ -f /tmp/fetch.log ]; then
+              echo
+              echo "## Fixture fetch"
+              echo
+              echo '```'
+              cat /tmp/fetch.log
+              echo '```'
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit only if the output changed
@@ -82,9 +102,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add calendars/
+          if [ -f data/fixtures-api.json ]; then
+            git add data/fixtures-api.json
+          fi
 
           if git diff --cached --quiet; then
-            echo "No change to calendars/. Nothing to commit."
+            echo "Nothing changed. No commit."
             exit 0
           fi
 
