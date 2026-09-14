@@ -13,6 +13,7 @@ on:
     branches: [main]
     paths:
       - "data/football-rules.json"
+      - "data/fixtures-manual.csv"
       - "tools/build_calendars.py"
       - ".github/workflows/build-calendars.yml"
   workflow_dispatch:
@@ -30,7 +31,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Validate the JSON before touching anything
         run: |
