@@ -959,7 +959,7 @@
   {
    "id": 558603,
    "utcDate": "2026-09-14T16:30:00Z",
-   "status": "IN_PLAY",
+   "status": "FINISHED",
    "matchday": 4,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -984,7 +984,7 @@
   {
    "id": 558601,
    "utcDate": "2026-09-14T18:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 4,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1002,9 +1002,9 @@
     "tla": "UDI",
     "crest": "https://crests.football-data.org/115.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 5,
+   "awayGoals": 3,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558596,
