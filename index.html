@@ -215,9 +215,9 @@ async function initMap(){
          .setView([48.80, 9.02], 8);
   L.control.zoom({position:'bottomright'}).addTo(MAP);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 18,
-    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
   }).addTo(MAP);
 
   /* Canvas rendering: DOM markers start to stutter on a phone at a
