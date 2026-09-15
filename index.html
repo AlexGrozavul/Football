@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Football planner</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --line:#26303b; --ink:#e6edf3;
+    --dim:#8b949e; --faint:#6b7681; --accent:#d9483b;
+    --t1:#e8543f; --t2:#e8a33f; --t3:#3fa0e8; --t4:#7d8894; --t5:#56606b;
+    --ok:#3fb950; --warn:#d29922; --bad:#f85149;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+    font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  #app{display:flex;flex-direction:column;height:100dvh}
+  #panes{flex:1;position:relative;overflow:hidden}
+  .pane{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none}
+  .pane.on{display:block}
+  #map{position:absolute;inset:0}
+
+  nav{display:flex;border-top:1px solid var(--line);background:var(--panel);
+    padding-bottom:env(safe-area-inset-bottom)}
+  nav button{flex:1;background:none;border:0;color:var(--faint);padding:11px 4px 9px;
+    font:inherit;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+  nav button b{display:block;font-size:17px;margin-bottom:2px;font-weight:600}
+  nav button.on{color:var(--ink)}
+  nav button.on b{color:var(--accent)}
+
+  .wrap{padding:14px 14px 28px;max-width:720px;margin:0 auto}
+  h2{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
+    margin:20px 0 9px;font-weight:600}
+  h2:first-child{margin-top:4px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:12px 13px;margin-bottom:9px}
+  .card h3{margin:0 0 3px;font-size:15px;font-weight:600;line-height:1.3}
+  .card p{margin:5px 0 0;color:var(--dim);font-size:13.5px}
+  .meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+  .tag{font-size:11px;padding:2px 7px;border-radius:20px;border:1px solid var(--line);
+    color:var(--dim);white-space:nowrap}
+  .tag.ok{color:var(--ok);border-color:#1e4429}
+  .tag.warn{color:var(--warn);border-color:#4a3a11}
+  .tag.bad{color:var(--bad);border-color:#5a2222}
+  .row{display:flex;gap:9px;font-size:13px;margin-top:6px}
+  .row span:first-child{color:var(--faint);min-width:82px;flex-shrink:0}
+  .blank{color:var(--bad);font-style:italic}
+
+  .bar{position:absolute;z-index:500;left:9px;right:9px;top:9px;display:flex;gap:6px;
+    pointer-events:none}
+  .chip{pointer-events:auto;background:rgba(22,27,34,.94);border:1px solid var(--line);
+    border-radius:8px;padding:6px 9px;font-size:12px;color:var(--dim);
+    backdrop-filter:blur(8px)}
+  .chip b{color:var(--ink);font-weight:600}
+  .legend{position:absolute;z-index:500;left:9px;bottom:12px;background:rgba(22,27,34,.94);
+    border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11.5px;
+    backdrop-filter:blur(8px)}
+  .legend div{display:flex;align-items:center;gap:7px;margin:2px 0;color:var(--dim)}
+  .legend i{width:9px;height:9px;border-radius:50%;display:block}
+  .off{opacity:.32}
+
+  .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);
+    border:1px solid var(--line);border-radius:10px}
+  .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+  .leaflet-popup-content{margin:11px 13px;font-size:13.5px}
+  .leaflet-popup-content b{font-size:14.5px}
+  .leaflet-container{background:#0a0e13;font-family:inherit}
+  .leaflet-control-attribution{background:rgba(13,17,23,.85)!important;color:var(--faint)!important}
+  .leaflet-control-attribution a{color:var(--dim)!important}
+
+  .note{color:var(--faint);font-size:12.5px;margin:14px 0 0;line-height:1.5}
+  .err{color:var(--bad);font-size:13px;margin:8px 0}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="panes">
+    <div class="pane on" id="pane-map">
+      <div id="map"></div>
+      <div class="bar">
+        <div class="chip" id="zoomChip">…</div>
+        <div class="chip" id="homeChip">home not set</div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="pane" id="pane-bucket"><div class="wrap" id="bucketBody"></div></div>
+    <div class="pane" id="pane-tickets"><div class="wrap" id="ticketBody"></div></div>
+  </div>
+  <nav>
+    <button class="on" data-pane="map"><b>◉</b>Map</button>
+    <button data-pane="bucket"><b>★</b>Bucket list</button>
+    <button data-pane="tickets"><b>▤</b>Ticket info</button>
+  </nav>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+/* ------------------------------------------------------------------
+   Football planner.
+   Reads the files the GitHub Actions workflows commit. Computes nothing
+   it cannot derive from them: a field that is missing in the data is
+   shown as "not recorded" rather than filled in with a guess.
+------------------------------------------------------------------- */
+
+const TIER_COLOUR = {1:'#e8543f',2:'#e8a33f',3:'#3fa0e8',4:'#7d8894',5:'#56606b'};
+const TIER_NAME   = {1:'Tier 1',2:'Tier 2',3:'Tier 3',4:'Tier 4',5:'Tier 5'};
+
+/* Zoom at which each tier switches on. Lower tiers appear as you zoom
+   in, so the country view stays readable. */
+const TIER_FROM_ZOOM = {1:0, 2:7, 3:9, 4:11, 5:12};
+
+const COUNTRY_FILES = ['data/clubs/DE.json','data/clubs/RO.json'];
+
+/* Fallback only. The real value comes from settings.home in
+   football-rules.json once you fill in its lat/lon. */
+const HOME_FALLBACK = {label:'Leonberg, DE (default)', lat:48.8003, lon:9.0167};
+
+let MAP, LAYER, CLUBS = [], HOME = null, MULTIPLIER = 1.25;
+
+/* ----------------------------------------------------------- helpers */
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function haversine(a, b, c, d){
+  const R = 6371, r = Math.PI/180;
+  const dLat = (c-a)*r, dLon = (d-b)*r;
+  const x = Math.sin(dLat/2)**2 +
+            Math.cos(a*r)*Math.cos(c*r)*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(x));
+}
+
+/* Straight line times the multiplier from settings. No routing API, so
+   this is a road-distance estimate and nothing more - it is not a
+   travel time and is not turned into one. */
+function roadEstimate(lat, lon){
+  if(!HOME || lat == null) return null;
+  return Math.round(haversine(HOME.lat, HOME.lon, lat, lon) * MULTIPLIER);
+}
+
+function field(label, value){
+  const v = (value === null || value === undefined || value === '')
+    ? '<span class="blank">not recorded</span>' : esc(value);
+  return `<div class="row"><span>${esc(label)}</span><span>${v}</span></div>`;
+}
+
+function sourceTag(src){
+  if(src === 'confirmed') return '<span class="tag ok">confirmed</span>';
+  if(src === 'inferred')  return '<span class="tag warn">estimated date</span>';
+  if(src === 'disputed')  return '<span class="tag bad">disputed — do not trust</span>';
+  return '<span class="tag bad">no date source</span>';
+}
+
+async function getJSON(path){
+  const res = await fetch(path, {cache:'no-cache'});
+  if(!res.ok) throw new Error(path + ' → ' + res.status);
+  return res.json();
+}
+
+/* --------------------------------------------------------------- map */
+
+function buildLegend(){
+  document.getElementById('legend').innerHTML =
+    Object.keys(TIER_COLOUR).map(t =>
+      `<div data-tier="${t}"><i style="background:${TIER_COLOUR[t]}"></i>${TIER_NAME[t]}</div>`
+    ).join('');
+}
+
+function radiusFor(tier, zoom){
+  const base = {1:7,2:6,3:5,4:4,5:3.5}[tier] || 4;
+  return zoom >= 10 ? base + 1.5 : base;
+}
+
+function drawClubs(){
+  const zoom = MAP.getZoom();
+  LAYER.clearLayers();
+
+  let shown = 0;
+  for(const club of CLUBS){
+    const from = TIER_FROM_ZOOM[club.tier];
+    if(from === undefined || zoom < from) continue;
+    shown++;
+
+    const km = roadEstimate(club.lat, club.lon);
+    const marker = L.circleMarker([club.lat, club.lon], {
+      radius: radiusFor(club.tier, zoom),
+      color: '#0d1117', weight: 1.5,
+      fillColor: TIER_COLOUR[club.tier] || '#888', fillOpacity: .95
+    });
+
+    marker.bindPopup(
+      `<b>${esc(club.name || club.id)}</b><br>` +
+      `<span style="color:#8b949e">${TIER_NAME[club.tier]} · ${esc(club.country || '')}</span><br>` +
+      `${esc(club.venue || 'ground not recorded')}` +
+      (club.capacity ? ` · ${club.capacity.toLocaleString()} seats` : '') +
+      (km !== null ? `<br><span style="color:#8b949e">≈ ${km} km from ${esc(HOME.label)}</span>` : '')
+    );
+    marker.addTo(LAYER);
+  }
+
+  document.getElementById('zoomChip').innerHTML =
+    `<b>${shown}</b> clubs · z${zoom}`;
+
+  document.querySelectorAll('#legend div').forEach(el => {
+    const t = Number(el.dataset.tier);
+    el.classList.toggle('off', zoom < TIER_FROM_ZOOM[t]);
+  });
+}
+
+async function initMap(){
+  MAP = L.map('map', {zoomControl:false, attributionControl:true})
+         .setView([48.80, 9.02], 8);
+  L.control.zoom({position:'bottomright'}).addTo(MAP);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+  }).addTo(MAP);
+
+  /* Canvas rendering: DOM markers start to stutter on a phone at a
+     couple of thousand, canvas does not. */
+  LAYER = L.layerGroup([], {renderer: L.canvas({padding:.5})}).addTo(MAP);
+
+  buildLegend();
+  MAP.on('zoomend', drawClubs);
+
+  const loaded = [];
+  for(const path of COUNTRY_FILES){
+    try{
+      const data = await getJSON(path);
+      for(const club of data.clubs || []){
+        club.country = data.country;
+        if(club.lat != null && club.tier != null) CLUBS.push(club);
+      }
+      loaded.push(path);
+    }catch(err){
+      console.warn('club file missing:', path, err.message);
+    }
+  }
+  if(!CLUBS.length){
+    document.getElementById('zoomChip').innerHTML =
+      '<b>no clubs</b> — run Build club layer';
+  }
+  drawClubs();
+}
+
+/* ------------------------------------------------------- bucket list */
+
+function bucketCard(item){
+  const bits = [];
+  if(item.type)     bits.push(`<span class="tag">${esc(item.type)}</span>`);
+  if(item.priority) bits.push(`<span class="tag">priority ${esc(item.priority)}</span>`);
+  if(item.status){
+    const cls = item.status === 'blocked' ? 'bad'
+              : item.status === 'deferred' ? 'warn' : '';
+    bits.push(`<span class="tag ${cls}">${esc(item.status)}</span>`);
+  }
+  if(item.trueDerby) bits.push('<span class="tag">true derby</span>');
+
+  const km = roadEstimate(item.lat, item.lon);
+  const dist = item.distanceKm ?? km;
+
+  let dates = '';
+  if(item.date) dates += field('Date', item.date + (item.kickoff ? ' · ' + item.kickoff : ''));
+  if(item.nextFixture) dates += field('Next fixture',
+      item.nextFixture.dateEstimate || item.nextFixture.date);
+  if(Array.isArray(item.fixtures))
+    item.fixtures.forEach(f => dates += field('Fixture', f.date));
+
+  return `<div class="card">
+    <h3>${esc(item.title || item.id)}</h3>
+    ${item.why ? `<p>${esc(item.why)}</p>` : ''}
+    <div class="meta">${bits.join('')}</div>
+    ${dates}
+    ${field('Venue', item.venue)}
+    ${dist != null ? field('Distance', '≈ ' + dist + ' km') : field('Distance', null)}
+    ${item.ticketRoute ? field('Tickets', item.ticketRoute) : ''}
+    ${item.ticketNote ? field('Ticket note', item.ticketNote) : ''}
+    ${item.blockedReason ? field('Blocked', item.blockedReason) : ''}
+    ${item.unblockCondition ? field('Unblocks when', item.unblockCondition) : ''}
+    ${item.deferReason ? field('Deferred', item.deferReason) : ''}
+    ${item.conflict ? field('Clashes with', item.conflict) : ''}
+    ${item.warning ? `<div class="meta"><span class="tag bad">${esc(item.warning)}</span></div>` : ''}
+  </div>`;
+}
+
+function renderBucket(rules){
+  const items = rules.bucketList || [];
+  const rank = {high:0, medium:1, low:2};
+  const live = items.filter(i => i.status !== 'blocked' && i.status !== 'deferred');
+  const held = items.filter(i => i.status === 'blocked' || i.status === 'deferred');
+  live.sort((a,b) => (rank[a.priority] ?? 9) - (rank[b.priority] ?? 9));
+
+  document.getElementById('bucketBody').innerHTML =
+    `<h2>Live — ${live.length}</h2>` + live.map(bucketCard).join('') +
+    (held.length ? `<h2>Blocked or deferred — ${held.length}</h2>` +
+      held.map(bucketCard).join('') : '') +
+    `<p class="note">Distances are straight-line × ${MULTIPLIER}, measured from
+     ${esc(HOME ? HOME.label : 'an unset home location')}. They are a road-distance
+     estimate, not a travel time.</p>`;
+}
+
+/* ------------------------------------------------------- ticket info */
+
+function ticketCard(ev, clubName){
+  const when = ev.recurring === 'annual'
+    ? ev.nextEstimate
+    : (ev.date || ev.dateEstimate);
+
+  return `<div class="card">
+    <h3>${esc(ev.title || ev.id)}</h3>
+    ${ev.action ? `<p>${esc(ev.action)}</p>` : ''}
+    <div class="meta">
+      ${sourceTag(ev.dateSource)}
+      ${ev.feed ? `<span class="tag">${esc(ev.feed)}</span>` : ''}
+      ${ev.status ? `<span class="tag">${esc(ev.status)}</span>` : ''}
+      ${ev.recurring ? `<span class="tag">${esc(ev.recurring)}</span>` : ''}
+    </div>
+    ${field('Date', when)}
+    ${field('Club', clubName)}
+    ${field('Reminder', ev.leadTimeDays != null ? ev.leadTimeDays + ' days before' : null)}
+    ${ev.rule ? field('Rule', ev.rule) : ''}
+    ${ev.derivation ? field('Derived from', ev.derivation) : ''}
+    ${ev.dependsOn ? field('Depends on', ev.dependsOn) : ''}
+    ${ev.warning ? `<div class="meta"><span class="tag bad">${esc(ev.warning)}</span></div>` : ''}
+  </div>`;
+}
+
+function renderTickets(rules){
+  const clubs = {};
+  (rules.clubs || []).forEach(c => clubs[c.id] = c.name);
+
+  const events = (rules.ticketEvents || []).slice();
+  const today = new Date().toISOString().slice(0,10);
+  const dateOf = e => e.recurring === 'annual'
+    ? e.nextEstimate : (e.date || e.dateEstimate) || '9999';
+
+  const upcoming = events.filter(e => dateOf(e) >= today && e.dateSource !== 'disputed');
+  const other    = events.filter(e => !(dateOf(e) >= today && e.dateSource !== 'disputed'));
+  upcoming.sort((a,b) => dateOf(a).localeCompare(dateOf(b)));
+
+  document.getElementById('ticketBody').innerHTML =
+    `<h2>Ahead — ${upcoming.length}</h2>` +
+    upcoming.map(e => ticketCard(e, clubs[e.club])).join('') +
+    (other.length ? `<h2>Past, disputed or undated — ${other.length}</h2>` +
+      other.map(e => ticketCard(e, clubs[e.club])).join('') : '') +
+    `<p class="note">Every rule and date on this tab is hand-written in
+     football-rules.json. Nothing here is generated, and a field shown as
+     "not recorded" is blank in the file rather than unknown to the app.</p>`;
+}
+
+/* -------------------------------------------------------------- boot */
+
+document.querySelectorAll('nav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('on'));
+    document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById('pane-' + btn.dataset.pane).classList.add('on');
+    if(btn.dataset.pane === 'map' && MAP) setTimeout(() => MAP.invalidateSize(), 60);
+  });
+});
+
+(async function start(){
+  let rules = null;
+  try{
+    rules = await getJSON('data/football-rules.json');
+  }catch(err){
+    document.getElementById('bucketBody').innerHTML =
+      `<p class="err">Could not load data/football-rules.json — ${esc(err.message)}</p>`;
+    document.getElementById('ticketBody').innerHTML =
+      document.getElementById('bucketBody').innerHTML;
+  }
+
+  if(rules && rules.settings){
+    MULTIPLIER = rules.settings.estimateMultiplier ?? 1.25;
+    const h = rules.settings.home || {};
+    HOME = (h.lat != null && h.lon != null)
+      ? {label: h.label || 'home', lat: h.lat, lon: h.lon}
+      : HOME_FALLBACK;
+    document.getElementById('homeChip').innerHTML =
+      (h.lat != null ? '' : '⚠ ') + esc(HOME.label);
+  }else{
+    HOME = HOME_FALLBACK;
+  }
+
+  await initMap();
+  if(rules){ renderBucket(rules); renderTickets(rules); }
+})();
+</script>
+</body>
+</html>
