@@ -3,5 +3,1520 @@
  "note": "Tier comes from data/league-tiers.csv, never from a league name.",
  "country": "DE",
  "countryName": "Germany",
- "clubs": []
+ "clubs": [
+  {
+   "id": "Q101859",
+   "name": "VfL Wolfsburg",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Volkswagen Arena",
+   "capacity": 30000,
+   "lat": 52.431944,
+   "lon": 10.803889,
+   "city": "Wolfsburg"
+  },
+  {
+   "id": "Q101959",
+   "name": "Borussia Mönchengladbach",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "ista-Borussia-Park",
+   "capacity": 59749,
+   "lat": 51.174583,
+   "lon": 6.385464,
+   "city": "Mönchengladbach"
+  },
+  {
+   "id": "Q102720",
+   "name": "Hertha BSC",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Olympiastadion Berlin",
+   "capacity": 74475,
+   "lat": 52.514722,
+   "lon": 13.239444,
+   "city": "Berlin"
+  },
+  {
+   "id": "Q104761",
+   "name": "Bayer 04 Leverkusen",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "BayArena",
+   "capacity": 30210,
+   "lat": 51.038256,
+   "lon": 7.002206,
+   "city": "Leverkusen"
+  },
+  {
+   "id": "Q104770",
+   "name": "1. FC Köln",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "RheinEnergieStadion",
+   "capacity": 46195,
+   "lat": 50.933611,
+   "lon": 6.875,
+   "city": "Köln"
+  },
+  {
+   "id": "Q105254",
+   "name": "1. FSV Mainz 05",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Mewa Arena",
+   "capacity": 34034,
+   "lat": 49.984167,
+   "lon": 8.224167,
+   "city": "Mainz"
+  },
+  {
+   "id": "Q105844",
+   "name": "Arminia Bielefeld",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "SchücoArena",
+   "capacity": 27300,
+   "lat": 52.031389,
+   "lon": 8.516944,
+   "city": "Bielefeld"
+  },
+  {
+   "id": "Q105853",
+   "name": "Karlsruher SC",
+   "leagues": [
+    "Q154069",
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Wildparkstadion",
+   "capacity": 29699,
+   "lat": 49.02,
+   "lon": 8.413056,
+   "city": "Karlsruhe"
+  },
+  {
+   "id": "Q105861",
+   "name": "VfL Bochum",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Ruhrstadion",
+   "capacity": 29299,
+   "lat": 51.489944,
+   "lon": 7.236489,
+   "city": "Bochum"
+  },
+  {
+   "id": "Q106394",
+   "name": "SC Freiburg",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Dreisamstadion",
+   "capacity": 24000,
+   "lat": 47.988889,
+   "lon": 7.893056,
+   "city": "Freiburg im Breisgau"
+  },
+  {
+   "id": "Q107421",
+   "name": "VfB Stuttgart II",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Waldau-Stadion",
+   "capacity": 11436,
+   "lat": 48.753944,
+   "lon": 9.188417,
+   "city": "Stuttgart"
+  },
+  {
+   "id": "Q107818",
+   "name": "Energie Cottbus",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "LEAG Energie Stadion",
+   "capacity": 22528,
+   "lat": 51.751389,
+   "lon": 14.345556,
+   "city": "Cottbus"
+  },
+  {
+   "id": "Q131603",
+   "name": "TSV 1860 München",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Städtisches Stadion an der Grünwalder Straße",
+   "capacity": 15000,
+   "lat": 48.110833,
+   "lon": 11.574444,
+   "city": "München"
+  },
+  {
+   "id": "Q136089",
+   "name": "ZFC Meuselwitz",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Bluechip-Arena",
+   "capacity": 5260,
+   "lat": 51.0536,
+   "lon": 12.2831,
+   "city": "Meuselwitz"
+  },
+  {
+   "id": "Q137499",
+   "name": "FC 08 Homburg",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Waldstadion Homburg",
+   "capacity": 21813,
+   "lat": 49.3161,
+   "lon": 7.355,
+   "city": "Homburg"
+  },
+  {
+   "id": "Q1387417",
+   "name": "FC Oberlausitz Neugersdorf",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Ostseehalle",
+   "capacity": 13500,
+   "lat": 54.320556,
+   "lon": 10.130556,
+   "city": "Ebersbach-Neugersdorf"
+  },
+  {
+   "id": "Q141931",
+   "name": "Dynamo Dresden",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Rudolf-Harbig-Stadion",
+   "capacity": 32085,
+   "lat": 51.040278,
+   "lon": 13.747778,
+   "city": "Dresden"
+  },
+  {
+   "id": "Q141971",
+   "name": "1. FC Union Berlin",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Stadion An der Alten Försterei",
+   "capacity": 21704,
+   "lat": 52.457222,
+   "lon": 13.568056,
+   "city": "Berlin"
+  },
+  {
+   "id": "Q142005",
+   "name": "Hansa Rostock",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Ostseestadion",
+   "capacity": 29000,
+   "lat": 54.08495,
+   "lon": 12.095189,
+   "city": "Rostock"
+  },
+  {
+   "id": "Q14551982",
+   "name": "SSV Ulm 1846",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Donaustadion",
+   "capacity": 19500,
+   "lat": 48.404589,
+   "lon": 10.009575,
+   "city": "Ulm"
+  },
+  {
+   "id": "Q151747",
+   "name": "Fortuna Düsseldorf",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Merkur Spiel-Arena",
+   "capacity": 9917,
+   "lat": 51.261539,
+   "lon": 6.733083,
+   "city": "Düsseldorf"
+  },
+  {
+   "id": "Q153535",
+   "name": "Alemannia Aachen",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Tivoli",
+   "capacity": 32960,
+   "lat": 50.793333,
+   "lon": 6.097222,
+   "city": "Aachen"
+  },
+  {
+   "id": "Q153539",
+   "name": "SpVgg Greuther Fürth",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Sportpark Ronhof",
+   "capacity": 18500,
+   "lat": 49.486944,
+   "lon": 10.999167,
+   "city": "Fürth"
+  },
+  {
+   "id": "Q154053",
+   "name": "Eintracht Braunschweig",
+   "leagues": [
+    "Q154069",
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Eintracht-Stadion",
+   "capacity": 24406,
+   "lat": 52.29,
+   "lon": 10.521389,
+   "city": "Braunschweig"
+  },
+  {
+   "id": "Q154293",
+   "name": "MSV Duisburg",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Schauinsland-Reisen-Arena",
+   "capacity": 31500,
+   "lat": 51.409028,
+   "lon": 6.778639,
+   "city": "Duisburg"
+  },
+  {
+   "id": "Q155186",
+   "name": "FC Carl Zeiss Jena",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Ernst-Abbe-Sportfeld",
+   "capacity": 12990,
+   "lat": 50.915833,
+   "lon": 11.582778,
+   "city": "Jena"
+  },
+  {
+   "id": "Q155218",
+   "name": "Rot-Weiss Essen",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Stadion an der Hafenstraße",
+   "capacity": 20650,
+   "lat": 51.486667,
+   "lon": 6.976389,
+   "city": "Essen"
+  },
+  {
+   "id": "Q155452",
+   "name": "TuS Koblenz",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Stadion Oberwerth",
+   "capacity": 9500,
+   "lat": 50.3305,
+   "lon": 7.58661,
+   "city": "Koblenz"
+  },
+  {
+   "id": "Q155730",
+   "name": "1. FC Magdeburg",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Avnet Arena",
+   "capacity": 30098,
+   "lat": 52.125556,
+   "lon": 11.670833,
+   "city": "Magdeburg"
+  },
+  {
+   "id": "Q1565781",
+   "name": "SV Tasmania Berlin",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Werner-Seelenbinder-Sportpark",
+   "capacity": 3500,
+   "lat": 52.4692,
+   "lon": 13.4167,
+   "city": "Deutschland"
+  },
+  {
+   "id": "Q157020",
+   "name": "Rot-Weiß Oberhausen",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Stadion Niederrhein",
+   "capacity": 21318,
+   "lat": 51.493611,
+   "lon": 6.854444,
+   "city": "Oberhausen"
+  },
+  {
+   "id": "Q157352",
+   "name": "FSV Frankfurt",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "PSD Bank Arena",
+   "capacity": 12542,
+   "lat": 50.128056,
+   "lon": 8.723333,
+   "city": "Frankfurt am Main"
+  },
+  {
+   "id": "Q157463",
+   "name": "1. FC Saarbrücken",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Ludwigsparkstadion",
+   "capacity": 35303,
+   "lat": 49.2475,
+   "lon": 6.984167,
+   "city": "Saarbrücken"
+  },
+  {
+   "id": "Q157828",
+   "name": "Holstein Kiel",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Holstein-Stadion",
+   "capacity": 15034,
+   "lat": 54.349167,
+   "lon": 10.123611,
+   "city": "Kiel"
+  },
+  {
+   "id": "Q15786",
+   "name": "1. FC Nürnberg",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Max-Morlock-Stadion",
+   "capacity": 50000,
+   "lat": 49.426241,
+   "lon": 11.125617,
+   "city": "Nürnberg"
+  },
+  {
+   "id": "Q15789",
+   "name": "FC Bayern München",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Allianz-Arena",
+   "capacity": 75024,
+   "lat": 48.218775,
+   "lon": 11.624753,
+   "city": "München"
+  },
+  {
+   "id": "Q158121",
+   "name": "SpVgg Unterhaching",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Sportpark Unterhaching",
+   "capacity": 15053,
+   "lat": 48.073611,
+   "lon": 11.615556,
+   "city": "Unterhaching"
+  },
+  {
+   "id": "Q159930",
+   "name": "BFC Dynamo",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Sportforum Hohenschönhausen",
+   "capacity": 19708,
+   "lat": 52.54,
+   "lon": 13.4764,
+   "city": "Berlin"
+  },
+  {
+   "id": "Q159936",
+   "name": "Kickers Offenbach",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Sparda-Bank-Hessen-Stadion",
+   "capacity": 20500,
+   "lat": 50.094444,
+   "lon": 8.798611,
+   "city": "Offenbach am Main"
+  },
+  {
+   "id": "Q160530",
+   "name": "VfL Osnabrück",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Bremer Brücke",
+   "capacity": 16130,
+   "lat": 52.280833,
+   "lon": 8.071111,
+   "city": "Osnabrück"
+  },
+  {
+   "id": "Q160532",
+   "name": "SC Paderborn 07",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Home-Deluxe-Arena",
+   "capacity": 15000,
+   "lat": 51.731389,
+   "lon": 8.710833,
+   "city": "Paderborn"
+  },
+  {
+   "id": "Q161554",
+   "name": "Chemnitzer FC",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Stadion an der Gellertstraße",
+   "capacity": 25000,
+   "lat": 50.842186,
+   "lon": 12.945669,
+   "city": "Chemnitz"
+  },
+  {
+   "id": "Q162251",
+   "name": "1. FC Heidenheim 1846",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Voith-Arena",
+   "capacity": 10001,
+   "lat": 48.6685,
+   "lon": 10.1393,
+   "city": "Heidenheim an der Brenz"
+  },
+  {
+   "id": "Q16525407",
+   "name": "1. FC Kaiserslautern II",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Fritz-Walter-Stadion",
+   "capacity": 49780,
+   "lat": 49.434444,
+   "lon": 7.775833,
+   "city": "Kaiserslautern"
+  },
+  {
+   "id": "Q16525419",
+   "name": "1. FSV Mainz 05 II",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Bruchwegstadion",
+   "capacity": 20300,
+   "lat": 50.000833,
+   "lon": 8.245556,
+   "city": null
+  },
+  {
+   "id": "Q16536906",
+   "name": "Bayer 04 Leverkusen II",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "BayArena",
+   "capacity": 30210,
+   "lat": 51.038256,
+   "lon": 7.002206,
+   "city": "Leverkusen"
+  },
+  {
+   "id": "Q16559523",
+   "name": "Eintracht Braunschweig II",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Eintracht-Stadion",
+   "capacity": 24406,
+   "lat": 52.29,
+   "lon": 10.521389,
+   "city": "Braunschweig"
+  },
+  {
+   "id": "Q16573990",
+   "name": "Hannover 96 II",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Eilenriedestadion",
+   "capacity": 18000,
+   "lat": 52.3766,
+   "lon": 9.7729,
+   "city": null
+  },
+  {
+   "id": "Q16637410",
+   "name": "TSG 1899 Hoffenheim II",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Dietmar-Hopp-Stadion",
+   "capacity": 6350,
+   "lat": 49.2783,
+   "lon": 8.84212,
+   "city": null
+  },
+  {
+   "id": "Q16645947",
+   "name": "VfL Wolfsburg II",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "AOK Stadion",
+   "capacity": null,
+   "lat": 52.434577,
+   "lon": 10.807511,
+   "city": null
+  },
+  {
+   "id": "Q170105",
+   "name": "Stuttgarter Kickers",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Waldau-Stadion",
+   "capacity": 11436,
+   "lat": 48.753944,
+   "lon": 9.188417,
+   "city": "Stuttgart"
+  },
+  {
+   "id": "Q170107",
+   "name": "FC Rot-Weiß Erfurt",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Steigerwaldstadion",
+   "capacity": 18599,
+   "lat": 50.960278,
+   "lon": 11.037222,
+   "city": "Erfurt"
+  },
+  {
+   "id": "Q170117",
+   "name": "FC Ingolstadt 04",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Audi-Sportpark",
+   "capacity": 15000,
+   "lat": 48.745556,
+   "lon": 11.485,
+   "city": "Ingolstadt"
+  },
+  {
+   "id": "Q170134",
+   "name": "SV Waldhof Mannheim",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Carl-Benz-Stadion",
+   "capacity": 27000,
+   "lat": 49.479444,
+   "lon": 8.5025,
+   "city": "Mannheim"
+  },
+  {
+   "id": "Q170157",
+   "name": "Wuppertaler SV",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Stadion am Zoo",
+   "capacity": 23067,
+   "lat": 51.239083,
+   "lon": 7.105083,
+   "city": "Wuppertal"
+  },
+  {
+   "id": "Q175616",
+   "name": "SV Seligenporten",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "M.A.R. Arena",
+   "capacity": 5000,
+   "lat": 49.264,
+   "lon": 11.298,
+   "city": "Pyrbaum"
+  },
+  {
+   "id": "Q176168",
+   "name": "TSG Neustrelitz",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Parkstadion",
+   "capacity": 62008,
+   "lat": 51.559368,
+   "lon": 7.067835,
+   "city": "Neustrelitz"
+  },
+  {
+   "id": "Q176850",
+   "name": "Bahlinger SC",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Kaiserstuhlstadion",
+   "capacity": 5000,
+   "lat": 48.1191,
+   "lon": 7.74351,
+   "city": "Bahlingen am Kaiserstuhl"
+  },
+  {
+   "id": "Q1921747",
+   "name": "BSG Chemie Leipzig",
+   "leagues": [
+    "Q6954881",
+    "Q1477042",
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Alfred-Kunze-Sportpark",
+   "capacity": 20000,
+   "lat": 51.358056,
+   "lon": 12.307778,
+   "city": "Leipzig"
+  },
+  {
+   "id": "Q20994272",
+   "name": "RB Leipzig II",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Red Bull Arena",
+   "capacity": 42000,
+   "lat": 51.345833,
+   "lon": 12.348056,
+   "city": null
+  },
+  {
+   "id": "Q22707",
+   "name": "TSG 1899 Hoffenheim",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "SNP Arena",
+   "capacity": 30150,
+   "lat": 49.239,
+   "lon": 8.888278,
+   "city": "Sinsheim"
+  },
+  {
+   "id": "Q265570",
+   "name": "SSV Jahn Regensburg",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Jahnstadion Regensburg",
+   "capacity": 15210,
+   "lat": 48.9909,
+   "lon": 12.1069,
+   "city": "Regensburg"
+  },
+  {
+   "id": "Q310608",
+   "name": "SC Fortuna Köln",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Südstadion",
+   "capacity": 13750,
+   "lat": 50.9175,
+   "lon": 6.94361,
+   "city": "Köln"
+  },
+  {
+   "id": "Q310621",
+   "name": "SV Wehen Wiesbaden",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Brita-Arena",
+   "capacity": 12560,
+   "lat": 50.071111,
+   "lon": 8.256667,
+   "city": "Taunusstein"
+  },
+  {
+   "id": "Q316855",
+   "name": "Hallescher FC",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Leuna-Chemie-Stadion",
+   "capacity": 15057,
+   "lat": 51.465278,
+   "lon": 11.961944,
+   "city": "Halle (Saale)"
+  },
+  {
+   "id": "Q316865",
+   "name": "Preußen Münster",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Preußenstadion",
+   "capacity": 45000,
+   "lat": 51.929722,
+   "lon": 7.624583,
+   "city": "Münster"
+  },
+  {
+   "id": "Q316896",
+   "name": "FSV Zwickau",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Stadion Zwickau",
+   "capacity": null,
+   "lat": 50.728539,
+   "lon": 12.519325,
+   "city": "Zwickau"
+  },
+  {
+   "id": "Q319167",
+   "name": "Kickers Emden",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Ostfriesland-Stadion",
+   "capacity": 7200,
+   "lat": 53.379167,
+   "lon": 7.203333,
+   "city": "Emden"
+  },
+  {
+   "id": "Q32494",
+   "name": "FC Schalke 04",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Veltins-Arena",
+   "capacity": 62271,
+   "lat": 51.554503,
+   "lon": 7.067589,
+   "city": "Gelsenkirchen"
+  },
+  {
+   "id": "Q33748",
+   "name": "Hannover 96",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Heinz-von-Heiden-Arena",
+   "capacity": 49000,
+   "lat": 52.36,
+   "lon": 9.731111,
+   "city": "Hannover"
+  },
+  {
+   "id": "Q38245",
+   "name": "Eintracht Frankfurt",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Deutsche Bank Park",
+   "capacity": 51500,
+   "lat": 50.068611,
+   "lon": 8.645278,
+   "city": "Frankfurt am Main"
+  },
+  {
+   "id": "Q4107588",
+   "name": "Werder Bremen II",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Weserstadion Platz 11",
+   "capacity": 5500,
+   "lat": 53.0636,
+   "lon": 8.84286,
+   "city": "Bremen"
+  },
+  {
+   "id": "Q41420",
+   "name": "Borussia Dortmund",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Signal Iduna Park",
+   "capacity": 81359,
+   "lat": 51.4925,
+   "lon": 7.451667,
+   "city": "Dortmund"
+  },
+  {
+   "id": "Q4512",
+   "name": "VfB Stuttgart",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "MHPArena",
+   "capacity": 60058,
+   "lat": 48.792222,
+   "lon": 9.231944,
+   "city": "Stuttgart"
+  },
+  {
+   "id": "Q479269",
+   "name": "SC Wiedenbrück",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Jahnstadion",
+   "capacity": 5000,
+   "lat": 51.8336,
+   "lon": 8.32201,
+   "city": "Rheda-Wiedenbrück"
+  },
+  {
+   "id": "Q479351",
+   "name": "SV Darmstadt 98",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Stadion am Böllenfalltor",
+   "capacity": 19000,
+   "lat": 49.857778,
+   "lon": 8.672222,
+   "city": "Darmstadt"
+  },
+  {
+   "id": "Q493464",
+   "name": "SV Bergisch Gladbach 09",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "BELKAW-Arena",
+   "capacity": 10500,
+   "lat": 50.9939,
+   "lon": 7.11969,
+   "city": "Bergisch Gladbach"
+  },
+  {
+   "id": "Q51974",
+   "name": "Hamburger SV",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Volksparkstadion",
+   "capacity": 51500,
+   "lat": 53.586944,
+   "lon": 9.898611,
+   "city": "Hamburg"
+  },
+  {
+   "id": "Q51976",
+   "name": "Werder Bremen",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Weserstadion",
+   "capacity": 42500,
+   "lat": 53.066389,
+   "lon": 8.8375,
+   "city": "Bremen"
+  },
+  {
+   "id": "Q535785",
+   "name": "Würzburger Kickers",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Flyeralarm Arena",
+   "capacity": 10504,
+   "lat": 49.767194,
+   "lon": 9.932944,
+   "city": "Würzburg"
+  },
+  {
+   "id": "Q5424977",
+   "name": "FC Ingolstadt 04 II",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "ESV-Stadion",
+   "capacity": 11418,
+   "lat": 48.744444,
+   "lon": 11.443056,
+   "city": "Ingolstadt"
+  },
+  {
+   "id": "Q5644342",
+   "name": "Hamburger SV II",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Sportpark Eimsbüttel",
+   "capacity": 2400,
+   "lat": 53.5886,
+   "lon": 9.94418,
+   "city": "Hamburg"
+  },
+  {
+   "id": "Q566136",
+   "name": "FC Memmingen",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Memminger Arena",
+   "capacity": 5100,
+   "lat": 47.9794,
+   "lon": 10.1661,
+   "city": "Memmingen"
+  },
+  {
+   "id": "Q566141",
+   "name": "SSVg Velbert",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Stadion Sonnenblume",
+   "capacity": 4702,
+   "lat": 51.3289,
+   "lon": 7.01857,
+   "city": "Velbert"
+  },
+  {
+   "id": "Q566172",
+   "name": "SC 07 Idar-Oberstein",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Stadion Im Haag",
+   "capacity": 4000,
+   "lat": 49.7352,
+   "lon": 7.29491,
+   "city": "Idar-Oberstein"
+  },
+  {
+   "id": "Q566183",
+   "name": "TSV Buchbach",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "SMR-Arena",
+   "capacity": 2500,
+   "lat": 48.3149,
+   "lon": 12.2759,
+   "city": "Buchbach"
+  },
+  {
+   "id": "Q568276",
+   "name": "Bonner SC",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Sportpark Nord",
+   "capacity": 10164,
+   "lat": 50.7481,
+   "lon": 7.0845,
+   "city": "Bonn"
+  },
+  {
+   "id": "Q609926",
+   "name": "Sportfreunde Siegen",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Leimbachstadion",
+   "capacity": 19400,
+   "lat": 50.852222,
+   "lon": 8.026111,
+   "city": "Siegen"
+  },
+  {
+   "id": "Q639419",
+   "name": "VfB Germania Halberstadt",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Friedensstadion",
+   "capacity": 5000,
+   "lat": 51.8764,
+   "lon": 11.0501,
+   "city": "Halberstadt"
+  },
+  {
+   "id": "Q639472",
+   "name": "Goslarer SC 08",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "S-Arena",
+   "capacity": 5001,
+   "lat": 51.905,
+   "lon": 10.4451,
+   "city": "Goslar"
+  },
+  {
+   "id": "Q639506",
+   "name": "VfR Neumünster",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Grümmi-Arena",
+   "capacity": 6000,
+   "lat": 54.0892,
+   "lon": 9.95558,
+   "city": "Neumünster"
+  },
+  {
+   "id": "Q639525",
+   "name": "SV Sandhausen",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Hardtwaldstadion",
+   "capacity": 12100,
+   "lat": 49.332083,
+   "lon": 8.647667,
+   "city": "Sandhausen"
+  },
+  {
+   "id": "Q6463",
+   "name": "FC St. Pauli",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Millerntor-Stadion",
+   "capacity": 29546,
+   "lat": 53.554444,
+   "lon": 9.967778,
+   "city": "Hamburg"
+  },
+  {
+   "id": "Q647893",
+   "name": "Eintracht Trier",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Moselstadion",
+   "capacity": 10256,
+   "lat": 49.768056,
+   "lon": 6.647778,
+   "city": "Trier"
+  },
+  {
+   "id": "Q665920",
+   "name": "VfB Lübeck",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Stadion an der Lohmühle",
+   "capacity": 10434,
+   "lat": 53.881111,
+   "lon": 10.668889,
+   "city": "Lübeck"
+  },
+  {
+   "id": "Q666000",
+   "name": "FC Bayern Alzenau",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Städtisches Stadion am Prischoß",
+   "capacity": 5113,
+   "lat": 50.0815,
+   "lon": 9.0593,
+   "city": "Alzenau"
+  },
+  {
+   "id": "Q666010",
+   "name": "SC Verl",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Stadion an der Poststraße",
+   "capacity": 5001,
+   "lat": 51.8833,
+   "lon": 8.51444,
+   "city": "Verl"
+  },
+  {
+   "id": "Q666024",
+   "name": "SC Pfullendorf",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Geberit-Arena",
+   "capacity": 10000,
+   "lat": 47.918342,
+   "lon": 9.261914,
+   "city": "Pfullendorf"
+  },
+  {
+   "id": "Q666067",
+   "name": "Sportfreunde Lotte",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Stadion am Lotter Kreuz",
+   "capacity": 7474,
+   "lat": 52.270936,
+   "lon": 7.920444,
+   "city": "Lotte"
+  },
+  {
+   "id": "Q692586",
+   "name": "VfR Aalen",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Centus Arena",
+   "capacity": 13271,
+   "lat": 48.840556,
+   "lon": 10.072222,
+   "city": null
+  },
+  {
+   "id": "Q692691",
+   "name": "SV Elversberg",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Waldstadion Kaiserlinde",
+   "capacity": 10000,
+   "lat": 49.3186,
+   "lon": 7.12167,
+   "city": "Spiesen-Elversberg"
+  },
+  {
+   "id": "Q692704",
+   "name": "Berliner AK 07",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Poststadion",
+   "capacity": 10000,
+   "lat": 52.53,
+   "lon": 13.359444,
+   "city": "Berlin"
+  },
+  {
+   "id": "Q692755",
+   "name": "SG Sonnenhof Großaspach",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "WIRmachenDRUCK Arena",
+   "capacity": 10000,
+   "lat": 48.980485,
+   "lon": 9.393005,
+   "city": "Aspach"
+  },
+  {
+   "id": "Q695008",
+   "name": "FC Viktoria Köln",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Sportpark Höhenberg",
+   "capacity": 8343,
+   "lat": 50.9452,
+   "lon": 7.03039,
+   "city": "Köln"
+  },
+  {
+   "id": "Q700029",
+   "name": "VFC Plauen",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Vogtlandstadion",
+   "capacity": 10490,
+   "lat": 50.5235,
+   "lon": 12.1259,
+   "city": "Plauen"
+  },
+  {
+   "id": "Q702455",
+   "name": "RB Leipzig",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "Red Bull Arena",
+   "capacity": 42000,
+   "lat": 51.345833,
+   "lon": 12.348056,
+   "city": "Leipzig"
+  },
+  {
+   "id": "Q7671747",
+   "name": "TSV 1860 München II",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Städtisches Stadion an der Grünwalder Straße",
+   "capacity": 15000,
+   "lat": 48.110833,
+   "lon": 11.574444,
+   "city": "München"
+  },
+  {
+   "id": "Q797022",
+   "name": "BSV Rehden",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Sportplatz Waldsportstätten",
+   "capacity": 4350,
+   "lat": 52.6163,
+   "lon": 8.48314,
+   "city": "Rehden"
+  },
+  {
+   "id": "Q819354",
+   "name": "KSV Hessen Kassel",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Auestadion",
+   "capacity": 17993,
+   "lat": 51.298611,
+   "lon": 9.484167,
+   "city": "Kassel"
+  },
+  {
+   "id": "Q819419",
+   "name": "Wormatia Worms",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "EWR-Arena",
+   "capacity": 5724,
+   "lat": 49.631381,
+   "lon": 8.335803,
+   "city": "Worms"
+  },
+  {
+   "id": "Q8466",
+   "name": "1. FC Kaiserslautern",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Fritz-Walter-Stadion",
+   "capacity": 49780,
+   "lat": 49.434444,
+   "lon": 7.775833,
+   "city": "Kaiserslautern"
+  },
+  {
+   "id": "Q865720",
+   "name": "Borussia Dortmund II",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Signal Iduna Park",
+   "capacity": 81359,
+   "lat": 51.4925,
+   "lon": 7.451667,
+   "city": "Dortmund"
+  },
+  {
+   "id": "Q97905916",
+   "name": "FC Augsburg",
+   "leagues": [
+    "Q82595"
+   ],
+   "tier": 1,
+   "venue": "WWK ARENA",
+   "capacity": 30660,
+   "lat": 48.323321,
+   "lon": 10.885926,
+   "city": null
+  },
+  {
+   "id": "Q97905930",
+   "name": "Hamburger SV",
+   "leagues": [
+    "Q152665"
+   ],
+   "tier": 2,
+   "venue": "Volksparkstadion",
+   "capacity": 51500,
+   "lat": 53.586944,
+   "lon": 9.898611,
+   "city": null
+  },
+  {
+   "id": "Q97927380",
+   "name": "SV Babelsberg 03",
+   "leagues": [
+    "Q548937",
+    "Q283009",
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Karl-Liebknecht-Stadion",
+   "capacity": 10787,
+   "lat": 52.399083,
+   "lon": 13.094806,
+   "city": null
+  },
+  {
+   "id": "Q994701",
+   "name": "FC Bayern München II",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Städtisches Stadion an der Grünwalder Straße",
+   "capacity": 15000,
+   "lat": 48.110833,
+   "lon": 11.574444,
+   "city": "München"
+  }
+ ]
 }

@@ -3,5 +3,775 @@
  "note": "Tier comes from data/league-tiers.csv, never from a league name.",
  "country": "RO",
  "countryName": "Romania",
- "clubs": []
+ "clubs": [
+  {
+   "id": "Q1024390",
+   "name": "Politehnica Iași",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Emil Alexandrescu",
+   "capacity": 11390,
+   "lat": 47.184583,
+   "lon": 27.561389,
+   "city": "Iași"
+  },
+  {
+   "id": "Q1024393",
+   "name": "CSM Pașcani",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul CFR Pașcani",
+   "capacity": null,
+   "lat": 47.250022,
+   "lon": 26.710978,
+   "city": "Pașcani"
+  },
+  {
+   "id": "Q1024395",
+   "name": "SCM Râmnicu Vâlcea",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Municipal",
+   "capacity": 12000,
+   "lat": 45.103056,
+   "lon": 24.352222,
+   "city": "Râmnicu Vâlcea"
+  },
+  {
+   "id": "Q1024397",
+   "name": "CSM Reșița",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Mircea Chivu",
+   "capacity": null,
+   "lat": 45.2817,
+   "lon": 21.8897,
+   "city": "Reșița"
+  },
+  {
+   "id": "Q1024463",
+   "name": "Concordia Chiajna",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Concordia",
+   "capacity": 5123,
+   "lat": 44.462778,
+   "lon": 25.975278,
+   "city": "Chiajna"
+  },
+  {
+   "id": "Q1057672",
+   "name": "CSM Cetatea Suceava",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Areni",
+   "capacity": 7000,
+   "lat": 47.639274,
+   "lon": 26.24626,
+   "city": "Suceava"
+  },
+  {
+   "id": "Q107724768",
+   "name": "SR Brașov",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Tineretului",
+   "capacity": 5750,
+   "lat": 45.664806,
+   "lon": 25.585583,
+   "city": "Brașov"
+  },
+  {
+   "id": "Q1135735",
+   "name": "Corvinul Hunedoara",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Corvinul 1921 Hunedoara",
+   "capacity": null,
+   "lat": 45.7614,
+   "lon": 22.9131,
+   "city": "Hunedoara"
+  },
+  {
+   "id": "Q1262822",
+   "name": "FC Botoșani",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Municipal",
+   "capacity": 12000,
+   "lat": 47.7483,
+   "lon": 26.6519,
+   "city": "Botoșani"
+  },
+  {
+   "id": "Q12723169",
+   "name": "CS Afumați",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Comunal (Afumați)",
+   "capacity": null,
+   "lat": 44.533056,
+   "lon": 26.259861,
+   "city": null
+  },
+  {
+   "id": "Q130302376",
+   "name": "CSM Târgu Jiu (fotbal)",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Constantina Diță",
+   "capacity": null,
+   "lat": 45.043611,
+   "lon": 23.27,
+   "city": null
+  },
+  {
+   "id": "Q1322550",
+   "name": "FC Petrolul Ploiești",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Ilie Oană",
+   "capacity": 15500,
+   "lat": 44.940278,
+   "lon": 26.033333,
+   "city": "Ploiești"
+  },
+  {
+   "id": "Q135627364",
+   "name": "Minaur Baia Mare",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Viorel Mateianu",
+   "capacity": null,
+   "lat": 47.6645,
+   "lon": 23.5793,
+   "city": "Baia Mare"
+  },
+  {
+   "id": "Q1386940",
+   "name": "Bihor Oradea",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Iuliu Bodola",
+   "capacity": 11067,
+   "lat": 47.071944,
+   "lon": 21.93,
+   "city": "Oradea"
+  },
+  {
+   "id": "Q141319965",
+   "name": "CS Lotru Brezoi",
+   "leagues": [
+    "Q12732231",
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Gheorghe Borchină",
+   "capacity": 700,
+   "lat": 45.339783,
+   "lon": 24.249151,
+   "city": "Brezoi"
+  },
+  {
+   "id": "Q1426344",
+   "name": "Flacăra Moreni",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Flacăra",
+   "capacity": 10000,
+   "lat": 44.981667,
+   "lon": 25.649444,
+   "city": "Moreni"
+  },
+  {
+   "id": "Q1463313",
+   "name": "Sănătatea Cluj",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Clujana",
+   "capacity": 2000,
+   "lat": 46.790278,
+   "lon": 23.612222,
+   "city": "Cluj-Napoca"
+  },
+  {
+   "id": "Q1575208",
+   "name": "CS Minerul Lupeni",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Minerul",
+   "capacity": 3000,
+   "lat": 45.357778,
+   "lon": 23.211389,
+   "city": "Lupeni"
+  },
+  {
+   "id": "Q15920568",
+   "name": "CS Național Sebiș",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Crișana",
+   "capacity": null,
+   "lat": 46.369556,
+   "lon": 22.127361,
+   "city": "Sebiș"
+  },
+  {
+   "id": "Q16838020",
+   "name": "Universitatea Craiova",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Ion Oblemenco",
+   "capacity": 30944,
+   "lat": 44.313889,
+   "lon": 23.784167,
+   "city": "Craiova"
+  },
+  {
+   "id": "Q16850839",
+   "name": "CS Știința Miroslava",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Comunal",
+   "capacity": null,
+   "lat": 47.160806,
+   "lon": 27.484972,
+   "city": null
+  },
+  {
+   "id": "Q1689705",
+   "name": "Jiul Petroșani",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Petre Libardi",
+   "capacity": 15500,
+   "lat": 45.408333,
+   "lon": 23.3675,
+   "city": "Petroșani"
+  },
+  {
+   "id": "Q179658",
+   "name": "FCSB",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Arena Națională",
+   "capacity": 55634,
+   "lat": 44.4372,
+   "lon": 26.1525,
+   "city": "București"
+  },
+  {
+   "id": "Q18129096",
+   "name": "FC Voluntari",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Anghel Iordănescu",
+   "capacity": null,
+   "lat": 44.499167,
+   "lon": 26.145556,
+   "city": "Voluntari"
+  },
+  {
+   "id": "Q18537232",
+   "name": "Bucovina Rădăuți",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Municipal",
+   "capacity": null,
+   "lat": 47.841861,
+   "lon": 25.903611,
+   "city": null
+  },
+  {
+   "id": "Q19902101",
+   "name": "CSM Deva",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Cetate (Deva)",
+   "capacity": 4000,
+   "lat": 45.889722,
+   "lon": 22.901389,
+   "city": null
+  },
+  {
+   "id": "Q204237",
+   "name": "Dinamo București",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Dinamo",
+   "capacity": 15032,
+   "lat": 44.455083,
+   "lon": 26.102444,
+   "city": "București"
+  },
+  {
+   "id": "Q20429561",
+   "name": "Sepsi OSK Sfântu Gheorghe",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Municipal (Sfântu Gheorghe)",
+   "capacity": 4774,
+   "lat": 45.862917,
+   "lon": 25.776139,
+   "city": "Sfântu Gheorghe"
+  },
+  {
+   "id": "Q205998",
+   "name": "CFR Cluj",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Dr. Constantin Rădulescu",
+   "capacity": 23500,
+   "lat": 46.779678,
+   "lon": 23.577247,
+   "city": "Cluj-Napoca"
+  },
+  {
+   "id": "Q220863",
+   "name": "Oțelul Galați",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Oțelul",
+   "capacity": 13500,
+   "lat": 45.430236,
+   "lon": 28.022378,
+   "city": "Galați"
+  },
+  {
+   "id": "Q23051672",
+   "name": "FK Csíkszereda",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Municipal",
+   "capacity": null,
+   "lat": 46.366944,
+   "lon": 25.802917,
+   "city": "Miercurea Ciuc"
+  },
+  {
+   "id": "Q245162",
+   "name": "Rapid București",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Regie",
+   "capacity": 10020,
+   "lat": 44.448194,
+   "lon": 26.052872,
+   "city": "București"
+  },
+  {
+   "id": "Q24884611",
+   "name": "FC Hermannstadt",
+   "leagues": [
+    "Q386384",
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Municipal Sibiu",
+   "capacity": 14200,
+   "lat": 45.783056,
+   "lon": 24.143611,
+   "city": "Sibiu"
+  },
+  {
+   "id": "Q24895825",
+   "name": "FC Bistrița",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Jean Pădureanu",
+   "capacity": 7800,
+   "lat": 47.130833,
+   "lon": 24.502778,
+   "city": null
+  },
+  {
+   "id": "Q2932010",
+   "name": "CS Medgidia",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Iftimie Ilisei",
+   "capacity": null,
+   "lat": 44.2481,
+   "lon": 28.2575,
+   "city": "Medgidia"
+  },
+  {
+   "id": "Q298201",
+   "name": "FC ASA Târgu Mureș",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Trans-Sil",
+   "capacity": 8200,
+   "lat": 46.549722,
+   "lon": 24.545833,
+   "city": "Târgu Mureș"
+  },
+  {
+   "id": "Q37855796",
+   "name": "AFC Metalul Buzău",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Metalul",
+   "capacity": 3000,
+   "lat": 45.144722,
+   "lon": 26.802778,
+   "city": null
+  },
+  {
+   "id": "Q4654138",
+   "name": "ASC Corona Brașov",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Carpați",
+   "capacity": null,
+   "lat": 45.6481,
+   "lon": 25.6503,
+   "city": "Brașov"
+  },
+  {
+   "id": "Q4654417",
+   "name": "Știința Poli Timișoara",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Dan Păltinișanu",
+   "capacity": 32972,
+   "lat": 45.740556,
+   "lon": 21.244167,
+   "city": "Timișoara"
+  },
+  {
+   "id": "Q4680389",
+   "name": "Dunărea Călărași",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Ion Comșa",
+   "capacity": null,
+   "lat": 44.200718,
+   "lon": 27.327948,
+   "city": "Călărași"
+  },
+  {
+   "id": "Q5014181",
+   "name": "CSM Râmnicu Sărat",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Municipal (Râmnicu Sărat)",
+   "capacity": 7000,
+   "lat": 45.376667,
+   "lon": 27.031111,
+   "city": null
+  },
+  {
+   "id": "Q5014447",
+   "name": "Aerostar Bacău",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Aerostar",
+   "capacity": null,
+   "lat": 46.529594,
+   "lon": 26.912234,
+   "city": null
+  },
+  {
+   "id": "Q5014453",
+   "name": "CS Inter Ilfov",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Orășenesc (Buftea)",
+   "capacity": 1500,
+   "lat": 44.566389,
+   "lon": 25.951667,
+   "city": "Clinceni"
+  },
+  {
+   "id": "Q5014471",
+   "name": "Victoria Ineu",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Central-Parc",
+   "capacity": null,
+   "lat": 46.424639,
+   "lon": 21.83275,
+   "city": null
+  },
+  {
+   "id": "Q5014496",
+   "name": "CSO Tricolorul Breaza",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Parc",
+   "capacity": 800,
+   "lat": 45.181944,
+   "lon": 25.657778,
+   "city": null
+  },
+  {
+   "id": "Q512961",
+   "name": "Unirea Alba Iulia",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Cetate",
+   "capacity": 18000,
+   "lat": 46.079078,
+   "lon": 23.566553,
+   "city": "Alba Iulia"
+  },
+  {
+   "id": "Q5424763",
+   "name": "Avântul Reghin",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Municipal",
+   "capacity": null,
+   "lat": 46.780833,
+   "lon": 24.710222,
+   "city": "Reghin"
+  },
+  {
+   "id": "Q5424871",
+   "name": "Chindia Târgoviște",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Eugen Popescu",
+   "capacity": null,
+   "lat": 44.931558,
+   "lon": 25.462294,
+   "city": "Târgoviște"
+  },
+  {
+   "id": "Q5425107",
+   "name": "Știința Poli Timișoara II",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Știința",
+   "capacity": 1000,
+   "lat": 45.746111,
+   "lon": 21.228333,
+   "city": null
+  },
+  {
+   "id": "Q5425216",
+   "name": "AFC Unirea Slobozia",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul 1 Mai (Slobozia)",
+   "capacity": 6000,
+   "lat": 44.5606,
+   "lon": 27.3727,
+   "city": null
+  },
+  {
+   "id": "Q55585581",
+   "name": "Progresul Spartac",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Progresul Spartac",
+   "capacity": 1030,
+   "lat": 44.380583,
+   "lon": 26.087833,
+   "city": null
+  },
+  {
+   "id": "Q584629",
+   "name": "FCU Craiova",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Ion Oblemenco",
+   "capacity": 30944,
+   "lat": 44.313889,
+   "lon": 23.784167,
+   "city": "Craiova"
+  },
+  {
+   "id": "Q629277",
+   "name": "Olimpia MCMXXI Satu Mare",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Daniel Prodan",
+   "capacity": 18000,
+   "lat": 47.799611,
+   "lon": 22.891028,
+   "city": "Satu Mare"
+  },
+  {
+   "id": "Q639046",
+   "name": "Dacia Unirea Brăila",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Municipal",
+   "capacity": 20000,
+   "lat": 45.258058,
+   "lon": 27.94715,
+   "city": "Brăila"
+  },
+  {
+   "id": "Q680770",
+   "name": "UTA Arad",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Francisc von Neumann",
+   "capacity": 7287,
+   "lat": 46.1925,
+   "lon": 21.3114,
+   "city": "Arad"
+  },
+  {
+   "id": "Q753462",
+   "name": "FC Universitatea Cluj",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Cluj Arena",
+   "capacity": 30335,
+   "lat": 46.768333,
+   "lon": 23.572222,
+   "city": "Cluj-Napoca"
+  },
+  {
+   "id": "Q841245",
+   "name": "FC Argeș Pitești",
+   "leagues": [
+    "Q237753"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Nicolae Dobrin",
+   "capacity": 15000,
+   "lat": 44.846675,
+   "lon": 24.866422,
+   "city": "Pitești"
+  },
+  {
+   "id": "Q924296",
+   "name": "Ceahlăul Piatra Neamț",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Ceahlăul",
+   "capacity": 18000,
+   "lat": 46.938517,
+   "lon": 26.354424,
+   "city": "Piatra-Neamț"
+  },
+  {
+   "id": "Q966392",
+   "name": "FC Unirea Dej",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Municipal Dej",
+   "capacity": null,
+   "lat": 44.308611,
+   "lon": 26.183889,
+   "city": "Dej"
+  }
+ ]
 }
