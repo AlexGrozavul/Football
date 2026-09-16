@@ -1,0 +1,91 @@
+name: Propose coordinates
+
+# Finds the clubs Wikidata cannot place - no ground and no coordinates
+# anywhere on the item - and asks OpenStreetMap where they might be.
+# Writes data/clubs/coordinate-review.csv, a list of proposals for you
+# to judge.
+#
+# Never edits a club file and never fills anything in by itself. A
+# wrong coordinate puts a club in the wrong town and looks entirely
+# normal on the map, which is worse than the club being absent.
+#
+# Monthly, because Wikidata gains coordinates slowly and Overpass is a
+# volunteer service that should not be hammered.
+
+on:
+  schedule:
+    # 03:11 UTC on the 11th of each month. Deliberately off the hour and
+    # away from the capacity cross-check on the 4th.
+    - cron: "11 3 11 * *"
+  push:
+    branches: [main]
+    paths:
+      - "tools/propose_coordinates.py"
+      - ".github/workflows/propose-coordinates.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: propose-coordinates
+  cancel-in-progress: false
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Ask OpenStreetMap where the unplaced clubs are
+        run: |
+          set -o pipefail
+          python3 tools/propose_coordinates.py | tee /tmp/coords.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Coordinate proposals"
+            echo
+            echo '```'
+            cat /tmp/coords.log 2>/dev/null || echo "the tool did not run"
+            echo '```'
+            if [ -f data/clubs/coordinate-review.csv ]; then
+              echo
+              echo "<details><summary>Proposals — the confident ones can be pasted into data/clubs-manual.csv</summary>"
+              echo
+              echo '```'
+              head -n 80 data/clubs/coordinate-review.csv
+              echo '```'
+              echo
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit only if the review file changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -f data/clubs/coordinate-review.csv ]; then
+            git add data/clubs/coordinate-review.csv
+          fi
+
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+
+          echo "Changed files:"
+          git diff --cached --name-only
+
+          git commit -m "chore: coordinate proposals ($(date -u +%Y-%m-%d))"
+
+          git push || {
+            echo "Push rejected, rebasing onto origin and retrying."
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }
