@@ -1,5 +1,5 @@
 clubQid,name,country,tier,venue,capacity,lat,lon,ticketUrl,source,note
-,CSC Dumbrăvița,RO,2,Stadionul Ștefan Dobay,1000,45.799167,21.249778,https://cscdumbravita.ro/,https://en.wikipedia.org/wiki/CSC_Dumbravita,Liga 2 since 2022 - 500 of the 1000 are seats
+Q55618976,CSC Dumbrăvița,RO,2,Stadionul Ștefan Dobay,1000,45.799167,21.249778,https://cscdumbravita.ro/,https://en.wikipedia.org/wiki/CSC_Dumbravita,Liga 2 since 2022 - 500 of the 1000 are seats; Wikidata has the club but no coordinates for it, which is why it never reached the map
 Q4654417,Știința Poli Timișoara,RO,,Stadionul Electrica,2000,45.769028,21.254440,,https://www.primariatm.ro/2026/06/30/baza-electrica,Dan Păltinișanu demolished - Electrica homologated for Liga 2 in Jun 2026 at 2000 (Wikipedia lists 5000 total); moves to Eroii Timișoarei (10101) once omologated
 Q14551982,SSV Ulm 1846,DE,4,,,,,,https://en.wikipedia.org/wiki/2026%E2%80%9327_in_German_football,Relegated from 3. Liga to Regionalliga in summer 2026
 Q310608,SC Fortuna Köln,DE,3,,,,,,https://en.wikipedia.org/wiki/2026%E2%80%9327_in_German_football,Promoted from Regionalliga to 3. Liga in summer 2026
