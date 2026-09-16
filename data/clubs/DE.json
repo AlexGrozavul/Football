@@ -1,5 +1,5 @@
 {
- "source": "Wikidata",
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
  "note": "Tier comes from data/league-tiers.csv, never from a league name.",
  "country": "DE",
  "countryName": "Germany",
@@ -15,7 +15,8 @@
    "capacity": 30000,
    "lat": 52.431944,
    "lon": 10.803889,
-   "city": "Wolfsburg"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q101959",
@@ -28,7 +29,8 @@
    "capacity": 59749,
    "lat": 51.174583,
    "lon": 6.385464,
-   "city": "Mönchengladbach"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q102720",
@@ -41,7 +43,8 @@
    "capacity": 74475,
    "lat": 52.514722,
    "lon": 13.239444,
-   "city": "Berlin"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q104761",
@@ -54,7 +57,8 @@
    "capacity": 30210,
    "lat": 51.038256,
    "lon": 7.002206,
-   "city": "Leverkusen"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q104770",
@@ -67,7 +71,8 @@
    "capacity": 46195,
    "lat": 50.933611,
    "lon": 6.875,
-   "city": "Köln"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q105254",
@@ -80,7 +85,8 @@
    "capacity": 34034,
    "lat": 49.984167,
    "lon": 8.224167,
-   "city": "Mainz"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q105844",
@@ -93,21 +99,23 @@
    "capacity": 27300,
    "lat": 52.031389,
    "lon": 8.516944,
-   "city": "Bielefeld"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q105853",
    "name": "Karlsruher SC",
    "leagues": [
-    "Q154069",
-    "Q152665"
+    "Q152665",
+    "Q154069"
    ],
    "tier": 2,
    "venue": "Wildparkstadion",
    "capacity": 29699,
    "lat": 49.02,
    "lon": 8.413056,
-   "city": "Karlsruhe"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q105861",
@@ -120,7 +128,8 @@
    "capacity": 29299,
    "lat": 51.489944,
    "lon": 7.236489,
-   "city": "Bochum"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q106394",
@@ -133,7 +142,8 @@
    "capacity": 24000,
    "lat": 47.988889,
    "lon": 7.893056,
-   "city": "Freiburg im Breisgau"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q107421",
@@ -146,7 +156,8 @@
    "capacity": 11436,
    "lat": 48.753944,
    "lon": 9.188417,
-   "city": "Stuttgart"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q107818",
@@ -159,7 +170,8 @@
    "capacity": 22528,
    "lat": 51.751389,
    "lon": 14.345556,
-   "city": "Cottbus"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q131603",
@@ -172,7 +184,8 @@
    "capacity": 15000,
    "lat": 48.110833,
    "lon": 11.574444,
-   "city": "München"
+   "city": null,
+   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q136089",
@@ -185,7 +198,8 @@
    "capacity": 5260,
    "lat": 51.0536,
    "lon": 12.2831,
-   "city": "Meuselwitz"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q137499",
@@ -198,7 +212,8 @@
    "capacity": 21813,
    "lat": 49.3161,
    "lon": 7.355,
-   "city": "Homburg"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q1387417",
@@ -211,7 +226,22 @@
    "capacity": 13500,
    "lat": 54.320556,
    "lon": 10.130556,
-   "city": "Ebersbach-Neugersdorf"
+   "city": null,
+   "competition": "Regionalliga Nordost"
+  },
+  {
+   "id": "Q1387764",
+   "name": "FC Triesenberg",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Sportanlage Leitawis",
+   "capacity": 800,
+   "lat": 47.1145,
+   "lon": 9.5401,
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q141931",
@@ -224,7 +254,8 @@
    "capacity": 32085,
    "lat": 51.040278,
    "lon": 13.747778,
-   "city": "Dresden"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q141971",
@@ -237,7 +268,8 @@
    "capacity": 21704,
    "lat": 52.457222,
    "lon": 13.568056,
-   "city": "Berlin"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q142005",
@@ -250,7 +282,8 @@
    "capacity": 29000,
    "lat": 54.08495,
    "lon": 12.095189,
-   "city": "Rostock"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q14551982",
@@ -258,12 +291,16 @@
    "leagues": [
     "Q154069"
    ],
-   "tier": 3,
+   "tier": 4,
    "venue": "Donaustadion",
    "capacity": 19500,
    "lat": 48.404589,
    "lon": 10.009575,
-   "city": "Ulm"
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_in_German_football",
+   "note": "Relegated from 3. Liga to Regionalliga in summer 2026",
+   "manual": true,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q151747",
@@ -276,7 +313,8 @@
    "capacity": 9917,
    "lat": 51.261539,
    "lon": 6.733083,
-   "city": "Düsseldorf"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q153535",
@@ -289,7 +327,8 @@
    "capacity": 32960,
    "lat": 50.793333,
    "lon": 6.097222,
-   "city": "Aachen"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q153539",
@@ -302,21 +341,23 @@
    "capacity": 18500,
    "lat": 49.486944,
    "lon": 10.999167,
-   "city": "Fürth"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q154053",
    "name": "Eintracht Braunschweig",
    "leagues": [
-    "Q154069",
-    "Q152665"
+    "Q152665",
+    "Q154069"
    ],
    "tier": 2,
    "venue": "Eintracht-Stadion",
    "capacity": 24406,
    "lat": 52.29,
    "lon": 10.521389,
-   "city": "Braunschweig"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q154293",
@@ -329,7 +370,8 @@
    "capacity": 31500,
    "lat": 51.409028,
    "lon": 6.778639,
-   "city": "Duisburg"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q155186",
@@ -342,7 +384,8 @@
    "capacity": 12990,
    "lat": 50.915833,
    "lon": 11.582778,
-   "city": "Jena"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q155218",
@@ -355,7 +398,8 @@
    "capacity": 20650,
    "lat": 51.486667,
    "lon": 6.976389,
-   "city": "Essen"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q155452",
@@ -368,7 +412,8 @@
    "capacity": 9500,
    "lat": 50.3305,
    "lon": 7.58661,
-   "city": "Koblenz"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q155730",
@@ -381,7 +426,8 @@
    "capacity": 30098,
    "lat": 52.125556,
    "lon": 11.670833,
-   "city": "Magdeburg"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q1565781",
@@ -394,7 +440,8 @@
    "capacity": 3500,
    "lat": 52.4692,
    "lon": 13.4167,
-   "city": "Deutschland"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q157020",
@@ -407,7 +454,8 @@
    "capacity": 21318,
    "lat": 51.493611,
    "lon": 6.854444,
-   "city": "Oberhausen"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q157352",
@@ -420,7 +468,8 @@
    "capacity": 12542,
    "lat": 50.128056,
    "lon": 8.723333,
-   "city": "Frankfurt am Main"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q157463",
@@ -433,7 +482,8 @@
    "capacity": 35303,
    "lat": 49.2475,
    "lon": 6.984167,
-   "city": "Saarbrücken"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q157828",
@@ -446,7 +496,8 @@
    "capacity": 15034,
    "lat": 54.349167,
    "lon": 10.123611,
-   "city": "Kiel"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q15786",
@@ -459,7 +510,8 @@
    "capacity": 50000,
    "lat": 49.426241,
    "lon": 11.125617,
-   "city": "Nürnberg"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q15789",
@@ -472,7 +524,8 @@
    "capacity": 75024,
    "lat": 48.218775,
    "lon": 11.624753,
-   "city": "München"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q158121",
@@ -485,7 +538,8 @@
    "capacity": 15053,
    "lat": 48.073611,
    "lon": 11.615556,
-   "city": "Unterhaching"
+   "city": null,
+   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q159930",
@@ -498,7 +552,8 @@
    "capacity": 19708,
    "lat": 52.54,
    "lon": 13.4764,
-   "city": "Berlin"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q159936",
@@ -511,7 +566,8 @@
    "capacity": 20500,
    "lat": 50.094444,
    "lon": 8.798611,
-   "city": "Offenbach am Main"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q160530",
@@ -524,7 +580,8 @@
    "capacity": 16130,
    "lat": 52.280833,
    "lon": 8.071111,
-   "city": "Osnabrück"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q160532",
@@ -537,7 +594,22 @@
    "capacity": 15000,
    "lat": 51.731389,
    "lon": 8.710833,
-   "city": "Paderborn"
+   "city": null,
+   "competition": "Bundesliga"
+  },
+  {
+   "id": "Q161034",
+   "name": "Wacker Burghausen",
+   "leagues": [
+    "Q154069"
+   ],
+   "tier": 3,
+   "venue": "Wacker-Arena",
+   "capacity": 10000,
+   "lat": 48.178889,
+   "lon": 12.836389,
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q161554",
@@ -550,7 +622,8 @@
    "capacity": 25000,
    "lat": 50.842186,
    "lon": 12.945669,
-   "city": "Chemnitz"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q162251",
@@ -563,7 +636,22 @@
    "capacity": 10001,
    "lat": 48.6685,
    "lon": 10.1393,
-   "city": "Heidenheim an der Brenz"
+   "city": null,
+   "competition": "2. Bundesliga"
+  },
+  {
+   "id": "Q162317",
+   "name": "1. FC Lokomotive Leipzig",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Bruno-Plache-Stadion",
+   "capacity": 7000,
+   "lat": 51.3029,
+   "lon": 12.4192,
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q16525407",
@@ -576,7 +664,8 @@
    "capacity": 49780,
    "lat": 49.434444,
    "lon": 7.775833,
-   "city": "Kaiserslautern"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q16525419",
@@ -589,7 +678,8 @@
    "capacity": 20300,
    "lat": 50.000833,
    "lon": 8.245556,
-   "city": null
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q16536906",
@@ -602,7 +692,8 @@
    "capacity": 30210,
    "lat": 51.038256,
    "lon": 7.002206,
-   "city": "Leverkusen"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q16559523",
@@ -615,7 +706,8 @@
    "capacity": 24406,
    "lat": 52.29,
    "lon": 10.521389,
-   "city": "Braunschweig"
+   "city": null,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q16573990",
@@ -628,7 +720,8 @@
    "capacity": 18000,
    "lat": 52.3766,
    "lon": 9.7729,
-   "city": null
+   "city": null,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q16637410",
@@ -641,7 +734,8 @@
    "capacity": 6350,
    "lat": 49.2783,
    "lon": 8.84212,
-   "city": null
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q16645947",
@@ -654,7 +748,8 @@
    "capacity": null,
    "lat": 52.434577,
    "lon": 10.807511,
-   "city": null
+   "city": null,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q170105",
@@ -667,7 +762,8 @@
    "capacity": 11436,
    "lat": 48.753944,
    "lon": 9.188417,
-   "city": "Stuttgart"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q170107",
@@ -680,7 +776,8 @@
    "capacity": 18599,
    "lat": 50.960278,
    "lon": 11.037222,
-   "city": "Erfurt"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q170117",
@@ -693,7 +790,8 @@
    "capacity": 15000,
    "lat": 48.745556,
    "lon": 11.485,
-   "city": "Ingolstadt"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q170134",
@@ -706,7 +804,8 @@
    "capacity": 27000,
    "lat": 49.479444,
    "lon": 8.5025,
-   "city": "Mannheim"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q170157",
@@ -719,7 +818,8 @@
    "capacity": 23067,
    "lat": 51.239083,
    "lon": 7.105083,
-   "city": "Wuppertal"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q175616",
@@ -732,7 +832,8 @@
    "capacity": 5000,
    "lat": 49.264,
    "lon": 11.298,
-   "city": "Pyrbaum"
+   "city": null,
+   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q176168",
@@ -745,7 +846,8 @@
    "capacity": 62008,
    "lat": 51.559368,
    "lon": 7.067835,
-   "city": "Neustrelitz"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q176850",
@@ -758,14 +860,13 @@
    "capacity": 5000,
    "lat": 48.1191,
    "lon": 7.74351,
-   "city": "Bahlingen am Kaiserstuhl"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q1921747",
    "name": "BSG Chemie Leipzig",
    "leagues": [
-    "Q6954881",
-    "Q1477042",
     "Q548937"
    ],
    "tier": 4,
@@ -773,7 +874,8 @@
    "capacity": 20000,
    "lat": 51.358056,
    "lon": 12.307778,
-   "city": "Leipzig"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q20994272",
@@ -786,7 +888,8 @@
    "capacity": 42000,
    "lat": 51.345833,
    "lon": 12.348056,
-   "city": null
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q22707",
@@ -799,7 +902,8 @@
    "capacity": 30150,
    "lat": 49.239,
    "lon": 8.888278,
-   "city": "Sinsheim"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q265570",
@@ -812,7 +916,22 @@
    "capacity": 15210,
    "lat": 48.9909,
    "lon": 12.1069,
-   "city": "Regensburg"
+   "city": null,
+   "competition": "3. Liga"
+  },
+  {
+   "id": "Q28936927",
+   "name": "1. FC Lokomotive Leipzig",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Bruno-Plache-Stadion",
+   "capacity": 7000,
+   "lat": 51.3029,
+   "lon": 12.4192,
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q310608",
@@ -820,12 +939,16 @@
    "leagues": [
     "Q555836"
    ],
-   "tier": 4,
+   "tier": 3,
    "venue": "Südstadion",
    "capacity": 13750,
    "lat": 50.9175,
    "lon": 6.94361,
-   "city": "Köln"
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_in_German_football",
+   "note": "Promoted from Regionalliga to 3. Liga in summer 2026",
+   "manual": true,
+   "competition": "3. Liga"
   },
   {
    "id": "Q310621",
@@ -838,7 +961,8 @@
    "capacity": 12560,
    "lat": 50.071111,
    "lon": 8.256667,
-   "city": "Taunusstein"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q316855",
@@ -851,7 +975,8 @@
    "capacity": 15057,
    "lat": 51.465278,
    "lon": 11.961944,
-   "city": "Halle (Saale)"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q316865",
@@ -864,7 +989,8 @@
    "capacity": 45000,
    "lat": 51.929722,
    "lon": 7.624583,
-   "city": "Münster"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q316896",
@@ -877,7 +1003,8 @@
    "capacity": null,
    "lat": 50.728539,
    "lon": 12.519325,
-   "city": "Zwickau"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q319167",
@@ -890,7 +1017,8 @@
    "capacity": 7200,
    "lat": 53.379167,
    "lon": 7.203333,
-   "city": "Emden"
+   "city": null,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q32494",
@@ -903,7 +1031,8 @@
    "capacity": 62271,
    "lat": 51.554503,
    "lon": 7.067589,
-   "city": "Gelsenkirchen"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q33748",
@@ -916,7 +1045,8 @@
    "capacity": 49000,
    "lat": 52.36,
    "lon": 9.731111,
-   "city": "Hannover"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q38245",
@@ -929,7 +1059,8 @@
    "capacity": 51500,
    "lat": 50.068611,
    "lon": 8.645278,
-   "city": "Frankfurt am Main"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q4107588",
@@ -942,7 +1073,8 @@
    "capacity": 5500,
    "lat": 53.0636,
    "lon": 8.84286,
-   "city": "Bremen"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q41420",
@@ -955,7 +1087,8 @@
    "capacity": 81359,
    "lat": 51.4925,
    "lon": 7.451667,
-   "city": "Dortmund"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q4512",
@@ -968,7 +1101,8 @@
    "capacity": 60058,
    "lat": 48.792222,
    "lon": 9.231944,
-   "city": "Stuttgart"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q479269",
@@ -981,7 +1115,8 @@
    "capacity": 5000,
    "lat": 51.8336,
    "lon": 8.32201,
-   "city": "Rheda-Wiedenbrück"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q479351",
@@ -994,7 +1129,8 @@
    "capacity": 19000,
    "lat": 49.857778,
    "lon": 8.672222,
-   "city": "Darmstadt"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q493464",
@@ -1007,7 +1143,8 @@
    "capacity": 10500,
    "lat": 50.9939,
    "lon": 7.11969,
-   "city": "Bergisch Gladbach"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q51974",
@@ -1020,7 +1157,8 @@
    "capacity": 51500,
    "lat": 53.586944,
    "lon": 9.898611,
-   "city": "Hamburg"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q51976",
@@ -1033,7 +1171,8 @@
    "capacity": 42500,
    "lat": 53.066389,
    "lon": 8.8375,
-   "city": "Bremen"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q535785",
@@ -1046,7 +1185,8 @@
    "capacity": 10504,
    "lat": 49.767194,
    "lon": 9.932944,
-   "city": "Würzburg"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q5424977",
@@ -1059,7 +1199,8 @@
    "capacity": 11418,
    "lat": 48.744444,
    "lon": 11.443056,
-   "city": "Ingolstadt"
+   "city": null,
+   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q5644342",
@@ -1072,7 +1213,8 @@
    "capacity": 2400,
    "lat": 53.5886,
    "lon": 9.94418,
-   "city": "Hamburg"
+   "city": null,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q566136",
@@ -1085,7 +1227,8 @@
    "capacity": 5100,
    "lat": 47.9794,
    "lon": 10.1661,
-   "city": "Memmingen"
+   "city": null,
+   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q566141",
@@ -1098,7 +1241,8 @@
    "capacity": 4702,
    "lat": 51.3289,
    "lon": 7.01857,
-   "city": "Velbert"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q566172",
@@ -1111,7 +1255,8 @@
    "capacity": 4000,
    "lat": 49.7352,
    "lon": 7.29491,
-   "city": "Idar-Oberstein"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q566183",
@@ -1124,7 +1269,8 @@
    "capacity": 2500,
    "lat": 48.3149,
    "lon": 12.2759,
-   "city": "Buchbach"
+   "city": null,
+   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q568276",
@@ -1137,7 +1283,8 @@
    "capacity": 10164,
    "lat": 50.7481,
    "lon": 7.0845,
-   "city": "Bonn"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q609926",
@@ -1150,7 +1297,8 @@
    "capacity": 19400,
    "lat": 50.852222,
    "lon": 8.026111,
-   "city": "Siegen"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q639419",
@@ -1163,7 +1311,8 @@
    "capacity": 5000,
    "lat": 51.8764,
    "lon": 11.0501,
-   "city": "Halberstadt"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q639472",
@@ -1176,7 +1325,8 @@
    "capacity": 5001,
    "lat": 51.905,
    "lon": 10.4451,
-   "city": "Goslar"
+   "city": null,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q639506",
@@ -1189,7 +1339,8 @@
    "capacity": 6000,
    "lat": 54.0892,
    "lon": 9.95558,
-   "city": "Neumünster"
+   "city": null,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q639525",
@@ -1202,7 +1353,8 @@
    "capacity": 12100,
    "lat": 49.332083,
    "lon": 8.647667,
-   "city": "Sandhausen"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q6463",
@@ -1215,7 +1367,8 @@
    "capacity": 29546,
    "lat": 53.554444,
    "lon": 9.967778,
-   "city": "Hamburg"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q647893",
@@ -1228,7 +1381,8 @@
    "capacity": 10256,
    "lat": 49.768056,
    "lon": 6.647778,
-   "city": "Trier"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q665920",
@@ -1241,7 +1395,8 @@
    "capacity": 10434,
    "lat": 53.881111,
    "lon": 10.668889,
-   "city": "Lübeck"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q666000",
@@ -1254,7 +1409,8 @@
    "capacity": 5113,
    "lat": 50.0815,
    "lon": 9.0593,
-   "city": "Alzenau"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q666010",
@@ -1267,7 +1423,8 @@
    "capacity": 5001,
    "lat": 51.8833,
    "lon": 8.51444,
-   "city": "Verl"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q666024",
@@ -1280,7 +1437,8 @@
    "capacity": 10000,
    "lat": 47.918342,
    "lon": 9.261914,
-   "city": "Pfullendorf"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q666067",
@@ -1293,7 +1451,8 @@
    "capacity": 7474,
    "lat": 52.270936,
    "lon": 7.920444,
-   "city": "Lotte"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q692586",
@@ -1306,7 +1465,8 @@
    "capacity": 13271,
    "lat": 48.840556,
    "lon": 10.072222,
-   "city": null
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q692691",
@@ -1319,7 +1479,8 @@
    "capacity": 10000,
    "lat": 49.3186,
    "lon": 7.12167,
-   "city": "Spiesen-Elversberg"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q692704",
@@ -1332,7 +1493,8 @@
    "capacity": 10000,
    "lat": 52.53,
    "lon": 13.359444,
-   "city": "Berlin"
+   "city": null,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q692755",
@@ -1340,12 +1502,16 @@
    "leagues": [
     "Q322128"
    ],
-   "tier": 4,
+   "tier": 3,
    "venue": "WIRmachenDRUCK Arena",
    "capacity": 10000,
    "lat": 48.980485,
    "lon": 9.393005,
-   "city": "Aspach"
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_in_German_football",
+   "note": "Promoted from Regionalliga to 3. Liga in summer 2026",
+   "manual": true,
+   "competition": "3. Liga"
   },
   {
    "id": "Q695008",
@@ -1358,7 +1524,8 @@
    "capacity": 8343,
    "lat": 50.9452,
    "lon": 7.03039,
-   "city": "Köln"
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q700029",
@@ -1371,7 +1538,22 @@
    "capacity": 10490,
    "lat": 50.5235,
    "lon": 12.1259,
-   "city": "Plauen"
+   "city": null,
+   "competition": "Regionalliga Nordost"
+  },
+  {
+   "id": "Q701290",
+   "name": "SSV Ulm 1846",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Donaustadion",
+   "capacity": 19500,
+   "lat": 48.404589,
+   "lon": 10.009575,
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q702455",
@@ -1384,7 +1566,8 @@
    "capacity": 42000,
    "lat": 51.345833,
    "lon": 12.348056,
-   "city": "Leipzig"
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q7671747",
@@ -1397,7 +1580,8 @@
    "capacity": 15000,
    "lat": 48.110833,
    "lon": 11.574444,
-   "city": "München"
+   "city": null,
+   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q797022",
@@ -1410,7 +1594,8 @@
    "capacity": 4350,
    "lat": 52.6163,
    "lon": 8.48314,
-   "city": "Rehden"
+   "city": null,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q819354",
@@ -1423,7 +1608,8 @@
    "capacity": 17993,
    "lat": 51.298611,
    "lon": 9.484167,
-   "city": "Kassel"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q819419",
@@ -1436,7 +1622,22 @@
    "capacity": 5724,
    "lat": 49.631381,
    "lon": 8.335803,
-   "city": "Worms"
+   "city": null,
+   "competition": "Regionalliga Suedwest"
+  },
+  {
+   "id": "Q821096",
+   "name": "SC Eltersdorf",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Sportanlage Langenau",
+   "capacity": 2500,
+   "lat": 49.5557,
+   "lon": 10.9947,
+   "city": null,
+   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q8466",
@@ -1449,7 +1650,8 @@
    "capacity": 49780,
    "lat": 49.434444,
    "lon": 7.775833,
-   "city": "Kaiserslautern"
+   "city": null,
+   "competition": "2. Bundesliga"
   },
   {
    "id": "Q865720",
@@ -1462,7 +1664,8 @@
    "capacity": 81359,
    "lat": 51.4925,
    "lon": 7.451667,
-   "city": "Dortmund"
+   "city": null,
+   "competition": "Regionalliga West"
   },
   {
    "id": "Q97905916",
@@ -1475,35 +1678,23 @@
    "capacity": 30660,
    "lat": 48.323321,
    "lon": 10.885926,
-   "city": null
-  },
-  {
-   "id": "Q97905930",
-   "name": "Hamburger SV",
-   "leagues": [
-    "Q152665"
-   ],
-   "tier": 2,
-   "venue": "Volksparkstadion",
-   "capacity": 51500,
-   "lat": 53.586944,
-   "lon": 9.898611,
-   "city": null
+   "city": null,
+   "competition": "Bundesliga"
   },
   {
    "id": "Q97927380",
    "name": "SV Babelsberg 03",
    "leagues": [
-    "Q548937",
-    "Q283009",
-    "Q154069"
+    "Q154069",
+    "Q548937"
    ],
    "tier": 3,
    "venue": "Karl-Liebknecht-Stadion",
    "capacity": 10787,
    "lat": 52.399083,
    "lon": 13.094806,
-   "city": null
+   "city": null,
+   "competition": "3. Liga"
   },
   {
    "id": "Q994701",
@@ -1516,7 +1707,8 @@
    "capacity": 15000,
    "lat": 48.110833,
    "lon": 11.574444,
-   "city": "München"
+   "city": null,
+   "competition": "Regionalliga Bayern"
   }
  ]
 }

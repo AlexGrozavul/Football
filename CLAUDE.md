@@ -71,7 +71,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   `feed`, `dateSource`.
 - `data/clubs-manual.csv` — corrections and additions to the club layer.
   A row with a `clubQid` overrides only the cells that are filled in; a
-  row without one adds a club. Same column set as `capacity-review.csv`.
+  row without one adds a club; `skip` in the tier column removes one,
+  which is how a duplicate Wikidata item is dropped. A `skip` row needs
+  a `clubQid`, because there has to be something already there to
+  remove, and every other cell on it is ignored. Same column set as
+  `capacity-review.csv`.
 - `data/league-tiers.csv` — maps a league's Wikidata Q-id to a tier.
   Tier comes from this file and never from a league name: Wikidata's
   league items are fragmented and undated, so names cannot be trusted.
@@ -140,19 +144,31 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 
 ## Known open problems
 
-- Hamburger SV appears twice in the club layer (`Q51974` at tier 1 and
-  `Q97905930` at tier 2). `clubs-manual.csv` can override a club but not
-  remove one; it needs a `skip` value in the tier column.
 - Three clubs are missing from the German layer entirely: SV Meppen,
   Erzgebirge Aue, 1. FC Schweinfurt.
 - FC Unirea Dej has plainly wrong coordinates in Wikidata — placed near
-  Bucharest, roughly 300km from Dej.
-- Several capacities are wrong in Wikidata (Preußen Münster, Fortuna
-  Düsseldorf, 1. FC Saarbrücken among them). The cross-check tool exists
-  to surface these; it has not been run for real yet.
-- About 37 Regionalliga clubs are missing, probably reserve teams typed
-  oddly in Wikidata. Dropping the type filter from the club query may
-  have fixed this — unverified.
+  Bucharest, roughly 300km from Dej. FK Csíkszereda is the same kind of
+  error, 31km from the nearest ground OpenStreetMap knows about.
+- 1. FC Lokomotive Leipzig appears twice, `Q162317` and `Q28936927`,
+  with the same league, ground, capacity and coordinates — two pins on
+  one ground, exactly like Hamburger SV was. `skip` will remove one, but
+  which of the two is the real item has not been checked, and removing
+  the wrong one takes the club off the map.
+- The cross-check has now been run for real. Of 185 clubs it compared,
+  20 agree and 7 disagree; the rest could not be compared because only
+  one source has a figure. Fortuna Düsseldorf (Wikidata 9,917 against
+  OpenStreetMap 54,600) and 1. FC Saarbrücken (35,303 against 16,003)
+  are the two worst. Preußen Münster was not among them — OpenStreetMap
+  has no capacity for its ground, so nothing could be checked. Romania
+  is effectively unchecked: OpenStreetMap has a usable capacity for
+  exactly one Romanian ground out of 404.
+- The club query has no type filter, so it matches anything carrying
+  `P118`, and Wikidata puts that on managers and players as well as
+  clubs. A German run pulls back about 10,000 people, all of which fall
+  out at the "no coordinates" gate — the map stays clean, but it is why
+  the league discovery query keeps hitting the query service's
+  60-second limit. Dropping the filter recovered 3 of the roughly 37
+  missing Regionalliga clubs, not all of them.
 - Wikidata's `P3983` (league level) is not set on Bundesliga, so it
   cannot be the sole source of tier data. It can generate a draft of
   `league-tiers.csv` for review, which is the plan for expanding beyond
@@ -166,23 +182,22 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 
 ## Planned, not built
 
-1. `skip` support in `clubs-manual.csv`
-2. A ticket-info file: official ticket page, whether a club sells to
+1. A ticket-info file: official ticket page, whether a club sells to
    non-members, typical price range with the season noted, how demand
    behaves, whether matches sell out. **Stable facts only — sale dates
    and deadlines stay hand-written by Alexandru.**
-3. Club detail sheet: a pull-up panel replacing the map popup, showing
+2. Club detail sheet: a pull-up panel replacing the map popup, showing
    name, ground, capacity, competition name with tier in brackets,
    distance, fixtures and ticket info, each saying "unavailable" rather
    than being hidden when there is nothing.
-4. Search box on the map, top right, live matches, enter flies to the club.
-5. Badges. 284 crest URLs already sit unused in `data/fixtures/`.
+3. Search box on the map, top right, live matches, enter flies to the club.
+4. Badges. 284 crest URLs already sit unused in `data/fixtures/`.
    Wikidata `P154` covers German clubs patchily and Romanian ones barely.
    Licensing is unresolved: only freely licensed images may be used on a
    public site, and Wikipedia's non-free crests may not. Fallback is a
    generated marker — club colours plus initials.
-6. Revamped bucket list and ticket info tabs, plus a fourth tab for
+5. Revamped bucket list and ticket info tabs, plus a fourth tab for
    memberships and tickets already held: cost, renewal date, benefits.
-7. Expansion to more countries, one at a time.
+6. Expansion to more countries, one at a time.
 
 Every change must actually land in the repository. Write files to disk, commit them, and push the branch — do not finish a task with changes left only in the working tree or described in the reply. When the task is done, state which files were committed and what the branch is called, so the diff can be reviewed.

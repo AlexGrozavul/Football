@@ -1,101 +1,57 @@
 leagueQid,tier,label,country,clubsSeen
-Q316686,,Fußball-Oberliga Nordost,DE,26
-Q26223,,Fußball-Oberliga Rheinland-Pfalz/Saar,DE,22
-Q878642,,Fußball-Oberliga Baden-Württemberg,DE,22
-Q15735,,Fußball-Bayernliga,DE,21
-Q322918,,Fußball-Oberliga Niederrhein,DE,19
-Q316113,,Oberliga Westfalen,DE,18
-Q316340,,Fußball-Hessenliga,DE,18
-Q317927,,Fußball-Oberliga Hamburg,DE,17
-Q317868,,Fußball-Oberliga Niedersachsen,DE,16
-Q821097,,Berlin-Liga,DE,15
-Q20025024,,Bayernliga Süd,DE,13
-Q1477042,,Fußball-Sachsenliga,DE,12
-Q1477071,,Fußball-Verbandsliga Hessen,DE,12
-Q1645341,,Landesliga Württemberg,DE,12
-Q832856,,Brandenburg-Liga,DE,12
-Q1309841,,Fußball-Landesliga Westfalen,DE,11
-Q1476473,,Fußball-Landesliga Niederrhein,DE,11
-Q609757,,Frauen-Bundesliga,DE,11
-Q875706,,Fußball-Verbandsliga Mecklenburg-Vorpommern,DE,11
-Q113159,,2. Frauen-Bundesliga,DE,10
-Q1770303,,Kreisliga,DE,10
-Q247040,,Fußball-Westfalenliga,DE,9
-Q324698,,Mittelrheinliga,DE,9
-Q44151,,Bezirksliga,DE,9
-Q475887,,Bremen-Liga,DE,9
-Q641369,,Fußball-Verbandsliga Württemberg,DE,9
-Q1477067,,Fußball-Thüringenliga,DE,8
-Q2188121,,Fußball-Regionalliga,DE,8
-Q20028073,,Bayernliga Nord,DE,7
-Q324154,,Fußball-Oberliga Schleswig-Holstein,DE,7
-Q127699,,Fußball-Verbandsliga Sachsen-Anhalt,DE,6
-Q1476475,,Fußball-Landesliga Mittelrhein,DE,6
+Q1231323,,Liga Națională,RO,13
+Q5284652,,Liga Națională,RO,8
+Q3712183,,Liga I,RO,7
 Q1824566,,Liga a IV-a,RO,6
-Q1477036,,Verbandsliga Saarland,DE,5
-Q5511147,,Landesliga Nordost,DE,5
-Q993765,,Fußball-Verbandsliga Baden,DE,5
-Q1477021,,Fußball-Regionalliga Nordost,DE,4
-Q1477024,,Fußball-Regionalliga Süd,DE,4
+Q18547858,,Liga a IV-a Sibiu,RO,6
+Q6970342,,RoBowl,RO,5
+Q12732182,,Liga A Prahova,RO,4
+Q12732211,,Liga a IV-a Buzău,RO,4
 Q18548570,,Liga a IV-a Timiș,RO,4
-Q5511145,,Landesliga Mitte (1963-2012),DE,4
-Q12732182,,Liga A Prahova,RO,3
+Q2952038,,Liga I Feminin,RO,4
 Q12732204,,Liga a IV-a Bihor,RO,3
 Q12732205,,Liga a IV-a Constanța,RO,3
+Q12732209,,Liga a IV-a București,RO,3
 Q12732224,,Liga a IV-a Ialomița,RO,3
-Q1477028,,Fußball-Regionalliga West,DE,3
-Q18547858,,Liga a IV-a Sibiu,RO,3
-Q5511150,,Landesliga Südwest,DE,3
-Q6954875,,Fußball-Oberliga Nordost (Staffel Nord),DE,3
+Q12732227,,Liga a IV-a Mureș,RO,3
+Q12732231,,Liga a IV-a Vâlcea,RO,3
 Q12732203,,Liga a IV-a Alba,RO,2
-Q12732209,,Liga a IV-a București,RO,2
-Q12732211,,Liga a IV-a Buzău,RO,2
+Q12732207,,Liga a IV-a Brăila,RO,2
+Q12732210,,Liga a IV-a Cluj,RO,2
+Q12732212,,Liga a IV-a Argeș,RO,2
+Q12732213,,Liga a IV-a Caraș-Severin,RO,2
 Q12732214,,Liga a IV-a Galați,RO,2
 Q12732218,,Liga a IV-a Călărași,RO,2
+Q12732220,,Liga a IV-a Gorj,RO,2
 Q12732223,,Liga a IV-a Hunedoara,RO,2
+Q12732225,,Liga a IV-a Ilfov,RO,2
 Q12732229,,Liga a IV-a Olt,RO,2
 Q12732230,,Liga a IV-a Satu Mare,RO,2
-Q1477019,,Fußball-Regionalliga Nord,DE,2
-Q1477025,,Fußball-Regionalliga Südwest,DE,2
+Q1756562,,Divizia A1 de volei feminin,RO,2
+Q18538278,,Liga a IV-a Brașov,RO,2
 Q18541340,,Liga a IV-a Bacău,RO,2
 Q18548729,,Liga a IV-a Tulcea,RO,2
-Q2952038,,Liga I Feminin,RO,2
-Q4900351,,Bezirksliga Mittelfranken Nord,DE,2
-Q4900360,,Bezirksliga Schwaben-Nord,DE,2
-Q4900362,,Bezirksliga Schwaben-Süd,DE,2
-Q5511148,,Landesliga Nordwest,DE,2
-Q5511149,,Landesliga Südost,DE,2
-Q6954881,,Fußball-Oberliga Nordost (Staffel Süd),DE,2
-Q826516,,Fußball-Landesliga Bremen,DE,2
-Q828056,,Fußball-Landesliga Hamburg,DE,2
-Q878505,,Landesliga,DE,2
+Q305104,,Liga Națională de hochei,RO,2
+Q821999,,Liga Națională,RO,2
+Q1049208,,Liga MOL,RO,1
 Q1050620,,Liga a V-a,RO,1
-Q108210188,,Landesliga Braunschweig,DE,1
-Q12732207,,Liga a IV-a Brăila,RO,1
-Q12732210,,Liga a IV-a Cluj,RO,1
-Q12732220,,Liga a IV-a Gorj,RO,1
-Q12732225,,Liga a IV-a Ilfov,RO,1
-Q12732227,,Liga a IV-a Mureș,RO,1
+Q106977877,,Liga I,RO,1
+Q106977879,,Liga II,RO,1
+Q1136446,,SuperLiga,RO,1
+Q12732217,,Liga a IV-a Covasna,RO,1
+Q12732219,,Liga a IV-a Giurgiu,RO,1
 Q12732228,,Liga a IV-a Mehedinți,RO,1
-Q12732231,,Liga a IV-a Vâlcea,RO,1
-Q1476469,,Fußball-Landesliga Bayern,DE,1
-Q1476585,,Fußball-Oberliga Baden-Württemberg (Frauen),DE,1
-Q1477038,,Fußball-Rheinlandliga,DE,1
-Q1478060,,Fußball-Westfalenliga,DE,1
-Q18538278,,Liga a IV-a Brașov,RO,1
 Q18541339,,Liga a IV-a Arad,RO,1
 Q18541351,,Liga a VI-a,RO,1
 Q18541679,,Liga a IV-a Maramureș,RO,1
 Q18548358,,Liga a IV-a Sălaj,RO,1
 Q18549264,,Liga a IV-a Vrancea,RO,1
-Q247481,,Fußball-Landesliga Niedersachsen,DE,1
-Q28208921,,Inactive,DE,1
-Q283009,,DDR-Liga,DE,1
+Q18549770,,Liga a IV-a Teleorman,RO,1
+Q257400,,ABA League,RO,1
 Q30668116,,Liga I Feminin,RO,1
+Q456092,,Eurocupa ULEB,RO,1
+Q5194425,,Cupa României,RO,1
 Q5282797,,dizolvare,RO,1
-Q5511144,,Gruppenliga,DE,1
 Q55452861,,Liga a V-a Dolj,RO,1
 Q61974506,,Liga a V-a Suceava,RO,1
-Q6436644,,Kreisliga Schwaben-Mitte,DE,1
-Q6484465,,Landesliga Hannover,DE,1
-Q7920950,,Verbandsliga Hessen-Süd,DE,1
+Q6545746,,Liga I (futsal),RO,1

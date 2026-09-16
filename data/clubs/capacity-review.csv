@@ -1,4 +1,13 @@
 clubQid,name,country,tier,venue,capacity,lat,lon,ticketUrl,source,note,_wikidata,_osm,_osmName,_osmTag,_metres,_verdict
+Q16645947,VfL Wolfsburg II,DE,,,,,,,,,,,AOK Stadion,,40,neither source has a capacity
+Q316896,FSV Zwickau,DE,,,,,,,,,,10134,GGZ-Arena,capacity,3,only OpenStreetMap has a figure
+Q105853,Karlsruher SC,DE,,,,,,,,,29699,34140,BBBank Wildpark,capacity,4,sources differ by 13%
+Q162317,1. FC Lokomotive Leipzig,DE,,,,,,,,,7000,12321,Bruno-Plache-Stadion,capacity,6,sources differ by 43%
+Q28936927,1. FC Lokomotive Leipzig,DE,,,,,,,,,7000,12321,Bruno-Plache-Stadion,capacity,6,sources differ by 43%
+Q157463,1. FC Saarbrücken,DE,,,,,,,,,35303,16003,Ludwigsparkstadion,capacity,74,sources differ by 55%
+Q479351,SV Darmstadt 98,DE,,,,,,,,,19000,17810,Merck-Stadion am Böllenfalltor,capacity,14,sources differ by 6%
+Q151747,Fortuna Düsseldorf,DE,,,,,,,,,9917,54600,Merkur Spiel-Arena,capacity,11,sources differ by 82%
+Q170157,Wuppertaler SV,DE,,,,,,,,,23067,21000,Stadion am Zoo,capacity,14,sources differ by 9%
 Q5424763,Avântul Reghin,RO,,,,,,,,,,,Stadionul Municipal Avântul Reghin,,34,neither source has a capacity
 Q18537232,Bucovina Rădăuți,RO,,,,,,,,,,,Stadion,,10,neither source has a capacity
 Q12723169,CS Afumați,RO,,,,,,,,,,,Stadion Afumați,,1,neither source has a capacity
@@ -10,7 +19,9 @@ Q130302376,CSM Târgu Jiu (fotbal),RO,,,,,,,,,,,Stadionul Constantina Diță-Tom
 Q5424871,Chindia Târgoviște,RO,,,,,,,,,,,Stadionul Municipal Eugen Popescu,,1,neither source has a capacity
 Q1135735,Corvinul Hunedoara,RO,,,,,,,,,,,Stadionul Michael Klein,,27,neither source has a capacity
 Q4680389,Dunărea Călărași,RO,,,,,,,,,,,FC Dunărea Călărași,,4,neither source has a capacity
+Q4683227,FC Rapid II București,RO,,,,,,,,,,,Stadionul Electromagnetica,,5,neither source has a capacity
 Q18129096,FC Voluntari,RO,,,,,,,,,,,Stadionul Voluntari Anghel Iordănescu,,18,neither source has a capacity
+Q28230355,Metaloglobus București,RO,,,,,,,,,,,Stadionul Metaloglobus,,84,neither source has a capacity
 Q135627364,Minaur Baia Mare,RO,,,,,,,,,,,Stadionul Viorel Mateianu,,27,neither source has a capacity
 Q5014471,Victoria Ineu,RO,,,,,,,,,,,Stadionul Ineu,,7,neither source has a capacity
 Q4654138,ASC Corona Brașov,RO,,,,,,,,,,,,,2093,no stadium in OSM within 500m
