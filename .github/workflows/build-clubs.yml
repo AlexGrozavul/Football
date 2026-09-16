@@ -36,6 +36,7 @@ jobs:
 
       - name: Fetch clubs from Wikidata
         run: |
+          set -o pipefail
           python3 tools/fetch_clubs.py | tee /tmp/clubs.log
 
       - name: Write the run summary
