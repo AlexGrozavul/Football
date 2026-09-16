@@ -4,8 +4,9 @@ name: TEMP run the new tools
 # and Overpass, which only happens on a runner, so this runs them once
 # on the branch and is deleted again once the answers are written down.
 #
-# The first job writes data/clubs/coordinate-review.csv and commits it to
-# this branch. The second only prints.
+# It writes data/clubs/coordinate-review.csv and commits it to this
+# branch. The discovery-query measurement ran once from here already and
+# its job has been taken out again, so a re-run does not repeat it.
 
 on:
   push:
@@ -73,29 +74,3 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
-
-  diagnose:
-    # After the first job, not beside it: both talk to Wikidata and there
-    # is no reason to make it answer two of our queries at once.
-    needs: propose
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Measure the discovery query
-        run: |
-          set -o pipefail
-          python3 tools/tmp_diagnose_discovery.py | tee /tmp/discovery.log
-
-      - name: Write the run summary
-        if: always()
-        run: |
-          {
-            echo "## Discovery query diagnosis"
-            echo
-            echo '```'
-            cat /tmp/discovery.log 2>/dev/null || echo "the diagnosis did not run"
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"

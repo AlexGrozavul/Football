@@ -98,8 +98,12 @@ CITY_LIMIT_KM = 30
 SAME_GROUND_M = 200
 
 REQUEST_GAP_SECONDS = 20
-TIMEOUT_SECONDS = 300
-MAX_RETRIES = 3
+TIMEOUT_SECONDS = 180
+MAX_RETRIES = 2
+
+# Overpass takes one "around" clause per place, and a country's worth of
+# them in one request is neither polite nor reliable.
+PLACES_PER_REQUEST = 50
 
 # Strongest first. The order is the whole decision: a club is confident
 # only when exactly one ground matches at the best level it reaches.
@@ -126,7 +130,7 @@ out tags center;
 PLACE_QUERY = """
 [out:json][timeout:240];
 area["ISO3166-1"="%(iso)s"][admin_level=2]->.a;
-node["place"~"^(city|town|village|suburb)$"]["name"~"^(%(names)s)$",i](area.a);
+node["place"~"^(city|town|village|suburb)$"]["name"~"^(%(names)s)([ /,-].*)?$",i](area.a);
 out tags center;
 """
 
@@ -144,13 +148,19 @@ out tags center;
 NAME_TAGS = ("name", "official_name", "alt_name", "short_name", "operator")
 TOWN_TAGS = ("addr:city", "addr:place", "addr:suburb", "addr:town")
 
+# The club's town, and what Wikidata thinks the item actually is. The
+# second one matters: a squad list carries a league tag like a club does,
+# and arrives here looking like a club with no ground.
 CITY_QUERY = """
-SELECT ?club ?city ?cityLabel ?coord ?rank WHERE {
+SELECT ?club ?city ?cityLabel ?coord ?rank ?typeLabel WHERE {
   VALUES ?club { %(clubs)s }
-  { ?club wdt:P159 ?city . BIND(1 AS ?rank) }
-  UNION
-  { ?club wdt:P131 ?city . BIND(2 AS ?rank) }
-  OPTIONAL { ?city wdt:P625 ?coord }
+  OPTIONAL { ?club wdt:P31 ?type }
+  OPTIONAL {
+    { ?club wdt:P159 ?city . BIND(1 AS ?rank) }
+    UNION
+    { ?club wdt:P131 ?city . BIND(2 AS ?rank) }
+    OPTIONAL { ?city wdt:P625 ?coord }
+  }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "%(lang)s,en" }
 }
 """
@@ -178,8 +188,8 @@ def overpass_with_retry(query, what):
             # 429 and 504 are Overpass saying it is busy, not that the
             # query is wrong. Waiting is the documented remedy.
             if exc.code in (429, 502, 503, 504) and attempt < MAX_RETRIES:
-                print(f"    Overpass busy ({exc.code}) on {what}, waiting 60s")
-                time.sleep(60)
+                print(f"    Overpass busy ({exc.code}) on {what}, waiting 30s")
+                time.sleep(30)
                 continue
             return None, f"HTTP {exc.code}"
         except (urllib.error.URLError, TimeoutError) as exc:
@@ -243,6 +253,15 @@ def words(name):
     return [w for w in re.split(r"\W+", name, flags=re.UNICODE) if w]
 
 
+def de_adjective(word):
+    """
+    German names a club after its town with an -er on the end:
+    Torgelower FC Greif plays in Torgelow. Only worth trying on a long
+    word, and a wrong guess just asks about a place that does not exist.
+    """
+    return word[:-2] if len(word) >= 6 and word.lower().endswith("er") else None
+
+
 def name_ngrams(name, longest=3):
     """
     Every run of up to three words in a club's name, which is what gets
@@ -255,9 +274,49 @@ def name_ngrams(name, longest=3):
     for size in range(1, longest + 1):
         for start in range(len(parts) - size + 1):
             gram = " ".join(parts[start:start + size])
-            if len(gram.replace(" ", "")) >= 4 and gram not in grams:
+            least = 3 if size == 1 else 4
+            if len(gram.replace(" ", "")) >= least and gram not in grams:
                 grams.append(gram)
+    for word in parts:
+        stem = de_adjective(word)
+        if stem and len(stem) >= 3 and stem not in grams:
+            grams.append(stem)
     return grams
+
+
+def club_forms(name):
+    """
+    The club's name as written, and again with German -er endings taken
+    off, so 'Torgelower FC Greif' can also be read as 'Torgelow FC
+    Greif'. The second form is marked, because a match on it is a
+    slightly longer reach and the row should say so.
+    """
+    plain = fold(name)
+    stemmed = " ".join(
+        fold(de_adjective(word) or word) for word in words(name))
+    forms = [(plain, "")]
+    if stemmed and stemmed != plain:
+        forms.append((stemmed, " (the club's name carries it as an "
+                               "adjective, the German -er ending)"))
+    return forms
+
+
+def place_in_club(place_name, forms, parts=None):
+    """
+    Does this place's name sit inside the club's name? OpenStreetMap
+    often carries the long official form - 'Garching bei München' for
+    Garching, 'Rain am Lech' for Rain - so a leading run of its words
+    counts too. Returns what matched and any caveat, longest first.
+    """
+    parts = parts if parts is not None else fold(place_name).split()
+    for size in range(len(parts), 0, -1):
+        lead = " ".join(parts[:size])
+        if len(lead.replace(" ", "")) < 3:
+            continue
+        for folded, caveat in forms:
+            if phrase_in(lead, folded):
+                return lead, caveat
+    return None, None
 
 
 def is_reserve(name):
@@ -282,6 +341,8 @@ def elements(payload, default_kind):
             "name": tags.get("name") or tags.get("official_name") or "",
             "kind": "stadium" if stadium else default_kind,
             "town": next((tags[t] for t in TOWN_TAGS if tags.get(t)), ""),
+            # folded once here: this gets compared against every club
+            "folded": {tag: fold(tags[tag]) for tag in NAME_TAGS if tags.get(tag)},
         }
     return out
 
@@ -295,7 +356,7 @@ def places(payload):
         if lat is None or lon is None or not tags.get("name"):
             continue
         out.append({"name": tags["name"], "kind": tags.get("place", "place"),
-                    "lat": lat, "lon": lon})
+                    "lat": lat, "lon": lon, "parts": fold(tags["name"]).split()})
     return out
 
 
@@ -330,7 +391,8 @@ def add_candidate(found, ground, level, how, town=""):
 def candidates_for(club, grounds, place_list):
     """Everything OpenStreetMap offers for one club, with its reason."""
     name = club.get("name") or club["id"]
-    folded = fold(name)
+    forms = club_forms(name)
+    folded = forms[0][0]
     venue = fold(club.get("venue") or "")
     found = []
 
@@ -346,23 +408,23 @@ def candidates_for(club, grounds, place_list):
             continue
 
         if len(folded) >= 6:
-            hit = next((tag for tag in NAME_TAGS
-                        if phrase_in(folded, fold(tags.get(tag)))), None)
+            hit = next((tag for tag, value in ground["folded"].items()
+                        if phrase_in(folded, value)), None)
             if hit:
                 add_candidate(found, ground, "club-name",
                               f"the ground's {hit} in OpenStreetMap is "
                               f"{tags[hit]!r}, which carries the club's name")
                 continue
 
-        if venue and len(venue) >= 6 and any(
-                fold(tags.get(tag)) == venue for tag in NAME_TAGS):
+        if venue and len(venue) >= 6 and venue in ground["folded"].values():
             add_candidate(found, ground, "ground-name",
                           f"Wikidata knows the club's ground as "
                           f"{club['venue']!r} but not where it is; this "
                           f"OpenStreetMap ground has that name")
 
     for place in place_list:
-        if not phrase_in(fold(place["name"]), folded):
+        lead, caveat = place_in_club(place["name"], forms, place["parts"])
+        if not lead:
             continue
         for ground in grounds.values():
             away = metres(place["lat"], place["lon"], ground["lat"], ground["lon"])
@@ -372,8 +434,8 @@ def candidates_for(club, grounds, place_list):
             what = "stadium" if ground["kind"] == "stadium" else "named football pitch"
             add_candidate(found, ground, level,
                           f"{place['name']!r} in the club's name is a "
-                          f"{place['kind']} in OpenStreetMap, and this {what} "
-                          f"is {km(away)} km from the middle of it",
+                          f"{place['kind']} in OpenStreetMap{caveat}, and this "
+                          f"{what} is {km(away)} km from the middle of it",
                           town=place["name"])
     return found
 
@@ -412,11 +474,13 @@ def propose(club, grounds, place_list):
 
     if not found:
         if too_far:
-            worst = ", ".join(describe(c) for c in too_far[:3])
+            row["_alternatives"] = "; ".join(describe(c) for c in too_far[:5])
             row["_verdict"] = (
-                f"no match - the only candidate(s) are more than {CITY_LIMIT_KM} km "
-                f"from {city['name']}, the club's town in Wikidata: {worst}")
-        elif any(phrase_in(fold(p["name"]), fold(name)) for p in place_list):
+                f"no match - every candidate is more than {CITY_LIMIT_KM} km from "
+                f"{city['name']}, the club's town in Wikidata, so each one is some "
+                f"other place of the same name")
+        elif any(place_in_club(p["name"], club_forms(name), p["parts"])[0]
+                 for p in place_list):
             row["_verdict"] = ("no match - a place in the club's name was found, but "
                                f"OpenStreetMap has no named ground within "
                                f"{PLACE_RADIUS_M // 1000} km of it")
@@ -485,6 +549,30 @@ def why_several(shortlist):
             f"{count} {what} lie within {PLACE_RADIUS_M // 1000} km of it")
 
 
+def flag_shared_grounds(rows):
+    """
+    Two clubs proposed at one ground would put two pins on one spot, the
+    thing that has already gone wrong here with duplicate Wikidata items.
+    Sometimes it is simply true - a town's clubs share the municipal
+    ground - so this does not throw either row away. It says so on both.
+    """
+    by_ground, shared = {}, []
+    for row in rows:
+        if row["_verdict"].split(" ")[0] == "confident" and row["_osmRef"]:
+            by_ground.setdefault(row["_osmRef"], []).append(row)
+    for ref, group in sorted(by_ground.items()):
+        if len(group) < 2:
+            continue
+        names = [row["name"] for row in group]
+        shared.append(f"{ref}  {' / '.join(names)}")
+        for row in group:
+            others = [n for n in names if n != row["name"]]
+            note = "the same ground is proposed for " + ", ".join(others)
+            row["_alternatives"] = (
+                f"{row['_alternatives']}; {note}" if row["_alternatives"] else note)
+    return shared
+
+
 # --------------------------------------------------------------- country
 
 def missing_clubs(code, lang, tiers, labels, manual_rows, failures):
@@ -509,7 +597,7 @@ def missing_clubs(code, lang, tiers, labels, manual_rows, failures):
 def add_cities(clubs, lang, failures, code):
     """
     The club's town from Wikidata, used only to throw out a candidate in
-    the wrong part of the country.
+    the wrong part of the country, and what Wikidata says the item is.
     """
     ids = [c["id"] for c in clubs if c["id"].startswith("Q")]
     if not ids:
@@ -520,10 +608,20 @@ def add_cities(clubs, lang, failures, code):
         failures.append(f"{code} club towns from Wikidata: {error} - "
                         f"no candidate could be checked against a town")
         return
-    best = {}
+    best, kinds = {}, {}
     for row in data.get("results", {}).get("bindings", []):
         cid = qid(cell(row, "club"))
-        rank = int(cell(row, "rank") or 9)
+
+        kind = cell(row, "typeLabel") or ""
+        if kind and not kind.startswith("Q"):
+            seen = kinds.setdefault(cid, [])
+            if kind not in seen:
+                seen.append(kind)
+
+        rank_raw = cell(row, "rank")
+        if rank_raw is None:
+            continue
+        rank = int(rank_raw)
         label = cell(row, "cityLabel") or ""
         if label.startswith("Q"):
             label = ""
@@ -541,6 +639,8 @@ def add_cities(clubs, lang, failures, code):
     for club in clubs:
         if club["id"] in best:
             club["_city"] = best[club["id"]]
+        if club["id"] in kinds:
+            club["_isA"] = "; ".join(kinds[club["id"]][:3])
 
 
 def pitch_query(place_list):
@@ -554,6 +654,10 @@ def pitch_query(place_list):
 # ------------------------------------------------------------------ main
 
 def main():
+    # Line by line, so a long run shows where it has got to instead of
+    # arriving in one block at the end.
+    sys.stdout.reconfigure(line_buffering=True)
+
     if not os.path.isdir("data"):
         sys.exit("run this from the top of the repository: "
                  "python3 tools/propose_coordinates.py")
@@ -612,21 +716,30 @@ def main():
         print(f"      {len(place_list)} place(s) in OpenStreetMap carry a name "
               f"that appears in a club's name")
 
+        forms = {c["id"]: club_forms(c.get("name") or "") for c in clubs}
         wanted_places = [p for p in place_list
-                         if any(phrase_in(fold(p["name"]), fold(c.get("name") or ""))
+                         if any(place_in_club(p["name"], forms[c["id"]], p["parts"])[0]
                                 for c in clubs)]
-        if wanted_places:
+        pitch_count = 0
+        batches = [wanted_places[i:i + PLACES_PER_REQUEST]
+                   for i in range(0, len(wanted_places), PLACES_PER_REQUEST)]
+        if batches:
+            print(f"      asking for named football pitches around those places, "
+                  f"{len(batches)} request(s)")
+        for batch in batches:
             time.sleep(REQUEST_GAP_SECONDS)
-            print("      asking for named football pitches around those places")
-            payload, error = overpass_with_retry(pitch_query(wanted_places), "pitches")
+            payload, error = overpass_with_retry(pitch_query(batch), "pitches")
             if error:
-                failures.append(f"{code} pitches: {error} - only stadiums were "
-                                f"considered for this country")
-            else:
-                pitches = elements(payload, "pitch")
-                for ref, ground in pitches.items():
-                    grounds.setdefault(ref, ground)
-                print(f"      {len(pitches)} named football pitch(es) nearby")
+                failures.append(f"{code} pitches: {error} - some of the country's "
+                                f"named pitches were not considered")
+                continue
+            pitches = elements(payload, "pitch")
+            for ref, ground in pitches.items():
+                if ref not in grounds:
+                    grounds[ref] = ground
+                    pitch_count += 1
+        if batches:
+            print(f"      {pitch_count} named football pitch(es) nearby")
 
         counts = {"confident": 0, "ambiguous": 0, "no": 0, "not": 0}
         for club in sorted(clubs, key=lambda c: (c.get("name") or c["id"]).lower()):
@@ -635,15 +748,24 @@ def main():
             rows.append(review_row(club, code, result))
             readback.append((code, result))
 
+        by_tier = {}
+        for club in clubs:
+            by_tier[club["tier"]] = by_tier.get(club["tier"], 0) + 1
+        tiers_seen = ", ".join(f"tier {t}: {n}" for t, n in sorted(by_tier.items()))
+
         summary.append(
             f"{code}  {len(clubs)} club(s) with no coordinates  |  "
             f"{counts['confident']} confident  |  {counts['ambiguous']} ambiguous  |  "
             f"{counts['no'] + counts['not']} nothing")
+        summary.append(
+            f"    {tiers_seen}  |  asked OpenStreetMap about {len(grounds)} "
+            f"ground(s) and {len(place_list)} place name(s)")
 
     header = ["clubQid", "name", "country", "tier", "venue", "capacity",
               "lat", "lon", "ticketUrl", "source", "note",
-              "_city", "_cityKm", "_osmName", "_osmTown", "_osmRef",
-              "_how", "_alternatives", "_verdict"]
+              "_tier", "_isA", "_city", "_cityKm", "_osmName", "_osmTown",
+              "_osmRef", "_how", "_alternatives", "_verdict"]
+    shared = flag_shared_grounds(rows)
     order = {"confident": 0, "ambiguous": 1, "no": 2, "not": 3}
     rows.sort(key=lambda r: (r["country"], order.get(r["_verdict"].split(" ")[0], 9),
                              r["name"].lower()))
@@ -691,6 +813,14 @@ def main():
                 if result["_alternatives"]:
                     print(f"         candidates: {result['_alternatives']}")
 
+    if shared:
+        print()
+        print("  Careful - one ground proposed for more than one club, which")
+        print("  would put two pins on one spot. Sometimes a town's clubs really")
+        print("  do share a ground; check before accepting both:")
+        for line in shared:
+            print("    " + line)
+
     for problem in problems:
         print("  ! " + problem)
     if failures:
@@ -707,6 +837,8 @@ def review_row(club, code, result):
         "name": result.get("name") or club.get("name") or club["id"],
         "country": code,
         "tier": "", "capacity": "", "ticketUrl": "", "note": "",
+        "_tier": club.get("tier") if club.get("tier") is not None else "",
+        "_isA": club.get("_isA", ""),
         "venue": result.get("venue", ""),
         "lat": result.get("lat", ""),
         "lon": result.get("lon", ""),
