@@ -1,0 +1,101 @@
+name: TEMP run the new tools
+
+# Throwaway. The two tools added on this branch have to talk to Wikidata
+# and Overpass, which only happens on a runner, so this runs them once
+# on the branch and is deleted again once the answers are written down.
+#
+# The first job writes data/clubs/coordinate-review.csv and commits it to
+# this branch. The second only prints.
+
+on:
+  push:
+    branches: [claude/stoic-albattani-txb0fm]
+    paths:
+      - "tools/propose_coordinates.py"
+      - "tools/tmp_diagnose_discovery.py"
+      - ".github/workflows/tmp-run-new-tools.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tmp-run-new-tools
+  cancel-in-progress: false
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Ask OpenStreetMap where the unplaced clubs are
+        run: |
+          set -o pipefail
+          python3 tools/propose_coordinates.py | tee /tmp/coords.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Coordinate proposals"
+            echo
+            echo '```'
+            cat /tmp/coords.log 2>/dev/null || echo "the tool did not run"
+            echo '```'
+            if [ -f data/clubs/coordinate-review.csv ]; then
+              echo
+              echo '```'
+              cat data/clubs/coordinate-review.csv
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit the review file
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -f data/clubs/coordinate-review.csv ]; then
+            git add data/clubs/coordinate-review.csv
+          fi
+
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+
+          git commit -m "chore: coordinate proposals ($(date -u +%Y-%m-%d))"
+
+          git push || {
+            echo "Push rejected, rebasing onto origin and retrying."
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }
+
+  diagnose:
+    # After the first job, not beside it: both talk to Wikidata and there
+    # is no reason to make it answer two of our queries at once.
+    needs: propose
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Measure the discovery query
+        run: |
+          set -o pipefail
+          python3 tools/tmp_diagnose_discovery.py | tee /tmp/discovery.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Discovery query diagnosis"
+            echo
+            echo '```'
+            cat /tmp/discovery.log 2>/dev/null || echo "the diagnosis did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
