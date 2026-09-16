@@ -59,24 +59,32 @@ REQUEST_GAP_SECONDS = 5
 TIMEOUT_SECONDS = 90
 MAX_RETRIES = 3
 
-# Discovery: every club in the country that carries any league tag. No
-# type filter, so nothing is missed - the cost is that other sports show
-# up in the seed list, which you mark "skip".
+# Discovery: every club in the country that carries any league tag.
+# Still no "is a football club" filter, so nothing is missed - the cost
+# is that other sports show up in the seed list, which you mark "skip".
+# People are excluded, though: Wikidata puts P118 on managers and
+# players as well as clubs, and a German run without this line drags in
+# about 10,000 of them, which is what made this query time out.
 DISCOVERY_QUERY = """
 SELECT ?club ?league ?leagueLabel WHERE {
   ?club wdt:P17 wd:%(country)s ; wdt:P118 ?league .
+  FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
   FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "%(lang)s,en" }
 }
 """
 
-# Clubs: restricted to the leagues you mapped, so no type filter is
-# needed and reserve teams are no longer excluded by accident.
+# Clubs: restricted to the leagues you mapped, so no "is a football
+# club" filter is needed and reserve teams are no longer excluded by
+# accident. People are excluded here too - a manager carries the league
+# he manages in, so without this line he arrives as a club with no
+# ground and no coordinates.
 CLUB_QUERY = """
 SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?capacity ?coord ?cityLabel
 WHERE {
   VALUES ?league { %(leagues)s }
   ?club wdt:P118 ?league .
+  FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
   FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
   OPTIONAL {
     ?club wdt:P115 ?venue .

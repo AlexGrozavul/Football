@@ -44,6 +44,7 @@ jobs:
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: |
+          set -o pipefail
           python3 tools/fetch_fixtures.py | tee /tmp/fetch.log
 
       - name: Validate the JSON before touching anything
@@ -67,6 +68,7 @@ jobs:
 
       - name: Build the calendars
         run: |
+          set -o pipefail
           python3 tools/build_calendars.py | tee /tmp/build.log
 
       - name: Write the run summary

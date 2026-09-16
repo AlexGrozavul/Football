@@ -3,15 +3,15 @@
  "countries": {
   "DE": {
    "name": "Germany",
-   "onMap": 121,
+   "onMap": 120,
    "byTier": {
     "1": 18,
     "2": 18,
     "3": 23,
-    "4": 62
+    "4": 61
    },
-   "withVenueName": 121,
-   "withCapacity": 119,
+   "withVenueName": 120,
+   "withCapacity": 118,
    "handCorrected": 3
   },
   "RO": {
