@@ -779,6 +779,24 @@
    "competition": "Liga a III-a"
   },
   {
+   "id": "Q55618976",
+   "name": "CSC Dumbrăvița",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Ștefan Dobay",
+   "capacity": 1000,
+   "lat": 45.799167,
+   "lon": 21.249778,
+   "city": null,
+   "ticketUrl": "https://cscdumbravita.ro/",
+   "source": "https://en.wikipedia.org/wiki/CSC_Dumbravita",
+   "note": "Liga 2 since 2022 - 500 of the 1000 are seats; Wikidata has the club but no coordinates for it",
+   "manual": true,
+   "competition": "Liga a II-a"
+  },
+  {
    "id": "Q584629",
    "name": "FCU Craiova",
    "leagues": [
