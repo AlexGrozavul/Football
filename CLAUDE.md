@@ -88,6 +88,8 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `data/clubs/*.json` — Wikidata plus manual corrections
 - `data/clubs/unmapped-leagues.csv` — seed list for `league-tiers.csv`
 - `data/clubs/capacity-review.csv` — disagreements for Alexandru to judge
+- `data/clubs/coordinate-review.csv` — proposed coordinates for clubs
+  Wikidata cannot place, for Alexandru to judge
 
 ### Code
 
@@ -97,6 +99,9 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/fetch_fixtures.py` — football-data.org
 - `tools/fetch_clubs.py` — Wikidata club layer
 - `tools/crosscheck_capacity.py` — OpenStreetMap capacity comparison
+- `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
+  clubs Wikidata cannot place. Matches on names, proposes only, and
+  flags anything ambiguous rather than settling it with a rule.
 
 ---
 
