@@ -144,31 +144,59 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 
 ## Known open problems
 
-- Three clubs are missing from the German layer entirely: SV Meppen,
-  Erzgebirge Aue, 1. FC Schweinfurt.
+- SV Meppen and 1. FC Schweinfurt are missing from the German layer
+  entirely: neither comes back from the club query at all, and until the
+  discovery query finishes there is no way to see which league Q-id they
+  do carry. Erzgebirge Aue is a different case — it does come back, as
+  `Q97927365`, and is dropped for the reason below.
 - FC Unirea Dej has plainly wrong coordinates in Wikidata — placed near
   Bucharest, roughly 300km from Dej. FK Csíkszereda is the same kind of
   error, 31km from the nearest ground OpenStreetMap knows about.
-- 1. FC Lokomotive Leipzig appears twice, `Q162317` and `Q28936927`,
-  with the same league, ground, capacity and coordinates — two pins on
-  one ground, exactly like Hamburger SV was. `skip` will remove one, but
-  which of the two is the real item has not been checked, and removing
-  the wrong one takes the club off the map.
+- Wikidata carries two items for the same club more often than expected.
+  Hamburger SV was the first, 1. FC Lokomotive Leipzig the second:
+  `Q162317` with 39 Wikipedia sitelinks against `Q28936927` with 2, same
+  league, ground, capacity and coordinates. Both duplicates now have a
+  `skip` row in `clubs-manual.csv`. Nothing detects this automatically,
+  so the next one will again show up as two pins on one ground.
 - The cross-check has now been run for real. Of 185 clubs it compared,
   20 agree and 7 disagree; the rest could not be compared because only
   one source has a figure. Fortuna Düsseldorf (Wikidata 9,917 against
   OpenStreetMap 54,600) and 1. FC Saarbrücken (35,303 against 16,003)
   are the two worst. Preußen Münster was not among them — OpenStreetMap
-  has no capacity for its ground, so nothing could be checked. Romania
-  is effectively unchecked: OpenStreetMap has a usable capacity for
-  exactly one Romanian ground out of 404.
-- The club query has no type filter, so it matches anything carrying
-  `P118`, and Wikidata puts that on managers and players as well as
-  clubs. A German run pulls back about 10,000 people, all of which fall
-  out at the "no coordinates" gate — the map stays clean, but it is why
-  the league discovery query keeps hitting the query service's
-  60-second limit. Dropping the filter recovered 3 of the roughly 37
-  missing Regionalliga clubs, not all of them.
+  has no capacity for its ground, so nothing could be checked.
+- Romanian capacities cannot be corroborated. OpenStreetMap has a usable
+  capacity for exactly one Romanian ground out of the 404 it knows about,
+  so the cross-check confirmed nothing there: 0 agreements, 0
+  disagreements, 0 figures OpenStreetMap could supply on its own. Every
+  Romanian capacity on the map is therefore either hand-entered or
+  single-sourced from Wikidata, and no second source exists to catch a
+  wrong one. Germany is only better by degree — 71 usable capacities out
+  of 2,960 grounds.
+- Both queries now exclude people with
+  `FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }`. That worked for what it
+  was aimed at: the German club count is unchanged apart from the
+  duplicate removed on purpose, and the "in more than one mapped tier"
+  figure fell from 4,104 to 3 for Germany and 1 for Romania. It did not
+  fix the discovery query, which still does not finish — it now fails
+  with HTTP 504 and 502 instead of a half-written answer. So
+  `unmapped-leagues.csv` still lists no German league at all and there is
+  no seed list for Germany.
+- The missing Regionalliga clubs are not a query problem, and the type
+  filter was never what stood in the way. The club query returns 95 clubs
+  tagged with one of the five mapped Regionalliga items. 31 of them have
+  no ground (`P115`) and no coordinates (`P625`) anywhere on the item, so
+  they are dropped at the coordinates gate; 64 survive, and 61 reach the
+  map once two are moved to tier 3 by hand and one duplicate is skipped.
+  The 31 are seven reserve teams (1. FC Köln II, FC Schalke 04 II,
+  Hertha BSC II, Borussia Mönchengladbach II, FC Augsburg II,
+  1. FC Nürnberg II, SpVgg Greuther Fürth II) and 24 first teams,
+  including SV Rödinghausen, TSV Steinbach Haiger, FC Viktoria 1889
+  Berlin, SV Heimstetten and FC Erzgebirge Aue. The gap is missing data
+  in Wikidata, not a filter, so no change to the query will close it.
+- Wikidata's Regionalliga season items carry no participant list
+  (`P1923`) for any of the five divisions, so there is no way inside
+  Wikidata to enumerate who should be in a division and compare it
+  against what came back.
 - Wikidata's `P3983` (league level) is not set on Bundesliga, so it
   cannot be the sole source of tier data. It can generate a draft of
   `league-tiers.csv` for review, which is the plan for expanding beyond
