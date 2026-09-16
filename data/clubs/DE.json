@@ -106,8 +106,8 @@
    "id": "Q105853",
    "name": "Karlsruher SC",
    "leagues": [
-    "Q152665",
-    "Q154069"
+    "Q154069",
+    "Q152665"
    ],
    "tier": 2,
    "venue": "Wildparkstadion",
@@ -138,10 +138,10 @@
     "Q82595"
    ],
    "tier": 1,
-   "venue": "Dreisamstadion",
-   "capacity": 24000,
-   "lat": 47.988889,
-   "lon": 7.893056,
+   "venue": "Europa-Park-Stadion",
+   "capacity": 34700,
+   "lat": 48.021536,
+   "lon": 7.830006,
    "city": null,
    "competition": "Bundesliga"
   },
@@ -348,8 +348,8 @@
    "id": "Q154053",
    "name": "Eintracht Braunschweig",
    "leagues": [
-    "Q152665",
-    "Q154069"
+    "Q154069",
+    "Q152665"
    ],
    "tier": 2,
    "venue": "Eintracht-Stadion",
@@ -918,20 +918,6 @@
    "lon": 12.1069,
    "city": null,
    "competition": "3. Liga"
-  },
-  {
-   "id": "Q28936927",
-   "name": "1. FC Lokomotive Leipzig",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Bruno-Plache-Stadion",
-   "capacity": 7000,
-   "lat": 51.3029,
-   "lon": 12.4192,
-   "city": null,
-   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q310608",
@@ -1685,8 +1671,8 @@
    "id": "Q97927380",
    "name": "SV Babelsberg 03",
    "leagues": [
-    "Q154069",
-    "Q548937"
+    "Q548937",
+    "Q154069"
    ],
    "tier": 3,
    "venue": "Karl-Liebknecht-Stadion",
