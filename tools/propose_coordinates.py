@@ -105,6 +105,16 @@ MAX_RETRIES = 2
 # them in one request is neither polite nor reliable.
 PLACES_PER_REQUEST = 50
 
+# Place names per lookup. A long list in one request is what failed on
+# the second real run: one lost request took a whole stretch of the
+# alphabet with it - Bacău, Blaj, Gheorgheni - and those clubs then read
+# as though no place of their name existed.
+NAMES_PER_REQUEST = 120
+
+# Between the small chunked requests. The country-wide one still waits
+# the full gap.
+SMALL_GAP_SECONDS = 10
+
 # Strongest first. The order is the whole decision: a club is confident
 # only when exactly one ground matches at the best level it reaches.
 LEVELS = ("wikidata-link", "club-name", "ground-name", "stadium-in-town",
@@ -472,13 +482,24 @@ def propose(club, grounds, place_list):
         "venue": "", "lat": "", "lon": "", "source": "",
     }
 
+    if club.get("_unchecked"):
+        caveat = ("part of the place lookup did not come back, so there may be "
+                  "candidates this row never saw")
+        row["_alternatives"] = caveat
+
     if not found:
         if too_far:
-            row["_alternatives"] = "; ".join(describe(c) for c in too_far[:5])
+            row["_alternatives"] = "; ".join(
+                [row["_alternatives"]] * bool(row["_alternatives"])
+                + [describe(c) for c in too_far[:5]])
             row["_verdict"] = (
                 f"no match - every candidate is more than {CITY_LIMIT_KM} km from "
                 f"{city['name']}, the club's town in Wikidata, so each one is some "
                 f"other place of the same name")
+        elif club.get("_unchecked"):
+            row["_verdict"] = (
+                "not checked - part of the place lookup did not come back, and it "
+                "covered this club's name, so nothing was really tested for it")
         elif any(place_in_club(p["name"], club_forms(name), p["parts"])[0]
                  for p in place_list):
             row["_verdict"] = ("no match - a place in the club's name was found, but "
@@ -505,7 +526,9 @@ def propose(club, grounds, place_list):
         row["_how"] = pick["how"]
         if pick.get("cityKm") is not None:
             row["_cityKm"] = pick["cityKm"]
-        row["_alternatives"] = "; ".join(describe(c) for c in others[:5])
+        row["_alternatives"] = "; ".join(
+            [row["_alternatives"]] * bool(row["_alternatives"])
+            + [describe(c) for c in others[:5]])
         row["_verdict"] = "confident"
         row["venue"] = pick["ground"]["name"] or ""
         row["lat"] = round(pick["ground"]["lat"], 6)
@@ -517,7 +540,9 @@ def propose(club, grounds, place_list):
     # naming one of several would read as a choice. They all go in the
     # alternatives column instead, strongest first.
     row["_how"] = why_several(shortlist)
-    row["_alternatives"] = "; ".join(describe(c) for c in (shortlist + others)[:6])
+    row["_alternatives"] = "; ".join(
+        [row["_alternatives"]] * bool(row["_alternatives"])
+        + [describe(c) for c in (shortlist + others)[:6]])
     if reserve:
         row["_verdict"] = ("ambiguous - reserve team, so the town in the name is the "
                            "first team's town and says nothing about which of the "
@@ -643,6 +668,32 @@ def add_cities(clubs, lang, failures, code):
             club["_isA"] = "; ".join(kinds[club["id"]][:3])
 
 
+def fetch_places(code, names, failures):
+    """
+    Ask OpenStreetMap which of these names are really places, in small
+    batches. Returns what came back and, separately, the names that were
+    never looked up - those are not the same as names that came back
+    empty, and the difference decides whether a club can be told it has
+    no match.
+    """
+    found, missing = [], []
+    batches = [names[i:i + NAMES_PER_REQUEST]
+               for i in range(0, len(names), NAMES_PER_REQUEST)]
+    for position, batch in enumerate(batches):
+        if position:
+            time.sleep(SMALL_GAP_SECONDS)
+        pattern = "|".join(re.escape(gram) for gram in batch)
+        payload, error = overpass_with_retry(
+            PLACE_QUERY % {"iso": code, "names": pattern}, "places")
+        if error:
+            failures.append(f"{code} places: {error} - {len(batch)} name(s) in "
+                            f"this batch were not looked up")
+            missing.extend(batch)
+            continue
+        found.extend(places(payload))
+    return found, missing
+
+
 def pitch_query(place_list):
     around = "\n".join(
         '  nwr["leisure"="pitch"]["sport"="soccer"]["name"]'
@@ -700,26 +751,39 @@ def main():
         grounds = elements(payload, "stadium")
         print(f"      {len(grounds)} stadiums")
 
-        asked = sorted({gram for club in clubs
-                        for gram in name_ngrams(club.get("name") or "")})
-        place_list = []
-        for chunk in [asked[i:i + 200] for i in range(0, len(asked), 200)]:
+        grams = {club["id"]: name_ngrams(club.get("name") or "") for club in clubs}
+        asked = sorted({gram for one in grams.values() for gram in one})
+        time.sleep(REQUEST_GAP_SECONDS)
+        print(f"      looking up {len(asked)} name(s) from the club names")
+        place_list, missing = fetch_places(code, asked, failures)
+        if missing:
+            print(f"      {len(missing)} name(s) did not come back, asking again")
             time.sleep(REQUEST_GAP_SECONDS)
-            names = "|".join(re.escape(gram) for gram in chunk)
-            payload, error = overpass_with_retry(
-                PLACE_QUERY % {"iso": code, "names": names}, "places")
-            if error:
-                failures.append(f"{code} places: {error} - the town half of the "
-                                f"matching could not run")
-                continue
-            place_list.extend(places(payload))
+            second, missing = fetch_places(code, missing, failures)
+            place_list.extend(second)
+        if missing:
+            # A lost request takes a whole stretch of the alphabet with
+            # it. Those clubs must not be told nothing matched, because
+            # nothing was asked.
+            failures.append(
+                f"{code}: {len(missing)} name(s) were never looked up, so the "
+                f"clubs carrying them say 'not checked' instead of 'no match'")
+            for club in clubs:
+                if any(gram in missing for gram in grams[club["id"]]):
+                    club["_unchecked"] = True
         print(f"      {len(place_list)} place(s) in OpenStreetMap carry a name "
               f"that appears in a club's name")
 
         forms = {c["id"]: club_forms(c.get("name") or "") for c in clubs}
+        # Pitches only where no stadium matched at all. Everywhere else
+        # they add candidates without settling anything, and the request
+        # is not free.
+        needy = [c for c in clubs if not candidates_for(c, grounds, place_list)]
         wanted_places = [p for p in place_list
                          if any(place_in_club(p["name"], forms[c["id"]], p["parts"])[0]
-                                for c in clubs)]
+                                for c in needy)]
+        if needy:
+            print(f"      {len(needy)} club(s) matched no stadium at all")
         pitch_count = 0
         batches = [wanted_places[i:i + PLACES_PER_REQUEST]
                    for i in range(0, len(wanted_places), PLACES_PER_REQUEST)]
@@ -727,7 +791,7 @@ def main():
             print(f"      asking for named football pitches around those places, "
                   f"{len(batches)} request(s)")
         for batch in batches:
-            time.sleep(REQUEST_GAP_SECONDS)
+            time.sleep(SMALL_GAP_SECONDS)
             payload, error = overpass_with_retry(pitch_query(batch), "pitches")
             if error:
                 failures.append(f"{code} pitches: {error} - some of the country's "
