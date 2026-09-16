@@ -147,13 +147,28 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 - Three clubs are missing from the German layer entirely: SV Meppen,
   Erzgebirge Aue, 1. FC Schweinfurt.
 - FC Unirea Dej has plainly wrong coordinates in Wikidata — placed near
-  Bucharest, roughly 300km from Dej.
-- Several capacities are wrong in Wikidata (Preußen Münster, Fortuna
-  Düsseldorf, 1. FC Saarbrücken among them). The cross-check tool exists
-  to surface these; it has not been run for real yet.
-- About 37 Regionalliga clubs are missing, probably reserve teams typed
-  oddly in Wikidata. Dropping the type filter from the club query may
-  have fixed this — unverified.
+  Bucharest, roughly 300km from Dej. FK Csíkszereda is the same kind of
+  error, 31km from the nearest ground OpenStreetMap knows about.
+- 1. FC Lokomotive Leipzig appears twice, `Q162317` and `Q28936927`,
+  with the same league, ground, capacity and coordinates — two pins on
+  one ground, exactly like Hamburger SV was. `skip` will remove one, but
+  which of the two is the real item has not been checked, and removing
+  the wrong one takes the club off the map.
+- The cross-check has now been run for real. Of 185 clubs it compared,
+  20 agree and 7 disagree; the rest could not be compared because only
+  one source has a figure. Fortuna Düsseldorf (Wikidata 9,917 against
+  OpenStreetMap 54,600) and 1. FC Saarbrücken (35,303 against 16,003)
+  are the two worst. Preußen Münster was not among them — OpenStreetMap
+  has no capacity for its ground, so nothing could be checked. Romania
+  is effectively unchecked: OpenStreetMap has a usable capacity for
+  exactly one Romanian ground out of 404.
+- The club query has no type filter, so it matches anything carrying
+  `P118`, and Wikidata puts that on managers and players as well as
+  clubs. A German run pulls back about 10,000 people, all of which fall
+  out at the "no coordinates" gate — the map stays clean, but it is why
+  the league discovery query keeps hitting the query service's
+  60-second limit. Dropping the filter recovered 3 of the roughly 37
+  missing Regionalliga clubs, not all of them.
 - Wikidata's `P3983` (league level) is not set on Bundesliga, so it
   cannot be the sole source of tier data. It can generate a draft of
   `league-tiers.csv` for review, which is the plan for expanding beyond
