@@ -5,15 +5,18 @@ TEMPORARY. Delete once the answer is written into CLAUDE.md.
 Answers one question: why are roughly a third of the Regionalliga clubs
 missing from data/clubs/DE.json? Writes nothing - it only prints.
 
-It works backwards from Wikidata's own season items: each Regionalliga
-season item lists its participating teams (P1923), so that list is what
-SHOULD be on the map. Anything on it that is not in DE.json is then
-looked up one by one to see which gate it fell through.
+It deliberately does NOT run the country-wide discovery query, which is
+the one that keeps timing out. It works backwards from Wikidata's own
+season items instead: each Regionalliga season item lists its
+participating teams (P1923), so that list is what SHOULD be on the map.
+Anything on it that is not in DE.json is then looked up one by one to
+see which gate it fell through.
 """
 
 import csv
 import json
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -25,16 +28,30 @@ UA = ("football-fixture-planner/1.0 (personal project; "
 RL = ["Q322128", "Q548937", "Q555836", "Q340179", "Q539678"]
 
 
-def ask(query, timeout=90):
-    body = urllib.parse.urlencode({"query": query, "format": "json"}).encode()
-    req = urllib.request.Request(ENDPOINT, data=body, headers={
-        "User-Agent": UA,
-        "Accept": "application/sparql-results+json",
-        "Content-Type": "application/x-www-form-urlencoded"})
-    start = time.time()
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        raw = resp.read().decode()
-    return json.loads(raw)["results"]["bindings"], time.time() - start
+def ask(query, timeout=90, tries=4):
+    """Never raises. Returns (rows, error)."""
+    for attempt in range(1, tries + 1):
+        try:
+            body = urllib.parse.urlencode({"query": query,
+                                           "format": "json"}).encode()
+            req = urllib.request.Request(ENDPOINT, data=body, headers={
+                "User-Agent": UA,
+                "Accept": "application/sparql-results+json",
+                "Content-Type": "application/x-www-form-urlencoded"})
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                raw = resp.read().decode()
+            return json.loads(raw)["results"]["bindings"], None
+        except urllib.error.HTTPError as exc:
+            print(f"      HTTP {exc.code}, attempt {attempt}/{tries}")
+            if attempt == tries:
+                return [], f"HTTP {exc.code}"
+            time.sleep(20)
+        except (urllib.error.URLError, TimeoutError, ValueError) as exc:
+            print(f"      {type(exc).__name__}, attempt {attempt}/{tries}")
+            if attempt == tries:
+                return [], str(exc)
+            time.sleep(20)
+    return [], "exhausted retries"
 
 
 def val(row, key):
@@ -46,48 +63,50 @@ def qid(uri):
 
 
 def main():
-    tiers = {}
+    tiers, labels = {}, {}
     with open("data/league-tiers.csv", encoding="utf-8-sig") as fh:
         for row in csv.DictReader(fh):
             if row["leagueQid"]:
-                tiers[row["leagueQid"]] = (row["tier"], row["label"])
+                tiers[row["leagueQid"]] = row["tier"]
+                labels[row["leagueQid"]] = row["label"]
 
     print("=" * 72)
-    print("A. Discovery query for Germany, with the human exclusion in place")
+    print("A. What the club query actually returns for the five Regionalligen")
     print("=" * 72)
-    rows, took = ask("""
-    SELECT ?club ?league ?leagueLabel WHERE {
-      ?club wdt:P17 wd:Q183 ; wdt:P118 ?league .
+    rows, err = ask("""
+    SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?venueCoord ?clubCoord
+    WHERE {
+      VALUES ?league { %s }
+      ?club wdt:P118 ?league .
       FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
       FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
+      OPTIONAL { ?club wdt:P115 ?venue . OPTIONAL { ?venue wdt:P625 ?venueCoord } }
+      OPTIONAL { ?club wdt:P625 ?clubCoord }
       SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en" }
     }
-    """)
-    print(f"  {len(rows)} rows in {took:.1f}s")
-    leagues = {}
-    for row in rows:
-        lid = qid(val(row, "league"))
-        entry = leagues.setdefault(lid, {"n": 0, "label": None})
-        entry["n"] += 1
-        label = val(row, "leagueLabel")
-        if label and not label.startswith("Q"):
-            entry["label"] = label
-    print(f"  {len(leagues)} distinct leagues, "
-          f"{sum(1 for l in leagues if l in tiers)} of them mapped")
-
-    print("\n  Every league whose label mentions Regionalliga:")
-    for lid, entry in sorted(leagues.items(), key=lambda x: -x[1]["n"]):
-        if "egionalliga" in (entry["label"] or ""):
-            mark = "MAPPED  " if lid in tiers else "unmapped"
-            print(f"    {mark} {lid:12s} {entry['n']:4d} clubs  {entry['label']}")
-
-    print("\n  The 25 biggest unmapped German leagues:")
-    shown = 0
-    for lid, entry in sorted(leagues.items(), key=lambda x: -x[1]["n"]):
-        if lid in tiers or shown >= 25:
-            continue
-        print(f"    {lid:12s} {entry['n']:4d} clubs  {entry['label'] or '(no label)'}")
-        shown += 1
+    """ % " ".join("wd:" + l for l in RL))
+    if err:
+        print(f"  query failed: {err}")
+        returned = {}
+    else:
+        returned = {}
+        for row in rows:
+            cid = qid(val(row, "club"))
+            rec = returned.setdefault(cid, {"name": None, "venue": None,
+                                            "coord": False, "leagues": set()})
+            rec["name"] = rec["name"] or val(row, "clubLabel")
+            rec["venue"] = rec["venue"] or val(row, "venueLabel")
+            rec["leagues"].add(qid(val(row, "league")))
+            if val(row, "venueCoord") or val(row, "clubCoord"):
+                rec["coord"] = True
+        no_coord = {k: v for k, v in returned.items() if not v["coord"]}
+        print(f"  {len(returned)} clubs come back tagged with a Regionalliga")
+        print(f"  {len(returned) - len(no_coord)} have coordinates, "
+              f"{len(no_coord)} do not and are dropped")
+        print("\n  Dropped for no coordinates:")
+        for cid, rec in sorted(no_coord.items(), key=lambda x: x[1]["name"] or ""):
+            print(f"    {cid:12s} {(rec['name'] or '?')[:40]:40s} "
+                  f"ground: {rec['venue'] or '(none in Wikidata)'}")
 
     print()
     print("=" * 72)
@@ -95,34 +114,43 @@ def main():
     print("=" * 72)
     want = {}
     for lid in RL:
-        rows, _ = ask("""
+        rows, err = ask("""
         SELECT ?season ?seasonLabel ?start ?team ?teamLabel WHERE {
           ?season wdt:P3450 wd:%s ; wdt:P580 ?start ; wdt:P1923 ?team .
           FILTER(YEAR(?start) >= 2024)
           SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en" }
         }
         """ % lid)
+        if err:
+            print(f"  {lid} {labels.get(lid, '?')}: query failed: {err}")
+            continue
         seasons = {}
         for row in rows:
             sid = qid(val(row, "season"))
             seasons.setdefault(sid, {"label": val(row, "seasonLabel"),
                                      "start": val(row, "start"), "teams": {}})
             seasons[sid]["teams"][qid(val(row, "team"))] = val(row, "teamLabel")
-        name = tiers.get(lid, ("", "?"))[1]
         if not seasons:
-            print(f"  {lid} {name}: no season item with a participant list")
+            print(f"  {lid} {labels.get(lid, '?')}: no season item carries a "
+                  f"participant list (P1923)")
             continue
         latest = max(seasons.values(), key=lambda s: s["start"])
-        print(f"  {lid} {name}: latest season {latest['label']} "
+        print(f"  {lid} {labels.get(lid, '?')}: latest season {latest['label']} "
               f"({latest['start'][:10]}) lists {len(latest['teams'])} teams")
         for tid, tlabel in latest["teams"].items():
             want[tid] = (tlabel, lid, latest["label"])
         time.sleep(3)
 
+    if not want:
+        print("\n  No season participant lists came back - B and C tell us nothing.")
+        print("=" * 72)
+        return
+
     print(f"\n  {len(want)} distinct clubs should be on the map at tier 4")
     have = {c["id"] for c in json.load(open("data/clubs/DE.json"))["clubs"]}
     missing = {k: v for k, v in want.items() if k not in have}
-    print(f"  {len(want) - len(missing)} of them are in DE.json, {len(missing)} are not")
+    print(f"  {len(want) - len(missing)} of them are in DE.json, "
+          f"{len(missing)} are not")
 
     print()
     print("=" * 72)
@@ -130,9 +158,9 @@ def main():
     print("=" * 72)
     ids = list(missing)
     facts = {}
-    for i in range(0, len(ids), 60):
-        chunk = ids[i:i + 60]
-        rows, _ = ask("""
+    for i in range(0, len(ids), 50):
+        chunk = ids[i:i + 50]
+        rows, err = ask("""
         SELECT ?club ?clubLabel ?league ?leagueLabel ?type ?typeLabel
                ?venue ?venueLabel ?venueCoord ?clubCoord ?dissolved WHERE {
           VALUES ?club { %s }
@@ -144,12 +172,14 @@ def main():
           SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en" }
         }
         """ % " ".join("wd:" + c for c in chunk))
+        if err:
+            print(f"  chunk {i // 50} failed: {err}")
+            continue
         for row in rows:
             cid = qid(val(row, "club"))
-            fact = facts.setdefault(cid, {"name": None, "leagues": {}, "types": {},
+            fact = facts.setdefault(cid, {"leagues": {}, "types": {},
                                           "venue": None, "coord": False,
                                           "dissolved": None})
-            fact["name"] = fact["name"] or val(row, "clubLabel")
             lid = qid(val(row, "league"))
             if lid:
                 fact["leagues"][lid] = val(row, "leagueLabel")
@@ -165,26 +195,32 @@ def main():
     tally = {}
     for cid, (label, _lid, season) in sorted(missing.items(),
                                              key=lambda x: x[1][0] or ""):
-        fact = facts.get(cid, {})
-        lg = fact.get("leagues", {})
-        mapped = [l for l in lg if l in tiers and tiers[l][0] not in ("", "skip")]
-        if fact.get("dissolved"):
-            reason = "P576 dissolved date set"
-        elif not lg:
-            reason = "no P118 at all"
-        elif not mapped:
-            reason = "P118 present, but pointing at no mapped league"
-        elif not fact.get("coord"):
-            reason = "mapped league, but no coordinates"
+        fact = facts.get(cid)
+        if fact is None:
+            reason = "not looked up (query failed)"
+            lg, types = {}, {}
         else:
-            reason = "should have come through - look closer"
+            lg, types = fact["leagues"], fact["types"]
+            mapped = [l for l in lg if tiers.get(l, "") not in ("", "skip")]
+            if fact["dissolved"]:
+                reason = "P576 dissolved date is set"
+            elif not lg:
+                reason = "no P118 at all"
+            elif not mapped:
+                reason = "has P118, but not to a league in league-tiers.csv"
+            elif not fact["coord"]:
+                reason = "in a mapped league, but no coordinates anywhere"
+            else:
+                reason = "should have come through - look closer"
         tally[reason] = tally.get(reason, 0) + 1
         print(f"  {cid:12s} {(label or '?')[:38]:38s} {reason}")
-        print("      P118 : " + (", ".join(f"{k} {v}" for k, v in lg.items()) or "(none)"))
-        print("      P31  : " + (", ".join(f"{k} {v}" for k, v in
-                                           fact.get("types", {}).items()) or "(none)"))
-        print(f"      venue: {fact.get('venue') or '(none)'}   "
-              f"coords: {'yes' if fact.get('coord') else 'NO'}   in: {season}")
+        print("      P118 : " + (", ".join(f"{k} {v}" for k, v in lg.items())
+                                 or "(none)"))
+        print("      P31  : " + (", ".join(f"{k} {v}" for k, v in types.items())
+                                 or "(none)"))
+        if fact is not None:
+            print(f"      ground: {fact['venue'] or '(none)'}   "
+                  f"coords: {'yes' if fact['coord'] else 'NO'}   listed in: {season}")
 
     print("\n  Tally:")
     for reason, n in sorted(tally.items(), key=lambda x: -x[1]):

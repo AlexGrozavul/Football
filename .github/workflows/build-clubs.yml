@@ -35,6 +35,9 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Fetch clubs from Wikidata
+        # TEMPORARY: switched off for the diagnosis run, restored with
+        # the rest of the temporary scaffolding.
+        if: false
         run: |
           set -o pipefail
           python3 tools/fetch_clubs.py | tee /tmp/clubs.log
