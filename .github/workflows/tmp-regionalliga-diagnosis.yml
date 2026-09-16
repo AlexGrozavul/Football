@@ -1,0 +1,207 @@
+name: TEMP Regionalliga diagnosis
+
+# Throwaway. Answers one question - why are roughly a third of the
+# Regionalliga clubs missing from data/clubs/DE.json - and is deleted
+# again once the answer is written down. Writes nothing to data/.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Ask Wikidata what is going on
+        run: |
+          set -o pipefail
+          python3 - <<'PY' | tee /tmp/diag.log
+          import json, time, urllib.parse, urllib.request, csv
+
+          ENDPOINT = "https://query.wikidata.org/sparql"
+          UA = ("football-fixture-planner/1.0 (personal project; "
+                "https://github.com/AlexGrozavul/Football)")
+
+          def ask(q, timeout=90):
+              body = urllib.parse.urlencode({"query": q, "format": "json"}).encode()
+              req = urllib.request.Request(ENDPOINT, data=body, headers={
+                  "User-Agent": UA,
+                  "Accept": "application/sparql-results+json",
+                  "Content-Type": "application/x-www-form-urlencoded"})
+              t0 = time.time()
+              with urllib.request.urlopen(req, timeout=timeout) as r:
+                  raw = r.read().decode()
+              took = time.time() - t0
+              return json.loads(raw)["results"]["bindings"], took
+
+          def v(row, k):
+              return row[k]["value"] if k in row else None
+
+          def qid(u):
+              return u.rsplit("/", 1)[-1] if u else None
+
+          tiers = {}
+          with open("data/league-tiers.csv", encoding="utf-8-sig") as fh:
+              for row in csv.DictReader(fh):
+                  if row["leagueQid"]:
+                      tiers[row["leagueQid"]] = (row["tier"], row["label"])
+
+          RL = ["Q322128", "Q548937", "Q555836", "Q340179", "Q539678"]
+
+          print("=" * 72)
+          print("A. Discovery query for Germany, with the new human exclusion")
+          print("=" * 72)
+          rows, took = ask("""
+          SELECT ?club ?league ?leagueLabel WHERE {
+            ?club wdt:P17 wd:Q183 ; wdt:P118 ?league .
+            FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
+            FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en" }
+          }
+          """)
+          print(f"  {len(rows)} rows in {took:.1f}s")
+          leagues = {}
+          for r in rows:
+              lid = qid(v(r, "league"))
+              e = leagues.setdefault(lid, {"n": 0, "label": None})
+              e["n"] += 1
+              lab = v(r, "leagueLabel")
+              if lab and not lab.startswith("Q"):
+                  e["label"] = lab
+          print(f"  {len(leagues)} distinct leagues, "
+                f"{sum(1 for l in leagues if l in tiers)} of them mapped")
+          print("\n  Every league whose label mentions Regionalliga:")
+          for lid, e in sorted(leagues.items(), key=lambda x: -x[1]["n"]):
+              lab = e["label"] or ""
+              if "egionalliga" in lab:
+                  mark = "MAPPED  " if lid in tiers else "unmapped"
+                  print(f"    {mark} {lid:12s} {e['n']:4d} clubs  {lab}")
+          print("\n  Top 25 unmapped German leagues by club count:")
+          for lid, e in sorted(leagues.items(), key=lambda x: -x[1]["n"])[:80]:
+              if lid not in tiers:
+                  print(f"    {lid:12s} {e['n']:4d} clubs  {e['label'] or '(no label)'}")
+
+          print()
+          print("=" * 72)
+          print("B. Who SHOULD be in each Regionalliga, per the season items")
+          print("=" * 72)
+          want = {}
+          for lid in RL:
+              rows, took = ask("""
+              SELECT ?season ?seasonLabel ?start ?team ?teamLabel WHERE {
+                ?season wdt:P3450 wd:%s ; wdt:P580 ?start ; wdt:P1923 ?team .
+                FILTER(YEAR(?start) >= 2024)
+                SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en" }
+              }
+              """ % lid)
+              seasons = {}
+              for r in rows:
+                  s = qid(v(r, "season"))
+                  seasons.setdefault(s, {"label": v(r, "seasonLabel"),
+                                         "start": v(r, "start"), "teams": {}})
+                  seasons[s]["teams"][qid(v(r, "team"))] = v(r, "teamLabel")
+              if not seasons:
+                  print(f"  {lid} {tiers.get(lid, ('', '?'))[1]}: no season item with "
+                        f"participants found")
+                  continue
+              latest = max(seasons.values(), key=lambda s: s["start"])
+              print(f"  {lid} {tiers.get(lid, ('', '?'))[1]}: latest season "
+                    f"{latest['label']} ({latest['start'][:10]}) lists "
+                    f"{len(latest['teams'])} teams")
+              for tid, tlabel in latest["teams"].items():
+                  want[tid] = (tlabel, lid, latest["label"])
+              time.sleep(3)
+
+          print(f"\n  {len(want)} distinct clubs should be on the map at tier 4")
+
+          have = {c["id"] for c in json.load(open("data/clubs/DE.json"))["clubs"]}
+          missing = {k: vv for k, vv in want.items() if k not in have}
+          print(f"  {len(want) - len(missing)} of them are in DE.json, "
+                f"{len(missing)} are not")
+
+          print()
+          print("=" * 72)
+          print("C. Why each missing club is missing")
+          print("=" * 72)
+          ids = list(missing)
+          facts = {}
+          for i in range(0, len(ids), 60):
+              chunk = ids[i:i + 60]
+              rows, took = ask("""
+              SELECT ?club ?clubLabel ?league ?leagueLabel ?type ?typeLabel
+                     ?venue ?venueLabel ?venueCoord ?clubCoord ?dissolved WHERE {
+                VALUES ?club { %s }
+                OPTIONAL { ?club wdt:P118 ?league }
+                OPTIONAL { ?club wdt:P31 ?type }
+                OPTIONAL { ?club wdt:P115 ?venue . OPTIONAL { ?venue wdt:P625 ?venueCoord } }
+                OPTIONAL { ?club wdt:P625 ?clubCoord }
+                OPTIONAL { ?club wdt:P576 ?dissolved }
+                SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en" }
+              }
+              """ % " ".join("wd:" + c for c in chunk))
+              for r in rows:
+                  cid = qid(v(r, "club"))
+                  f = facts.setdefault(cid, {"name": None, "leagues": {}, "types": {},
+                                             "venue": None, "coord": False,
+                                             "dissolved": None})
+                  f["name"] = f["name"] or v(r, "clubLabel")
+                  lid = qid(v(r, "league"))
+                  if lid:
+                      f["leagues"][lid] = v(r, "leagueLabel")
+                  tid = qid(v(r, "type"))
+                  if tid:
+                      f["types"][tid] = v(r, "typeLabel")
+                  f["venue"] = f["venue"] or v(r, "venueLabel")
+                  if v(r, "venueCoord") or v(r, "clubCoord"):
+                      f["coord"] = True
+                  f["dissolved"] = f["dissolved"] or v(r, "dissolved")
+              time.sleep(3)
+
+          reasons = {}
+          for cid, (label, lid, season) in sorted(missing.items(), key=lambda x: x[1][0] or ""):
+              f = facts.get(cid, {})
+              lg = f.get("leagues", {})
+              mapped = [l for l in lg if tiers.get(l, ("", ""))[0] not in ("", "skip")
+                        and l in tiers]
+              if f.get("dissolved"):
+                  reason = "P576 dissolved date set"
+              elif not lg:
+                  reason = "no P118 at all"
+              elif not mapped:
+                  reason = "P118 present but no mapped league"
+              elif not f.get("coord"):
+                  reason = "mapped league, but no coordinates"
+              else:
+                  reason = "should have come through - look closer"
+              reasons[reason] = reasons.get(reason, 0) + 1
+              print(f"  {cid:12s} {(label or '?')[:38]:38s} {reason}")
+              print(f"      P118: " + (", ".join(f"{k} {vv}" for k, vv in lg.items())
+                                       or "(none)"))
+              print(f"      P31 : " + (", ".join(f"{k} {vv}" for k, vv in
+                                                 f.get('types', {}).items()) or "(none)"))
+              print(f"      venue: {f.get('venue') or '(none)'}   "
+                    f"coords: {'yes' if f.get('coord') else 'NO'}   "
+                    f"listed in: {season}")
+
+          print()
+          print("  Tally:")
+          for reason, n in sorted(reasons.items(), key=lambda x: -x[1]):
+              print(f"    {n:4d}  {reason}")
+          print("=" * 72)
+          PY
+
+      - name: Put it in the run summary too
+        if: always()
+        run: |
+          {
+            echo '## Regionalliga diagnosis'
+            echo
+            echo '```'
+            cat /tmp/diag.log 2>/dev/null || echo "did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
