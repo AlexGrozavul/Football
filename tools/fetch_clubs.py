@@ -270,6 +270,11 @@ def load_manual():
     are changed, blanks leave the fetched value alone. A row without one
     adds a club Wikidata does not have, or has wrong beyond repair.
 
+    The word "skip" in the tier column removes that club from the output
+    entirely, which is how a duplicate Wikidata item is dropped. It needs
+    a clubQid, because there has to be something there to remove, and it
+    ignores every other cell on the row.
+
     Hand-written data always wins. That is the point of the file.
     """
     rows, problems = [], []
@@ -304,11 +309,30 @@ def load_manual():
                 problems.append(f"{MANUAL_FILE} line {line}: clubQid {qid_val!r} is not a Q-id")
                 continue
 
-            for numeric in ("tier", "capacity"):
-                if row.get(numeric) and not row[numeric].isdigit():
+            tier_raw = row.get("tier", "")
+            if tier_raw.lower() == "skip":
+                if not qid_val:
                     problems.append(
-                        f"{MANUAL_FILE} line {line}: {numeric} {row[numeric]!r} is not a whole number")
-                    row[numeric] = ""
+                        f"{MANUAL_FILE} line {line}: tier 'skip' removes a club that is "
+                        f"already there, so it needs a clubQid - row ignored")
+                    continue
+                ignored = [f for f in ("venue", "capacity", "lat", "lon", "ticketUrl")
+                           if row.get(f)]
+                if ignored:
+                    problems.append(
+                        f"{MANUAL_FILE} line {line}: tier is 'skip', so "
+                        + ", ".join(ignored) + " on this row are ignored")
+                row["tier"] = "skip"
+            elif tier_raw and not tier_raw.isdigit():
+                problems.append(
+                    f"{MANUAL_FILE} line {line}: tier {tier_raw!r} must be a whole number "
+                    f"or 'skip'")
+                row["tier"] = ""
+
+            if row.get("capacity") and not row["capacity"].isdigit():
+                problems.append(
+                    f"{MANUAL_FILE} line {line}: capacity {row['capacity']!r} is not a whole number")
+                row["capacity"] = ""
             for coord in ("lat", "lon"):
                 if row.get(coord):
                     try:
@@ -344,6 +368,19 @@ def apply_manual(clubs, manual_rows, country_code):
                     f"country's fetched clubs - check the Q-id, or leave it blank to add "
                     f"the club instead")
                 continue
+
+        # "skip" in the tier column drops the club altogether. Everything
+        # else on the row is ignored, so this is handled before any of the
+        # cell-by-cell overriding below.
+        if row.get("tier") == "skip":
+            gone = clubs.pop(row["clubQid"])
+            label = gone.get("name") or gone["id"]
+            for same in by_name.get((gone.get("name") or "").lower(), []):
+                if same is gone:
+                    by_name[gone["name"].lower()].remove(same)
+                    break
+            notes.append(f"removed {label} ({gone['id']}) - tier says skip")
+            continue
 
         if target is None:
             # New club. Needs enough to put a pin on a map.
