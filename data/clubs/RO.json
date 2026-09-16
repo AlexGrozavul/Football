@@ -1,5 +1,5 @@
 {
- "source": "Wikidata",
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
  "note": "Tier comes from data/league-tiers.csv, never from a league name.",
  "country": "RO",
  "countryName": "Romania",
@@ -15,7 +15,8 @@
    "capacity": 11390,
    "lat": 47.184583,
    "lon": 27.561389,
-   "city": "Iași"
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q1024393",
@@ -28,7 +29,8 @@
    "capacity": null,
    "lat": 47.250022,
    "lon": 26.710978,
-   "city": "Pașcani"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1024395",
@@ -41,7 +43,8 @@
    "capacity": 12000,
    "lat": 45.103056,
    "lon": 24.352222,
-   "city": "Râmnicu Vâlcea"
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q1024397",
@@ -54,7 +57,8 @@
    "capacity": null,
    "lat": 45.2817,
    "lon": 21.8897,
-   "city": "Reșița"
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q1024463",
@@ -67,7 +71,8 @@
    "capacity": 5123,
    "lat": 44.462778,
    "lon": 25.975278,
-   "city": "Chiajna"
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q1057672",
@@ -80,7 +85,8 @@
    "capacity": 7000,
    "lat": 47.639274,
    "lon": 26.24626,
-   "city": "Suceava"
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q107724768",
@@ -93,7 +99,8 @@
    "capacity": 5750,
    "lat": 45.664806,
    "lon": 25.585583,
-   "city": "Brașov"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1135735",
@@ -106,7 +113,22 @@
    "capacity": null,
    "lat": 45.7614,
    "lon": 22.9131,
-   "city": "Hunedoara"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
+  },
+  {
+   "id": "Q113577526",
+   "name": "Dinamo București",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Dinamo",
+   "capacity": 15032,
+   "lat": 44.455083,
+   "lon": 26.102444,
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q1262822",
@@ -119,7 +141,8 @@
    "capacity": 12000,
    "lat": 47.7483,
    "lon": 26.6519,
-   "city": "Botoșani"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q12723169",
@@ -132,7 +155,8 @@
    "capacity": null,
    "lat": 44.533056,
    "lon": 26.259861,
-   "city": null
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q130302376",
@@ -145,7 +169,8 @@
    "capacity": null,
    "lat": 45.043611,
    "lon": 23.27,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1322550",
@@ -158,7 +183,8 @@
    "capacity": 15500,
    "lat": 44.940278,
    "lon": 26.033333,
-   "city": "Ploiești"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q135627364",
@@ -171,7 +197,8 @@
    "capacity": null,
    "lat": 47.6645,
    "lon": 23.5793,
-   "city": "Baia Mare"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1386940",
@@ -184,13 +211,13 @@
    "capacity": 11067,
    "lat": 47.071944,
    "lon": 21.93,
-   "city": "Oradea"
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q141319965",
    "name": "CS Lotru Brezoi",
    "leagues": [
-    "Q12732231",
     "Q1707697"
    ],
    "tier": 3,
@@ -198,7 +225,8 @@
    "capacity": 700,
    "lat": 45.339783,
    "lon": 24.249151,
-   "city": "Brezoi"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1426344",
@@ -211,7 +239,8 @@
    "capacity": 10000,
    "lat": 44.981667,
    "lon": 25.649444,
-   "city": "Moreni"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1463313",
@@ -224,7 +253,8 @@
    "capacity": 2000,
    "lat": 46.790278,
    "lon": 23.612222,
-   "city": "Cluj-Napoca"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1575208",
@@ -237,7 +267,8 @@
    "capacity": 3000,
    "lat": 45.357778,
    "lon": 23.211389,
-   "city": "Lupeni"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q15920568",
@@ -250,7 +281,8 @@
    "capacity": null,
    "lat": 46.369556,
    "lon": 22.127361,
-   "city": "Sebiș"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q16838020",
@@ -263,7 +295,22 @@
    "capacity": 30944,
    "lat": 44.313889,
    "lon": 23.784167,
-   "city": "Craiova"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
+  },
+  {
+   "id": "Q16846810",
+   "name": "CSM Slatina",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul 1 Mai",
+   "capacity": 10000,
+   "lat": 44.4233,
+   "lon": 24.3503,
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q16850839",
@@ -276,7 +323,8 @@
    "capacity": null,
    "lat": 47.160806,
    "lon": 27.484972,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1689705",
@@ -289,7 +337,8 @@
    "capacity": 15500,
    "lat": 45.408333,
    "lon": 23.3675,
-   "city": "Petroșani"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q179658",
@@ -302,7 +351,8 @@
    "capacity": 55634,
    "lat": 44.4372,
    "lon": 26.1525,
-   "city": "București"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q18129096",
@@ -315,7 +365,8 @@
    "capacity": null,
    "lat": 44.499167,
    "lon": 26.145556,
-   "city": "Voluntari"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q18537232",
@@ -328,7 +379,8 @@
    "capacity": null,
    "lat": 47.841861,
    "lon": 25.903611,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q19902101",
@@ -341,7 +393,8 @@
    "capacity": 4000,
    "lat": 45.889722,
    "lon": 22.901389,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q204237",
@@ -354,7 +407,8 @@
    "capacity": 15032,
    "lat": 44.455083,
    "lon": 26.102444,
-   "city": "București"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q20429561",
@@ -367,7 +421,8 @@
    "capacity": 4774,
    "lat": 45.862917,
    "lon": 25.776139,
-   "city": "Sfântu Gheorghe"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q205998",
@@ -380,7 +435,8 @@
    "capacity": 23500,
    "lat": 46.779678,
    "lon": 23.577247,
-   "city": "Cluj-Napoca"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q220863",
@@ -393,7 +449,8 @@
    "capacity": 13500,
    "lat": 45.430236,
    "lon": 28.022378,
-   "city": "Galați"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q23051672",
@@ -406,7 +463,8 @@
    "capacity": null,
    "lat": 46.366944,
    "lon": 25.802917,
-   "city": "Miercurea Ciuc"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q245162",
@@ -419,21 +477,23 @@
    "capacity": 10020,
    "lat": 44.448194,
    "lon": 26.052872,
-   "city": "București"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q24884611",
    "name": "FC Hermannstadt",
    "leagues": [
-    "Q386384",
-    "Q237753"
+    "Q237753",
+    "Q386384"
    ],
    "tier": 1,
    "venue": "Stadionul Municipal Sibiu",
    "capacity": 14200,
    "lat": 45.783056,
    "lon": 24.143611,
-   "city": "Sibiu"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q24895825",
@@ -446,7 +506,22 @@
    "capacity": 7800,
    "lat": 47.130833,
    "lon": 24.502778,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
+  },
+  {
+   "id": "Q28230355",
+   "name": "Metaloglobus București",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Metaloglobus",
+   "capacity": null,
+   "lat": 44.442417,
+   "lon": 26.18425,
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q2932010",
@@ -459,7 +534,8 @@
    "capacity": null,
    "lat": 44.2481,
    "lon": 28.2575,
-   "city": "Medgidia"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q298201",
@@ -472,7 +548,8 @@
    "capacity": 8200,
    "lat": 46.549722,
    "lon": 24.545833,
-   "city": "Târgu Mureș"
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q37855796",
@@ -485,7 +562,8 @@
    "capacity": 3000,
    "lat": 45.144722,
    "lon": 26.802778,
-   "city": null
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q4654138",
@@ -498,7 +576,8 @@
    "capacity": null,
    "lat": 45.6481,
    "lon": 25.6503,
-   "city": "Brașov"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q4654417",
@@ -507,11 +586,15 @@
     "Q386384"
    ],
    "tier": 2,
-   "venue": "Stadionul Dan Păltinișanu",
-   "capacity": 32972,
-   "lat": 45.740556,
-   "lon": 21.244167,
-   "city": "Timișoara"
+   "venue": "Stadionul Electrica",
+   "capacity": 2000,
+   "lat": 45.769028,
+   "lon": 21.25444,
+   "city": null,
+   "source": "https://www.primariatm.ro/2026/06/30/baza-electrica",
+   "note": "Dan Păltinișanu demolished - Electrica homologated for Liga 2 in Jun 2026 at 2000 (Wikipedia lists 5000 total); moves to Eroii Timișoarei (10101) once omologated",
+   "manual": true,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q4680389",
@@ -524,7 +607,22 @@
    "capacity": null,
    "lat": 44.200718,
    "lon": 27.327948,
-   "city": "Călărași"
+   "city": null,
+   "competition": "Liga a III-a"
+  },
+  {
+   "id": "Q4683227",
+   "name": "FC Rapid II București",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Electromagnetica",
+   "capacity": null,
+   "lat": 44.406,
+   "lon": 26.0852,
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q5014181",
@@ -537,7 +635,8 @@
    "capacity": 7000,
    "lat": 45.376667,
    "lon": 27.031111,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q5014447",
@@ -550,7 +649,8 @@
    "capacity": null,
    "lat": 46.529594,
    "lon": 26.912234,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q5014453",
@@ -563,7 +663,8 @@
    "capacity": 1500,
    "lat": 44.566389,
    "lon": 25.951667,
-   "city": "Clinceni"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q5014471",
@@ -576,7 +677,8 @@
    "capacity": null,
    "lat": 46.424639,
    "lon": 21.83275,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q5014496",
@@ -589,7 +691,8 @@
    "capacity": 800,
    "lat": 45.181944,
    "lon": 25.657778,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q512961",
@@ -602,7 +705,8 @@
    "capacity": 18000,
    "lat": 46.079078,
    "lon": 23.566553,
-   "city": "Alba Iulia"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q5424763",
@@ -615,7 +719,8 @@
    "capacity": null,
    "lat": 46.780833,
    "lon": 24.710222,
-   "city": "Reghin"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q5424871",
@@ -628,7 +733,8 @@
    "capacity": null,
    "lat": 44.931558,
    "lon": 25.462294,
-   "city": "Târgoviște"
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q5425107",
@@ -641,7 +747,8 @@
    "capacity": 1000,
    "lat": 45.746111,
    "lon": 21.228333,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q5425216",
@@ -654,7 +761,8 @@
    "capacity": 6000,
    "lat": 44.5606,
    "lon": 27.3727,
-   "city": null
+   "city": null,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q55585581",
@@ -667,7 +775,8 @@
    "capacity": 1030,
    "lat": 44.380583,
    "lon": 26.087833,
-   "city": null
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q584629",
@@ -680,7 +789,8 @@
    "capacity": 30944,
    "lat": 44.313889,
    "lon": 23.784167,
-   "city": "Craiova"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q629277",
@@ -693,7 +803,8 @@
    "capacity": 18000,
    "lat": 47.799611,
    "lon": 22.891028,
-   "city": "Satu Mare"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q639046",
@@ -706,7 +817,8 @@
    "capacity": 20000,
    "lat": 45.258058,
    "lon": 27.94715,
-   "city": "Brăila"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q680770",
@@ -719,7 +831,8 @@
    "capacity": 7287,
    "lat": 46.1925,
    "lon": 21.3114,
-   "city": "Arad"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q753462",
@@ -732,7 +845,8 @@
    "capacity": 30335,
    "lat": 46.768333,
    "lon": 23.572222,
-   "city": "Cluj-Napoca"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q841245",
@@ -745,7 +859,8 @@
    "capacity": 15000,
    "lat": 44.846675,
    "lon": 24.866422,
-   "city": "Pitești"
+   "city": null,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q924296",
@@ -758,7 +873,8 @@
    "capacity": 18000,
    "lat": 46.938517,
    "lon": 26.354424,
-   "city": "Piatra-Neamț"
+   "city": null,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q966392",
@@ -771,7 +887,8 @@
    "capacity": null,
    "lat": 44.308611,
    "lon": 26.183889,
-   "city": "Dej"
+   "city": null,
+   "competition": "Liga a III-a"
   }
  ]
 }
