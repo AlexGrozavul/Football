@@ -2608,8 +2608,8 @@
   },
   {
    "id": 567363,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-29T18:00:00Z",
+   "status": "TIMED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2658,8 +2658,8 @@
   },
   {
    "id": 567359,
-   "utcDate": "2026-11-30T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-30T20:15:00Z",
+   "status": "TIMED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,

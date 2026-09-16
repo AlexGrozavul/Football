@@ -2034,7 +2034,7 @@
   {
    "id": 561825,
    "utcDate": "2026-09-15T18:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 6,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2052,14 +2052,14 @@
     "tla": "MIL",
     "crest": "https://crests.football-data.org/384.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "winner": "DRAW"
   },
   {
    "id": 561828,
    "utcDate": "2026-09-15T18:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 6,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2077,9 +2077,9 @@
     "tla": "LIN",
     "crest": "https://crests.football-data.org/1126.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561845,

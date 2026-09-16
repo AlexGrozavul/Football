@@ -1334,7 +1334,7 @@
   {
    "id": 558240,
    "utcDate": "2026-09-15T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 3,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1352,9 +1352,9 @@
     "tla": "WII",
     "crest": "https://crests.football-data.org/672.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 5,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558888,
