@@ -99,7 +99,17 @@ SAME_GROUND_M = 200
 
 REQUEST_GAP_SECONDS = 20
 TIMEOUT_SECONDS = 180
-MAX_RETRIES = 2
+MAX_RETRIES = 3
+
+# Overpass hands out a couple of slots per caller and a country's worth
+# of requests can use them up. The wait after a busy answer is long on
+# purpose: giving up loses a whole country, and the rows then say
+# "not checked", which helps nobody.
+BUSY_WAIT_SECONDS = 60
+
+# Between countries. The second country arrives straight after the first
+# one's batches, which is exactly when the slots are gone.
+COUNTRY_GAP_SECONDS = 60
 
 # Overpass takes one "around" clause per place, and a country's worth of
 # them in one request is neither polite nor reliable.
@@ -198,8 +208,9 @@ def overpass_with_retry(query, what):
             # 429 and 504 are Overpass saying it is busy, not that the
             # query is wrong. Waiting is the documented remedy.
             if exc.code in (429, 502, 503, 504) and attempt < MAX_RETRIES:
-                print(f"    Overpass busy ({exc.code}) on {what}, waiting 30s")
-                time.sleep(30)
+                print(f"    Overpass busy ({exc.code}) on {what}, waiting "
+                      f"{BUSY_WAIT_SECONDS}s")
+                time.sleep(BUSY_WAIT_SECONDS)
                 continue
             return None, f"HTTP {exc.code}"
         except (urllib.error.URLError, TimeoutError) as exc:
@@ -722,7 +733,7 @@ def main():
 
     for position, (code, _country_qid, country_name) in enumerate(COUNTRIES):
         if position:
-            time.sleep(REQUEST_GAP_SECONDS)
+            time.sleep(COUNTRY_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro"}.get(code, "en")
         print(f"  {code}  {country_name}")
 
