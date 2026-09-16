@@ -184,3 +184,5 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 6. Revamped bucket list and ticket info tabs, plus a fourth tab for
    memberships and tickets already held: cost, renewal date, benefits.
 7. Expansion to more countries, one at a time.
+
+Every change must actually land in the repository. Write files to disk, commit them, and push the branch — do not finish a task with changes left only in the working tree or described in the reply. When the task is done, state which files were committed and what the branch is called, so the diff can be reviewed.
