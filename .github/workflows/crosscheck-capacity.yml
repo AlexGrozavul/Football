@@ -1,0 +1,84 @@
+name: Cross-check capacities
+
+# Compares every stadium capacity in data/clubs/ against OpenStreetMap
+# and writes data/clubs/capacity-review.csv listing the disagreements.
+#
+# Never edits a club file. The review file is a list for you to judge,
+# not a change to your data.
+#
+# Monthly, because capacities barely move and Overpass is a volunteer
+# service that should not be hammered.
+
+on:
+  schedule:
+    # 03:41 UTC on the 4th of each month.
+    - cron: "41 3 4 * *"
+  push:
+    branches: [main]
+    paths:
+      - "tools/crosscheck_capacity.py"
+      - ".github/workflows/crosscheck-capacity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crosscheck-capacity
+  cancel-in-progress: false
+
+jobs:
+  crosscheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Compare capacities against OpenStreetMap
+        run: |
+          set -o pipefail
+          python3 tools/crosscheck_capacity.py | tee /tmp/capacity.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Capacity cross-check"
+            echo
+            echo '```'
+            cat /tmp/capacity.log 2>/dev/null || echo "the check did not run"
+            echo '```'
+            if [ -f data/clubs/capacity-review.csv ]; then
+              echo
+              echo "<details><summary>Rows needing your eye</summary>"
+              echo
+              echo '```'
+              head -n 80 data/clubs/capacity-review.csv
+              echo '```'
+              echo
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit only if the review file changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -f data/clubs/capacity-review.csv ]; then
+            git add data/clubs/capacity-review.csv
+          fi
+
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+
+          git commit -m "chore: capacity cross-check ($(date -u +%Y-%m-%d))"
+
+          git push || {
+            echo "Push rejected, rebasing onto origin and retrying."
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }
