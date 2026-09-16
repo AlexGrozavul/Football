@@ -134,6 +134,18 @@ def sparql_with_retry(query):
                 print("    timed out, retrying")
                 continue
             return None, "query timed out"
+        except ValueError:
+            # The query service answers 200 with a half-written body when
+            # a query runs past its own 60-second limit, so a broken JSON
+            # answer means "too slow", not "wrong query". Without this the
+            # whole script dies on one slow query and no country is
+            # written at all.
+            if attempt < MAX_RETRIES:
+                print("    answer was cut off mid-JSON, retrying")
+                time.sleep(15)
+                continue
+            return None, ("answer cut off mid-JSON - the query service gave up "
+                          "on this query (its limit is 60s)")
     return None, "exhausted retries"
 
 
