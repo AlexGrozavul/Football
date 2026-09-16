@@ -182,10 +182,39 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   was aimed at: the German club count is unchanged apart from the
   duplicate removed on purpose, and the "in more than one mapped tier"
   figure fell from 4,104 to 3 for Germany and 1 for Romania. It did not
-  fix the discovery query, which still does not finish — it now fails
-  with HTTP 504 and 502 instead of a half-written answer. So
-  `unmapped-leagues.csv` still lists no German league at all and there is
-  no seed list for Germany.
+  fix the discovery query, so `unmapped-leagues.csv` still lists no
+  German league at all. It has now been measured, though — see below.
+- **The discovery query is slow because of the label service, not the
+  join.** 20 timed probes, run 2026-09-16. Stripped of
+  `SERVICE wikibase:label` the German query finishes in 8.9 seconds and
+  returns 967 rows. Exactly the same query with the label service put
+  back dies at the query service's 60-second ceiling, having streamed
+  324KB of a half-written answer. The German answer was never large:
+  967 rows, 138 different leagues. Romania's is 308 rows and 56 leagues
+  and takes 5.8 seconds, labels and all — Germany sits just over a line
+  Romania sits just under.
+  - Paging is the wrong remedy. The whole German answer is one page of
+    1,016 rows; `LIMIT 10000` returned all of it, and adding
+    `ORDER BY` made it slower (27–30s against 4.6s), not faster.
+  - Splitting by tier cannot be done: tier is what the discovery query
+    exists to find out. Splitting by region needs `P131` on the club,
+    which is exactly the data the missing clubs do not have.
+  - Forcing the join order with `hint:optimizer "None"` made it worse:
+    HTTP 504 after 65 seconds.
+  - What did work, measured: asking which leagues have Germany as their
+    country, counting clubs per league, instead of asking which clubs
+    are in Germany and collecting their leagues. 6.9 seconds, 118
+    leagues, labels included. The same shape returns Romania's 56 — the
+    same 56 already in `unmapped-leagues.csv`, which is the evidence
+    that it loses nothing.
+  - Adding a "is a football club by type" filter is faster still (3.5s)
+    but returns 74 leagues against 118. It drops 44, so it would undo
+    the deliberate decision not to filter by type. Not worth it.
+  - The trade-off in the turned-round version: it finds leagues *in*
+    Germany rather than leagues *German clubs play in*, so a German club
+    in a foreign league would no longer put that league in the seed
+    list. Nothing about that has been decided — this is a measurement,
+    not a change.
 - The missing Regionalliga clubs are not a query problem, and the type
   filter was never what stood in the way. The club query returns 95 clubs
   tagged with one of the five mapped Regionalliga items. 31 of them have
