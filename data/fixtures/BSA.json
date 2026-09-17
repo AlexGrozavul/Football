@@ -6734,7 +6734,7 @@
   {
    "id": 554941,
    "utcDate": "2026-09-16T22:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 21,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -6752,9 +6752,9 @@
     "tla": "FBP",
     "crest": "https://crests.football-data.org/1767.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555011,
