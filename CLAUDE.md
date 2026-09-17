@@ -215,6 +215,42 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
     in a foreign league would no longer put that league in the seed
     list. Nothing about that has been decided — this is a measurement,
     not a change.
+- **OpenStreetMap has now been asked where the unplaced clubs are**, by
+  `propose_coordinates.py`, first real run 2026-09-16. Of the 31
+  Regionalliga clubs with no coordinates: 9 got a confident proposal,
+  19 are ambiguous, 3 got nothing. Five of the nine are certain enough
+  to be worth reading first — the OpenStreetMap ground names the club in
+  its `operator` tag (DJK Vilzing, SSV Jeddeloh, SV Rödinghausen,
+  TSV 1896 Rain, VfB Auerbach). The other four rest on a town match and
+  deserve a harder look. Six of the seven reserve teams are ambiguous on
+  purpose: their town is the first team's town and says nothing about
+  which of the club's grounds they play on. Nothing has been applied to
+  any club file — `data/clubs/coordinate-review.csv` is a list to judge.
+- Romania turns out to be the bigger hole, and it was never written
+  down: 107 Romanian clubs have a tier and no coordinates, against 64 on
+  the map. 31 confident, 32 ambiguous, 44 nothing. Most of the 44 are
+  villages where OpenStreetMap has no named ground at all, which no
+  amount of matching can fix.
+- Romanian club names are full of words that are also village names —
+  Unirea, Progresul, Viitorul, Cetate, Petrolul. The town match finds
+  the wrong village and the club's town from Wikidata throws it out
+  again, which is what that check is for. A club with no town in
+  Wikidata has no such guard, so a row like that is worth more
+  suspicion than its wording suggests.
+- Four Romanian grounds are proposed for two clubs at once (Bacău,
+  Vaslui, Darabani, Modelu). Sharing a municipal ground is normal, so
+  the rows say so rather than being dropped — but "ACS Înainte Modelu"
+  and "Înainte Modelu" are almost certainly one club with two Wikidata
+  items, the same problem as Hamburger SV.
+- **The club query pulls in things that are not clubs.** Five German
+  items with a tier are Wikidata squad lists — "Kader der 2.
+  Fußball-Bundesliga 2019/20", "Mannschaftskader der deutschen
+  Fußball-Bundesliga" and so on. They carry `P118` exactly as a club
+  does and are not people, so the `wdt:P31 wd:Q5` filter does not touch
+  them. They only stay off the map because they have no coordinates: if
+  one ever gained a `P625`, a squad list would appear as a pin. Nothing
+  has been changed about this yet. `SC Veltheim` is a different oddity —
+  a real club carrying a 3. Liga tag it should not have.
 - The missing Regionalliga clubs are not a query problem, and the type
   filter was never what stood in the way. The club query returns 95 clubs
   tagged with one of the five mapped Regionalliga items. 31 of them have
@@ -227,6 +263,8 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   including SV Rödinghausen, TSV Steinbach Haiger, FC Viktoria 1889
   Berlin, SV Heimstetten and FC Erzgebirge Aue. The gap is missing data
   in Wikidata, not a filter, so no change to the query will close it.
+  What can close it is a second source, which is what
+  `coordinate-review.csv` above now offers for 28 of the 31.
 - Wikidata's Regionalliga season items carry no participant list
   (`P1923`) for any of the five divisions, so there is no way inside
   Wikidata to enumerate who should be in a division and compare it
