@@ -611,7 +611,8 @@ def flag_shared_grounds(rows):
 
 # --------------------------------------------------------------- country
 
-def missing_clubs(code, lang, tiers, labels, manual_rows, failures, incomplete):
+def missing_clubs(code, lang, tiers, labels, manual_rows, failures, incomplete,
+                  summary=None):
     """The clubs fetch_clubs.py drops: they have a tier but no position."""
     wanted = [lid for lid, t in tiers.items()
               if t != "skip" and labels.get(lid, {}).get("country", code) == code]
@@ -625,8 +626,15 @@ def missing_clubs(code, lang, tiers, labels, manual_rows, failures, incomplete):
         failures.append(f"{code} clubs from Wikidata: {error}")
         incomplete.append(f"{code} clubs from Wikidata: {error}")
         return []
-    clubs, _leagues, _ambiguous = build_clubs(
+    clubs, _leagues, _ambiguous, dropped = build_clubs(
         data.get("results", {}).get("bindings", []), tiers)
+    # The items that carry a league tag and are not clubs - squad lists,
+    # most often - used to arrive here and take up a row each in the
+    # review file, asking you to find a ground for a list. They are named
+    # rather than removed quietly.
+    if summary is not None:
+        for note in dropped:
+            summary.append(f"{code}  left out, not a club: {note}")
     apply_manual(clubs, manual_rows, code)
     return [c for c in clubs.values()
             if c["tier"] is not None and c["lat"] is None]
@@ -751,7 +759,7 @@ def main():
         print(f"  {code}  {country_name}")
 
         clubs = missing_clubs(code, lang, tiers, labels, manual_rows, failures,
-                              incomplete)
+                              incomplete, summary)
         if not clubs:
             summary.append(f"{code}  no club is missing its coordinates, "
                            f"or the club list could not be fetched")
