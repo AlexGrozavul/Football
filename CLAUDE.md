@@ -184,16 +184,20 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   discovery query finishes there is no way to see which league Q-id they
   do carry. Erzgebirge Aue is a different case — it does come back, as
   `Q97927365`, and is dropped for the reason below.
-- **Two coordinate proposals are wrong and must not be pasted in.**
+- **Two coordinate proposals were wrong and must not be pasted in.**
   OpenStreetMap puts SV Heimstetten (`Q324983`) at "Sporttraum München"
-  (`way/388183624`), a commercial sports centre 0.3km from the middle of
-  Heimstetten — not the club's own Sportpark Heimstetten, Am Sportpark 2,
-  85551 Kirchheim bei München. ETSV Weiche (`Q831867`, the club is now
-  SC Weiche Flensburg 08) is proposed at the "GP JOULE Arena"
-  (`way/25020637`) rather than its Manfred-Werner-Stadion, Bredstedter
-  Str. 2, 24941 Flensburg. Both were checked against independent sources
-  by Alexandru. Nothing in `propose_coordinates.py` remembers a
-  rejection, so `coordinate-review.csv` will offer both again next month.
+  (`way/388183624`), a commercial sports centre 0.8km from the club's own
+  Stadion im ATS-Sportpark; and ETSV Weiche (`Q831867`) at the
+  "GP JOULE Arena" (`way/25020637`), 3.3km from its Manfred-Werner-
+  Stadion. Both were checked against independent sources by Alexandru and
+  both are now corrected by hand in `clubs-manual.csv`, from
+  europlan-online, with the addresses and capacities in the note column.
+  That row also carries the club's current name, SC Weiche Flensburg 08 —
+  Wikidata still labels it ETSV Weiche.
+  Nothing in `propose_coordinates.py` remembers a rejection, so
+  `coordinate-review.csv` will offer both wrong grounds again next month.
+  The manual rows win, so the map is safe either way; the risk is only
+  that the review file still reads "confident" for two rows that are not.
 - FC Unirea Dej has plainly wrong coordinates in Wikidata — placed near
   Bucharest, roughly 300km from Dej. FK Csíkszereda is the same kind of
   error, 31km from the nearest ground OpenStreetMap knows about.
