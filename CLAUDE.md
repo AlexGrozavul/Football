@@ -88,6 +88,8 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `data/clubs/*.json` — Wikidata plus manual corrections
 - `data/clubs/unmapped-leagues.csv` — seed list for `league-tiers.csv`
 - `data/clubs/capacity-review.csv` — disagreements for Alexandru to judge
+- `data/clubs/coordinate-review.csv` — proposed coordinates for clubs
+  Wikidata cannot place, for Alexandru to judge
 
 ### Code
 
@@ -97,6 +99,9 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/fetch_fixtures.py` — football-data.org
 - `tools/fetch_clubs.py` — Wikidata club layer
 - `tools/crosscheck_capacity.py` — OpenStreetMap capacity comparison
+- `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
+  clubs Wikidata cannot place. Matches on names, proposes only, and
+  flags anything ambiguous rather than settling it with a rule.
 
 ---
 
@@ -177,10 +182,75 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   was aimed at: the German club count is unchanged apart from the
   duplicate removed on purpose, and the "in more than one mapped tier"
   figure fell from 4,104 to 3 for Germany and 1 for Romania. It did not
-  fix the discovery query, which still does not finish — it now fails
-  with HTTP 504 and 502 instead of a half-written answer. So
-  `unmapped-leagues.csv` still lists no German league at all and there is
-  no seed list for Germany.
+  fix the discovery query, so `unmapped-leagues.csv` still lists no
+  German league at all. It has now been measured, though — see below.
+- **The discovery query is slow because of the label service, not the
+  join.** 20 timed probes, run 2026-09-16. Stripped of
+  `SERVICE wikibase:label` the German query finishes in 8.9 seconds and
+  returns 967 rows. Exactly the same query with the label service put
+  back dies at the query service's 60-second ceiling, having streamed
+  324KB of a half-written answer. The German answer was never large:
+  967 rows, 138 different leagues. Romania's is 308 rows and 56 leagues
+  and takes 5.8 seconds, labels and all — Germany sits just over a line
+  Romania sits just under.
+  - Paging is the wrong remedy. The whole German answer is one page of
+    1,016 rows; `LIMIT 10000` returned all of it, and adding
+    `ORDER BY` made it slower (27–30s against 4.6s), not faster.
+  - Splitting by tier cannot be done: tier is what the discovery query
+    exists to find out. Splitting by region needs `P131` on the club,
+    which is exactly the data the missing clubs do not have.
+  - Forcing the join order with `hint:optimizer "None"` made it worse:
+    HTTP 504 after 65 seconds.
+  - What did work, measured: asking which leagues have Germany as their
+    country, counting clubs per league, instead of asking which clubs
+    are in Germany and collecting their leagues. 6.9 seconds, 118
+    leagues, labels included. The same shape returns Romania's 56 — the
+    same 56 already in `unmapped-leagues.csv`, which is the evidence
+    that it loses nothing.
+  - Adding a "is a football club by type" filter is faster still (3.5s)
+    but returns 74 leagues against 118. It drops 44, so it would undo
+    the deliberate decision not to filter by type. Not worth it.
+  - The trade-off in the turned-round version: it finds leagues *in*
+    Germany rather than leagues *German clubs play in*, so a German club
+    in a foreign league would no longer put that league in the seed
+    list. Nothing about that has been decided — this is a measurement,
+    not a change.
+- **OpenStreetMap has now been asked where the unplaced clubs are**, by
+  `propose_coordinates.py`, first real run 2026-09-16. Of the 31
+  Regionalliga clubs with no coordinates: 9 got a confident proposal,
+  19 are ambiguous, 3 got nothing. Five of the nine are certain enough
+  to be worth reading first — the OpenStreetMap ground names the club in
+  its `operator` tag (DJK Vilzing, SSV Jeddeloh, SV Rödinghausen,
+  TSV 1896 Rain, VfB Auerbach). The other four rest on a town match and
+  deserve a harder look. Six of the seven reserve teams are ambiguous on
+  purpose: their town is the first team's town and says nothing about
+  which of the club's grounds they play on. Nothing has been applied to
+  any club file — `data/clubs/coordinate-review.csv` is a list to judge.
+- Romania turns out to be the bigger hole, and it was never written
+  down: 107 Romanian clubs have a tier and no coordinates, against 64 on
+  the map. 31 confident, 32 ambiguous, 44 nothing. Most of the 44 are
+  villages where OpenStreetMap has no named ground at all, which no
+  amount of matching can fix.
+- Romanian club names are full of words that are also village names —
+  Unirea, Progresul, Viitorul, Cetate, Petrolul. The town match finds
+  the wrong village and the club's town from Wikidata throws it out
+  again, which is what that check is for. A club with no town in
+  Wikidata has no such guard, so a row like that is worth more
+  suspicion than its wording suggests.
+- Four Romanian grounds are proposed for two clubs at once (Bacău,
+  Vaslui, Darabani, Modelu). Sharing a municipal ground is normal, so
+  the rows say so rather than being dropped — but "ACS Înainte Modelu"
+  and "Înainte Modelu" are almost certainly one club with two Wikidata
+  items, the same problem as Hamburger SV.
+- **The club query pulls in things that are not clubs.** Five German
+  items with a tier are Wikidata squad lists — "Kader der 2.
+  Fußball-Bundesliga 2019/20", "Mannschaftskader der deutschen
+  Fußball-Bundesliga" and so on. They carry `P118` exactly as a club
+  does and are not people, so the `wdt:P31 wd:Q5` filter does not touch
+  them. They only stay off the map because they have no coordinates: if
+  one ever gained a `P625`, a squad list would appear as a pin. Nothing
+  has been changed about this yet. `SC Veltheim` is a different oddity —
+  a real club carrying a 3. Liga tag it should not have.
 - The missing Regionalliga clubs are not a query problem, and the type
   filter was never what stood in the way. The club query returns 95 clubs
   tagged with one of the five mapped Regionalliga items. 31 of them have
@@ -193,6 +263,8 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   including SV Rödinghausen, TSV Steinbach Haiger, FC Viktoria 1889
   Berlin, SV Heimstetten and FC Erzgebirge Aue. The gap is missing data
   in Wikidata, not a filter, so no change to the query will close it.
+  What can close it is a second source, which is what
+  `coordinate-review.csv` above now offers for 28 of the 31.
 - Wikidata's Regionalliga season items carry no participant list
   (`P1923`) for any of the five divisions, so there is no way inside
   Wikidata to enumerate who should be in a division and compare it
