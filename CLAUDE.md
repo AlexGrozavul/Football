@@ -72,10 +72,11 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `data/clubs-manual.csv` — corrections and additions to the club layer.
   A row with a `clubQid` overrides only the cells that are filled in; a
   row without one adds a club; `skip` in the tier column removes one,
-  which is how a duplicate Wikidata item is dropped. A `skip` row needs
-  a `clubQid`, because there has to be something already there to
-  remove, and every other cell on it is ignored. Same column set as
-  `capacity-review.csv`.
+  which is how a duplicate Wikidata item is dropped, and also how a club
+  that only reaches the map through a wrong league tag is removed — SC
+  Veltheim is the second kind. A `skip` row needs a `clubQid`, because
+  there has to be something already there to remove, and every other
+  cell on it is ignored. Same column set as `capacity-review.csv`.
 - `data/league-tiers.csv` — maps a league's Wikidata Q-id to a tier.
   Tier comes from this file and never from a league name: Wikidata's
   league items are fragmented and undated, so names cannot be trusted.
@@ -140,6 +141,13 @@ left exactly as the last good run left it and the summary says so:
 "Overpass unreachable, review file unchanged from the last successful
 run." The first run is the one exception: with no file there is nothing
 to protect, so a partial list is written and labelled as partial.
+
+`unmapped-leagues.csv` now follows the same rule. It is read from and
+pasted out of exactly like a review file, and it used to be rewritten
+unconditionally — so a run where one country's league discovery failed
+replaced the whole seed list with the other country's half, with a green
+tick. It now keeps the last good file and says which country was
+missing.
 
 **Past dates drop out of calendars but stay in the JSON.** The file is
 the history and the anchor for next year's estimate; the calendar is only

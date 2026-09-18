@@ -631,9 +631,17 @@ def main():
 
         # 1. discovery - which leagues Wikidata places in this country,
         #    and how many clubs each has, for the seed file
+        started = time.monotonic()
         disc, error = sparql_with_retry(DISCOVERY_QUERY % {"country": country_qid, "lang": lang})
+        took = time.monotonic() - started
+        # How long the discovery query took, every run. The whole reason
+        # this query was rewritten is that the old one was too slow to
+        # answer at all, so how close the new one runs to the query
+        # service's 60-second ceiling is worth knowing before it starts
+        # failing rather than after.
         if error:
-            failures.append(f"{code} ({name}) league discovery: {error}")
+            failures.append(f"{code} ({name}) league discovery: {error} "
+                            f"(gave up after {took:.1f}s including retries)")
             discovery_missing.append(f"{code} ({name}): {error}")
         else:
             seen_here = 0
@@ -657,7 +665,8 @@ def main():
                 llabel = cell(row, "leagueLabel")
                 if llabel and not llabel.startswith("Q"):
                     entry["label"] = llabel
-            report.append(f"{code}  {seen_here} leagues placed in this country by Wikidata")
+            report.append(f"{code}  {seen_here} leagues placed in this country by Wikidata, "
+                          f"answered in {took:.1f}s")
 
         # 2. clubs - only the leagues mapped for this country
         wanted = [lid for lid, t in tiers.items()
