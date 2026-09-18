@@ -59,33 +59,79 @@ REQUEST_GAP_SECONDS = 5
 TIMEOUT_SECONDS = 90
 MAX_RETRIES = 3
 
-# Discovery: every club in the country that carries any league tag.
+# Discovery: which leagues does Wikidata place in this country, and how
+# many clubs does each of them have.
+#
+# This is the question turned round. Asking it the old way - every club
+# in the country, collect the leagues they carry - died at the query
+# service's 60-second ceiling for Germany every single time, so Germany
+# never reached the seed list at all. Measured on 2026-09-16, this shape
+# answers in 6.9 seconds with 118 German leagues, labels included, and
+# returns the same 56 Romanian leagues the old one did.
+#
+# THE TRADE-OFF, which the run summary also prints: this finds leagues
+# LOCATED IN the country, not leagues this country's clubs PLAY IN. A
+# German club playing in a league Wikidata places abroad no longer puts
+# that league into Germany's seed list. Nothing has been seen to fall
+# through that gap, but nothing rules it out either - and a seed list
+# that arrives beats one that times out.
+#
+# The counting happens in the subquery and the labels are added outside
+# it. The label service cannot run inside an aggregate, and it was the
+# label service, not the join, that made the old query too slow.
+#
 # Still no "is a football club" filter, so nothing is missed - the cost
 # is that other sports show up in the seed list, which you mark "skip".
-# People are excluded, though: Wikidata puts P118 on managers and
-# players as well as clubs, and a German run without this line drags in
-# about 10,000 of them, which is what made this query time out.
+# People are excluded: Wikidata puts P118 on managers and players as
+# well as clubs.
 DISCOVERY_QUERY = """
-SELECT ?club ?league ?leagueLabel WHERE {
-  ?club wdt:P17 wd:%(country)s ; wdt:P118 ?league .
-  FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-  FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
+SELECT ?league ?leagueLabel ?clubs WHERE {
+  {
+    SELECT ?league (COUNT(DISTINCT ?club) AS ?clubs) WHERE {
+      ?league wdt:P17 wd:%(country)s .
+      ?club wdt:P118 ?league .
+      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
+      FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
+    }
+    GROUP BY ?league
+  }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "%(lang)s,en" }
 }
 """
+
+# Printed in the run summary next to the seed list, because the seed
+# list is what the trade-off changes and a comment in the code is no use
+# to anyone reading the summary.
+DISCOVERY_TRADE_OFF = (
+    "Leagues are found by asking which leagues Wikidata places IN the "
+    "country and counting the clubs in each. That is not the same "
+    "question as which leagues this country's clubs PLAY IN: a German "
+    "club playing in a league Wikidata places abroad will not put that "
+    "league in this list. The old question timed out for Germany every "
+    "time and produced no German leagues at all, so this is the trade "
+    "being made. clubsSeen therefore counts every club carrying that "
+    "league tag, not only the clubs of this country.")
 
 # Clubs: restricted to the leagues you mapped, so no "is a football
 # club" filter is needed and reserve teams are no longer excluded by
 # accident. People are excluded here too - a manager carries the league
 # he manages in, so without this line he arrives as a club with no
 # ground and no coordinates.
+#
+# P31 is asked for as well, not to filter by type - that decision stands
+# - but so that the handful of items which are plainly not clubs at all
+# can be named and left out. This query is bounded by the leagues you
+# mapped, a few hundred items, so it is nothing like the country-wide
+# discovery query and one more optional property costs nothing
+# measurable.
 CLUB_QUERY = """
-SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?capacity ?coord ?cityLabel
+SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?capacity ?coord ?cityLabel ?typeLabel
 WHERE {
   VALUES ?league { %(leagues)s }
   ?club wdt:P118 ?league .
   FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
   FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
+  OPTIONAL { ?club wdt:P31 ?type }
   OPTIONAL {
     ?club wdt:P115 ?venue .
     OPTIONAL { ?venue wdt:P625 ?venueCoord }
@@ -113,6 +159,20 @@ OVERFLOW = object()
 
 def _s(v):
     return (v or "").strip()
+
+
+def _wrap(text, width=66):
+    """Line-wrapping for the summary, so a long explanation stays readable."""
+    lines, line = [], ""
+    for word in text.split():
+        if line and len(line) + 1 + len(word) > width:
+            lines.append(line)
+            line = word
+        else:
+            line = f"{line} {word}".strip()
+    if line:
+        lines.append(line)
+    return lines
 
 
 def overflow_problem(path, line, columns, extra):
@@ -235,6 +295,53 @@ def load_tiers():
     return tiers, labels, problems
 
 
+# --------------------------------------------------------- not a club
+
+# Some Wikidata items carry a league tag exactly as a club does and are
+# not clubs. Five German ones are squad lists - "Kader der 2.
+# Fussball-Bundesliga 2019/20", "Mannschaftskader der deutschen
+# Fussball-Bundesliga 2013/14" and so on. They are not people, so the
+# wd:Q5 filter never touched them, and they stayed off the map only
+# because they happen to have no coordinates. That is luck, not a rule:
+# one of them gaining a P625 would put a squad list on the map as a pin.
+#
+# Two nets, and the run summary says which one caught what, by name:
+#
+#   1. What Wikidata says the item IS. The club query now asks for P31,
+#      which costs nothing there because that query is bounded by the
+#      leagues you mapped. This is the net that should do the work.
+#   2. The item's NAME, for anything whose type is missing or says
+#      nothing useful. A backstop only - a name is weaker evidence than
+#      a type, so it is anchored at the start of the name and kept to
+#      the shapes a list article has and a club never does.
+#
+# This is not the "is a football club" filter that was deliberately not
+# added. That one would have said which items to KEEP, by type, and
+# dropped 44 leagues' worth of clubs whose type is simply not filled in.
+# This one says which items to THROW OUT, and an item with no type at
+# all passes it untouched.
+NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ")
+
+NOT_A_CLUB_NAME = re.compile(
+    r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b", re.IGNORECASE)
+
+
+def not_a_club(name, kinds):
+    """
+    Returns the reason this item is not a club, or None if it is one.
+    The reason is written for the run summary, so it says what was seen.
+    """
+    for kind in kinds:
+        low = kind.lower()
+        for word in NOT_A_CLUB_TYPES:
+            if word in low:
+                return f"Wikidata says it is a {kind!r}, which is a list, not a club"
+    if name and NOT_A_CLUB_NAME.match(name):
+        return ("its name is the title of a squad list, not the name of a club "
+                "(Wikidata gives it no type that says so)")
+    return None
+
+
 # --------------------------------------------------------------- shaping
 
 def cell(row, name):
@@ -243,9 +350,16 @@ def cell(row, name):
 
 
 def build_clubs(rows, tiers):
-    """Fold the flat SPARQL rows into one record per club."""
+    """
+    Fold the flat SPARQL rows into one record per club.
+
+    Returns (clubs, leagues, ambiguous, dropped). "dropped" is the items
+    that carried a league tag but are not clubs - see not_a_club above.
+    They are named in the run summary rather than removed quietly.
+    """
     clubs = {}
     leagues = {}
+    kinds = {}
 
     for row in rows:
         cid = qid(cell(row, "club"))
@@ -294,6 +408,24 @@ def build_clubs(rows, tiers):
         if city and not city.startswith("Q") and not club["city"]:
             club["city"] = city
 
+        kind = cell(row, "typeLabel")
+        if kind and not kind.startswith("Q"):
+            seen = kinds.setdefault(cid, [])
+            if kind not in seen:
+                seen.append(kind)
+
+    # The items that are not clubs at all, thrown out before anything
+    # else looks at them.
+    dropped = []
+    for cid in sorted(clubs):
+        reason = not_a_club(clubs[cid].get("name"), kinds.get(cid, []))
+        if not reason:
+            continue
+        gone = clubs.pop(cid)
+        for entry in leagues.values():
+            entry["clubs"].discard(cid)
+        dropped.append(f"{gone.get('name') or cid} ({cid}) - {reason}")
+
     # Tier comes only from leagues you have mapped. Unmapped and skipped
     # leagues are ignored, which is what keeps defunct tags out.
     ambiguous = []
@@ -305,7 +437,7 @@ def build_clubs(rows, tiers):
             if len(set(mapped)) > 1:
                 ambiguous.append(club["name"] or club["id"])
 
-    return clubs, leagues, ambiguous
+    return clubs, leagues, ambiguous, dropped
 
 
 
@@ -486,27 +618,55 @@ def main():
 
     all_leagues, index, failures, report = {}, {}, [], []
 
+    # Which countries' league discovery came back. A country that did not
+    # answer means the seed list is only part of the picture, and a part
+    # of the picture must not overwrite a whole one.
+    discovery_missing = []
+
     for position, (code, country_qid, name) in enumerate(COUNTRIES):
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro"}.get(code, "en")
         print(f"  {code}  {name}")
 
-        # 1. discovery - which leagues exist, for the seed file
+        # 1. discovery - which leagues Wikidata places in this country,
+        #    and how many clubs each has, for the seed file
+        started = time.monotonic()
         disc, error = sparql_with_retry(DISCOVERY_QUERY % {"country": country_qid, "lang": lang})
+        took = time.monotonic() - started
+        # How long the discovery query took, every run. The whole reason
+        # this query was rewritten is that the old one was too slow to
+        # answer at all, so how close the new one runs to the query
+        # service's 60-second ceiling is worth knowing before it starts
+        # failing rather than after.
         if error:
-            failures.append(f"{code} ({name}) league discovery: {error}")
+            failures.append(f"{code} ({name}) league discovery: {error} "
+                            f"(gave up after {took:.1f}s including retries)")
+            discovery_missing.append(f"{code} ({name}): {error}")
         else:
+            seen_here = 0
             for row in disc.get("results", {}).get("bindings", []):
                 lid = qid(cell(row, "league"))
                 if not lid:
                     continue
+                seen_here += 1
+                try:
+                    count = int(cell(row, "clubs") or 0)
+                except ValueError:
+                    count = 0
                 entry = all_leagues.setdefault(
                     lid, {"id": lid, "label": None, "clubs": 0, "country": code})
-                entry["clubs"] += 1
+                # A league placed in two countries is possible and would
+                # otherwise silently look like one country's.
+                if code not in entry["country"].split(";"):
+                    entry["country"] = ";".join(sorted(
+                        set(entry["country"].split(";")) | {code}))
+                entry["clubs"] += count
                 llabel = cell(row, "leagueLabel")
                 if llabel and not llabel.startswith("Q"):
                     entry["label"] = llabel
+            report.append(f"{code}  {seen_here} leagues placed in this country by Wikidata, "
+                          f"answered in {took:.1f}s")
 
         # 2. clubs - only the leagues mapped for this country
         wanted = [lid for lid, t in tiers.items()
@@ -520,10 +680,10 @@ def main():
             if error:
                 failures.append(f"{code} ({name}) clubs: {error} - file left untouched")
                 continue
-            clubs, _leagues, ambiguous = build_clubs(
+            clubs, _leagues, ambiguous, dropped = build_clubs(
                 data.get("results", {}).get("bindings", []), tiers)
         else:
-            ambiguous = []
+            ambiguous, dropped = [], []
             failures.append(f"{code} ({name}): no leagues mapped for this country yet")
 
         applied, applied_problems = apply_manual(clubs, manual_rows, code)
@@ -570,6 +730,8 @@ def main():
         report.append(f"{code}  {len(keep):4d} on the map  |  {with_venue} grounds, "
                       f"{with_cap} capacities, {manual_count} hand-corrected  |  "
                       f"{no_coord} dropped for no coordinates")
+        for note in dropped:
+            report.append(f"    left out, not a club: {note}")
         for note in applied:
             report.append(f"    {note}")
         if ambiguous:
@@ -582,12 +744,28 @@ def main():
 
     unmapped = sorted((l for l in all_leagues.values() if l["id"] not in tiers),
                       key=lambda l: (-l["clubs"], l["id"]))
-    with open(SEED_FILE, "w", encoding="utf-8", newline="") as fh:
-        writer = csv.writer(fh)
-        writer.writerow(["leagueQid", "tier", "label", "country", "clubsSeen"])
-        for league in unmapped:
-            writer.writerow([league["id"], "", league["label"] or "",
-                             league["country"], league["clubs"]])
+
+    # The seed list is a file you read and paste from, so it is treated
+    # like the review files: a run that lost a country knows only part
+    # of the answer, and writing that part would delete the rest with a
+    # green tick. The first run is the exception - there is nothing
+    # there to protect, so a partial list is written and said to be one.
+    seed_note = ""
+    if discovery_missing and os.path.exists(SEED_FILE):
+        seed_note = ("league discovery failed for " +
+                     ", ".join(discovery_missing) +
+                     f" - {SEED_FILE} left exactly as the last good run left it")
+    else:
+        with open(SEED_FILE, "w", encoding="utf-8", newline="") as fh:
+            writer = csv.writer(fh)
+            writer.writerow(["leagueQid", "tier", "label", "country", "clubsSeen"])
+            for league in unmapped:
+                writer.writerow([league["id"], "", league["label"] or "",
+                                 league["country"], league["clubs"]])
+        if discovery_missing:
+            seed_note = (f"{SEED_FILE} did not exist, so it was written from a "
+                         "run that is missing " + ", ".join(discovery_missing) +
+                         " - it is a partial list")
 
     print()
     print("=" * 70)
@@ -600,9 +778,19 @@ def main():
     print()
     print(f"  {len(all_leagues)} leagues seen, {len(all_leagues) - len(unmapped)} mapped, "
           f"{len(unmapped)} unmapped (see {SEED_FILE})")
+    by_country = {}
+    for league in unmapped:
+        by_country[league["country"]] = by_country.get(league["country"], 0) + 1
+    for country in sorted(by_country):
+        print(f"    {country}: {by_country[country]} unmapped")
     for league in unmapped[:10]:
         print(f"    {league['id']:11s} {league['clubs']:4d} clubs  {league['country']}  "
               f"{league['label'] or '(no label)'}")
+    if seed_note:
+        print("  ! " + seed_note)
+    print()
+    for line in _wrap(DISCOVERY_TRADE_OFF):
+        print("  " + line)
     if failures:
         print()
         for f in failures:
