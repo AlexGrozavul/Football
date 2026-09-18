@@ -149,6 +149,17 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 
 ## Known open problems
 
+- **The city field is always null.** `CLUB_QUERY` in `tools/fetch_clubs.py`
+  selects `?cityLabel` but never binds a `?city` variable anywhere in its
+  `WHERE` clause — there is no `?club wdt:P159 ?city` or similar triple, so
+  `SERVICE wikibase:label` has nothing to label and `?cityLabel` comes back
+  unbound on every row. `city = cell(row, "cityLabel")` is therefore always
+  `None`, and every club in `data/clubs/DE.json` and `data/clubs/RO.json`
+  carries `"city": null`, confirmed by inspecting both files directly.
+  `propose_coordinates.py`'s own `CITY_QUERY` binds `?city` correctly (via
+  `?club wdt:P159 ?city` / `wdt:P131 ?city`), so the fix pattern already
+  exists in this codebase — it was just never carried over to `CLUB_QUERY`.
+  Not fixed here; recorded only.
 - SV Meppen and 1. FC Schweinfurt are missing from the German layer
   entirely: neither comes back from the club query at all, and until the
   discovery query finishes there is no way to see which league Q-id they
