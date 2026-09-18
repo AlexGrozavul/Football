@@ -138,10 +138,10 @@
     "Q82595"
    ],
    "tier": 1,
-   "venue": "Europa-Park-Stadion",
-   "capacity": 34700,
-   "lat": 48.021536,
-   "lon": 7.830006,
+   "venue": "Dreisamstadion",
+   "capacity": 24000,
+   "lat": 47.988889,
+   "lon": 7.893056,
    "city": null,
    "competition": "Bundesliga"
   },
@@ -542,6 +542,23 @@
    "competition": "Regionalliga Bayern"
   },
   {
+   "id": "Q15843660",
+   "name": "SV Rödinghausen",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Häcker-Wiehenstadion",
+   "capacity": null,
+   "lat": 52.249456,
+   "lon": 8.506655,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/909365791",
+   "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
+   "manual": true,
+   "competition": "Regionalliga West"
+  },
+  {
    "id": "Q159930",
    "name": "BFC Dynamo",
    "leagues": [
@@ -822,6 +839,23 @@
    "competition": "Regionalliga West"
   },
   {
+   "id": "Q17321080",
+   "name": "DJK Vilzing",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Manfred Zollner Stadion",
+   "capacity": null,
+   "lat": 49.175929,
+   "lon": 12.669127,
+   "city": null,
+   "source": "https://www.openstreetmap.org/node/13043406139",
+   "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
    "id": "Q175616",
    "name": "SV Seligenporten",
    "leagues": [
@@ -890,6 +924,40 @@
    "lon": 12.348056,
    "city": null,
    "competition": "Regionalliga Nordost"
+  },
+  {
+   "id": "Q2207914",
+   "name": "SSV Jeddeloh",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Haskamp Arena",
+   "capacity": null,
+   "lat": 53.09117,
+   "lon": 8.057975,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/1121559196",
+   "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
+   "manual": true,
+   "competition": "Regionalliga Nord"
+  },
+  {
+   "id": "Q2208389",
+   "name": "SV Eichede",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Ernst-Wagener-Stadion",
+   "capacity": null,
+   "lat": 53.720317,
+   "lon": 10.4138,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/26487966",
+   "note": "Coordinates from OpenStreetMap; confident row in coordinate-review.csv - this named football pitch is 0.6 km from the middle of Eichede, the village in the club's name",
+   "manual": true,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q22707",
@@ -1021,6 +1089,23 @@
    "competition": "Bundesliga"
   },
   {
+   "id": "Q324983",
+   "name": "SV Heimstetten",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Stadion im ATS-Sportpark",
+   "capacity": 2800,
+   "lat": 48.162078,
+   "lon": 11.748226,
+   "city": null,
+   "source": "https://www.europlan-online.de/stadion-im-sportpark-heimstetten/stadion-746.html",
+   "note": "Am Sportpark 2, 85551 Kirchheim bei München. Capacity cross-checked against the club site and Wikipedia, which both say 2800; Soccerway's 3100 is the outlier. Rejects the coordinate-review.csv proposal of Sporttraum München (way/388183624), which is a commercial sports centre, not the club's ground",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
    "id": "Q33748",
    "name": "Hannover 96",
    "leagues": [
@@ -1105,6 +1190,40 @@
    "competition": "Regionalliga West"
   },
   {
+   "id": "Q479321",
+   "name": "FV Illertissen",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Vöhlinstadion",
+   "capacity": null,
+   "lat": 48.217941,
+   "lon": 10.092186,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/1301973503",
+   "note": "Coordinates from OpenStreetMap; confident row in coordinate-review.csv - the stadium is 1.1 km from the middle of Illertissen, the town in the club's name",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
+   "id": "Q479340",
+   "name": "TSV 1896 Rain",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Georg-Weber-Stadion",
+   "capacity": null,
+   "lat": 48.69474,
+   "lon": 10.907072,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/1375425515",
+   "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
    "id": "Q479351",
    "name": "SV Darmstadt 98",
    "leagues": [
@@ -1117,6 +1236,23 @@
    "lon": 8.672222,
    "city": null,
    "competition": "2. Bundesliga"
+  },
+  {
+   "id": "Q479366",
+   "name": "VfB Auerbach",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Arena zur Vogtlandweide",
+   "capacity": null,
+   "lat": 50.506196,
+   "lon": 12.38675,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/72745820",
+   "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
+   "manual": true,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q493464",
@@ -1624,6 +1760,23 @@
    "lon": 10.9947,
    "city": null,
    "competition": "Regionalliga Bayern"
+  },
+  {
+   "id": "Q831867",
+   "name": "SC Weiche Flensburg 08",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Manfred-Werner-Stadion",
+   "capacity": 2500,
+   "lat": 54.760405,
+   "lon": 9.406829,
+   "city": null,
+   "source": "https://www.europlan-online.de/manfred-werner-stadion/stadion-675.html",
+   "note": "Bredstedter Str. 2, 24941 Flensburg. 4000 total capacity, 2500 licensed for match use - the licensed figure is the one that decides whether a match sells out. Club renamed from ETSV Weiche, which is still the Wikidata label. Rejects the coordinate-review.csv proposal of the GP JOULE Arena (way/25020637), a different ground",
+   "manual": true,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q8466",

@@ -792,7 +792,7 @@
    "city": null,
    "ticketUrl": "https://cscdumbravita.ro/",
    "source": "https://en.wikipedia.org/wiki/CSC_Dumbravita",
-   "note": "Liga 2 since 2022 - 500 of the 1000 are seats; Wikidata has the club but no coordinates for it",
+   "note": "Liga 2 since 2022 - 500 of the 1000 are seats; Wikidata has the club but no coordinates for it, which is why it never reached the map",
    "manual": true,
    "competition": "Liga a II-a"
   },
