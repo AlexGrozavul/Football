@@ -122,6 +122,25 @@ what went in is what he meant.
 to `tee`, or a crashing script shows a green tick. This has already
 caused one silent failure.
 
+**A comma inside a hand-written CSV cell has to be quoted.** `note` is
+the usual victim: `a, b` is two cells, not one, and the second one falls
+off the end of the row. Every reader in `tools/` now rejects a row that
+has more values than the header has columns and prints the line number,
+instead of throwing the overflow away without a word — which is what cut
+two notes in half before anyone noticed. Wrap the whole cell in double
+quotes, `"a, b"`, and the comma survives.
+
+**A failed fetch never rewrites a review file.** `capacity-review.csv`
+and `coordinate-review.csv` are evidence waiting to be judged, and the
+cron commits whatever it finds. If Overpass or Wikidata does not answer,
+the run has only part of the picture — a country missing, or rows reading
+"not checked" — and writing that would delete work nobody has acted on
+yet, with a green tick. So when anything did not come back, the file is
+left exactly as the last good run left it and the summary says so:
+"Overpass unreachable, review file unchanged from the last successful
+run." The first run is the one exception: with no file there is nothing
+to protect, so a partial list is written and labelled as partial.
+
 **Past dates drop out of calendars but stay in the JSON.** The file is
 the history and the anchor for next year's estimate; the calendar is only
 what lies ahead.
@@ -165,6 +184,20 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   discovery query finishes there is no way to see which league Q-id they
   do carry. Erzgebirge Aue is a different case — it does come back, as
   `Q97927365`, and is dropped for the reason below.
+- **Two coordinate proposals were wrong and must not be pasted in.**
+  OpenStreetMap puts SV Heimstetten (`Q324983`) at "Sporttraum München"
+  (`way/388183624`), a commercial sports centre 0.8km from the club's own
+  Stadion im ATS-Sportpark; and ETSV Weiche (`Q831867`) at the
+  "GP JOULE Arena" (`way/25020637`), 3.3km from its Manfred-Werner-
+  Stadion. Both were checked against independent sources by Alexandru and
+  both are now corrected by hand in `clubs-manual.csv`, from
+  europlan-online, with the addresses and capacities in the note column.
+  That row also carries the club's current name, SC Weiche Flensburg 08 —
+  Wikidata still labels it ETSV Weiche.
+  Nothing in `propose_coordinates.py` remembers a rejection, so
+  `coordinate-review.csv` will offer both wrong grounds again next month.
+  The manual rows win, so the map is safe either way; the risk is only
+  that the review file still reads "confident" for two rows that are not.
 - FC Unirea Dej has plainly wrong coordinates in Wikidata — placed near
   Bucharest, roughly 300km from Dej. FK Csíkszereda is the same kind of
   error, 31km from the nearest ground OpenStreetMap knows about.

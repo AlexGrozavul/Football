@@ -385,6 +385,28 @@ def _clean(value):
     return (value or "").strip()
 
 
+# csv.DictReader hands back any value past the last column under a single
+# "rest" key. Left at its default that key is None, and a dictionary
+# comprehension that skips None throws the values away without a word.
+# One comma typed inside a note is enough to trigger it, so the row is
+# rejected with its line number instead. An object() is used rather than
+# a string so that no column name can ever collide with it.
+OVERFLOW = object()
+
+
+def overflow_problem(line, columns, extra):
+    """
+    The complaint for a row carrying more values than the header has
+    columns. Says what would have been lost and how to keep it, because
+    the fix is in the file, not in the code.
+    """
+    lost = ", ".join(repr(_clean(v)) for v in extra)
+    return (f"line {line}: this row has {columns + len(extra)} values but the "
+            f"header has {columns} columns, so {lost} would be thrown away. "
+            f"A comma inside a cell splits that cell in two - put double quotes "
+            f'round the whole cell ("like, this") to keep the comma. Row ignored.')
+
+
 def read_manual_fixtures(clubs_by_id, today):
     """
     Parse data/fixtures-manual.csv.
@@ -400,7 +422,7 @@ def read_manual_fixtures(clubs_by_id, today):
         return events, readback, problems
 
     with open(FIXTURES_FILE, encoding="utf-8-sig", newline="") as fh:
-        reader = csv.DictReader(fh)
+        reader = csv.DictReader(fh, restkey=OVERFLOW)
         if reader.fieldnames is None:
             problems.append("line 1: the file is empty - it needs a header row")
             return events, readback, problems
@@ -417,7 +439,11 @@ def read_manual_fixtures(clubs_by_id, today):
 
         for row in reader:
             line = reader.line_num
-            row = {(_clean(k) or ""): _clean(v) for k, v in row.items() if k is not None}
+            extra = row.pop(OVERFLOW, None)
+            if extra:
+                problems.append(overflow_problem(line, len(reader.fieldnames), extra))
+                continue
+            row = {(_clean(k) or ""): _clean(v) for k, v in row.items()}
 
             if not any(row.get(c) for c in CSV_REQUIRED) and not any(row.values()):
                 continue  # blank line

@@ -100,6 +100,34 @@ WHERE {
 POINT_RE = re.compile(r"Point\(\s*(-?[\d.]+)\s+(-?[\d.]+)\s*\)")
 
 
+# ------------------------------------------------------------- csv safety
+
+# csv.DictReader hands back any value past the last column under a single
+# "rest" key. Left at its default that key is None, and a dictionary
+# comprehension that skips None throws the values away without a word -
+# which is what quietly cut two notes in half the first time a comma was
+# typed inside one. An object() is used rather than a string so that no
+# column name, present or future, can collide with it.
+OVERFLOW = object()
+
+
+def _s(v):
+    return (v or "").strip()
+
+
+def overflow_problem(path, line, columns, extra):
+    """
+    The complaint for a row carrying more values than the header has
+    columns. Says what would have been lost and how to keep it, because
+    the fix is in the file, not in the code.
+    """
+    lost = ", ".join(repr(_s(v)) for v in extra)
+    return (f"{path} line {line}: this row has {columns + len(extra)} values but "
+            f"the header has {columns} columns, so {lost} would be thrown away. "
+            f"A comma inside a cell splits that cell in two - put double quotes "
+            f'round the whole cell ("like, this") to keep the comma. Row ignored.')
+
+
 # ------------------------------------------------------------------ http
 
 def sparql(query):
@@ -177,12 +205,17 @@ def load_tiers():
         return tiers, labels, problems
 
     with open(TIER_FILE, encoding="utf-8-sig", newline="") as fh:
-        reader = csv.DictReader(fh)
+        reader = csv.DictReader(fh, restkey=OVERFLOW)
         if not reader.fieldnames or "leagueQid" not in reader.fieldnames:
             problems.append(f"{TIER_FILE} line 1: header must contain leagueQid and tier")
             return tiers, labels, problems
         for row in reader:
             line = reader.line_num
+            extra = row.pop(OVERFLOW, None)
+            if extra:
+                problems.append(overflow_problem(
+                    TIER_FILE, line, len(reader.fieldnames), extra))
+                continue
             key = (row.get("leagueQid") or "").strip()
             raw = (row.get("tier") or "").strip().lower()
             if not key:
@@ -278,10 +311,6 @@ def build_clubs(rows, tiers):
 
 # ------------------------------------------------------ manual overrides
 
-def _s(v):
-    return (v or "").strip()
-
-
 def load_manual():
     """
     data/clubs-manual.csv -- hand-written corrections and additions.
@@ -302,7 +331,7 @@ def load_manual():
         return rows, problems
 
     with open(MANUAL_FILE, encoding="utf-8-sig", newline="") as fh:
-        reader = csv.DictReader(fh)
+        reader = csv.DictReader(fh, restkey=OVERFLOW)
         if not reader.fieldnames:
             problems.append(f"{MANUAL_FILE} is empty - it needs a header row")
             return rows, problems
@@ -317,7 +346,12 @@ def load_manual():
 
         for raw in reader:
             line = reader.line_num
-            row = {_s(k): _s(v) for k, v in raw.items() if k is not None}
+            extra = raw.pop(OVERFLOW, None)
+            if extra:
+                problems.append(overflow_problem(
+                    MANUAL_FILE, line, len(reader.fieldnames), extra))
+                continue
+            row = {_s(k): _s(v) for k, v in raw.items()}
             if not any(row.values()):
                 continue
             if not row.get("name"):

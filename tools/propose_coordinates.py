@@ -611,17 +611,19 @@ def flag_shared_grounds(rows):
 
 # --------------------------------------------------------------- country
 
-def missing_clubs(code, lang, tiers, labels, manual_rows, failures):
+def missing_clubs(code, lang, tiers, labels, manual_rows, failures, incomplete):
     """The clubs fetch_clubs.py drops: they have a tier but no position."""
     wanted = [lid for lid, t in tiers.items()
               if t != "skip" and labels.get(lid, {}).get("country", code) == code]
     if not wanted:
         failures.append(f"{code}: no leagues mapped for this country yet")
+        incomplete.append(f"{code}: no leagues mapped, so no club was looked at")
         return []
     values = " ".join("wd:" + lid for lid in wanted)
     data, error = sparql_with_retry(CLUB_QUERY % {"leagues": values, "lang": lang})
     if error:
         failures.append(f"{code} clubs from Wikidata: {error}")
+        incomplete.append(f"{code} clubs from Wikidata: {error}")
         return []
     clubs, _leagues, _ambiguous = build_clubs(
         data.get("results", {}).get("bindings", []), tiers)
@@ -630,7 +632,7 @@ def missing_clubs(code, lang, tiers, labels, manual_rows, failures):
             if c["tier"] is not None and c["lat"] is None]
 
 
-def add_cities(clubs, lang, failures, code):
+def add_cities(clubs, lang, failures, code, incomplete):
     """
     The club's town from Wikidata, used only to throw out a candidate in
     the wrong part of the country, and what Wikidata says the item is.
@@ -643,6 +645,12 @@ def add_cities(clubs, lang, failures, code):
     if error:
         failures.append(f"{code} club towns from Wikidata: {error} - "
                         f"no candidate could be checked against a town")
+        # Without the town the wrong-village guard is gone, so a candidate
+        # that would have been thrown out can come back as confident. That
+        # is a worse answer, not a shorter one, and it must not replace a
+        # good file either.
+        incomplete.append(f"{code} club towns from Wikidata: {error} - "
+                          f"the wrong-town guard was off for this country")
         return
     best, kinds = {}, {}
     for row in data.get("results", {}).get("bindings", []):
@@ -731,13 +739,19 @@ def main():
 
     rows, summary, failures, readback = [], [], [], []
 
+    # Anything that makes this run less than the whole picture. While this
+    # list is empty the run may replace the review file; once it is not,
+    # the file is left exactly as the last good run left it.
+    incomplete = []
+
     for position, (code, _country_qid, country_name) in enumerate(COUNTRIES):
         if position:
             time.sleep(COUNTRY_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro"}.get(code, "en")
         print(f"  {code}  {country_name}")
 
-        clubs = missing_clubs(code, lang, tiers, labels, manual_rows, failures)
+        clubs = missing_clubs(code, lang, tiers, labels, manual_rows, failures,
+                              incomplete)
         if not clubs:
             summary.append(f"{code}  no club is missing its coordinates, "
                            f"or the club list could not be fetched")
@@ -745,7 +759,7 @@ def main():
         print(f"      {len(clubs)} club(s) have a tier but no coordinates")
 
         time.sleep(REQUEST_GAP_SECONDS)
-        add_cities(clubs, lang, failures, code)
+        add_cities(clubs, lang, failures, code, incomplete)
 
         time.sleep(REQUEST_GAP_SECONDS)
         print("      asking OpenStreetMap for every stadium in the country")
@@ -753,6 +767,7 @@ def main():
         if error:
             failures.append(f"{code}: {error} - OpenStreetMap was not asked, so "
                             f"no coordinate was proposed for this country")
+            incomplete.append(f"{code}: OpenStreetMap unreachable ({error})")
             for club in clubs:
                 rows.append(review_row(club, code, {
                     "_verdict": "not checked - OpenStreetMap could not be reached",
@@ -779,6 +794,8 @@ def main():
             failures.append(
                 f"{code}: {len(missing)} name(s) were never looked up, so the "
                 f"clubs carrying them say 'not checked' instead of 'no match'")
+            incomplete.append(f"{code}: {len(missing)} place name(s) were never "
+                              f"looked up")
             for club in clubs:
                 if any(gram in missing for gram in grams[club["id"]]):
                     club["_unchecked"] = True
@@ -807,6 +824,8 @@ def main():
             if error:
                 failures.append(f"{code} pitches: {error} - some of the country's "
                                 f"named pitches were not considered")
+                incomplete.append(f"{code} pitches: {error} - a club whose only "
+                                  f"ground is a pitch could read as 'no match'")
                 continue
             pitches = elements(payload, "pitch")
             for ref, ground in pitches.items():
@@ -844,11 +863,24 @@ def main():
     order = {"confident": 0, "ambiguous": 1, "no": 2, "not": 3}
     rows.sort(key=lambda r: (r["country"], order.get(r["_verdict"].split(" ")[0], 9),
                              r["name"].lower()))
-    with open(REVIEW_FILE, "w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=header)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
+
+    # A request that did not come back turns real proposals into rows that
+    # read "not checked", or drops a whole country from the list. Writing
+    # that over the file would replace evidence you have not worked
+    # through yet, and the cron would commit the deletion the same
+    # morning - with a green tick. So when anything went wrong the file is
+    # left exactly as the last good run left it.
+    #
+    # The first run is the one exception: there is nothing there to
+    # protect, so a partial list is better than no list.
+    existing = os.path.exists(REVIEW_FILE)
+    kept = bool(incomplete) and existing
+    if not kept:
+        with open(REVIEW_FILE, "w", encoding="utf-8", newline="") as fh:
+            writer = csv.DictWriter(fh, fieldnames=header)
+            writer.writeheader()
+            for row in rows:
+                writer.writerow(row)
 
     print()
     print("=" * 74)
@@ -857,6 +889,19 @@ def main():
     for line in summary:
         print("  " + line)
     print()
+    if kept:
+        print("  Overpass unreachable, review file unchanged from the last")
+        print(f"  successful run. {REVIEW_FILE} was NOT rewritten.")
+        print(f"  This run only got as far as {len(rows)} row(s), which is not the")
+        print("  whole picture, so those were thrown away rather than the file.")
+        print("  What did not come back:")
+        for reason in incomplete:
+            print(f"    {reason}")
+        print("=" * 74)
+        return
+    if incomplete:
+        print(f"  {REVIEW_FILE} did not exist yet, so a partial list was written.")
+        print("  It is missing whatever is listed at the bottom.")
     print(f"  {len(rows)} club(s) written to {REVIEW_FILE}")
     print("  Nothing was applied. A confident row carries a ground, a lat and a")
     print("  lon and can be pasted into data/clubs-manual.csv once you agree with")
