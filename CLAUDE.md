@@ -234,10 +234,47 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   was aimed at: the German club count is unchanged apart from the
   duplicate removed on purpose, and the "in more than one mapped tier"
   figure fell from 4,104 to 3 for Germany and 1 for Romania. It did not
-  fix the discovery query, so `unmapped-leagues.csv` still lists no
-  German league at all. It has now been measured, though — see below.
-- **The discovery query is slow because of the label service, not the
-  join.** 20 timed probes, run 2026-09-16. Stripped of
+  fix the discovery query. That was fixed separately — see the next
+  entry — and `unmapped-leagues.csv` now carries 108 German leagues.
+- **The discovery query has been turned round, and Germany is in the
+  seed list at last.** `unmapped-leagues.csv` carried no German league
+  at all until 2026-09-18; it now carries 108, alongside Romania's 53.
+  What the tool asks is now: which leagues does Wikidata place in this
+  country, and how many clubs does each have. The counting happens in a
+  subquery and the labels are added outside it, because the label
+  service cannot run inside an aggregate.
+  - **The trade-off, and it is a real one.** This finds leagues LOCATED
+    IN a country, not leagues that country's clubs PLAY IN. A club
+    playing in a league Wikidata places abroad no longer puts that
+    league in the seed list, and a domestic league with no `P17` at all
+    disappears from it too. The run summary prints this every time.
+  - Measured, not assumed: four Romanian leagues that were in the old
+    seed list are gone from the new one. Two are the trade-off exactly —
+    `Q257400` ABA League and `Q456092` Eurocupa ULEB, foreign basketball
+    competitions Romanian clubs take part in. One, `Q5282797`
+    "dizolvare", is junk and no loss. The fourth, `Q55452861` Liga a V-a
+    Dolj, is the case that should worry anyone extending this: a real
+    Romanian league that the new question cannot see because its
+    Wikidata item carries no country. One league arrived that was never
+    there before, `Q18417282` Cupa României. Net: 56 Romanian rows
+    became 53.
+  - No mapped league was lost. All 11 leagues in `league-tiers.csv`
+    came back, and the club layer is unchanged at 129 German and 64
+    Romanian clubs on the map.
+  - **It is not as fast as the probe suggested and it is not reliable
+    yet.** The probe measured 6.9 seconds; inside the tool the German
+    query took 23.7 seconds, and the run before that one failed
+    outright — HTTP 502, then 504, then 504, three attempts, no German
+    leagues. The ceiling is 60 seconds, so there is room but not much,
+    and the summary now prints how long the query took on every run.
+    When it does fail the seed file is left alone rather than
+    half-written. If this keeps failing, the next thing to try is
+    splitting it: the league list in one query, the club counts in a
+    second one bounded by `VALUES ?league`, with `clubsSeen` left blank
+    and reported when the count cannot be had. That has not been
+    measured and has not been built.
+- **What the 2026-09-16 probes measured**, kept because it is the
+  evidence the rewrite rests on. 20 timed probes. Stripped of
   `SERVICE wikibase:label` the German query finishes in 8.9 seconds and
   returns 967 rows. Exactly the same query with the label service put
   back dies at the query service's 60-second ceiling, having streamed
@@ -256,17 +293,21 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   - What did work, measured: asking which leagues have Germany as their
     country, counting clubs per league, instead of asking which clubs
     are in Germany and collecting their leagues. 6.9 seconds, 118
-    leagues, labels included. The same shape returns Romania's 56 — the
-    same 56 already in `unmapped-leagues.csv`, which is the evidence
-    that it loses nothing.
+    leagues, labels included. This is the shape that was built.
+    The note here used to add that the same shape returns Romania's 56,
+    "the same 56 already in `unmapped-leagues.csv`, which is the
+    evidence that it loses nothing." That reading was wrong: 56 is the
+    total including the three leagues already mapped, so it was 53
+    unmapped against the file's 56, and the real run confirmed exactly
+    that. It loses four and gains one — named in the entry above.
   - Adding a "is a football club by type" filter is faster still (3.5s)
     but returns 74 leagues against 118. It drops 44, so it would undo
     the deliberate decision not to filter by type. Not worth it.
   - The trade-off in the turned-round version: it finds leagues *in*
     Germany rather than leagues *German clubs play in*, so a German club
     in a foreign league would no longer put that league in the seed
-    list. Nothing about that has been decided — this is a measurement,
-    not a change.
+    list. That was a measurement when it was written; it is now the
+    behaviour, and what it actually cost is listed above.
 - **OpenStreetMap has now been asked where the unplaced clubs are**, by
   `propose_coordinates.py`, first real run 2026-09-16. Of the 31
   Regionalliga clubs with no coordinates: 9 got a confident proposal,
@@ -294,15 +335,42 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   the rows say so rather than being dropped — but "ACS Înainte Modelu"
   and "Înainte Modelu" are almost certainly one club with two Wikidata
   items, the same problem as Hamburger SV.
-- **The club query pulls in things that are not clubs.** Five German
-  items with a tier are Wikidata squad lists — "Kader der 2.
+- **The squad lists are filtered out now, by type.** Five German items
+  with a tier were Wikidata squad lists — "Kader der 2.
   Fußball-Bundesliga 2019/20", "Mannschaftskader der deutschen
-  Fußball-Bundesliga" and so on. They carry `P118` exactly as a club
-  does and are not people, so the `wdt:P31 wd:Q5` filter does not touch
-  them. They only stay off the map because they have no coordinates: if
-  one ever gained a `P625`, a squad list would appear as a pin. Nothing
-  has been changed about this yet. `SC Veltheim` is a different oddity —
-  a real club carrying a 3. Liga tag it should not have.
+  Fußball-Bundesliga 2013/14" and so on. They carry `P118` exactly as a
+  club does and are not people, so the `wdt:P31 wd:Q5` filter never
+  touched them, and they stayed off the map only because they happen to
+  have no coordinates — luck, not a rule.
+  The club query now asks for `P31` as well, which costs nothing there
+  because that query is bounded by the leagues in `league-tiers.csv`,
+  and an item whose type is a list is thrown out and named in the run
+  summary. In the real run of 2026-09-18 all five were caught by the
+  type, none needed the name fallback: four are a "list of participants
+  in sport tournament" and one is a "Mannschaftskader". The name
+  fallback exists for an item whose type says nothing, and it only
+  matches the shapes a list title has ("Kader …", "Mannschaftskader …",
+  "Liste …") and a club name does not.
+  This is not the "is a football club by type" filter that was
+  deliberately not added. That one would have said which items to keep
+  and dropped every club whose type is simply not filled in. This one
+  says what to throw out, and an item with no type at all passes
+  untouched.
+  They will keep their rows in `coordinate-review.csv` until
+  `propose_coordinates.py` next runs, which is monthly.
+- **SC Veltheim is not German.** It came through the club query
+  carrying the German 3. Liga item `Q154069`, and the map has no
+  country filter to stop it: the club query is bounded by league, not
+  by country, so any foreign club whose league tag points at a German
+  league item arrives as a German club. Two searches on 2026-09-18
+  agree it is the Swiss SC Veltheim, from the Veltheim district of
+  Winterthur, registered with the Fussballverband Region Zürich and
+  playing in the Swiss 2. Liga — so its tag most likely means the Swiss
+  3. Liga and is a wrong link. It is now removed by hand with a `skip`
+  row in `clubs-manual.csv`. Adding a country filter to the club query
+  was considered and not done: `P17` is exactly the kind of field the
+  missing clubs already lack, and a filter on it would quietly drop
+  real ones. Nothing detects the next case automatically.
 - The missing Regionalliga clubs are not a query problem, and the type
   filter was never what stood in the way. The club query returns 95 clubs
   tagged with one of the five mapped Regionalliga items. 31 of them have
@@ -317,6 +385,47 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   in Wikidata, not a filter, so no change to the query will close it.
   What can close it is a second source, which is what
   `coordinate-review.csv` above now offers for 28 of the 31.
+- **europlan-online as a second stadium source: still a question, and
+  the go/no-go part of it was not answerable on 2026-09-18.** The site
+  could not be reached at all from the machine doing the work — its
+  network policy blocks europlan-online.de, and Wikidata and Overpass
+  with it. So none of the three things that decide it were checked:
+  what `robots.txt` says, what the terms of use say about automated
+  reading, and whether the coordinates and capacities on the page are
+  as precise and as consistently laid out as the two hand-checked pages
+  suggested. Nobody should treat the question as settled until those
+  three have been read from the site itself.
+  What could be established, from a search engine's index of the site's
+  own pages rather than from the pages — so worth a second look, not a
+  decision:
+  - There is a systematic way round it. A ground is
+    `/<name>/stadion-<id>.html`, a league is `index.php?s=liga&id=<n>`
+    and lists that league's grounds and clubs, a country is
+    `index.php?s=land&id=1`, and leagues go down to Kreisliga level.
+  - The thing OpenStreetMap cannot do, this site appears to do: a club
+    is a page *under a ground* — `/<ground>/verein/<clubId>` — so the
+    club-to-ground link is the site's own structure rather than
+    something to infer from a name.
+  - Eight of ten ambiguous clubs came back with a named ground:
+    1. FC Köln II at the Franz-Kremer-Stadion, Borussia Mönchengladbach
+    II at the Grenzlandstadion in Rheydt, FC Augsburg II at the
+    Rosenaustadion, FC Ismaning at the Prof.-Erich-Greipl-Stadion,
+    FC Kray at the KrayArena, FC Viktoria 1889 Berlin at Stadion
+    Lichterfelde, FC Erzgebirge Aue at the Erzgebirgsstadion, Eutin 08
+    at the Eutina-Platz. Two did not: FC Schalke 04 II, and
+    1. FC Nürnberg II, where the Sportpark Valznerweiher is four
+    separate pitches on the site and nothing said which one.
+  - Two of those eight are grounds OpenStreetMap never offered at all.
+    The Gladbach II row proposed Borussia-Park and SparkassenPark, not
+    the Grenzlandstadion; the Viktoria Berlin row offered ten Berlin
+    stadiums, none of them Stadion Lichterfelde. If the site is right,
+    it settles rows that no amount of name-matching against
+    OpenStreetMap could settle.
+  - The same breadth is also the risk: side pitches, old grounds and
+    sports halls are separate entries — Aue alone returned six, and
+    Valznerweiher four. Matching on a ground's name would be exactly as
+    ambiguous as OpenStreetMap is. Only the club-to-ground link is
+    worth anything here.
 - Wikidata's Regionalliga season items carry no participant list
   (`P1923`) for any of the five divisions, so there is no way inside
   Wikidata to enumerate who should be in a division and compare it
