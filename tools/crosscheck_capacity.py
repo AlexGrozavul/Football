@@ -167,6 +167,11 @@ def main():
 
     rows, summary, failures = [], [], []
 
+    # Anything that makes this run less than the whole picture. While
+    # this list is empty the run may replace the review file; once it is
+    # not, the file is left exactly as the last good run left it.
+    incomplete = []
+
     for position, filename in enumerate(files):
         code = filename[:-5]
         with open(os.path.join(CLUB_DIR, filename), encoding="utf-8") as fh:
@@ -181,6 +186,7 @@ def main():
         payload, error = overpass_with_retry(code)
         if error:
             failures.append(f"{code}: {error} - no cross-check done for this country")
+            incomplete.append(f"{code}: {error}")
             continue
 
         stadiums = stadium_points(payload)
@@ -246,11 +252,23 @@ def main():
               "_wikidata", "_osm", "_osmName", "_osmTag", "_metres", "_verdict"]
 
     rows.sort(key=lambda r: (r["country"], r["_verdict"], r["name"]))
-    with open(REVIEW_FILE, "w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=header)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
+
+    # A country Overpass could not answer for contributes no rows. Writing
+    # the file anyway would replace a list you have not worked through yet
+    # with a shorter one, and the cron would commit that deletion the same
+    # morning - evidence gone, with a green tick. So when anything went
+    # wrong the file is left exactly as the last good run left it.
+    #
+    # The first run is the one exception: there is nothing there to
+    # protect, so a partial list is better than no list.
+    existing = os.path.exists(REVIEW_FILE)
+    kept = bool(incomplete) and existing
+    if not kept:
+        with open(REVIEW_FILE, "w", encoding="utf-8", newline="") as fh:
+            writer = csv.DictWriter(fh, fieldnames=header)
+            writer.writeheader()
+            for row in rows:
+                writer.writerow(row)
 
     print()
     print("=" * 74)
@@ -259,11 +277,23 @@ def main():
     for line in summary:
         print("  " + line)
     print()
-    print(f"  {len(rows)} club(s) need your eye - written to {REVIEW_FILE}")
-    print("  Columns starting with _ are evidence and are ignored by the")
-    print("  club builder. Put the figure you trust in the capacity column,")
-    print("  then paste the row into data/clubs-manual.csv.")
-    if rows:
+    if kept:
+        print("  Overpass unreachable, review file unchanged from the last")
+        print(f"  successful run. {REVIEW_FILE} was NOT rewritten.")
+        print(f"  This run could only match {len(rows)} row(s), which is not the")
+        print("  whole picture, so those were thrown away rather than the file.")
+        print("  Not checked this time:")
+        for reason in incomplete:
+            print(f"    {reason}")
+    else:
+        if incomplete:
+            print(f"  {REVIEW_FILE} did not exist yet, so a partial list was")
+            print("  written. It is missing the countries listed at the bottom.")
+        print(f"  {len(rows)} club(s) need your eye - written to {REVIEW_FILE}")
+        print("  Columns starting with _ are evidence and are ignored by the")
+        print("  club builder. Put the figure you trust in the capacity column,")
+        print("  then paste the row into data/clubs-manual.csv.")
+    if rows and not kept:
         print()
         print("  Biggest disagreements:")
         ranked = [r for r in rows if r["_wikidata"] and r["_osm"]]
