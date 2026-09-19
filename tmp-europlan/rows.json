@@ -1,0 +1,738 @@
+[
+ {
+  "club": "1. FC Magdeburg 1965 II Avnet-Arena",
+  "ground": "Avnet-Arena",
+  "cap": "30.098",
+  "href": "mdcc-arena/stadion-965.html",
+  "stadionId": "965",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "FC Rot-Weiß Erfurt 1966 Steigerwaldstadion",
+  "ground": "Steigerwaldstadion",
+  "cap": "18.711",
+  "href": "steigerwaldstadion/stadion-459.html",
+  "stadionId": "459",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "FC Erzgebirge Aue 1992 eins Erzgebirgsstadion",
+  "ground": "eins Erzgebirgsstadion",
+  "cap": "15.500",
+  "href": "sparkassen-erzgebirgsstadion/stadion-144.html",
+  "stadionId": "144",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "Chemnitzer FC 1966 eins-Stadion – An der Gellertstraße",
+  "ground": "eins-Stadion – An der Gellertstraße",
+  "cap": "15.479",
+  "href": "stadion--an-der-gellertstrasse/stadion-17738.html",
+  "stadionId": "17738",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "Hallescher FC 1966 Leuna-Chemie-Stadion",
+  "ground": "Leuna-Chemie-Stadion",
+  "cap": "15.057",
+  "href": "leuna-chemie-stadion/stadion-6945.html",
+  "stadionId": "6945",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "FC Carl Zeiss Jena 1966 ad hoc Arena im Ernst-Abbe-Sportfeld",
+  "ground": "ad hoc Arena im Ernst-Abbe-Sportfeld",
+  "cap": "15.000",
+  "href": "ernst-abb%2525e9-sportfeld/stadion-795.html",
+  "stadionId": "795",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "Berliner FC Dynamo 1966 Sportforum Berlin",
+  "ground": "Sportforum Berlin",
+  "cap": "12.400",
+  "href": "sportforum-berlin/stadion-207.html",
+  "stadionId": "207",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "1. FC Lokomotive Leipzig - VfB 1893 Bruno-Plache-Stadion",
+  "ground": "Bruno-Plache-Stadion",
+  "cap": "12.321",
+  "href": "bruno-plache-stadion/stadion-871.html",
+  "stadionId": "871",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "SV Babelsberg 03 Karl-Liebknecht-Stadion",
+  "ground": "Karl-Liebknecht-Stadion",
+  "cap": "11.925",
+  "href": "karl-liebknecht-stadion/stadion-264.html",
+  "stadionId": "264",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "FSV Zwickau 1991 GGZ ARENA",
+  "ground": "GGZ ARENA",
+  "cap": "10.134",
+  "href": "ggz-arena/stadion-14895.html",
+  "stadionId": "14895",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "Berliner FC Preussen 1894 Preussenstadion Malteserstraße",
+  "ground": "Preussenstadion Malteserstraße",
+  "cap": "7.000",
+  "href": "preussenstadion-malteserstrasse/stadion-202.html",
+  "stadionId": "202",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "Regionaler SV Eintracht 1949 Teltow-Kleinmachnow-Stahnsdorf Preussenstadion Malteserstraße",
+  "ground": "Preussenstadion Malteserstraße",
+  "cap": "7.000",
+  "href": "preussenstadion-malteserstrasse/stadion-202.html",
+  "stadionId": "202",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "SV Tasmania 73 Berlin Werner-Seelenbinder-Sportpark",
+  "ground": "Werner-Seelenbinder-Sportpark",
+  "cap": "6.000",
+  "href": "werner-seelenbinder-sportpark/stadion-9123.html",
+  "stadionId": "9123",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "Hertha Berliner SC 1892 II Stadion auf dem Wurfplatz",
+  "ground": "Stadion auf dem Wurfplatz",
+  "cap": "5.400",
+  "href": "stadion-auf-dem-wurfplatz/stadion-195.html",
+  "stadionId": "195",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "VSG Altglienicke 1949 Spree-Arena",
+  "ground": "Spree-Arena",
+  "cap": "5.000",
+  "href": "spree-arena/stadion-1707.html",
+  "stadionId": "1707",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "BSG Chemie Leipzig 1997 Alfred-Kunze-Sportpark",
+  "ground": "Alfred-Kunze-Sportpark",
+  "cap": "4.999",
+  "href": "alfred-kunze-sportpark/stadion-873.html",
+  "stadionId": "873",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "Greifswalder FC 2004 Volksstadion",
+  "ground": "Volksstadion",
+  "cap": "4.990",
+  "href": "volksstadion/stadion-573.html",
+  "stadionId": "573",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "FSV 63 Luckenwalde Werner-Seelenbinder-Stadion",
+  "ground": "Werner-Seelenbinder-Stadion",
+  "cap": "3.000",
+  "href": "werner-seelenbinder-stadion/stadion-1692.html",
+  "stadionId": "1692",
+  "liga": "NOFV-Regionalliga Nordost"
+ },
+ {
+  "club": "FC Augsburg 1907 II Rosenaustadion",
+  "ground": "Rosenaustadion",
+  "cap": "26.443",
+  "href": "rosenaustadion/stadion-8300.html",
+  "stadionId": "8300",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "TSV 1847 Schwaben Augsburg Rosenaustadion",
+  "ground": "Rosenaustadion",
+  "cap": "26.443",
+  "href": "rosenaustadion/stadion-8300.html",
+  "stadionId": "8300",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "SpVgg. Oberfranken Bayreuth 1921 Hans-Walter-Wild-Stadion",
+  "ground": "Hans-Walter-Wild-Stadion",
+  "cap": "21.500",
+  "href": "hans-walter-wild-stadion/stadion-1700.html",
+  "stadionId": "1700",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "SpVgg. Unterhaching 1925 Stadion am Sportpark",
+  "ground": "Stadion am Sportpark",
+  "cap": "15.053",
+  "href": "stadion-im-sportpark/stadion-1680.html",
+  "stadionId": "1680",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "1. FC Schweinfurt 05 Riedel Bau Arena im Sachs-Stadion",
+  "ground": "Riedel Bau Arena im Sachs-Stadion",
+  "cap": "15.000",
+  "href": "sachs-stadion/stadion-1376.html",
+  "stadionId": "1376",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "FC Bayern München 1900 II Städtisches Stadion an der Grünwalder Straße",
+  "ground": "Städtisches Stadion an der Grünwalder Straße",
+  "cap": "15.000",
+  "href": "staedtisches-stadion-an-der-gruenwalder-strasse/stadion-943.html",
+  "stadionId": "943",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "TSV 1860 München Städtisches Stadion an der Grünwalder Straße",
+  "ground": "Städtisches Stadion an der Grünwalder Straße",
+  "cap": "15.000",
+  "href": "staedtisches-stadion-an-der-gruenwalder-strasse/stadion-943.html",
+  "stadionId": "943",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "SV Wacker Burghausen 1930 flatbuy-Stadion an der Liebigstraße",
+  "ground": "flatbuy-Stadion an der Liebigstraße",
+  "cap": "10.200",
+  "href": "flatbuy-stadion-an-der-liebigstrasse/stadion-285.html",
+  "stadionId": "285",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "SpVgg. Ansbach 09 Stadion im Xaver-Bertsch-Sportpark",
+  "ground": "Stadion im Xaver-Bertsch-Sportpark",
+  "cap": "5.000",
+  "href": "pigrol-sportpark/stadion-130.html",
+  "stadionId": "130",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "FC Memmingen 1907 e-con Arena Park im Memminger Stadion",
+  "ground": "e-con Arena Park im Memminger Stadion",
+  "cap": "5.000",
+  "href": "am-e-con-arena-park-im-memminger-stadion/stadion-1685.html",
+  "stadionId": "1685",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "TSV 1882 Landsberg Sportzentrum Landsberg",
+  "ground": "Sportzentrum Landsberg",
+  "cap": "4.000",
+  "href": "sportzentrum-landsberg/stadion-2664.html",
+  "stadionId": "2664",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "FV Illertissen 1921 Vöhlinstadion im Sportzentrum Nautilla",
+  "ground": "Vöhlinstadion im Sportzentrum Nautilla",
+  "cap": "4.000",
+  "href": "voehlinstadion-im-sportzentrum-nautilla/stadion-790.html",
+  "stadionId": "790",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "SpVgg. Greuther Fürth 1903 II &bull; Ground A Konrad-Ammon-Platz im Sportzentrum",
+  "ground": "Konrad-Ammon-Platz im Sportzentrum",
+  "cap": "3.000",
+  "href": "konrad-ammon-platz-im-sportzentrum/stadion-12438.html",
+  "stadionId": "12438",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "SpVgg. Greuther Fürth 1903 II &bull; Ground B Sportpark Ronhof | Thomas Sommer",
+  "ground": "Sportpark Ronhof | Thomas Sommer",
+  "cap": "16.626",
+  "href": "sportpark-ronhof-%257C-thomas-sommer/stadion-521.html",
+  "stadionId": "521",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "1. FC Nürnberg 1900 II Max-Morlock-Platz Valznerweiher",
+  "ground": "Max-Morlock-Platz Valznerweiher",
+  "cap": "3.000",
+  "href": "max-morlock-platz-valznerweiher/stadion-9726.html",
+  "stadionId": "9726",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "TSV Aubstadt 1921 NGN-Arena",
+  "ground": "NGN-Arena",
+  "cap": "3.000",
+  "href": "schulstadion/stadion-150.html",
+  "stadionId": "150",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "SC 1926 Eltersdorf ELSNER Sportpark Erlangen",
+  "ground": "ELSNER Sportpark Erlangen",
+  "cap": "2.500",
+  "href": "sportanlage-langenaustrasse/stadion-490.html",
+  "stadionId": "490",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "DJK Vilzing 1967 Manfred-Zollner-Stadion",
+  "ground": "Manfred-Zollner-Stadion",
+  "cap": "2.500",
+  "href": "manfred-zollner-stadion/stadion-1515.html",
+  "stadionId": "1515",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "TSV Buchbach 1913 SMR-Arena",
+  "ground": "SMR-Arena",
+  "cap": "2.500",
+  "href": "smr-arena/stadion-299.html",
+  "stadionId": "299",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "VfB Eichstätt 1920 HIRSCH Sportpark",
+  "ground": "HIRSCH Sportpark",
+  "cap": "2.100",
+  "href": "liqui-moly-stadion/stadion-491.html",
+  "stadionId": "491",
+  "liga": "Regionalliga Bayern"
+ },
+ {
+  "club": "VfB Lübeck 1919 Stadion an der Lohmühle",
+  "ground": "Stadion an der Lohmühle",
+  "cap": "15.292",
+  "href": "stadion-an-der-lohmuehle/stadion-894.html",
+  "stadionId": "894",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "VfB Oldenburg 1897 Marschwegstadion",
+  "ground": "Marschwegstadion",
+  "cap": "15.200",
+  "href": "marschwegstadion/stadion-1236.html",
+  "stadionId": "1236",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "1. FC Phönix 03 Lübeck Stadion Buniamshof",
+  "ground": "Stadion Buniamshof",
+  "cap": "12.000",
+  "href": "stadion-buniamshof/stadion-896.html",
+  "stadionId": "896",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "SV Atlas Delmenhorst 2012 Städtisches Stadion Düsternortstraße",
+  "ground": "Städtisches Stadion Düsternortstraße",
+  "cap": "12.000",
+  "href": "staedtisches-stadion-duesternortstrasse/stadion-8087.html",
+  "stadionId": "8087",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "Bremer SV 06 Stadion am Panzenberg",
+  "ground": "Stadion am Panzenberg",
+  "cap": "8.000",
+  "href": "stadion-am-panzenberg/stadion-248.html",
+  "stadionId": "248",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "BSV Kickers Emden 1946 Ostfriesland-Stadion",
+  "ground": "Ostfriesland-Stadion",
+  "cap": "7.200",
+  "href": "ostfriesland-stadion/stadion-461.html",
+  "stadionId": "461",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "SV Werder Bremen 1899 II Amateurstadion Platz 11",
+  "ground": "Amateurstadion Platz 11",
+  "cap": "5.500",
+  "href": "amateurstadion-platz-11/stadion-247.html",
+  "stadionId": "247",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "FC Eintracht Norderstedt 2003 Edmund-Plambeck-Stadion",
+  "ground": "Edmund-Plambeck-Stadion",
+  "cap": "5.068",
+  "href": "edmund-plambeck-stadion/stadion-1204.html",
+  "stadionId": "1204",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "FC St. Pauli 1910 II Edmund-Plambeck-Stadion",
+  "ground": "Edmund-Plambeck-Stadion",
+  "cap": "5.068",
+  "href": "edmund-plambeck-stadion/stadion-1204.html",
+  "stadionId": "1204",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "Hamburger SV 1887 II Stadion Hoheluft",
+  "ground": "Stadion Hoheluft",
+  "cap": "5.004",
+  "href": "stadion-hoheluft/stadion-625.html",
+  "stadionId": "625",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "Hannoverscher SV 96 II Eilenriedestadion",
+  "ground": "Eilenriedestadion",
+  "cap": "5.001",
+  "href": "96--das-stadion/stadion-18414.html",
+  "stadionId": "18414",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "Eimsbütteler TV 1889 Sportpark Hinschenfelde",
+  "ground": "Sportpark Hinschenfelde",
+  "cap": "4.500",
+  "href": "sportpark-hinschenfelde/stadion-1638.html",
+  "stadionId": "1638",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "SC Weiche Flensburg 08 Manfred-Werner-Stadion",
+  "ground": "Manfred-Werner-Stadion",
+  "cap": "4.000",
+  "href": "manfred-werner-stadion/stadion-675.html",
+  "stadionId": "675",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "FSV Schöningen 2011 Elm-Stadion",
+  "ground": "Elm-Stadion",
+  "cap": "3.500",
+  "href": "elm-stadion/stadion-11182.html",
+  "stadionId": "11182",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "Hannoverscher SC 1893 HSC-Stadion Constantinstraße",
+  "ground": "HSC-Stadion Constantinstraße",
+  "cap": "3.000",
+  "href": "hsc-stadion-constantinstrasse/stadion-9230.html",
+  "stadionId": "9230",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "SV Drochtersen/Assel 1977 Kehdinger Stadion",
+  "ground": "Kehdinger Stadion",
+  "cap": "3.000",
+  "href": "kehdinger-stadion/stadion-441.html",
+  "stadionId": "441",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "SSV Jeddeloh II 1951 HASKAMP-Arena",
+  "ground": "HASKAMP-Arena",
+  "cap": "2.500",
+  "href": "haskamp-arena/stadion-1691.html",
+  "stadionId": "1691",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "SV Todesfelde 1928 Joda Sportpark",
+  "ground": "Joda Sportpark",
+  "cap": "2.000",
+  "href": "joda-sportpark/stadion-1491.html",
+  "stadionId": "1491",
+  "liga": "Regionalliga Nord"
+ },
+ {
+  "club": "1. FC Kaiserslautern 1900 II Fritz-Walter-Stadion",
+  "ground": "Fritz-Walter-Stadion",
+  "cap": "49.327",
+  "href": "fritz-walter-stadion/stadion-103.html",
+  "stadionId": "103",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "SC Freiburg 1904 II Dreisamstadion",
+  "ground": "Dreisamstadion",
+  "cap": "24.000",
+  "href": "dreisamstadion/stadion-110.html",
+  "stadionId": "110",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "Offenbacher FC Kickers 1901 PLUTOS Stadion am Bieberer Berg",
+  "ground": "PLUTOS Stadion am Bieberer Berg",
+  "cap": "20.500",
+  "href": "stadion-am-bieberer-berg/stadion-1240.html",
+  "stadionId": "1240",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "KSV Hessen Kassel 1998 Auestadion",
+  "ground": "Auestadion",
+  "cap": "18.737",
+  "href": "auestadion/stadion-832.html",
+  "stadionId": "832",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "SG Barockstadt Fulda-Lehnerz 04-65 Stadion der Stadt Fulda im Sportpark Johannisau",
+  "ground": "Stadion der Stadt Fulda im Sportpark Johannisau",
+  "cap": "18.000",
+  "href": "stadion-der-stadt-fulda-im-sportpark-johannisau/stadion-9316.html",
+  "stadionId": "9316",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "SSV Ulm 1846 Fußball Donaustadion",
+  "ground": "Donaustadion",
+  "cap": "17.400",
+  "href": "donaustadion/stadion-1477.html",
+  "stadionId": "1477",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "SGV Freiberg-Heilbronn 1973 Frankenstadion",
+  "ground": "Frankenstadion",
+  "cap": "17.284",
+  "href": "frankenstadion/stadion-710.html",
+  "stadionId": "710",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "FC 08 Homburg Waldstadion",
+  "ground": "Waldstadion",
+  "cap": "16.488",
+  "href": "waldstadion-homburg/stadion-1683.html",
+  "stadionId": "1683",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "SV Sandhausen 1916 Stadion am Hardtwald",
+  "ground": "Stadion am Hardtwald",
+  "cap": "15.414",
+  "href": "stadion-am-hardtwald/stadion-1393.html",
+  "stadionId": "1393",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "FSV Frankfurt 1899 PSD Bank Arena",
+  "ground": "PSD Bank Arena",
+  "cap": "12.542",
+  "href": "psd-bank-arena/stadion-516.html",
+  "stadionId": "516",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "SV Stuttgarter Kickers 1899 GAZ&#304;-Stadion auf der Waldau",
+  "ground": "GAZ&#304;-Stadion auf der Waldau",
+  "cap": "11.468",
+  "href": "gaz%252526%252523304%25253b-stadion-auf-der-waldau/stadion-1364.html",
+  "stadionId": "1364",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "VfR Aalen 1921 Bediani-Arena",
+  "ground": "Bediani-Arena",
+  "cap": "11.088",
+  "href": "waldstadion-aalen/stadion-147.html",
+  "stadionId": "147",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "SV Eintracht Trier 05 Moselstadion",
+  "ground": "Moselstadion",
+  "cap": "10.494",
+  "href": "moselstadion/stadion-1476.html",
+  "stadionId": "1476",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "VfR Mannheim 1896 Rhein-Neckar-Stadion",
+  "ground": "Rhein-Neckar-Stadion",
+  "cap": "8.000",
+  "href": "rhein-neckar-stadion/stadion-954.html",
+  "stadionId": "954",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "1. FSV Mainz 05 II Bruchwegstadion auf dem WOLFGANG FRANK CAMPUS",
+  "ground": "Bruchwegstadion auf dem WOLFGANG FRANK CAMPUS",
+  "cap": "7.134",
+  "href": "bruchwegstadion-auf-dem-wolfgang-frank-campus/stadion-111.html",
+  "stadionId": "111",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "FC Astoria Walldorf 1908 Stadion im Dietmar-Hopp-Sportpark",
+  "ground": "Stadion im Dietmar-Hopp-Sportpark",
+  "cap": "5.000",
+  "href": "stadion-im-dietmar-hopp-sportpark/stadion-1698.html",
+  "stadionId": "1698",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "TSV Steinbach 1921 SIBRE-Sportzentrum Haarwasen",
+  "ground": "SIBRE-Sportzentrum Haarwasen",
+  "cap": "4.999",
+  "href": "sibre-sportzentrum-haarwasen/stadion-11684.html",
+  "stadionId": "11684",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "Eintracht Frankfurt 1899 II Maxworx Sportpark",
+  "ground": "Maxworx Sportpark",
+  "cap": "2.513",
+  "href": "sportpark-dreieich/stadion-11722.html",
+  "stadionId": "11722",
+  "liga": "Regionalliga Südwest"
+ },
+ {
+  "club": "SF Siegen 1899 Leimbachstadion",
+  "ground": "Leimbachstadion",
+  "cap": "18.716",
+  "href": "leimbachstadion/stadion-1378.html",
+  "stadionId": "1378",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "SC Rot-Weiß Oberhausen-Rheinland 1904 Stadion Niederrhein",
+  "ground": "Stadion Niederrhein",
+  "cap": "17.165",
+  "href": "stadion-niederrhein/stadion-1238.html",
+  "stadionId": "1238",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "SG Wattenscheid 09 Lohrheidestadion powered by ImmoTec",
+  "ground": "Lohrheidestadion powered by ImmoTec",
+  "cap": "16.387",
+  "href": "lohrheidestadion/stadion-1539.html",
+  "stadionId": "1539",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "SC Paderborn 07 II Home-Deluxe-Arena",
+  "ground": "Home-Deluxe-Arena",
+  "cap": "15.306",
+  "href": "benteler-arena/stadion-1277.html",
+  "stadionId": "1277",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "VfL Bochum 1848 II Mondpalast Arena",
+  "ground": "Mondpalast Arena",
+  "cap": "13.500",
+  "href": "mondpalast-arena/stadion-1569.html",
+  "stadionId": "1569",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "FC Gütersloh 2000 NRG24 Stadion im Heidewald",
+  "ground": "NRG24 Stadion im Heidewald",
+  "cap": "12.500",
+  "href": "heidewaldstadion/stadion-575.html",
+  "stadionId": "575",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "Bonner SC 01/04 Stadion Bonn im Sportpark Nord",
+  "ground": "Stadion Bonn im Sportpark Nord",
+  "cap": "10.164",
+  "href": "sportpark-nord/stadion-265.html",
+  "stadionId": "265",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "VfL SF Lotte 1929 Stadion am Lotter Kreuz",
+  "ground": "Stadion am Lotter Kreuz",
+  "cap": "10.059",
+  "href": "connectm-arena/stadion-909.html",
+  "stadionId": "909",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "SV 09 Bergisch Gladbach BELKAW-Arena",
+  "ground": "BELKAW-Arena",
+  "cap": "10.000",
+  "href": "belkaw-arena/stadion-312.html",
+  "stadionId": "312",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "Borussia VfL Mönchengladbach 1900 II Grenzlandstadion",
+  "ground": "Grenzlandstadion",
+  "cap": "10.000",
+  "href": "grenzlandstadion/stadion-939.html",
+  "stadionId": "939",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "BV Borussia 09 Dortmund II Stadion Rote Erde",
+  "ground": "Stadion Rote Erde",
+  "cap": "9.500",
+  "href": "stadion-rote-erde/stadion-395.html",
+  "stadionId": "395",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "1. FC Köln 01/07 II Franz-Kremer-Stadion",
+  "ground": "Franz-Kremer-Stadion",
+  "cap": "5.457",
+  "href": "franz-kremer-stadion/stadion-809.html",
+  "stadionId": "809",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "VfB 03 Hilden Städtisches Stadion der Bezirkssportanlage Am Bandsbusch",
+  "ground": "Städtisches Stadion der Bezirkssportanlage Am Bandsbusch",
+  "cap": "4.500",
+  "href": "staedtisches-stadion-der-bza-am-bandsbusch/stadion-8361.html",
+  "stadionId": "8361",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "SV Westfalia Rhynern 1935 Kümpel+Hellmeister-Arena",
+  "ground": "Kümpel+Hellmeister-Arena",
+  "cap": "3.500",
+  "href": "kuempel%252Bhellmeister-arena/stadion-50262.html",
+  "stadionId": "50262",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "1. FC Bocholt 1900 praemium Park am Hünting",
+  "ground": "praemium Park am Hünting",
+  "cap": "3.276",
+  "href": "stadion-am-huenting/stadion-280.html",
+  "stadionId": "280",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "FC Schalke 04 II Parkstadion",
+  "ground": "Parkstadion",
+  "cap": "2.999",
+  "href": "parkstadion/stadion-29511.html",
+  "stadionId": "29511",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "SV Rödinghausen 1970 Häcker Wiehenstadion",
+  "ground": "Häcker Wiehenstadion",
+  "cap": "2.550",
+  "href": "haecker-wiehenstadion/stadion-6113.html",
+  "stadionId": "6113",
+  "liga": "Regionalliga West"
+ },
+ {
+  "club": "SC Wiedenbrück 2000 Jahnstadion",
+  "ground": "Jahnstadion",
+  "cap": "2.550",
+  "href": "jahnstadion/stadion-1568.html",
+  "stadionId": "1568",
+  "liga": "Regionalliga West"
+ }
+]
