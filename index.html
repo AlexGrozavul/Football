@@ -336,9 +336,9 @@ async function initMap(){
          .setView([48.80, 9.02], 8);
   L.control.zoom({position:'bottomright'}).addTo(MAP);
 
-   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
+   L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=ec818681-51dd-4ceb-89c0-6f1124dbc053', {
+    maxZoom: 20,
+    attribution: '&copy; <a href="https://stadiamaps.com/attribution/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
   }).addTo(MAP);
 
   /* Canvas rendering: DOM markers start to stutter on a phone at a
