@@ -329,11 +329,22 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   `skip` row in `clubs-manual.csv`. Nothing detects this automatically,
   so the next one will again show up as two pins on one ground.
 - The cross-check has now been run for real. Of 185 clubs it compared,
-  20 agree and 7 disagree; the rest could not be compared because only
+  20 agreed and 7 disagreed; the rest could not be compared because only
   one source has a figure. Fortuna Düsseldorf (Wikidata 9,917 against
   OpenStreetMap 54,600) and 1. FC Saarbrücken (35,303 against 16,003)
   are the two worst. Preußen Münster was not among them — OpenStreetMap
   has no capacity for its ground, so nothing could be checked.
+  **That 7 was 6 clubs, not 7.** Checked on 2026-09-19 against the run
+  that produced it: the 2026-09-16 file carried 1. FC Lokomotive Leipzig
+  twice, once as `Q162317` and once as `Q28936927`, the duplicate item —
+  same club, same two figures, counted twice. Since the `skip` row for
+  `Q28936927` the file has held **6** disagreements, and that is the
+  real number. Nobody has recounted the 20 agreements or the 185
+  comparisons the same way, so treat those two as upper bounds until a
+  run after the duplicate removals is counted. The lesson is worth more
+  than the arithmetic: a duplicate Wikidata item does not only put two
+  pins on one ground, it quietly inflates every count taken downstream
+  of the club layer.
 - Romanian capacities cannot be corroborated. OpenStreetMap has a usable
   capacity for exactly one Romanian ground out of the 404 it knows about,
   so the cross-check confirmed nothing there: 0 agreements, 0
