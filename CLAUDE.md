@@ -414,17 +414,26 @@ a page anyone can already view in their browser's network tab.
   cleared; it is two now, and the third was never really there, only
   copied from the senior club.
 
-- **The Franz-Kremer-Stadion is not in the data at all**, so it was not
-  one of the grounds this fixed. The bug report that prompted the change
-  named 1. FC Köln II, the women's team and the U19s as three clubs
-  sharing it; none of the three is in `data/clubs/DE.json`. Only three
+- **The Franz-Kremer-Stadion is in the data now.** It was not, when
+  this entry was written, and the rest of the entry explains why the
+  bug report that named it was not a marker problem. 1. FC Köln II now
+  has the ground by hand in `clubs-manual.csv`, from europlan-online —
+  see the entry on the 22 coordinate rows below. The women's team and
+  the U19s named in that bug report are still not in the data, and the
+  ground still carries exactly one club, so there is still nothing here
+  for the shared-marker feature to show.
+  What the original entry said, and it still holds as the reasoning:
+  the bug report that prompted the change named 1. FC Köln II, the
+  women's team and the U19s as three clubs sharing it, and at the time
+  none of the three was in `data/clubs/DE.json`. Only three
   clubs in the German file have "Köln" in the name — 1. FC Köln at the
   RheinEnergieStadion, SC Fortuna Köln at the Südstadion and FC Viktoria
   Köln at the Sportpark Höhenberg — and no club anywhere in either file
-  has a Franz-Kremer venue. 1. FC Köln II is one of the 31 Regionalliga
-  clubs listed below that Wikidata cannot place, so it never reaches the
-  map to collide with anything. It is a candidate for `clubs-manual.csv`
-  by way of `coordinate-review.csv`, not a marker problem.
+  had a Franz-Kremer venue. 1. FC Köln II was one of the 31
+  Regionalliga clubs listed below that Wikidata cannot place, so it
+  never reached the map to collide with anything. It was a candidate
+  for `clubs-manual.csv` by way of `coordinate-review.csv`, not a
+  marker problem — and that is exactly the route it took.
 
 - **The Actions-dispatch route to Wikidata still works, and it is the
   only route this sandbox has.** Checked first thing on 2026-09-19. The
@@ -706,17 +715,105 @@ a page anyone can already view in their browser's network tab.
     in a foreign league would no longer put that league in the seed
     list. That was a measurement when it was written; it is now the
     behaviour, and what it actually cost is listed above.
+- **Twenty of the 22 unresolved German coordinate rows are settled,
+  from europlan-online.** Done on 2026-09-19 through the
+  Actions-dispatch route, because the sandbox still answers 403 to
+  CONNECT for europlan-online.de. The 22 were the 19 `ambiguous` rows
+  and the 3 `no match` rows of `coordinate-review.csv`, once the five
+  Wikidata squad lists and SC Veltheim are set aside. Scale: 13 league
+  pages, 7 searches and 38 ground pages, which is the "few dozen pages"
+  end of the question left open above, not a country's worth.
+  **What settled them is the site's own club-to-ground link**, not a
+  ground name. A league page's table row pairs a club with its ground,
+  and the ground page's "Vereine, die in diesem Stadion spielen" says
+  the same thing from the other side, with the club's current league
+  and level. Both were required to agree before a row was written, and
+  the ground's own town was checked against the town Wikidata gives the
+  club. That last check earned its place immediately: **Eutin 08 scored
+  0.5 against FC 08 Homburg** on the shared "08" alone, and only the
+  town told them apart.
+  **The 14 found on league pages**: 1. FC Köln II (Franz-Kremer-
+  Stadion), 1. FC Nürnberg II (Max-Morlock-Platz), Borussia
+  Mönchengladbach II (Grenzlandstadion), FC Augsburg II
+  (Rosenaustadion), FC Erzgebirge Aue (eins Erzgebirgsstadion),
+  FC Ismaning (Prof. Erich Greipl Stadion), FC Schalke 04 II
+  (Parkstadion), FSV Optik Rathenow (Stadion Vogelgesang), Germania
+  Egestorf (Stadion An der Ammerke), SG Barockstadt Fulda-Lehnerz
+  (Stadion der Stadt Fulda), SpVgg Greuther Fürth II (Konrad-Ammon-
+  Platz), VfB Eichstätt (HIRSCH Sportpark), Hertha BSC II (Stadion auf
+  dem Wurfplatz) and TSV Steinbach Haiger (SIBRE-Sportzentrum
+  Haarwasen).
+  **The 6 found through the site's search**: Eutin 08 (Thies Hahn
+  Arena), FC Kray (KrayArena), Lupo Martini Wolfsburg (Lupo Stadio),
+  VfB Hüls (EVONIK Sportpark), VfR Garching (Sportplatz Schleißheimer
+  Straße) and FC Viktoria 1889 Berlin (Stadion Lichterfelde).
+  **Two of the three clubs OpenStreetMap could not place at all are
+  now placed**: Hertha BSC II and TSV Steinbach Haiger.
+
+- **A club can be unplaceable because it no longer exists, and nothing
+  here was looking for that.** The two of the 22 that did not resolve
+  are not missing data. Both clubs were merged out of existence, and
+  europlan says so on the ground page itself:
+  - **Torgelower FC Greif** (`Q566179`). The Gießerei-Arena in Torgelow
+    lists **SpVgg. Torgelow-Ueckermünde 22**, "Fusion 2022 aus
+    Torgelower FC Greif 1919 und FC Einheit Ueckermünde 1949", and
+    names Torgelower FC Greif 1919 under *former* clubs.
+  - **Teutonia Watzenborn-Steinberg** (`Q21175456`). The Waldstadion in
+    Gießen lists **FC Gießen 1927 Teutonia/1900 VfB**, "Fusion 2018 aus
+    VfB 1900 Gießen / SC-Teutonia Watzenborn-Steinberg". The club's old
+    ground, the Sportplatz an der Neumühle in
+    Pohlheim-Watzenborn-Steinberg, is still there and is now a side
+    pitch of the merged club.
+  **Neither was given coordinates, on purpose.** A ground is known for
+  both, and writing it would put a club that has not existed since 2018
+  or 2022 onto the map, at the Regionalliga tier Wikidata still tags it
+  with. That is a `skip` decision or a rename, and it is Alexandru's,
+  not something to settle by filling in a coordinate. Note that this is
+  a *fourth* shape to add to the three duplicate shapes above, and it
+  is the only one that a shared-ground marker can never reveal, because
+  the club never reaches the map at all.
+
+- **Six of the 20 are nowhere near the tier Wikidata gives them, and
+  the tier was deliberately not corrected.** europlan names each club's
+  current league and level on the ground page, and for these six it is
+  far below the Regionalliga tag that brought them into
+  `coordinate-review.csv` in the first place: FC Kray and Lupo Martini
+  Wolfsburg at level 6, Eutin 08 at level 6, VfR Garching at level 7,
+  VfB Hüls at level 8, and FC Viktoria 1889 Berlin's men's team not
+  found in any league page read. Each row says so in its note.
+  **Why nothing was changed.** `TIER_FROM_ZOOM` in `index.html` is
+  `{1:0, 2:7, 3:9, 4:11, 5:12}`, and `drawClubs()` skips a club whose
+  tier is not a key in it. So writing tier 6, 7 or 8 does not move a
+  club down the map, it **removes the club from the map entirely**, the
+  same way TSV 1860 München II left it. Leaving the tier blank instead
+  leaves Wikidata's stale tier 4, so these six will now appear at z11
+  among the Regionalliga clubs. Both are wrong in different directions
+  and the choice is a real one, so it is being put to Alexandru rather
+  than taken here.
+
 - **OpenStreetMap has now been asked where the unplaced clubs are**, by
   `propose_coordinates.py`, first real run 2026-09-16. Of the 31
   Regionalliga clubs with no coordinates: 9 got a confident proposal,
-  19 are ambiguous, 3 got nothing. Five of the nine are certain enough
+  19 are ambiguous, 3 got nothing. **All 22 of the ambiguous and the
+  unplaceable have since been taken to europlan-online and 20 of them
+  settled** — see the entry above. What is left in this file for
+  Germany is therefore evidence that has been acted on, not evidence
+  waiting to be judged, and `propose_coordinates.py` will offer every
+  one of those rows again next month, because nothing in it remembers
+  that a row was resolved elsewhere. Same standing trap as the two
+  rejected rows below: the manual rows win, so the map is safe, and the
+  risk is only that the review file goes on reading "ambiguous" for
+  rows that are not. Five of the nine are certain enough
   to be worth reading first — the OpenStreetMap ground names the club in
   its `operator` tag (DJK Vilzing, SSV Jeddeloh, SV Rödinghausen,
   TSV 1896 Rain, VfB Auerbach). The other four rest on a town match and
   deserve a harder look. Six of the seven reserve teams are ambiguous on
   purpose: their town is the first team's town and says nothing about
-  which of the club's grounds they play on. Nothing has been applied to
-  any club file — `data/clubs/coordinate-review.csv` is a list to judge.
+  which of the club's grounds they play on — which is the question
+  europlan's club rows turned out to answer directly. Nothing had been
+  applied to any club file when this was written;
+  `data/clubs/coordinate-review.csv` is a list to judge, and its German
+  half has now been judged.
 - Romania turns out to be the bigger hole, and it was never written
   down: 107 Romanian clubs have a tier and no coordinates, against 64 on
   the map. 31 confident, 32 ambiguous, 44 nothing. Most of the 44 are
@@ -875,7 +972,10 @@ a page anyone can already view in their browser's network tab.
   Berlin, SV Heimstetten and FC Erzgebirge Aue. The gap is missing data
   in Wikidata, not a filter, so no change to the query will close it.
   What can close it is a second source, which is what
-  `coordinate-review.csv` above now offers for 28 of the 31.
+  `coordinate-review.csv` above offered for 28 of the 31 — and what
+  europlan-online has now actually closed for 20 of them, two of which
+  the review file could not place at all. Two more turned out to be
+  clubs that no longer exist. See the entries above.
 - **europlan-online as a second stadium source: the site has been read
   at last, and what it says about automated access is nothing.** Two of
   the three go/no-go questions are answered as of 2026-09-19, from the
@@ -963,11 +1063,21 @@ a page anyone can already view in their browser's network tab.
   four named people, and a short mail describing exactly what is wanted
   would replace all of this reasoning with an answer.
 
-  **The third go/no-go criterion was not checked and is still open**:
-  whether the coordinates and capacities on a ground page are as
-  precise and as consistently laid out as the two hand-checked pages
-  suggested. That needs the ground pages parsed, which is the build
-  that has deliberately not been started.
+  **The third go/no-go criterion is answered, and the answer is yes.**
+  Checked on 2026-09-19 across 38 ground pages read while settling the
+  22 clubs below. Every ground page carries its position in the same
+  place and the same shape — a Google Maps link,
+  `maps.google.de/maps?q=(<lat>, <lon>)` — and a second, rounded copy
+  in an `index.php?s=umkreis&lat=…&lon=…` link beside it. Precision is
+  not the problem: most are 14–15 decimal places, which is a click on a
+  map rather than a survey, and the four or five that matter are all
+  there. Capacity is `Kapazität: 12.345` in the Stadiondaten block,
+  German thousands separators, and the address sits above it under
+  Anschrift with a postcode and town. Layout did not vary once across
+  the 38.
+  **What the pages do NOT carry is a coordinate for the club** — only
+  for the ground. That is the right way round for this project, but it
+  means the club-to-ground link is what everything rests on.
 
   **Notes for whoever does build the fetcher**, all measured on
   2026-09-19:
@@ -985,26 +1095,54 @@ a page anyone can already view in their browser's network tab.
     `/stadion-gladbeck-vestische-kampfbahn/stadion-5093.html`.
 
   What was established earlier from a search engine's index of the
-  site's own pages rather than from the pages — still unverified
-  against the site, so still worth a second look rather than a
-  decision:
-  - There is a systematic way round it. A ground is
-    `/<name>/stadion-<id>.html`, a league is `index.php?s=liga&id=<n>`
-    and lists that league's grounds and clubs, a country is
+  site's own pages rather than from the pages has now been checked
+  against the pages, and it was half right:
+  - The URL shapes are real. A ground is `/<name>/stadion-<id>.html`,
+    a league is `index.php?s=liga&id=<n>`, a country is
     `index.php?s=land&id=1`, and leagues go down to Kreisliga level.
-  - The thing OpenStreetMap cannot do, this site appears to do: a club
-    is a page *under a ground* — `/<ground>/verein/<clubId>` — so the
-    club-to-ground link is the site's own structure rather than
-    something to infer from a name.
-  - Eight of ten ambiguous clubs came back with a named ground:
-    1. FC Köln II at the Franz-Kremer-Stadion, Borussia Mönchengladbach
-    II at the Grenzlandstadion in Rheydt, FC Augsburg II at the
-    Rosenaustadion, FC Ismaning at the Prof.-Erich-Greipl-Stadion,
-    FC Kray at the KrayArena, FC Viktoria 1889 Berlin at Stadion
-    Lichterfelde, FC Erzgebirge Aue at the Erzgebirgsstadion, Eutin 08
-    at the Eutina-Platz. Two did not: FC Schalke 04 II, and
-    1. FC Nürnberg II, where the Sportpark Valznerweiher is four
-    separate pitches on the site and nothing said which one.
+    Germany's country page lists **2,382** league links, each labelled
+    with its level in brackets — `NOFV-Regionalliga Nordost (4)` — so
+    the level comes from the site rather than from reading a name.
+  - **`/<ground>/verein/<clubId>` does not exist.** It was the one
+    thing this entry was most confident about and it is wrong. Counted
+    on 2026-09-19: **zero** links of that shape on the homepage, on the
+    country page, on a league page or on a ground page. It was an
+    artefact of a search engine's index, which is exactly why this
+    entry said it was unverified — and the lesson is that an index can
+    show you a URL the site does not itself link, or does not serve at
+    all.
+  - **The real club-to-ground link is better, not worse.** A league
+    page is a table and every row pairs a club with the ground it plays
+    at. In the row: the club is a `<span translate="no">`, the ground
+    is a `<td class="liste_stadt">` link, the capacity is a
+    `<td class="kapazitaet">`, and the row's own map-zoom control
+    carries the position as `ol.proj.fromLonLat([lon, lat])`. So one
+    league page gives club, ground, capacity and coordinates for every
+    club in that division at once. A ground page then closes the loop
+    from the other side: **"Vereine, die in diesem Stadion spielen"**
+    names the clubs based there, with each one's current league and
+    level. Both are the site's own assertion, not a name match.
+  - **There is a search, and the form field is called `search`.**
+    `index.php?s=search&search=<term>` — a plain GET, placeholder
+    "Stadion / Verein suchen". It searches grounds, not clubs, so it
+    answers "which grounds are in this town" and the ground page's
+    club list is what picks between them. Five other parameter names
+    were guessed first and every one of them returned the search page
+    with no results rather than an error, which is the same trap as the
+    `?s=` fallback: **this site answers a wrong question with a page,
+    not with a 404.** Use a control term whose answer you already know.
+  - The eight clubs the index had named were all confirmed against the
+    site, and **the two it could not name are now named too**.
+    FC Schalke 04 II is at the **Parkstadion** in Gelsenkirchen-Buer —
+    the small current one, not the demolished 70,000 ground of the same
+    name. 1. FC Nürnberg II is at the **Max-Morlock-Platz**, which is
+    the one of the four Valznerweiher pitches that the club row points
+    at. The index could not choose between the four; the club row does
+    not have to, because the site itself made the link.
+    Two of the eight also needed correcting in passing: Eutin 08's
+    ground is the **Thies Hahn Arena**, which is the Eutina-Platz
+    renamed and still at that URL, and Aue's is the **eins
+    Erzgebirgsstadion**, whose URL still says `sparkassen-`.
   - Two of those eight are grounds OpenStreetMap never offered at all.
     The Gladbach II row proposed Borussia-Park and SparkassenPark, not
     the Grenzlandstadion; the Viktoria Berlin row offered ten Berlin

@@ -34,10 +34,6 @@ concurrency:
 
 jobs:
   clubs:
-    # TEMPORARY: held off while the europlan probe below runs, so that
-    # dispatching this workflow to ask a question does not also rebuild
-    # and commit the club layer as a side effect. Remove with the probe.
-    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -103,40 +99,4 @@ jobs:
             echo "Push rejected, rebasing onto origin and retrying."
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
-          }
-
-  # ----------------------------------------------------------------------
-  # TEMPORARY. Reads a handful of europlan-online.de pages to settle the
-  # 19 ambiguous and 3 unplaceable coordinate rows. Delete this job and
-  # tools/tmp/ once the answers are in clubs-manual.csv.
-  # ----------------------------------------------------------------------
-  europlan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Probe europlan-online.de
-        timeout-minutes: 12
-        run: |
-          set -o pipefail
-          # No pipe to tail: it buffers, and the first attempt at this
-          # hung with nothing readable in the log. The script keeps its
-          # own output small and writes detail to tmp-europlan/.
-          timeout 600 python3 -u tools/tmp/europlan_probe.py
-
-      - name: Commit the probe output back to this branch
-        if: always()
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A tmp-europlan/ || true
-          if git diff --cached --quiet; then
-            echo "probe produced nothing"
-            exit 0
-          fi
-          git commit -m "temp: europlan probe output ($(date -u +%H:%M:%SZ))"
-          git push origin "HEAD:${GITHUB_REF_NAME}" || {
-            git pull --rebase origin "${GITHUB_REF_NAME}"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
           }
