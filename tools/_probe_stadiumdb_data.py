@@ -1,22 +1,18 @@
-"""THROWAWAY PROBE 3 - discover structure first, assume nothing.
+"""THROWAWAY PROBE 4 - coverage and page format, with the real URL shape.
 
-Probe 2 assumed /stadiums/<iso3> and found nothing. This one reads what
-the site actually links and prints the raw evidence.
+The site links countries as ABSOLUTE urls: https://stadiumdb.com/stadiums/fra
 """
-import re, time, urllib.request, urllib.error
+import re, time, urllib.request, urllib.error, random
 from collections import Counter
 
 UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 LAST = [0.0]
-
 def get(url, timeout=45):
     gap = time.time() - LAST[0]
-    if gap < 0.7:
-        time.sleep(0.7 - gap)
+    if gap < 0.6: time.sleep(0.6 - gap)
     LAST[0] = time.time()
-    req = urllib.request.Request(url, headers={"User-Agent": UA,
-                                               "Accept-Language": "en,pl;q=0.8"})
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return r.status, r.read()
@@ -28,65 +24,98 @@ def get(url, timeout=45):
 def text_of(html):
     s = re.sub(rb"(?is)<(script|style)[^>]*>.*?</\1>", b" ", html)
     s = re.sub(rb"(?s)<[^>]+>", b" ", s)
-    s = s.decode("utf-8", "replace").replace("-->", " ")
-    return re.sub(r"\s+", " ", s).strip()
+    return re.sub(r"\s+", " ", s.decode("utf-8", "replace")).strip()
 
-# ============================================ PART 1: legal pages, FULL text
-print("#" * 70)
-print("PART 1  legal pages - full text this time, not the footer")
-print("#" * 70)
-for url in ("https://stadiumdb.com/copyrights",
-            "https://stadiumdb.com/contact_us",
-            "https://stadiumdb.com/faq",
-            "https://stadiony.net/prawa_autorskie",
-            "https://stadiony.net/o_serwisie"):
-    st, body = get(url)
-    txt = text_of(body)
-    print("\n=== %s  HTTP %s  %d chars" % (url, st, len(txt)))
-    print("    FULL: %s" % txt[:2600])
-
-# ============================================ PART 2: real URL structure
-print("\n" + "#" * 70)
-print("PART 2  what /stadiums actually links to")
-print("#" * 70)
+print("#"*70); print("PART A  the full country index"); print("#"*70)
 st, body = get("https://stadiumdb.com/stadiums")
-print("/stadiums HTTP %s  %d bytes" % (st, len(body)))
-hrefs = [h.decode("utf-8", "replace")
-         for h in re.findall(rb'href="([^"]+)"', body)]
-print("total hrefs: %d" % len(hrefs))
-pat = Counter()
-for h in hrefs:
-    parts = [p for p in h.split("?")[0].split("/") if p]
-    shape = "/".join(("<%d>" % len(p)) if i and not p.isalpha() else p
-                     for i, p in enumerate(parts[:3]))
-    pat[shape] += 1
-print("\ncommonest path shapes:")
-for s, n in pat.most_common(18):
-    print("   %-52s %d" % (s, n))
-print("\nfirst 30 hrefs verbatim:")
-for h in hrefs[:30]:
-    print("   %s" % h)
-print("\nany href containing 'fra' or 'ita' or 'france' or 'italy':")
-for h in hrefs:
-    if re.search(r"(fra|ita|france|italy|serbia|greece|austria|switz)", h, re.I):
-        print("   %s" % h)
+codes = sorted(set(m.decode() for m in
+                   re.findall(rb'href="https://stadiumdb\.com/stadiums/([a-z]{2,3})"', body)))
+print("country codes: %d" % len(codes))
+print("  " + " ".join(codes))
 
-# ============================================ PART 3: the stadium page shape
-print("\n" + "#" * 70)
-print("PART 3  a real stadium page, to learn the field markup")
-print("#" * 70)
-cand = [h for h in hrefs if re.match(r"^(https://stadiumdb\.com)?/[a-z]{3}/", h)]
-print("hrefs that look like /<iso3>/<slug>: %d, e.g. %s" % (len(cand), cand[:5]))
-target = cand[0] if cand else None
-if target:
-    u = target if target.startswith("http") else "https://stadiumdb.com" + target
-    st, body = get(u)
-    print("\n%s HTTP %s %d bytes" % (u, st, len(body)))
+TARGET = ["fra","ita","sui","aut","srb","gre","ger","rou","pol"]
+present = [c for c in TARGET if c in codes]
+missing = [c for c in TARGET if c not in codes]
+print("\ntargets present: %s" % present)
+print("targets NOT in index: %s" % missing)
+
+print("\n"+"#"*70); print("PART B  how many stadiums per country, and how small do they get")
+print("#"*70)
+harvest = {}
+for c in present:
+    st, body = get("https://stadiumdb.com/stadiums/%s" % c)
+    urls = sorted(set(m.decode() for m in re.findall(
+        (r'href="https://stadiumdb\.com/%s/([a-z0-9_\-]+)"' % c).encode(), body)))
+    harvest[c] = urls
     txt = text_of(body)
-    i = txt.lower().find("capacity")
-    print("text around 'capacity': ...%s..." % txt[max(0, i-300):i+300])
-    # show the raw markup around capacity so a parser can be written
-    m = re.search(rb"(?is).{400}Capacity.{600}", body)
-    if m:
-        print("\nRAW MARKUP around Capacity:")
-        print(m.group(0).decode("utf-8", "replace"))
+    caps = sorted(int(x.replace(" ","").replace(",","")) for x in
+                  re.findall(r"\b(\d{1,3}(?:[ ,]\d{3})+|\d{3,6})\b", txt)
+                  if 300 <= int(x.replace(" ","").replace(",","")) <= 130000)
+    n = len(caps)
+    print("%s  HTTP %s  stadium links=%-5d  numbers on page n=%-4d min=%-6s p25=%-6s med=%-6s"
+          % (c, st, len(urls), n,
+             caps[0] if n else "-", caps[n//4] if n else "-", caps[n//2] if n else "-"))
+
+print("\n"+"#"*70); print("PART C  are second-tier grounds present?"); print("#"*70)
+print("The needles below are the PROBE AUTHOR'S OWN recollection of")
+print("second-tier clubs, not read from any source. Treat as a smoke test.")
+PROBE = {
+ "fra": ["amiens","guingamp","laval","rodez","pau","annecy","bastia","dunkerque",
+         "clermont","troyes","grenoble","caen"],
+ "ita": ["cesena","catanzaro","carrarese","sudtirol","sud_tirol","modena","cittadella",
+         "reggiana","bari","spezia","frosinone","palermo"],
+ "sui": ["aarau","wil","schaffhausen","nyon","bellinzona","vaduz","stade_lausanne",
+         "thun","sion"],
+ "aut": ["amstetten","kapfenberg","liefering","st_polten","admira","ried","rheindorf",
+         "vorwarts_steyr","sturm"],
+ "srb": ["kolubara","radnicki","jedinstvo","loznica","javor","backa","mladost"],
+ "gre": ["kalamata","chania","niki","makedonikos","ilioupoli","kavala","levadiakos"],
+}
+for c, needles in PROBE.items():
+    if c not in harvest:
+        print("%s -- not in index" % c); continue
+    blob = " ".join(harvest[c])
+    hit = [n for n in needles if n in blob]
+    print("%s  %2d/%2d needles found among %3d stadiums | found: %s"
+          % (c, len(hit), len(needles), len(harvest[c]), ",".join(hit) or "NONE"))
+
+print("\n"+"#"*70); print("PART D  per-stadium page format"); print("#"*70)
+FIELDS = {
+ "Capacity":  rb"(?i)>\s*Capacity\s*<",
+ "Country":   rb"(?i)>\s*Country\s*<",
+ "City":      rb"(?i)>\s*City\s*<",
+ "Clubs":     rb"(?i)>\s*Clubs?\s*<",
+ "Inaugurat": rb"(?i)>\s*Inauguration\s*<",
+ "Address":   rb"(?i)>\s*Address\s*<",
+ "coords":    rb"(?i)(maps\.google|google\.[a-z.]+/maps|\bdata-lat|latitude|openstreetmap)",
+}
+random.seed(11)
+sample = []
+for c in present:
+    for slug in random.sample(harvest[c], min(3, len(harvest[c]))):
+        sample.append((c, slug))
+print("sampling %d pages\n" % len(sample))
+hdr = "%-34s %s" % ("page", " ".join("%-9s" % f[:9] for f in FIELDS))
+print(hdr)
+tally = Counter(); caps = []
+for c, slug in sample:
+    st, body = get("https://stadiumdb.com/%s/%s" % (c, slug))
+    row = []
+    for f, pat in FIELDS.items():
+        ok = bool(re.search(pat, body))
+        row.append("%-9s" % ("yes" if ok else "NO"))
+        if ok: tally[f] += 1
+    m = re.search(rb"(?is)>\s*Capacity\s*<.{0,300}?([0-9][0-9 ,\xc2\xa0]{2,9})", body)
+    v = m.group(1).decode("utf-8","replace").strip() if m else None
+    caps.append(v)
+    print("%-34s %s cap=%s" % (("%s/%s" % (c, slug))[:34], " ".join(row), v))
+print("\nfield present in N of %d:" % len(sample))
+for f in FIELDS: print("   %-10s %d" % (f, tally[f]))
+print("capacity value parsed: %d/%d" % (sum(1 for x in caps if x), len(caps)))
+
+print("\n"+"#"*70); print("HEADLINE REPEAT"); print("#"*70)
+print("country codes in index: %d" % len(codes))
+for c in present: print("  %s stadiums: %d" % (c, len(harvest.get(c,[]))))
+print("targets NOT in index: %s" % missing)
+print("Capacity field: %d/%d   coords: %d/%d" % (tally["Capacity"], len(sample),
+                                                 tally["coords"], len(sample)))
