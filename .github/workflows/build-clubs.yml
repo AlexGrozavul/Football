@@ -33,29 +33,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TEMPORARY probe job - remove with tools/_probe_tickets.py.
-  probe:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Probe ticket sources
-        run: |
-          set -o pipefail
-          python3 tools/_probe_tickets.py 2>&1 | tee /tmp/probe.log
-      - name: Summary
-        if: always()
-        run: |
-          {
-            echo '## Probe'
-            echo '```'
-            tail -c 60000 /tmp/probe.log
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-
   clubs:
-    # TEMPORARY: disabled while the probe runs, so asking a question does
-    # not also rebuild and commit the club layer.
-    if: false
     runs-on: ubuntu-latest
 
     steps:
