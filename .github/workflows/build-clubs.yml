@@ -34,9 +34,6 @@ concurrency:
 
 jobs:
   clubs:
-    # TEMPORARY: disabled while the fcbayern probe runs, so that asking a
-    # question does not also rebuild and commit the club layer.
-    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -103,50 +100,3 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
-
-  # TEMPORARY PROBE - remove together with tools/_probe_fcbayern.py.
-  # The sandbox answers 403 to CONNECT for fcbayern.com; a runner does not.
-  fcbayern-probe:
-    runs-on: ubuntu-latest
-    timeout-minutes: 12
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Diagnose what fcbayern.com does to a runner
-        timeout-minutes: 6
-        run: |
-          set -o pipefail
-          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
-          for u in \
-            https://www.bundesliga.com/de/bundesliga \
-            https://fcbayern.com/robots.txt \
-            https://fcbayern.com/de/tickets/info/preise-und-ermaessigungen \
-            https://tickets.fcbayern.com/documents/de/preisliste.pdf ; do
-            echo "=================================================================="
-            echo "## $u"
-            echo "--- plain curl, browser UA, 25s ---"
-            curl -sS -o /tmp/body.bin -D /tmp/hdr.txt --max-time 25 \
-                 -A "$UA" \
-                 -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
-                 -H 'Accept-Language: de-DE,de;q=0.9,en;q=0.8' \
-                 -w 'exit_ok http=%{http_code} dns=%{time_namelookup}s connect=%{time_connect}s tls=%{time_appconnect}s firstbyte=%{time_starttransfer}s total=%{time_total}s size=%{size_download}\n' \
-                 "$u" || echo "curl exit=$?"
-            echo "--- response headers ---"
-            head -c 1200 /tmp/hdr.txt 2>/dev/null || echo "(none)"
-            echo "--- first 600 bytes of body ---"
-            head -c 600 /tmp/body.bin 2>/dev/null | tr -d '\000' || echo "(none)"
-            echo
-          done
-        continue-on-error: true
-
-      - name: Write the probe to the run summary
-        if: always()
-        run: |
-          {
-            echo '## FC Bayern ticket pages (temporary probe)'
-            echo
-            echo '```'
-            echo 'see the step log'
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"

@@ -536,6 +536,43 @@ a page anyone can already view in their browser's network tab.
   180.8s across retries on the first run of the day (one 502, one
   timeout) and 2 minutes total on the second.
 
+- **The Actions-dispatch route does not reach fcbayern.com, and that was
+  measured rather than assumed.** Established 2026-09-19 while writing
+  the first row of `club-tickets.csv`. The club's site sits behind
+  Akamai and refuses this infrastructure outright:
+  `fcbayern.com/robots.txt`, `fcbayern.com/de/tickets/info/preise-und-ermaessigungen`
+  and `tickets.fcbayern.com/documents/de/preisliste.pdf` all answer
+  **HTTP 403 with `server: AkamaiGHost`** and a 3,823-byte "FC Bayern
+  München - Support" page carrying `<meta name="robots"
+  content="noindex,nofollow">`.
+  **The control is what makes this conclusive.** From the same runner,
+  in the same step, `www.bundesliga.com` answered **HTTP 200 in 0.13s**
+  with 1.1 MB of HTML. So it is not the runner's network, not its
+  region (Azure westus), and not a transient failure. It is that site
+  refusing that traffic.
+  **Two shapes of the same refusal, and the first one wastes eight
+  minutes if you do not know about it.** With a scripted `User-Agent`,
+  Python's `urlopen` does not get a 403 at all - the TCP connection
+  opens and then no bytes ever arrive, so every request dies on the
+  read timeout. It was only switching to `curl` with an ordinary
+  browser `User-Agent` that turned the silence into a legible 403. If
+  a fetch against this site hangs rather than failing, that is the
+  block, not a slow page.
+  **`robots.txt` is itself a 403**, so unlike europlan-online - where
+  the missing file meant there were no path rules to obey - there is no
+  readable crawl policy here at all. What there is instead is an
+  explicit refusal, and it was not worked around. Rotating user agents,
+  residential proxies or TLS fingerprint spoofing would be evading an
+  access control the site operator deliberately put up, which is a
+  different thing from reading a page that is simply slow.
+  **What this costs, practically:** the ticket facts in
+  `club-tickets.csv`, `club-ticket-windows.csv` and
+  `club-ticket-prices.csv` for Bayern are hand-written by Alexandru and
+  corroborated only by search-engine results that quote the club's
+  pages, never by the pages themselves. Every row says so in its note.
+  The URLs in the `source` columns are real and open normally in an
+  ordinary browser - which is the route to confirming any of it.
+
 - **TSV 1860 München II is off the map until somebody finds its real
   ground, and that is the right place for it.** `Q7671747` is corrected
   to **tier 5, Bayernliga Süd**, in `clubs-manual.csv` — Wikidata still
@@ -1238,10 +1275,25 @@ a page anyone can already view in their browser's network tab.
 
 ## Planned, not built
 
-1. A ticket-info file: official ticket page, whether a club sells to
-   non-members, typical price range with the season noted, how demand
-   behaves, whether matches sell out. **Stable facts only — sale dates
-   and deadlines stay hand-written by Alexandru.**
+1. ~~A ticket-info file~~ **— the files exist now.** `club-tickets.csv`,
+   `club-ticket-windows.csv` and `club-ticket-prices.csv` are described
+   under Files and Conventions above, and FC Bayern's men's team is the
+   first and so far only entry. **Stable facts only — a specific
+   match's sale date or deadline still stays hand-written by Alexandru,
+   and none of the three files has a column that could hold one.** The
+   one date-shaped thing they do carry is a *pattern* estimate of when a
+   recurring window tends to open, which is a different claim from a
+   deadline and carries its own `dateSource` and `basis` saying how much
+   to trust it.
+   **What is still not built is any code that reads them.** Nothing in
+   `tools/` parses these files, nothing validates the controlled
+   vocabularies, and `index.html` does not show them. So the read-back
+   convention — print back what was parsed, with line numbers for
+   rejected rows — is not honoured for them yet, and a typo in a
+   vocabulary column currently goes unnoticed. That reader is the
+   obvious next step, and it should reject a row whose `dateSource` or
+   `basis` is not one of the listed values rather than quietly accepting
+   it.
 2. Club detail sheet: a pull-up panel replacing the map popup, showing
    name, ground, capacity, competition name with tier in brackets,
    distance, fixtures and ticket info, each saying "unavailable" rather
