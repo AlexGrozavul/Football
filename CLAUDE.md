@@ -275,6 +275,23 @@ something to discover.
 client code, in `data/`, or anywhere under `calendars/`. No other key is
 needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 
+**The Stadia Maps key in `index.html` is a deliberate, documented
+exception to "no keys in client code."** The map tiles moved off
+`tile.openstreetmap.org` on 2026-09-19 — OpenStreetMap's own tile policy
+says that server may be blocked without notice and carries no SLA, which
+is not something to build an ongoing-use app on. Stadia Maps requires
+either an API key or domain-based authentication for anything other than
+`localhost`/`127.0.0.1`, and this project has no server to keep a key
+behind: it is a static site with no build step, so the key has to sit in
+the page that requests the tiles or the map does not load at all.
+Domain-based auth (binding the key to `alexgrozavul.github.io` in the
+Stadia dashboard instead of writing the key into the page) was the other
+option and was not taken here — if the domain ever needs to change, or
+the key needs rotating, that is a plain edit to the `L.tileLayer` URL in
+`index.html`. This key only unlocks map tiles; it is not the kind of
+secret `FOOTBALL_DATA_TOKEN` is, and it is fine for it to be visible in
+a page anyone can already view in their browser's network tab.
+
 ---
 
 ## Known open problems
