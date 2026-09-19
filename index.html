@@ -10,7 +10,8 @@
   :root{
     --bg:#0d1117; --panel:#161b22; --line:#26303b; --ink:#e6edf3;
     --dim:#8b949e; --faint:#6b7681; --accent:#d9483b;
-    --t1:#e8543f; --t2:#e8a33f; --t3:#3fa0e8; --t4:#7d8894; --t5:#56606b;
+    --t1:#e8543f; --t2:#e8a33f; --t3:#3fa0e8; --t4:#2aab8e; --t5:#4caf50;
+    --t6:#9b6bd6; --t7:#e8629f; --t8:#825e35;
     --ok:#3fb950; --warn:#d29922; --bad:#f85149;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -123,12 +124,31 @@
    shown as "not recorded" rather than filled in with a guess.
 ------------------------------------------------------------------- */
 
-const TIER_COLOUR = {1:'#e8543f',2:'#e8a33f',3:'#3fa0e8',4:'#7d8894',5:'#56606b'};
-const TIER_NAME   = {1:'Tier 1',2:'Tier 2',3:'Tier 3',4:'Tier 4',5:'Tier 5'};
+const TIER_COLOUR = {
+  1:'#e8543f', 2:'#e8a33f', 3:'#3fa0e8', 4:'#2aab8e', 5:'#4caf50',
+  6:'#9b6bd6', 7:'#e8629f', 8:'#825e35'
+};
+const TIER_NAME = {
+  1:'Tier 1', 2:'Tier 2', 3:'Tier 3', 4:'Tier 4', 5:'Tier 5',
+  6:'Tier 6', 7:'Tier 7', 8:'Tier 8'
+};
 
-/* Zoom at which each tier switches on. Lower tiers appear as you zoom
-   in, so the country view stays readable. */
-const TIER_FROM_ZOOM = {1:0, 2:7, 3:9, 4:11, 5:12};
+/* Zoom at which each tier switches on. Tiers 1-3 each keep their own
+   threshold, so the country view stays readable as you zoom in. Tier 4
+   and every tier deeper than it share one threshold, DEEP_TIER_ZOOM -
+   the zoom tier 4 used on its own before this merge. A separate
+   threshold per tier tops out somewhere, and clubs have now turned up
+   as deep as tier 8 (from europlan-online's league pages, which go well
+   below the Regionalliga Wikidata tags them with); topping out either
+   drops a deep club off the map or shows it at a false shallow tier.
+   One shared band for "tier 4 or deeper" means a newly discovered
+   tier 6, 7 or 8 club falls into the right band with no further code
+   change here. */
+const TIER_FROM_ZOOM = {1:0, 2:7, 3:9};
+const DEEP_TIER_ZOOM = 11;
+function zoomForTier(tier){
+  return TIER_FROM_ZOOM[tier] ?? (tier >= 4 ? DEEP_TIER_ZOOM : undefined);
+}
 
 const COUNTRY_FILES = ['data/clubs/DE.json','data/clubs/RO.json'];
 
@@ -189,7 +209,7 @@ function buildLegend(){
 }
 
 function radiusFor(tier, zoom){
-  const base = {1:7,2:6,3:5,4:4,5:3.5}[tier] || 4;
+  const base = {1:7,2:6,3:5,4:4,5:3.5,6:3,7:3,8:3}[tier] || 3;
   return zoom >= 10 ? base + 1.5 : base;
 }
 
@@ -300,7 +320,7 @@ function drawClubs(){
 
   const points = new Map();
   for(const club of CLUBS){
-    const from = TIER_FROM_ZOOM[club.tier];
+    const from = zoomForTier(club.tier);
     if(from === undefined || zoom < from) continue;
     const key = club.lat + ',' + club.lon;
     if(!points.has(key)) points.set(key, []);
@@ -326,7 +346,7 @@ function drawClubs(){
 
   document.querySelectorAll('#legend div[data-tier]').forEach(el => {
     const t = Number(el.dataset.tier);
-    el.classList.toggle('off', zoom < TIER_FROM_ZOOM[t]);
+    el.classList.toggle('off', zoom < zoomForTier(t));
   });
   document.querySelector('#legend .shared')?.classList.toggle('off', !shared);
 }

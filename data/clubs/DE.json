@@ -141,10 +141,10 @@
     "Q82595"
    ],
    "tier": 1,
-   "venue": "Dreisamstadion",
-   "capacity": 24000,
-   "lat": 47.988889,
-   "lon": 7.893056,
+   "venue": "Europa-Park-Stadion",
+   "capacity": 34700,
+   "lat": 48.021536,
+   "lon": 7.830006,
    "city": null,
    "competition": "Bundesliga"
   },
@@ -182,16 +182,16 @@
    "leagues": [
     "Q340179"
    ],
-   "tier": 4,
+   "tier": 7,
    "venue": "Sportplatz Schleißheimer Straße",
    "capacity": 1700,
    "lat": 48.251703,
    "lon": 11.642393,
    "city": null,
    "source": "https://www.europlan-online.de/sportplatz-schleissheimer-strasse/stadion-13010.html",
-   "note": "Sportplatz Schleißheimer Straße, Schleißheimer Straße 40, 85748 Garching bei München. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfR Garching 1921. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN BEZIRKSLIGA OBERBAYERN NORD, LEVEL 7, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely. europlan also lists side pitches for this club at the GARMIN Stadion am See; the first team's own club row points here.",
+   "note": "Sportplatz Schleißheimer Straße, Schleißheimer Straße 40, 85748 Garching bei München. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfR Garching 1921. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN BEZIRKSLIGA OBERBAYERN NORD, LEVEL 7, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 7 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map. europlan also lists side pitches for this club at the GARMIN Stadion am See; the first team's own club row points here.",
    "manual": true,
-   "competition": "Regionalliga Bayern"
+   "competition": null
   },
   {
    "id": "Q131603",
@@ -275,16 +275,16 @@
    "leagues": [
     "Q539678"
    ],
-   "tier": 4,
+   "tier": 6,
    "venue": "Thies Hahn Arena",
    "capacity": 2000,
    "lat": 54.147329,
    "lon": 10.627917,
    "city": null,
    "source": "https://www.europlan-online.de/eutina-platz/stadion-11632.html",
-   "note": "Thies Hahn Arena, Steinredder, 23701 Eutin-Fissau. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names Eutiner SV 08. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA HOLSTEIN, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely. The ground's URL still carries the name eutina-platz, which is what an earlier pass had for this club - same ground, since renamed.",
+   "note": "Thies Hahn Arena, Steinredder, 23701 Eutin-Fissau. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names Eutiner SV 08. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA HOLSTEIN, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 6 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map. The ground's URL still carries the name eutina-platz, which is what an earlier pass had for this club - same ground, since renamed.",
    "manual": true,
-   "competition": "Regionalliga Nord"
+   "competition": null
   },
   {
    "id": "Q1387417",
@@ -1383,16 +1383,16 @@
    "leagues": [
     "Q555836"
    ],
-   "tier": 4,
+   "tier": 8,
    "venue": "EVONIK Sportpark",
    "capacity": 6000,
    "lat": 51.67652,
    "lon": 7.099067,
    "city": null,
    "source": "https://www.europlan-online.de/evonik-sportpark-stadion-am-badeweiher/stadion-689.html",
-   "note": "EVONIK Sportpark, Paul-Baumann-Straße, 45772 Marl. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfB 48/64 Hüls. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN BEZIRKSLIGA WESTFALEN 11, LEVEL 8, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely. europlan has three pitches on this address; this is the main one, which its club row gives the first team.",
+   "note": "EVONIK Sportpark, Paul-Baumann-Straße, 45772 Marl. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfB 48/64 Hüls. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN BEZIRKSLIGA WESTFALEN 11, LEVEL 8, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 8 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map. europlan has three pitches on this address; this is the main one, which its club row gives the first team.",
    "manual": true,
-   "competition": "Regionalliga West"
+   "competition": null
   },
   {
    "id": "Q479321",
@@ -1512,7 +1512,7 @@
    ],
    "tier": 3,
    "venue": "Flyeralarm Arena",
-   "capacity": 10504,
+   "capacity": 14500,
    "lat": 49.767194,
    "lon": 9.932944,
    "city": null,
@@ -1925,16 +1925,16 @@
    "leagues": [
     "Q555836"
    ],
-   "tier": 4,
+   "tier": 6,
    "venue": "KrayArena",
    "capacity": 2000,
    "lat": 51.462594,
    "lon": 7.074942,
    "city": null,
    "source": "https://www.europlan-online.de/krayarena-kr/stadion-6747.html",
-   "note": "KrayArena - powered by Stölting Service Group, Buderusstraße 20a, 45307 Essen/Ruhr-Kray. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Kray 09/31. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA NIEDERRHEIN 2, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely. europlan has three grounds on this address; this is the one its club row gives the first team, the other two being the reserve sides' pitch and a former ground.",
+   "note": "KrayArena - powered by Stölting Service Group, Buderusstraße 20a, 45307 Essen/Ruhr-Kray. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Kray 09/31. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA NIEDERRHEIN 2, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 6 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map. europlan has three grounds on this address; this is the one its club row gives the first team, the other two being the reserve sides' pitch and a former ground.",
    "manual": true,
-   "competition": "Regionalliga West"
+   "competition": null
   },
   {
    "id": "Q7572134",
@@ -2049,16 +2049,16 @@
    "leagues": [
     "Q539678"
    ],
-   "tier": 4,
+   "tier": 6,
    "venue": "Lupo Stadio",
    "capacity": 2000,
    "lat": 52.451539,
    "lon": 10.793827,
    "city": null,
    "source": "https://www.europlan-online.de/lupo-stadio/stadion-1532.html",
-   "note": "Lupo Stadio, Hubertusstraße 10, 38448 Wolfsburg-Kreuzheide. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names USI Lupo Martini Wolfsburg 62/81/70. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA BRAUNSCHWEIG, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely.",
+   "note": "Lupo Stadio, Hubertusstraße 10, 38448 Wolfsburg-Kreuzheide. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names USI Lupo Martini Wolfsburg 62/81/70. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA BRAUNSCHWEIG, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 6 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map.",
    "manual": true,
-   "competition": "Regionalliga Nord"
+   "competition": null
   },
   {
    "id": "Q8466",
