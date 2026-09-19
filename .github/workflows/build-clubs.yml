@@ -117,9 +117,13 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Probe europlan-online.de
+        timeout-minutes: 12
         run: |
           set -o pipefail
-          python3 tools/tmp/europlan_probe.py 2>&1 | tail -n 60
+          # No pipe to tail: it buffers, and the first attempt at this
+          # hung with nothing readable in the log. The script keeps its
+          # own output small and writes detail to tmp-europlan/.
+          timeout 600 python3 -u tools/tmp/europlan_probe.py
 
       - name: Commit the probe output back to this branch
         if: always()
