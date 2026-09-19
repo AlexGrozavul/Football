@@ -164,6 +164,46 @@ No routing API. It is a road-distance estimate and is deliberately not
 converted into a travel time, because that would need an invented average
 speed.
 
+**Clubs on the same coordinate share one marker.** `drawClubs()` used to
+make one circle per club with no idea that another club was already
+standing on that pixel, and the circle drawn second covered the first
+completely: the club underneath was in the data, on the map, and had no
+marker anyone could see or click. It was silent — nothing counted it,
+nothing reported it, and the club count in the corner said it was there.
+Measured on 2026-09-19 across both country files: **10 grounds carry more
+than one club, 21 clubs sit on them, and 11 of those 21 had no reachable
+marker.** That is one club in eighteen on the map.
+
+Clubs are now grouped by coordinate *before* anything is drawn. A
+coordinate with one club is the same circle it always was. A coordinate
+with more than one gets a single marker carrying the number of clubs on
+it: tapping it lists them, and tapping a name opens that club's own
+popup, with a way back to the list. Nothing is merged — the list is a way
+in to each club, not a club made out of several. The marker takes the
+colour and size of the most senior club on it, and the pale ring round it
+is what tells it apart from an ordinary one-club circle.
+
+The grouping is on the **exact** coordinate, and it must stay that way.
+Two clubs a few metres apart stay two markers. This is not clustering and
+must not be allowed to grow into it: clustering is a different problem
+with its own zoom trade-offs, and this only rescues clubs that would
+otherwise be invisible. The data says the distinction costs nothing
+today — no two distinct grounds in either country file are within 150m of
+each other, so exact matching and matching rounded to four decimal places
+pick out the same 10 grounds.
+
+**The tier/zoom filter runs first and the grouping second, never the
+other way round.** The zoom rule therefore keeps meaning exactly what it
+always meant: a club is drawn once its tier's zoom is reached and never
+before. A shared marker lists exactly the clubs visible at the current
+zoom, and its number is how many those are — it never drags a club onto
+the map early because a more senior club happens to share its ground, and
+it never hides one that the zoom has switched on. The Fritz-Walter-Stadion
+is a plain 1. FC Kaiserslautern circle from z7 and turns into a "2" at
+z11, when 1. FC Kaiserslautern II's tier switches on. The corner chip says
+how many shared grounds are on screen, so the count is visible rather than
+something to discover.
+
 ---
 
 ## Secrets
@@ -175,6 +215,48 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 ---
 
 ## Known open problems
+
+- **Two more duplicate Wikidata items, found by grouping clubs on their
+  coordinates.** Of the 10 shared grounds, two are one club entered
+  twice rather than two clubs at one ground. Neither is fixed here,
+  because which of the two items to keep is a judgement, not a rule:
+  - **SSV Ulm 1846** is both `Q14551982` and `Q701290` — same name,
+    ground, capacity, coordinates and tier, differing only in the league
+    tag (`Q154069` 3. Liga against `Q322128` Regionalliga Südwest).
+    `Q14551982` is the one already hand-corrected in `clubs-manual.csv`
+    for the 2026 relegation; `Q701290` carries the Regionalliga tag on
+    its own without help. One of them needs a `skip` row and the choice
+    is Alexandru's.
+  - **Dinamo București** is `Q113577526` at tier 2 and `Q204237` at
+    tier 1 — same name, ground, capacity and coordinates, one tagged
+    SuperLiga and one Liga a II-a. Whether that is a duplicate item or a
+    reserve side carrying the first team's name was not established
+    here, and guessing it would put a real club in the bin or leave a
+    phantom on the map.
+
+  The other eight are real. FCU Craiova and Universitatea Craiova
+  genuinely share the Stadionul Ion Oblemenco, and the Waldau-Stadion
+  really is Stuttgarter Kickers and VfB Stuttgart II. The remaining six
+  are a first team with its own reserve side, the Grünwalder being three
+  at once: TSV 1860 München, TSV 1860 München II and FC Bayern München II.
+
+  This is the third and fourth case of the duplicate-item problem
+  already recorded above for Hamburger SV and Lok Leipzig, and the first
+  two were found by eye. Until now a duplicate of this kind was
+  *invisible* — the second pin sat exactly under the first. A "2" over
+  two identical club names is how the next one gets spotted.
+
+- **The Franz-Kremer-Stadion is not in the data at all**, so it was not
+  one of the grounds this fixed. The bug report that prompted the change
+  named 1. FC Köln II, the women's team and the U19s as three clubs
+  sharing it; none of the three is in `data/clubs/DE.json`. Only three
+  clubs in the German file have "Köln" in the name — 1. FC Köln at the
+  RheinEnergieStadion, SC Fortuna Köln at the Südstadion and FC Viktoria
+  Köln at the Sportpark Höhenberg — and no club anywhere in either file
+  has a Franz-Kremer venue. 1. FC Köln II is one of the 31 Regionalliga
+  clubs listed below that Wikidata cannot place, so it never reaches the
+  map to collide with anything. It is a candidate for `clubs-manual.csv`
+  by way of `coordinate-review.csv`, not a marker problem.
 
 - **The city field is always null.** `CLUB_QUERY` in `tools/fetch_clubs.py`
   selects `?cityLabel` but never binds a `?city` variable anywhere in its
