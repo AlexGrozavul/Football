@@ -337,9 +337,12 @@ def read_file(path, today):
             # ---- per-file checks
             problem, notice = check_row(path, line, row, today)
             problems.extend(problem)
-            notices.extend(notice)
+            # A rejected row's softer remarks are not worth printing -
+            # they are about a row nobody is keeping, and they bury the
+            # complaint that actually rejected it.
             if problem:
                 continue
+            notices.extend(notice)
 
             # ---- duplicate key
             key = tuple(row.get(k, "") for k in schema["key"])
