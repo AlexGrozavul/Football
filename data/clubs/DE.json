@@ -177,6 +177,23 @@
    "competition": "2. Bundesliga"
   },
   {
+   "id": "Q127275134",
+   "name": "VfR Garching",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Sportplatz Schleißheimer Straße",
+   "capacity": 1700,
+   "lat": 48.251703,
+   "lon": 11.642393,
+   "city": null,
+   "source": "https://www.europlan-online.de/sportplatz-schleissheimer-strasse/stadion-13010.html",
+   "note": "Sportplatz Schleißheimer Straße, Schleißheimer Straße 40, 85748 Garching bei München. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfR Garching 1921. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN BEZIRKSLIGA OBERBAYERN NORD, LEVEL 7, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely. europlan also lists side pitches for this club at the GARMIN Stadion am See; the first team's own club row points here.",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
    "id": "Q131603",
    "name": "TSV 1860 München",
    "leagues": [
@@ -189,6 +206,40 @@
    "lon": 11.574444,
    "city": null,
    "competition": "Regionalliga Bayern"
+  },
+  {
+   "id": "Q13397712",
+   "name": "Borussia Mönchengladbach II",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Grenzlandstadion",
+   "capacity": 10000,
+   "lat": 51.176437,
+   "lon": 6.44906,
+   "city": null,
+   "source": "https://www.europlan-online.de/grenzlandstadion/stadion-939.html",
+   "note": "Grenzlandstadion, Seminarstraße 20, 41236 Mönchengladbach-Rheydt. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga West page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names Borussia VfL Mönchengladbach 1900 II. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. OpenStreetMap had proposed Borussia-Park and SparkassenPark, neither of which is this ground.",
+   "manual": true,
+   "competition": "Regionalliga West"
+  },
+  {
+   "id": "Q13426883",
+   "name": "FC Viktoria 1889 Berlin",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Stadion Lichterfelde",
+   "capacity": 4300,
+   "lat": 52.439306,
+   "lon": 13.323972,
+   "city": null,
+   "source": "https://www.europlan-online.de/stadion-lichterfelde/stadion-234.html",
+   "note": "Stadion Lichterfelde, Ostpreußendamm 3-17, 12207 Berlin-Lichterfelde. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Viktoria 1889 Berlin Lichterfelde-Tempelhof. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. WORTH A SECOND LOOK: this ground page names the club's WOMEN'S team (2. Bundesliga) and its Nebenplatz names the third team, but the men's first team is not listed on any of the three Lichterfelde pages read. The club is unambiguously based here - same postcode, and the club is named for the district - but the men's team's own row was not seen. OpenStreetMap had offered ten Berlin stadiums for this club, none of them this one.",
+   "manual": true,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q136089",
@@ -217,6 +268,23 @@
    "lon": 7.355,
    "city": null,
    "competition": "Regionalliga Suedwest"
+  },
+  {
+   "id": "Q1378922",
+   "name": "Eutin 08",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Thies Hahn Arena",
+   "capacity": 2000,
+   "lat": 54.147329,
+   "lon": 10.627917,
+   "city": null,
+   "source": "https://www.europlan-online.de/eutina-platz/stadion-11632.html",
+   "note": "Thies Hahn Arena, Steinredder, 23701 Eutin-Fissau. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names Eutiner SV 08. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA HOLSTEIN, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely. The ground's URL still carries the name eutina-platz, which is what an earlier pass had for this club - same ground, since renamed.",
+   "manual": true,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q1387417",
@@ -290,6 +358,23 @@
    "note": "Relegated from 3. Liga to Regionalliga in summer 2026. This is the item that survives the duplicate check: read on 2026-09-19 it has 21 Wikipedia sitelinks against Q701290's 14, so Q701290 gets the skip row. Its own P118 is still 2. Bundesliga and 3. Liga, which is why the tier 4 correction has to stay.",
    "manual": true,
    "competition": "Regionalliga Suedwest"
+  },
+  {
+   "id": "Q1514109",
+   "name": "Germania Egestorf",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Stadion An der Ammerke",
+   "capacity": 3000,
+   "lat": 52.285947,
+   "lon": 9.512819,
+   "city": null,
+   "source": "https://www.europlan-online.de/sportanlage-egestorf/stadion-1868.html",
+   "note": "Stadion An der Ammerke, An der Ammerke 3, 30890 Barsinghausen-Egestorf. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Oberliga Niedersachsen page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names 1. FC Germania Egestorf/Langreder 2001. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. Wikidata's town for this club is Barsinghausen and the ground is in Barsinghausen-Egestorf, so town and club name agree.",
+   "manual": true,
+   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q151747",
@@ -554,6 +639,40 @@
    "competition": "Regionalliga West"
   },
   {
+   "id": "Q15849956",
+   "name": "SG Barockstadt Fulda-Lehnerz",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "Stadion der Stadt Fulda im Sportpark Johannisau",
+   "capacity": 18000,
+   "lat": 50.540078,
+   "lon": 9.665356,
+   "city": null,
+   "source": "https://www.europlan-online.de/stadion-der-stadt-fulda-im-sportpark-johannisau/stadion-9316.html",
+   "note": "Stadion der Stadt Fulda im Sportpark Johannisau, Johannistraße, 36041 Fulda. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga Südwest page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names SG Barockstadt Fulda-Lehnerz 04-65. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
+   "manual": true,
+   "competition": "Regionalliga Suedwest"
+  },
+  {
+   "id": "Q15972883",
+   "name": "1. FC Köln II",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Franz-Kremer-Stadion",
+   "capacity": 5457,
+   "lat": 50.908299,
+   "lon": 6.905668,
+   "city": null,
+   "source": "https://www.europlan-online.de/franz-kremer-stadion/stadion-809.html",
+   "note": "Franz-Kremer-Stadion, Franz-Kremer-Allee 1-3, 50937 Köln-Sülz. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga West page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names 1. FC Köln 01/07 II. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
+   "manual": true,
+   "competition": "Regionalliga West"
+  },
+  {
    "id": "Q159930",
    "name": "BFC Dynamo",
    "leagues": [
@@ -767,6 +886,23 @@
    "competition": "Regionalliga Nord"
   },
   {
+   "id": "Q16743331",
+   "name": "TSV Steinbach Haiger",
+   "leagues": [
+    "Q322128"
+   ],
+   "tier": 4,
+   "venue": "SIBRE-Sportzentrum Haarwasen",
+   "capacity": 4999,
+   "lat": 50.741194,
+   "lon": 8.190319,
+   "city": null,
+   "source": "https://www.europlan-online.de/sibre-sportzentrum-haarwasen/stadion-11684.html",
+   "note": "SIBRE-Sportzentrum Haarwasen, Sportplatzstraße 120, 35708 Haiger. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga Südwest page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names TSV Steinbach 1921. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. One of the three OpenStreetMap could not place: every candidate it found was more than 30 km from Haiger. Steinbach is a district of Haiger and the ground is in Haiger.",
+   "manual": true,
+   "competition": "Regionalliga Suedwest"
+  },
+  {
    "id": "Q170105",
    "name": "Stuttgarter Kickers",
    "leagues": [
@@ -975,6 +1111,23 @@
    "competition": "Bundesliga"
   },
   {
+   "id": "Q2521441",
+   "name": "VfB Eichstätt",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "HIRSCH Sportpark",
+   "capacity": 2100,
+   "lat": 48.887767,
+   "lon": 11.192279,
+   "city": null,
+   "source": "https://www.europlan-online.de/liqui-moly-stadion/stadion-491.html",
+   "note": "HIRSCH Sportpark, Am Sportplatz 8, 85072 Eichstätt. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga Bayern page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfB Eichstätt 1920. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. The ground's URL still carries its old liqui-moly- name; europlan's current name for it is the one used here.",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
    "id": "Q265570",
    "name": "SSV Jahn Regensburg",
    "leagues": [
@@ -1121,6 +1274,23 @@
    "competition": "2. Bundesliga"
   },
   {
+   "id": "Q3736767",
+   "name": "FC Schalke 04 II",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "Parkstadion",
+   "capacity": 2999,
+   "lat": 51.55922,
+   "lon": 7.067567,
+   "city": null,
+   "source": "https://www.europlan-online.de/parkstadion/stadion-29511.html",
+   "note": "Parkstadion, Parkallee, 45891 Gelsenkirchen-Buer. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga West page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Schalke 04 II. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. This is the small current Parkstadion in Buer, not the 70000-capacity one that was demolished. Schalke's first team is at the Veltins-Arena, so the two do not share a pin.",
+   "manual": true,
+   "competition": "Regionalliga West"
+  },
+  {
    "id": "Q38245",
    "name": "Eintracht Frankfurt",
    "leagues": [
@@ -1177,6 +1347,23 @@
    "competition": "Bundesliga"
   },
   {
+   "id": "Q4545849",
+   "name": "1. FC Nürnberg II",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Max-Morlock-Platz Valznerweiher",
+   "capacity": 3000,
+   "lat": 49.435887,
+   "lon": 11.131017,
+   "city": null,
+   "source": "https://www.europlan-online.de/max-morlock-platz-valznerweiher/stadion-9726.html",
+   "note": "Max-Morlock-Platz Valznerweiher, Valznerweiherstraße 200, 90480 Nürnberg-Zerzabelshof. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga Bayern page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names 1. FC Nürnberg 1900 II. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. Settles which Valznerweiher pitch: europlan lists four there and this is the one its club row names.",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
    "id": "Q479269",
    "name": "SC Wiedenbrück",
    "leagues": [
@@ -1188,6 +1375,23 @@
    "lat": 51.8336,
    "lon": 8.32201,
    "city": null,
+   "competition": "Regionalliga West"
+  },
+  {
+   "id": "Q479306",
+   "name": "VfB Hüls",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "EVONIK Sportpark",
+   "capacity": 6000,
+   "lat": 51.67652,
+   "lon": 7.099067,
+   "city": null,
+   "source": "https://www.europlan-online.de/evonik-sportpark-stadion-am-badeweiher/stadion-689.html",
+   "note": "EVONIK Sportpark, Paul-Baumann-Straße, 45772 Marl. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfB 48/64 Hüls. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN BEZIRKSLIGA WESTFALEN 11, LEVEL 8, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely. europlan has three pitches on this address; this is the main one, which its club row gives the first team.",
+   "manual": true,
    "competition": "Regionalliga West"
   },
   {
@@ -1315,6 +1519,23 @@
    "competition": "3. Liga"
   },
   {
+   "id": "Q5424829",
+   "name": "FC Augsburg II",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Rosenaustadion",
+   "capacity": 26443,
+   "lat": 48.355351,
+   "lon": 10.875971,
+   "city": null,
+   "source": "https://www.europlan-online.de/rosenaustadion/stadion-8300.html",
+   "note": "Rosenaustadion, Stadionstraße 21, 86159 Augsburg. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga Bayern page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Augsburg 1907 II. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
    "id": "Q5424977",
    "name": "FC Ingolstadt 04 II",
    "leagues": [
@@ -1369,6 +1590,23 @@
    "lon": 7.01857,
    "city": null,
    "competition": "Regionalliga West"
+  },
+  {
+   "id": "Q566165",
+   "name": "FSV Optik Rathenow",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Stadion Vogelgesang",
+   "capacity": 5000,
+   "lat": 52.597398,
+   "lon": 12.368599,
+   "city": null,
+   "source": "https://www.europlan-online.de/stadion-vogelgesang/stadion-1314.html",
+   "note": "Stadion Vogelgesang, Birkenweg 45, 14712 Rathenow. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the NOFV-Oberliga Nord page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FSV Optik Rathenow 1991. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
+   "manual": true,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q566172",
@@ -1682,6 +1920,40 @@
    "competition": "Bundesliga"
   },
   {
+   "id": "Q720528",
+   "name": "FC Kray",
+   "leagues": [
+    "Q555836"
+   ],
+   "tier": 4,
+   "venue": "KrayArena",
+   "capacity": 2000,
+   "lat": 51.462594,
+   "lon": 7.074942,
+   "city": null,
+   "source": "https://www.europlan-online.de/krayarena-kr/stadion-6747.html",
+   "note": "KrayArena - powered by Stölting Service Group, Buderusstraße 20a, 45307 Essen/Ruhr-Kray. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Kray 09/31. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA NIEDERRHEIN 2, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely. europlan has three grounds on this address; this is the one its club row gives the first team, the other two being the reserve sides' pitch and a former ground.",
+   "manual": true,
+   "competition": "Regionalliga West"
+  },
+  {
+   "id": "Q7572134",
+   "name": "SpVgg Greuther Fürth II",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Konrad-Ammon-Platz im Sportzentrum",
+   "capacity": 3000,
+   "lat": 49.493757,
+   "lon": 10.908985,
+   "city": null,
+   "source": "https://www.europlan-online.de/konrad-ammon-platz-im-sportzentrum/stadion-12438.html",
+   "note": "Konrad-Ammon-Platz im Sportzentrum, Tulpenweg 60, 90768 Fürth/Mittelfranken-Burgfarrnbach. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga Bayern page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names SpVgg. Greuther Fürth 1903 II. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
    "id": "Q797022",
    "name": "BSV Rehden",
    "leagues": [
@@ -1755,6 +2027,40 @@
    "competition": "Regionalliga Nord"
   },
   {
+   "id": "Q831887",
+   "name": "FC Ismaning",
+   "leagues": [
+    "Q340179"
+   ],
+   "tier": 4,
+   "venue": "Prof. Erich Greipl Stadion",
+   "capacity": 5000,
+   "lat": 48.228361,
+   "lon": 11.666837,
+   "city": null,
+   "source": "https://www.europlan-online.de/prof-erich-greipl-stadion/stadion-782.html",
+   "note": "Prof. Erich Greipl Stadion, Leuchtenbergstraße 25, 85737 Ismaning. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Bayernliga Süd page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Ismaning 1921. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
+   "manual": true,
+   "competition": "Regionalliga Bayern"
+  },
+  {
+   "id": "Q831892",
+   "name": "Lupo Martini Wolfsburg",
+   "leagues": [
+    "Q539678"
+   ],
+   "tier": 4,
+   "venue": "Lupo Stadio",
+   "capacity": 2000,
+   "lat": 52.451539,
+   "lon": 10.793827,
+   "city": null,
+   "source": "https://www.europlan-online.de/lupo-stadio/stadion-1532.html",
+   "note": "Lupo Stadio, Hubertusstraße 10, 38448 Wolfsburg-Kreuzheide. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names USI Lupo Martini Wolfsburg 62/81/70. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA BRAUNSCHWEIG, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. The tier is deliberately NOT corrected here - that is a separate decision, and on this map a tier above 5 would take the club off it entirely.",
+   "manual": true,
+   "competition": "Regionalliga Nord"
+  },
+  {
    "id": "Q8466",
    "name": "1. FC Kaiserslautern",
    "leagues": [
@@ -1783,6 +2089,23 @@
    "competition": "Regionalliga West"
   },
   {
+   "id": "Q920263",
+   "name": "Hertha BSC II",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "Stadion auf dem Wurfplatz",
+   "capacity": 5400,
+   "lat": 52.517161,
+   "lon": 13.236616,
+   "city": null,
+   "source": "https://www.europlan-online.de/stadion-auf-dem-wurfplatz/stadion-195.html",
+   "note": "Stadion auf dem Wurfplatz, Hanns-Braun-Straße, 14053 Berlin-Charlottenburg. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the NOFV-Regionalliga Nordost page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names Hertha Berliner SC 1892 II. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. One of the three clubs OpenStreetMap could not place at all - every Berlin candidate it offered was some other ground.",
+   "manual": true,
+   "competition": "Regionalliga Nordost"
+  },
+  {
    "id": "Q97905916",
    "name": "FC Augsburg",
    "leagues": [
@@ -1795,6 +2118,23 @@
    "lon": 10.885926,
    "city": null,
    "competition": "Bundesliga"
+  },
+  {
+   "id": "Q97927365",
+   "name": "FC Erzgebirge Aue",
+   "leagues": [
+    "Q548937"
+   ],
+   "tier": 4,
+   "venue": "eins Erzgebirgsstadion",
+   "capacity": 15500,
+   "lat": 50.597649,
+   "lon": 12.711139,
+   "city": null,
+   "source": "https://www.europlan-online.de/sparkassen-erzgebirgsstadion/stadion-144.html",
+   "note": "eins Erzgebirgsstadion, Gerd-Schädlich-Platz 1, 08280 Aue-Bad Schlema. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the NOFV-Regionalliga Nordost page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Erzgebirge Aue 1992. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. The ground's URL still carries its old sparkassen- name; europlan's current name for it is the one used here.",
+   "manual": true,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q97927380",
