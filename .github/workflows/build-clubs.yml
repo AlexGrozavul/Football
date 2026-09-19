@@ -27,7 +27,23 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # TEMPORARY probe job. This sandbox answers 403 to CONNECT for
+  # stadiumdb.com, en.wikipedia.org and wikidata.org, so the only way to
+  # read them is from a runner. Both this job and the `if: false` on
+  # `clubs` below are removed in this same branch once the answers are
+  # read - see the Actions-dispatch entry in CLAUDE.md.
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+      - name: Probe
+        run: |
+          set -o pipefail
+          python3 tools/_probe.py
+
   clubs:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
