@@ -118,14 +118,27 @@ SCHEMA = {
     PRICES_FILE: {
         "required": ["clubQid", "club", "team", "season", "competition",
                      "stage", "kind", "category", "price", "currency"],
-        "optional": ["placeType", "priceBasis", "checked", "source", "note"],
-        # CLAUDE.md describes this file as one row per club per team per
-        # season per competition per stage per category. That is one
-        # column short, and the file already proves it: the FC Bayern
-        # rows carry a face value AND an observed resale price for
-        # Bundesliga category 1 in 2026-27, which are two different
-        # facts about the same seat and both belong in the file. kind is
-        # part of what identifies a row, so it is part of the key here.
+        "optional": ["opponentTier", "placeType", "priceBasis", "checked",
+                     "source", "note"],
+        # The key has been one column short TWICE, and both times the
+        # file already held the proof before anyone noticed.
+        #
+        # kind was the first. CLAUDE.md described this file as one row
+        # per club per team per season per competition per stage per
+        # category, and the FC Bayern rows carried a face value AND an
+        # observed resale price for the same Bundesliga category 1 seat.
+        # Those are two different facts about one seat and both belong
+        # in the file, so kind is part of what identifies a row.
+        #
+        # opponentTier was the second, and it was found the same way.
+        # The club's own price page carries TWO Champions League
+        # league-phase tables side by side - one for the strongest
+        # visitor, one for the rest - same competition, same stage, same
+        # categories, different prices. Without this column the second
+        # table is not a second fact, it is a duplicate key, and the
+        # checker would have thrown away whichever one was written
+        # second. A blank cell means the club publishes one price for
+        # that row's stage, which is the ordinary case.
         #
         # Two observations of the same category are also a real thing -
         # a price somebody saw twice, at two prices - so a duplicate
@@ -133,7 +146,7 @@ SCHEMA = {
         # Two face values for one category is a plain mistake and is
         # rejected: a category has one published price.
         "key": ["clubQid", "team", "season", "competition", "stage",
-                "category", "kind"],
+                "category", "kind", "opponentTier"],
     },
 }
 
@@ -145,7 +158,14 @@ CLOSED = {
                               "user-supplied", "unknown"],
     (TICKETS_FILE, "cutoff"): ["stated", "none", "unknown"],
     (PRICES_FILE, "kind"): ["face-value", "resale-observed"],
-    (PRICES_FILE, "priceBasis"): ["excl-vat-fees", "incl-vat-fees", "unknown"],
+    # incl-vat-excl-fees is the one German consumer price pages actually
+    # quote: the price includes VAT, because the Preisangabenverordnung
+    # requires a consumer price to, and the booking and system fees are
+    # added on top at checkout. Neither of the two values this list
+    # started with can say that, and both of them say something false
+    # about the FC Bayern rows - see CLAUDE.md.
+    (PRICES_FILE, "priceBasis"): ["excl-vat-fees", "incl-vat-fees",
+                                  "incl-vat-excl-fees", "unknown"],
 }
 
 # ---- open vocabularies: values currently in use. Anything else is
@@ -161,11 +181,15 @@ KNOWN = {
                                     "yes-when-overbooked"],
     (TICKETS_FILE, "demand"): ["overbooked-usually"],
     (TICKETS_FILE, "resale"): ["official-members-only"],
-    (WINDOWS_FILE, "window"): ["bundesliga-home", "bundesliga-away",
+    (WINDOWS_FILE, "window"): ["season-ticket-renewal",
+                               "bundesliga-single-match",
+                               "bundesliga-away-block",
+                               "away-season-ticket",
                                "ucl-league-phase"],
     (PRICES_FILE, "competition"): ["bundesliga", "dfb-pokal", "ucl"],
     (PRICES_FILE, "stage"): ["regular", "early-rounds", "league-phase"],
     (PRICES_FILE, "category"): ["1", "2", "3", "4", "5"],
+    (PRICES_FILE, "opponentTier"): ["top-opponent", "standard-opponent"],
     (PRICES_FILE, "placeType"): ["standing", "seat"],
 }
 
@@ -188,8 +212,8 @@ NO_DATE_COLUMNS = {
     # turns "late June" into a day, and rounding it to one is the exact
     # failure rule 1 exists to prevent.
     WINDOWS_FILE: ["opensEstimate", "label"],
-    PRICES_FILE: ["competition", "stage", "kind", "category", "placeType",
-                  "priceBasis"],
+    PRICES_FILE: ["competition", "stage", "kind", "opponentTier",
+                  "category", "placeType", "priceBasis"],
 }
 
 MONTHS = ("januar|february|februar|january|märz|maerz|march|april|mai|may|"

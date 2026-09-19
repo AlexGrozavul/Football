@@ -103,11 +103,14 @@ a subscribed calendar reads as a schedule regardless of its description.
   window tends to open is allowed to live, and the only place it is.
   It carries its own `dateSource` and its own `basis`.
 - `data/club-ticket-prices.csv` — one row per club per team per season
-  per competition per stage per category per `kind`. Face values, and
-  observed resale prices, which are marked as observations rather than
-  policy. `kind` is part of that key because a face value and a price
-  somebody saw are two different facts about the same seat and the file
-  already holds both for one category — see the Conventions entry.
+  per competition per stage per category per `kind` per `opponentTier`.
+  Face values, and observed resale prices, which are marked as
+  observations rather than policy. `kind` is part of that key because a
+  face value and a price somebody saw are two different facts about the
+  same seat and the file already holds both for one category.
+  `opponentTier` is part of it because a club may publish two prices for
+  the same seat in the same round depending on who is visiting, and
+  Bayern does — see the Conventions entry.
 
 ### Generated — safe to overwrite
 
@@ -220,6 +223,47 @@ missing.
 the history and the anchor for next year's estimate; the calendar is only
 what lies ahead.
 
+**A bot-management 403 is a stop. The Internet Archive is not a way
+round it — it is a different source, and that is standing policy, not a
+judgment made once for one club.**
+
+When a live site refuses this infrastructure with a bot-management 403 —
+Akamai, Cloudflare and their like — that is an access control the site
+operator deliberately put up. It is not retried until it gives way and
+it is **not worked around**: no rotating user agents, no residential
+proxies, no TLS fingerprint spoofing. `fcbayern.com` is the case this
+was written from and the rule is not about Bayern.
+
+Reading the **same page from the Internet Archive is allowed**, and it
+is the same category of source this project already leans on when it
+cites a news article or a search result that quotes the club: **a third
+party's own public record.** It does not touch the refusing server, it
+does not pretend to be a client that server would accept, and it takes
+nothing the archive is not already handing to anybody who asks. The
+block is on the club's server; the archive is not the club's server. So
+an archive read is not a smaller version of the thing that was refused,
+it is a different thing — and treating it as a loophole would get the
+reasoning exactly backwards.
+
+**What it is not is a route around the block.** If the archive has no
+capture, the page stays unread, and that is the answer rather than a
+reason to go back at the live site harder.
+`/de/tickets/info/anfragen-fuer-die-neue-saison-2026-2027` has no
+snapshot, so it is unread and will probably stay unread.
+
+**Two things every archive-sourced row carries.** The **original URL**
+goes in `source`, because that is where Alexandru verifies it in an
+ordinary browser, where the page opens normally. The **capture date**
+goes in the note, because an archived page is the page as it stood on a
+day, not as it stands now — a figure read from a 2025-09-02 capture is a
+fact about 2025-09-02, which is exactly how the Bundesliga price rows
+ended up correctly labelled `2025-26` instead of `2026-27`.
+
+The same holds for every other third-party record this project uses: a
+search result quoting the club, a ticket reseller's page, a news report.
+They are evidence about what the club said. They are never the club
+saying it, and a row says which of the two it rests on.
+
 **The ticket files hold rules, not dates.** Rule 1 says never generate a
 ticket rule, sale date, application window or deadline. The three ticket
 files are built so that obeying it is the path of least resistance.
@@ -275,6 +319,24 @@ never written as though the club had stated it, and `priceBasis` records
 whether a figure is before or after VAT and fees, because German clubs
 quote both and the difference is real money.
 
+`priceBasis` has **four** values, and the fourth was added on
+2026-09-19 because the three before it could not say what was true of
+every Bayern face value in the file. A German consumer price **includes
+VAT by law** — the Preisangabenverordnung requires it — so
+`excl-vat-fees` was simply wrong on a figure copied off the club's
+consumer-facing price page. But the club adds a 1 EUR
+Vorverkaufsgebühr and 2–8 EUR Systemgebühren **on top** at checkout, so
+`incl-vat-fees` is wrong in the other direction. `incl-vat-excl-fees`
+is the honest one: **VAT in, booking fees out.** That is what a German
+consumer price page quotes, so expect it to be the common value rather
+than the exotic one.
+
+`unknown` is not a worse answer than a wrong one. The DFB-Pokal rows
+carry it because nothing has ever been read for them, and inheriting a
+basis from the Bundesliga rows beside them would be a guess wearing a
+checked fact's clothes — which is how `excl-vat-fees` got onto them in
+the first place.
+
 **The three ticket files are read back and checked, and the checker has
 two kinds of vocabulary on purpose.** `tools/check_tickets.py` is the
 reader this project went without for as long as the files existed. It
@@ -294,9 +356,10 @@ value outside them rejects the row: `dateSource`, `basis`, `cutoff`,
 
 **Open vocabularies are every other controlled column** — `access`,
 `salesModel`, `requestTypes`, `closesEarly`, `demand`, `resale`, `team`,
-`window`, `competition`, `stage`, `category`, `placeType`. Nobody has
-written down what their allowed values are, because there is one club in
-the file and whatever Bayern needed is all that exists. A closed list
+`window`, `competition`, `stage`, `category`, `placeType`,
+`opponentTier`. Nobody has written down what their allowed values are,
+because there is one club in the file and whatever Bayern needed is all
+that exists. A closed list
 for them would reject the first legitimate value a second club needs, so
 the tool holds the values currently in use, **reports** anything new and
 **keeps the row**. A typo is by definition a new value, so it is still
@@ -314,14 +377,40 @@ like `2027-28`. The overflow guard from `fetch_clubs.py` is here too, so
 an unquoted comma is named with its line number instead of truncating a
 note. `checked` must be an ISO date; a future one is reported.
 
-**A `kind` column belongs in the price file's key, and the checker found
-that on its first run.** This file described `club-ticket-prices.csv` as
-one row per club per team per season per competition per stage per
-category — which is one column short, and the existing rows already
-proved it: FC Bayern has both a `face-value` row and a `resale-observed`
-row for Bundesliga category 1 in 2026-27. Those are two different facts
-about the same seat and both belong in the file. So the key is club,
-team, season, competition, stage, category **and `kind`**.
+**The price file's key has been one column short twice, and both times
+the file already held the proof.** This is worth keeping as a shape
+rather than as two anecdotes: a key gap does not announce itself, it
+shows up as a row that looks like a duplicate of a row it is not.
+
+**`kind` was the first**, found by the checker on its first run. The
+file was described as one row per club per team per season per
+competition per stage per category, and FC Bayern had both a
+`face-value` row and a `resale-observed` row for the same Bundesliga
+category 1 seat. Two different facts about one seat, both belonging in
+the file.
+
+**`opponentTier` was the second**, found on 2026-09-19 when the
+Champions League prices were written out properly. The club's own price
+page carries **two league-phase tables side by side** — one for the
+strongest visitor, one for everybody else — same competition, same
+stage, same categories, different prices. Without the column the second
+table is not a second fact, it is a duplicate key, and the checker
+throws away whichever table was written second. Verified rather than
+assumed: with `opponentTier` taken back out of the key, the checker
+rejects five rows and exits 1.
+
+So the key is club, team, season, competition, stage, category,
+**`kind`** and **`opponentTier`**. A blank `opponentTier` means the club
+publishes one price for that row's stage, which is the ordinary case —
+the Bundesliga and DFB-Pokal rows all leave it empty.
+
+**The tier label is ours, not the club's.** Bayern names the visitors
+in its table headings; it publishes no tier scheme, and nothing read
+says which table a future opponent would fall into. `top-opponent` and
+`standard-opponent` describe what two tables did in one season. They are
+not a rule for predicting the next one, and they must not quietly become
+one.
+
 A repeated `resale-observed` row is **reported, not rejected** — two
 sightings of one category at two prices is a real thing, and a file that
 records observations has to be able to hold more than one. A repeated
@@ -669,13 +758,19 @@ a page anyone can already view in their browser's network tab.
   residential proxies or TLS fingerprint spoofing would be evading an
   access control the site operator deliberately put up, which is a
   different thing from reading a page that is simply slow.
-  **What this costs, practically:** the ticket facts in
-  `club-tickets.csv`, `club-ticket-windows.csv` and
-  `club-ticket-prices.csv` for Bayern are hand-written by Alexandru and
-  corroborated only by search-engine results that quote the club's
-  pages, never by the pages themselves. Every row says so in its note.
+  **What this cost, practically** - written when it was still the whole
+  story: the ticket facts in `club-tickets.csv`,
+  `club-ticket-windows.csv` and `club-ticket-prices.csv` for Bayern were
+  hand-written by Alexandru and corroborated only by search-engine
+  results quoting the club's pages, never by the pages themselves.
+  **That is no longer true of most of them.** The next entry is how the
+  pages were read - from the Internet Archive, which does not touch the
+  refusing server - and the price and window rows now rest on the club's
+  own words with a capture date on them. What is still uncorroborated
+  says so in its own note: the DFB-Pokal prices, and the
+  `bundesliga-away-block` window whose club page has no snapshot at all.
   The URLs in the `source` columns are real and open normally in an
-  ordinary browser - which is the route to confirming any of it.
+  ordinary browser - which is still the route to confirming any of it.
 
 - **The club's pages have now been read, from the Internet Archive, and
   that is a different thing from getting past Akamai.** Done on
@@ -685,6 +780,11 @@ a page anyone can already view in their browser's network tab.
   is the same category of source as the search-engine results this
   project already leans on, only far better - the club's exact words,
   with a capture date on them.
+  **This is now standing policy rather than a call made once**, and it
+  lives in Conventions above: a bot-management 403 is a stop, the
+  archive is a different source and not a way round it, and every
+  archive-sourced row carries the original URL in `source` and the
+  capture date in its note.
   **What exists and what does not**, checked rather than assumed:
   `/de/tickets/jahreskarten` (captured 2026-06-08),
   `/de/tickets/faq-jahreskarten` (2026-06-14),
@@ -712,8 +812,15 @@ a page anyone can already view in their browser's network tab.
   **two league-phase tables side by side**: "PREISE UEFA CHAMPIONS
   LEAGUE GRUPPENPHASE FC BAYERN - CHELSEA FC" at 120/100/70/60/19, and
   "... FC BAYERN - BRÜGGE / SPORTING LISSABON / SAINT-GILLOISE" at
-  100/80/60/50/19. Same round, different visitors. The file's figures
-  are the cheaper-opponent table.
+  100/80/60/50/19. Same round, different visitors.
+  **Both tables are now in the file**, as of 2026-09-19, under a new
+  `opponentTier` column that is part of the price key - see the
+  Conventions entry. Until then the file held only the cheaper set and
+  read like *the* Champions League league-phase price. **A single flat
+  figure for a club that prices by opponent was always going to be
+  incomplete**, and nothing in the file said so, which is the part worth
+  remembering: it was not wrong about a number, it was silently missing
+  half the answer.
   **The category-5 clue was worthless and it is worth knowing why.**
   19 EUR is the Südkurve standing price on *every* Champions League
   table on that page, and 15 EUR on every Bundesliga one. Two Champions
@@ -732,21 +839,44 @@ a page anyone can already view in their browser's network tab.
   **The Bundesliga rows are confirmed exactly** against the same page:
   80/70/50/40/15 for categories 1 to 5, Vollzahler, member discount
   2,50 EUR.
-  **What is now the open problem is the season, not the figures.** The
-  page that matches every one of those rows is the **2025|26** one, and
-  the rows say `2026-27`. fussball-tickets-kaufen.de, read directly,
-  says the club has not published 26/27 league-phase prices at all. So
-  the figures are most likely last season's carried forward. They
-  stand, because hand-written data wins - but the `season` cell is the
-  one to check. The 150/120/100/70/19 set was on no page read and is
-  still unaccounted for.
-  **One more thing nobody has settled**, and it is flagged in the rows
-  rather than acted on: `priceBasis` says `excl-vat-fees`, but the
-  club's page quotes these as consumer prices with a 1 EUR
-  Vorverkaufsgebühr and 2-8 EUR Systemgebühren added *on top*, and
-  German consumer prices are normally quoted **including** VAT. If
-  that is right, `excl-vat-fees` claims more than is true, and the
-  arithmetic in the 120 EUR resale row rests on it.
+  **The season was the open problem and it is closed by relabelling,
+  not by research.** The page that matches every one of those rows is
+  the **2025|26** one and the rows said `2026-27`;
+  fussball-tickets-kaufen.de, read directly, says the club has not
+  published 26/27 prices at all. So the rows confirmed against that
+  page - the Bundesliga set and both Champions League sets - now say
+  `2025-26`, the season they were actually confirmed for. That is not a
+  downgrade: they are confirmed more firmly than before, against the
+  right year.
+  **What the file therefore no longer claims is a 26/27 Bundesliga
+  price**, and that gap is the honest state of things rather than
+  something to fill. The only rows left at `2026-27` are the DFB-Pokal
+  ones, whose sole source is Alexandru and which say so - the archived
+  price page carries no Pokal table at all, so there was nothing to
+  check them against.
+  The 150/120/100/70/19 set was on no page read and is still
+  unaccounted for.
+  **`priceBasis` is corrected too.** It said `excl-vat-fees`, which is
+  wrong twice over: a German consumer price includes VAT by law, and
+  the 1 EUR Vorverkaufsgebühr and 2-8 EUR Systemgebühren are added *on
+  top*. Neither of the two values that existed could say that, so
+  `incl-vat-excl-fees` was added to the closed vocabulary and the
+  confirmed rows carry it. The Pokal rows now say `unknown`, because
+  nothing was ever read for them.
+  **And the 120 EUR resale row has a likely explanation at last**,
+  which is the thing this correction bought. Alexandru's sighting was
+  FC Bayern v **RB Leipzig**, 24/25, on the club's member-only
+  Zweitmarkt, against an 80 EUR category 1 face value - which read as a
+  breach of the club's own no-more-than-face-value rule. If Bayern
+  tiers domestic prices by opponent the way it demonstrably tiers
+  Champions League ones, the face value for that fixture was probably
+  above 80 EUR and nothing was breached. **That is inferred and the row
+  says so**: the tiering actually read is Champions League, no
+  Bundesliga table showing two price sets has been seen, and no price
+  table for that match has been read at all. The 120 EUR matching the
+  top Champions League category 1 exactly is a coincidence worth
+  noting and is not evidence - different competition, different season.
+  `opponentTier` is left **blank** on that row for the same reason.
 
 - **The Bayern request windows were two clocks read as one, and that is
   settled.** The `bundesliga-home` and `bundesliga-away` rows of
@@ -770,18 +900,41 @@ a page anyone can already view in their browser's network tab.
   slot `football-rules.json` describes; a **match-specific** request
   needs the schedule, which is why 26/27 league-phase requests opened
   on 29 August 2026, two days after the draw.
-  **What was deliberately not changed.** `opensEstimate` still reads
-  `late June` on both Bundesliga rows. Which clock those rows are meant
-  to catch is Alexandru's call: for the season-ticket cycle late June is
-  right and the label is wrong; for single-match Bundesliga requests it
-  is probably a month early. Writing a window is not something to guess
-  at - rule 1.
-  **And one window could now honestly be `confirmed`.** The ADK page
-  states its own next cycle: "Ende Mai 2027 informieren wir Sie dann
-  gerne wieder über Bestellmöglichkeiten für die Saison 2027/28." That
-  is a published claim about a future window, so an ADK row could carry
-  `dateSource` `confirmed` and `basis` `published`. **No such row was
-  added**, because the windows in that file are Alexandru's to write.
+  **The single `late June` estimate has now been split, 2026-09-19**,
+  because one cell cannot answer for two clocks and leaving it whole
+  meant it was wrong for at least one of them. The file now carries
+  **five** window rows instead of three:
+  - `season-ticket-renewal` — the Jahreskarte cycle, `early to mid
+    June`, `inferred` / `observed-past-cycle`. It follows the season
+    ending, so the DFL's fixture list is irrelevant to it.
+  - `bundesliga-single-match` — the per-match home clock, `about six
+    weeks before each match`, `inferred` / `published`. **It has no
+    calendar date at all**, which is the point: a reminder built from
+    this row hangs off a fixture, never off a month.
+  - `bundesliga-away-block` — all away fixtures in one pre-season
+    window, moved from `late June` to `early July`, `inferred` /
+    `user-supplied`. A match-specific away request needs the schedule,
+    and Alexandru's own `football-rules.json` says the same from the
+    other side: check "from early July 2027", close 27 July. **That
+    cell is his figure moved across, not a new one invented here** —
+    rule 1 — and if he disagrees it is his to change.
+  - `away-season-ticket` — the ADK, `late May`, and the **only**
+    `confirmed` / `published` row in the file. The ADK page states its
+    own next cycle: "Ende Mai 2027 informieren wir Sie dann gerne
+    wieder über Bestellmöglichkeiten für die Saison 2027/28." A
+    published claim about a *future* window is exactly what `confirmed`
+    means, and nothing else in the file has one.
+  - `ucl-league-phase` — unchanged.
+  **One nuance the six-weeks row carries and nobody should lose**: the
+  club's "ca. 6 Wochen vor jedem Spiel" is when the **lottery draws**,
+  not when requests open. The portal takes them before the season
+  starts. So six weeks is the deadline side of that window and the
+  request has to be in *before* it, not made at it.
+  **What is confirmed about the ADK is narrower than the row looks.**
+  The club says it will *inform* members at the end of May 2027. It
+  does not say the ordering window opens then and does not say when it
+  closes, so `late May` is when to start watching and no deadline is
+  written anywhere in these files.
 
 - **TSV 1860 München II is off the map until somebody finds its real
   ground, and that is the right place for it.** `Q7671747` is corrected
