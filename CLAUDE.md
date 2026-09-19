@@ -76,7 +76,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   that only reaches the map through a wrong league tag is removed — SC
   Veltheim is the second kind. A `skip` row needs a `clubQid`, because
   there has to be something already there to remove, and every other
-  cell on it is ignored. Same column set as `capacity-review.csv`.
+  cell on it is ignored. A cell reading `<clear>` is the third thing a
+  cell can say, and it is not the same as leaving it empty: empty means
+  *leave the fetched value alone*, `<clear>` means *delete it and put
+  nothing back*. See the convention below. Same column set as
+  `capacity-review.csv`.
 - `data/league-tiers.csv` — maps a league's Wikidata Q-id to a tier.
   Tier comes from this file and never from a league name: Wikidata's
   league items are fragmented and undated, so names cannot be trusted.
@@ -133,6 +137,42 @@ instead of throwing the overflow away without a word — which is what cut
 two notes in half before anyone noticed. Wrap the whole cell in double
 quotes, `"a, b"`, and the comma survives.
 
+**A cell reading `<clear>` deletes a fetched value; an empty cell does
+not.** The rule of `clubs-manual.csv` is that only the cells you fill in
+are changed, so an empty cell says *leave what Wikidata gave us alone*.
+That is right for almost every correction and useless for the one case
+that matters most: a value that is known to be wrong when nobody yet
+knows the right one. Left empty, the wrong value stays on the map,
+looking exactly like a checked fact.
+
+`<clear>` in a cell removes what was fetched and puts nothing in its
+place. Angle brackets, because "none" and "unknown" could one day be
+somebody's real note and `<clear>` cannot be anybody's ground.
+
+- Only **`venue`, `capacity`, `lat` and `lon`** can be cleared — the
+  four cells that can hold a fetched value.
+- `name`, `clubQid` and `country` are refused: they are how a row finds
+  the club it is correcting, not something the club has.
+- `tier` is refused, and the message says what to use instead. A club
+  with no tier is off the map but still in the file, which is not what
+  clearing means anywhere else — `skip` is the way to remove a club.
+- `ticketUrl`, `source` and `note` are refused: nothing fetches them,
+  so emptying the cell already does the whole job.
+- Clearing a position needs `<clear>` in **both** `lat` and `lon`. Half
+  a coordinate is not "no position", it is a broken one, and a broken
+  one is what gets drawn somewhere wrong. One half alone is refused and
+  both cells are left as they were.
+
+A club left without coordinates **drops off the map entirely**, exactly
+as if no source had ever placed it — not at 0,0, not at a
+half-coordinate, not anywhere. Both gates that decide this used to ask
+for a latitude alone, which was safe only while "Wikidata supplied
+neither" was the only way to have no position; `fetch_clubs.py` and
+`index.html` now both ask for latitude **and** longitude. And because a
+club vanishing from a count is exactly the kind of silent change this
+project does not allow, the run summary names every club that left the
+map this way and says how to bring it back.
+
 **A failed fetch never rewrites a review file.** `capacity-review.csv`
 and `coordinate-review.csv` are evidence waiting to be judged, and the
 cron commits whatever it finds. If Overpass or Wikidata does not answer,
@@ -179,11 +219,19 @@ eighteen on the map.
 
 After the corrections of the same day — CS Dinamo București given its
 own coordinates, and `skip` rows for the second SSV Ulm item and for FC
-Triesenberg — the count is **191 clubs on 182 grounds, 8 of them shared
-by 17 clubs**, and all eight are genuinely shared. Two of the original
-ten were never shared grounds at all: one was a copied coordinate and
-one was a parent club beside its football department. The feature is
-what made both of them visible.
+Triesenberg — the count was **191 clubs on 182 grounds, 8 of them
+shared by 17 clubs**, and all eight were genuinely shared. Two of the
+original ten were never shared grounds at all: one was a copied
+coordinate and one was a parent club beside its football department.
+The feature is what made both of them visible.
+
+Clearing TSV 1860 München II's ground later the same day took one more
+club off a shared pin. Counted against the rebuild of 2026-09-19:
+**190 clubs on 182 grounds, 8 of them shared by 16 clubs**, and every
+one of the eight is now exactly two clubs — six reserve sides at their
+first team's ground, plus the Waldau-Stadion and the Stadionul Ion
+Oblemenco, which two unrelated clubs really do share. No ground on
+either map carries three clubs any more.
 
 Clubs are now grouped by coordinate *before* anything is drawn. A
 coordinate with one club is the same circle it always was. A coordinate
@@ -211,9 +259,11 @@ zoom, and its number is how many those are — it never drags a club onto
 the map early because a more senior club happens to share its ground, and
 it never hides one that the zoom has switched on. The Fritz-Walter-Stadion
 is a plain 1. FC Kaiserslautern circle from z7 and turns into a "2" at
-z11, when 1. FC Kaiserslautern II's tier switches on. The Grünwalder now
-does it twice: a "2" at z11 for TSV 1860 München and FC Bayern München
-II, then a "3" at z12 when TSV 1860 München II's tier 5 switches on. The corner chip says
+z11, when 1. FC Kaiserslautern II's tier switches on. The Grünwalder
+used to do it twice — a "2" at z11 and a "3" at z12, when TSV 1860
+München II's tier 5 switched on — and since that club's ground was
+cleared it is a plain "2" from z11 and stays one at every zoom above.
+The corner chip says
 how many shared grounds are on screen, so the count is visible rather than
 something to discover.
 
@@ -255,6 +305,23 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
     different grounds in the same town. The coordinate is still trusted,
     because that row had already named `Q7596368` as its source before
     anyone could read it.
+    **There is now a theory for the 450, and it is a theory, not a
+    finding.** CNF Buftea is not a stadium, it is the federation's
+    national training centre: a complex of several pitches on one site.
+    Romanian sources give its main stadium **800 on each side**, which
+    is the **1,600** already in the row — so the hand-written figure and
+    the main stadium agree, and `Q7596368`'s 450 would then be a
+    *different pitch in the same complex*, not a contradiction of
+    anything. That would explain the gap without either number being
+    wrong, and it would explain why the coordinate can be right while
+    the capacity beside it is not.
+    **Nobody has verified it, so nothing has been changed.** What would
+    settle it is reading which ground `Q7596368` actually names, and
+    which pitch of the complex CS Dinamo plays on, from the federation
+    or the club rather than from a number that fits. Until then the
+    1,600 stands because it is hand-written, not because this theory is
+    right — and if the theory turns out to be right, the row still does
+    not change, it just stops looking like a disagreement.
   - **SSV Ulm 1846 is decided, and it is not a duplicate either.** The
     sitelink test prepared for it was run: **`Q14551982` has 21
     Wikipedia sitelinks, `Q701290` has 14**, so the second of the two
@@ -281,12 +348,54 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   the "2" marker is what makes the symptom visible at all. Before it,
   the second pin sat exactly under the first and nothing counted it.
 
+  **The three shapes have names now, because the next one will not
+  arrive with a label on it.** All three look identical on the map —
+  two items, one name, one ground — and each wants a different remedy.
+  Getting the shape wrong is not a cosmetic mistake: `skip` the wrong
+  item in the second shape and a real club disappears from the map for
+  good, with nothing to notice it had gone.
+
+  1. **One club, two items — a true duplicate.** *Hamburger SV,
+     1. FC Lokomotive Leipzig.* Same name, same league, same ground,
+     same capacity, same coordinates, and one of the two items carries
+     almost no Wikipedia sitelinks. **Remedy: `skip` the thin item.**
+  2. **Two clubs, one name — separate real clubs.** *Dinamo București:
+     `Q204237` in Liga 1, `Q113577526` in Liga 2.* Both items are real
+     and both belong on the map. They landed on one pin because one
+     item was given the other's ground — `Q113577526`'s `P115` points
+     at Stadionul Dinamo, and the coordinates and capacity followed.
+     **Remedy: correct the wrong club's ground and coordinates in
+     `clubs-manual.csv`. Never `skip`.**
+  3. **One club, two items — parent and department.** *SSV Ulm 1846:
+     `Q701290` the multi-sport parent, `Q14551982` the football
+     department.* One organisation, two Wikidata items by design, which
+     is how a great many German clubs are structured. **Remedy: keep
+     the football item, `skip` the parent.**
+
+  **What to look at, in this order.** `P31` first: *association
+  football club* on one item and *sports club* or *multisports club* on
+  the other is shape 3 and is nearly conclusive — a label ending in
+  "Fußball" says the same thing. Then the league and the tier: two
+  items in **different** divisions of the same pyramid, each with its
+  own history and its own current season, is shape 2. Only when both
+  items claim the same club in the same division is it shape 1.
+
+  **The sitelink count is not the test it looks like.** It answers
+  "which item do the Wikipedias write about", which happens to be the
+  right question in shapes 1 and 3 and is the **wrong question in shape
+  2**, where both items are real clubs and the senior one will always
+  win on sitelinks. It pointed at the football item for SSV Ulm for a
+  reason that had nothing to do with duplication. Use it to break a tie
+  *after* the shape is settled, never to settle the shape.
+
   The remaining shared grounds are genuine. FCU Craiova and
   Universitatea Craiova really do share the Stadionul Ion Oblemenco,
   and the Waldau-Stadion really is Stuttgarter Kickers and VfB
-  Stuttgart II. The rest are a first team with its own reserve side —
-  the Grünwalder being three at once: TSV 1860 München, TSV 1860
-  München II and FC Bayern München II.
+  Stuttgart II. The rest are a first team with its own reserve side.
+  The Grünwalder was three at once — TSV 1860 München, TSV 1860 München
+  II and FC Bayern München II — until TSV 1860 München II's ground was
+  cleared; it is two now, and the third was never really there, only
+  copied from the senior club.
 
 - **The Franz-Kremer-Stadion is not in the data at all**, so it was not
   one of the grounds this fixed. The bug report that prompted the change
@@ -325,35 +434,50 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   180.8s across retries on the first run of the day (one 502, one
   timeout) and 2 minutes total on the second.
 
-- **TSV 1860 München II is at tier 5 now, and its ground is still not
-  known.** `Q7671747` is corrected to **tier 5, Bayernliga Süd**, in
-  `clubs-manual.csv`. Wikidata still tags it `Q340179` Regionalliga
-  Bayern, which is why it arrives at tier 4 and needs the correction.
-  **Only the tier was corrected.** The venue, capacity and coordinate
-  cells on that row are deliberately blank, because the ground is
-  genuinely unconfirmed rather than merely unchecked — and that blank
-  does **not** clear anything (see the next entry). So the club keeps
-  Wikidata's `P115` `Q254903`, the Grünwalder, together with that
-  ground's coordinates and its 15,000 capacity, none of which is
-  verified and all of which belongs to the senior club. It is the same
-  shape of error as CS Dinamo's copied ground.
-  **The Grünwalder collision therefore persists**, and will until the
-  real ground is established. Confirmed against the rebuild of
-  2026-09-19: the Grünwalder is a **"2"** at z11 (TSV 1860 München and
-  FC Bayern München II, both tier 4) and becomes a **"3"** at z12, when
-  tier 5 switches on. Moving the club to tier 5 changed when it
-  collides, not whether it does.
+- **TSV 1860 München II is off the map until somebody finds its real
+  ground, and that is the right place for it.** `Q7671747` is corrected
+  to **tier 5, Bayernliga Süd**, in `clubs-manual.csv` — Wikidata still
+  tags it `Q340179` Regionalliga Bayern, which is why it arrives at
+  tier 4 and needs the correction. Its **venue, lat and lon now read
+  `<clear>`**, which deletes Wikidata's `P115` `Q254903`, the
+  Grünwalder, and the coordinates that came with it. Those were the
+  senior club's, copied onto this item — the same shape of error as CS
+  Dinamo's, and none of it ever verified.
+  Until 2026-09-19 those cells were blank instead, and a blank leaves
+  the fetched value alone, so the club went on displaying the senior
+  club's ground as fact. That was the case that produced the `<clear>`
+  sentinel.
+  **The Grünwalder collision is gone.** Confirmed against the rebuild
+  of 2026-09-19, which was run on a GitHub runner because this sandbox
+  cannot reach Wikidata: `Q7671747` is no longer in `data/clubs/DE.json`
+  at all, Germany went from 127 clubs on the map to 126, tier 5 is now
+  empty, and the Grünwalder is a **"2"** — TSV 1860 München and FC
+  Bayern München II, both tier 4 — from z11 and at every zoom above it.
+  It never becomes a "3" again.
+  **The capacity cell was deliberately left alone.** 15,000 is the
+  Grünwalder's and just as wrong, but a club with no coordinates is not
+  written to `DE.json` at all, so that figure now reaches nothing.
+  Clear it too if the club ever comes back without a confirmed one.
+  **What is still not known is the ground itself.** Nothing here
+  establishes where this team plays; it says only that the map has
+  stopped claiming to know. Fill the three cells in with a real ground
+  and it returns.
 
-- **A blank cell in `clubs-manual.csv` cannot clear a fetched value.**
-  The file's rule is "only the cells you fill in are changed", which
-  means a blank says *leave the fetched value alone* and there is no
-  way at all to say *remove what Wikidata claims here*. That is fine
-  for most corrections and wrong for exactly the case above: a ground
-  that is known to be wrong but not yet known to be anything else has
-  to keep displaying the wrong ground. A sentinel — a cell reading
-  `none` or `unknown`, say — would fix it, and it is **not built**,
-  because changing the meaning of a hand-written file's cells is
-  Alexandru's call and was not what this session was asked to do.
+- **A blank cell still cannot clear a fetched value, and now it does
+  not have to.** This used to be an open problem: a blank said *leave
+  the fetched value alone* and nothing said *remove what Wikidata
+  claims here*, so a ground known to be wrong had to go on being
+  displayed. The sentinel that was sketched here is **built** — a cell
+  reading `<clear>` deletes the fetched value and puts nothing back.
+  The rules, the four cells that accept it and the reason a position
+  needs it in both `lat` and `lon` are in Conventions above. A blank
+  cell means exactly what it always meant; nothing already in
+  `clubs-manual.csv` changed meaning.
+  **What is still open is not the mechanism.** Nothing detects a
+  copied ground on its own. `<clear>` is how you act on one once a
+  person has spotted it, and the only thing that makes them visible is
+  still the shared-ground marker — which cannot help when the copied
+  ground belongs to a club that is not on the map at all.
 
 - **The map lag was profiled, and `drawClubs()` is not where it is.**
   Measured on 2026-09-19 in headless Chromium at a 390x844 phone
