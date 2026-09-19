@@ -155,7 +155,7 @@ function haversine(a, b, c, d){
    this is a road-distance estimate and nothing more - it is not a
    travel time and is not turned into one. */
 function roadEstimate(lat, lon){
-  if(!HOME || lat == null) return null;
+  if(!HOME || lat == null || lon == null) return null;
   return Math.round(haversine(HOME.lat, HOME.lon, lat, lon) * MULTIPLIER);
 }
 
@@ -354,7 +354,11 @@ async function initMap(){
       const data = await getJSON(path);
       for(const club of data.clubs || []){
         club.country = data.country;
-        if(club.lat != null && club.tier != null) CLUBS.push(club);
+        /* Both halves of the coordinate. A club whose position was
+           cleared by hand in clubs-manual.csv arrives with lat and lon
+           null and must not be drawn at all - not at 0,0, not at a
+           half-coordinate, not anywhere. */
+        if(club.lat != null && club.lon != null && club.tier != null) CLUBS.push(club);
       }
       loaded.push(path);
     }catch(err){

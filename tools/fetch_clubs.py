@@ -46,6 +46,30 @@ MANUAL_REQUIRED = ("name",)
 MANUAL_OPTIONAL = ("clubQid", "country", "tier", "venue", "capacity",
                    "lat", "lon", "ticketUrl", "source", "note")
 
+# The clear sentinel.
+#
+# A blank cell in clubs-manual.csv means "leave the fetched value
+# alone", and for almost every correction that is exactly right. What it
+# left no way to say at all was "what Wikidata claims here is wrong and
+# I do not yet know what is right". TSV 1860 Muenchen II is the case
+# that forced this: its ground is genuinely unconfirmed, so every cell
+# but the tier was left blank - and the club went on carrying the senior
+# club's ground, the senior club's coordinates and the senior club's
+# capacity, none of it verified, all of it displayed as fact.
+#
+# <clear> in a cell removes what was fetched and puts nothing in its
+# place. The angle brackets are the point: "none" or "unknown" could
+# one day be somebody's actual note, a ground called "<clear>" cannot
+# exist. It is matched without regard to case.
+CLEAR = "<clear>"
+
+# Only the four cells that can hold a FETCHED value may be cleared.
+# ticketUrl, source and note never come from Wikidata, so there is
+# nothing there to clear - emptying the cell does the whole job. name,
+# clubQid, country and tier are refused for reasons given where they
+# are checked, in load_manual below.
+CLEARABLE = ("venue", "capacity", "lat", "lon")
+
 ENDPOINT = "https://query.wikidata.org/sparql"
 USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
               "https://github.com/AlexGrozavul/Football)")
@@ -600,6 +624,13 @@ def load_manual():
     are changed, blanks leave the fetched value alone. A row without one
     adds a club Wikidata does not have, or has wrong beyond repair.
 
+    A cell reading <clear> is the third thing, and it is not the same as
+    a blank one: it removes what was fetched and puts nothing back. Only
+    venue, capacity, lat and lon can be cleared. Clearing a position
+    needs <clear> in both lat and lon, and a club left without
+    coordinates drops off the map exactly as if no source had ever
+    placed it - which is the point.
+
     The word "skip" in the tier column removes that club from the output
     entirely, which is how a duplicate Wikidata item is dropped. It needs
     a clubQid, because there has to be something there to remove, and it
@@ -644,6 +675,63 @@ def load_manual():
                 problems.append(f"{MANUAL_FILE} line {line}: clubQid {qid_val!r} is not a Q-id")
                 continue
 
+            # ---- the clear sentinel
+            #
+            # Read before the cells below are checked for being numbers,
+            # because <clear> is not a number and must not be told off
+            # for failing to be one. A cleared cell is then blanked and
+            # remembered in _clear, so every check after this point sees
+            # an ordinary empty cell and apply_manual is the only place
+            # that has to know about clearing at all.
+            cleared, refused_row = set(), False
+            for field in list(row):
+                if row[field].lower() != CLEAR:
+                    continue
+                if field in CLEARABLE:
+                    cleared.add(field)
+                    continue
+                row[field] = ""
+                if field in ("name", "clubQid", "country"):
+                    problems.append(
+                        f"{MANUAL_FILE} line {line}: {field} cannot be {CLEAR} - it is how "
+                        f"this row finds the club it is correcting, not something the club "
+                        f"has. Row ignored")
+                    refused_row = True
+                elif field == "tier":
+                    problems.append(
+                        f"{MANUAL_FILE} line {line}: tier cannot be {CLEAR}. A club with no "
+                        f"tier is off the map but still in this file, which is not what "
+                        f"clearing means anywhere else - put 'skip' in this cell to remove "
+                        f"the club instead. Cell ignored")
+                else:
+                    problems.append(
+                        f"{MANUAL_FILE} line {line}: {field} never comes from Wikidata, so "
+                        f"there is nothing fetched to clear - empty the cell instead. "
+                        f"Cell ignored")
+            if refused_row:
+                continue
+
+            # A club cannot have half a coordinate. Clearing one of the
+            # two would leave a latitude with no longitude, and that is
+            # not "no position" - it is a broken one, which is exactly
+            # the kind of thing that gets drawn somewhere wrong.
+            half = cleared & {"lat", "lon"}
+            if len(half) == 1:
+                problems.append(
+                    f"{MANUAL_FILE} line {line}: {half.pop()} is {CLEAR} but the other half "
+                    f"of the coordinate is not. Clearing a position needs {CLEAR} in BOTH "
+                    f"lat and lon - both cells left alone")
+                cleared -= {"lat", "lon"}
+                # Emptied so the number check below does not complain a
+                # second time that <clear> is not a number. Empty means
+                # "leave the fetched value alone", which is what "both
+                # cells left alone" says is going to happen.
+                row["lat"] = row["lon"] = ""
+
+            for field in cleared:
+                row[field] = ""
+            row["_clear"] = sorted(cleared)
+
             tier_raw = row.get("tier", "")
             if tier_raw.lower() == "skip":
                 if not qid_val:
@@ -652,7 +740,7 @@ def load_manual():
                         f"already there, so it needs a clubQid - row ignored")
                     continue
                 ignored = [f for f in ("venue", "capacity", "lat", "lon", "ticketUrl")
-                           if row.get(f)]
+                           if row.get(f) or f in cleared]
                 if ignored:
                     problems.append(
                         f"{MANUAL_FILE} line {line}: tier is 'skip', so "
@@ -683,8 +771,16 @@ def load_manual():
 
 
 def apply_manual(clubs, manual_rows, country_code):
-    """Returns (applied_notes, problems). Mutates clubs in place."""
-    notes, problems = [], []
+    """
+    Returns (applied_notes, problems, cleared). Mutates clubs in place.
+
+    "cleared" maps a club id to the fields a <clear> emptied on it, so
+    that main can name the clubs that left the map because a hand
+    correction took their coordinates away. A club that simply vanishes
+    from the count is the kind of silent change this project does not
+    allow.
+    """
+    notes, problems, cleared = [], [], {}
     by_name = {}
     for club in clubs.values():
         if club.get("name"):
@@ -717,7 +813,18 @@ def apply_manual(clubs, manual_rows, country_code):
             notes.append(f"removed {label} ({gone['id']}) - tier says skip")
             continue
 
+        clear = [f for f in row.get("_clear", ()) if f in CLEARABLE]
+
         if target is None:
+            # A row with no clubQid adds a club, and a club being added
+            # has nothing fetched behind it to clear.
+            if clear:
+                problems.append(
+                    f"{MANUAL_FILE} line {row['_line']}: {CLEAR} in "
+                    + ", ".join(clear) +
+                    f" but this row has no clubQid, so it ADDS {row['name']!r} rather than "
+                    f"correcting anything - there is no fetched value to clear. Row ignored")
+                continue
             # New club. Needs enough to put a pin on a map.
             missing = [f for f in ("tier", "lat", "lon") if not row.get(f)]
             if missing:
@@ -741,8 +848,13 @@ def apply_manual(clubs, manual_rows, country_code):
         else:
             changed = [f for f in ("name", "tier", "venue", "capacity", "lat", "lon")
                        if row.get(f)]
+            what = []
+            if changed:
+                what.append(", ".join(changed))
+            if clear:
+                what.append("cleared " + ", ".join(clear))
             notes.append(f"corrected {target.get('name') or target['id']}"
-                         + (f" ({', '.join(changed)})" if changed else " (no change)"))
+                         + (f" ({'; '.join(what)})" if what else " (no change)"))
 
         if row.get("name"):     target["name"] = row["name"]
         if row.get("tier"):     target["tier"] = int(row["tier"])
@@ -753,9 +865,18 @@ def apply_manual(clubs, manual_rows, country_code):
         if row.get("ticketUrl"): target["ticketUrl"] = row["ticketUrl"]
         if row.get("source"):   target["source"] = row["source"]
         if row.get("note"):     target["note"] = row["note"]
+
+        # Last, so that a cleared cell wins over anything above it - and
+        # nothing above it can set a cleared field anyway, because
+        # load_manual blanked the cell once it recorded the clear.
+        for field in clear:
+            target[field] = None
+        if clear:
+            cleared[target["id"]] = clear
+
         target["manual"] = True
 
-    return notes, problems
+    return notes, problems, cleared
 
 
 # ------------------------------------------------------------------ main
@@ -845,11 +966,18 @@ def main():
             failures.append(f"{code} ({name}): no leagues mapped for this country yet")
             clubs_missing.append(f"{code} ({name}): no leagues mapped yet")
 
-        applied, applied_problems = apply_manual(clubs, manual_rows, code)
+        applied, applied_problems, cleared = apply_manual(clubs, manual_rows, code)
         manual_problems.extend(applied_problems)
 
+        # Both halves of the coordinate, not just the latitude. The gate
+        # used to ask for lat alone, which was fine while the only way
+        # to have no position was for Wikidata to supply neither - it is
+        # not fine now that a hand correction can take them away, and a
+        # club with a latitude and no longitude is a broken position
+        # rather than a missing one.
         keep = {cid: c for cid, c in clubs.items()
-                if c["tier"] is not None and c["lat"] is not None}
+                if c["tier"] is not None
+                and c["lat"] is not None and c["lon"] is not None}
         for club in keep.values():
             lid = next((l for l in club["leagues"] if tiers.get(l) == club["tier"]), None)
             meta = labels.get(lid or "", {})
@@ -864,7 +992,16 @@ def main():
                         break
             club["competition"] = label or None
         no_coord = sum(1 for c in clubs.values()
-                       if c["tier"] is not None and c["lat"] is None)
+                       if c["tier"] is not None
+                       and (c["lat"] is None or c["lon"] is None))
+        # A club that left the map because a hand correction cleared its
+        # position is named, not just counted. Clearing is supposed to
+        # remove a club from the map; a removal nobody can see is how
+        # this project loses things.
+        gone_by_clear = sorted(
+            (clubs[cid].get("name") or cid)
+            for cid, fields in cleared.items()
+            if cid in clubs and cid not in keep and {"lat", "lon"} & set(fields))
         with_cap = sum(1 for c in keep.values() if c["capacity"])
         with_venue = sum(1 for c in keep.values() if c["venue"])
         manual_count = sum(1 for c in keep.values() if c.get("manual"))
@@ -911,6 +1048,10 @@ def main():
             report.append(f"    left out, not a club: {note}")
         for note in applied:
             report.append(f"    {note}")
+        if gone_by_clear:
+            report.append(f"    off the map, position cleared by hand in {MANUAL_FILE}: "
+                          + ", ".join(gone_by_clear) +
+                          " - put it back by replacing the coordinates")
         if ambiguous:
             report.append(f"    {len(ambiguous)} club(s) in more than one mapped tier; "
                           f"took the highest. First: {ambiguous[0]}")
