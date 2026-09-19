@@ -141,10 +141,10 @@
     "Q82595"
    ],
    "tier": 1,
-   "venue": "Europa-Park-Stadion",
-   "capacity": 34700,
-   "lat": 48.021536,
-   "lon": 7.830006,
+   "venue": "Dreisamstadion",
+   "capacity": 24000,
+   "lat": 47.988889,
+   "lon": 7.893056,
    "city": null,
    "competition": "Bundesliga"
   },
@@ -1512,7 +1512,7 @@
    ],
    "tier": 3,
    "venue": "Flyeralarm Arena",
-   "capacity": 14500,
+   "capacity": 10504,
    "lat": 49.767194,
    "lon": 9.932944,
    "city": null,
