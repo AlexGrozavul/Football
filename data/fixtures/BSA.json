@@ -4982,31 +4982,6 @@
    "winner": "HOME_TEAM"
   },
   {
-   "id": 554940,
-   "utcDate": "2026-07-29T00:00:00Z",
-   "status": "POSTPONED",
-   "matchday": 21,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1766,
-    "name": "CA Mineiro",
-    "shortName": "Mineiro",
-    "tla": "CAM",
-    "crest": "https://crests.football-data.org/1766.png"
-   },
-   "away": {
-    "id": 4286,
-    "name": "RB Bragantino",
-    "shortName": "Bragantino",
-    "tla": "RBB",
-    "crest": "https://crests.football-data.org/4286.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 554942,
    "utcDate": "2026-07-29T00:00:00Z",
    "status": "POSTPONED",
@@ -5026,31 +5001,6 @@
     "shortName": "Vasco da Gama",
     "tla": "VAS",
     "crest": "https://crests.football-data.org/1780.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 554948,
-   "utcDate": "2026-07-29T00:00:00Z",
-   "status": "POSTPONED",
-   "matchday": 21,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1776,
-    "name": "São Paulo FC",
-    "shortName": "São Paulo",
-    "tla": "PAU",
-    "crest": "https://crests.football-data.org/1776.png"
-   },
-   "away": {
-    "id": 6685,
-    "name": "Santos FC",
-    "shortName": "Santos",
-    "tla": "SAN",
-    "crest": "https://crests.football-data.org/6685.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -7001,6 +6951,56 @@
     "shortName": "Bahia",
     "tla": "BAH",
     "crest": "https://crests.football-data.org/1777.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 554948,
+   "utcDate": "2026-10-02T23:00:00Z",
+   "status": "TIMED",
+   "matchday": 21,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1776,
+    "name": "São Paulo FC",
+    "shortName": "São Paulo",
+    "tla": "PAU",
+    "crest": "https://crests.football-data.org/1776.png"
+   },
+   "away": {
+    "id": 6685,
+    "name": "Santos FC",
+    "shortName": "Santos",
+    "tla": "SAN",
+    "crest": "https://crests.football-data.org/6685.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 554940,
+   "utcDate": "2026-10-03T21:30:00Z",
+   "status": "TIMED",
+   "matchday": 21,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1766,
+    "name": "CA Mineiro",
+    "shortName": "Mineiro",
+    "tla": "CAM",
+    "crest": "https://crests.football-data.org/1766.png"
+   },
+   "away": {
+    "id": 4286,
+    "name": "RB Bragantino",
+    "shortName": "Bragantino",
+    "tla": "RBB",
+    "crest": "https://crests.football-data.org/4286.png"
    },
    "homeGoals": null,
    "awayGoals": null,

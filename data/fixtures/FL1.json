@@ -909,7 +909,7 @@
   {
    "id": 559682,
    "utcDate": "2026-09-18T18:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 5,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -927,9 +927,9 @@
     "tla": "RCL",
     "crest": "https://crests.football-data.org/546.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559679,

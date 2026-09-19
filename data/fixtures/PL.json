@@ -1009,7 +1009,7 @@
   {
    "id": 560591,
    "utcDate": "2026-09-18T19:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 5,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1027,9 +1027,9 @@
     "tla": "CHE",
     "crest": "https://crests.football-data.org/61.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560587,

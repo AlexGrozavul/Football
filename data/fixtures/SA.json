@@ -1009,7 +1009,7 @@
   {
    "id": 558596,
    "utcDate": "2026-09-18T18:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 5,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1027,9 +1027,9 @@
     "tla": "SAS",
     "crest": "https://crests.football-data.org/471.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558589,
