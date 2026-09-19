@@ -886,6 +886,13 @@ def main():
                        "withVenueName": with_venue, "withCapacity": with_cap,
                        "handCorrected": manual_count}
 
+        # A country with no rectangle is only half checked, and silence
+        # would look exactly like a clean result. Say so.
+        if code not in COUNTRY_BOX:
+            report.append(f"    country check: no bounding box for {code} yet, so only "
+                          f"Wikidata's P17 was checked - add one to COUNTRY_BOX in "
+                          f"tools/fetch_clubs.py")
+
         flagged = country_review(keep, club_countries, code, country_qid)
         country_rows.extend(flagged)
 
