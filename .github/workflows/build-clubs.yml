@@ -44,6 +44,11 @@ jobs:
         run: |
           set -o pipefail
           python3 tools/_probe_stadiumdb_data.py 2>&1 | tee /tmp/probe.log
+      - name: Probe roster sources
+        if: always()
+        run: |
+          set -o pipefail
+          python3 tools/_probe_rosters.py 2>&1 | tee /tmp/roster.log
       - name: Summary
         if: always()
         run: |
