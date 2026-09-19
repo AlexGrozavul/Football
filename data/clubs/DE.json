@@ -1664,23 +1664,6 @@
    "competition": "Bundesliga"
   },
   {
-   "id": "Q7671747",
-   "name": "TSV 1860 München II",
-   "leagues": [
-    "Q340179"
-   ],
-   "tier": 5,
-   "venue": "Städtisches Stadion an der Grünwalder Straße",
-   "capacity": 15000,
-   "lat": 48.110833,
-   "lon": 11.574444,
-   "city": null,
-   "source": "https://www.wikidata.org/wiki/Q7671747",
-   "note": "Bayernliga Sud, tier 5. Wikidata still tags it Regionalliga Bayern (Q340179), which is why it arrives at tier 4. TIER ONLY - the venue, capacity and coordinates cells are deliberately left blank because the ground is genuinely unconfirmed, not merely unchecked. BUT LEAVING THEM BLANK DOES NOT CLEAR THEM: a blank cell means 'leave the fetched value alone', so this club keeps Wikidata's claim of the Grunwalder (P115 Q254903), its coordinates 48.110833/11.574444 and its 15000 capacity, all of which are the senior club's and none of which is verified. That is the same kind of copied-ground error as CS Dinamo above. Until the real ground is settled this club still shares the Grunwalder pin with TSV 1860 Munchen and FC Bayern Munchen II - at z12 and above, since tier 5 does not switch on before then.",
-   "manual": true,
-   "competition": null
-  },
-  {
    "id": "Q797022",
    "name": "BSV Rehden",
    "leagues": [
