@@ -4,8 +4,13 @@ name: Build club layer
 # data/clubs/. Weekly, because clubs move division once a season, not
 # once a day.
 #
-# Also runs whenever you edit data/league-tiers.csv, which is the file
-# that decides which clubs appear on the map at all.
+# Also runs whenever you edit one of the two hand-written files that
+# decide what is on the map: data/league-tiers.csv, which says which
+# leagues count, and data/clubs-manual.csv, which corrects, adds and
+# removes individual clubs. clubs-manual.csv was missing from this list
+# until 2026-09-19, so a hand correction sat inert until the Sunday cron
+# or a manual run - the CS Dinamo Bucuresti correction was committed on
+# 2026-09-18 and was still not on the map a day later.
 
 on:
   schedule:
@@ -15,6 +20,7 @@ on:
     branches: [main]
     paths:
       - "data/league-tiers.csv"
+      - "data/clubs-manual.csv"
       - "tools/fetch_clubs.py"
       - ".github/workflows/build-clubs.yml"
   workflow_dispatch:
@@ -48,6 +54,16 @@ jobs:
             echo '```'
             cat /tmp/clubs.log 2>/dev/null || echo "fetch did not run"
             echo '```'
+            if [ -f data/clubs/country-review.csv ]; then
+              echo
+              echo "### Clubs that may be in the wrong country's file"
+              echo
+              echo "Reported, never removed. A club listed here is still on the map."
+              echo
+              echo '```'
+              cat data/clubs/country-review.csv
+              echo '```'
+            fi
             if [ -f data/clubs/unmapped-leagues.csv ]; then
               echo
               echo "<details><summary>Unmapped leagues — paste the ones you want into data/league-tiers.csv</summary>"

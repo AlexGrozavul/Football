@@ -118,16 +118,19 @@
   },
   {
    "id": "Q113577526",
-   "name": "Dinamo București",
+   "name": "CS Dinamo București",
    "leagues": [
     "Q386384"
    ],
    "tier": 2,
-   "venue": "Stadionul Dinamo",
-   "capacity": 15032,
-   "lat": 44.455083,
-   "lon": 26.102444,
+   "venue": "CNF Buftea",
+   "capacity": 1600,
+   "lat": 44.5481,
+   "lon": 25.9811,
    "city": null,
+   "source": "https://www.wikidata.org/wiki/Q7596368",
+   "note": "Not a duplicate of Q204237. CS Dinamo Bucuresti is a separate club, currently in Liga 2, established by Alexandru from its Wikipedia article and the club's own csdinamofotbal accounts. Wikidata gives the club item the senior club's ground by mistake - its P115 is Q1226240, Stadionul Dinamo - and the capacity and coordinates follow from that. Name, venue, capacity and now coordinates are corrected here. The coordinates 44.5481/25.9811 are Q7596368's own P625, read on 2026-09-19 from a GitHub runner because the session doing the work could not reach wikidata.org. That is 14.1 km from Stadionul Dinamo, so the two Dinamos are now two separate pins. CAPACITY DISAGREES AND IS NOT CHANGED: Q7596368 says 450, the 1600 here is Alexandru's and wins. Worth a look - either Wikidata is low, or Q7596368 Stadionul Buftea is not the same ground as the CNF Buftea pitch the club actually uses. The coordinate is trusted because this row already named Q7596368 as its source.",
+   "manual": true,
    "competition": "Liga a II-a"
   },
   {
