@@ -230,20 +230,6 @@
    "competition": "Regionalliga Nordost"
   },
   {
-   "id": "Q1387764",
-   "name": "FC Triesenberg",
-   "leagues": [
-    "Q154069"
-   ],
-   "tier": 3,
-   "venue": "Sportanlage Leitawis",
-   "capacity": 800,
-   "lat": 47.1145,
-   "lon": 9.5401,
-   "city": null,
-   "competition": "3. Liga"
-  },
-  {
    "id": "Q141931",
    "name": "Dynamo Dresden",
    "leagues": [
@@ -298,7 +284,7 @@
    "lon": 10.009575,
    "city": null,
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_in_German_football",
-   "note": "Relegated from 3. Liga to Regionalliga in summer 2026",
+   "note": "Relegated from 3. Liga to Regionalliga in summer 2026. This is the item that survives the duplicate check: read on 2026-09-19 it has 21 Wikipedia sitelinks against Q701290's 14, so Q701290 gets the skip row. Its own P118 is still 2. Bundesliga and 3. Liga, which is why the tier 4 correction has to stay.",
    "manual": true,
    "competition": "Regionalliga Suedwest"
   },
@@ -1664,20 +1650,6 @@
    "competition": "Regionalliga Nordost"
   },
   {
-   "id": "Q701290",
-   "name": "SSV Ulm 1846",
-   "leagues": [
-    "Q322128"
-   ],
-   "tier": 4,
-   "venue": "Donaustadion",
-   "capacity": 19500,
-   "lat": 48.404589,
-   "lon": 10.009575,
-   "city": null,
-   "competition": "Regionalliga Suedwest"
-  },
-  {
    "id": "Q702455",
    "name": "RB Leipzig",
    "leagues": [
@@ -1697,13 +1669,16 @@
    "leagues": [
     "Q340179"
    ],
-   "tier": 4,
+   "tier": 5,
    "venue": "Städtisches Stadion an der Grünwalder Straße",
    "capacity": 15000,
    "lat": 48.110833,
    "lon": 11.574444,
    "city": null,
-   "competition": "Regionalliga Bayern"
+   "source": "https://www.wikidata.org/wiki/Q7671747",
+   "note": "Bayernliga Sud, tier 5. Wikidata still tags it Regionalliga Bayern (Q340179), which is why it arrives at tier 4. TIER ONLY - the venue, capacity and coordinates cells are deliberately left blank because the ground is genuinely unconfirmed, not merely unchecked. BUT LEAVING THEM BLANK DOES NOT CLEAR THEM: a blank cell means 'leave the fetched value alone', so this club keeps Wikidata's claim of the Grunwalder (P115 Q254903), its coordinates 48.110833/11.574444 and its 15000 capacity, all of which are the senior club's and none of which is verified. That is the same kind of copied-ground error as CS Dinamo above. Until the real ground is settled this club still shares the Grunwalder pin with TSV 1860 Munchen and FC Bayern Munchen II - at z12 and above, since tier 5 does not switch on before then.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q797022",
