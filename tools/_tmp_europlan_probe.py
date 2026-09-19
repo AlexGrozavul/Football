@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-"""TEMPORARY throwaway probe, second pass. Delete after the run.
+"""TEMPORARY throwaway probe, third pass. Delete after the run.
 
-The first pass drowned in the homepage's link dump and the log lost the
-robots.txt body. This one prints robots.txt first and last, prints no
-link dumps, and proves which index.php?s=... pages are real pages rather
-than the site's fallback, by comparing each body against the homepage.
+Pass two printed only the first 9,000 characters of the 43,000-character
+Datenschutzerklaerung, so the sweep for prohibition wording did not cover
+all of it. This pass sweeps the COMPLETE text of every real page and
+prints only the headings and the hits, so the answer is not capped.
 
-It reports verbatim and interprets nothing. It fetches no club or ground
-data and builds nothing.
+It reports verbatim and interprets nothing. It builds nothing.
 """
 
-import hashlib
 import html
 import re
 import time
@@ -19,33 +17,47 @@ import urllib.request
 
 UA = "Mozilla/5.0 (compatible; europlan-probe/1.0; one-off manual check)"
 BASE = "https://europlan-online.de"
-pages = {}
+
+# Anything that would amount to a restriction on reading the site, or a
+# permission to. German first, then English.
+WORDS = [
+    "untersagt", "verboten", "nicht gestattet", "unzulässig", "dürfen nicht",
+    "darf nicht", "nicht erlaubt", "keine automat", "automatisiert",
+    "automatisch", "systematisch", "massenhaft", "crawl", "scrap", "spider",
+    "harvest", "data mining", "data-mining", "text und data", "roboter",
+    "bot ", "bots", "skript", "rate limit", "zugriffsbeschränk",
+    "nur für den persönlichen", "private nutzung", "gewerblich",
+    "kommerziell", "vervielfält", "verwertung", "weiterverwend",
+    "datenbank", "schnittstelle", "api", "download", "herunterladen",
+    "einwilligung", "zustimmung", "genehmigung", "erlaubnis", "lizenz",
+    "nutzungsbedingung", "agb", "terms of use",
+]
+
+PAGES = {
+    "impressum": f"{BASE}/index.php?s=impressum",
+    "datenschutz": f"{BASE}/index.php?s=datenschutz",
+    "faq": f"{BASE}/index.php?s=faq",
+    "kontakt": f"{BASE}/index.php?s=kontakt",
+}
 
 
-def get(url, quiet=False):
+def fetch(url):
     req = urllib.request.Request(url, headers={
         "User-Agent": UA, "Accept": "*/*", "Accept-Language": "de,en;q=0.8"})
     try:
         with urllib.request.urlopen(req, timeout=45) as r:
-            raw, status, final, hdr = r.read(), r.status, r.geturl(), dict(r.headers)
+            raw, hdr, st = r.read(), dict(r.headers), r.status
     except urllib.error.HTTPError as e:
-        raw, status = e.read(), e.code
-        final = getattr(e, "url", url)
-        hdr = dict(e.headers) if e.headers else {}
+        raw, hdr, st = e.read(), dict(e.headers) if e.headers else {}, e.code
     except Exception as e:
         print(f"  FAILED {url}: {type(e).__name__} {e}")
-        time.sleep(1)
-        return None
+        return None, None
     cs = "utf-8"
     m = re.search(r"charset=([\w-]+)", hdr.get("Content-Type", ""), re.I)
     if m:
         cs = m.group(1)
-    body = raw.decode(cs, errors="replace")
-    pages[url] = (status, final, hdr, body)
-    if not quiet:
-        print(f"  status {status}  final {final}  {len(raw)} bytes")
     time.sleep(1)
-    return body
+    return st, raw.decode(cs, errors="replace")
 
 
 def text(h):
@@ -58,96 +70,37 @@ def text(h):
     return re.sub(r"\n\s*\n+", "\n", t).strip()
 
 
-def robots_block(tag):
-    print("#" * 70)
-    print(f"# ROBOTS.TXT VERBATIM ({tag})")
-    print("#" * 70)
-    for u in (f"{BASE}/robots.txt", "https://www.europlan-online.de/robots.txt"):
-        print(f"--- {u}")
-        b = get(u, quiet=(tag == "repeat"))
-        if b is None:
-            continue
-        st, final, hdr, _ = pages[u]
-        if tag != "repeat":
-            for k in sorted(hdr):
-                print(f"    header {k}: {hdr[k]}")
-        print(f"    HTTP {st}, {len(b)} chars")
-        print("    >>>>>>>>>> BEGIN BODY")
-        for line in b.splitlines():
-            print("    |" + line)
-        print("    <<<<<<<<<< END BODY")
-        print("    repr:", repr(b[:2000]))
-        print()
-
-
-robots_block("first")
-
-print("#" * 70)
-print("# WHICH index.php?s=... PAGES ARE REAL, AND WHICH ARE THE FALLBACK")
-print("#" * 70)
-home = get(f"{BASE}/", quiet=True)
-home_h = hashlib.sha1((home or "").encode()).hexdigest()[:12]
-home_t = text(home or "")
-print(f"homepage: {len(home or '')} chars, sha1 {home_h}, text {len(home_t)} chars")
+print("Sweeping the COMPLETE text of every real page. Nothing is capped.")
 print()
-
-slugs = ["impressum", "datenschutz", "faq", "kontakt", "agb",
-         "nutzungsbedingungen", "info", "hilfe", "ueber", "copyright",
-         "disclaimer", "terms", "nutzung", "regeln", "lizenz",
-         "thisdefinitelydoesnotexist"]
-real = []
-for s in slugs:
-    u = f"{BASE}/index.php?s={s}"
-    b = get(u, quiet=True)
-    if b is None:
+for name, url in PAGES.items():
+    st, body = fetch(url)
+    if body is None:
         continue
-    st, final, hdr, _ = pages[u]
-    t = text(b)
-    same = "SAME AS HOMEPAGE (fallback)" if t == home_t else "distinct page"
-    ttl = re.search(r"<title>(.*?)</title>", b, re.S | re.I)
-    ttl = re.sub(r"\s+", " ", html.unescape(ttl.group(1))).strip() if ttl else "(no title)"
-    print(f"  s={s:28} HTTP {st}  text {len(t):6} chars  {same}")
-    print(f"      <title> {ttl}")
-    if t != home_t:
-        real.append((s, u, t))
-print()
+    t = text(body)
+    print("=" * 70)
+    print(f"PAGE {name}  HTTP {st}  full text {len(t)} chars")
+    print("=" * 70)
 
-print("#" * 70)
-print("# FULL TEXT OF EVERY DISTINCT PAGE FOUND")
-print("#" * 70)
-for s, u, t in real:
-    print("=" * 70)
-    print(f"PAGE s={s}  ({u})  {len(t)} chars")
-    print("=" * 70)
-    print(t[:9000])
-    if len(t) > 9000:
-        print(f"... [{len(t)-9000} more chars omitted]")
+    heads = re.findall(r"<h([1-4])[^>]*>(.*?)</h\1>", body, re.S | re.I)
+    print("  headings:")
+    for lvl, htxt in heads:
+        clean = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", htxt))).strip()
+        if clean:
+            print(f"    h{lvl}: {clean[:110]}")
+
+    print("  sweep over the whole page:")
+    total = 0
+    for w in WORDS:
+        hits = [m.start() for m in re.finditer(re.escape(w), t, re.I)]
+        if not hits:
+            continue
+        total += len(hits)
+        print(f"    [{w}] {len(hits)} hit(s)")
+        for p in hits[:3]:
+            frag = re.sub(r"\s+", " ", t[max(0, p - 200):p + 260])
+            print(f"        ...{frag}...")
+    if total == 0:
+        print("    nothing matched on this page")
     print()
 
-print("#" * 70)
-print("# DOES THE SITE LINK TO A TERMS PAGE ANYWHERE ON THE HOMEPAGE?")
-print("#" * 70)
-print("Searching the homepage HTML for the words themselves, links or not.")
-for w in ["agb", "nutzungsbedingung", "nutzungsbeding", "terms", "impressum",
-          "datenschutz", "urheber", "copyright", "lizenz", "disclaimer",
-          "haftung", "api", "robots"]:
-    hits = [m.start() for m in re.finditer(w, home or "", re.I)]
-    print(f"  {w:20} {len(hits)} occurrence(s)")
-    for p in hits[:3]:
-        frag = re.sub(r"\s+", " ", (home or "")[max(0, p - 120):p + 120])
-        print(f"      ...{frag}...")
-print()
-
-print("#" * 70)
-print("# SITEMAP")
-print("#" * 70)
-for u in (f"{BASE}/sitemap.xml", f"{BASE}/sitemap_index.xml",
-          f"{BASE}/sitemap.xml.gz"):
-    print(f"--- {u}")
-    b = get(u, quiet=False)
-    if b:
-        print("    first 600 chars:", repr(b[:600]))
-print()
-
-robots_block("repeat")
 print("PROBE COMPLETE")
