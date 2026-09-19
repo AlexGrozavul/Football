@@ -33,36 +33,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TEMPORARY: europlan-online.de is blocked from the sandbox proxy the
-  # same way Wikidata and the Stadia docs were. This job reads the site's
-  # robots.txt and hunts for a terms-of-use page from a GitHub runner,
-  # which has normal egress. It answers the go/no-go question only and
-  # fetches nothing else. Remove this job, the script and the `if: false`
-  # below once the answer is read out of the job log.
-  europlan-probe-tmp:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Read europlan-online.de robots.txt and terms
-        run: |
-          set -o pipefail
-          python3 tools/_tmp_europlan_probe.py 2>&1 | tee /tmp/europlan.log
-
-      - name: Write the run summary
-        if: always()
-        run: |
-          {
-            echo "## europlan-online.de go/no-go probe"
-            echo
-            echo '```'
-            cat /tmp/europlan.log 2>/dev/null || echo "probe did not run"
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-
   clubs:
-    if: false  # TEMPORARY, see europlan-probe-tmp above
     runs-on: ubuntu-latest
 
     steps:

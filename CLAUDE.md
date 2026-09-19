@@ -437,11 +437,20 @@ a page anyone can already view in their browser's network tab.
   `workflow_dispatch` of `build-clubs.yml` against a working branch
   reaches Wikidata normally. That is how the Dinamo coordinates, the
   SSV Ulm sitelink counts and the Triesenberg confirmation were
-  obtained. The pattern, which has now been used three times: add a
+  obtained, and how europlan-online.de was read for the go/no-go
+  question below. The pattern, used repeatedly on 2026-09-19: add a
   throwaway script plus a temporary step to `build-clubs.yml` **on the
   working branch**, dispatch it with `ref` set to that branch, read the
   answers out of the job log, then remove the script and the step in
   the same branch.
+  **Two practical lessons from the europlan runs.** Put a temporary
+  job's own `if: false` on the `clubs` job while the probe runs, or the
+  dispatch also rebuilds and commits the club layer as a side effect of
+  asking a question. And **keep the printed output small**: the first
+  europlan probe dumped the site's ~1,000 homepage links, and the log
+  that could be read back no longer reached as far as the answer at the
+  top of it. Print the thing you are asking about first, and print it
+  again last.
   **The one constraint worth writing down:** `workflow_dispatch` only
   works for a workflow file that already exists on the **default
   branch**. A brand-new workflow on a working branch cannot be
@@ -867,18 +876,117 @@ a page anyone can already view in their browser's network tab.
   in Wikidata, not a filter, so no change to the query will close it.
   What can close it is a second source, which is what
   `coordinate-review.csv` above now offers for 28 of the 31.
-- **europlan-online as a second stadium source: still a question, and
-  the go/no-go part of it was not answerable on 2026-09-18.** The site
-  could not be reached at all from the machine doing the work — its
-  network policy blocks europlan-online.de, and Wikidata and Overpass
-  with it. So none of the three things that decide it were checked:
-  what `robots.txt` says, what the terms of use say about automated
-  reading, and whether the coordinates and capacities on the page are
-  as precise and as consistently laid out as the two hand-checked pages
-  suggested. Nobody should treat the question as settled until those
-  three have been read from the site itself.
-  What could be established, from a search engine's index of the site's
-  own pages rather than from the pages — so worth a second look, not a
+- **europlan-online as a second stadium source: the site has been read
+  at last, and what it says about automated access is nothing.** Two of
+  the three go/no-go questions are answered as of 2026-09-19, from the
+  site itself, through the Actions-dispatch route — the sandbox still
+  answers 403 to CONNECT for europlan-online.de, so a throwaway probe
+  went into `build-clubs.yml` on a working branch and was dispatched
+  three times. The probe read the legal and informational pages, plus
+  the homepage and one country, league and ground page to see what
+  robots directives those carry; it extracted no club or ground data
+  and kept nothing. Both it and the temporary job were removed again in
+  the same branch.
+  - **There is no `robots.txt`. It is a 404.** Both
+    `europlan-online.de/robots.txt` and
+    `www.europlan-online.de/robots.txt` return **HTTP 404** with the
+    server's generic 964-byte "404 Not Found" page — not an empty file,
+    not a file with no rules in it, no file at all. So there is **no
+    `User-agent` group, no `Disallow`, no `Allow`, no `Crawl-delay` and
+    no `Sitemap` line**, for any user agent, because there is no file
+    for them to be in. There is also no `sitemap.xml`.
+  - **There is no terms-of-use page, and this was proved rather than
+    assumed.** The site has exactly **four** pages that are not content:
+    Impressum, Datenschutz, FAQ and Kontakt. Everything else guessed at
+    — `?s=agb`, `?s=nutzungsbedingungen`, `?s=terms`, `?s=lizenz`,
+    `?s=copyright`, `?s=disclaimer`, `?s=info`, `?s=hilfe`, `?s=regeln`
+    — returns **HTTP 200 with the homepage**, and so does
+    `?s=thisdefinitelydoesnotexist`. That is the site's fallback, not a
+    page. The words "AGB", "Nutzungsbedingungen" and "Terms" appear
+    **zero** times in the homepage HTML, and the footer links only to
+    Bilder/Grounds hinzufügen, Fehler melden, FAQ, Presse, Kontakt,
+    Impressum and Datenschutz. So the earlier session was right that
+    `index.php?s=impressum` is generic legal boilerplate — and right to
+    keep looking, because now we know there is nowhere else to look.
+  - **Nothing on the site addresses automated or repeated access.** The
+    **complete** text of all four pages was swept — 6,888 characters of
+    Impressum, 42,931 of Datenschutz, 5,622 of FAQ, 4,436 of Kontakt —
+    for some forty German and English terms: *untersagt, verboten,
+    nicht gestattet, unzulässig, dürfen nicht, keine automatisierte,
+    systematisch, massenhaft, Roboter, crawl, scrap, spider, harvest,
+    data mining, rate limit, Zugriffsbeschränkung, nur für den
+    persönlichen Gebrauch, gewerblich, kommerziell* and the rest.
+    **Not one of them is there.** The handful of matches were substrings
+    inside unrelated German words — "agb" inside
+    *Datenübertragbarkeit*, "bots" inside *Botswana* in the country
+    dropdown — and GDPR boilerplate about processing personal data.
+  - **What the site does say is about copyright, not about access.** The
+    Impressum carries the standard eRecht24 paragraph: content created
+    by the operators is under German copyright, and "die
+    Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
+    Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der
+    schriftlichen Zustimmung des jeweiligen Autors". The Kontakt page
+    says the usage rights in the photographs belong **exclusively to
+    the person who submitted them** and that Europlan is not authorised
+    to license them on. Both are about republishing, neither is about
+    reading.
+  - **The one robots instruction that does exist says "index, follow",
+    and it must not be over-read.** Every page checked — homepage,
+    country page, league page and a ground page — carries
+    `<meta name="robots" content="index, follow">` and **no
+    `X-Robots-Tag` header**. That is an instruction to search engines to
+    index the page. It is not a grant of permission for anything else,
+    and nobody should cite it as one.
+
+  **So: it is silence, and silence is what it is.** The site expresses
+  no rule about automated reading — it neither permits it nor forbids
+  it, and there is no document on it that speaks to the question at
+  all. A missing `robots.txt` conventionally means a crawler has no
+  path-level rules to obey (RFC 9309), but that is a convention among
+  crawlers, not permission given by this site. Do not write "the site
+  allows it" anywhere. What is true is: **nothing there says not to.**
+
+  **What silence does not settle, and it is the real question.** German
+  law gives a database maker a right of its own (`§ 87a-b UrhG`,
+  *Datenbankherstellerrecht*) against extracting a **substantial part**
+  of a database, whether or not the individual facts in it are
+  copyrightable — and a ground's coordinates and capacity are facts.
+  Reading a few dozen pages to settle the 19 ambiguous coordinate rows
+  and the 3 unplaceable clubs is a different thing from taking a
+  country's worth of grounds for tier 5, and the difference is exactly
+  what that right is about. Nothing found on the site answers it,
+  because the site says nothing. This is flagged here as an open
+  question and is **not** a finding — nobody involved is a lawyer, and
+  it should not be settled by anybody guessing which side of "a
+  substantial part" a plan falls on. The cheap way past it is to ask:
+  the Kontakt page gives `info@europlan-online.de`, the site is run by
+  four named people, and a short mail describing exactly what is wanted
+  would replace all of this reasoning with an answer.
+
+  **The third go/no-go criterion was not checked and is still open**:
+  whether the coordinates and capacities on a ground page are as
+  precise and as consistently laid out as the two hand-checked pages
+  suggested. That needs the ground pages parsed, which is the build
+  that has deliberately not been started.
+
+  **Notes for whoever does build the fetcher**, all measured on
+  2026-09-19:
+  - Everything redirects to `www.europlan-online.de`. nginx, PHP
+    7.4.33, a `PHPSESSID` cookie on every response, and
+    `Cache-Control: public, max-age=600`.
+  - **A 200 from this site does not mean the page exists.** An unknown
+    `?s=` value silently serves the homepage with HTTP 200. Any fetcher
+    must check the content, never the status code.
+  - The country page `index.php?s=land&id=1` is **504 KB** in one
+    response and the homepage is 176 KB. Whatever is built should be
+    slow and few-requests by design; there is no `Crawl-delay` to obey
+    precisely because there is no file to put one in.
+  - A real ground URL, confirmed live:
+    `/stadion-gladbeck-vestische-kampfbahn/stadion-5093.html`.
+
+  What was established earlier from a search engine's index of the
+  site's own pages rather than from the pages — still unverified
+  against the site, so still worth a second look rather than a
   decision:
   - There is a systematic way round it. A ground is
     `/<name>/stadion-<id>.html`, a league is `index.php?s=liga&id=<n>`
