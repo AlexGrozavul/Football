@@ -1621,10 +1621,174 @@ a page anyone can already view in their browser's network tab.
     Valznerweiher four. Matching on a ground's name would be exactly as
     ambiguous as OpenStreetMap is. Only the club-to-ground link is
     worth anything here.
+- **StadiumDB.com was evaluated as a second, OpenStreetMap-independent
+  capacity source on 2026-09-19, to the same standard europlan-online
+  got. It passes on terms and on format, and it fails on coverage —
+  so it is not the tier-2 cross-check that was wanted.** Everything
+  below was read from the site through the Actions-dispatch route; the
+  sandbox answers 403 to CONNECT for `stadiumdb.com` the same way it
+  does for Wikidata and europlan. **That 403 is this sandbox's egress
+  policy, not the site refusing anything**, which is the opposite of
+  the fcbayern.com case and must not be confused with it.
+  - **There is a real `robots.txt`, and it permits this.** 33 bytes,
+    `text/plain`, byte-identical on `stadiumdb.com`,
+    `www.stadiumdb.com`, `stadiony.net` and `www.stadiony.net` (the
+    www hosts redirect to the apex). In full:
+    `User-agent: *` / `Disallow: /lay-gfx/`. One disallowed path, and
+    it is the layout graphics directory. No `Crawl-delay`, no
+    `Sitemap` line, and `sitemap.xml` and `sitemap_index.xml` are both
+    404.
+    **This is a stronger answer than europlan gave and the difference
+    matters.** europlan has no `robots.txt` at all, so there were no
+    path rules to obey and the conclusion had to be "nothing there says
+    not to". StadiumDB *has* a crawl policy, and that policy allows
+    every content path. That is permission of a narrow and specific
+    kind — for crawling, under the robots convention — and it should
+    not be stretched into permission for anything else.
+  - **It 404s honestly, which europlan does not.** A bogus path returns
+    a genuine HTTP 404 with an 11.5 KB error page, clearly distinct
+    from the 54 KB homepage, at both `/xxx` and `/stadiums/xxx`.
+    europlan answers an unknown `?s=` with the homepage and HTTP 200,
+    so any fetcher there has to check content rather than status.
+    Here the status code can be trusted.
+  - **No `<meta name="robots">` on any page checked and no
+    `X-Robots-Tag` header**, on the homepage, the stadium index or
+    the about page. europlan carried `index, follow`; this carries
+    nothing at all.
+  - **There is no terms-of-use page, and the copyright page is empty.**
+    The footer links to Copyrights on both sites. The English
+    `/copyrights` is a **404**. The Polish `/prawa_autorskie` returns
+    **HTTP 200 with no body text whatsoever** — 1,324 characters, every
+    one of them navigation, the standard site blurb and the footer.
+    `/faq` is the same: HTTP 200, no FAQ on it. `/privacy_policy` is a
+    404 despite being linked, because those nav entries sit inside HTML
+    comments in the markup, which is why a link-scrape finds URLs the
+    site does not serve. `/contact_us` is real and names Grzegorz
+    Kaliciak as founder and owner. `/o_serwisie` is real and is the
+    site's history.
+  - **The only statement of rights anywhere is the footer line**:
+    "© 2001-now StadiumDB.com. All rights reserved." and its Polish
+    twin "Wszelkie prawa zastrzeżone." A sweep of the full text of
+    every non-content page on both sites for some forty English and
+    Polish terms — *prohibit, forbidden, not permitted, automated,
+    scrap, crawl, spider, harvest, data mining, systematic, bulk,
+    rate limit, personal use, commercial, zabronione, niedozwolone,
+    automatyczn, masowe, systematyczn, komercyjn, użytek osobisty,
+    baza danych* and the rest — matched **nothing about access**. The
+    two Polish hits were a gambling-licence disclaimer that appears in
+    the footer of every page.
+  - **So the open legal question is the same one europlan left open,
+    and it is not settled here either.** The operator is Polish, and
+    Poland implements the EU sui generis database right just as
+    Germany does, so extracting a substantial part of the database is
+    a different question from reading some pages, and `robots.txt`
+    does not speak to it. Nobody involved is a lawyer and this is not
+    a finding. The cheap way past it is the same: the contact page
+    names the owner, and a short mail describing exactly what is
+    wanted would replace the reasoning with an answer.
+  - **The page format is the most consistent this project has
+    evaluated.** 27 stadium pages were sampled across nine countries.
+    Capacity, Country, City and Clubs were present on **27 of 27**.
+    Inauguration on 23, Address on 21, Floodlights on 5. Layout did
+    not vary.
+    Better still, every page carries a single meta tag that holds the
+    whole record:
+    `<meta name="Description" content="Stadium: Stade des Costières,
+    Nîmes, France, capacity: 18482, club: -." />`
+    One regular expression over that line gives name, city, country,
+    capacity and club, with no HTML parsing at all. The capacity in
+    the page body uses non-breaking spaces as thousands separators
+    ("18 482"); the meta tag gives it as a bare integer.
+    A country page is even cheaper: it is one table,
+    **Name | City | Clubs | Capacity**, and **every row named a club**
+    — 69 of 69 for France, 109 of 109 for Germany, 314 of 314 for
+    Poland. One request per country gives the whole country.
+  - **What the pages do NOT carry is a coordinate. Zero of 27.** This
+    is the structural problem, not a detail. `crosscheck_capacity.py`
+    matches a club to a ground **by position, within 500 m,
+    deliberately not by name**, and this project has already been
+    bitten by name matching — Eutin 08 scored 0.5 against FC 08
+    Homburg on the shared "08" alone. A StadiumDB cross-check cannot
+    use the existing matcher and would have to match on club name plus
+    city, which is the technique the coordinate matcher exists to
+    avoid.
+  - **Coverage is where it fails, and the numbers are the answer.**
+    Counted from each country's own listing page:
+
+    | country | stadiums | under 6,000 | under 12,000 | under 20,000 |
+    |---|---|---|---|---|
+    | France | 69 | 5 | 15 | 40 |
+    | Italy | 69 | 7 | 18 | 36 |
+    | Switzerland | **17** | 2 | 7 | 12 |
+    | Austria | 27 | 8 | 17 | 23 |
+    | Serbia | 29 | 11 | 20 | 26 |
+    | Greece | 29 | 5 | 15 | 20 |
+    | Germany | 108 | 5 | 18 | 63 |
+    | Romania | 40 | 7 | 17 | 33 |
+    | Poland | **314** | 246 | 278 | 302 |
+
+    The whole database is **2,501 stadiums worldwide**, a figure the
+    site prints on its own pages. Poland having 314 of them, against
+    108 for Germany and 17 for Switzerland, is the shape of a Polish
+    site that grew out of `stadiony.net` in 2001 and added an English
+    edition in 2012. **Coverage is deep at home and thin abroad**, and
+    that is the finding.
+  - **Switzerland fails on arithmetic alone.** Seventeen stadiums in
+    the whole country is fewer grounds than the Super League and
+    Challenge League have clubs between them, so the second tier
+    cannot be complete no matter which 17 they are. Austria at 27,
+    Serbia at 29 and Greece at 29 are all in the same range as their
+    top two divisions' club counts, which means at best bare coverage
+    with no margin, and in practice less than that.
+  - **A name-based smoke test agrees, and it was the author's own
+    recollection rather than a source**, so it is corroboration and
+    not evidence: second-tier club and town names were found for
+    France 10 of 12 and Italy 10 of 12, but Switzerland 5 of 11,
+    Serbia 4 of 10, Austria 3 of 7 and **Greece 2 of 10**. The two
+    countries that pass the arithmetic are the two that pass the name
+    test, which is what makes the pattern worth reporting.
+  - **So the verdict is: yes for France and Italy, no for
+    Switzerland, Austria, Serbia and Greece.** As a second opinion on
+    a ground StadiumDB happens to hold it is excellent — clean to
+    parse, independent of both OpenStreetMap and Wikidata, and
+    editorially curated rather than crowd-sourced. As the systematic
+    tier-2 capacity cross-check for those six countries it does not
+    have the data, and no amount of parsing will conjure it.
+  - **What would fill the gap is already in hand.** The Wikipedia
+    current-season article for a league carries a "Stadiums and
+    locations" table with a capacity column, and its coverage is
+    exactly the league being checked, by construction — there is no
+    country where it is thin, because the table is the league. The
+    roster check described under "Planned, not built" reads those
+    tables anyway, so the capacity column is free once it exists: one
+    source doing two jobs. europlan-online remains the deeper source
+    for Germany and OpenStreetMap remains the position-matched one.
+    StadiumDB is worth keeping as a third opinion for the top flights
+    and for France and Italy, and is not worth building a pipeline
+    around.
 - Wikidata's Regionalliga season items carry no participant list
   (`P1923`) for any of the five divisions, so there is no way inside
   Wikidata to enumerate who should be in a division and compare it
   against what came back.
+  **That was measured across seven countries on 2026-09-19 and it is
+  worse than the Regionalliga note suggested.** The latest season item
+  of each league was found through `P3450` and its `P1923` count
+  taken. **Zero participants** on the current season of the
+  Bundesliga (`Q138320695`, starts 2026-08-28), the Romanian SuperLiga
+  (`Q140134051`), Liga II, Liga III, the Austrian Bundesliga
+  (`Q138946873`), the Serbian SuperLiga, the Swiss Super League
+  (`Q138975892`) and the Challenge League. The only two leagues with
+  any participants at all are stale: 2. Bundesliga last has 18 on a
+  **2022-07-15** season, 3. Liga 19 on a **2024-08-02** one.
+  So `P1923` cannot be the roster source for any tier, in any of these
+  countries. This is a shame rather than a detail, because it is the
+  only candidate that would have returned **Q-ids** and so joined to
+  the club layer with no name matching at all.
+  `P3983` (league level) is no better as a way in: asked for every
+  league in France, Italy, Switzerland, Austria, Serbia and Greece at
+  level 1 or 2, it returns **six leagues**, none of them French or
+  Italian, and **two of the six are women's competitions**, which rule
+  6 excludes anyway.
 - Wikidata's `P3983` (league level) is not set on Bundesliga, so it
   cannot be the sole source of tier data. It can generate a draft of
   `league-tiers.csv` for review, which is the plan for expanding beyond
@@ -1671,5 +1835,143 @@ a page anyone can already view in their browser's network tab.
 5. Revamped bucket list and ticket info tabs, plus a fourth tab for
    memberships and tickets already held: cost, renewal date, benefits.
 6. Expansion to more countries, one at a time.
+7. **The official-roster check — designed 2026-09-19, not built.**
+   Every accuracy pass this project has runs on what is already on the
+   map: `crosscheck_capacity.py` compares figures for clubs it has,
+   `country-review.csv` flags clubs that reached the wrong file,
+   `coordinate-review.csv` places clubs it knows about. **Nothing
+   anywhere asks whether a club that should be there is missing**, and
+   a club absent from the club query leaves no trace to find. The
+   roster check is the pass that asks the question from the league's
+   side: here is the division's actual current membership, does the
+   pipeline have all of it.
+
+   **The counts already say something is wrong, and that is the
+   motivation.** Germany is 18 at tier 1, 18 at tier 2 and **22 at
+   tier 3**, where the 3. Liga fields twenty. Romania is 16 at tier 1,
+   **16 at tier 2** where Liga II fields around twenty-two, and **32
+   at tier 3** where Liga III fields something near a hundred across
+   its series. Those gaps are invisible today because nothing compares
+   the club layer against a membership list.
+
+   **Three different things are being called "missing" and they want
+   three different remedies**, which is why the check reports a verdict
+   per club rather than a count:
+   1. **Absent from Wikidata's answer** — no `P118`, or a `P118` naming
+      a league not in `league-tiers.csv`. The pipeline cannot see the
+      club at all. Remedy: an add row in `clubs-manual.csv`.
+   2. **In the answer, dropped at the coordinates gate** — the
+      documented case of the 31 Regionalliga clubs with no `P115` and
+      no `P625`. The pipeline knows the club and cannot place it.
+      Remedy: the route that already exists, `coordinate-review.csv`
+      and then europlan.
+   3. **Present at the wrong tier** — a stale `P118` from last season.
+      Not absent from the file, absent from its division. Remedy: the
+      `tier` cell in `clubs-manual.csv`.
+   A bare count cannot tell these apart, and worse, **a count can come
+   out right while the membership is wrong** — one club promoted in and
+   one relegated out, both mistagged, cancel exactly.
+
+   **The source: Wikipedia's current-season article, and the reason is
+   measured rather than preferred.** `P1923` was tried first, because
+   it would have returned Q-ids and needed no name matching at all, and
+   it is empty — see the entry under Known open problems. League
+   official sites were rejected as the backbone for the opposite
+   reason: they are authoritative and every one of them is a different
+   site in a different language with a different layout, several of
+   them rendered in the browser, so six countries means six brittle
+   parsers and a silent breakage looks exactly like "every club is
+   missing". Wikipedia's season articles are one shape in one language
+   across all of them. Tested on 2026-09-19 with a single generic
+   parser — find the first `wikitable` whose header mentions a stadium
+   or venue and a capacity, take the first linked article in each row:
+
+   | article | clubs parsed |
+   |---|---|
+   | 2026–27 Bundesliga | 18 |
+   | 2026–27 2. Bundesliga | 18 |
+   | 2026–27 Ligue 2 | 18 |
+   | 2026–27 Serie B | 20 |
+   | 2026–27 Swiss Challenge League | 10 |
+   | 2026–27 Serbian First League | 16 |
+   | 2026–27 Super League Greece 2 | 16 |
+
+   **Seven of nine on the first attempt.** The two that failed —
+   Austrian 2. Liga and Romanian Liga II — failed on the **article
+   title**, not on the table: nothing was found under the titles
+   guessed for them. That is the failure mode a hand-written config
+   column fixes once and for good, and it is exactly the kind of thing
+   this project already hand-writes rather than infers.
+
+   **The en dash is not optional.** The articles are `2026–27`, not
+   `2026-27`. The probe tried both and only the en dash resolved.
+
+   **Name matching is avoided by hopping through the sitelink.** A
+   Wikipedia row gives an article title; `wbgetentities` with
+   `sites=enwiki` turns that title into a **Q-id**, which joins to the
+   club layer exactly. So the comparison is id-to-id even though the
+   source is an HTML table, and none of the fuzzy matching that put
+   Eutin 08 next to FC 08 Homburg is needed. This is the same sitelink
+   machinery the SSV Ulm question already used.
+
+   **What it would write.** `data/clubs/roster-review.csv`, in the
+   column order of `clubs-manual.csv` followed by underscore-prefixed
+   diagnostics, the same shape as `capacity-review.csv` and
+   `coordinate-review.csv` so an accepted row pastes straight across.
+   `_verdict` carries one of the five outcomes: `ok`, `missing-from-
+   wikidata`, `unplaced-no-coordinates`, `wrong-tier`, `extra-not-in-
+   roster`. It **reads and never writes** to any club file, and it
+   reports rather than corrects, because deciding which of the three
+   remedies applies is a judgement — the SSV Ulm case is the standing
+   proof that two items on one ground can want opposite answers.
+
+   **Two guards it must have, both from mistakes this project has
+   already made.** First, **a source that returns nothing is a failed
+   fetch, not an empty league**: if the article is missing or the table
+   does not parse, the run keeps the last good review file and says so
+   in the summary, the rule `capacity-review.csv` and
+   `unmapped-leagues.csv` already follow. A parser that silently
+   returns zero clubs would otherwise report an entire division as
+   missing, with a green tick. Second, **it must not hardcode league
+   sizes.** The expected membership comes from the source; writing "the
+   3. Liga has 20 clubs" into the tool would be inventing the very fact
+   the check exists to obtain.
+
+   **Where two sources are wanted.** Following the capacity
+   cross-check's own rule — where two independent sources agree the
+   figure is almost certainly right and the row is left out — a club
+   should be reported as genuinely missing when **the roster source and
+   a second source agree it is in the division**. football-data.org is
+   already wired up and its token is already in Actions secrets, and it
+   gives a real team list per competition; its free tier reaches the
+   top flights and not the second tiers, so it confirms tier 1 and
+   stays silent below. OpenLigaDB would do the same job for Germany's
+   2. Bundesliga, 3. Liga and Regionalliga and is still not wired up.
+   Where only one source speaks, the row says so rather than being
+   suppressed or promoted.
+
+   **The per-league configuration is one small hand-written file**,
+   `data/league-rosters.csv`, rather than a change to
+   `league-tiers.csv`, so no existing hand-written file's schema moves:
+   `leagueQid`, `country`, `tier`, `season`, `article`, `note`. The
+   `season` cell is hand-written because deriving "2026–27" from the
+   date is an inference that is wrong for weeks every summer, and the
+   `article` cell is what fixes Austria's and Romania's titles. One
+   line per league, edited once a year.
+
+   **The capacity column comes free.** The table the check reads for
+   membership is the "Stadiums and locations" table, which carries a
+   capacity per club. Since StadiumDB turned out not to cover the
+   second tiers of Switzerland, Austria, Serbia or Greece, this is the
+   better answer to the capacity question too: the coverage is the
+   league by construction. Whether to use it that way is a separate
+   decision and nothing here assumes it.
+
+   **What this does not do.** It says nothing about tier 4 and below,
+   where no season article reliably exists and where Romania's Liga III
+   would need its series enumerated. It cannot see a club that both
+   sources miss. And it is a check on *membership*, not on grounds,
+   capacities or coordinates — a club can be correctly listed and still
+   be sitting on the wrong pin.
 
 Every change must actually land in the repository. Write files to disk, commit them, and push the branch — do not finish a task with changes left only in the working tree or described in the reply. When the task is done, state which files were committed and what the branch is called, so the diff can be reviewed.
