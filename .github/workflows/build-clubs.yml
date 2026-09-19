@@ -43,7 +43,7 @@ jobs:
       - name: Probe StadiumDB access and terms
         run: |
           set -o pipefail
-          python3 tools/_probe_stadiumdb_access.py 2>&1 | tee /tmp/probe.log
+          python3 tools/_probe_stadiumdb_data.py 2>&1 | tee /tmp/probe.log
       - name: Summary
         if: always()
         run: |
