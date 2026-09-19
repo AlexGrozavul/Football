@@ -111,10 +111,13 @@
    ],
    "tier": 2,
    "venue": "Wildparkstadion",
-   "capacity": 29699,
+   "capacity": 33180,
    "lat": 49.02,
    "lon": 8.413056,
    "city": null,
+   "source": "ksc.de",
+   "note": "33180 is the club's own announced matchday capacity for the 2025/26 season, from ksc.de. THE GROUND HOLDS MORE THAN THIS: its total physical capacity is 34140 - the figure OpenStreetMap carries - but not all of it is licensed for matchday use, and the licensed figure is the one that decides whether a match sells out. Wikidata's 29699 is neither of the two. SEASON WORTH CHECKING: 2025/26 is the season Alexandru named, and this was entered on 2026-09-19, by which time 2026/27 had started - so re-read ksc.de in case the club has announced a newer figure. The page could not be opened from the machine that made this edit.",
+   "manual": true,
    "competition": "2. Bundesliga"
   },
   {
@@ -296,10 +299,13 @@
    ],
    "tier": 3,
    "venue": "Merkur Spiel-Arena",
-   "capacity": 9917,
+   "capacity": 54600,
    "lat": 51.261539,
    "lon": 6.733083,
    "city": null,
+   "source": "ticketpiloten.de, and the Merkur Spiel-Arena's own site",
+   "note": "Wikidata's 9917 is the standing-room figure on its own, not the ground's total. 54600 is the full capacity, given by Alexandru from ticketpiloten.de and the arena's own site. OpenStreetMap already had 54600, so the two now agree - this was the worst row in capacity-review.csv, 82% apart. Neither source page could be opened from the machine that made this edit, so the figure rests on Alexandru's reading of them.",
+   "manual": true,
    "competition": "3. Liga"
   },
   {
@@ -465,10 +471,13 @@
    ],
    "tier": 3,
    "venue": "Ludwigsparkstadion",
-   "capacity": 35303,
+   "capacity": 16000,
    "lat": 49.2475,
    "lon": 6.984167,
    "city": null,
+   "source": "sportschau.de, liga3-online.de",
+   "note": "Wikidata's 35303 is not the Ludwigsparkstadion's current capacity. 16000 is, given by Alexandru from sportschau.de and liga3-online.de; OpenStreetMap's 16003 agrees to within three seats. AN EXPANSION TOWARD 18500 IS APPROVED BUT NOT YET UNDER WAY, so 18500 is deliberately NOT entered here and no date is given for it - put it in once the ground actually holds that many. Neither source page could be opened from the machine that made this edit.",
+   "manual": true,
    "competition": "3. Liga"
   },
   {
@@ -650,10 +659,13 @@
    ],
    "tier": 4,
    "venue": "Bruno-Plache-Stadion",
-   "capacity": 7000,
+   "capacity": 12321,
    "lat": 51.3029,
    "lon": 12.4192,
    "city": null,
+   "source": "pulsleipzig.de",
+   "note": "Wikidata says 7000 for the Bruno-Plache-Stadion. 12321 is Alexandru's figure from pulsleipzig.de, and it matches OpenStreetMap's 12321 exactly, which is what settles it - capacity-review.csv had the two sources 43% apart. Note this is the surviving Lok Leipzig item; Q28936927 is the duplicate and has a skip row above. The source page could not be opened from the machine that made this edit.",
+   "manual": true,
    "competition": "Regionalliga Nordost"
   },
   {
@@ -822,6 +834,9 @@
    "lat": 51.239083,
    "lon": 7.105083,
    "city": null,
+   "source": "multiple independent listings, per Alexandru",
+   "note": "THIS ROW CHANGES NOTHING ON THE MAP AND IS MEANT TO: Wikidata already says 23067 for the Stadion am Zoo and it is right, so the capacity before and after this row is the same. It goes in the other direction from every other correction in this batch - here it was OPENSTREETMAP that was imprecise, with a round 21000, and capacity-review.csv reported the 9% gap as if Wikidata were the suspect one. Writing 23067 down by hand pins it, so a future Wikidata edit cannot quietly move it and so the next reader knows the row was judged rather than missed.",
+   "manual": true,
    "competition": "Regionalliga West"
   },
   {
@@ -1217,10 +1232,13 @@
    ],
    "tier": 2,
    "venue": "Stadion am Böllenfalltor",
-   "capacity": 19000,
+   "capacity": 17810,
    "lat": 49.857778,
    "lon": 8.672222,
    "city": null,
+   "source": "sv98.de",
+   "note": "17810 is the club's own stated legal capacity for the Merck-Stadion am Boellenfalltor, from sv98.de. Wikidata says 19000; OpenStreetMap already had 17810, so the club's figure and OpenStreetMap agree and Wikidata is the odd one out. The source page could not be opened from the machine that made this edit.",
+   "manual": true,
    "competition": "2. Bundesliga"
   },
   {
