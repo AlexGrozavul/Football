@@ -1,0 +1,39 @@
+{
+ "forms": [
+  "<form method=\"get\" action=\"index.php\"> <input type=\"hidden\" name=\"s\" value=\"search\"/> <div id=\"input-search\"><input type=\"text\" name=\"search\" class=\"text\" placeholder=\"Stadion / Verein suchen\" autocorrect=\"off\" /></div> <button type=\"submit\" name=\"suchen\" class=\"btn\"><i class=\"fa fa-search\" aria-hidden=\"true\"></i></button> <div class=\"clr\"></div> </form>"
+ ],
+ "inputs": [
+  "<input type=\"hidden\" name=\"s\" value=\"search\"/>",
+  "<input type=\"text\" name=\"search\" class=\"text\" placeholder=\"Stadion / Verein suchen\" autocorrect=\"off\" />",
+  "<select name=\"q_land\" id=\"q_land\" >",
+  "<select name=\"q_liga\" id=\"q_liga\" disabled=\"disabled\">",
+  "<select name=\"q_verein\" id=\"q_verein\" disabled=\"disabled\">"
+ ],
+ "action_hints": [
+  "index.php"
+ ],
+ "control_tries": {
+  "index.php?s=search&q={q}": {
+   "bytes": 46097,
+   "found_control": false
+  },
+  "index.php?s=search&suche={q}": {
+   "bytes": 46101,
+   "found_control": false
+  },
+  "index.php?s=search&begriff={q}": {
+   "bytes": 46103,
+   "found_control": false
+  },
+  "index.php?s=search&name={q}": {
+   "bytes": 46100,
+   "found_control": false
+  },
+  "index.php?s=search&t=verein&q={q}": {
+   "bytes": 46106,
+   "found_control": false
+  }
+ },
+ "working_shape": null,
+ "missing_results": {}
+}
