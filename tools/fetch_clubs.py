@@ -124,14 +124,21 @@ DISCOVERY_TRADE_OFF = (
 # mapped, a few hundred items, so it is nothing like the country-wide
 # discovery query and one more optional property costs nothing
 # measurable.
+#
+# P17 is asked for on the same terms and for the same reason: to REPORT,
+# never to filter. See the country sanity check below. Filtering on P17
+# was considered and rejected because the clubs that are missing are
+# exactly the ones whose fields are not filled in; reporting on it
+# cannot drop anybody.
 CLUB_QUERY = """
-SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?capacity ?coord ?cityLabel ?typeLabel
+SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?capacity ?coord ?cityLabel ?typeLabel ?country
 WHERE {
   VALUES ?league { %(leagues)s }
   ?club wdt:P118 ?league .
   FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
   FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
   OPTIONAL { ?club wdt:P31 ?type }
+  OPTIONAL { ?club wdt:P17 ?country }
   OPTIONAL {
     ?club wdt:P115 ?venue .
     OPTIONAL { ?venue wdt:P625 ?venueCoord }
@@ -144,6 +151,22 @@ WHERE {
 """
 
 POINT_RE = re.compile(r"Point\(\s*(-?[\d.]+)\s+(-?[\d.]+)\s*\)")
+
+# Printed in the run summary every time the country check runs, because
+# what this check CANNOT see matters as much as what it flags.
+COUNTRY_CHECK_NOTE = (
+    "The country check reports and never removes. It uses two signals: a "
+    "rectangle round the country, and Wikidata's own P17 on the club. "
+    "Neither is enough alone. The rectangle cannot tell a German club "
+    "from a Swiss or Austrian one near the border, because a rectangle "
+    "big enough for Germany also covers northern Switzerland, western "
+    "Austria and all of Liechtenstein - it caught FC Triesenberg only "
+    "because Liechtenstein is south of Germany's southernmost point. P17 "
+    "covers that gap but is blank on many clubs, and a club with no P17 "
+    "inside the rectangle is never mentioned. So nothing flagged here "
+    "does not mean nothing is wrong.")
+
+
 
 
 # ------------------------------------------------------------- csv safety
@@ -353,13 +376,19 @@ def build_clubs(rows, tiers):
     """
     Fold the flat SPARQL rows into one record per club.
 
-    Returns (clubs, leagues, ambiguous, dropped). "dropped" is the items
-    that carried a league tag but are not clubs - see not_a_club above.
-    They are named in the run summary rather than removed quietly.
+    Returns (clubs, leagues, ambiguous, dropped, countries). "dropped" is
+    the items that carried a league tag but are not clubs - see
+    not_a_club above; they are named in the run summary rather than
+    removed quietly. "countries" is Wikidata's own P17 per club, as
+    Q-ids, and is used only by the country sanity check.
     """
     clubs = {}
     leagues = {}
     kinds = {}
+    # Wikidata's own P17 per club, kept BESIDE the club and not on it:
+    # the club dictionary is written to the country file as it stands,
+    # and this is evidence for a report, not data for the map.
+    countries = {}
 
     for row in rows:
         cid = qid(cell(row, "club"))
@@ -414,6 +443,12 @@ def build_clubs(rows, tiers):
             if kind not in seen:
                 seen.append(kind)
 
+        home = qid(cell(row, "country"))
+        if home:
+            seen = countries.setdefault(cid, [])
+            if home not in seen:
+                seen.append(home)
+
     # The items that are not clubs at all, thrown out before anything
     # else looks at them.
     dropped = []
@@ -437,8 +472,122 @@ def build_clubs(rows, tiers):
             if len(set(mapped)) > 1:
                 ambiguous.append(club["name"] or club["id"])
 
-    return clubs, leagues, ambiguous, dropped
+    return clubs, leagues, ambiguous, dropped, countries
 
+
+# ------------------------------------------------- country sanity check
+
+# A rectangle round each country, with a small margin on every side.
+# Hand-written from the country's own extreme points, and deliberately
+# no tighter than that: this is a net for a club that is plainly
+# somewhere else, not a border survey.
+#
+#   DE  south 47.2701 (Haldenwanger Eck), north 55.0583 (Ellenbogen,
+#       Sylt), west 5.8663 (Selfkant), east 15.0419 (Neissaue)
+#   RO  south 43.6187 (Zimnicea), north 48.2673 (Horodistea),
+#       west 20.2619 (Beba Veche), east 29.6912 (Sulina)
+COUNTRY_BOX = {
+    "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
+    "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
+}
+
+COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
+
+# So a Q-id in the report is readable without looking it up. A country
+# that is not in here is printed as its Q-id and nothing is invented.
+COUNTRY_NAMES = {
+    "Q183": "Germany", "Q218": "Romania", "Q39": "Switzerland",
+    "Q347": "Liechtenstein", "Q40": "Austria", "Q142": "France",
+    "Q31": "Belgium", "Q55": "Netherlands", "Q36": "Poland",
+    "Q213": "Czechia", "Q28": "Hungary", "Q403": "Serbia",
+    "Q219": "Bulgaria", "Q212": "Ukraine", "Q217": "Moldova",
+    "Q38": "Italy", "Q29": "Spain", "Q145": "United Kingdom",
+    "Q41": "Greece", "Q43": "Turkey", "Q184": "Belarus",
+    "Q32": "Luxembourg", "Q33": "Finland", "Q34": "Sweden",
+    "Q20": "Norway", "Q35": "Denmark",
+}
+
+
+def country_review(keep, club_countries, code, country_qid):
+    """
+    Which clubs in this country's file do not look like they belong in it.
+
+    REPORTS, never drops - the same shape as capacity-review.csv. The
+    club query is bounded by LEAGUE and never by country, so any foreign
+    club whose Wikidata item carries a mapped league's Q-id arrives as a
+    club of that country. It has happened twice: SC Veltheim, which is
+    Swiss, and FC Triesenberg, which is in Liechtenstein, both carrying
+    Q154069, the German 3. Liga. Both were found by eye, months apart.
+
+    Adding a country FILTER to the query was considered and rejected in
+    CLAUDE.md for a good reason: P17 is exactly the field the missing
+    clubs already lack, so a filter on it would quietly drop real ones.
+    Reporting on it drops nobody. A club with no P17 whose coordinates
+    are inside the box is never mentioned at all.
+
+    Two independent signals, because ONE OF THEM IS NOT ENOUGH:
+
+      1. The box. Catches a club that is plainly somewhere else.
+      2. Wikidata's own P17. Catches a club sitting inside the box but
+         belonging to another country.
+
+    CLAUDE.md used to say a bounding box alone would have caught both
+    Veltheim and Triesenberg. It would not have. Veltheim is in
+    Winterthur, near 47.51N 8.72E, and any rectangle wide enough to hold
+    Germany also holds northern Switzerland, western Austria and the
+    whole of Liechtenstein; tightening it enough to exclude Winterthur
+    would cut off real German clubs in the far south. Signal 1 catches
+    Triesenberg, at 47.11N, which is south of Germany's southernmost
+    point. Signal 2 is the one that would have caught Veltheim.
+
+    A hand-corrected club is checked like any other and the row says so.
+    Hand-written data wins on the map, as it always does - but a report
+    is not an override, and a mistyped coordinate in clubs-manual.csv is
+    exactly the kind of thing worth seeing.
+    """
+    box = COUNTRY_BOX.get(code)
+    rows = []
+    for cid in sorted(keep):
+        club = keep[cid]
+        lat, lon = club.get("lat"), club.get("lon")
+        if lat is None or lon is None:
+            continue                      # never reaches the map anyway
+
+        signals, details = [], []
+
+        if box and not (box["lat"][0] <= lat <= box["lat"][1]
+                        and box["lon"][0] <= lon <= box["lon"][1]):
+            signals.append("outside the box")
+            details.append(
+                f"{lat}/{lon} is outside the {code} box "
+                f"(lat {box['lat'][0]}..{box['lat'][1]}, "
+                f"lon {box['lon'][0]}..{box['lon'][1]})")
+
+        tagged = club_countries.get(cid, [])
+        if tagged and country_qid not in tagged:
+            named = ", ".join(f"{COUNTRY_NAMES.get(q, 'country ' + q)} ({q})"
+                              for q in tagged)
+            signals.append("Wikidata says another country")
+            details.append(
+                f"P17 on the item says {named}, not "
+                f"{COUNTRY_NAMES.get(country_qid, country_qid)}")
+
+        if not signals:
+            continue
+
+        rows.append({
+            "clubQid": cid,
+            "name": club.get("name") or cid,
+            "inFile": code,
+            "tier": club.get("tier"),
+            "venue": club.get("venue") or "",
+            "lat": lat,
+            "lon": lon,
+            "handCorrected": "yes" if club.get("manual") else "no",
+            "signal": " + ".join(signals),
+            "detail": "; ".join(details),
+        })
+    return rows
 
 
 # ------------------------------------------------------ manual overrides
@@ -623,6 +772,14 @@ def main():
     # of the picture must not overwrite a whole one.
     discovery_missing = []
 
+    # Same rule again for the country sanity check. Its review file lists
+    # every country at once, so a run that lost one country knows only
+    # part of the answer - writing that part would delete the rest with a
+    # green tick, which is the exact failure the review files already
+    # guard against.
+    clubs_missing = []
+    country_rows = []
+
     for position, (code, country_qid, name) in enumerate(COUNTRIES):
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
@@ -679,12 +836,14 @@ def main():
                 CLUB_QUERY % {"leagues": values, "lang": lang})
             if error:
                 failures.append(f"{code} ({name}) clubs: {error} - file left untouched")
+                clubs_missing.append(f"{code} ({name}): {error}")
                 continue
-            clubs, _leagues, ambiguous, dropped = build_clubs(
+            clubs, _leagues, ambiguous, dropped, club_countries = build_clubs(
                 data.get("results", {}).get("bindings", []), tiers)
         else:
-            ambiguous, dropped = [], []
+            ambiguous, dropped, club_countries = [], [], {}
             failures.append(f"{code} ({name}): no leagues mapped for this country yet")
+            clubs_missing.append(f"{code} ({name}): no leagues mapped yet")
 
         applied, applied_problems = apply_manual(clubs, manual_rows, code)
         manual_problems.extend(applied_problems)
@@ -727,9 +886,20 @@ def main():
                        "withVenueName": with_venue, "withCapacity": with_cap,
                        "handCorrected": manual_count}
 
+        flagged = country_review(keep, club_countries, code, country_qid)
+        country_rows.extend(flagged)
+
         report.append(f"{code}  {len(keep):4d} on the map  |  {with_venue} grounds, "
                       f"{with_cap} capacities, {manual_count} hand-corrected  |  "
                       f"{no_coord} dropped for no coordinates")
+        if flagged:
+            report.append(f"    {len(flagged)} club(s) do not look like they belong in "
+                          f"this country's file - NOT removed, see {COUNTRY_REVIEW}:")
+            for row in flagged:
+                report.append(f"      {row['name']} ({row['clubQid']}) - {row['detail']}")
+        else:
+            report.append("    country check: every club on this map is where "
+                          "this file says it should be")
         for note in dropped:
             report.append(f"    left out, not a club: {note}")
         for note in applied:
@@ -767,6 +937,32 @@ def main():
                          "run that is missing " + ", ".join(discovery_missing) +
                          " - it is a partial list")
 
+    # The country review file, under the same rule as the seed list and
+    # the two other review files: a run that lost a country holds only
+    # part of the answer, and writing that part would delete the rest.
+    # The first run is the exception - with no file there is nothing to
+    # protect, so a partial list is written and labelled as partial.
+    country_note = ""
+    if clubs_missing and os.path.exists(COUNTRY_REVIEW):
+        country_note = ("clubs could not be fetched for " +
+                        ", ".join(clubs_missing) +
+                        f" - {COUNTRY_REVIEW} left exactly as the last good "
+                        f"run left it")
+    else:
+        with open(COUNTRY_REVIEW, "w", encoding="utf-8", newline="") as fh:
+            writer = csv.writer(fh)
+            writer.writerow(["clubQid", "name", "inFile", "tier", "venue",
+                             "lat", "lon", "handCorrected", "signal", "detail"])
+            for row in country_rows:
+                writer.writerow([row["clubQid"], row["name"], row["inFile"],
+                                 row["tier"], row["venue"], row["lat"],
+                                 row["lon"], row["handCorrected"],
+                                 row["signal"], row["detail"]])
+        if clubs_missing:
+            country_note = (f"{COUNTRY_REVIEW} did not exist, so it was written "
+                            "from a run that is missing " +
+                            ", ".join(clubs_missing) + " - it is a partial list")
+
     print()
     print("=" * 70)
     print("CLUB LAYER")
@@ -788,6 +984,16 @@ def main():
               f"{league['label'] or '(no label)'}")
     if seed_note:
         print("  ! " + seed_note)
+    print()
+    if country_rows:
+        print(f"  {len(country_rows)} club(s) flagged by the country check - "
+              f"listed, NOT removed (see {COUNTRY_REVIEW})")
+    else:
+        print("  country check: nothing flagged in any country")
+    for line in _wrap(COUNTRY_CHECK_NOTE):
+        print("  " + line)
+    if country_note:
+        print("  ! " + country_note)
     print()
     for line in _wrap(DISCOVERY_TRADE_OFF):
         print("  " + line)
