@@ -1,0 +1,613 @@
+{
+ "picks": [
+  {
+   "qid": "Q15972883",
+   "wikidata_name": "1. FC Köln II",
+   "wikidata_city": "",
+   "candidates": [
+    {
+     "club": "1. FC Köln 01/07 II",
+     "ground": "Franz-Kremer-Stadion",
+     "href": "franz-kremer-stadion/stadion-809.html",
+     "stadionId": "809",
+     "cap": "5.457",
+     "lon": "6.905668252778625",
+     "lat": "50.90829865319848",
+     "liga": "Regionalliga West",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q4545849",
+   "wikidata_name": "1. FC Nürnberg II",
+   "wikidata_city": "Nürnberg",
+   "candidates": [
+    {
+     "club": "1. FC Nürnberg 1900 II",
+     "ground": "Max-Morlock-Platz Valznerweiher",
+     "href": "max-morlock-platz-valznerweiher/stadion-9726.html",
+     "stadionId": "9726",
+     "cap": "3.000",
+     "lon": "11.131017",
+     "lat": "49.435887",
+     "liga": "Regionalliga Bayern",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q13397712",
+   "wikidata_name": "Borussia Mönchengladbach II",
+   "wikidata_city": "",
+   "candidates": [
+    {
+     "club": "Borussia VfL Mönchengladbach 1900 II",
+     "ground": "Grenzlandstadion",
+     "href": "grenzlandstadion/stadion-939.html",
+     "stadionId": "939",
+     "cap": "10.000",
+     "lon": "6.449060440063477",
+     "lat": "51.17643736645568",
+     "liga": "Regionalliga West",
+     "score": 1.0
+    },
+    {
+     "club": "BV Borussia 09 Dortmund II",
+     "ground": "Stadion Rote Erde",
+     "href": "stadion-rote-erde/stadion-395.html",
+     "stadionId": "395",
+     "cap": "9.500",
+     "lon": "7.454217789024367",
+     "lat": "51.49285265114528",
+     "liga": "Regionalliga West",
+     "score": 0.333
+    }
+   ]
+  },
+  {
+   "qid": "Q1378922",
+   "wikidata_name": "Eutin 08",
+   "wikidata_city": "Eutin",
+   "candidates": []
+  },
+  {
+   "qid": "Q5424829",
+   "wikidata_name": "FC Augsburg II",
+   "wikidata_city": "",
+   "candidates": [
+    {
+     "club": "FC Augsburg 1907 II",
+     "ground": "Rosenaustadion",
+     "href": "rosenaustadion/stadion-8300.html",
+     "stadionId": "8300",
+     "cap": "26.443",
+     "lon": "10.87597131729126",
+     "lat": "48.355350732370965",
+     "liga": "Regionalliga Bayern",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q97927365",
+   "wikidata_name": "FC Erzgebirge Aue",
+   "wikidata_city": "Aue-Bad Schlema",
+   "candidates": [
+    {
+     "club": "FC Erzgebirge Aue 1992",
+     "ground": "eins Erzgebirgsstadion",
+     "href": "sparkassen-erzgebirgsstadion/stadion-144.html",
+     "stadionId": "144",
+     "cap": "15.500",
+     "lon": "12.711138725280761",
+     "lat": "50.59764933052808",
+     "liga": "NOFV-Regionalliga Nordost",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q831887",
+   "wikidata_name": "FC Ismaning",
+   "wikidata_city": "Ismaning",
+   "candidates": [
+    {
+     "club": "FC Ismaning 1921",
+     "ground": "Prof. Erich Greipl Stadion",
+     "href": "prof-erich-greipl-stadion/stadion-782.html",
+     "stadionId": "782",
+     "cap": "5.000",
+     "lon": "11.666836738586425",
+     "lat": "48.22836071585399",
+     "liga": "Bayernliga Süd",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q720528",
+   "wikidata_name": "FC Kray",
+   "wikidata_city": "Essen",
+   "candidates": []
+  },
+  {
+   "qid": "Q3736767",
+   "wikidata_name": "FC Schalke 04 II",
+   "wikidata_city": "Gelsenkirchen",
+   "candidates": [
+    {
+     "club": "FC Schalke 04 II",
+     "ground": "Parkstadion",
+     "href": "parkstadion/stadion-29511.html",
+     "stadionId": "29511",
+     "cap": "2.999",
+     "lon": "7.067566865081769",
+     "lat": "51.55922037198858",
+     "liga": "Regionalliga West",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q13426883",
+   "wikidata_name": "FC Viktoria 1889 Berlin",
+   "wikidata_city": "Berlin",
+   "candidates": [
+    {
+     "club": "TuS Makkabi Berlin 1970",
+     "ground": "Julius-Hirsch-Sportanlage",
+     "href": "julius-hirsch-sportanlage/stadion-9124.html",
+     "stadionId": "9124",
+     "cap": "3.500",
+     "lon": "13.254060745239258",
+     "lat": "52.49746588610886",
+     "liga": "NOFV-Oberliga Nord",
+     "score": 0.5
+    },
+    {
+     "club": "SV Tasmania 73 Berlin",
+     "ground": "Werner-Seelenbinder-Sportpark",
+     "href": "werner-seelenbinder-sportpark/stadion-9123.html",
+     "stadionId": "9123",
+     "cap": "6.000",
+     "lon": "13.417503833770752",
+     "lat": "52.46836416682321",
+     "liga": "NOFV-Regionalliga Nordost",
+     "score": 0.333
+    },
+    {
+     "club": "Füchse Berlin Reinickendorf Berliner TSV 1891",
+     "ground": "Sportplatz Kienhorststraße",
+     "href": "sportplatz-kienhorststra%25C3%259Fe/stadion-10688.html",
+     "stadionId": "10688",
+     "cap": "5.000",
+     "lon": "13.309582",
+     "lat": "52.575476",
+     "liga": "NOFV-Oberliga Nord",
+     "score": 0.333
+    }
+   ]
+  },
+  {
+   "qid": "Q566165",
+   "wikidata_name": "FSV Optik Rathenow",
+   "wikidata_city": "Rathenow",
+   "candidates": [
+    {
+     "club": "FSV Optik Rathenow 1991",
+     "ground": "Stadion Vogelgesang",
+     "href": "stadion-vogelgesang/stadion-1314.html",
+     "stadionId": "1314",
+     "cap": "5.000",
+     "lon": "12.36859917640686",
+     "lat": "52.59739781260923",
+     "liga": "NOFV-Oberliga Nord",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q1514109",
+   "wikidata_name": "Germania Egestorf",
+   "wikidata_city": "Barsinghausen",
+   "candidates": [
+    {
+     "club": "1. FC Germania Egestorf/Langreder 2001",
+     "ground": "Stadion An der Ammerke",
+     "href": "sportanlage-egestorf/stadion-1868.html",
+     "stadionId": "1868",
+     "cap": "3.000",
+     "lon": "9.512819051742553",
+     "lat": "52.28594682369387",
+     "liga": "Oberliga Niedersachsen",
+     "score": 0.667
+    },
+    {
+     "club": "Ratinger SpVgg. Germania 04/19",
+     "ground": "Stadion Ratingen",
+     "href": "stadion-ratingen/stadion-1318.html",
+     "stadionId": "1318",
+     "cap": "5.000",
+     "lon": "6.840469837188721",
+     "lat": "51.29541737712993",
+     "liga": "Oberliga Niederrhein",
+     "score": 0.5
+    },
+    {
+     "club": "SV Wilhelmshaven-Germania 05",
+     "ground": "Jade-Stadion",
+     "href": "jade-stadion/stadion-1538.html",
+     "stadionId": "1538",
+     "cap": "7.387",
+     "lon": "8.095829486846923",
+     "lat": "53.5364563012121",
+     "liga": "Oberliga Niedersachsen",
+     "score": 0.5
+    }
+   ]
+  },
+  {
+   "qid": "Q831892",
+   "wikidata_name": "Lupo Martini Wolfsburg",
+   "wikidata_city": "Wolfsburg",
+   "candidates": []
+  },
+  {
+   "qid": "Q15849956",
+   "wikidata_name": "SG Barockstadt Fulda-Lehnerz",
+   "wikidata_city": "",
+   "candidates": [
+    {
+     "club": "SG Barockstadt Fulda-Lehnerz 04-65",
+     "ground": "Stadion der Stadt Fulda im Sportpark Johannisau",
+     "href": "stadion-der-stadt-fulda-im-sportpark-johannisau/stadion-9316.html",
+     "stadionId": "9316",
+     "cap": "18.000",
+     "lon": "9.665356",
+     "lat": "50.540078",
+     "liga": "Regionalliga Südwest",
+     "score": 0.75
+    }
+   ]
+  },
+  {
+   "qid": "Q7572134",
+   "wikidata_name": "SpVgg Greuther Fürth II",
+   "wikidata_city": "Fürth",
+   "candidates": [
+    {
+     "club": "SpVgg. Greuther Fürth 1903 II",
+     "ground": "Konrad-Ammon-Platz im Sportzentrum",
+     "href": "konrad-ammon-platz-im-sportzentrum/stadion-12438.html",
+     "stadionId": "12438",
+     "cap": "3.000",
+     "lon": "10.908985187835697",
+     "lat": "49.493756767552284",
+     "liga": "Regionalliga Bayern",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q566179",
+   "wikidata_name": "Torgelower FC Greif",
+   "wikidata_city": "Torgelow",
+   "candidates": []
+  },
+  {
+   "qid": "Q2521441",
+   "wikidata_name": "VfB Eichstätt",
+   "wikidata_city": "Eichstätt",
+   "candidates": [
+    {
+     "club": "VfB Eichstätt 1920",
+     "ground": "HIRSCH Sportpark",
+     "href": "liqui-moly-stadion/stadion-491.html",
+     "stadionId": "491",
+     "cap": "2.100",
+     "lon": "11.192278861999511",
+     "lat": "48.8877674424057",
+     "liga": "Regionalliga Bayern",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q479306",
+   "wikidata_name": "VfB Hüls",
+   "wikidata_city": "Marl",
+   "candidates": []
+  },
+  {
+   "qid": "Q127275134",
+   "wikidata_name": "VfR Garching",
+   "wikidata_city": "Garching bei München",
+   "candidates": []
+  },
+  {
+   "qid": "Q920263",
+   "wikidata_name": "Hertha BSC II",
+   "wikidata_city": "Berlin",
+   "candidates": [
+    {
+     "club": "Hertha Berliner SC 1892 II",
+     "ground": "Stadion auf dem Wurfplatz",
+     "href": "stadion-auf-dem-wurfplatz/stadion-195.html",
+     "stadionId": "195",
+     "cap": "5.400",
+     "lon": "13.236615657806396",
+     "lat": "52.51716101425811",
+     "liga": "NOFV-Regionalliga Nordost",
+     "score": 1.0
+    }
+   ]
+  },
+  {
+   "qid": "Q21175456",
+   "wikidata_name": "Teutonia Watzenborn-Steinberg",
+   "wikidata_city": "Pohlheim",
+   "candidates": [
+    {
+     "club": "FC Gießen 1927 Teutonia/1900 VfB",
+     "ground": "Waldstadion",
+     "href": "waldstadion/stadion-615.html",
+     "stadionId": "615",
+     "cap": "4.999",
+     "lon": "8.704454898834228",
+     "lat": "50.585750302996324",
+     "liga": "Hessenliga",
+     "score": 0.333
+    }
+   ]
+  },
+  {
+   "qid": "Q16743331",
+   "wikidata_name": "TSV Steinbach Haiger",
+   "wikidata_city": "Haiger",
+   "candidates": [
+    {
+     "club": "TSV Steinbach 1921",
+     "ground": "SIBRE-Sportzentrum Haarwasen",
+     "href": "sibre-sportzentrum-haarwasen/stadion-11684.html",
+     "stadionId": "11684",
+     "cap": "4.999",
+     "lon": "8.190319258552563",
+     "lat": "50.74119400526587",
+     "liga": "Regionalliga Südwest",
+     "score": 0.5
+    }
+   ]
+  }
+ ],
+ "grounds": {
+  "809": {
+   "url": "https://www.europlan-online.de/franz-kremer-stadion/stadion-809.html",
+   "lat": "50.90829865319848",
+   "lon": "6.905668252778625",
+   "capacity": "5.457",
+   "surface": "Hybridrasen",
+   "address": "Franz-Kremer-Stadion, Franz-Kremer-Allee 1-3, 50937 Köln-Sülz",
+   "plz": "50937",
+   "town": "Köln-Sülz",
+   "clubs_here": "1. FC Köln 01/07 II / Franz-Kremer-Allee 1-3 / 50937 Köln / zur Website / Liga: Regionalliga West / 4 / 1. FC Köln 01/07 - Frauen / Franz-Kremer-Allee 1-3 / 50937 Köln / zur Website / Liga: 1. Bundesliga der Frauen / 1 / 1. FC Köln 01/07 U19 / Franz-Kremer-Allee 1-3 / 50937 Köln / zur Website / Liga",
+   "title": "Franz-Kremer-Stadion - Stadion in Köln-Sülz"
+  },
+  "9726": {
+   "url": "https://www.europlan-online.de/max-morlock-platz-valznerweiher/stadion-9726.html",
+   "lat": "49.435887",
+   "lon": "11.131017",
+   "capacity": "3.000",
+   "surface": "Naturrasen",
+   "address": "Max-Morlock-Platz Valznerweiher, Valznerweiherstraße 200, 90480 Nürnberg-Zerzabelshof",
+   "plz": "90480",
+   "town": "Nürnberg-Zerzabelshof",
+   "clubs_here": "1. FC Nürnberg 1900 II / Valznerweiherstraße 200 / 90480 Nürnberg / zur Website / Liga: Regionalliga Bayern / 4",
+   "title": "Max-Morlock-Platz Valznerweiher - Stadion in Nürnberg-Zerzabelshof"
+  },
+  "939": {
+   "url": "https://www.europlan-online.de/grenzlandstadion/stadion-939.html",
+   "lat": "51.17643736645568",
+   "lon": "6.449060440063477",
+   "capacity": "10.000",
+   "surface": "Naturrasen",
+   "address": "Grenzlandstadion, Seminarstraße 20, 41236 Mönchengladbach-Rheydt",
+   "plz": "41236",
+   "town": "Mönchengladbach-Rheydt",
+   "clubs_here": "Borussia VfL Mönchengladbach 1900 II / Hennes-Weisweiler-Allee 1 / 41179 Mönchengladbach / zur Website / Liga: Regionalliga West / 4 / Borussia VfL Mönchengladbach 1900 - Frauen / Hennes-Weisweiler-Allee 1 / 41179 Mönchengladbach / zur Website / Liga: 2. Bundesliga der Frauen / 2",
+   "title": "Grenzlandstadion - Stadion in Mönchengladbach-Rheydt"
+  },
+  "395": {
+   "url": "https://www.europlan-online.de/stadion-rote-erde/stadion-395.html",
+   "lat": "51.49285265114528",
+   "lon": "7.454217789024367",
+   "capacity": "9.500",
+   "surface": "Naturrasen",
+   "address": "Stadion Rote Erde, Strobelallee 46, 44139 Dortmund-Westfalenhalle",
+   "plz": "44139",
+   "town": "Dortmund-Westfalenhalle",
+   "clubs_here": "BV Borussia 09 Dortmund II / Rheinlanddamm 207-209 / 44137 Dortumund / zur Website / zur Facebook-Seite / Liga: Regionalliga West / 4 / BV Borussia 09 Dortmund - Frauen / Rheinlanddamm 207-209 / 44137 Dortumund / zur Website / zur Facebook-Seite / Liga: Regionalliga West - Frauen / 3",
+   "title": "Stadion Rote Erde - Stadion in Dortmund-Westfalenhalle"
+  },
+  "8300": {
+   "url": "https://www.europlan-online.de/rosenaustadion/stadion-8300.html",
+   "lat": "48.355350732370965",
+   "lon": "10.87597131729126",
+   "capacity": "26.443",
+   "surface": "Naturrasen",
+   "address": "Rosenaustadion, Stadionstraße 21, 86159 Augsburg",
+   "plz": "86159",
+   "town": "Augsburg",
+   "clubs_here": "FC Augsburg 1907 II / Donauwörther Straße 170 / 86154 Augsburg / zur Website / Liga: Regionalliga Bayern / 4 / TSV 1847 Schwaben Augsburg / Stauffenbergstraße 19 / 86161 Augsburg / zur Website / Liga: Regionalliga Bayern / 4",
+   "title": "Rosenaustadion - Stadion in Augsburg"
+  },
+  "144": {
+   "url": "https://www.europlan-online.de/sparkassen-erzgebirgsstadion/stadion-144.html",
+   "lat": "50.59764933052808",
+   "lon": "12.711138725280761",
+   "capacity": "15.500",
+   "surface": "Naturrasen",
+   "address": "eins Erzgebirgsstadion, Gerd-Schädlich-Platz 1, 08280 Aue-Bad Schlema",
+   "plz": "08280",
+   "town": "Aue-Bad Schlema",
+   "clubs_here": "FC Erzgebirge Aue 1992 / Gerd-Schädlich-Platz 1 / 08280 Aue-Bad Schlema / zur Website / Liga: NOFV-Regionalliga Nordost / 4",
+   "title": "eins Erzgebirgsstadion - Stadion in Aue-Bad Schlema"
+  },
+  "782": {
+   "url": "https://www.europlan-online.de/prof-erich-greipl-stadion/stadion-782.html",
+   "lat": "48.22836071585399",
+   "lon": "11.666836738586425",
+   "capacity": "5.000",
+   "surface": "Naturrasen",
+   "address": "Prof. Erich Greipl Stadion, Leuchtenbergstraße 25, 85737 Ismaning",
+   "plz": "85737",
+   "town": "Ismaning",
+   "clubs_here": "FC Ismaning 1921 / Leuchtenbergstraße 25 / 85737 Ismaning / zur Website / Liga: Bayernliga Süd / 5",
+   "title": "Prof. Erich Greipl Stadion - Stadion in Ismaning"
+  },
+  "29511": {
+   "url": "https://www.europlan-online.de/parkstadion/stadion-29511.html",
+   "lat": "51.55922037198858",
+   "lon": "7.067566865081769",
+   "capacity": "2.999",
+   "surface": "Hybridrasen",
+   "address": "Parkstadion, Parkallee, 45891 Gelsenkirchen-Buer",
+   "plz": "45891",
+   "town": "Gelsenkirchen-Buer",
+   "clubs_here": "FC Schalke 04 II / Ernst-Kuzorra-Weg 1 / 45891 Gelsenkirchen / zur Website / Liga: Regionalliga West / 4 / FC Schalke 04 U19 / Ernst-Kuzorra-Weg 1 / 45891 Gelsenkirchen / zur Website / Liga: U19-Nachwuchsliga Gruppe H / 1",
+   "title": "Parkstadion - Stadion in Gelsenkirchen-Buer"
+  },
+  "9124": {
+   "url": "https://www.europlan-online.de/julius-hirsch-sportanlage/stadion-9124.html",
+   "lat": "52.49746588610886",
+   "lon": "13.254060745239258",
+   "capacity": "3.500",
+   "surface": "Naturrasen",
+   "address": "Julius-Hirsch-Sportanlage, Harbigstraße 40, 14055 Berlin-Charlottenburg",
+   "plz": "14055",
+   "town": "Berlin-Charlottenburg",
+   "clubs_here": "TuS Makkabi Berlin 1970 / Harbigstraße 40 / 14055 Berlin / zur Website / Liga: NOFV-Oberliga Nord / 5 / SC Charlottenburg 1902 II / Fetschowzeile 10a / 13437 Berlin / zur Website / Liga: Bezirksliga Berlin 1 / 8",
+   "title": "Julius-Hirsch-Sportanlage - Stadion in Berlin-Charlottenburg"
+  },
+  "9123": {
+   "url": "https://www.europlan-online.de/werner-seelenbinder-sportpark/stadion-9123.html",
+   "lat": "52.46836416682321",
+   "lon": "13.417503833770752",
+   "capacity": "6.000",
+   "surface": "Naturrasen",
+   "address": "Werner-Seelenbinder-Sportpark, Oderstraße 182, 12051 Berlin-Neukölln",
+   "plz": "12051",
+   "town": "Berlin-Neukölln",
+   "clubs_here": "SV Tasmania 73 Berlin / Oderstraße 182 / 12051 Berlin / zur Website / Liga: NOFV-Regionalliga Nordost / 4",
+   "title": "Werner-Seelenbinder-Sportpark - Stadion in Berlin-Neukölln"
+  },
+  "1314": {
+   "url": "https://www.europlan-online.de/stadion-vogelgesang/stadion-1314.html",
+   "lat": "52.59739781260923",
+   "lon": "12.36859917640686",
+   "capacity": "5.000",
+   "surface": "Naturrasen",
+   "address": "Stadion Vogelgesang, Birkenweg 45, 14712 Rathenow",
+   "plz": "14712",
+   "town": "Rathenow",
+   "clubs_here": "FSV Optik Rathenow 1991 / Berliner Straße 50 / 14712 Rathenow / zur Website / Liga: NOFV-Oberliga Nord / 5",
+   "title": "Stadion Vogelgesang - Stadion in Rathenow"
+  },
+  "1868": {
+   "url": "https://www.europlan-online.de/sportanlage-egestorf/stadion-1868.html",
+   "lat": "52.28594682369387",
+   "lon": "9.512819051742553",
+   "capacity": "3.000",
+   "surface": "Naturrasen",
+   "address": "Stadion An der Ammerke, An der Ammerke 3, 30890 Barsinghausen-Egestorf",
+   "plz": "30890",
+   "town": "Barsinghausen-Egestorf",
+   "clubs_here": "1. FC Germania Egestorf/Langreder 2001 / An der Ammerke 3 / 30890 Barsinghausen / zur Website / Liga: Oberliga Niedersachsen / 5 / JFV Calenberger Land 2014 / Halbe Straße 3 / 30890 Barsinghausen / zur Website / Liga: U19-Regionalliga Nord / 2",
+   "title": "Stadion An der Ammerke - Stadion in Barsinghausen-Egestorf"
+  },
+  "1318": {
+   "url": "https://www.europlan-online.de/stadion-ratingen/stadion-1318.html",
+   "lat": "51.29541737712993",
+   "lon": "6.840469837188721",
+   "capacity": "5.000",
+   "surface": "Naturrasen",
+   "address": "Stadion Ratingen, Am Stadion, 40878 Ratingen",
+   "plz": "40878",
+   "town": "Ratingen",
+   "clubs_here": "Ratinger SpVgg. Germania 04/19 / Friedrich-Mohn-Straße 23 / 40878 Ratingen / zur Website / Liga: Oberliga Niederrhein / 5",
+   "title": "Stadion Ratingen - Stadion in Ratingen"
+  },
+  "9316": {
+   "url": "https://www.europlan-online.de/stadion-der-stadt-fulda-im-sportpark-johannisau/stadion-9316.html",
+   "lat": "50.540078",
+   "lon": "9.665356",
+   "capacity": "18.000",
+   "surface": "Naturrasen",
+   "address": "Stadion der Stadt Fulda im Sportpark Johannisau, Johannistraße, 36041 Fulda",
+   "plz": "36041",
+   "town": "Fulda",
+   "clubs_here": "SG Barockstadt Fulda-Lehnerz 04-65 / Johannisstraße 45 / 36041 Fulda / zur Website / Liga: Regionalliga Südwest / 4 / Fusion 2018 aus / SC Borussia 04 Fulda / TSV Lehnerz 1965",
+   "title": "Stadion der Stadt Fulda im Sportpark Johannisau - Stadion in Fulda"
+  },
+  "12438": {
+   "url": "https://www.europlan-online.de/konrad-ammon-platz-im-sportzentrum/stadion-12438.html",
+   "lat": "49.493756767552284",
+   "lon": "10.908985187835697",
+   "capacity": "3.000",
+   "surface": "Naturrasen",
+   "address": "Konrad-Ammon-Platz im Sportzentrum, Tulpenweg 60, 90768 Fürth/Mittelfranken-Burgfarrnbach",
+   "plz": "90768",
+   "town": "Fürth/Mittelfranken-Burgfarrnbach",
+   "clubs_here": "SpVgg. Greuther Fürth 1903 II / Kronacher Str. 140 / 90765 Fürth/Mittelfranken / zur Website / Liga: Regionalliga Bayern / 4 / TSV 1895 Burgfarrnbach / Tulpenweg 60 / 90768 Fürth/Mittelfranken / zur Website / Liga: Kreisliga Nürnberg/Frankenhöhe 2 / 8 / TSV 1895 Burgfarrnbach II / Tulpenweg 60 / 907",
+   "title": "Konrad-Ammon-Platz im Sportzentrum - Stadion in Fürth/Mittelfranken-Burgfarrnbach"
+  },
+  "491": {
+   "url": "https://www.europlan-online.de/liqui-moly-stadion/stadion-491.html",
+   "lat": "48.8877674424057",
+   "lon": "11.192278861999511",
+   "capacity": "2.100",
+   "surface": "Naturrasen",
+   "address": "HIRSCH Sportpark, Am Sportplatz 8, 85072 Eichstätt",
+   "plz": "85072",
+   "town": "Eichstätt",
+   "clubs_here": "VfB Eichstätt 1920 / Am Sportplatz 8 / 85072 Eichstätt / zur Website / Liga: Regionalliga Bayern / 4 / VfB Eichstätt 1920 II / Am Sportplatz 8 / 85072 Eichstätt / zur Website / Liga: Kreisliga Donau/Isar 1 / 8",
+   "title": "HIRSCH Sportpark - Stadion in Eichstätt"
+  },
+  "195": {
+   "url": "https://www.europlan-online.de/stadion-auf-dem-wurfplatz/stadion-195.html",
+   "lat": "52.51716101425811",
+   "lon": "13.236615657806396",
+   "capacity": "5.400",
+   "surface": "Naturrasen",
+   "address": "Stadion auf dem Wurfplatz, Hanns-Braun-Straße, 14053 Berlin-Charlottenburg",
+   "plz": "14053",
+   "town": "Berlin-Charlottenburg",
+   "clubs_here": "Hertha Berliner SC 1892 II / Hanns-Braun-Straße; Friesenhaus 2 / 14053 Berlin / zur Website / Liga: NOFV-Regionalliga Nordost / 4 / Hertha Berliner SC 1892 U19 / Hanns-Braun-Straße; Friesenhaus 2 / 14053 Berlin / zur Website / Liga: U19-Nachwuchsliga Gruppe B / 1 / Hertha Berliner SC 1892 - Frauen /",
+   "title": "Stadion auf dem Wurfplatz - Stadion in Berlin-Westend"
+  },
+  "615": {
+   "url": "https://www.europlan-online.de/waldstadion/stadion-615.html",
+   "lat": "50.585750302996324",
+   "lon": "8.704454898834228",
+   "capacity": "4.999",
+   "surface": "Naturrasen",
+   "address": "Waldstadion, Zum Waldsportplatz 12, 35394 Gießen",
+   "plz": "35394",
+   "town": "Gießen",
+   "clubs_here": "FC Gießen 1927 Teutonia/1900 VfB / Postfach 1144 / 35411 Pohlheim / zur Website / Liga: Hessenliga / 5 / Fusion 2018 aus / VfB 1900 Gießen / SC-Teutonia Watzenborn-Steinberg 1927",
+   "title": "Waldstadion - Stadion in Gießen"
+  },
+  "11684": {
+   "url": "https://www.europlan-online.de/sibre-sportzentrum-haarwasen/stadion-11684.html",
+   "lat": "50.74119400526587",
+   "lon": "8.190319258552563",
+   "capacity": "4.999",
+   "surface": "Naturrasen",
+   "address": "SIBRE-Sportzentrum Haarwasen, Sportplatzstraße 120, 35708 Haiger",
+   "plz": "35708",
+   "town": "Haiger",
+   "clubs_here": "TSV Steinbach 1921 / Sportplatzstraße 22 / 35708 Haiger / zur Website / zur Facebook-Seite / Liga: Regionalliga Südwest / 4",
+   "title": "SIBRE-Sportzentrum Haarwasen - Stadion in Haiger"
+  }
+ }
+}
