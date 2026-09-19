@@ -118,16 +118,19 @@
   },
   {
    "id": "Q113577526",
-   "name": "Dinamo București",
+   "name": "CS Dinamo București",
    "leagues": [
     "Q386384"
    ],
    "tier": 2,
-   "venue": "Stadionul Dinamo",
-   "capacity": 15032,
+   "venue": "CNF Buftea",
+   "capacity": 1600,
    "lat": 44.455083,
    "lon": 26.102444,
    "city": null,
+   "source": "https://www.wikidata.org/wiki/Q7596368",
+   "note": "Not a duplicate of Q204237. CS Dinamo București is a separate club, currently in Liga 2, established by Alexandru from its Wikipedia article and the club's own csdinamofotbal accounts. Wikidata gives it the senior club's ground, capacity and coordinates by mistake. Name, venue and capacity are corrected here. THE COORDINATES ARE NOT: lat/lon are still blank, so this club still sits on Stadionul Dinamo and the two Dinamos still share one pin. They must be filled in from Q7596368, the ground's own Wikidata item, which could not be opened on 2026-09-19 because that session's network policy blocked wikidata.org. Nothing here was read from that item - the venue and capacity come from Alexandru, not from the source URL.",
+   "manual": true,
    "competition": "Liga a II-a"
   },
   {
