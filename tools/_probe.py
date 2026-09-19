@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""TEMPORARY probe. Removed in the same branch once the answers are read."""
-import json, re, sys, urllib.parse, urllib.request, html
+"""TEMPORARY probe 2. Removed in the same branch once the answers are read."""
+import json, re, urllib.parse, urllib.request, html
 
 UA = ("football-fixture-planner/1.0 (personal project; "
       "https://github.com/AlexGrozavul/Football)")
-ANS = []
+TAG = re.compile(r"<[^>]+>")
 
 def get(url, timeout=60):
     req = urllib.request.Request(url, headers={"User-Agent": UA})
@@ -14,69 +14,68 @@ def get(url, timeout=60):
     except Exception as e:
         return getattr(e, "code", 0), str(e)
 
-# ---------------------------------------------------------- StadiumDB
-print("### STADIUMDB country page shape")
-for slug in ("ger", "germany", "de", "rou", "rom", "romania", "ro"):
-    code, body = get(f"https://stadiumdb.com/stadiums/{slug}")
-    hit = code == 200 and len(body) > 20000
-    print(f"  /stadiums/{slug:8s} -> {code} len={len(body) if code==200 else 0} {'OK' if hit else ''}")
-    if hit:
-        ANS.append(f"stadiumdb /stadiums/{slug} = {len(body)} bytes")
+def txt(f):
+    return re.sub(r"\s+", " ", html.unescape(TAG.sub(" ", f))).strip()
 
-for slug in ("ger", "rou", "rom", "romania"):
+print("### 1. STADIUMDB parsed rows (name | city | clubs | capacity)")
+for slug in ("ger", "rou"):
     code, body = get(f"https://stadiumdb.com/stadiums/{slug}")
-    if code != 200 or len(body) < 20000:
-        continue
-    print(f"  --- table shape for /stadiums/{slug}")
-    ths = re.findall(r"<th[^>]*>(.*?)</th>", body, re.S)[:8]
-    print("      headers:", [re.sub(r"<[^>]+>", "", t).strip() for t in ths])
-    trs = re.findall(r"<tr[^>]*>(.*?)</tr>", body, re.S)
-    print(f"      rows: {len(trs)}")
-    for tr in trs[1:4]:
-        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
-        print("      row:", [html.unescape(re.sub(r"<[^>]+>", " ", t)).strip()[:44] for t in tds])
-    # first stadium link shape
-    links = re.findall(r'href="(/[^"]*)"', "".join(trs[1:3]))
-    print("      links:", links[:6])
+    print(f"--BEGIN {slug} ({code})")
+    tables = re.findall(r"<table[^>]*>(.*?)</table>", body, re.S | re.I)
+    print(f"  tables on page: {len(tables)}")
+    n = 0
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", body, re.S | re.I):
+        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S | re.I)
+        if len(tds) < 4:
+            continue
+        n += 1
+        href = re.search(r'href="([^"]+)"', tds[0])
+        print(f"R\t{txt(tds[0])}\t{txt(tds[1])}\t{txt(tds[2])}\t{txt(tds[3])}\t{href.group(1) if href else ''}")
+    print(f"--END {slug} rows={n}")
 
-# ------------------------------------------------------------ Wikipedia
 print()
-print("### WIKIPEDIA season articles")
+print("### 2. RAW HTML of two rows, to see what the Clubs cell really holds")
+code, body = get("https://stadiumdb.com/stadiums/ger")
+rows = [tr for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", body, re.S | re.I)
+        if len(re.findall(r"<td", tr)) >= 4]
+for tr in rows[:2]:
+    print("  RAW:", re.sub(r"\s+", " ", tr)[:600])
+
+print()
+print("### 3. WIKIPEDIA table headers on the two pages that found nothing")
 API = "https://en.wikipedia.org/w/api.php"
-CAND = [
- "2026–27 Bundesliga", "2026–27 2. Bundesliga", "2026–27 3. Liga",
- "2026–27 Regionalliga",
- "2026–27 Liga I", "2026–27 Liga II", "2026–27 Liga 2 (Romania)",
- "2026–27 Liga III", "2026–27 Liga 3 (Romania)",
- "2026–27 Austrian 2. Liga", "2026–27 2. Liga (Austria)",
-]
-for title in CAND:
+def parse(title):
     q = urllib.parse.urlencode({"action":"parse","page":title,"prop":"text",
                                 "format":"json","formatversion":"2","redirects":"1"})
-    code, body = get(f"{API}?{q}")
-    if code != 200:
-        print(f"  {title!r:36s} HTTP {code}")
-        continue
-    try:
-        d = json.loads(body)
-    except ValueError:
-        print(f"  {title!r:36s} bad json"); continue
-    if "error" in d:
-        print(f"  {title!r:36s} MISSING ({d['error'].get('code')})")
-        continue
-    txt = d["parse"]["text"]
-    real = d["parse"]["title"]
-    tables = re.findall(r'<table[^>]*class="[^"]*wikitable[^"]*"[^>]*>.*?</table>', txt, re.S)
-    good = []
-    for t in tables:
-        hdr = " ".join(re.sub(r"<[^>]+>"," ",h).lower() for h in re.findall(r"<th[^>]*>(.*?)</th>", t, re.S)[:12])
-        if ("stadium" in hdr or "venue" in hdr or "ground" in hdr) and "capacit" in hdr:
-            rows = len(re.findall(r"<tr[^>]*>", t)) - 1
-            good.append(rows)
-    print(f"  {title!r:36s} OK as {real!r}  tables={len(tables)} roster-like={good}")
-    ANS.append(f"wp {title} -> {real} roster-like tables {good}")
+    c, b = get(f"{API}?{q}")
+    if c != 200: return None, f"HTTP {c}"
+    d = json.loads(b)
+    if "error" in d: return None, d["error"].get("code")
+    return d["parse"], None
+
+for title in ("2026–27 Regionalliga", "2026–27 Liga III"):
+    p, err = parse(title)
+    if err: print(f"  {title}: {err}"); continue
+    tables = re.findall(r'<table[^>]*class="[^"]*wikitable[^"]*"[^>]*>.*?</table>', p["text"], re.S)
+    print(f"  {title}: {len(tables)} wikitables")
+    for i, t in enumerate(tables[:14]):
+        hdr = [txt(h)[:22] for h in re.findall(r"<th[^>]*>(.*?)</th>", t, re.S)[:8]]
+        nrows = len(re.findall(r"<tr[^>]*>", t)) - 1
+        print(f"    [{i}] rows={nrows:3d} hdr={hdr}")
 
 print()
-print("### ANSWERS AGAIN")
-for a in ANS:
-    print("  " + a)
+print("### 4. Candidate per-division / alternative titles")
+for title in ("2026–27 Regionalliga Bayern", "2026–27 Regionalliga West",
+              "2026–27 Regionalliga Nord", "2026–27 Regionalliga Nordost",
+              "2026–27 Regionalliga Südwest", "2026–27 2. Liga",
+              "2026–27 Austrian Football Second League"):
+    p, err = parse(title)
+    if err:
+        print(f"  {title!r:40s} MISSING ({err})"); continue
+    tables = re.findall(r'<table[^>]*class="[^"]*wikitable[^"]*"[^>]*>.*?</table>', p["text"], re.S)
+    good = []
+    for t in tables:
+        hdr = " ".join(txt(h).lower() for h in re.findall(r"<th[^>]*>(.*?)</th>", t, re.S)[:12])
+        if ("stadium" in hdr or "venue" in hdr or "ground" in hdr) and "capacit" in hdr:
+            good.append(len(re.findall(r"<tr[^>]*>", t)) - 1)
+    print(f"  {title!r:40s} OK as {p['title']!r} roster-like={good}")
