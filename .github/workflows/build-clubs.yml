@@ -33,7 +33,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # TEMPORARY probe job - StadiumDB access/terms evaluation. Remove with the
+  # script in tools/_probe_stadiumdb_access.py once the log has been read.
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+      - name: Probe StadiumDB access and terms
+        run: |
+          set -o pipefail
+          python3 tools/_probe_stadiumdb_access.py 2>&1 | tee /tmp/probe.log
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## StadiumDB access probe'
+            echo
+            echo '```'
+            tail -n 120 /tmp/probe.log 2>/dev/null || echo "probe did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
   clubs:
+    # TEMPORARY: disabled while the StadiumDB probe runs.
+    if: false
     runs-on: ubuntu-latest
 
     steps:
