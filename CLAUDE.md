@@ -103,8 +103,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   window tends to open is allowed to live, and the only place it is.
   It carries its own `dateSource` and its own `basis`.
 - `data/club-ticket-prices.csv` — one row per club per team per season
-  per competition per stage per category. Face values, and observed
-  resale prices, which are marked as observations rather than policy.
+  per competition per stage per category per `kind`. Face values, and
+  observed resale prices, which are marked as observations rather than
+  policy. `kind` is part of that key because a face value and a price
+  somebody saw are two different facts about the same seat and the file
+  already holds both for one category — see the Conventions entry.
 
 ### Generated — safe to overwrite
 
@@ -129,6 +132,8 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
   clubs Wikidata cannot place. Matches on names, proposes only, and
   flags anything ambiguous rather than settling it with a rule.
+- `tools/check_tickets.py` — read-back and checks for the three ticket
+  files. Reads, never writes; exits 1 on a problem.
 
 ---
 
@@ -269,6 +274,58 @@ separates `face-value` — what the club publishes — from
 never written as though the club had stated it, and `priceBasis` records
 whether a figure is before or after VAT and fees, because German clubs
 quote both and the difference is real money.
+
+**The three ticket files are read back and checked, and the checker has
+two kinds of vocabulary on purpose.** `tools/check_tickets.py` is the
+reader this project went without for as long as the files existed. It
+reads all three, prints every accepted row back exactly as understood,
+and names every rejected row with its line number. It never writes to
+any of the three, and it exits 1 when it finds a problem, because a
+green tick over a file with a rejected row in it is the same failure
+`set -o pipefail` was added elsewhere to prevent.
+`.github/workflows/check-tickets.yml` runs it on a push that touches one
+of the files — with the same caveat as `build-clubs.yml`, that the
+`paths` filter only applies to pushes on `main`, so an edit on a working
+branch still needs a `workflow_dispatch`.
+
+**Closed vocabularies are the ones this file actually lists**, and a
+value outside them rejects the row: `dateSource`, `basis`, `cutoff`,
+`kind`, `priceBasis`.
+
+**Open vocabularies are every other controlled column** — `access`,
+`salesModel`, `requestTypes`, `closesEarly`, `demand`, `resale`, `team`,
+`window`, `competition`, `stage`, `category`, `placeType`. Nobody has
+written down what their allowed values are, because there is one club in
+the file and whatever Bayern needed is all that exists. A closed list
+for them would reject the first legitimate value a second club needs, so
+the tool holds the values currently in use, **reports** anything new and
+**keeps the row**. A typo is by definition a new value, so it is still
+caught; a real new value is caught too, and the remedy is to add it to
+`KNOWN` in the tool, which is a deliberate edit rather than a silent
+one. The lists are seeded from the FC Bayern rows and from nothing else,
+and the tool says so.
+
+**It enforces rule 1 rather than describing it.** No cell that states a
+rule may hold a day-level date, and `opensEstimate` above all: `late
+June` passes, `30 June` and `2027-06-30` do not. A month is a pattern, a
+day is a deadline, and the line between them is the whole reason
+`opensEstimate` is loose text. `estimateFor` and `season` must be cycles
+like `2027-28`. The overflow guard from `fetch_clubs.py` is here too, so
+an unquoted comma is named with its line number instead of truncating a
+note. `checked` must be an ISO date; a future one is reported.
+
+**A `kind` column belongs in the price file's key, and the checker found
+that on its first run.** This file described `club-ticket-prices.csv` as
+one row per club per team per season per competition per stage per
+category — which is one column short, and the existing rows already
+proved it: FC Bayern has both a `face-value` row and a `resale-observed`
+row for Bundesliga category 1 in 2026-27. Those are two different facts
+about the same seat and both belong in the file. So the key is club,
+team, season, competition, stage, category **and `kind`**.
+A repeated `resale-observed` row is **reported, not rejected** — two
+sightings of one category at two prices is a real thing, and a file that
+records observations has to be able to hold more than one. A repeated
+`face-value` row is rejected: a category has one published price.
 
 **Six feeds plus admin**: `bayern`, `germany-nt`, `local`, `italy`,
 `romania`, `uefa-finals`, `admin`. `local` means within day-trip range of
@@ -1332,15 +1389,16 @@ a page anyone can already view in their browser's network tab.
    recurring window tends to open, which is a different claim from a
    deadline and carries its own `dateSource` and `basis` saying how much
    to trust it.
-   **What is still not built is any code that reads them.** Nothing in
-   `tools/` parses these files, nothing validates the controlled
-   vocabularies, and `index.html` does not show them. So the read-back
-   convention — print back what was parsed, with line numbers for
-   rejected rows — is not honoured for them yet, and a typo in a
-   vocabulary column currently goes unnoticed. That reader is the
-   obvious next step, and it should reject a row whose `dateSource` or
-   `basis` is not one of the listed values rather than quietly accepting
-   it.
+   **The reader is built.** `tools/check_tickets.py` parses all three,
+   prints back every accepted row exactly as understood, and names every
+   rejected row with its line number, so the read-back convention is
+   honoured for them now. It rejects a row whose `dateSource` or `basis`
+   is not one of the listed values, which is what this entry asked for.
+   It never writes to any of the three files, and it exits 1 on a
+   problem so a workflow step shows red rather than a green tick. See
+   the Conventions entry on it above.
+   **What is still not built is the display.** `index.html` does not
+   show any of these files. Item 2 below is where that belongs.
 2. Club detail sheet: a pull-up panel replacing the map popup, showing
    name, ground, capacity, competition name with tier in brackets,
    distance, fixtures and ticket info, each saying "unavailable" rather
