@@ -103,8 +103,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   window tends to open is allowed to live, and the only place it is.
   It carries its own `dateSource` and its own `basis`.
 - `data/club-ticket-prices.csv` — one row per club per team per season
-  per competition per stage per category. Face values, and observed
-  resale prices, which are marked as observations rather than policy.
+  per competition per stage per category per `kind`. Face values, and
+  observed resale prices, which are marked as observations rather than
+  policy. `kind` is part of that key because a face value and a price
+  somebody saw are two different facts about the same seat and the file
+  already holds both for one category — see the Conventions entry.
 
 ### Generated — safe to overwrite
 
@@ -129,6 +132,8 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
   clubs Wikidata cannot place. Matches on names, proposes only, and
   flags anything ambiguous rather than settling it with a rule.
+- `tools/check_tickets.py` — read-back and checks for the three ticket
+  files. Reads, never writes; exits 1 on a problem.
 
 ---
 
@@ -269,6 +274,58 @@ separates `face-value` — what the club publishes — from
 never written as though the club had stated it, and `priceBasis` records
 whether a figure is before or after VAT and fees, because German clubs
 quote both and the difference is real money.
+
+**The three ticket files are read back and checked, and the checker has
+two kinds of vocabulary on purpose.** `tools/check_tickets.py` is the
+reader this project went without for as long as the files existed. It
+reads all three, prints every accepted row back exactly as understood,
+and names every rejected row with its line number. It never writes to
+any of the three, and it exits 1 when it finds a problem, because a
+green tick over a file with a rejected row in it is the same failure
+`set -o pipefail` was added elsewhere to prevent.
+`.github/workflows/check-tickets.yml` runs it on a push that touches one
+of the files — with the same caveat as `build-clubs.yml`, that the
+`paths` filter only applies to pushes on `main`, so an edit on a working
+branch still needs a `workflow_dispatch`.
+
+**Closed vocabularies are the ones this file actually lists**, and a
+value outside them rejects the row: `dateSource`, `basis`, `cutoff`,
+`kind`, `priceBasis`.
+
+**Open vocabularies are every other controlled column** — `access`,
+`salesModel`, `requestTypes`, `closesEarly`, `demand`, `resale`, `team`,
+`window`, `competition`, `stage`, `category`, `placeType`. Nobody has
+written down what their allowed values are, because there is one club in
+the file and whatever Bayern needed is all that exists. A closed list
+for them would reject the first legitimate value a second club needs, so
+the tool holds the values currently in use, **reports** anything new and
+**keeps the row**. A typo is by definition a new value, so it is still
+caught; a real new value is caught too, and the remedy is to add it to
+`KNOWN` in the tool, which is a deliberate edit rather than a silent
+one. The lists are seeded from the FC Bayern rows and from nothing else,
+and the tool says so.
+
+**It enforces rule 1 rather than describing it.** No cell that states a
+rule may hold a day-level date, and `opensEstimate` above all: `late
+June` passes, `30 June` and `2027-06-30` do not. A month is a pattern, a
+day is a deadline, and the line between them is the whole reason
+`opensEstimate` is loose text. `estimateFor` and `season` must be cycles
+like `2027-28`. The overflow guard from `fetch_clubs.py` is here too, so
+an unquoted comma is named with its line number instead of truncating a
+note. `checked` must be an ISO date; a future one is reported.
+
+**A `kind` column belongs in the price file's key, and the checker found
+that on its first run.** This file described `club-ticket-prices.csv` as
+one row per club per team per season per competition per stage per
+category — which is one column short, and the existing rows already
+proved it: FC Bayern has both a `face-value` row and a `resale-observed`
+row for Bundesliga category 1 in 2026-27. Those are two different facts
+about the same seat and both belong in the file. So the key is club,
+team, season, competition, stage, category **and `kind`**.
+A repeated `resale-observed` row is **reported, not rejected** — two
+sightings of one category at two prices is a real thing, and a file that
+records observations has to be able to hold more than one. A repeated
+`face-value` row is rejected: a category has one published price.
 
 **Six feeds plus admin**: `bayern`, `germany-nt`, `local`, `italy`,
 `romania`, `uefa-finals`, `admin`. `local` means within day-trip range of
@@ -619,6 +676,112 @@ a page anyone can already view in their browser's network tab.
   pages, never by the pages themselves. Every row says so in its note.
   The URLs in the `source` columns are real and open normally in an
   ordinary browser - which is the route to confirming any of it.
+
+- **The club's pages have now been read, from the Internet Archive, and
+  that is a different thing from getting past Akamai.** Done on
+  2026-09-19. `fcbayern.com` was **not** retried: it answers 403 and a
+  bot-management refusal is a stop, not something to work around. What
+  was fetched instead is the Wayback Machine's own public copies, which
+  is the same category of source as the search-engine results this
+  project already leans on, only far better - the club's exact words,
+  with a capture date on them.
+  **What exists and what does not**, checked rather than assumed:
+  `/de/tickets/jahreskarten` (captured 2026-06-08),
+  `/de/tickets/faq-jahreskarten` (2026-06-14),
+  `/de/tickets/auswaerts-dauerkarte` (2026-06-13) and
+  `/de/tickets/info/preise-und-ermaessigungen` (2025-09-02, and three
+  older ones). The one page most wanted -
+  `/de/tickets/info/anfragen-fuer-die-neue-saison-2026-2027` - has **no
+  snapshot at all**; the CDX index answered HTTP 200 with an empty list.
+  So the page dated 2 June 2026 is still unread and probably always will
+  be.
+  **Two practical notes for next time.** The CDX index is slow and
+  flaky from a runner: several queries needed three attempts at a
+  70-second timeout, and one run spent seventeen minutes on five URLs.
+  And a `.../<timestamp>id_/<url>` fetch sometimes fails where the same
+  capture succeeds on a plain `.../<timestamp>/<url>` retry, so retry
+  without `id_` before believing a snapshot is unreadable.
+
+- **The Champions League price sets differ by OPPONENT, not by round,
+  and the theory that said otherwise was wrong.** This is the
+  correction worth keeping from 2026-09-19.
+  `club-ticket-prices.csv` used to argue that its 100/80/60/50/19 rows
+  were the league phase and that a higher 150/120/100/70/19 set search
+  results kept returning was a later knockout round - reasoning from
+  category 5 agreeing at 19 EUR in both. The archived price page shows
+  **two league-phase tables side by side**: "PREISE UEFA CHAMPIONS
+  LEAGUE GRUPPENPHASE FC BAYERN - CHELSEA FC" at 120/100/70/60/19, and
+  "... FC BAYERN - BRÜGGE / SPORTING LISSABON / SAINT-GILLOISE" at
+  100/80/60/50/19. Same round, different visitors. The file's figures
+  are the cheaper-opponent table.
+  **The category-5 clue was worthless and it is worth knowing why.**
+  19 EUR is the Südkurve standing price on *every* Champions League
+  table on that page, and 15 EUR on every Bundesliga one. Two Champions
+  League sets agreeing on category 5 therefore says only that both are
+  Champions League - it would have matched whatever the two sets were.
+  A constant is not a fingerprint. Use it to confirm a competition,
+  never a round.
+  **Prices do rise by round, so half the theory was right**, and the
+  archived Jahreskarten page proves it for the season-ticket add-on:
+  UCL Ligaphase 80/60/40/30/15, Achtelfinale 110/90/70/40/15,
+  Viertelfinale and Halbfinale both 160/120/80/60/15. Those are
+  Jahreskarten prices - a per-match add-on for season-ticket holders -
+  and **a different product from a day ticket**, so they do not belong
+  in the day-ticket rows. Bayern quotes at least three price families
+  for the same seat, and mixing them is the easy mistake here.
+  **The Bundesliga rows are confirmed exactly** against the same page:
+  80/70/50/40/15 for categories 1 to 5, Vollzahler, member discount
+  2,50 EUR.
+  **What is now the open problem is the season, not the figures.** The
+  page that matches every one of those rows is the **2025|26** one, and
+  the rows say `2026-27`. fussball-tickets-kaufen.de, read directly,
+  says the club has not published 26/27 league-phase prices at all. So
+  the figures are most likely last season's carried forward. They
+  stand, because hand-written data wins - but the `season` cell is the
+  one to check. The 150/120/100/70/19 set was on no page read and is
+  still unaccounted for.
+  **One more thing nobody has settled**, and it is flagged in the rows
+  rather than acted on: `priceBasis` says `excl-vat-fees`, but the
+  club's page quotes these as consumer prices with a 1 EUR
+  Vorverkaufsgebühr and 2-8 EUR Systemgebühren added *on top*, and
+  German consumer prices are normally quoted **including** VAT. If
+  that is right, `excl-vat-fees` claims more than is true, and the
+  arithmetic in the 120 EUR resale row rests on it.
+
+- **The Bayern request windows were two clocks read as one, and that is
+  settled.** The `bundesliga-home` and `bundesliga-away` rows of
+  `club-ticket-windows.csv` used to end "Both cannot be right. Nothing
+  here picks a winner", over an apparent contradiction: a request page
+  dated 2 June 2026 against a DFL fixture list published 2 July 2026.
+  Both were right, about different products.
+  **The season-ticket clock** runs on the season ending, not on the
+  fixture list. From the club's own pages: the ADK order deadline for
+  26/27 "endete ... am 28.05.2026" with answers "Anfang Juni"; the
+  Reservierungsanschreiben goes out "ca. Anfang bis Mitte Juni", and
+  for 26/27 "voraussichtlich Mitte Juni 2026"; and "alle Änderungen für
+  die Jahreskarte können immer in der Saisonvorbereitung durchgeführt
+  werden, ca. Anfang Juni bis Ende Juni, dies hängt vom Saisonende ab".
+  A season runs 1 July to 30 June.
+  **The single-match clock** is the Ticket-Anfrageportal, "bereits vor
+  einer Saison für die Spiele Ihrer Wahl", with the lottery "ca. 6
+  Wochen vor jedem Spiel" - which also pins down the "four to six
+  weeks" in `club-tickets.csv` at about six. A request can be lodged
+  before the opponent is known, which is exactly the blind matchday
+  slot `football-rules.json` describes; a **match-specific** request
+  needs the schedule, which is why 26/27 league-phase requests opened
+  on 29 August 2026, two days after the draw.
+  **What was deliberately not changed.** `opensEstimate` still reads
+  `late June` on both Bundesliga rows. Which clock those rows are meant
+  to catch is Alexandru's call: for the season-ticket cycle late June is
+  right and the label is wrong; for single-match Bundesliga requests it
+  is probably a month early. Writing a window is not something to guess
+  at - rule 1.
+  **And one window could now honestly be `confirmed`.** The ADK page
+  states its own next cycle: "Ende Mai 2027 informieren wir Sie dann
+  gerne wieder über Bestellmöglichkeiten für die Saison 2027/28." That
+  is a published claim about a future window, so an ADK row could carry
+  `dateSource` `confirmed` and `basis` `published`. **No such row was
+  added**, because the windows in that file are Alexandru's to write.
 
 - **TSV 1860 München II is off the map until somebody finds its real
   ground, and that is the right place for it.** `Q7671747` is corrected
@@ -1332,15 +1495,16 @@ a page anyone can already view in their browser's network tab.
    recurring window tends to open, which is a different claim from a
    deadline and carries its own `dateSource` and `basis` saying how much
    to trust it.
-   **What is still not built is any code that reads them.** Nothing in
-   `tools/` parses these files, nothing validates the controlled
-   vocabularies, and `index.html` does not show them. So the read-back
-   convention — print back what was parsed, with line numbers for
-   rejected rows — is not honoured for them yet, and a typo in a
-   vocabulary column currently goes unnoticed. That reader is the
-   obvious next step, and it should reject a row whose `dateSource` or
-   `basis` is not one of the listed values rather than quietly accepting
-   it.
+   **The reader is built.** `tools/check_tickets.py` parses all three,
+   prints back every accepted row exactly as understood, and names every
+   rejected row with its line number, so the read-back convention is
+   honoured for them now. It rejects a row whose `dateSource` or `basis`
+   is not one of the listed values, which is what this entry asked for.
+   It never writes to any of the three files, and it exits 1 on a
+   problem so a workflow step shows red rather than a green tick. See
+   the Conventions entry on it above.
+   **What is still not built is the display.** `index.html` does not
+   show any of these files. Item 2 below is where that belongs.
 2. Club detail sheet: a pull-up panel replacing the map popup, showing
    name, ground, capacity, competition name with tier in brackets,
    distance, fixtures and ticket info, each saying "unavailable" rather

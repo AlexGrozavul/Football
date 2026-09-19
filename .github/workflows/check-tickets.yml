@@ -1,0 +1,69 @@
+name: Check ticket files
+
+# Reads the three hand-written ticket files, prints back what it
+# understood, and complains about anything it could not.
+#
+#   data/club-tickets.csv
+#   data/club-ticket-windows.csv
+#   data/club-ticket-prices.csv
+#
+# It never writes to them, so there is nothing to commit. It exists so a
+# typo in a vocabulary column - "inferrred", "face_value" - is caught
+# when you push it rather than months later, and so the read-back
+# convention is honoured for these files the way it already is for
+# clubs-manual.csv and league-tiers.csv.
+#
+# The step fails when the tool finds a problem. That is the point: a
+# green tick over a file with a rejected row in it is the exact failure
+# `set -o pipefail` was added elsewhere in this repo to prevent.
+#
+# Note the same caveat as build-clubs.yml: the paths filter below only
+# applies to pushes on main. Editing one of these files on a working
+# branch needs a manual "Run workflow" against that branch.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/club-tickets.csv"
+      - "data/club-ticket-windows.csv"
+      - "data/club-ticket-prices.csv"
+      - "tools/check_tickets.py"
+      - ".github/workflows/check-tickets.yml"
+  pull_request:
+    paths:
+      - "data/club-tickets.csv"
+      - "data/club-ticket-windows.csv"
+      - "data/club-ticket-prices.csv"
+      - "tools/check_tickets.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      # set -o pipefail, or a crashing script shows a green tick. This
+      # has already caused one silent failure in this repo.
+      - name: Read the ticket files back
+        id: check
+        run: |
+          set -o pipefail
+          python3 tools/check_tickets.py --full 2>&1 | tee /tmp/tickets.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Ticket files"
+            echo
+            echo '```'
+            cat /tmp/tickets.log 2>/dev/null || echo "the check did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
