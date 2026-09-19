@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
-"""THROWAWAY probe, phase 4: the seven the league pages did not hold.
+"""THROWAWAY probe, phase 5: the seven, through the site's real search.
 
-Thirteen league pages settled 14 of the 22. Seven are left, and all of
-them look like clubs that have simply dropped below tier 5 since
-Wikidata last tagged them Regionalliga: Eutin 08, FC Kray, Lupo Martini
-Wolfsburg, Torgelower FC Greif, VfB Hüls, VfR Garching, and Viktoria
-1889 Berlin, whose best league-page candidate was a different Berlin
-club matched on the word Berlin.
+Phase 4 found the search form and proved five guessed parameter names
+wrong. The form is a plain GET to index.php with s=search and the term
+in a field called `search`, placeholder "Stadion / Verein suchen".
 
-Guessing at more league pages is how a targeted lookup turns into a
-scan, so this asks the site's own search instead - if it has one.
-index.php?s=search came back in phase 1 as a distinct 46KB page rather
-than the homepage the site serves for an unknown ?s=, so there is
-something there.
+FSV Optik Rathenow is the control - already settled from a league page,
+so a search that cannot find it is broken rather than evidence that the
+other seven are absent. Nothing is asked for the seven until the
+control comes back.
 
-FSV Optik Rathenow is the control. It is one of the 14 already settled,
-so a search that cannot find it is broken rather than telling us these
-seven are absent.
+For each hit the ground page is read for address, capacity and the
+Google Maps coordinates, exactly as phase 3 did, so the seven are
+judged on the same evidence as the fourteen.
 """
-import json, os, re, subprocess, time
+import json, os, re, subprocess, time, urllib.parse as up
 
 BASE = "https://www.europlan-online.de"
 UA = ("FootballFixturePlanner/1.0 (personal, non-commercial; "
@@ -26,21 +22,24 @@ UA = ("FootballFixturePlanner/1.0 (personal, non-commercial; "
 OUT, PAUSE, MAXTIME = "tmp-europlan", 1.2, 40
 os.makedirs(OUT, exist_ok=True)
 
-MISSING = ["Eutin 08", "Kray", "Lupo Martini", "Torgelower", "Hüls",
-           "Garching", "Viktoria 1889 Berlin"]
-CONTROL = "Optik Rathenow"
+CONTROL = ("FSV Optik Rathenow", "Optik Rathenow")
+MISSING = [("Q1378922", "Eutin 08", "Eutin"),
+           ("Q720528", "FC Kray", "Essen"),
+           ("Q831892", "Lupo Martini Wolfsburg", "Wolfsburg"),
+           ("Q566179", "Torgelower FC Greif", "Torgelow"),
+           ("Q479306", "VfB Hüls", "Marl"),
+           ("Q127275134", "VfR Garching", "Garching bei München"),
+           ("Q13426883", "FC Viktoria 1889 Berlin", "Berlin"),
+           ("Q21175456", "Teutonia Watzenborn-Steinberg", "Pohlheim")]
 
 
 def say(s): print(s, flush=True)
 
 
-def get(path, label, post=None):
+def get(path, label):
     url = path if path.startswith("http") else BASE + "/" + path.lstrip("/")
     cmd = ["curl", "-sSL", "--max-time", str(MAXTIME), "--compressed", "-A", UA,
-           "-H", "Accept-Language: de,en", "-w", "\n__M__%{http_code}"]
-    if post:
-        cmd += ["--data-urlencode", post]
-    cmd.append(url)
+           "-H", "Accept-Language: de,en", "-w", "\n__M__%{http_code}", url]
     try:
         p = subprocess.run(cmd, capture_output=True, timeout=MAXTIME + 10)
     except subprocess.TimeoutExpired:
@@ -54,78 +53,111 @@ def get(path, label, post=None):
     return body
 
 
-ENT = {"&nbsp;": " ", "&amp;": "&", "&uuml;": "ü", "&auml;": "ä",
-       "&ouml;": "ö", "&szlig;": "ß", "&Uuml;": "Ü", "&Ouml;": "Ö"}
+ENT = {"&nbsp;": " ", "&amp;": "&", "&quot;": '"', "&#039;": "'", "&uuml;": "ü",
+       "&auml;": "ä", "&ouml;": "ö", "&szlig;": "ß", "&Uuml;": "Ü",
+       "&Auml;": "Ä", "&Ouml;": "Ö", "&ndash;": "–"}
 
 def txt(h):
     t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", h)
+    t = re.sub(r"(?i)<br\s*/?>", "\n", t)
     t = re.sub(r"<[^>]+>", " ", t)
     for k, v in ENT.items(): t = t.replace(k, v)
-    return re.sub(r"\s+", " ", t).strip()
+    t = re.sub(r"[ \t]+", " ", t)
+    return re.sub(r"\n\s*\n+", "\n", t).strip()
 
 
-out = {}
+def search(term):
+    return get("index.php?s=search&search=" + up.quote(term), f"search {term!r}")
 
-# ------------------------------------------------- what is the search page
-say("[1] the search page and its form")
-h = get("index.php?s=search", "s=search")
-if h:
-    open(f"{OUT}/search-page.html", "w").write(h)
-    forms = re.findall(r"(?is)<form[^>]*>.*?</form>", h)
-    out["forms"] = [re.sub(r"\s+", " ", f)[:900] for f in forms[:4]]
-    out["inputs"] = re.findall(r"(?is)<(?:input|select)[^>]*>", h)[:25]
-    out["action_hints"] = sorted(set(re.findall(r'action=["\']([^"\']*)["\']', h)))[:8]
-    say(f"  forms: {len(forms)}  inputs: {len(out['inputs'])}")
-    for i in out["inputs"][:12]:
-        say("    " + re.sub(r"\s+", " ", i)[:150])
 
-json.dump(out, open(f"{OUT}/search-probe.json", "w"), ensure_ascii=False, indent=1)
-
-# --------------------------------------- try query shapes with the control
-say(f"[2] control search for {CONTROL!r}")
-SHAPES = ["index.php?s=search&q={q}", "index.php?s=search&suche={q}",
-          "index.php?s=search&begriff={q}", "index.php?s=search&name={q}",
-          "index.php?s=search&t=verein&q={q}"]
-import urllib.parse as up
-working = None
-tries = {}
-for sh in SHAPES:
-    u = sh.format(q=up.quote(CONTROL))
-    b = get(u, sh.split("&", 1)[1].split("=")[0])
-    if not b:
-        continue
-    hit = bool(re.search(r"stadion-\d+\.html", b)) and "Rathenow" in b
-    tries[sh] = {"bytes": len(b), "found_control": hit}
-    if hit and not working:
-        working = sh
-        open(f"{OUT}/search-hit.html", "w").write(b)
-out["control_tries"] = tries
-out["working_shape"] = working
-say(f"  working shape: {working}")
-json.dump(out, open(f"{OUT}/search-probe.json", "w"), ensure_ascii=False, indent=1)
-
-# ------------------------------------------------------ the seven, if we can
-results = {}
-if working:
-    say("[3] the seven")
-    for name in MISSING:
-        b = get(working.format(q=up.quote(name)), name)
-        if not b:
+def hits(html):
+    """A search result row: the ground link, and whatever text sits with it."""
+    out, seen = [], set()
+    for m in re.finditer(r'(?is)<tr[^>]*>(.*?)</tr>', html):
+        row = m.group(1)
+        a = re.search(r'(?is)<a href="([^"]*stadion-(\d+)\.html)"[^>]*>(.*?)</a>', row)
+        if not a or a.group(2) in seen:
             continue
-        rows = []
-        for m in re.finditer(
-                r'(?is)<a href="([^"]*stadion-(\d+)\.html)"[^>]*>(.*?)</a>', b):
-            rows.append({"href": m.group(1), "id": m.group(2),
-                         "ground": txt(m.group(3))})
-        seen, ded = set(), []
-        for r in rows:
-            if r["id"] not in seen:
-                seen.add(r["id"]); ded.append(r)
-        results[name] = {"hits": ded[:8], "text": txt(b)[:1200]}
-        say(f"    {name}: {len(ded)} distinct ground links")
-else:
-    say("[3] skipped - no working search shape, so the seven cannot be asked for")
+        seen.add(a.group(2))
+        out.append({"href": a.group(1), "id": a.group(2),
+                    "ground": txt(a.group(3)), "row": txt(row)[:200]})
+    if not out:                      # not a table? fall back to bare links
+        for m in re.finditer(r'(?is)<a href="([^"]*stadion-(\d+)\.html)"[^>]*>(.*?)</a>', html):
+            if m.group(2) in seen:
+                continue
+            seen.add(m.group(2))
+            out.append({"href": m.group(1), "id": m.group(2),
+                        "ground": txt(m.group(3)), "row": ""})
+    return out
 
-out["missing_results"] = results
-json.dump(out, open(f"{OUT}/search-probe.json", "w"), ensure_ascii=False, indent=1)
+
+def parse_ground(html, url):
+    t = txt(html)
+    g = {"url": url}
+    m = re.search(r"maps\.google\.[a-z.]+/maps\?q=\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)", html)
+    if m: g["lat"], g["lon"] = m.group(1), m.group(2)
+    m = re.search(r"(?i)Kapazität:\s*([\d.]+)", t)
+    if m: g["capacity"] = m.group(1)
+    m = re.search(r"(?is)Anschrift\s*\n(.{0,260}?)\n\s*(?:\||Stadiondaten)", t)
+    if m: g["address"] = re.sub(r"\s*\n\s*", ", ", m.group(1).strip())[:200]
+    m = re.search(r"\b(\d{5})\s+([^\n,|]+)", g.get("address", ""))
+    if m: g["plz"], g["town"] = m.group(1), m.group(2).strip()
+    m = re.search(r"(?is)Vereine, die in diesem Stadion spielen\s*\n(.{0,400}?)\n\s*(?:Weitere Vereine|Bilder|Europlan)", t)
+    if m: g["clubs_here"] = re.sub(r"\s*\n\s*", " / ", m.group(1).strip())[:300]
+    m = re.search(r"(?is)Weitere Vereine[^\n]*\n(.{0,300}?)\n\s*(?:Bilder|Europlan)", t)
+    if m: g["clubs_former"] = re.sub(r"\s*\n\s*", " / ", m.group(1).strip())[:300]
+    m = re.search(r"(?is)<title>(.*?)</title>", html)
+    if m: g["title"] = txt(m.group(1))[:120]
+    return g
+
+
+# --------------------------------------------------------------- control
+say("[1] control")
+cb = search(CONTROL[1])
+ok = bool(cb) and "Rathenow" in cb and re.search(r"stadion-\d+\.html", cb or "")
+say(f"  control found: {bool(ok)}")
+if cb:
+    open(f"{OUT}/search-control.html", "w").write(cb)
+result = {"control_ok": bool(ok), "control_hits": hits(cb) if cb else []}
+json.dump(result, open(f"{OUT}/seven.json", "w"), ensure_ascii=False, indent=1)
+if not ok:
+    say("  search does not work; not asking for the seven")
+    raise SystemExit(0)
+
+# ------------------------------------------------------------- the seven
+say("[2] the seven")
+found = {}
+for qid, name, town in MISSING:
+    b = search(name)
+    h = hits(b) if b else []
+    if not h and b:                       # try the distinctive word alone
+        short = max(name.split(), key=len)
+        b2 = search(short)
+        h = hits(b2) if b2 else []
+    found[qid] = {"name": name, "wikidata_town": town, "hits": h[:6]}
+    say(f"    {name}: {len(h)} ground hits")
+result["seven"] = found
+json.dump(result, open(f"{OUT}/seven.json", "w"), ensure_ascii=False, indent=1)
+
+# ------------------------------------------------------- their ground pages
+want = {}
+for qid, v in found.items():
+    for h in v["hits"][:3]:
+        want.setdefault(h["id"], h["href"])
+say(f"[3] ground pages: {len(want)}")
+grounds = {}
+for sid, href in list(want.items())[:30]:
+    b = get(href, f"stadion-{sid}")
+    if b:
+        grounds[sid] = parse_ground(b, BASE + "/" + href.lstrip("/"))
+result["grounds"] = grounds
+json.dump(result, open(f"{OUT}/seven.json", "w"), ensure_ascii=False, indent=1)
+
+say("")
+for qid, v in found.items():
+    say(f'{v["name"]}  (wikidata town: {v["wikidata_town"]})')
+    for h in v["hits"][:4]:
+        g = grounds.get(h["id"], {})
+        say(f'   {h["ground"][:34].ljust(35)} town={g.get("town","?")[:22].ljust(23)}'
+            f' cap={g.get("capacity","?")}')
 say("done")
