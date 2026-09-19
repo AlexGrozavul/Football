@@ -39,6 +39,14 @@ is wrong.** He has asked for this explicitly and has been right often
 enough that it matters — several of the better decisions in this project
 came from him correcting a proposal.
 
+**6. Men's football only, for now.** No women's league has been added to
+`data/league-tiers.csv`, so the club layer is already compliant — this
+is a documentation rule, not a data fix. It applies beyond leagues: a
+future club addition, a badge, or a piece of research is also men's
+football only until this rule changes, so don't reach for a women's
+team, a women's competition, or a women's-team crest just because a
+men's counterpart already has one.
+
 ---
 
 ## dateSource
@@ -333,6 +341,45 @@ cleared it is a plain "2" from z11 and stays one at every zoom above.
 The corner chip says
 how many shared grounds are on screen, so the count is visible rather than
 something to discover.
+
+**Tier zoom bands for tier 4 and deeper were merged into one, 2026-09-19.**
+Until then `TIER_FROM_ZOOM` gave every tier its own threshold, topping out
+at tier 5's z12. europlan-online's own club-to-ground link (see below)
+turned up real clubs as deep as tier 8 — Bezirksliga, two levels past
+where the scheme stopped — and a scheme with a ceiling has only two ways
+to handle a tier it was never built for: drop the club off the map
+entirely, or draw it at the deepest tier it knows, which is a false
+shallow tier. Neither is acceptable, so the per-tier scheme now stops at
+tier 3: `TIER_FROM_ZOOM` lists zooms for tiers 1-3 only, and tier 4 plus
+every tier deeper than it — 5, 6, 7, 8, and whatever is found after —
+switch on together at z11, the zoom tier 4 used on its own before.
+`zoomForTier()` in `index.html` is what does this, and a newly
+discovered tier 9 or 10 club falls into the same band with no code
+change. The Fritz-Walter-Stadion and Grünwalder examples just above
+still read true — both are tier 4 clubs and tier 4's own zoom did not
+move — but a shared ground pairing a tier 4 club with a tier 7 one now
+turns from a "1" straight into a "2" at z11, never a "1" and later a "2".
+
+Tiers 1-8 also got their own colour, because tier 4 and 5 used to both
+render as barely-different greys. Tier 1 stays red, 2 amber, 3 blue; 4
+is now teal, 5 green, 6 purple, 7 pink, 8 a warm gold-brown. The legend
+still lists all eight separately, each with its own colour and label,
+even though several now share one zoom threshold.
+
+**Five of the six europlan clubs found below tier 5 are now at their
+real tier.** The entry on the 20 europlan corrections below explains
+why six of them were left at Wikidata's stale Regionalliga tag: the
+zoom scheme topped out at tier 5, so writing their true level would
+have taken them off the map rather than moved them down it. Now that
+tier 4 and everything deeper share one band, `clubs-manual.csv` gives
+five of the six their real tier: FC Kray, Lupo Martini Wolfsburg and
+Eutin 08 to 6 (their Landesliga), VfR Garching to 7 (Bezirksliga
+Oberbayern Nord), VfB Hüls to 8 (Bezirksliga Westfalen 11). The sixth,
+FC Viktoria 1889 Berlin, is left as it was: europlan's own pages never
+named the men's first team's league on any page read, only the
+women's team's and the reserve side's, so there is no level to put in
+the cell. A blank stays blank rather than guessing tier 4 is wrong or
+right.
 
 ---
 
