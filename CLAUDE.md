@@ -85,6 +85,18 @@ a subscribed calendar reads as a schedule regardless of its description.
   Tier comes from this file and never from a league name: Wikidata's
   league items are fragmented and undated, so names cannot be trusted.
   `skip` in the tier column excludes a league.
+- `data/club-tickets.csv` — one row per club per team: who may buy, how
+  the club allocates, whether there is a formal cutoff, whether the
+  window can close before it, how demand behaves, and whether official
+  resale exists. **No cell in this file ever holds a date.** `cutoff`
+  says whether a stated deadline *exists*, not when it falls.
+- `data/club-ticket-windows.csv` — one row per club per team per sales
+  window. This is where a pattern-based estimate of when a recurring
+  window tends to open is allowed to live, and the only place it is.
+  It carries its own `dateSource` and its own `basis`.
+- `data/club-ticket-prices.csv` — one row per club per team per season
+  per competition per stage per category. Face values, and observed
+  resale prices, which are marked as observations rather than policy.
 
 ### Generated — safe to overwrite
 
@@ -194,6 +206,61 @@ missing.
 **Past dates drop out of calendars but stay in the JSON.** The file is
 the history and the anchor for next year's estimate; the calendar is only
 what lies ahead.
+
+**The ticket files hold rules, not dates.** Rule 1 says never generate a
+ticket rule, sale date, application window or deadline. The three ticket
+files are built so that obeying it is the path of least resistance.
+
+`club-tickets.csv` has no date column at all. `cutoff` says whether the
+club states a deadline (`stated`, `none`, `unknown`) and never when it
+falls; a specific match's actual deadline belongs in
+`football-rules.json` or `fixtures-manual.csv`, hand-written, as it
+always did. `closesEarly` says whether the window can shut before that
+stated deadline, which for a club like Bayern is the fact that actually
+decides whether you get in.
+
+`club-ticket-windows.csv` is the one place an estimate may live, and it
+is a *pattern*, not a deadline: "Bundesliga home and away requests have
+opened in late June in past cycles" is a different kind of claim from
+"requests close on 17 August". It estimates a future window from a past
+one and it never states a past window as fact without a source.
+
+Every window row carries two provenance columns, because `dateSource`
+alone cannot say what a reader needs to know:
+
+| column | what it answers |
+|---|---|
+| `dateSource` | how much to trust the date — `confirmed`, `inferred`, `disputed`, exactly as in `football-rules.json` |
+| `basis` | where the pattern came from — `published`, `observed-past-cycle`, `user-supplied`, `unknown` |
+
+`inferred` plus `basis` `user-supplied` is the honest combination for an
+estimate Alexandru supplied that no source has confirmed. It is not the
+same as `inferred` plus `observed-past-cycle`, which is an estimate
+reasoned from a past window somebody actually read. Collapsing the two
+into one column would lose exactly the distinction that matters, which
+is why there are two.
+
+`pastCycle` holds the past window the estimate reasons from, and it is
+blank unless a source says so. A blank `pastCycle` beside a filled
+`opensEstimate` is the file admitting that the pattern rests on nothing
+written down — which is a thing the file is allowed to say, and says out
+loud, rather than quietly inventing a past window to justify a future
+one.
+
+`opensEstimate` is deliberately **loose text** — `late June`, `after the
+UCL draw` — not a date. There is no format that makes "late June" into a
+day, and rounding it to one would be the exact failure rule 1 exists to
+prevent. `estimateFor` says which cycle the estimate is about, because
+"late June" alone means nothing.
+
+**A price is a fact about a season, and observed is not stated.**
+`club-ticket-prices.csv` carries `season` on every row, because a face
+value without a season is a wrong number waiting to happen. `kind`
+separates `face-value` — what the club publishes — from
+`resale-observed`, a price somebody actually saw once. An observation is
+never written as though the club had stated it, and `priceBasis` records
+whether a figure is before or after VAT and fees, because German clubs
+quote both and the difference is real money.
 
 **Six feeds plus admin**: `bayern`, `germany-nt`, `local`, `italy`,
 `romania`, `uefa-finals`, `admin`. `local` means within day-trip range of

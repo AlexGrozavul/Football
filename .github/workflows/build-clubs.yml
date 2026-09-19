@@ -113,11 +113,32 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
-      - name: Read FC Bayern's own ticket pages
-        timeout-minutes: 8
+      - name: Diagnose what fcbayern.com does to a runner
+        timeout-minutes: 6
         run: |
           set -o pipefail
-          python3 tools/_probe_fcbayern.py 2>&1 | tee /tmp/fcb.log
+          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
+          for u in \
+            https://www.bundesliga.com/de/bundesliga \
+            https://fcbayern.com/robots.txt \
+            https://fcbayern.com/de/tickets/info/preise-und-ermaessigungen \
+            https://tickets.fcbayern.com/documents/de/preisliste.pdf ; do
+            echo "=================================================================="
+            echo "## $u"
+            echo "--- plain curl, browser UA, 25s ---"
+            curl -sS -o /tmp/body.bin -D /tmp/hdr.txt --max-time 25 \
+                 -A "$UA" \
+                 -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
+                 -H 'Accept-Language: de-DE,de;q=0.9,en;q=0.8' \
+                 -w 'exit_ok http=%{http_code} dns=%{time_namelookup}s connect=%{time_connect}s tls=%{time_appconnect}s firstbyte=%{time_starttransfer}s total=%{time_total}s size=%{size_download}\n' \
+                 "$u" || echo "curl exit=$?"
+            echo "--- response headers ---"
+            head -c 1200 /tmp/hdr.txt 2>/dev/null || echo "(none)"
+            echo "--- first 600 bytes of body ---"
+            head -c 600 /tmp/body.bin 2>/dev/null | tr -d '\000' || echo "(none)"
+            echo
+          done
+        continue-on-error: true
 
       - name: Write the probe to the run summary
         if: always()
@@ -126,6 +147,6 @@ jobs:
             echo '## FC Bayern ticket pages (temporary probe)'
             echo
             echo '```'
-            cat /tmp/fcb.log 2>/dev/null || echo 'probe did not run'
+            echo 'see the step log'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
