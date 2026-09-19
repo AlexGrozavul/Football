@@ -1,0 +1,28 @@
+clubQid,name,country,tier,venue,capacity,lat,lon,ticketUrl,source,note,_ours,_stadiumdb,_osm,_sdbGround,_sdbCity,_sdbClub,_sdbUrl,_match,_candidates,_verdict
+Q101959,Borussia Mönchengladbach,DE,,,,,,,,,59749,54042,,Borussia Park,Mönchengladbach,Borussia,,name-contained+city,,sources differ by 10%
+Q153539,SpVgg Greuther Fürth,DE,,,,,,,,,18500,16626,,Sportpark Ronhof,Fürth,SpVgg Greuther Fürth,,name-exact+city,,sources differ by 10%
+Q105861,VfL Bochum,DE,,,,,,,,,29299,26000,,Vonovia Ruhrstadion,Bochum,VfL Bochum,,name-exact+city,,sources differ by 11%
+Q702455,RB Leipzig,DE,,,,,,,,,42000,47800,,Red Bull Arena,Leipzig,RB Leipzig,,name-exact+city,,sources differ by 12%
+Q155730,1. FC Magdeburg,DE,,,,,,,,,30098,25910,,Avnet Arena,Magdeburg,Magdeburg,,name-contained+city,,sources differ by 14%
+Q38245,Eintracht Frankfurt,DE,,,,,,,,,51500,60100,,Deutsche Bank Park,Frankfurt,Eintracht Frankfurt,,name-exact+city,,sources differ by 14%
+Q695008,FC Viktoria Köln,DE,,,,,,,,,8343,10000,,Sportpark Höhenberg,Cologne,Viktoria,,name-contained+ground,,sources differ by 17%
+Q137499,FC 08 Homburg,DE,,,,,,,,,21813,16488,,Waldstadion Homburg,Homburg,FC Homburg,,name-contained+city,,sources differ by 24%
+Q162251,1. FC Heidenheim 1846,DE,,,,,,,,,10001,15000,,Voith-Arena,Heidenheim,1. FC Heidenheim,,name-contained+city,,sources differ by 33%
+Q155452,TuS Koblenz,DE,,,,,,,,,9500,15000,,Stadion Oberwerth,Koblenz,TuS Koblenz,,name-exact+city,,sources differ by 37%
+Q665920,VfB Lübeck,DE,,,,,,,,,10434,17869,,Lohmühle,Lübeck,VfL Lübeck,,name-contained+city,,sources differ by 42%
+Q1921747,BSG Chemie Leipzig,DE,,,,,,,,,20000,10500,,Alfred-Kunze-Sportpark,Leipzig,"Sachsen, Chemie",,name-contained+city,,sources differ by 48%
+Q316865,Preußen Münster,DE,,,,,,,,,45000,15050,,LVM-Preußenstadion,Münster,Preußen,,name-contained+city,,sources differ by 67%
+Q104770,1. FC Köln,DE,,,,,,,,,46195,50000,,RheinEnergie Stadion,Cologne,Köln,,name-contained+ground,,sources differ by 8%
+Q310608,SC Fortuna Köln,DE,,,,,,,,,13750,14944,,Südstadion,Cologne,Fortuna,,name-contained+ground,,sources differ by 8%
+Q865720,Borussia Dortmund II,DE,,,,,,,,,81359,9999,,Stadion Rote Erde,Dortmund,Borussia II,,name-contained+city,,the two ground names do not match AND the two figures do not either - check which ground each source means before trusting either number
+Q155186,FC Carl Zeiss Jena,DE,,,,,,,,,12990,15432,,ad hoc Arena,Jena,FC Carl Zeiss Jena,,name-exact+city,,the two ground names do not match AND the two figures do not either - check which ground each source means before trusting either number
+Q316896,FSV Zwickau,DE,,,,,,,,,,10134,10134,GGZ-Arena,Zwickau,FSV Zwickau,,name-exact+city,,the two ground names do not match AND the two figures do not either - check which ground each source means before trusting either number
+Q692586,VfR Aalen,DE,,,,,,,,,13271,14500,,OSTALB Arena,Aalen,VfR Aalen,,name-exact+city,,the two ground names do not match AND the two figures do not either - check which ground each source means before trusting either number
+Q158121,SpVgg Unterhaching,DE,,,,,,,,,15053,15053,,Uhlsport Park,Unterhaching,SpVgg Unterhaching,,name-exact+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"
+Q5424763,Avântul Reghin,RO,,,,,,,,,,3000,,Stadionul Avântul,Reghin,Avântul Reghin,,name-exact?ground-unchecked+city,,only StadiumDB has a figure
+Q1262822,FC Botoșani,RO,,,,,,,,,12000,8500,,Stadionul Municipal Botoșani,Botoșani,FC Botoșani,,name-exact?ground-unchecked+city,,sources differ by 29%
+Q680770,UTA Arad,RO,,,,,,,,,7287,12584,,Stadionul Francisc von Neuman,Arad,"UTA, Corvinul",,name-contained+city,,sources differ by 42%
+Q298201,FC ASA Târgu Mureș,RO,,,,,,,,,8200,3500,,Stadionul Municipal,Târgu Mureş,ASA Târgu Mureș,,name-contained?ground-unchecked+city,,sources differ by 57%
+Q24884611,FC Hermannstadt,RO,,,,,,,,,14200,13013,,Stadionul Municipal Sibiu,Sibiu,Hermannstadt,,name-contained+ground,,sources differ by 8%
+Q20429561,Sepsi OSK Sfântu Gheorghe,RO,,,,,,,,,4774,8400,,Sepsi OSK Aréna,Sfântu Gheorghe,Sepsi OSK,,name-contained+city,,the two ground names do not match AND the two figures do not either - check which ground each source means before trusting either number
+Q1689705,Jiul Petroșani,RO,,,,,,,,,15500,15500,,Stadionul Jiul,Petroșani,Jiul,,name-contained+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"

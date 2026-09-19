@@ -27,20 +27,45 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TEMPORARY probe job. This sandbox answers 403 to CONNECT for
-  # stadiumdb.com, en.wikipedia.org and wikidata.org, so the only way to
-  # read them is from a runner. Both this job and the `if: false` on
-  # `clubs` below are removed in this same branch once the answers are
-  # read - see the Actions-dispatch entry in CLAUDE.md.
-  probe:
+  # TEMPORARY job. This sandbox answers 403 to CONNECT for stadiumdb.com,
+  # en.wikipedia.org and wikidata.org, so the only way to run the two new
+  # checks is from a runner. Both this job and the `if: false` on `clubs`
+  # below are removed in this same branch once the review files are in -
+  # see the Actions-dispatch entry in CLAUDE.md. The two checks have
+  # their own workflows (crosscheck-stadiumdb.yml, check-rosters.yml),
+  # but a workflow_dispatch only works for a file that already exists on
+  # the DEFAULT branch, which theirs do not yet.
+  checks:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
-      - name: Probe
+
+      - name: StadiumDB cross-check
         run: |
           set -o pipefail
-          python3 tools/_probe.py
+          python3 tools/crosscheck_stadiumdb.py 2>&1 | tee /tmp/stadiumdb.log
+
+      - name: Roster check
+        run: |
+          set -o pipefail
+          python3 tools/check_rosters.py 2>&1 | tee /tmp/rosters.log
+
+      - name: Commit the review files
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/clubs/stadiumdb-review.csv data/clubs/roster-review.csv 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+          git commit -m "chore: first run of the StadiumDB and roster checks"
+          git push || {
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }
 
   clubs:
     if: false

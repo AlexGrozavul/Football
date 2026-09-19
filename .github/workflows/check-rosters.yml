@@ -1,0 +1,88 @@
+name: Roster check
+
+# Asks, from the league's side, whether a club that should be on the map
+# is missing from it - the one question no other pass in this project
+# asks. Writes data/clubs/roster-review.csv.
+#
+# Never edits a club file. Each row carries a verdict saying WHICH KIND
+# of missing the club is, because the kinds want different remedies.
+#
+# Weekly, on the morning the club layer is rebuilt, so the comparison is
+# against a fresh map. Also whenever data/league-rosters.csv is edited,
+# because that file is what decides which leagues are checked at all.
+
+on:
+  schedule:
+    # 05:31 UTC every Sunday, about an hour after the club layer build.
+    - cron: "31 5 * * 0"
+  push:
+    branches: [main]
+    paths:
+      - "data/league-rosters.csv"
+      - "data/league-tiers.csv"
+      - "tools/check_rosters.py"
+      - ".github/workflows/check-rosters.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-rosters
+  cancel-in-progress: false
+
+jobs:
+  rosters:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Compare the club layer against each league's membership
+        run: |
+          set -o pipefail
+          python3 tools/check_rosters.py | tee /tmp/rosters.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Roster check"
+            echo
+            echo '```'
+            cat /tmp/rosters.log 2>/dev/null || echo "the check did not run"
+            echo '```'
+            if [ -f data/clubs/roster-review.csv ]; then
+              echo
+              echo "<details><summary>Every club the check has something to say about</summary>"
+              echo
+              echo '```'
+              head -n 120 data/clubs/roster-review.csv
+              echo '```'
+              echo
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit only if the review file changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -f data/clubs/roster-review.csv ]; then
+            git add data/clubs/roster-review.csv
+          fi
+
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+
+          git commit -m "chore: roster check ($(date -u +%Y-%m-%d))"
+
+          git push || {
+            echo "Push rejected, rebasing onto origin and retrying."
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }
