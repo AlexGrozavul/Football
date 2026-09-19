@@ -34,6 +34,9 @@ concurrency:
 
 jobs:
   clubs:
+    # TEMPORARY: disabled while the fcbayern probe runs, so that asking a
+    # question does not also rebuild and commit the club layer.
+    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -100,3 +103,27 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
+
+  # TEMPORARY PROBE - remove together with tools/_probe_fcbayern.py.
+  # The sandbox answers 403 to CONNECT for fcbayern.com; a runner does not.
+  fcbayern-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Read FC Bayern's own ticket pages
+        run: |
+          set -o pipefail
+          python3 tools/_probe_fcbayern.py 2>&1 | tee /tmp/fcb.log
+
+      - name: Write the probe to the run summary
+        if: always()
+        run: |
+          {
+            echo '## FC Bayern ticket pages (temporary probe)'
+            echo
+            echo '```'
+            cat /tmp/fcb.log 2>/dev/null || echo 'probe did not run'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
