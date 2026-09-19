@@ -108,11 +108,13 @@ jobs:
   # The sandbox answers 403 to CONNECT for fcbayern.com; a runner does not.
   fcbayern-probe:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
 
       - name: Read FC Bayern's own ticket pages
+        timeout-minutes: 8
         run: |
           set -o pipefail
           python3 tools/_probe_fcbayern.py 2>&1 | tee /tmp/fcb.log
