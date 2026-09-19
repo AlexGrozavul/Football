@@ -1,257 +1,153 @@
 #!/usr/bin/env python3
-"""TEMPORARY throwaway probe. Delete after the run.
+"""TEMPORARY throwaway probe, second pass. Delete after the run.
 
-Reads europlan-online.de from a GitHub runner, because this project's
-sandbox proxy answers 403 to CONNECT for that host. It answers one
-question and builds nothing: what does the site itself say about
-automated reading?
+The first pass drowned in the homepage's link dump and the log lost the
+robots.txt body. This one prints robots.txt first and last, prints no
+link dumps, and proves which index.php?s=... pages are real pages rather
+than the site's fallback, by comparing each body against the homepage.
 
-It fetches robots.txt, hunts the site for a terms page, and records the
-response headers and meta tags that carry robots directives. It reports
-verbatim and interprets nothing.
+It reports verbatim and interprets nothing. It fetches no club or ground
+data and builds nothing.
 """
 
+import hashlib
 import html
 import re
-import sys
 import time
 import urllib.error
 import urllib.request
 
 UA = "Mozilla/5.0 (compatible; europlan-probe/1.0; one-off manual check)"
 BASE = "https://europlan-online.de"
-
-# Words that would mean the site has something to say about automated or
-# repeated reading, or about reusing what is on the page. German first.
-KEYWORDS = [
-    "automat", "roboter", "crawl", "scrap", "spider", "bot", "skript",
-    "script", "maschinell", "massenhaft", "datenbank", "urheber",
-    "vervielf", "nutzungsbedingung", "agb", "genehmigung", "erlaubnis",
-    "zustimmung", "kommerziell", "gewerblich", "weiterverwend",
-    "weitergabe", "auslesen", "api", "abruf", "zugriff", "lizenz",
-    "copyright", "terms", "rechte",
-]
-
-pages = {}  # url -> (status, final_url, headers, text)
+pages = {}
 
 
-def get(url, note=""):
-    print("=" * 72)
-    print("GET", url, note)
+def get(url, quiet=False):
     req = urllib.request.Request(url, headers={
-        "User-Agent": UA,
-        "Accept": "*/*",
-        "Accept-Language": "de,en;q=0.8",
-    })
+        "User-Agent": UA, "Accept": "*/*", "Accept-Language": "de,en;q=0.8"})
     try:
         with urllib.request.urlopen(req, timeout=45) as r:
-            raw = r.read()
-            status = r.status
-            final = r.geturl()
-            headers = dict(r.headers)
+            raw, status, final, hdr = r.read(), r.status, r.geturl(), dict(r.headers)
     except urllib.error.HTTPError as e:
-        raw = e.read()
-        status = e.code
-        final = e.url if hasattr(e, "url") else url
-        headers = dict(e.headers) if e.headers else {}
+        raw, status = e.read(), e.code
+        final = getattr(e, "url", url)
+        hdr = dict(e.headers) if e.headers else {}
     except Exception as e:
-        print("  FAILED:", type(e).__name__, e)
-        print()
+        print(f"  FAILED {url}: {type(e).__name__} {e}")
         time.sleep(1)
         return None
-
-    print("  status:", status)
-    print("  final URL:", final)
-    for k in sorted(headers):
-        print(f"  header  {k}: {headers[k]}")
-
-    charset = "utf-8"
-    ct = headers.get("Content-Type", "")
-    m = re.search(r"charset=([\w-]+)", ct, re.I)
+    cs = "utf-8"
+    m = re.search(r"charset=([\w-]+)", hdr.get("Content-Type", ""), re.I)
     if m:
-        charset = m.group(1)
-    else:
-        m = re.search(rb'charset=["\']?([\w-]+)', raw[:2000], re.I)
-        if m:
-            charset = m.group(1).decode("ascii", "replace")
-    print("  charset used:", charset, f"({len(raw)} bytes)")
-    body = raw.decode(charset, errors="replace")
-    pages[url] = (status, final, headers, body)
-    print()
+        cs = m.group(1)
+    body = raw.decode(cs, errors="replace")
+    pages[url] = (status, final, hdr, body)
+    if not quiet:
+        print(f"  status {status}  final {final}  {len(raw)} bytes")
     time.sleep(1)
     return body
 
 
-def to_text(htm):
-    t = re.sub(r"<script.*?</script>", " ", htm, flags=re.S | re.I)
+def text(h):
+    t = re.sub(r"<script.*?</script>", " ", h, flags=re.S | re.I)
     t = re.sub(r"<style.*?</style>", " ", t, flags=re.S | re.I)
     t = re.sub(r"<br\s*/?>", "\n", t, flags=re.I)
     t = re.sub(r"</(p|div|tr|li|h\d)>", "\n", t, flags=re.I)
-    t = re.sub(r"<[^>]+>", " ", t)
-    t = html.unescape(t)
+    t = html.unescape(re.sub(r"<[^>]+>", " ", t))
     t = re.sub(r"[ \t\xa0]+", " ", t)
-    t = re.sub(r"\n\s*\n+", "\n", t)
-    return t.strip()
+    return re.sub(r"\n\s*\n+", "\n", t).strip()
 
 
-print("#" * 72)
-print("# 1. robots.txt, verbatim")
-print("#" * 72)
-for u in (f"{BASE}/robots.txt", "https://www.europlan-online.de/robots.txt"):
-    b = get(u)
-    if b is not None:
-        print("---- BEGIN robots.txt body ----")
-        print(b)
-        print("---- END robots.txt body ----")
-        print("(repr of first 1500 chars, so nothing is lost to whitespace)")
-        print(repr(b[:1500]))
+def robots_block(tag):
+    print("#" * 70)
+    print(f"# ROBOTS.TXT VERBATIM ({tag})")
+    print("#" * 70)
+    for u in (f"{BASE}/robots.txt", "https://www.europlan-online.de/robots.txt"):
+        print(f"--- {u}")
+        b = get(u, quiet=(tag == "repeat"))
+        if b is None:
+            continue
+        st, final, hdr, _ = pages[u]
+        if tag != "repeat":
+            for k in sorted(hdr):
+                print(f"    header {k}: {hdr[k]}")
+        print(f"    HTTP {st}, {len(b)} chars")
+        print("    >>>>>>>>>> BEGIN BODY")
+        for line in b.splitlines():
+            print("    |" + line)
+        print("    <<<<<<<<<< END BODY")
+        print("    repr:", repr(b[:2000]))
         print()
 
-print("#" * 72)
-print("# 2. sitemaps")
-print("#" * 72)
-for u in (f"{BASE}/sitemap.xml", f"{BASE}/sitemap_index.xml"):
-    b = get(u)
-    if b:
-        print(b[:1200])
-        print()
 
-print("#" * 72)
-print("# 3. homepage, and every link on it that could be a legal page")
-print("#" * 72)
-home = get(f"{BASE}/", "(homepage)")
-candidates = []
-if home:
-    links = re.findall(r'<a\s[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
-                       home, flags=re.S | re.I)
-    print(f"  {len(links)} links on the homepage")
-    legal_re = re.compile(
-        r"impressum|agb|nutzung|datenschutz|recht|terms|privacy|kontakt|"
-        r"contact|info|hilfe|help|faq|about|ueber|über|urheber|copyright|"
-        r"disclaimer|haftung|lizenz|licen",
-        re.I)
-    seen = set()
-    print("\n  -- links whose href or text looks legal/informational --")
-    for href, txt in links:
-        label = re.sub(r"\s+", " ", to_text(txt))[:60]
-        if legal_re.search(href) or legal_re.search(label):
-            key = (href, label)
-            if key in seen:
-                continue
-            seen.add(key)
-            print(f"    {label!r:40} -> {href}")
-            candidates.append(href)
-    print("\n  -- the site's full distinct href set (first 120) --")
-    allh = []
-    for href, _ in links:
-        if href not in allh:
-            allh.append(href)
-    for h in allh[:120]:
-        print("   ", h)
-    print()
+robots_block("first")
 
-    # A real ground page and club page, to read their headers/meta tags.
-    m = re.search(r'href=["\']([^"\']*stadion-\d+\.html)["\']', home, re.I)
-    if m:
-        candidates.append(m.group(1))
-        print("  found a ground page link on the homepage:", m.group(1))
-    print()
+print("#" * 70)
+print("# WHICH index.php?s=... PAGES ARE REAL, AND WHICH ARE THE FALLBACK")
+print("#" * 70)
+home = get(f"{BASE}/", quiet=True)
+home_h = hashlib.sha1((home or "").encode()).hexdigest()[:12]
+home_t = text(home or "")
+print(f"homepage: {len(home or '')} chars, sha1 {home_h}, text {len(home_t)} chars")
+print()
 
-print("#" * 72)
-print("# 4. candidate legal / info pages")
-print("#" * 72)
-guesses = [
-    "/index.php?s=impressum",
-    "/index.php?s=agb",
-    "/index.php?s=nutzungsbedingungen",
-    "/index.php?s=datenschutz",
-    "/index.php?s=kontakt",
-    "/index.php?s=info",
-    "/index.php?s=hilfe",
-    "/index.php?s=faq",
-    "/index.php?s=ueber",
-    "/index.php?s=copyright",
-    "/index.php?s=disclaimer",
-    "/impressum",
-    "/agb",
-    "/datenschutz",
-    "/nutzungsbedingungen",
-    "/terms",
-]
-todo = []
-for c in candidates + guesses:
-    if c.startswith("http"):
-        u = c
-    elif c.startswith("/"):
-        u = BASE + c
-    else:
-        u = BASE + "/" + c
-    if u not in todo and "europlan-online" in u:
-        todo.append(u)
-
-for u in todo:
-    b = get(u)
+slugs = ["impressum", "datenschutz", "faq", "kontakt", "agb",
+         "nutzungsbedingungen", "info", "hilfe", "ueber", "copyright",
+         "disclaimer", "terms", "nutzung", "regeln", "lizenz",
+         "thisdefinitelydoesnotexist"]
+real = []
+for s in slugs:
+    u = f"{BASE}/index.php?s={s}"
+    b = get(u, quiet=True)
     if b is None:
         continue
-    st = pages[u][0]
-    txt = to_text(b)
-    if st != 200:
-        print(f"  -> HTTP {st}; first 300 chars of text: {txt[:300]!r}")
-        print()
-        continue
-    print(f"  -> text ({len(txt)} chars):")
-    print(txt[:6000])
-    if len(txt) > 6000:
-        print(f"  ... [{len(txt)-6000} more chars]")
+    st, final, hdr, _ = pages[u]
+    t = text(b)
+    same = "SAME AS HOMEPAGE (fallback)" if t == home_t else "distinct page"
+    ttl = re.search(r"<title>(.*?)</title>", b, re.S | re.I)
+    ttl = re.sub(r"\s+", " ", html.unescape(ttl.group(1))).strip() if ttl else "(no title)"
+    print(f"  s={s:28} HTTP {st}  text {len(t):6} chars  {same}")
+    print(f"      <title> {ttl}")
+    if t != home_t:
+        real.append((s, u, t))
+print()
+
+print("#" * 70)
+print("# FULL TEXT OF EVERY DISTINCT PAGE FOUND")
+print("#" * 70)
+for s, u, t in real:
+    print("=" * 70)
+    print(f"PAGE s={s}  ({u})  {len(t)} chars")
+    print("=" * 70)
+    print(t[:9000])
+    if len(t) > 9000:
+        print(f"... [{len(t)-9000} more chars omitted]")
     print()
 
-print("#" * 72)
-print("# 5. robots directives in headers and meta tags, on content pages")
-print("#" * 72)
-content_urls = [f"{BASE}/", f"{BASE}/index.php?s=land&id=1",
-                f"{BASE}/index.php?s=liga&id=1"]
-m = re.search(r'href=["\']([^"\']*stadion-\d+\.html)["\']', home or "", re.I)
-if m:
-    h = m.group(1)
-    content_urls.append(h if h.startswith("http") else BASE + "/" + h.lstrip("/"))
-for u in content_urls:
-    if u not in pages:
-        get(u)
-for u in content_urls:
-    if u not in pages:
-        continue
-    st, final, hdr, body = pages[u]
-    xrt = [f"{k}: {v}" for k, v in hdr.items() if k.lower() == "x-robots-tag"]
-    metas = re.findall(r"<meta[^>]+name=[\"']robots[\"'][^>]*>", body, re.I)
-    metas += re.findall(r"<meta[^>]+robots[^>]*>", body, re.I)
-    print(f"  {u}")
-    print(f"    status {st}")
-    print(f"    X-Robots-Tag header: {xrt or 'none'}")
-    print(f"    <meta robots>: {sorted(set(metas)) or 'none'}")
+print("#" * 70)
+print("# DOES THE SITE LINK TO A TERMS PAGE ANYWHERE ON THE HOMEPAGE?")
+print("#" * 70)
+print("Searching the homepage HTML for the words themselves, links or not.")
+for w in ["agb", "nutzungsbedingung", "nutzungsbeding", "terms", "impressum",
+          "datenschutz", "urheber", "copyright", "lizenz", "disclaimer",
+          "haftung", "api", "robots"]:
+    hits = [m.start() for m in re.finditer(w, home or "", re.I)]
+    print(f"  {w:20} {len(hits)} occurrence(s)")
+    for p in hits[:3]:
+        frag = re.sub(r"\s+", " ", (home or "")[max(0, p - 120):p + 120])
+        print(f"      ...{frag}...")
 print()
 
-print("#" * 72)
-print("# 6. keyword sweep over every page fetched")
-print("#" * 72)
-print("Any line, on any page above, mentioning automated access or reuse.")
+print("#" * 70)
+print("# SITEMAP")
+print("#" * 70)
+for u in (f"{BASE}/sitemap.xml", f"{BASE}/sitemap_index.xml",
+          f"{BASE}/sitemap.xml.gz"):
+    print(f"--- {u}")
+    b = get(u, quiet=False)
+    if b:
+        print("    first 600 chars:", repr(b[:600]))
 print()
-for u, (st, final, hdr, body) in pages.items():
-    txt = body if u.endswith("robots.txt") else to_text(body)
-    hits = []
-    for line in txt.splitlines():
-        low = line.lower()
-        for kw in KEYWORDS:
-            if kw in low:
-                hits.append((kw, line.strip()[:400]))
-                break
-    if hits:
-        print(f"-- {u} ({len(hits)} matching lines)")
-        for kw, line in hits[:60]:
-            print(f"   [{kw}] {line}")
-        if len(hits) > 60:
-            print(f"   ... {len(hits)-60} more")
-        print()
-    else:
-        print(f"-- {u}: no keyword matched")
-print()
+
+robots_block("repeat")
 print("PROBE COMPLETE")
