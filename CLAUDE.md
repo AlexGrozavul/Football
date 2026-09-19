@@ -216,33 +216,64 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
 
 ## Known open problems
 
-- **Two more duplicate Wikidata items, found by grouping clubs on their
-  coordinates.** Of the 10 shared grounds, two are one club entered
-  twice rather than two clubs at one ground. Neither is fixed here,
-  because which of the two items to keep is a judgement, not a rule:
-  - **SSV Ulm 1846** is both `Q14551982` and `Q701290` — same name,
-    ground, capacity, coordinates and tier, differing only in the league
-    tag (`Q154069` 3. Liga against `Q322128` Regionalliga Südwest).
-    `Q14551982` is the one already hand-corrected in `clubs-manual.csv`
-    for the 2026 relegation; `Q701290` carries the Regionalliga tag on
-    its own without help. One of them needs a `skip` row and the choice
-    is Alexandru's.
-  - **Dinamo București** is `Q113577526` at tier 2 and `Q204237` at
-    tier 1 — same name, ground, capacity and coordinates, one tagged
-    SuperLiga and one Liga a II-a. Whether that is a duplicate item or a
-    reserve side carrying the first team's name was not established
-    here, and guessing it would put a real club in the bin or leave a
-    phantom on the map.
+- **One duplicate Wikidata item and one wrongly-copied ground, found by
+  grouping clubs on their coordinates.** Of the 10 shared grounds, two
+  looked like one club entered twice. On 2026-09-19 one of the two
+  turned out not to be a duplicate at all:
+  - **Dinamo București is two real clubs, not one item twice.**
+    `Q204237` is the Liga 1 club at Stadionul Dinamo. `Q113577526` is
+    **CS Dinamo București**, a separate club currently in Liga 2, whose
+    ground is CNF Buftea (also called Stadionul CNAF), capacity 1,600 —
+    established by Alexandru from its Wikipedia article and the club's
+    own csdinamofotbal accounts. What is wrong is Wikidata's data, not
+    the item: `Q113577526` carries the senior club's venue, capacity and
+    coordinates, copied or inherited by mistake. `clubs-manual.csv` now
+    corrects the name, venue and capacity.
+    **The coordinates are still not fixed and the two clubs still share
+    one pin.** They have to come from `Q7596368`, the ground's own
+    Wikidata item, which could not be read on 2026-09-19: that session's
+    network policy blocked `wikidata.org`, `query.wikidata.org` and
+    Overpass, so nothing could be fetched. Until `lat`/`lon` are filled
+    in on that row, CS Dinamo București sits on Stadionul Dinamo with a
+    popup naming a ground it does not play at. That mismatch is
+    deliberate and visible — it is not a second bug to hunt. How far
+    apart the two grounds actually are is not written down here because
+    it has not been measured; Buftea is outside Bucharest, and that is
+    as much as can be said without the coordinate.
+  - **SSV Ulm 1846** is still unresolved, and is a genuine duplicate:
+    `Q14551982` and `Q701290`, same name, ground, capacity, coordinates
+    and tier, differing only in the league tag (`Q154069` 3. Liga
+    against `Q322128` Regionalliga Südwest). The check to run is the
+    sitelink count used for Lok Leipzig — keep the item with more
+    Wikipedia sitelinks — and it could not be run on 2026-09-19 for the
+    same network reason. Both outcomes are already worked out, so
+    whoever can reach Wikidata has one step, not a decision:
+    - if **`Q701290`** wins, it already carries the Regionalliga tag on
+      its own and resolves to tier 4 unaided, so the `Q14551982` row in
+      `clubs-manual.csv` becomes a `skip` row and the hand-written
+      `tier 4` relegation correction is deleted with it — it would be
+      correcting an item that is no longer on the map.
+    - if **`Q14551982`** wins, its `tier 4` correction has to stay,
+      because its own tag is the 3. Liga one, and `Q701290` gets the
+      `skip` row instead.
+    Nothing was changed either way, because guessing which item survives
+    is exactly the assumption this entry exists to prevent.
 
-  The other eight are real. FCU Craiova and Universitatea Craiova
-  genuinely share the Stadionul Ion Oblemenco, and the Waldau-Stadion
-  really is Stuttgarter Kickers and VfB Stuttgart II. The remaining six
-  are a first team with its own reserve side, the Grünwalder being three
-  at once: TSV 1860 München, TSV 1860 München II and FC Bayern München II.
+  So the 10 shared grounds break down as eight genuinely shared, one
+  duplicate item (SSV Ulm) and one wrong coordinate (Dinamo) — and the
+  Dinamo pair is not a shared ground at all, it only looks like one.
+  The eight real ones: FCU Craiova and Universitatea Craiova genuinely
+  share the Stadionul Ion Oblemenco, and the Waldau-Stadion really is
+  Stuttgarter Kickers and VfB Stuttgart II. The remaining six are a
+  first team with its own reserve side, the Grünwalder being three at
+  once: TSV 1860 München, TSV 1860 München II and FC Bayern München II.
 
-  This is the third and fourth case of the duplicate-item problem
-  already recorded above for Hamburger SV and Lok Leipzig, and the first
-  two were found by eye. Until now a duplicate of this kind was
+  SSV Ulm is the third case of the duplicate-item problem already
+  recorded above for Hamburger SV and Lok Leipzig, and the first two
+  were found by eye. Dinamo is not a fourth — it is the opposite case,
+  and worth keeping in mind next time two pins land on one ground: a
+  shared coordinate can mean a copied coordinate rather than a copied
+  club. Until now a duplicate of this kind was
   *invisible* — the second pin sat exactly under the first. A "2" over
   two identical club names is how the next one gets spotted.
 
@@ -298,11 +329,22 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   `skip` row in `clubs-manual.csv`. Nothing detects this automatically,
   so the next one will again show up as two pins on one ground.
 - The cross-check has now been run for real. Of 185 clubs it compared,
-  20 agree and 7 disagree; the rest could not be compared because only
+  20 agreed and 7 disagreed; the rest could not be compared because only
   one source has a figure. Fortuna Düsseldorf (Wikidata 9,917 against
   OpenStreetMap 54,600) and 1. FC Saarbrücken (35,303 against 16,003)
   are the two worst. Preußen Münster was not among them — OpenStreetMap
   has no capacity for its ground, so nothing could be checked.
+  **That 7 was 6 clubs, not 7.** Checked on 2026-09-19 against the run
+  that produced it: the 2026-09-16 file carried 1. FC Lokomotive Leipzig
+  twice, once as `Q162317` and once as `Q28936927`, the duplicate item —
+  same club, same two figures, counted twice. Since the `skip` row for
+  `Q28936927` the file has held **6** disagreements, and that is the
+  real number. Nobody has recounted the 20 agreements or the 185
+  comparisons the same way, so treat those two as upper bounds until a
+  run after the duplicate removals is counted. The lesson is worth more
+  than the arithmetic: a duplicate Wikidata item does not only put two
+  pins on one ground, it quietly inflates every count taken downstream
+  of the club layer.
 - Romanian capacities cannot be corroborated. OpenStreetMap has a usable
   capacity for exactly one Romanian ground out of the 404 it knows about,
   so the cross-check confirmed nothing there: 0 agreements, 0
@@ -453,6 +495,59 @@ needed: Wikidata, Overpass and OpenLigaDB are all free and keyless.
   was considered and not done: `P17` is exactly the kind of field the
   missing clubs already lack, and a filter on it would quietly drop
   real ones. Nothing detects the next case automatically.
+- **FC Triesenberg is not German either, and it is on the map right
+  now.** `Q1387764`, in `data/clubs/DE.json` at tier 3, venue
+  Sportanlage Leitawis, capacity 800, coordinates 47.1145 / 9.5401 —
+  which is in **Liechtenstein**, not Germany. It reaches the German map
+  the same way SC Veltheim did: its Wikidata item carries `Q154069`, the
+  German 3. Liga, and the club query is bounded by league rather than by
+  country. Liechtenstein has no league of its own; its clubs play in the
+  Swiss pyramid, so the tag is most likely the same Swiss-for-German
+  confusion as Veltheim's. That last part is inference and is **not**
+  confirmed: on 2026-09-19 the network policy blocked every source that
+  could check it. What is not inference is the coordinate, which comes
+  from Wikidata itself and is in Liechtenstein.
+  No `skip` row has been added — that is Alexandru's call, and it was
+  not what this session was asked to do. It is listed here so it is not
+  lost.
+- **Romania was checked for the same mistag pattern and came back
+  clean.** Every one of the 64 clubs in `data/clubs/RO.json` has
+  coordinates inside Romania, so no foreign club has arrived through a
+  Romanian league tag the way Veltheim and Triesenberg arrived through a
+  German one. Moldova was the case to worry about, because a crude
+  bounding box for Romania also covers Chișinău and Moldovan clubs have
+  Romanian-language names; the easternmost club in the file is
+  CS Medgidia at 28.2575, well inside Dobrogea, so nothing came through.
+  No club Q-id appears in both country files.
+  **What that check cannot see**, and nobody should read it as covering:
+  the other direction — a Romanian club tagged onto a *foreign* league.
+  The club query is bounded by the leagues in `league-tiers.csv`, so a
+  Romanian club carrying, say, a Hungarian league tag simply never
+  appears through that tag and leaves no trace in the output to find.
+  There is already evidence this direction is real: the old discovery
+  query put `Q257400` ABA League and `Q456092` Eurocupa ULEB into the
+  seed list precisely because Romanian clubs take part in them. Ruling
+  it out needs a Wikidata query listing every `P118` value on Romanian
+  clubs, which could not be run on 2026-09-19.
+- **Editing `clubs-manual.csv` does not rebuild the club layer.**
+  `.github/workflows/build-clubs.yml` reruns on a push that touches
+  `league-tiers.csv`, `fetch_clubs.py` or the workflow itself — but not
+  `clubs-manual.csv`, even though a hand correction decides what is on
+  the map just as directly. So a correction sits inert until the Sunday
+  04:23 UTC cron, or until "Run workflow" is pressed by hand. This bit
+  the Dinamo correction above: the row is committed and correct and the
+  map will not show it until one of those two happens. Adding the path
+  to the workflow is a one-line change and was not made here, because it
+  was not what this session was asked to do.
+- **A bounding-box check would catch this class automatically, and
+  does not exist.** Both Veltheim and Triesenberg would have been caught
+  by comparing each fetched club's own coordinates against a bounding
+  box for the country file it is being written into. Unlike the `P17`
+  country filter that was considered and rejected above, this costs
+  nothing in lost clubs: a club with no coordinates never reaches the
+  map anyway, so there is no field to be missing. It would report, not
+  drop — the same shape as `capacity-review.csv`. Proposed on
+  2026-09-19, not built, because it was outside what was asked.
 - The missing Regionalliga clubs are not a query problem, and the type
   filter was never what stood in the way. The club query returns 95 clubs
   tagged with one of the five mapped Regionalliga items. 31 of them have
