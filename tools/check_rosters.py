@@ -443,6 +443,55 @@ def qids_for_titles(titles):
     """
     found, failures = {}, []
     ordered = list(dict.fromkeys(titles))
+    found, failures = _hop(ordered, found, failures)
+
+    # A season article often links a club through a REDIRECT - "FC Chindia
+    # Targoviste" pointing at "Chindia Targoviste". A redirect has no
+    # Wikidata item of its own, so the hop comes back empty for it and the
+    # club reads as having no item at all, which is a finding about this
+    # tool rather than about the club. So the titles that did not resolve
+    # are put through Wikipedia's own redirect table and tried once more
+    # under the title they actually land on. Wikipedia is the one that
+    # says where a redirect goes; nothing is guessed here.
+    unresolved = [t for t in ordered if t not in found]
+    if unresolved:
+        canonical, redirect_failures = follow_redirects(unresolved)
+        failures.extend(redirect_failures)
+        if canonical:
+            print(f"    {len(canonical)} unresolved title(s) were redirects, "
+                  f"retrying under what they point at")
+            retried, retry_failures = _hop(
+                sorted(set(canonical.values())), {}, [])
+            failures.extend(retry_failures)
+            for original, target in canonical.items():
+                if target in retried:
+                    found[original] = retried[target]
+    return found, failures
+
+
+def follow_redirects(titles):
+    """
+    Ask Wikipedia which of these titles are redirects and where they go.
+    Returns {title as linked: title it lands on}.
+    """
+    canonical, failures = {}, []
+    for start in range(0, len(titles), TITLE_BATCH):
+        batch = titles[start:start + TITLE_BATCH]
+        query = urllib.parse.urlencode({
+            "action": "query", "titles": "|".join(batch), "redirects": "1",
+            "format": "json", "formatversion": "2"})
+        data, error = get_json_with_retry(f"{WIKIPEDIA_API}?{query}", "redirects")
+        if error:
+            failures.append(f"redirect lookup failed for {len(batch)} titles: {error}")
+            continue
+        for hop in ((data.get("query") or {}).get("redirects") or []):
+            if hop.get("from") and hop.get("to"):
+                canonical[hop["from"]] = hop["to"]
+        time.sleep(REQUEST_GAP_SECONDS)
+    return canonical, failures
+
+
+def _hop(ordered, found, failures):
     for start in range(0, len(ordered), TITLE_BATCH):
         batch = ordered[start:start + TITLE_BATCH]
         # NO `normalize` HERE, and that is not an oversight. wbgetentities

@@ -41,6 +41,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
+      - name: Probe the duplicate pairs
+        run: |
+          set -o pipefail
+          python3 tools/_probe.py
+
       - name: StadiumDB cross-check
         run: |
           set -o pipefail
