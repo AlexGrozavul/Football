@@ -450,6 +450,27 @@ def fetch_article(title):
 
 # ------------------------------------------------------- title -> Q-id
 
+def enwiki_title(entity):
+    """
+    The English Wikipedia title an entity is linked to.
+
+    wbgetentities returns sitelinks in two different shapes and the
+    difference is not documented anywhere near the parameter that causes
+    it: under formatversion=2 they come back as a LIST of
+    {site, title}, and under the default as a DICT keyed by site. Both
+    are read here, because a reader that knows only one of them resolves
+    every title to nothing and says nothing about it.
+    """
+    links = entity.get("sitelinks")
+    if isinstance(links, dict):
+        return (links.get("enwiki") or {}).get("title")
+    if isinstance(links, list):
+        for link in links:
+            if link.get("site") == "enwiki":
+                return link.get("title")
+    return None
+
+
 def qids_for_titles(titles):
     """
     The sitelink hop. wbgetentities with sites=enwiki turns an English
@@ -479,15 +500,36 @@ def qids_for_titles(titles):
         # which is precisely the error the sitelink hop exists to avoid.
         normalised = {n.get("to"): n.get("from")
                       for n in (data.get("normalized") or [])}
+        resolved = 0
         for qid, entity in (data.get("entities") or {}).items():
             if not qid.startswith("Q"):
                 continue
-            sitelink = ((entity.get("sitelinks") or {}).get("enwiki") or {}).get("title")
+            sitelink = enwiki_title(entity)
             if not sitelink:
                 continue
+            resolved += 1
             found[sitelink] = qid
             if sitelink in normalised:
                 found[normalised[sitelink]] = qid
+
+        # A batch that resolves NOTHING is a failed lookup, not a batch of
+        # clubs Wikidata has never heard of. This guard is here because
+        # its absence already cost a run: props=sitelinks under
+        # formatversion=2 hands sitelinks back as a LIST, the reader
+        # expected a dict keyed by site, every title silently resolved to
+        # nothing, and the check cheerfully reported all 246 clubs as
+        # having no Wikidata item and all 205 on the map as not being in
+        # their own division - with a green tick. Exactly the shape of
+        # failure the "a source that returns nothing is a failed fetch"
+        # rule exists to catch, at a step the rule had not been applied to.
+        if not resolved:
+            failures.append(
+                f"sitelink lookup returned {len(data.get('entities') or {})} entities "
+                f"for {len(batch)} titles and not one of them carried an enwiki "
+                f"sitelink. That is a failed lookup, not {len(batch)} clubs Wikidata "
+                f"has never heard of")
+        else:
+            print(f"    {resolved}/{len(batch)} titles resolved to a Q-id")
         time.sleep(REQUEST_GAP_SECONDS)
     return found, failures
 
@@ -534,8 +576,20 @@ def diagnose(qids):
         if error:
             failures.append(f"diagnosis failed for {len(batch)} clubs: {error}")
             continue
+        bindings = data["results"]["bindings"]
+        # Same guard as the sitelink hop, for the same reason: a query
+        # that answers 200 with nothing in it is a failed query, not a
+        # batch of clubs Wikidata holds no statement about. Every club
+        # here came out of a Wikidata sitelink a moment ago, so at
+        # minimum each one has a label.
+        if not bindings:
+            failures.append(
+                f"the diagnosis query answered with no rows at all for {len(batch)} "
+                f"clubs that Wikidata had just resolved sitelinks for. That is a "
+                f"failed query, not {len(batch)} clubs with nothing on them")
+            continue
         print(f"    diagnosed {len(batch)} clubs in {round(time.time() - began, 1)}s")
-        for row in data["results"]["bindings"]:
+        for row in bindings:
             qid = qid_of((row.get("club") or {}).get("value"))
             if not qid:
                 continue
