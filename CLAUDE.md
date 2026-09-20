@@ -167,6 +167,12 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/check_rosters.py` — the roster check. Asks, from the league's
   side, whether a club that should be on the map is missing from it.
   Reads, never writes to a club file.
+- `tools/diagnose_p118_rank.py` — which clubs the club query's truthy
+  `wdt:P118` join hides, and why: a preferred-rank statement asserting
+  no league, or every statement deprecated. Reads `P576` so a
+  `<novalue>` on a club that folded is not mistaken for an error.
+  Reads and writes **nothing** — not a club file, not a review file —
+  and exits 1 on a failed call.
 
 ---
 
@@ -783,6 +789,128 @@ a page anyone can already view in their browser's network tab.
   deciding what a deprecated league tag means, and that is a decision
   for Alexandru, not a query change to slip in.
 
+- **The rank blind spot has been measured, 2026-09-20. It is 20 clubs,
+  and it costs this project exactly two of them.** The entry above was
+  written from two clubs found by accident. `tools/diagnose_p118_rank.py`
+  now asks the question deliberately, and the first two real runs are
+  what follows. It was run from a GitHub runner, because the sandbox
+  still answers 403 to CONNECT for `wikidata.org`.
+  **Two queries, because one question is a census and the other is a
+  bill.**
+  - **Query A, the census**: every item **anywhere** carrying a
+    preferred-rank `P118` that asserts no league. It is deliberately
+    **not** bounded by country — `P17` is exactly the field the missing
+    clubs already lack, so a country filter would drop the clubs the
+    query exists to find. **43 items worldwide**, in 168.2s with one
+    timeout and retry.
+  - **Query B, the bill**: clubs carrying one of the twelve leagues
+    `league-tiers.csv` maps, on a statement `wdt:P118` will not yield —
+    for any reason, a deprecated rank or a preferred `<novalue>` on top.
+    Bounded by the mapped leagues, so it needs no `P17` at all: the
+    league is the country signal. **18 clubs**, in 82.0s with one 504
+    and a retry.
+
+  **Twenty clubs in Germany and Romania are hidden from the club query
+  by rank.** Eighteen by a preferred `<novalue>`, two because every
+  statement on the item is deprecated.
+  **Every one of the eighteen is Romanian. Not one is German.** The
+  German half of this blind spot is the deprecated shape and FC
+  Augsburg is still its only instance. The remaining 25 of the
+  worldwide 43 are somebody else's problem — mostly American college
+  athletics programmes, a few Polish and Dutch clubs.
+  **Seventeen of the twenty leave no trace anywhere in the pipeline.**
+  Only three appear in `roster-review.csv` at all — Augsburg, Fotbal
+  Comuna Recea and Farul — and none of the twenty is in `data/clubs/`,
+  because none has a truthy `P118`. That is the blind spot stated as a
+  number rather than as a worry.
+
+  **A preferred `<novalue>` is NOT automatically an error, and treating
+  all eighteen as one would be the mistake this entry exists to
+  prevent.** Wikidata's `<novalue>` means *this item has no value for
+  this property*, and on a club that folded that is the **correct**
+  statement: the club is in no league because there is no club, and the
+  normal-rank league tags underneath it are history. Reading through
+  those would put a dead club on the map at the tier it last played in,
+  which is precisely what the truthy join exists to prevent. `P576` is
+  what separates the two, and the tool reads it.
+  **Twelve of the twenty carry `P576`**, with dissolution years from
+  1946 to 2026: ACS Poli Timișoara 2021, CA Câmpulung Moldovenesc 1953,
+  CS Mioveni 2025, Chinezul Timișoara 1946, FC Brașov Steagul Renaște
+  2023, FC Gloria Buzău 2025, FC Politehnica Iași 2026, FC Politehnica
+  Timișoara 2012, Fotbal Comuna Recea 2021, Gloria Bistrița 2015,
+  Turris-Oltul Turnu Măgurele 2021, Viitorul-Pandurii Târgu Jiu 2024.
+  On every one of them the `<novalue>` is right, and `CLUB_QUERY`
+  excludes dissolved clubs anyway, so nothing is owed.
+  **Two more have no position**: AFC Câmpulung Muscel `Q113816215`
+  (the second deprecated-only case) and FC Carmen București
+  `Q62562381`, which also hides nothing this project maps. Reading
+  their rank would not place them.
+
+  **Six are left**, and they are the only ones where reading the rank
+  would put a club on a map: FC Augsburg `Q15755` (hides tier 1 DE),
+  CS Balotești `Q12723213` (tier 2 RO), CS Gaz Metan Mediaș `Q856790`
+  (tier 1 RO), CSM Focșani `Q4683096` (tier 2 RO), FC Astra Giurgiu
+  `Q750322` (tier 1 RO) and SSC Farul Constanța `Q368104` (tier 2 RO).
+  **A missing `P576` is not evidence that a club is playing**, and this
+  is where that matters. It means only that nobody has recorded a
+  dissolution. The thing that says whether a club is in a division
+  **now** is the roster check, and of these six exactly **two** are
+  named by any 2026-27 season article this project reads: **FC
+  Augsburg**, in the Bundesliga article, and **SSC Farul Constanța**,
+  in the Liga I one. The other four are listed by no current-season
+  article at all, so nothing here says they are in a division, and
+  nothing should be written for them on the strength of an absent
+  property.
+  **So the rank blind spot costs this project two clubs today, and they
+  are the two that were already known.** That is a good outcome rather
+  than a dull one: the pair found by accident turns out to be the whole
+  current bill, it is now known rather than hoped, and the other
+  eighteen are written down so that the next run can tell a new one
+  from these.
+
+  **Farul's `<novalue>` is being treated as an error rather than as
+  authority, and that decision is Alexandru's, taken on 2026-09-20.**
+  `Q368104` carries Liga III and Liga II at normal rank, both of them
+  true statements about a club that exists and is playing, and a
+  preferred-rank statement asserting no league sitting on top of them
+  and suppressing both. A statement that overrides two true ones with
+  an assertion that the club is in no league, about a club the Liga I
+  article lists this season, is a mistake on Wikidata's side. **The
+  suppressed tags are what this project reads for Farul.**
+  **What that does not settle is the tier, and it is worth being exact
+  about why.** Read through the `<novalue>` and the two tags give
+  **tier 2**, because the builder takes the most senior mapped league
+  and Liga II is it. The 2026-27 Liga I article says **tier 1**. So the
+  `<novalue>` is an error *and* the statements under it are stale, both
+  at once — correcting the first does not correct the second, and
+  reading the rank would put Farul on the map one division below where
+  it plays. Neither number may be written: tier 2 is contradicted by
+  the roster, and tier 1 rests on the English Wikipedia table alone.
+  **Asked directly on 2026-09-20, Alexandru's answer was to leave Farul
+  off the map and settle the identity question first**, and the reason
+  is the right one: the tier is the *second* question. The first is
+  which club `Q368104` actually is — the old Farul, the 2021 Viitorul
+  merger that took the name, or both depending on who edited the item —
+  and a tier written before that is a number attached to a club nobody
+  has identified. So the `<novalue>` is recorded as an error and the
+  suppressed tags are what this project reads, **and nothing is written
+  to any club file.** `roster-review.csv` goes on reporting it, which is
+  correct: it is a real finding and it is still open.
+  **And there is a mechanical obstacle that has to be cleared first,
+  whichever tier is chosen.** `apply_manual` in `fetch_clubs.py`
+  **rejects** a row whose `clubQid` is not in the country's fetched
+  clubs — verified by running it against a Farul-shaped row, which
+  comes back *"Q368104 is not in this country's fetched clubs"*. That
+  is the right guard for a typo and it is exactly wrong here, because
+  not being in the fetched clubs is the whole problem. The row that
+  does work is an **add** row with no `clubQid`, and it costs the Q-id:
+  the club gets a synthetic `MANUAL-…` id, and `check_rosters.py` joins
+  on Q-ids, so the roster's `Q368104` would still read as missing while
+  the hand-added club would read as `extra-not-in-roster` — **two
+  permanent false findings in place of one true one**. So a hand row is
+  not the remedy for a rank-hidden club, and making one work means a
+  deliberate change to what a `clubQid` row may do. Not attempted here.
+
 - **Two Romanian clubs are one club's identity question each, and
   neither is settled here.** Both came out of the roster check on
   2026-09-20 and both are shape 2 — two real items, not a duplicate —
@@ -919,6 +1047,90 @@ a page anyone can already view in their browser's network tab.
   so no harm is done - but a `wrong-tier` from the Liga III row alone is
   not evidence, and nothing should be changed on the strength of one.
 
+- **Liga II's shortfall, taken apart club by club on 2026-09-20: it is
+  coordinates, and the figure of six hides how it is made.** The table
+  above reads 22 in the division against 16 on the map, and six is what
+  you get by subtracting. Six is not six clubs.
+  **Eight of the division's 22 are absent from the map, and two clubs
+  the division does not list are on it at tier 2. Those cancel to six.**
+  That is the arithmetic this whole check was built to distrust — a
+  count can come out nearly right while the membership is wrong, and
+  here it comes out two clubs closer to the truth than it should.
+  **Seven of the eight are coordinate-only, and nothing about their
+  tags needs touching.** Every one of them carries `Q386384` Liga II on
+  a statement `wdt:P118` yields, so the club query sees them and the
+  tier they would land at is right; they die at the coordinates gate
+  because neither the club nor its ground has a position:
+
+  | club | Q-id |
+  |---|---|
+  | CSA Steaua București | `Q39487082` |
+  | CSC 1599 Șelimbăr | `Q66424141` |
+  | CSL Ștefăneștii de Jos | `Q18539440` |
+  | CSM Olimpia Satu Mare | `Q99446805` |
+  | FC Bacău | `Q106779019` |
+  | Gloria Bistrița | `Q56677281` |
+  | SC Popești-Leordeni | `Q55593565` |
+
+  **The eighth is a tagging problem that fixing would not place.** FC
+  Bihor Oradea `Q113541238` comes back `missing-from-wikidata` because
+  it carries **no `P118` at all** — but it carries no ground and no
+  position either, so giving it a league would move it from one kind of
+  missing to the other and it would still not be drawn. It is also half
+  of the Bihor identity question recorded below: the club on the map at
+  tier 2 is `Q1386940`, the 1958 item, which carries Liga II at
+  preferred rank, and it is one of the two extras.
+  **So the answer to "how many of the six are a tagging problem the
+  roster check should resolve" is none of them.** Seven are the
+  coordinates gate and the eighth is blocked by the coordinates gate
+  underneath an identity question that is Alexandru's to settle. The
+  roster check has already done its job here: it named all eight and
+  said which kind each one is.
+  **The two extras are not one thing either.** `Q1386940` Bihor Oradea
+  is the other half of the identity question and is not a spurious club
+  — read the two Bihor items as one club and the genuine absence is
+  seven, all coordinate-only, against one genuine extra. That one is
+  **`Q1024390` Politehnica Iași**, which carries `Q386384` and nothing
+  else and which the 2026-27 Liga II article does not list. Either its
+  `P118` is stale or the article links it under a title the sitelink
+  hop did not resolve. **Nothing has been changed for it**, because a
+  single article saying a club is absent is not evidence that it is,
+  and this project does not act on one source that way.
+  **The remedy already exists and has already worked once at this
+  tier.** CSC Dumbrăvița `Q55618976` is on the map at tier 2 only
+  because a hand row in `clubs-manual.csv` carries coordinates Wikidata
+  does not have — its `roster-review.csv` row still says
+  `_hasCoordinates: no` and its verdict is `ok`. That is exactly the
+  shape the other seven need: `coordinate-review.csv`, a second source,
+  then a hand row. How much of Romania europlan-online covers has never
+  been measured — the 20 clubs it settled were all German — so whether
+  it is the second source for these seven is an open question rather
+  than an assumption.
+  **Liga III and below stay where they are**, in the coordinate-review
+  queue at its current standard. The 34 Liga III clubs above are the
+  same coordinates gate and a much bigger pile of it, and a decision
+  taken here for 22 clubs in the second tier is not a decision about
+  69 in the third.
+
+- **Romania's top flight WAS roster-checked this pass, and it did not
+  come back 16 of 16.** Asked directly on 2026-09-20 and answered from
+  the file rather than from the counts: `roster-review.csv` holds **17
+  rows** for `SuperLiga Romaniei`, every one of them against
+  `2026–27 Liga I`, season `2026-27`. So the division was fetched,
+  parsed and compared like the others — it was not skipped, and it was
+  not merely left unflagged because nothing about it had changed.
+  **What it came back with is 15 of 16.** Fifteen `ok`, one
+  `wrong-tier` and one `extra-not-in-roster`. The roster's sixteenth
+  club is **SSC Farul Constanța `Q368104`**, which is not on the map at
+  all; the map's sixteenth tier-1 club is **FC Hermannstadt
+  `Q24884611`**, which the Liga I article does not list.
+  **The count is right and one member is wrong**, which is precisely
+  the failure a count cannot see and precisely why this check exists.
+  The table above already says so — `ok` 15, `extra` 1, `wrong tier` 1
+  — and the **16** in its "on the map" column is the size of the tier,
+  not a number of matches. Reading that 16 as agreement is the one
+  misreading the table invites, and it is worth saying out loud once.
+
 - **Wikidata keeps a CLUB item and a MEN'S FIRST TEAM item for many
   German clubs. That is a fifth shape, and it wants a different remedy
   from all four above.** Found 2026-09-20 by the roster check, which
@@ -942,6 +1154,38 @@ a page anyone can already view in their browser's network tab.
   never come back. This is the SSV Ulm lesson pointing the other way:
   there the parent was the one to skip, here the "duplicate" is the only
   one that works. **Getting the shape wrong deletes a real club.**
+  **The rule that decides which of the two items wins, written down so
+  a later cleanup pass cannot get it backwards: an item with a LIVE
+  `P118` beats a sibling item whose league tag is deprecated or absent
+  altogether. Never the reverse.** A live league tag is the only thing
+  that puts a club on the map at all, so the item carrying one is the
+  only item that works; an item with no usable league is not a tidier
+  copy of it, it is a copy that cannot be drawn. That holds whichever
+  item Wikipedia writes about, whichever is older, and whichever has
+  the fuller description.
+  **The sitelink count points the wrong way in all three pairs, and
+  that is the trap.** 75 against 0 for Augsburg, 38 against 0 for Aue,
+  21 against 0 for Babelsberg. The shapes list below already says to
+  use the sitelink count only to break a tie *after* the shape is
+  settled; this is the shape where using it to settle anything deletes
+  the club.
+  **These three pairs are verified correct as they stand, and they are
+  protected from any future duplicate cleanup pass.** That is a
+  standing instruction, not an observation:
+
+  | club | the item that must stay | the item that must NOT be preferred over it | why |
+  |---|---|---|---|
+  | FC Augsburg | `Q97905916`, the men's team item | `Q15755`, the club item | `Q15755`'s only `P118` is Bundesliga at **deprecated** rank, so `wdt:P118` yields nothing and the club query cannot see it. `skip` the team item and Augsburg leaves the map with nothing to bring it back |
+  | FC Erzgebirge Aue | `Q97927365`, the men's team item | `Q141882`, the club item | `Q141882` carries **no `P118` at all** |
+  | SV Babelsberg 03 | `Q97927380`, the men's team item | `Q571553`, the club item | `Q571553` carries **no `P118` at all**; the team item is the one whose tier is corrected by hand to 4 |
+
+  **None of the three needs a `skip` row and none may be given one.**
+  What makes them look like duplicates is not two pins on one ground —
+  the club item never reaches the map, so nothing on the map can show
+  it. It is the roster check reporting each club twice, once as missing
+  from Wikidata under the club item Wikipedia links and once as extra
+  on the map under the team item, and `_sameNameOnMap` exists exactly
+  so that one club appearing twice does not read as two errors.
   **Rule 6 is satisfied rather than threatened by these items** — they
   are explicitly the men's team, which is what this project wants.
   **What did change is one tier.** SV Babelsberg 03's team item carries
@@ -1026,12 +1270,16 @@ a page anyone can already view in their browser's network tab.
   the "2" marker is what makes the symptom visible at all. Before it,
   the second pin sat exactly under the first and nothing counted it.
 
-  **The three shapes have names now, because the next one will not
-  arrive with a label on it.** All three look identical on the map —
-  two items, one name, one ground — and each wants a different remedy.
+  **The five shapes have names now, because the next one will not
+  arrive with a label on it.** The first three look identical on the
+  map — two items, one name, one ground — and each wants a different
+  remedy. The last two never appear as two pins at all, because one
+  item of the pair never reaches the map: only the roster check can see
+  them, and it sees them as one club reported twice.
   Getting the shape wrong is not a cosmetic mistake: `skip` the wrong
   item in the second shape and a real club disappears from the map for
-  good, with nothing to notice it had gone.
+  good, with nothing to notice it had gone, and `skip` the wrong item
+  in the fifth and the same thing happens for the same reason.
 
   1. **One club, two items — a true duplicate.** *Hamburger SV,
      1. FC Lokomotive Leipzig.* Same name, same league, same ground,
@@ -1049,6 +1297,24 @@ a page anyone can already view in their browser's network tab.
      department.* One organisation, two Wikidata items by design, which
      is how a great many German clubs are structured. **Remedy: keep
      the football item, `skip` the parent.**
+  4. **One club that is no longer a club — merged out of existence.**
+     *Torgelower FC Greif `Q566179`, Teutonia Watzenborn-Steinberg
+     `Q21175456`.* The club went into a merger and Wikidata still tags
+     it with the division it was in. It has no coordinates, so it never
+     reaches the map and no marker can ever reveal it. **Remedy:
+     Alexandru's, and it is a `skip` or a rename, never a coordinate** —
+     writing the merged club's ground would put a club that has not
+     existed since 2018 or 2022 onto the map at a tier it left.
+  5. **One club, two items — club and men's first team.** *FC Augsburg
+     `Q15755` / `Q97905916`, FC Erzgebirge Aue `Q141882` /
+     `Q97927365`, SV Babelsberg 03 `Q571553` / `Q97927380`.* Wikidata
+     keeps an *association football club* item and a ***men's
+     association football team*** item (`P31` = `Q103229495`) and they
+     split the facts between them: Wikipedia links the club item, the
+     usable league tag lives on the team item. **Remedy: keep the item
+     with a live `P118` — the team item in all three — and `skip`
+     neither. Never the reverse.** The entry above names these three
+     pairs as verified and protected from cleanup.
 
   **What to look at, in this order.** `P31` first: *association
   football club* on one item and *sports club* or *multisports club* on
@@ -1057,12 +1323,20 @@ a page anyone can already view in their browser's network tab.
   items in **different** divisions of the same pyramid, each with its
   own history and its own current season, is shape 2. Only when both
   items claim the same club in the same division is it shape 1.
+  `P31` names shape 5 just as plainly: ***men's association football
+  team*** (`Q103229495`) on one item against *association football
+  club* on the other. Where that is what you have, stop comparing the
+  items and read the **rank** of each one's `P118` instead — an item
+  can carry exactly the right league and still be invisible to the club
+  query, which is what `tools/diagnose_p118_rank.py` exists to say.
 
   **The sitelink count is not the test it looks like.** It answers
   "which item do the Wikipedias write about", which happens to be the
-  right question in shapes 1 and 3 and is the **wrong question in shape
-  2**, where both items are real clubs and the senior one will always
-  win on sitelinks. It pointed at the football item for SSV Ulm for a
+  right question in shapes 1 and 3 and is the **wrong question in
+  shapes 2 and 5**. In shape 2 both items are real clubs and the senior
+  one always wins on sitelinks; in shape 5 the club item wins every
+  time — 75 to 0, 38 to 0, 21 to 0 — and it is the item that cannot be
+  drawn. It pointed at the football item for SSV Ulm for a
   reason that had nothing to do with duplication. Use it to break a tie
   *after* the shape is settled, never to settle the shape.
 
