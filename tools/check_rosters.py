@@ -60,7 +60,30 @@ a checked fact's clothes:
                              worth re-reading.
   no-wikidata-item           the league article links an article that has
                              no Wikidata item at all, so there is no Q-id
-                             to compare with anything.
+                             to compare with anything. Most of these turn
+                             out to be redirects and are resolved before
+                             the verdict is reached - see below.
+
+
+WHAT THE FIRST REAL RUN FOUND THAT THE DESIGN DID NOT EXPECT
+
+  A STATEMENT'S RANK CAN HIDE A LEAGUE. The club query joins on
+  wdt:P118, which yields only TRUTHY statements: the preferred-rank ones
+  if any exist, otherwise the normal-rank ones, and never a deprecated
+  one. So a club can carry exactly the right league and still be
+  invisible. FC Augsburg's Q15755 has P118 = Bundesliga at DEPRECATED
+  rank and reaches the map not at all. SSC Farul Constanta's Q368104 has
+  Liga II and Liga III at normal rank and a <novalue> statement at
+  PREFERRED rank, which suppresses both. Neither club leaves a trace
+  anywhere else in the pipeline, which is exactly the blind spot this
+  tool was built for.
+
+  WIKIDATA KEEPS A CLUB ITEM AND A MEN'S FIRST TEAM ITEM for many German
+  clubs, and they carry different things: the club item has the
+  Wikipedia sitelinks, the team item often has the only usable P118. One
+  club then reads as two - missing on the roster side, extra on the map
+  side. The _sameNameOnMap column says so in a sentence rather than
+  leaving it to be worked out twice.
 
 
 THE SOURCE, AND WHY IT IS WIKIPEDIA
@@ -767,8 +790,36 @@ def second_source_says(names, *candidates):
 HEADER = ["clubQid", "name", "country", "tier", "venue", "capacity",
           "lat", "lon", "ticketUrl", "source", "note",
           "_league", "_season", "_article", "_rosterCapacity", "_ourTier",
-          "_wikidataLeagues", "_hasCoordinates", "_secondSource", "_why",
-          "_verdict"]
+          "_wikidataLeagues", "_hasCoordinates", "_sameNameOnMap",
+          "_secondSource", "_why", "_verdict"]
+
+
+def same_name_on_map(name, qid, country, tier, layer, by_country_tier):
+    """
+    Is a club of THIS NAME already on the map at this tier under a
+    DIFFERENT Q-id?
+
+    This is an annotation and nothing else. It never decides a verdict,
+    never joins two records and never changes a figure - the whole point
+    of the sitelink hop is that the comparison is id-to-id. It exists
+    because Wikidata keeps a CLUB item and a MEN'S FIRST TEAM item for
+    many German clubs, and the two carry different things: the club item
+    has the Wikipedia sitelinks, the team item often has the only P118.
+    A roster check that does not say so reports one club twice, once as
+    missing and once as extra, and reads like two errors.
+
+    A name is weak evidence, which is exactly why it is confined to a
+    sentence a person reads rather than to a decision the tool takes.
+    """
+    target = fold(name)
+    if not target:
+        return None
+    for other in by_country_tier.get((country, tier), set()):
+        if other == qid:
+            continue
+        if fold((layer.get(other) or {}).get("name")) == target:
+            return other
+    return None
 
 
 def main():
@@ -983,6 +1034,18 @@ def main():
                     "is still not on the map. Nothing here explains that - read the club "
                     "layer run summary for this Q-id")
 
+            twin = same_name_on_map(base["name"], qid, country, tier,
+                                    layer, by_country_tier)
+            if twin and base["_verdict"] != "ok":
+                base["_sameNameOnMap"] = twin
+                base["_why"] += (
+                    f". A club of the same name IS on the map at this tier, under "
+                    f"{twin}. Wikidata keeps a club item and a men's-first-team item "
+                    f"for many German clubs and they carry different things - the club "
+                    f"item has the sitelinks, the team item often has the only P118 - "
+                    f"so this may be one club appearing twice rather than one missing "
+                    f"and one spurious. Read both items before adding or skipping "
+                    f"anything")
             rows.append(base)
             counts[base["_verdict"]] = counts.get(base["_verdict"], 0) + 1
 
@@ -998,6 +1061,7 @@ def main():
                 "_rosterCapacity": "", "_ourTier": club.get("tier") or "",
                 "_wikidataLeagues": " ".join(club.get("leagues") or []) or "none",
                 "_hasCoordinates": "yes" if club.get("lat") is not None else "no",
+                "_sameNameOnMap": "",
                 "_secondSource": (f"{second_label}: "
                                   f"{second_source_says(second_names, club.get('name'))}"
                                   if second_names else "no second source for this division"),

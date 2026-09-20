@@ -4,8 +4,9 @@ name: Build club layer
 # data/clubs/. Weekly, because clubs move division once a season, not
 # once a day.
 #
-# Also runs whenever you edit data/league-tiers.csv, which is the file
-# that decides which clubs appear on the map at all.
+# Also runs whenever you edit data/league-tiers.csv or
+# data/clubs-manual.csv, the two files that decide which clubs appear on
+# the map at all.
 
 on:
   schedule:
@@ -15,6 +16,7 @@ on:
     branches: [main]
     paths:
       - "data/league-tiers.csv"
+      - "data/clubs-manual.csv"
       - "tools/fetch_clubs.py"
       - ".github/workflows/build-clubs.yml"
   workflow_dispatch:
@@ -27,58 +29,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TEMPORARY job. This sandbox answers 403 to CONNECT for stadiumdb.com,
-  # en.wikipedia.org and wikidata.org, so the only way to run the two new
-  # checks is from a runner. Both this job and the `if: false` on `clubs`
-  # below are removed in this same branch once the review files are in -
-  # see the Actions-dispatch entry in CLAUDE.md. The two checks have
-  # their own workflows (crosscheck-stadiumdb.yml, check-rosters.yml),
-  # but a workflow_dispatch only works for a file that already exists on
-  # the DEFAULT branch, which theirs do not yet.
-  checks:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Probe the ranks and the unmapped leagues
-        run: |
-          set -o pipefail
-          python3 tools/_probe.py
-
-      - name: Rebuild the club layer with this branch's hand corrections
-        run: |
-          set -o pipefail
-          python3 tools/fetch_clubs.py 2>&1 | tee /tmp/clubs.log
-
-      - name: StadiumDB cross-check
-        run: |
-          set -o pipefail
-          python3 tools/crosscheck_stadiumdb.py 2>&1 | tee /tmp/stadiumdb.log
-
-      - name: Roster check
-        run: |
-          set -o pipefail
-          python3 tools/check_rosters.py 2>&1 | tee /tmp/rosters.log
-
-      - name: Commit the review files
-        if: always()
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/clubs/ 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "Nothing changed. No commit."
-            exit 0
-          fi
-          git commit -m "chore: rebuild the club layer and rerun both checks"
-          git push || {
-            git pull --rebase origin "${GITHUB_REF_NAME}"
-            git push
-          }
-
   clubs:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -87,6 +38,7 @@ jobs:
 
       - name: Fetch clubs from Wikidata
         run: |
+          set -o pipefail
           python3 tools/fetch_clubs.py | tee /tmp/clubs.log
 
       - name: Write the run summary
