@@ -481,25 +481,37 @@ def qids_for_titles(titles):
     ordered = list(dict.fromkeys(titles))
     for start in range(0, len(ordered), TITLE_BATCH):
         batch = ordered[start:start + TITLE_BATCH]
+        # NO `normalize` HERE, and that is not an oversight. wbgetentities
+        # accepts it only when exactly one title is given; sent with a
+        # batch it rejects the whole call, and the rejection arrives as a
+        # 200 with an "error" object and no entities - which read, before
+        # the error was checked for, as "Wikidata has never heard of any
+        # of these 246 clubs". Titles come straight out of the /wiki/
+        # hrefs, so they are already in the form Wikidata keys on.
         query = urllib.parse.urlencode({
             "action": "wbgetentities", "sites": "enwiki",
             "titles": "|".join(batch), "props": "sitelinks",
-            "sitefilter": "enwiki", "normalize": "1",
+            "sitefilter": "enwiki",
             "format": "json", "formatversion": "2"})
         data, error = get_json_with_retry(f"{WIKIDATA_API}?{query}", "sitelinks")
         if error:
             failures.append(f"sitelink lookup failed for {len(batch)} titles: {error}")
             continue
+        if data.get("error"):
+            # An API complaint is a failure of this tool's request, not a
+            # fact about the clubs, and it says exactly what is wrong - so
+            # it is printed rather than left to look like an empty answer.
+            failures.append(
+                f"sitelink lookup for {len(batch)} titles was refused: "
+                f"{data['error'].get('code')} - {data['error'].get('info')}")
+            continue
 
         # The answer comes back keyed by Q-id, not by the title that was
-        # sent, so it is read back through the sitelink each item
-        # actually carries. Wikidata also normalises titles on the way in
-        # (underscores, capitalisation), so its own normalisation table
-        # is followed rather than a pairing being guessed - a guessed
-        # pairing here would put one club's Q-id on another club's row,
-        # which is precisely the error the sitelink hop exists to avoid.
-        normalised = {n.get("to"): n.get("from")
-                      for n in (data.get("normalized") or [])}
+        # sent, so it is read back through the enwiki sitelink each item
+        # actually carries. No pairing is ever guessed from position in
+        # the batch - a guessed pairing would put one club's Q-id on
+        # another club's row, which is precisely the error the sitelink
+        # hop exists to avoid.
         resolved = 0
         for qid, entity in (data.get("entities") or {}).items():
             if not qid.startswith("Q"):
@@ -509,8 +521,6 @@ def qids_for_titles(titles):
                 continue
             resolved += 1
             found[sitelink] = qid
-            if sitelink in normalised:
-                found[normalised[sitelink]] = qid
 
         # A batch that resolves NOTHING is a failed lookup, not a batch of
         # clubs Wikidata has never heard of. This guard is here because
