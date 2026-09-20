@@ -308,10 +308,31 @@ green tick. Surfacing nothing is also the status quo, so a failed run
 leaves the map as it was rather than changing it on no evidence — and
 the summary names what is therefore missing from that build.
 
-**It costs nothing where nothing is hidden.** The roster articles are
-fetched only after the query has found a candidate, so Germany — whose
-only rank-hidden club is Augsburg's deprecated shape — makes no
-Wikipedia request at all.
+**What it costs, measured on 2026-09-20 rather than guessed.** The
+Romanian fallback query answered in **49.5s**. That is under the query
+service's 60-second ceiling and **not by much**, so the run summary
+prints the time on every run the way the discovery query already does
+— this is the number to watch before it starts failing rather than
+after. When it does fail the summary says so and **nothing is
+surfaced**, which means a club that only reaches the map this way is
+missing from that build; it is named as missing rather than quietly
+dropped.
+
+**The roster articles are fetched only after the query has found a
+candidate** — verified against the code, not just intended — so a
+country with nothing hidden makes no Wikipedia request at all.
+Germany should be that country, since its only rank-hidden club is
+Augsburg's deprecated shape, which this query does not match. **That
+was not read off a run log and is not claimed as a measurement**: what
+the logs of both 2026-09-20 runs do show is that no German club was
+surfaced and Germany's count was unchanged at 149.
+
+**A pre-existing flakiness to keep separate from this.** The German
+**discovery** query — a different query, older than the fallback —
+failed on both runs, HTTP 503 after 166.1s and HTTP 502 after 191.1s.
+`unmapped-leagues.csv` was correctly left as the last good run left it
+both times, which is the review-file guard doing exactly its job. It
+is unrelated to the fallback and was already the known behaviour.
 
 **A failed fetch never rewrites a review file.** `capacity-review.csv`
 and `coordinate-review.csv` are evidence waiting to be judged, and the
