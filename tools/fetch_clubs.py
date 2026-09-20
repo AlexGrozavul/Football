@@ -36,9 +36,9 @@ import urllib.request
 # The roster check's own reader, for the novalue fallback below. Which
 # clubs a division actually fields is check_rosters.py's question, and
 # it is answered here by that file's code rather than by a second copy
-# of it - three of that reader's four bugs were silent ones in the
-# article parse, the sitelink hop and the redirect hop, and a duplicate
-# would get its own three. sys.path is set explicitly so that the import
+# of it - all three bugs that reader has had failed silently, in the
+# sitelink hop and the redirect hop, and a duplicate of those steps
+# would earn its own three. sys.path is set explicitly so that the import
 # works however this script is started, not only as `python3
 # tools/fetch_clubs.py`.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

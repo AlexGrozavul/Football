@@ -175,9 +175,9 @@ a subscribed calendar reads as a schedule regardless of its description.
   `fetch_clubs.py` asks "does a division this project tracks say this
   club is playing" for the novalue fallback. The question belongs to
   this file, so it is answered by this file's reader rather than by a
-  second copy of it — three of this reader's four bugs were silent ones
-  in the article parse, the sitelink hop and the redirect hop, and a
-  duplicate would earn its own three. It returns **Q-ids and nothing
+  second copy of it — all three bugs this reader has had failed
+  silently, in the sitelink hop and the redirect hop, and a duplicate
+  of those steps would earn its own three. It returns **Q-ids and nothing
   else**: which divisions name a club, never which tier the club
   should be given.
 - `tools/diagnose_p118_rank.py` — which clubs the club query's truthy

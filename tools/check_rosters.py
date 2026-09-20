@@ -591,9 +591,10 @@ def roster_qids(country, tiers, config=None):
     novalue fallback has to ask "does a division this project already
     tracks say this club is playing", and that question is this file's
     question - so it is answered by this file's reader rather than by a
-    second copy of it. Three of the four silent bugs this check has had
-    were in the article parse, the sitelink hop and the redirect hop;
-    a duplicate of them somewhere else would get its own three.
+    second copy of it. All three of the bugs this check has had failed
+    SILENTLY, and they were in the two steps this function reuses - two
+    in the sitelink hop and one in the redirect hop. A duplicate of
+    those steps somewhere else would earn its own three.
 
     It returns Q-ids and nothing else. It says which divisions name a
     club, never which tier the club should be given - the article is
