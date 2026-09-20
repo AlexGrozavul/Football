@@ -1,141 +1,128 @@
-"""THROWAWAY probe. Remove with the temporary workflow step that runs it."""
-import sys, time, urllib.parse
+"""THROWAWAY probe 2. Remove with the temporary workflow step that runs it."""
+import re, sys, time, urllib.parse
 
 sys.path.insert(0, "tools")
 import check_rosters as CR
 import diagnose_p118_rank as RANK
 
-OF_INTEREST = ["Q368104", "Q24884611", "Q1386940", "Q113541238", "Q1024390"]
+ITEMS = ["Q136715692", "Q24884611", "Q1024390", "Q926152", "Q1386940",
+         "Q113541238", "Q368104", "Q55625185"]
+PROPS = ["P31", "P17", "P115", "P118", "P571", "P576", "P1365", "P1366",
+         "P155", "P156", "P1889"]
 
 HEAD = []
 
 
-def year_of(entity, prop):
-    for st in (entity.get("claims") or {}).get(prop) or []:
+def times(e, prop):
+    out = []
+    for st in (e.get("claims") or {}).get(prop) or []:
         v = (((st.get("mainsnak") or {}).get("datavalue") or {}).get("value") or {})
         if isinstance(v, dict) and v.get("time"):
-            return v["time"].lstrip("+")[:4]
-    return None
+            out.append(v["time"].lstrip("+")[:10])
+    return out
 
 
-def wbsearch(term):
-    q = urllib.parse.urlencode({
-        "action": "wbsearchentities", "search": term, "language": "en",
-        "uselang": "en", "type": "item", "limit": "12",
-        "format": "json", "formatversion": "2"})
-    data, err = CR.get_json_with_retry(f"{CR.WIKIDATA_API}?{q}", f"search {term}")
-    if err or not data:
-        return [("SEARCH FAILED", str(err))]
-    return [(r.get("id"), f"{r.get('label') or ''} -- {r.get('description') or ''}")
-            for r in data.get("search") or []]
+def qids(e, prop):
+    out = []
+    for st in (e.get("claims") or {}).get(prop) or []:
+        snak = st.get("mainsnak") or {}
+        v = (snak.get("datavalue") or {}).get("value") or {}
+        vid = v.get("id") if isinstance(v, dict) else None
+        out.append(f"{vid or '<' + (snak.get('snaktype') or '?') + '>'}"
+                   f"/{st.get('rank')}")
+    return out
+
+
+def descriptions(e):
+    d = e.get("descriptions") or {}
+    out = []
+    for lang in ("en", "ro", "de"):
+        v = d.get(lang)
+        if isinstance(v, dict):
+            v = v.get("value")
+        if v:
+            out.append(f"{lang}={v}")
+    return "; ".join(out)
 
 
 print("=" * 72)
-print("PROBE: Romanian tier 1 and tier 2 -- rosters, rank, identities")
+print("PROBE 2: Hermannstadt, Politehnica Iasi, Bihor -- identity and prose")
 print("=" * 72)
 
-# --------------------------------------------------------- 1. the rosters
-mapped = RANK.load_tiers()
-rows, problems = CR.load_config()
-for p in problems:
-    print(f"  ! config: {p}")
+# ---------------------------------------------------------- 1. the items
+print("\n--- ITEMS")
+q = urllib.parse.urlencode({
+    "action": "wbgetentities", "ids": "|".join(ITEMS),
+    "props": "claims|labels|descriptions|sitelinks",
+    "languages": "en|de|ro", "format": "json", "formatversion": "2"})
+data, err = CR.get_json_with_retry(f"{CR.WIKIDATA_API}?{q}", "items")
+ents = {}
+if err or not data or data.get("error"):
+    print(f"    READ FAILED: {err or data.get('error')}")
+else:
+    ents = {k: v for k, v in (data.get("entities") or {}).items()
+            if k.startswith("Q") and not v.get("missing")}
+for cid in ITEMS:
+    e = ents.get(cid)
+    if not e:
+        print(f"    {cid}: NOT READ / missing")
+        continue
+    print(f"    {cid}  {RANK.label_of(e)!r}  sitelinks={RANK.sitelink_count(e)}")
+    print(f"        desc: {descriptions(e) or '(none)'}")
+    print(f"        enwiki: {CR.enwiki_title(e)!r}")
+    for prop in PROPS:
+        vals = times(e, prop) or qids(e, prop)
+        if vals:
+            print(f"        {prop}: {', '.join(vals)}")
 
-roster = {}
-for row in rows:
-    if row["country"] != "RO" or row["tier"] not in ("1", "2", "3"):
-        continue
-    tier = row["tier"]
-    if tier in roster:
-        continue
-    print(f"\n--- ROSTER RO tier {tier}: {row['article']}")
-    page, title, err = CR.fetch_article(row["article"])
+# --------------------------------------------------- 2. the article prose
+NEEDLES = ["Hermannstadt", "Politehnica Ia", "Poli Ia", "Bihor",
+           "Farul", "exclud", "withdr", "relegat", "promot", "dissolv",
+           "licen", "insolven"]
+for article in ("2026–27 Liga I", "2026–27 Liga II"):
+    print(f"\n--- PROSE OF {article!r}")
+    page, real, err = CR.fetch_article(article)
     if err:
         print(f"    FETCH FAILED: {err}")
         continue
-    tables, shape = CR.roster_tables(page)
-    titles = []
-    for table, headers in tables:
-        for t, _cap in CR.rows_of(table, headers):
-            if t not in titles:
-                titles.append(t)
-    print(f"    {title!r} via {shape}: {len(titles)} linked titles")
-    found, failures = CR.qids_for_titles(titles)
-    for f in failures:
-        print(f"    ! {f}")
-    roster[tier] = {found[t]: t for t in titles if t in found}
-    if tier in ("1", "2"):
-        for t in titles:
-            print(f"      {found.get(t, '(no Q-id)'):<12} {t}")
-    else:
-        print(f"      (tier 3: {len(found)} of {len(titles)} titles resolved, not listed)")
+    # Tables out, so what is left is the page's own sentences.
+    prose = re.sub(r"<table.*?</table>", " ", page, flags=re.S)
+    prose = CR.text_of(prose)
+    for needle in NEEDLES:
+        for m in re.finditer(re.escape(needle), prose, re.I):
+            s = max(0, m.start() - 130)
+            snippet = prose[s:m.end() + 130].strip()
+            line = f"    [{needle}] ...{snippet}..."
+            print(line)
+            if needle in ("Hermannstadt", "Politehnica Ia", "Poli Ia"):
+                HEAD.append(line)
+            break   # one hit per needle is enough to see the sentence
+    time.sleep(2)
 
-print("\n--- ARE THE CLUBS OF INTEREST IN ANY RO ROSTER?")
-for cid in OF_INTEREST:
-    where = [f"RO tier {t}" for t in ("1", "2", "3") if cid in roster.get(t, {})]
-    line = f"    {cid:<12} {', '.join(where) if where else 'IN NO RO ROSTER (1/2/3)'}"
-    print(line)
-    HEAD.append(line)
-
-# ------------------------------------------------- 2. rank-hidden clubs
-print("\n--- RANK: clubs carrying a mapped league on a statement wdt:P118 will not yield")
-values = " ".join("wd:" + lid for lid in sorted(mapped))
-data, err = RANK.sparql_with_retry(RANK.QUERY_HIDDEN % {"leagues": values}, "hidden")
-hidden_qids = []
-if err:
-    print(f"    QUERY FAILED: {err}")
-    HEAD.append(f"    RANK QUERY FAILED: {err}")
-else:
-    seen = {}
-    for row in data.get("results", {}).get("bindings", []):
-        cid = RANK.qid(RANK.cell(row, "club"))
-        if not cid:
-            continue
-        entry = seen.setdefault(cid, {"label": RANK.cell(row, "clubLabel") or "", "st": set()})
-        entry["st"].add((RANK.qid(RANK.cell(row, "league")),
-                         (RANK.cell(row, "rank") or "").rsplit("#", 1)[-1]))
-    hidden_qids = sorted(seen)
-    print(f"    {len(hidden_qids)} clubs")
-    for cid in hidden_qids:
-        st = ", ".join(f"{l}/{r}" for l, r in sorted(seen[cid]["st"]))
-        print(f"      {cid:<12} {seen[cid]['label'][:34]:<34} {st}")
-
-# ----------------------------------------------- 3. the items themselves
-print("\n--- THE ITEMS")
-want = list(dict.fromkeys(OF_INTEREST + hidden_qids))
-ents, failures = RANK.fetch_entities(want)
-for f in failures:
-    print(f"    ! {f}")
-for cid in want:
-    e = ents.get(cid)
-    if not e:
-        print(f"    {cid}: NOT READ")
+# ------------------------------------------- 3. the clubs' own articles
+for article in ("FC Hermannstadt", "Politehnica Iași"):
+    print(f"\n--- CLUB ARTICLE {article!r}")
+    page, real, err = CR.fetch_article(article)
+    if err:
+        print(f"    FETCH FAILED: {err}")
         continue
-    st = RANK.league_statements(e)
-    truthy = RANK.truthy_leagues(st)
-    novalue_pref = any(r == "preferred" and s != "value" for _v, r, s in st)
-    in_roster = [t for t in ("1", "2", "3") if cid in roster.get(t, {})]
-    print(f"    {cid}  {RANK.label_of(e)}  sitelinks={RANK.sitelink_count(e)}")
-    print(f"        P31={RANK.first_qid(e,'P31')} P17={RANK.first_qid(e,'P17')} "
-          f"P115={RANK.first_qid(e,'P115')} P625={RANK.has_claim(e,'P625')} "
-          f"P576={RANK.dissolved_year(e)} P571={year_of(e,'P571')}")
-    for vid, rank, snak in st:
-        tier = mapped.get(vid or "")
-        print(f"        P118 {rank:<10} {snak:<9} {str(vid):<12} "
-              f"{'TRUTHY' if vid in truthy else 'hidden'} "
-              f"{('tier %s %s %s' % tier) if tier else ''}")
-    print(f"        => wdt:P118 yields {truthy or 'NOTHING'}; "
-          f"preferred-novalue={novalue_pref}; roster={in_roster or 'none'}")
-
-# ------------------------------------------------------- 4. name searches
-print("\n--- SEARCHES")
-for term in ("Politehnica Iasi", "FC Hermannstadt", "Bihor Oradea", "Farul Constanta"):
-    print(f"    {term}:")
-    for cid, desc in wbsearch(term):
-        print(f"      {str(cid):<12} {desc[:74]}")
-    time.sleep(1)
+    print(f"    resolved to {real!r}")
+    infobox = re.search(r'<table[^>]*class="[^"]*infobox[^"]*"[^>]*>.*?</table>',
+                        page, re.S)
+    if infobox:
+        rows = re.findall(r"<tr[^>]*>(.*?)</tr>", infobox.group(0), re.S)
+        for tr in rows:
+            flat = CR.text_of(tr)
+            if re.search(r"league|liga|season|founded|dissolv|ground", flat, re.I):
+                print(f"      infobox: {flat[:150]}")
+    first = CR.text_of(re.sub(r"<table.*?</table>", " ", page, flags=re.S))
+    line = f"    lead: {first[:420]}"
+    print(line)
+    HEAD.append(f"    {real}: {first[:240]}")
+    time.sleep(2)
 
 print("\n" + "=" * 72)
-print("HEADLINES REPEATED (log tails are what get read)")
+print("HEADLINES REPEATED")
 print("=" * 72)
 for line in HEAD:
     print(line)

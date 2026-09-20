@@ -33,6 +33,17 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+# The roster check's own reader, for the novalue fallback below. Which
+# clubs a division actually fields is check_rosters.py's question, and
+# it is answered here by that file's code rather than by a second copy
+# of it - three of that reader's four bugs were silent ones in the
+# article parse, the sitelink hop and the redirect hop, and a duplicate
+# would get its own three. sys.path is set explicitly so that the import
+# works however this script is started, not only as `python3
+# tools/fetch_clubs.py`.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import check_rosters                                    # noqa: E402
+
 # ---------------------------------------------------------------- config
 
 OUT_DIR = "data/clubs"
@@ -173,6 +184,100 @@ WHERE {
   SERVICE wikibase:label { bd:serviceParam wikibase:language "%(lang)s,en" }
 }
 """
+
+# The novalue fallback.
+#
+# CLUB_QUERY joins on `wdt:P118`, which yields only TRUTHY statements:
+# the preferred-rank ones if the item has any, otherwise the normal-rank
+# ones. So a single PREFERRED statement asserting NO LEAGUE - Wikidata's
+# <novalue>, or a <somevalue> - suppresses every normal-rank league tag
+# underneath it and the club never reaches the map at all. SSC Farul
+# Constanta is the case this was written from: Liga II and Liga III at
+# normal rank, both true, both invisible.
+#
+# THIS QUERY IS DELIBERATELY NARROW, and every line of the narrowness is
+# load-bearing:
+#
+#   `?st wikibase:rank wikibase:NormalRank` - only NORMAL-rank statements
+#   are read through. A DEPRECATED statement stays exactly as invisible
+#   as it is today. Deprecated means somebody looked at that statement
+#   and marked it wrong, and reading through it is how a club gets put
+#   in a league it left in 1994 - the exact failure league-tiers.csv and
+#   the truthy join exist to avoid. FC Augsburg is the deprecated shape
+#   and this query does not touch it.
+#
+#   The UNION on `?sup` - the suppression must actually BE a preferred
+#   statement asserting no league. Without it this would read through
+#   any club whose truthy set is empty for any reason at all.
+#
+#   `FILTER NOT EXISTS { ?club wdt:P118 ?anyTruthy }` - only clubs the
+#   main query cannot already see. A club that reaches the map normally
+#   is never touched here, and nothing can be added twice.
+#
+#   `FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }` - the same gate
+#   CLUB_QUERY applies, and here it is the whole safety argument. A
+#   <novalue> on a club that FOLDED is not a mistake, it is the correct
+#   statement: the club is in no league because there is no club, and
+#   the tags underneath it are history. Twelve of the eighteen Romanian
+#   clubs hidden this way carry a dissolution date, with years from 1946
+#   to 2026. Reading through those would put dead clubs on the map at
+#   the tier they last played in.
+#
+# AND THE QUERY IS NOT THE LAST GATE. What comes back from here is a
+# CANDIDATE, never a club. A candidate is surfaced only if a
+# current-season roster article this project already tracks names it -
+# see novalue_fallback below. "Nobody has recorded a dissolution" is not
+# evidence that a club is playing; a league's own membership list is.
+#
+# The columns are exactly CLUB_QUERY's, in the same order, so a surfaced
+# club is folded, tiered, type-checked and country-checked by the same
+# code as every other club and cannot pick up a private set of rules.
+NOVALUE_FALLBACK_QUERY = """
+SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?capacity ?coord ?cityLabel ?typeLabel ?country
+WHERE {
+  VALUES ?league { %(leagues)s }
+  ?club p:P118 ?st .
+  ?st ps:P118 ?league .
+  ?st wikibase:rank wikibase:NormalRank .
+  {
+    ?club p:P118 ?sup .
+    ?sup a wdno:P118 .
+    ?sup wikibase:rank wikibase:PreferredRank .
+  } UNION {
+    ?club p:P118 ?sup .
+    ?sup wikibase:rank wikibase:PreferredRank .
+    ?sup ps:P118 ?someValue .
+    FILTER(isBlank(?someValue))
+  }
+  FILTER NOT EXISTS { ?club wdt:P118 ?anyTruthy }
+  FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
+  FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
+  OPTIONAL { ?club wdt:P31 ?type }
+  OPTIONAL { ?club wdt:P17 ?country }
+  OPTIONAL {
+    ?club wdt:P115 ?venue .
+    OPTIONAL { ?venue wdt:P625 ?venueCoord }
+    OPTIONAL { ?venue wdt:P1083 ?capacity }
+  }
+  OPTIONAL { ?club wdt:P625 ?clubCoord }
+  BIND(COALESCE(?venueCoord, ?clubCoord) AS ?coord)
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "%(lang)s,en" }
+}
+"""
+
+# Printed whenever the fallback surfaces anything, because the one thing
+# a reader must not conclude from a surfaced club is that its TIER has
+# been checked.
+FALLBACK_NOTE = (
+    "The novalue fallback decides VISIBILITY and never TIER. A club it "
+    "surfaces is tiered by the ordinary rule - the most senior league in "
+    "league-tiers.csv that its normal-rank statements name - exactly as "
+    "if the suppression had never been there. The roster article is "
+    "evidence that the club is PLAYING; it is not authority for which "
+    "division, and this project does not write a tier off one English "
+    "Wikipedia table. Where the two disagree it is said so below, and "
+    "the remedy is a hand row in data/clubs-manual.csv.")
+
 
 POINT_RE = re.compile(r"Point\(\s*(-?[\d.]+)\s+(-?[\d.]+)\s*\)")
 
@@ -497,6 +602,120 @@ def build_clubs(rows, tiers):
                 ambiguous.append(club["name"] or club["id"])
 
     return clubs, leagues, ambiguous, dropped, countries
+
+
+# --------------------------------------------- the novalue fallback
+
+def novalue_fallback(code, lang, values, main_rows, tiers):
+    """
+    The clubs a preferred-rank "no league" statement hides, that a
+    current-season roster this project already tracks says are playing.
+
+    Returns (extra_rows, surfaced, notes).
+
+      extra_rows  SPARQL bindings in CLUB_QUERY's own shape, to be folded
+                  in beside the main ones. Only for confirmed clubs.
+      surfaced    {qid: {...}} for the run summary.
+      notes       lines for the run summary, always - including when
+                  nothing was surfaced, because "nothing" is a result.
+
+    THREE CONDITIONS, ALL REQUIRED, and the order matters because each
+    one is cheaper than the next:
+
+      1. the suppression is a PREFERRED-rank statement asserting no
+         league, and the tags underneath it are NORMAL rank. In the
+         query above.
+      2. the club shows no dissolution evidence. Also in the query
+         above, as the same P576 gate CLUB_QUERY applies.
+      3. a current-season roster article named in data/league-rosters.csv
+         names the club. Here, and only after 1 and 2 have cut the list
+         down to a handful.
+
+    CONDITION 3 IS THE ONE THAT MAKES THIS SAFE. Without it the rule
+    would be "read through a preferred novalue whenever the club is not
+    marked dissolved", and a missing P576 means only that nobody has
+    recorded a dissolution - it is not evidence that a club is playing.
+    Measured on 2026-09-20: twenty clubs were hidden by rank across both
+    countries, eighteen of them by a preferred novalue, and only a
+    roster tells the live ones from the rest.
+
+    A FAILED ROSTER FETCH SURFACES NOTHING, and says so loudly. The
+    alternative - treating "the article did not load" as "no club is
+    confirmed" - is the exact shape of the bug that once reported all
+    246 roster clubs as missing with a green tick. Surfacing nothing is
+    also the status quo, so a failed run leaves the map as it was rather
+    than changing it on no evidence.
+    """
+    notes, surfaced = [], {}
+    if not values:
+        return [], surfaced, notes
+
+    time.sleep(REQUEST_GAP_SECONDS)
+    data, error = sparql_with_retry(
+        NOVALUE_FALLBACK_QUERY % {"leagues": values, "lang": lang})
+    if error:
+        notes.append(f"novalue fallback: the query failed ({error}) - no club was "
+                     f"surfaced this run. A club that only reaches the map through "
+                     f"the fallback is missing from this build")
+        return [], surfaced, notes
+
+    rows = data.get("results", {}).get("bindings", [])
+    already = {qid(cell(row, "club")) for row in main_rows}
+    candidates = {}
+    for row in rows:
+        cid = qid(cell(row, "club"))
+        # The query already excludes these; belt and braces, because a
+        # club added twice would be a duplicate nothing else looks for.
+        if not cid or cid in already:
+            continue
+        entry = candidates.setdefault(cid, {"name": None, "rows": [], "leagues": []})
+        entry["rows"].append(row)
+        label = cell(row, "clubLabel")
+        if label and not label.startswith("Q") and not entry["name"]:
+            entry["name"] = label
+        lid = qid(cell(row, "league"))
+        if lid and lid not in entry["leagues"]:
+            entry["leagues"].append(lid)
+
+    if not candidates:
+        notes.append("novalue fallback: no club in this country's mapped leagues is "
+                     "hidden by a preferred-rank statement asserting no league")
+        return [], surfaced, notes
+
+    # Only now is a roster worth fetching. Where nothing is hidden this
+    # costs no request at all, which is the case for Germany.
+    names = ", ".join(f"{c['name'] or cid} ({cid})" for cid, c in sorted(candidates.items()))
+    notes.append(f"novalue fallback: {len(candidates)} candidate(s) hidden by a "
+                 f"preferred-rank no-league statement - {names}")
+    notes.append("    asking the roster articles which of them is actually playing")
+
+    named, roster_failures = check_rosters.roster_qids(code, tiers)
+    if roster_failures:
+        for failure in roster_failures:
+            notes.append(f"    ! roster read failed: {failure}")
+        notes.append("    NOTHING was surfaced, because a roster that did not come "
+                     "back is a failed fetch and not a division with nobody in it. "
+                     "Any club that reaches the map only through the fallback is "
+                     "missing from this build - it is not gone, it is unconfirmed")
+        return [], surfaced, notes
+
+    extra_rows = []
+    for cid, entry in sorted(candidates.items()):
+        label = entry["name"] or cid
+        where = named.get(cid)
+        if not where:
+            notes.append(f"    left out: {label} ({cid}) - no current-season roster "
+                         f"in data/league-rosters.csv names it, so nothing here says "
+                         f"it is playing")
+            continue
+        extra_rows.extend(entry["rows"])
+        surfaced[cid] = {
+            "name": label,
+            "rosterTiers": sorted({tier for tier, _article in where}),
+            "articles": sorted({article for _tier, article in where}),
+            "leagues": entry["leagues"],
+        }
+    return extra_rows, surfaced, notes
 
 
 # ------------------------------------------------- country sanity check
