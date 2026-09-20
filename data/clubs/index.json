@@ -7,15 +7,15 @@
    "byTier": {
     "1": 18,
     "2": 18,
-    "3": 22,
-    "4": 83,
+    "3": 18,
+    "4": 87,
     "6": 3,
     "7": 1,
     "8": 1
    },
    "withVenueName": 146,
-   "withCapacity": 137,
-   "handCorrected": 38
+   "withCapacity": 138,
+   "handCorrected": 56
   },
   "RO": {
    "name": "Romania",
@@ -27,7 +27,7 @@
    },
    "withVenueName": 64,
    "withCapacity": 43,
-   "handCorrected": 3
+   "handCorrected": 5
   }
  }
 }
