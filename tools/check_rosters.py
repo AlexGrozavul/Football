@@ -133,7 +133,6 @@ CONFIG_OPTIONAL = ("leagueQid", "note")
 
 WIKIPEDIA_API = "https://en.wikipedia.org/w/api.php"
 WIKIDATA_API = "https://www.wikidata.org/w/api.php"
-SPARQL = "https://query.wikidata.org/sparql"
 USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
               "https://github.com/AlexGrozavul/Football)")
 
@@ -141,7 +140,7 @@ TIMEOUT_SECONDS = 90
 MAX_RETRIES = 3
 REQUEST_GAP_SECONDS = 2
 TITLE_BATCH = 40          # wbgetentities takes 50; 40 leaves room
-QID_BATCH = 40            # VALUES clause size; the query service gives up at 60s
+ENTITY_BATCH = 50         # wbgetentities takes 50 ids per call
 
 # Which football-data.org competition file confirms which division. Only
 # the competitions whose team list this project already holds are here,
@@ -206,41 +205,6 @@ def get_json_with_retry(url, what):
             # slow", not "wrong query".
             if attempt < MAX_RETRIES:
                 print(f"    {what}: answer cut off mid-JSON, retrying")
-                time.sleep(15)
-                continue
-            return None, "answer cut off mid-JSON"
-    return None, "exhausted retries"
-
-
-def post_sparql(query):
-    body = urllib.parse.urlencode({"query": query, "format": "json"}).encode("utf-8")
-    req = urllib.request.Request(SPARQL, data=body, headers={
-        "User-Agent": USER_AGENT,
-        "Accept": "application/sparql-results+json",
-        "Content-Type": "application/x-www-form-urlencoded"})
-    with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as resp:
-        return json.loads(resp.read().decode("utf-8"))
-
-
-def sparql_with_retry(query):
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            return post_sparql(query), None
-        except urllib.error.HTTPError as exc:
-            if exc.code in (429, 500, 502, 503, 504) and attempt < MAX_RETRIES:
-                print(f"    query service said {exc.code}, retrying")
-                time.sleep(15)
-                continue
-            return None, f"HTTP {exc.code}"
-        except (urllib.error.URLError, TimeoutError) as exc:
-            if attempt < MAX_RETRIES:
-                print(f"    network problem, retrying: {exc}")
-                time.sleep(10)
-                continue
-            return None, f"network error: {exc}"
-        except ValueError:
-            if attempt < MAX_RETRIES:
-                print("    answer cut off mid-JSON, retrying")
                 time.sleep(15)
                 continue
             return None, "answer cut off mid-JSON"
@@ -546,26 +510,14 @@ def qids_for_titles(titles):
 
 # ------------------------------------------------------ wikidata diagnosis
 
-DIAGNOSIS_QUERY = """
-SELECT ?club ?clubLabel ?league ?venue ?coord ?type ?dissolved
-WHERE {
-  VALUES ?club { %(clubs)s }
-  OPTIONAL { ?club wdt:P118 ?league }
-  OPTIONAL { ?club wdt:P31 ?type }
-  OPTIONAL { ?club wdt:P576 ?dissolved }
-  OPTIONAL {
-    ?club wdt:P115 ?venue .
-    OPTIONAL { ?venue wdt:P625 ?venueCoord }
-  }
-  OPTIONAL { ?club wdt:P625 ?clubCoord }
-  BIND(COALESCE(?venueCoord, ?clubCoord) AS ?coord)
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,de,ro" }
-}
-"""
-
-
-def qid_of(uri):
-    return uri.rsplit("/", 1)[-1] if uri else None
+# The five properties this asks about, and why each one is here. They are
+# exactly the terms CLUB_QUERY in fetch_clubs.py asks in, so that a club
+# it cannot see is explained in the same language it used to not see it.
+P_LEAGUE = "P118"        # which league - the club query is bounded by these
+P_VENUE = "P115"         # home venue - where the coordinates usually come from
+P_COORD = "P625"         # a position, on the club or on its ground
+P_TYPE = "P31"           # instance of - the club query throws out people
+P_DISSOLVED = "P576"     # dissolved - the club query throws these out too
 
 
 def diagnose(qids):
@@ -573,53 +525,137 @@ def diagnose(qids):
     What Wikidata says about each club, in the same terms the club query
     asks in - which leagues it claims, whether anything gives it a
     position, whether it is typed as a person or marked dissolved. Those
-    last two are the gates CLUB_QUERY applies, so a club failing one of
-    them is invisible to the pipeline for a reason this tool can name.
+    last two are the gates CLUB_QUERY applies, so a club failing one is
+    invisible to the pipeline for a reason this tool can then name.
+
+    THIS DOES NOT USE THE QUERY SERVICE, AND THAT IS DELIBERATE. The
+    obvious way to write it is one SPARQL query per batch with a VALUES
+    clause, and that is how it was written first. Measured on a runner it
+    did not finish: the query service has a 60-second ceiling, this query
+    joins five optional properties and the label service on top, and the
+    run sat past 25 minutes retrying without producing a single answer.
+    CLAUDE.md already records the same service taking 180.8s across
+    retries on the club discovery query, so this is its normal behaviour
+    rather than one bad afternoon.
+
+    wbgetentities has no such ceiling. It answers with whole entities, 50
+    ids per call, off the ordinary MediaWiki API that the sitelink hop
+    already uses and that has been reliable throughout. The cost is a
+    second round of calls for the grounds - a club's position usually
+    lives on its ground rather than on the club - and that is a good
+    trade against a step that cannot be relied on to answer at all.
     """
-    facts, failures = {}, []
+    facts = {}
     ordered = list(dict.fromkeys(qids))
-    for start in range(0, len(ordered), QID_BATCH):
-        batch = ordered[start:start + QID_BATCH]
-        query = DIAGNOSIS_QUERY % {"clubs": " ".join(f"wd:{q}" for q in batch)}
-        began = time.time()
-        data, error = sparql_with_retry(query)
-        if error:
-            failures.append(f"diagnosis failed for {len(batch)} clubs: {error}")
-            continue
-        bindings = data["results"]["bindings"]
-        # Same guard as the sitelink hop, for the same reason: a query
-        # that answers 200 with nothing in it is a failed query, not a
-        # batch of clubs Wikidata holds no statement about. Every club
-        # here came out of a Wikidata sitelink a moment ago, so at
-        # minimum each one has a label.
-        if not bindings:
-            failures.append(
-                f"the diagnosis query answered with no rows at all for {len(batch)} "
-                f"clubs that Wikidata had just resolved sitelinks for. That is a "
-                f"failed query, not {len(batch)} clubs with nothing on them")
-            continue
-        print(f"    diagnosed {len(batch)} clubs in {round(time.time() - began, 1)}s")
-        for row in bindings:
-            qid = qid_of((row.get("club") or {}).get("value"))
-            if not qid:
-                continue
-            fact = facts.setdefault(qid, {
-                "label": "", "leagues": set(), "venue": None,
-                "coord": False, "types": set(), "dissolved": False})
-            if row.get("clubLabel"):
-                fact["label"] = row["clubLabel"]["value"]
-            if row.get("league"):
-                fact["leagues"].add(qid_of(row["league"]["value"]))
-            if row.get("type"):
-                fact["types"].add(qid_of(row["type"]["value"]))
-            if row.get("venue"):
-                fact["venue"] = qid_of(row["venue"]["value"])
-            if row.get("coord"):
+
+    entities, failures = fetch_entities(ordered, "clubs")
+    venues_wanted = set()
+    for qid, entity in entities.items():
+        claims = entity.get("claims") or {}
+        fact = {
+            "label": best_label(entity),
+            "leagues": set(claim_qids(claims, P_LEAGUE)),
+            "types": set(claim_qids(claims, P_TYPE)),
+            "venue": next(iter(claim_qids(claims, P_VENUE)), None),
+            "coord": bool(claims.get(P_COORD)),
+            "dissolved": bool(claims.get(P_DISSOLVED)),
+        }
+        facts[qid] = fact
+        if not fact["coord"] and fact["venue"]:
+            venues_wanted.add(fact["venue"])
+
+    # Round two: the grounds, for the clubs that carry no position of
+    # their own. COALESCE(venueCoord, clubCoord) is what fetch_clubs.py
+    # does, so the same order is kept here.
+    if venues_wanted:
+        print(f"  asking Wikidata about {len(venues_wanted)} grounds for "
+              f"the clubs that carry no position themselves")
+        grounds, ground_failures = fetch_entities(sorted(venues_wanted), "grounds")
+        failures.extend(ground_failures)
+        placed = {qid for qid, entity in grounds.items()
+                  if (entity.get("claims") or {}).get(P_COORD)}
+        for fact in facts.values():
+            if not fact["coord"] and fact["venue"] in placed:
                 fact["coord"] = True
-            if row.get("dissolved"):
-                fact["dissolved"] = True
-        time.sleep(REQUEST_GAP_SECONDS)
+
+    # Belt and braces on the guard above: no club read at all, and
+    # nothing said about why, is still a failure rather than an answer.
+    if ordered and not facts and not failures:
+        failures.append(
+            f"nothing was read for any of the {len(ordered)} clubs and no call "
+            f"reported a problem, which should not be possible - treat this run "
+            f"as failed rather than as {len(ordered)} clubs with nothing on them")
+
     return facts, failures
+
+
+def fetch_entities(qids, what):
+    """
+    wbgetentities in batches, asking only for the parts that are read.
+    Returns {qid: entity}, plus the failures - and a batch that comes
+    back empty is one of them, for the same reason it is in the sitelink
+    hop: an empty answer to a question about items Wikidata has just
+    named is a failed call, not a fact about those items.
+    """
+    entities, failures = {}, []
+    for start in range(0, len(qids), ENTITY_BATCH):
+        batch = qids[start:start + ENTITY_BATCH]
+        query = urllib.parse.urlencode({
+            "action": "wbgetentities", "ids": "|".join(batch),
+            "props": "claims|labels", "languages": "en|de|ro",
+            "format": "json", "formatversion": "2"})
+        began = time.time()
+        data, error = get_json_with_retry(f"{WIKIDATA_API}?{query}", what)
+        if error:
+            failures.append(f"reading {len(batch)} {what} from Wikidata failed: {error}")
+            continue
+        if data.get("error"):
+            failures.append(
+                f"reading {len(batch)} {what} from Wikidata was refused: "
+                f"{data['error'].get('code')} - {data['error'].get('info')}")
+            continue
+        got = {q: e for q, e in (data.get("entities") or {}).items()
+               if q.startswith("Q") and not e.get("missing")}
+        if not got:
+            failures.append(
+                f"Wikidata answered with no usable entity for any of {len(batch)} "
+                f"{what} it had just named itself. That is a failed call, not "
+                f"{len(batch)} items with nothing on them")
+            continue
+        entities.update(got)
+        print(f"    read {len(got)}/{len(batch)} {what} in "
+              f"{round(time.time() - began, 1)}s")
+        time.sleep(REQUEST_GAP_SECONDS)
+    return entities, failures
+
+
+def claim_qids(claims, prop):
+    """The Q-ids a property points at, ignoring statements with no value."""
+    out = []
+    for statement in claims.get(prop) or []:
+        value = (((statement.get("mainsnak") or {}).get("datavalue") or {})
+                 .get("value") or {})
+        if isinstance(value, dict) and value.get("id"):
+            out.append(value["id"])
+    return out
+
+
+def best_label(entity):
+    """
+    The club's own name, preferring English and falling back through the
+    two languages this project's countries are in. formatversion=2 gives
+    a label as a plain string; the default gives {language, value}. Both
+    are read, because guessing which one arrived is how the sitelink hop
+    came back empty.
+    """
+    labels = entity.get("labels") or {}
+    for lang in ("en", "de", "ro"):
+        label = labels.get(lang)
+        if isinstance(label, str):
+            return label
+        if isinstance(label, dict) and label.get("value"):
+            return label["value"]
+    return ""
 
 
 # ------------------------------------------------------- the second source
