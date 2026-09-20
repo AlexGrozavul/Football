@@ -41,10 +41,15 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
-      - name: Probe the duplicate pairs
+      - name: Probe the ranks and the unmapped leagues
         run: |
           set -o pipefail
           python3 tools/_probe.py
+
+      - name: Rebuild the club layer with this branch's hand corrections
+        run: |
+          set -o pipefail
+          python3 tools/fetch_clubs.py 2>&1 | tee /tmp/clubs.log
 
       - name: StadiumDB cross-check
         run: |
@@ -61,12 +66,12 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/clubs/stadiumdb-review.csv data/clubs/roster-review.csv 2>/dev/null || true
+          git add data/clubs/ 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Nothing changed. No commit."
             exit 0
           fi
-          git commit -m "chore: first run of the StadiumDB and roster checks"
+          git commit -m "chore: rebuild the club layer and rerun both checks"
           git push || {
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
