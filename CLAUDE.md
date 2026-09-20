@@ -800,14 +800,30 @@ a page anyone can already view in their browser's network tab.
   project in breach of rule 6, and it is TSV Schwaben Augsburg's only
   tag. `Q283009` DDR-Liga and `Q6954881` NOFV-Oberliga Süd are history,
   not a current division.
-  **One of them was mapped, on purpose.** `Q2188121` is the **generic**
-  "Regionalliga" item — Wikidata's own description is "fourth division
-  of men's association football in Germany" — and four clubs carry it
-  and nothing else. It is now in `league-tiers.csv` at tier 4. Two of
-  the four really are in the Regionalliga; the other two, **SV Meppen**
-  and **TSV Havelse**, are in the 3. Liga and have hand rows saying so.
-  A generic item is a league *history* rather than a current division,
-  so expect to have to say that again for the next club that carries it.
+  **One of them was mapped, on purpose, and the cost was measured
+  rather than assumed.** `Q2188121` is the **generic** "Regionalliga"
+  item — Wikidata's own description is "fourth division of men's
+  association football in Germany" — and **eight** clubs carry it and
+  nothing else. It is now in `league-tiers.csv` at tier 4.
+  Of the eight, three are right: **VfB Oldenburg** really is in the
+  Regionalliga, and **SV Meppen** and **TSV Havelse** are in the 3. Liga
+  and have hand rows saying so. That closes the 3. Liga completely — it
+  now reads **20 of 20, nothing missing and nothing extra**.
+  **The other five arrived at tier 4 with nothing to support it**, and
+  they are `skip`ped: 1. FC Union Berlin II, BV Cloppenburg, FC
+  Oberneuland, SV Wilhelmshaven and Viktoria Aschaffenburg. The 2026-27
+  Regionalliga article lists none of them and the roster check found no
+  second Wikidata item for any of them, so tier 4 would have been an
+  invention — rule 2. They are off the map until somebody finds their
+  real tier, which is exactly where TSV 1860 München II is and for the
+  same kind of reason, and each row says how to bring the club back.
+  **A generic item is a league HISTORY, not a current division.** It
+  says a club has played at that level at some point and nothing about
+  now, which is why five of eight were wrong. Expect to have to say this
+  again for the next club that carries one, and expect the same split:
+  the item is worth mapping for the clubs it places correctly, and every
+  club it places has to be checked against a roster before it is
+  believed.
   This closes the 3. Liga gap: CLAUDE.md has recorded since 2026-09-16
   that "SV Meppen and 1. FC Schweinfurt are missing from the German
   layer entirely ... there is no way to see which league Q-id they do
