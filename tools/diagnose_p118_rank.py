@@ -71,6 +71,7 @@ P_VENUE = "P115"
 P_COORD = "P625"
 P_COUNTRY = "P17"
 P_TYPE = "P31"
+P_DISSOLVED = "P576"     # dissolved, abolished or demolished
 
 
 # QUERY A - the census. Every item ANYWHERE with a preferred-rank P118
@@ -335,6 +336,33 @@ def has_claim(entity, prop):
     return bool((entity.get("claims") or {}).get(prop))
 
 
+def dissolved_year(entity):
+    """
+    The year on P576, if there is one.
+
+    THIS IS THE COLUMN THAT DECIDES WHETHER A <novalue> IS AN ERROR.
+    Wikidata's <novalue> means "this item has no value for this
+    property", and on a club that folded that is not a mistake, it is
+    the correct statement - the club is in no league because there is
+    no club. The normal-rank league tags underneath it are history, and
+    reading through them would put a dead club on the map at the tier
+    it last played in, which is the exact failure the truthy join
+    exists to prevent.
+
+    A <novalue> on a club that is playing this season is the other
+    thing entirely, and Farul is that case.
+
+    P576 is also what CLUB_QUERY filters on, so a club carrying it
+    would never reach the map even if its rank were read.
+    """
+    for statement in (entity.get("claims") or {}).get(P_DISSOLVED) or []:
+        value = (((statement.get("mainsnak") or {}).get("datavalue") or {})
+                 .get("value") or {})
+        if isinstance(value, dict) and value.get("time"):
+            return value["time"].lstrip("+")[:4]
+    return None
+
+
 # ---------------------------------------------------------------- report
 
 def describe(entity, tiers, placed_grounds):
@@ -364,6 +392,7 @@ def describe(entity, tiers, placed_grounds):
         "venue": venue,
         "coord": has_claim(entity, P_COORD) or (venue in placed_grounds),
         "type": first_qid(entity, P_TYPE),
+        "dissolved": dissolved_year(entity),
     }
 
 
@@ -384,6 +413,10 @@ def print_club(fact, tiers):
         print(f"      wdt:P118 yields: {' '.join(fact['truthy'])}")
     else:
         print("      wdt:P118 yields: NOTHING - the club query cannot see this item")
+    if fact["dissolved"]:
+        print(f"      P576 DISSOLVED {fact['dissolved']} - the club query excludes "
+              f"dissolved clubs, and a <novalue> on a club that folded is the "
+              f"CORRECT statement, not an error")
     if fact["coord"]:
         print("      position: yes")
     else:
@@ -538,9 +571,27 @@ def main():
         print(f"    {fact['qid']:<12} {fact['label']:<28} {why}")
         for line in mappable:
             print(f"                 hides {line}")
+        if fact["dissolved"]:
+            print(f"                 P576 dissolved {fact['dissolved']} - excluded "
+                  f"from the club query anyway, and the <novalue> is right")
         if not fact["coord"]:
             print("                 and has no position, so reading the rank "
                   "alone would not place it")
+    print()
+    live = [f for f in ours if not f["dissolved"] and f["coord"]
+            and any("MAPPED" in n for _v, _r, n in f["hidden"])]
+    print(f"  of the {len(ours)}, {len(live)} carry no P576, have a position, and "
+          f"hide a league league-tiers.csv maps.")
+    print("  Those are the only ones where reading the rank would put a club on "
+          "the map, and")
+    print("  they are the only ones worth a judgement. The rest are dissolved, "
+          "unplaceable, or")
+    print("  hide nothing this project maps.")
+    for fact in live:
+        best = min((tiers[v][0] for v, _r, n in fact["hidden"] if v in tiers),
+                   default=None)
+        print(f"    {fact['qid']:<12} {fact['label']:<28} most senior hidden "
+              f"tier: {best}")
     return 0
 
 
