@@ -884,10 +884,18 @@ a page anyone can already view in their browser's network tab.
   `<novalue>` is an error *and* the statements under it are stale, both
   at once — correcting the first does not correct the second, and
   reading the rank would put Farul on the map one division below where
-  it plays. Neither number may be written here: tier 2 is contradicted
-  by the roster, and tier 1 rests on the English Wikipedia table alone,
-  which is exactly the call the entry above reserved for Alexandru and
-  which he has not yet made.
+  it plays. Neither number may be written: tier 2 is contradicted by
+  the roster, and tier 1 rests on the English Wikipedia table alone.
+  **Asked directly on 2026-09-20, Alexandru's answer was to leave Farul
+  off the map and settle the identity question first**, and the reason
+  is the right one: the tier is the *second* question. The first is
+  which club `Q368104` actually is — the old Farul, the 2021 Viitorul
+  merger that took the name, or both depending on who edited the item —
+  and a tier written before that is a number attached to a club nobody
+  has identified. So the `<novalue>` is recorded as an error and the
+  suppressed tags are what this project reads, **and nothing is written
+  to any club file.** `roster-review.csv` goes on reporting it, which is
+  correct: it is a real finding and it is still open.
   **And there is a mechanical obstacle that has to be cleared first,
   whichever tier is chosen.** `apply_manual` in `fetch_clubs.py`
   **rejects** a row whose `clubQid` is not in the country's fetched
