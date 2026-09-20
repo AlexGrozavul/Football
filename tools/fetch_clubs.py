@@ -1169,6 +1169,7 @@ def main():
         wanted = [lid for lid, t in tiers.items()
                   if t != "skip" and labels.get(lid, {}).get("country", code) == code]
         clubs = {}
+        surfaced, fallback_notes = {}, []
         if wanted:
             time.sleep(REQUEST_GAP_SECONDS)
             values = " ".join("wd:" + lid for lid in wanted)
@@ -1178,8 +1179,24 @@ def main():
                 failures.append(f"{code} ({name}) clubs: {error} - file left untouched")
                 clubs_missing.append(f"{code} ({name}): {error}")
                 continue
+            rows = data.get("results", {}).get("bindings", [])
+
+            # 2b. the clubs a preferred-rank "no league" statement hides
+            #     from the query above, where a current-season roster
+            #     says the club is playing. AFTER the main query, and
+            #     given its rows, so that a club the main query can
+            #     already see is never a candidate here.
+            extra_rows, surfaced, fallback_notes = novalue_fallback(
+                code, lang, values, rows, tiers)
+
             clubs, _leagues, ambiguous, dropped, club_countries = build_clubs(
-                data.get("results", {}).get("bindings", []), tiers)
+                rows + extra_rows, tiers)
+
+            # The tier the fallback gave it, before any hand row is
+            # applied - so the summary can show the hand correction
+            # doing its work rather than hiding it.
+            for cid, info in surfaced.items():
+                info["wikidataTier"] = (clubs.get(cid) or {}).get("tier")
         else:
             ambiguous, dropped, club_countries = [], [], {}
             failures.append(f"{code} ({name}): no leagues mapped for this country yet")
@@ -1265,6 +1282,39 @@ def main():
                           "this file says it should be")
         for note in dropped:
             report.append(f"    left out, not a club: {note}")
+        for note in fallback_notes:
+            report.append(f"    {note}")
+        for cid, info in sorted(surfaced.items()):
+            club = clubs.get(cid)
+            final = (club or {}).get("tier")
+            roster = "/".join(str(t) for t in info["rosterTiers"])
+            if cid in keep:
+                where = "ON THE MAP"
+            elif club is None:
+                where = "removed again by a skip row in " + MANUAL_FILE
+            elif final is None:
+                where = "still off the map - no tier from a mapped league"
+            else:
+                where = ("still off the map - neither the club nor its ground has "
+                         "a position")
+            report.append(
+                f"    surfaced by the novalue fallback: {info['name']} ({cid}) - "
+                f"named by {', '.join(info['articles'])} at tier {roster}; "
+                f"tier {info.get('wikidataTier')} from its normal-rank tags "
+                f"({', '.join(info['leagues'])}); {where}")
+            # The one thing a reader must not take from a surfaced club.
+            if info.get("wikidataTier") is not None and \
+                    info["wikidataTier"] not in info["rosterTiers"]:
+                fixed = (f", and a hand row has corrected it to {final}"
+                         if final != info["wikidataTier"] else
+                         f" - correct it by hand in {MANUAL_FILE} if the roster "
+                         f"is right")
+                report.append(
+                    f"        TIER DISAGREES: the roster says tier {roster}, its "
+                    f"Wikidata tags say tier {info['wikidataTier']}{fixed}")
+        if surfaced:
+            for line in _wrap(FALLBACK_NOTE):
+                report.append("    " + line)
         for note in applied:
             report.append(f"    {note}")
         if gone_by_clear:
