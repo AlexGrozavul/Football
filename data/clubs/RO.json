@@ -5,20 +5,6 @@
  "countryName": "Romania",
  "clubs": [
   {
-   "id": "Q1024390",
-   "name": "Politehnica Iași",
-   "leagues": [
-    "Q386384"
-   ],
-   "tier": 2,
-   "venue": "Stadionul Emil Alexandrescu",
-   "capacity": 11390,
-   "lat": 47.184583,
-   "lon": 27.561389,
-   "city": null,
-   "competition": "Liga a II-a"
-  },
-  {
    "id": "Q1024393",
    "name": "CSM Pașcani",
    "leagues": [
@@ -215,6 +201,9 @@
    "lat": 47.071944,
    "lon": 21.93,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II",
+   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. The roster check reports this club twice, Q1386940 as extra-not-in-roster at tier 2 and Q113541238 as missing-from-wikidata, and that is one club appearing twice rather than two mistakes. The two items are FC Bihor Oradea (1958) and FC Bihor Oradea (2022), and the sources disagree about which of them is the club now in Liga II: Wikidata puts Q386384 Liga II on the 1958 item at PREFERRED rank, and the 2026-27 Liga II article links the 2022 one. Both agree that a club called Bihor Oradea is in Liga II, which is exactly what the map shows. Q1386940 is also the only one of the two that can be drawn at all: read on 2026-09-20, Q113541238 has no P118, no ground, no coordinates and no inception date, so skipping the 1958 item would take Bihor off the map entirely and replace a correct pin with nothing. What is still unsettled is which item is the club, and that is Alexandru's to decide - it is not something to fix by removing a pin.",
+   "manual": true,
    "competition": "Liga a II-a"
   },
   {
@@ -487,21 +476,6 @@
    "competition": "SuperLiga Romaniei"
   },
   {
-   "id": "Q24884611",
-   "name": "FC Hermannstadt",
-   "leagues": [
-    "Q386384",
-    "Q237753"
-   ],
-   "tier": 1,
-   "venue": "Stadionul Municipal Sibiu",
-   "capacity": 14200,
-   "lat": 45.783056,
-   "lon": 24.143611,
-   "city": null,
-   "competition": "SuperLiga Romaniei"
-  },
-  {
    "id": "Q24895825",
    "name": "FC Bistrița",
    "leagues": [
@@ -556,6 +530,24 @@
    "lon": 24.545833,
    "city": null,
    "competition": "Liga a II-a"
+  },
+  {
+   "id": "Q368104",
+   "name": "FCV Farul Constanța",
+   "leagues": [
+    "Q386384",
+    "Q1707697"
+   ],
+   "tier": 1,
+   "venue": "Stadionul Gheorghe Hagi",
+   "capacity": 15500,
+   "lat": 44.197278,
+   "lon": 28.639333,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_I",
+   "note": "TIER CORRECTED TO 1. This club reaches the map at all only through the novalue fallback in tools/fetch_clubs.py. Q368104 carries Q1707697 Liga III and Q386384 Liga II at normal rank and a preferred-rank statement asserting NO LEAGUE on top of both, so wdt:P118 yields nothing and the ordinary club query cannot see it. The fallback reads through that suppression because the 2026-27 Liga I article names the club and the item carries no dissolution date. THE FALLBACK DECIDES VISIBILITY AND NOT TIER: read through the suppression those tags give tier 2, because Liga II is the most senior mapped league on them, which is one division below where the club plays. The 1 in this cell is the roster's and is hand-written - the 2026-27 Liga I stadiums-and-locations table, read on 2026-09-20, whose 16 linked titles resolved 16 of 16 to Q-ids with Q368104 among them as 'FCV Farul Constanța'. STILL OPEN AND NOT SETTLED BY THIS ROW: which club Q368104 actually is - the old Farul, the 2021 Viitorul merger that took the name, or both depending on who edited the item. Putting it on the map is Alexandru's decision of 2026-09-20 and it supersedes the earlier decision of the same day to leave it off until the identity was settled. The identity question itself is unchanged and still open.",
+   "manual": true,
+   "competition": "SuperLiga Romaniei"
   },
   {
    "id": "Q37855796",

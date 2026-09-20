@@ -19,15 +19,15 @@
   },
   "RO": {
    "name": "Romania",
-   "onMap": 64,
+   "onMap": 63,
    "byTier": {
     "1": 16,
-    "2": 16,
+    "2": 15,
     "3": 32
    },
-   "withVenueName": 64,
-   "withCapacity": 43,
-   "handCorrected": 5
+   "withVenueName": 63,
+   "withCapacity": 42,
+   "handCorrected": 7
   }
  }
 }
