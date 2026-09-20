@@ -1089,6 +1089,26 @@ a page anyone can already view in their browser's network tab.
     is in Liga II; they disagree only about which item it is. That is
     the opposite of Politehnica Iași below, where the division itself
     says the club is not in it.
+    **`_sameNameOnMap` does NOT fire for this pair, and that is a
+    shortcoming of the annotation rather than of the finding.** The
+    column exists exactly so that one club appearing twice does not
+    read as two errors, and here it is blank on both rows: the roster
+    calls the club **"FC Bihor Oradea"** and the map calls it
+    **"Bihor Oradea"**, because the map takes Wikidata's *Romanian*
+    label and the article links the English one. `same_name_on_map()`
+    compares folded names for **exact equality**, so a missing "FC"
+    is enough to miss it. It was left alone on purpose: loosening the
+    comparison is how Eutin 08 scored against FC 08 Homburg on a shared
+    "08", and renaming the club to make the annotation fire would be
+    engineering a weak signal to produce an answer already known. **The
+    note-only row is what carries the explanation instead**, and it
+    travels into `RO.json` where the annotation would have been read.
+    Worth fixing properly if a second pair turns up; not worth a fuzzy
+    matcher for one.
+    **The other blank is structural**: the `extra-not-in-roster` branch
+    of `check_rosters.py` hardcodes `_sameNameOnMap` to empty and never
+    looks, so even an exact name match would only ever annotate the
+    `missing-from-wikidata` side of a pair, never both.
 
 - **Two clubs were holding Romanian tier-1 and tier-2 slots they had
   left, and in both cases Wikidata had simply not been told. Found and
