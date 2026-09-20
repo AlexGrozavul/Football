@@ -919,6 +919,90 @@ a page anyone can already view in their browser's network tab.
   so no harm is done - but a `wrong-tier` from the Liga III row alone is
   not evidence, and nothing should be changed on the strength of one.
 
+- **Liga II's shortfall, taken apart club by club on 2026-09-20: it is
+  coordinates, and the figure of six hides how it is made.** The table
+  above reads 22 in the division against 16 on the map, and six is what
+  you get by subtracting. Six is not six clubs.
+  **Eight of the division's 22 are absent from the map, and two clubs
+  the division does not list are on it at tier 2. Those cancel to six.**
+  That is the arithmetic this whole check was built to distrust — a
+  count can come out nearly right while the membership is wrong, and
+  here it comes out two clubs closer to the truth than it should.
+  **Seven of the eight are coordinate-only, and nothing about their
+  tags needs touching.** Every one of them carries `Q386384` Liga II on
+  a statement `wdt:P118` yields, so the club query sees them and the
+  tier they would land at is right; they die at the coordinates gate
+  because neither the club nor its ground has a position:
+
+  | club | Q-id |
+  |---|---|
+  | CSA Steaua București | `Q39487082` |
+  | CSC 1599 Șelimbăr | `Q66424141` |
+  | CSL Ștefăneștii de Jos | `Q18539440` |
+  | CSM Olimpia Satu Mare | `Q99446805` |
+  | FC Bacău | `Q106779019` |
+  | Gloria Bistrița | `Q56677281` |
+  | SC Popești-Leordeni | `Q55593565` |
+
+  **The eighth is a tagging problem that fixing would not place.** FC
+  Bihor Oradea `Q113541238` comes back `missing-from-wikidata` because
+  it carries **no `P118` at all** — but it carries no ground and no
+  position either, so giving it a league would move it from one kind of
+  missing to the other and it would still not be drawn. It is also half
+  of the Bihor identity question recorded below: the club on the map at
+  tier 2 is `Q1386940`, the 1958 item, which carries Liga II at
+  preferred rank, and it is one of the two extras.
+  **So the answer to "how many of the six are a tagging problem the
+  roster check should resolve" is none of them.** Seven are the
+  coordinates gate and the eighth is blocked by the coordinates gate
+  underneath an identity question that is Alexandru's to settle. The
+  roster check has already done its job here: it named all eight and
+  said which kind each one is.
+  **The two extras are not one thing either.** `Q1386940` Bihor Oradea
+  is the other half of the identity question and is not a spurious club
+  — read the two Bihor items as one club and the genuine absence is
+  seven, all coordinate-only, against one genuine extra. That one is
+  **`Q1024390` Politehnica Iași**, which carries `Q386384` and nothing
+  else and which the 2026-27 Liga II article does not list. Either its
+  `P118` is stale or the article links it under a title the sitelink
+  hop did not resolve. **Nothing has been changed for it**, because a
+  single article saying a club is absent is not evidence that it is,
+  and this project does not act on one source that way.
+  **The remedy already exists and has already worked once at this
+  tier.** CSC Dumbrăvița `Q55618976` is on the map at tier 2 only
+  because a hand row in `clubs-manual.csv` carries coordinates Wikidata
+  does not have — its `roster-review.csv` row still says
+  `_hasCoordinates: no` and its verdict is `ok`. That is exactly the
+  shape the other seven need: `coordinate-review.csv`, a second source,
+  then a hand row. How much of Romania europlan-online covers has never
+  been measured — the 20 clubs it settled were all German — so whether
+  it is the second source for these seven is an open question rather
+  than an assumption.
+  **Liga III and below stay where they are**, in the coordinate-review
+  queue at its current standard. The 34 Liga III clubs above are the
+  same coordinates gate and a much bigger pile of it, and a decision
+  taken here for 22 clubs in the second tier is not a decision about
+  69 in the third.
+
+- **Romania's top flight WAS roster-checked this pass, and it did not
+  come back 16 of 16.** Asked directly on 2026-09-20 and answered from
+  the file rather than from the counts: `roster-review.csv` holds **17
+  rows** for `SuperLiga Romaniei`, every one of them against
+  `2026–27 Liga I`, season `2026-27`. So the division was fetched,
+  parsed and compared like the others — it was not skipped, and it was
+  not merely left unflagged because nothing about it had changed.
+  **What it came back with is 15 of 16.** Fifteen `ok`, one
+  `wrong-tier` and one `extra-not-in-roster`. The roster's sixteenth
+  club is **SSC Farul Constanța `Q368104`**, which is not on the map at
+  all; the map's sixteenth tier-1 club is **FC Hermannstadt
+  `Q24884611`**, which the Liga I article does not list.
+  **The count is right and one member is wrong**, which is precisely
+  the failure a count cannot see and precisely why this check exists.
+  The table above already says so — `ok` 15, `extra` 1, `wrong tier` 1
+  — and the **16** in its "on the map" column is the size of the tier,
+  not a number of matches. Reading that 16 as agreement is the one
+  misreading the table invites, and it is worth saying out loud once.
+
 - **Wikidata keeps a CLUB item and a MEN'S FIRST TEAM item for many
   German clubs. That is a fifth shape, and it wants a different remedy
   from all four above.** Found 2026-09-20 by the roster check, which
@@ -942,6 +1026,38 @@ a page anyone can already view in their browser's network tab.
   never come back. This is the SSV Ulm lesson pointing the other way:
   there the parent was the one to skip, here the "duplicate" is the only
   one that works. **Getting the shape wrong deletes a real club.**
+  **The rule that decides which of the two items wins, written down so
+  a later cleanup pass cannot get it backwards: an item with a LIVE
+  `P118` beats a sibling item whose league tag is deprecated or absent
+  altogether. Never the reverse.** A live league tag is the only thing
+  that puts a club on the map at all, so the item carrying one is the
+  only item that works; an item with no usable league is not a tidier
+  copy of it, it is a copy that cannot be drawn. That holds whichever
+  item Wikipedia writes about, whichever is older, and whichever has
+  the fuller description.
+  **The sitelink count points the wrong way in all three pairs, and
+  that is the trap.** 75 against 0 for Augsburg, 38 against 0 for Aue,
+  21 against 0 for Babelsberg. The shapes list below already says to
+  use the sitelink count only to break a tie *after* the shape is
+  settled; this is the shape where using it to settle anything deletes
+  the club.
+  **These three pairs are verified correct as they stand, and they are
+  protected from any future duplicate cleanup pass.** That is a
+  standing instruction, not an observation:
+
+  | club | the item that must stay | the item that must NOT be preferred over it | why |
+  |---|---|---|---|
+  | FC Augsburg | `Q97905916`, the men's team item | `Q15755`, the club item | `Q15755`'s only `P118` is Bundesliga at **deprecated** rank, so `wdt:P118` yields nothing and the club query cannot see it. `skip` the team item and Augsburg leaves the map with nothing to bring it back |
+  | FC Erzgebirge Aue | `Q97927365`, the men's team item | `Q141882`, the club item | `Q141882` carries **no `P118` at all** |
+  | SV Babelsberg 03 | `Q97927380`, the men's team item | `Q571553`, the club item | `Q571553` carries **no `P118` at all**; the team item is the one whose tier is corrected by hand to 4 |
+
+  **None of the three needs a `skip` row and none may be given one.**
+  What makes them look like duplicates is not two pins on one ground —
+  the club item never reaches the map, so nothing on the map can show
+  it. It is the roster check reporting each club twice, once as missing
+  from Wikidata under the club item Wikipedia links and once as extra
+  on the map under the team item, and `_sameNameOnMap` exists exactly
+  so that one club appearing twice does not read as two errors.
   **Rule 6 is satisfied rather than threatened by these items** — they
   are explicitly the men's team, which is what this project wants.
   **What did change is one tier.** SV Babelsberg 03's team item carries
@@ -1026,12 +1142,16 @@ a page anyone can already view in their browser's network tab.
   the "2" marker is what makes the symptom visible at all. Before it,
   the second pin sat exactly under the first and nothing counted it.
 
-  **The three shapes have names now, because the next one will not
-  arrive with a label on it.** All three look identical on the map —
-  two items, one name, one ground — and each wants a different remedy.
+  **The five shapes have names now, because the next one will not
+  arrive with a label on it.** The first three look identical on the
+  map — two items, one name, one ground — and each wants a different
+  remedy. The last two never appear as two pins at all, because one
+  item of the pair never reaches the map: only the roster check can see
+  them, and it sees them as one club reported twice.
   Getting the shape wrong is not a cosmetic mistake: `skip` the wrong
   item in the second shape and a real club disappears from the map for
-  good, with nothing to notice it had gone.
+  good, with nothing to notice it had gone, and `skip` the wrong item
+  in the fifth and the same thing happens for the same reason.
 
   1. **One club, two items — a true duplicate.** *Hamburger SV,
      1. FC Lokomotive Leipzig.* Same name, same league, same ground,
@@ -1049,6 +1169,24 @@ a page anyone can already view in their browser's network tab.
      department.* One organisation, two Wikidata items by design, which
      is how a great many German clubs are structured. **Remedy: keep
      the football item, `skip` the parent.**
+  4. **One club that is no longer a club — merged out of existence.**
+     *Torgelower FC Greif `Q566179`, Teutonia Watzenborn-Steinberg
+     `Q21175456`.* The club went into a merger and Wikidata still tags
+     it with the division it was in. It has no coordinates, so it never
+     reaches the map and no marker can ever reveal it. **Remedy:
+     Alexandru's, and it is a `skip` or a rename, never a coordinate** —
+     writing the merged club's ground would put a club that has not
+     existed since 2018 or 2022 onto the map at a tier it left.
+  5. **One club, two items — club and men's first team.** *FC Augsburg
+     `Q15755` / `Q97905916`, FC Erzgebirge Aue `Q141882` /
+     `Q97927365`, SV Babelsberg 03 `Q571553` / `Q97927380`.* Wikidata
+     keeps an *association football club* item and a ***men's
+     association football team*** item (`P31` = `Q103229495`) and they
+     split the facts between them: Wikipedia links the club item, the
+     usable league tag lives on the team item. **Remedy: keep the item
+     with a live `P118` — the team item in all three — and `skip`
+     neither. Never the reverse.** The entry above names these three
+     pairs as verified and protected from cleanup.
 
   **What to look at, in this order.** `P31` first: *association
   football club* on one item and *sports club* or *multisports club* on
@@ -1057,12 +1195,20 @@ a page anyone can already view in their browser's network tab.
   items in **different** divisions of the same pyramid, each with its
   own history and its own current season, is shape 2. Only when both
   items claim the same club in the same division is it shape 1.
+  `P31` names shape 5 just as plainly: ***men's association football
+  team*** (`Q103229495`) on one item against *association football
+  club* on the other. Where that is what you have, stop comparing the
+  items and read the **rank** of each one's `P118` instead — an item
+  can carry exactly the right league and still be invisible to the club
+  query, which is what `tools/diagnose_p118_rank.py` exists to say.
 
   **The sitelink count is not the test it looks like.** It answers
   "which item do the Wikipedias write about", which happens to be the
-  right question in shapes 1 and 3 and is the **wrong question in shape
-  2**, where both items are real clubs and the senior one will always
-  win on sitelinks. It pointed at the football item for SSV Ulm for a
+  right question in shapes 1 and 3 and is the **wrong question in
+  shapes 2 and 5**. In shape 2 both items are real clubs and the senior
+  one always wins on sitelinks; in shape 5 the club item wins every
+  time — 75 to 0, 38 to 0, 21 to 0 — and it is the item that cannot be
+  drawn. It pointed at the football item for SSV Ulm for a
   reason that had nothing to do with duplication. Use it to break a tie
   *after* the shape is settled, never to settle the shape.
 
