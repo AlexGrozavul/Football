@@ -5,6 +5,7 @@ Q137499,FC 08 Homburg,DE,,,,,,,,,21813,16488,,Waldstadion Homburg,Homburg,FC Hom
 Q155452,TuS Koblenz,DE,,,,,,,,,9500,15000,,Stadion Oberwerth,Koblenz,TuS Koblenz,https://stadiumdb.com/stadiums/ger/stadion_oberwerth,name-exact+city,,sources differ by 37%
 Q665920,VfB Lübeck,DE,,,,,,,,,10434,17869,,Lohmühle,Lübeck,VfL Lübeck,https://stadiumdb.com/stadiums/ger/lohmuhle,name-contained+city,,sources differ by 42%
 Q1921747,BSG Chemie Leipzig,DE,,,,,,,,,20000,10500,,Alfred-Kunze-Sportpark,Leipzig,"Sachsen, Chemie",https://stadiumdb.com/stadiums/ger/alfred_kunze_sportpark,name-contained+city,,sources differ by 48%
+Q826212,VfB Oldenburg,DE,,,,,,,,,32000,15200,,Marschweg Stadion,Oldenburg,VfB Oldenburg,https://stadiumdb.com/stadiums/ger/marschweg_stadion,name-exact+city,,sources differ by 52%
 Q310608,SC Fortuna Köln,DE,,,,,,,,,13750,14944,,Südstadion,Cologne,Fortuna,https://stadiumdb.com/stadiums/ger/sudstadion_koln,name-contained+ground,,sources differ by 8%
 Q155186,FC Carl Zeiss Jena,DE,,,,,,,,,12990,15432,,ad hoc Arena,Jena,FC Carl Zeiss Jena,https://stadiumdb.com/stadiums/ger/jenaer_stadion,name-exact+city,,the two ground names do not match AND the two figures do not either - check which ground each source means before trusting either number
 Q692586,VfR Aalen,DE,,,,,,,,,13271,14500,,OSTALB Arena,Aalen,VfR Aalen,https://stadiumdb.com/stadiums/ger/waldstadion_aalen,name-exact+city,,the two ground names do not match AND the two figures do not either - check which ground each source means before trusting either number
