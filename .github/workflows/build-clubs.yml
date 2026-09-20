@@ -29,7 +29,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # TEMPORARY probe job. Removed together with tools/_probe.py.
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+      - name: Probe
+        run: |
+          set -o pipefail
+          python3 tools/_probe.py 2>&1 | tee /tmp/probe.log
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## Probe'
+            echo '```'
+            cat /tmp/probe.log 2>/dev/null || echo "probe did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
   clubs:
+    # TEMPORARY: off while the probe runs, so asking a question does not
+    # also rebuild and commit the club layer.
+    if: false
     runs-on: ubuntu-latest
 
     steps:
