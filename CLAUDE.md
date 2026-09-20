@@ -167,6 +167,12 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/check_rosters.py` — the roster check. Asks, from the league's
   side, whether a club that should be on the map is missing from it.
   Reads, never writes to a club file.
+- `tools/diagnose_p118_rank.py` — which clubs the club query's truthy
+  `wdt:P118` join hides, and why: a preferred-rank statement asserting
+  no league, or every statement deprecated. Reads `P576` so a
+  `<novalue>` on a club that folded is not mistaken for an error.
+  Reads and writes **nothing** — not a club file, not a review file —
+  and exits 1 on a failed call.
 
 ---
 
@@ -782,6 +788,120 @@ a page anyone can already view in their browser's network tab.
   and the truthy join exist to avoid. Reading rank properly means
   deciding what a deprecated league tag means, and that is a decision
   for Alexandru, not a query change to slip in.
+
+- **The rank blind spot has been measured, 2026-09-20. It is 20 clubs,
+  and it costs this project exactly two of them.** The entry above was
+  written from two clubs found by accident. `tools/diagnose_p118_rank.py`
+  now asks the question deliberately, and the first two real runs are
+  what follows. It was run from a GitHub runner, because the sandbox
+  still answers 403 to CONNECT for `wikidata.org`.
+  **Two queries, because one question is a census and the other is a
+  bill.**
+  - **Query A, the census**: every item **anywhere** carrying a
+    preferred-rank `P118` that asserts no league. It is deliberately
+    **not** bounded by country — `P17` is exactly the field the missing
+    clubs already lack, so a country filter would drop the clubs the
+    query exists to find. **43 items worldwide**, in 168.2s with one
+    timeout and retry.
+  - **Query B, the bill**: clubs carrying one of the twelve leagues
+    `league-tiers.csv` maps, on a statement `wdt:P118` will not yield —
+    for any reason, a deprecated rank or a preferred `<novalue>` on top.
+    Bounded by the mapped leagues, so it needs no `P17` at all: the
+    league is the country signal. **18 clubs**, in 82.0s with one 504
+    and a retry.
+
+  **Twenty clubs in Germany and Romania are hidden from the club query
+  by rank.** Eighteen by a preferred `<novalue>`, two because every
+  statement on the item is deprecated.
+  **Every one of the eighteen is Romanian. Not one is German.** The
+  German half of this blind spot is the deprecated shape and FC
+  Augsburg is still its only instance. The remaining 25 of the
+  worldwide 43 are somebody else's problem — mostly American college
+  athletics programmes, a few Polish and Dutch clubs.
+  **Seventeen of the twenty leave no trace anywhere in the pipeline.**
+  Only three appear in `roster-review.csv` at all — Augsburg, Fotbal
+  Comuna Recea and Farul — and none of the twenty is in `data/clubs/`,
+  because none has a truthy `P118`. That is the blind spot stated as a
+  number rather than as a worry.
+
+  **A preferred `<novalue>` is NOT automatically an error, and treating
+  all eighteen as one would be the mistake this entry exists to
+  prevent.** Wikidata's `<novalue>` means *this item has no value for
+  this property*, and on a club that folded that is the **correct**
+  statement: the club is in no league because there is no club, and the
+  normal-rank league tags underneath it are history. Reading through
+  those would put a dead club on the map at the tier it last played in,
+  which is precisely what the truthy join exists to prevent. `P576` is
+  what separates the two, and the tool reads it.
+  **Twelve of the twenty carry `P576`**, with dissolution years from
+  1946 to 2026: ACS Poli Timișoara 2021, CA Câmpulung Moldovenesc 1953,
+  CS Mioveni 2025, Chinezul Timișoara 1946, FC Brașov Steagul Renaște
+  2023, FC Gloria Buzău 2025, FC Politehnica Iași 2026, FC Politehnica
+  Timișoara 2012, Fotbal Comuna Recea 2021, Gloria Bistrița 2015,
+  Turris-Oltul Turnu Măgurele 2021, Viitorul-Pandurii Târgu Jiu 2024.
+  On every one of them the `<novalue>` is right, and `CLUB_QUERY`
+  excludes dissolved clubs anyway, so nothing is owed.
+  **Two more have no position**: AFC Câmpulung Muscel `Q113816215`
+  (the second deprecated-only case) and FC Carmen București
+  `Q62562381`, which also hides nothing this project maps. Reading
+  their rank would not place them.
+
+  **Six are left**, and they are the only ones where reading the rank
+  would put a club on a map: FC Augsburg `Q15755` (hides tier 1 DE),
+  CS Balotești `Q12723213` (tier 2 RO), CS Gaz Metan Mediaș `Q856790`
+  (tier 1 RO), CSM Focșani `Q4683096` (tier 2 RO), FC Astra Giurgiu
+  `Q750322` (tier 1 RO) and SSC Farul Constanța `Q368104` (tier 2 RO).
+  **A missing `P576` is not evidence that a club is playing**, and this
+  is where that matters. It means only that nobody has recorded a
+  dissolution. The thing that says whether a club is in a division
+  **now** is the roster check, and of these six exactly **two** are
+  named by any 2026-27 season article this project reads: **FC
+  Augsburg**, in the Bundesliga article, and **SSC Farul Constanța**,
+  in the Liga I one. The other four are listed by no current-season
+  article at all, so nothing here says they are in a division, and
+  nothing should be written for them on the strength of an absent
+  property.
+  **So the rank blind spot costs this project two clubs today, and they
+  are the two that were already known.** That is a good outcome rather
+  than a dull one: the pair found by accident turns out to be the whole
+  current bill, it is now known rather than hoped, and the other
+  eighteen are written down so that the next run can tell a new one
+  from these.
+
+  **Farul's `<novalue>` is being treated as an error rather than as
+  authority, and that decision is Alexandru's, taken on 2026-09-20.**
+  `Q368104` carries Liga III and Liga II at normal rank, both of them
+  true statements about a club that exists and is playing, and a
+  preferred-rank statement asserting no league sitting on top of them
+  and suppressing both. A statement that overrides two true ones with
+  an assertion that the club is in no league, about a club the Liga I
+  article lists this season, is a mistake on Wikidata's side. **The
+  suppressed tags are what this project reads for Farul.**
+  **What that does not settle is the tier, and it is worth being exact
+  about why.** Read through the `<novalue>` and the two tags give
+  **tier 2**, because the builder takes the most senior mapped league
+  and Liga II is it. The 2026-27 Liga I article says **tier 1**. So the
+  `<novalue>` is an error *and* the statements under it are stale, both
+  at once — correcting the first does not correct the second, and
+  reading the rank would put Farul on the map one division below where
+  it plays. Neither number may be written here: tier 2 is contradicted
+  by the roster, and tier 1 rests on the English Wikipedia table alone,
+  which is exactly the call the entry above reserved for Alexandru and
+  which he has not yet made.
+  **And there is a mechanical obstacle that has to be cleared first,
+  whichever tier is chosen.** `apply_manual` in `fetch_clubs.py`
+  **rejects** a row whose `clubQid` is not in the country's fetched
+  clubs — verified by running it against a Farul-shaped row, which
+  comes back *"Q368104 is not in this country's fetched clubs"*. That
+  is the right guard for a typo and it is exactly wrong here, because
+  not being in the fetched clubs is the whole problem. The row that
+  does work is an **add** row with no `clubQid`, and it costs the Q-id:
+  the club gets a synthetic `MANUAL-…` id, and `check_rosters.py` joins
+  on Q-ids, so the roster's `Q368104` would still read as missing while
+  the hand-added club would read as `extra-not-in-roster` — **two
+  permanent false findings in place of one true one**. So a hand row is
+  not the remedy for a rank-hidden club, and making one work means a
+  deliberate change to what a `clubQid` row may do. Not attempted here.
 
 - **Two Romanian clubs are one club's identity question each, and
   neither is settled here.** Both came out of the roster check on

@@ -29,11 +29,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TEMPORARY, removed in this branch once the probe has been read:
-  # if: false so that dispatching this workflow to ask a question does
-  # not also rebuild and commit the club layer as a side effect.
   clubs:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -90,30 +86,3 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
-
-  # TEMPORARY, removed in this branch once its answer has been read.
-  # tools/diagnose_p118_rank.py asks Wikidata which clubs the club
-  # query's truthy P118 join hides. The sandbox this was written in
-  # answers 403 to CONNECT for wikidata.org, so a runner is the only
-  # route to the answer.
-  p118-rank:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Which clubs does wdt:P118 hide
-        run: |
-          set -o pipefail
-          python3 tools/diagnose_p118_rank.py | tee /tmp/p118.log
-
-      - name: Write the run summary
-        if: always()
-        run: |
-          {
-            echo "## P118 rank diagnostic"
-            echo
-            echo '```'
-            cat /tmp/p118.log 2>/dev/null || echo "the probe did not run"
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
