@@ -369,20 +369,6 @@
    "competition": "Regionalliga Suedwest"
   },
   {
-   "id": "Q1501893",
-   "name": "SV Wilhelmshaven",
-   "leagues": [
-    "Q2188121"
-   ],
-   "tier": 4,
-   "venue": "Jadestadion",
-   "capacity": 7500,
-   "lat": 53.53613,
-   "lon": 8.09622,
-   "city": null,
-   "competition": "Regionalliga (the generic fourth-division item)"
-  },
-  {
    "id": "Q1514109",
    "name": "Germania Egestorf",
    "leagues": [
@@ -832,20 +818,6 @@
    "lon": 7.775833,
    "city": null,
    "competition": "Regionalliga Suedwest"
-  },
-  {
-   "id": "Q16525415",
-   "name": "1. FC Union Berlin II",
-   "leagues": [
-    "Q2188121"
-   ],
-   "tier": 4,
-   "venue": "Friedrich-Ludwig-Jahn-Sportpark",
-   "capacity": 19708,
-   "lat": 52.543056,
-   "lon": 13.405278,
-   "city": null,
-   "competition": "Regionalliga (the generic fourth-division item)"
   },
   {
    "id": "Q16525419",
@@ -1603,20 +1575,6 @@
    "competition": "3. Liga"
   },
   {
-   "id": "Q537325",
-   "name": "BV Cloppenburg",
-   "leagues": [
-    "Q2188121"
-   ],
-   "tier": 4,
-   "venue": "Stadion an der Friesoyther Straße",
-   "capacity": 5001,
-   "lat": 52.8525,
-   "lon": 8.03874,
-   "city": null,
-   "competition": "Regionalliga (the generic fourth-division item)"
-  },
-  {
    "id": "Q5424829",
    "name": "FC Augsburg II",
    "leagues": [
@@ -1923,20 +1881,6 @@
    "competition": "Regionalliga West"
   },
   {
-   "id": "Q692571",
-   "name": "Viktoria Aschaffenburg",
-   "leagues": [
-    "Q2188121"
-   ],
-   "tier": 4,
-   "venue": "Stadion am Schönbusch",
-   "capacity": 8000,
-   "lat": 49.9703,
-   "lon": 9.12991,
-   "city": null,
-   "competition": "Regionalliga (the generic fourth-division item)"
-  },
-  {
    "id": "Q692586",
    "name": "VfR Aalen",
    "leagues": [
@@ -2073,20 +2017,6 @@
    "note": "Konrad-Ammon-Platz im Sportzentrum, Tulpenweg 60, 90768 Fürth/Mittelfranken-Burgfarrnbach. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga Bayern page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names SpVgg. Greuther Fürth 1903 II. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
    "manual": true,
    "competition": "Regionalliga Bayern"
-  },
-  {
-   "id": "Q782387",
-   "name": "FC Oberneuland",
-   "leagues": [
-    "Q2188121"
-   ],
-   "tier": 4,
-   "venue": "Sportpark am Vinnenweg",
-   "capacity": 5050,
-   "lat": 53.0799,
-   "lon": 8.93039,
-   "city": null,
-   "competition": "Regionalliga (the generic fourth-division item)"
   },
   {
    "id": "Q797022",
