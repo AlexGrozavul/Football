@@ -41,21 +41,6 @@ jobs:
           set -o pipefail
           python3 tools/fetch_clubs.py | tee /tmp/clubs.log
 
-      # TEMPORARY. crosscheck-stadiumdb.yml and check-rosters.yml are new
-      # files on this branch, and a workflow_dispatch only works for a
-      # file that already exists on the DEFAULT branch - so the only way
-      # to run them against the freshly rebuilt layer is from here. Both
-      # steps are removed in this same branch once the results are read.
-      - name: StadiumDB cross-check
-        run: |
-          set -o pipefail
-          python3 tools/crosscheck_stadiumdb.py 2>&1 | tee /tmp/stadiumdb.log
-
-      - name: Roster check
-        run: |
-          set -o pipefail
-          python3 tools/check_rosters.py 2>&1 | tee /tmp/rosters.log
-
       - name: Write the run summary
         if: always()
         run: |

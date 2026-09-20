@@ -677,6 +677,77 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **Both new checks are built and have run for real, 2026-09-20. These
+  are the numbers they left behind.** `crosscheck_stadiumdb.py` and
+  `check_rosters.py` are described under Files and Code; what follows is
+  what the first pass over Germany and Romania actually did.
+
+  | | tier 1 | tier 2 | tier 3 | tier 4 | 6 | 7 | 8 | on the map |
+  |---|---|---|---|---|---|---|---|---|
+  | **Germany** before | 18 | 18 | **22** | 83 | 3 | 1 | 1 | 146 |
+  | **Germany** after | 18 | 18 | **20** | 88 | 3 | 1 | 1 | **149** |
+  | **Romania** before and after | 16 | 16 | 32 | — | — | — | — | 64 |
+
+  **Against the leagues' own membership, after the corrections:**
+
+  | division | roster | on the map | ok | extra | missing | wrong tier | unplaced |
+  |---|---|---|---|---|---|---|---|
+  | Bundesliga | 18 | 18 | 17 | 1 | 1 | — | — |
+  | 2. Bundesliga | 18 | 18 | **18** | — | — | — | — |
+  | 3. Liga | 20 | 20 | **20** | — | — | — | — |
+  | Regionalliga | 87 | 88 | 55 | 33 | 29 | 3 | — |
+  | Liga I | 16 | 16 | 15 | 1 | — | 1 | — |
+  | Liga II | 22 | 16 | 14 | 2 | 1 | — | 7 |
+  | Liga III | 69 | 32 | 18 | 14 | 13 | 4 | 34 |
+
+  **The 3. Liga is the headline.** It began this pass at 22 clubs
+  against a real 20 — the gap that motivated the whole design — and it
+  is now **20 of 20, nothing missing and nothing extra**. Six clubs were
+  sitting at tier 3 on a stale `P118`, two belonged there and were at
+  tier 4, and two were invisible to the club query altogether. The
+  2. Bundesliga is likewise exact.
+  **Romania's counts did not move, and that is the honest outcome.**
+  Liga II is 16 on the map against 22, Liga III 32 against 69, and the
+  reason is coordinates rather than tags: 41 of those clubs are
+  `unplaced-no-coordinates`, which is the route `coordinate-review.csv`
+  and europlan-online already exist for. Nothing was trimmed to make a
+  count look better.
+  **What the capacity pass changed:** eleven figures, every one of them
+  a case where two independent sources agreed against what the map held,
+  plus one copied ground. The StadiumDB review went from **27 rows to
+  19**. The template for recording a contested figure is in Conventions
+  above and UTA Arad is the worked example.
+
+- **What stayed contested after all three sources, and why.** Nineteen
+  rows survive in `stadiumdb-review.csv`, and they are not all the same
+  kind of thing.
+  - **Three where the map is corroborated and StadiumDB is the
+    outlier**, because StadiumDB matched a ground the club does not play
+    at: **1. FC Magdeburg** (30,098 on the map and on Wikipedia against
+    StadiumDB's 25,910), **FC Viktoria Köln** (8,343 twice against
+    10,000) and **FC ASA Târgu Mureș** (8,200 twice against 3,500 — and
+    StadiumDB's is the Stadionul Municipal while ours is the Stadionul
+    Trans-Sil). The tool's own `?ground-unchecked` marker flagged the
+    last of these before anyone looked. **A third opinion is a third
+    opinion, not a tie-breaker.**
+  - **Three where no two sources agree and nothing was changed**:
+    **FC Botoșani** 12,000 / 8,500 / 7,782, **SC Fortuna Köln** 13,750 /
+    14,944 / 11,748, and **VfB Oldenburg** 32,000 against 15,200, which
+    only became visible because `Q2188121` put the club on the map that
+    same day.
+  - **Seven with one source each way and no third**, all tier 4 or
+    below where Wikipedia has no stadiums table: BSG Chemie Leipzig,
+    FC 08 Homburg, FC Carl Zeiss Jena, TuS Koblenz, VfB Lübeck, VfR
+    Aalen, FC Hermannstadt. Two figures, no arbiter.
+  - **One with a single source at all**: Avântul Reghin, where only
+    StadiumDB has a figure (3,000) and neither Wikidata nor
+    OpenStreetMap has one.
+  - **Four that are not disagreements**: FSV Zwickau, SpVgg
+    Unterhaching, Jiul Petroșani, Sepsi OSK and UTA Arad, where the
+    figures agree and only the ground NAMES differ — a sponsor's name
+    against the old one. They stay in the file because a name clash is
+    worth one look, not because a number is in doubt.
+
 - **A Wikidata statement's RANK can hide a league from the club query
   entirely, and until 2026-09-20 nothing here could see it.** This is
   the most important thing the roster check found on its first real
