@@ -3,19 +3,19 @@
  "countries": {
   "DE": {
    "name": "Germany",
-   "onMap": 146,
+   "onMap": 149,
    "byTier": {
     "1": 18,
     "2": 18,
-    "3": 22,
-    "4": 83,
+    "3": 20,
+    "4": 88,
     "6": 3,
     "7": 1,
     "8": 1
    },
-   "withVenueName": 146,
-   "withCapacity": 137,
-   "handCorrected": 38
+   "withVenueName": 149,
+   "withCapacity": 141,
+   "handCorrected": 58
   },
   "RO": {
    "name": "Romania",
@@ -27,7 +27,7 @@
    },
    "withVenueName": 64,
    "withCapacity": 43,
-   "handCorrected": 3
+   "handCorrected": 5
   }
  }
 }

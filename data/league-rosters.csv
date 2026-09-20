@@ -1,0 +1,13 @@
+leagueQid,country,tier,season,article,note
+Q82595,DE,1,2026-27,2026–27 Bundesliga,
+Q152665,DE,2,2026-27,2026–27 2. Bundesliga,
+Q154069,DE,3,2026-27,2026–27 3. Liga,
+Q322128,DE,4,2026-27,2026–27 Regionalliga,"one article covers all five divisions - it is fetched once and its clubs compared against tier 4 as a whole, which is what league-tiers.csv maps all five to"
+Q548937,DE,4,2026-27,2026–27 Regionalliga,see the Suedwest row
+Q555836,DE,4,2026-27,2026–27 Regionalliga,see the Suedwest row
+Q340179,DE,4,2026-27,2026–27 Regionalliga,see the Suedwest row
+Q539678,DE,4,2026-27,2026–27 Regionalliga,see the Suedwest row
+Q237753,RO,1,2026-27,2026–27 Liga I,"the article is Liga I even though league-tiers.csv calls the league SuperLiga Romaniei"
+Q386384,RO,2,2026-27,2026–27 Liga II,"FIRST OF THE TWO TITLE MISSES. The design pass could not find this league under the titles it guessed; 2026–27 Liga II is the one that resolves, and it is written down here so nobody has to guess again"
+Q1707697,RO,3,2026-27,2026–27 Liga III,"the series and the play-off groups are separate tables on one page; every one of them is read and the clubs unioned, because the groups are subsets of the series"
+,AT,2,2026-27,2026–27 Austrian Football Second League,"SECOND OF THE TWO TITLE MISSES. Not 2026–27 Austrian 2. Liga and not 2026–27 2. Liga - both are red links. Austria is not in league-tiers.csv yet so this row is read back and skipped, and it is here so the title is not lost between now and the day Austria is added"

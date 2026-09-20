@@ -4,8 +4,9 @@ name: Build club layer
 # data/clubs/. Weekly, because clubs move division once a season, not
 # once a day.
 #
-# Also runs whenever you edit data/league-tiers.csv, which is the file
-# that decides which clubs appear on the map at all.
+# Also runs whenever you edit data/league-tiers.csv or
+# data/clubs-manual.csv, the two files that decide which clubs appear on
+# the map at all.
 
 on:
   schedule:
@@ -15,6 +16,7 @@ on:
     branches: [main]
     paths:
       - "data/league-tiers.csv"
+      - "data/clubs-manual.csv"
       - "tools/fetch_clubs.py"
       - ".github/workflows/build-clubs.yml"
   workflow_dispatch:
@@ -36,6 +38,7 @@ jobs:
 
       - name: Fetch clubs from Wikidata
         run: |
+          set -o pipefail
           python3 tools/fetch_clubs.py | tee /tmp/clubs.log
 
       - name: Write the run summary

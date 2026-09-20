@@ -1,0 +1,86 @@
+name: Cross-check capacities against StadiumDB
+
+# A THIRD opinion on every stadium capacity in data/clubs/, beside
+# Wikidata and OpenStreetMap, written to
+# data/clubs/stadiumdb-review.csv.
+#
+# Never edits a club file and never picks a winner. The review file is a
+# list of disagreements for you to judge, with every figure and every
+# source on the row.
+#
+# Monthly, a day after the OpenStreetMap cross-check, so that the
+# OpenStreetMap figures it carries across are the fresh ones.
+
+on:
+  schedule:
+    # 03:47 UTC on the 5th of each month.
+    - cron: "47 3 5 * *"
+  push:
+    branches: [main]
+    paths:
+      - "tools/crosscheck_stadiumdb.py"
+      - ".github/workflows/crosscheck-stadiumdb.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crosscheck-stadiumdb
+  cancel-in-progress: false
+
+jobs:
+  stadiumdb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Compare capacities against StadiumDB
+        run: |
+          set -o pipefail
+          python3 tools/crosscheck_stadiumdb.py | tee /tmp/stadiumdb.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## StadiumDB cross-check"
+            echo
+            echo '```'
+            cat /tmp/stadiumdb.log 2>/dev/null || echo "the check did not run"
+            echo '```'
+            if [ -f data/clubs/stadiumdb-review.csv ]; then
+              echo
+              echo "<details><summary>Rows needing your eye</summary>"
+              echo
+              echo '```'
+              head -n 80 data/clubs/stadiumdb-review.csv
+              echo '```'
+              echo
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit only if the review file changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -f data/clubs/stadiumdb-review.csv ]; then
+            git add data/clubs/stadiumdb-review.csv
+          fi
+
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+
+          git commit -m "chore: StadiumDB cross-check ($(date -u +%Y-%m-%d))"
+
+          git push || {
+            echo "Push rejected, rebasing onto origin and retrying."
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }

@@ -26,10 +26,13 @@
    ],
    "tier": 1,
    "venue": "ista-Borussia-Park",
-   "capacity": 59749,
+   "capacity": 54042,
    "lat": 51.174583,
    "lon": 6.385464,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga",
+   "note": "CONTESTED CAPACITY. In use: 54042 (StadiumDB). Not taken: 54057 (the English Wikipedia Bundesliga stadiums table - 15 seats apart, so the two agree); 59749 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "Bundesliga"
   },
   {
@@ -68,10 +71,13 @@
    ],
    "tier": 1,
    "venue": "RheinEnergieStadion",
-   "capacity": 46195,
+   "capacity": 49698,
    "lat": 50.933611,
    "lon": 6.875,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga",
+   "note": "CONTESTED CAPACITY. In use: 49698 (the English Wikipedia Bundesliga stadiums table). Not taken: 50000 (StadiumDB - 0.6% apart, so the two agree); 46195 (Wikidata, which the map held until now and is probably an all-seated or reduced figure). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "Bundesliga"
   },
   {
@@ -128,10 +134,13 @@
    ],
    "tier": 2,
    "venue": "Ruhrstadion",
-   "capacity": 29299,
+   "capacity": 26000,
    "lat": 51.489944,
    "lon": 7.236489,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_2._Bundesliga",
+   "note": "CONTESTED CAPACITY. In use: 26000 (the English Wikipedia 2. Bundesliga stadiums table, with StadiumDB agreeing exactly). Not taken: 29299 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "2. Bundesliga"
   },
   {
@@ -415,10 +424,13 @@
    ],
    "tier": 2,
    "venue": "Sportpark Ronhof",
-   "capacity": 18500,
+   "capacity": 16626,
    "lat": 49.486944,
    "lon": 10.999167,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_2._Bundesliga",
+   "note": "CONTESTED CAPACITY. In use: 16626 (the English Wikipedia 2. Bundesliga stadiums table, with StadiumDB agreeing exactly). Not taken: 18500 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "2. Bundesliga"
   },
   {
@@ -734,13 +746,16 @@
    "leagues": [
     "Q154069"
    ],
-   "tier": 3,
+   "tier": 4,
    "venue": "Wacker-Arena",
    "capacity": 10000,
    "lat": 48.178889,
    "lon": 12.836389,
    "city": null,
-   "competition": "3. Liga"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
+   "manual": true,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q161554",
@@ -764,10 +779,13 @@
    ],
    "tier": 2,
    "venue": "Voith-Arena",
-   "capacity": 10001,
+   "capacity": 15000,
    "lat": 48.6685,
    "lon": 10.1393,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_2._Bundesliga",
+   "note": "CONTESTED CAPACITY. In use: 15000 (the English Wikipedia 2. Bundesliga stadiums table, with StadiumDB agreeing exactly). Not taken: 10001 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "2. Bundesliga"
   },
   {
@@ -807,13 +825,16 @@
    "leagues": [
     "Q154069"
    ],
-   "tier": 3,
+   "tier": 4,
    "venue": "Bruchwegstadion",
    "capacity": 20300,
    "lat": 50.000833,
    "lon": 8.245556,
    "city": null,
-   "competition": "3. Liga"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
+   "manual": true,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q16536906",
@@ -863,13 +884,16 @@
    "leagues": [
     "Q322128"
    ],
-   "tier": 4,
+   "tier": 3,
    "venue": "Dietmar-Hopp-Stadion",
    "capacity": 6350,
    "lat": 49.2783,
    "lon": 8.84212,
    "city": null,
-   "competition": "Regionalliga Suedwest"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_3._Liga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 3. Liga article lists this club and the 2026-27 Regionalliga article does not, so tier 3 is what the leagues themselves say. Wikidata still tags it Q322128 Regionalliga Suedwest, which is where the old tier came from.",
+   "manual": true,
+   "competition": "3. Liga"
   },
   {
    "id": "Q16645947",
@@ -1178,13 +1202,16 @@
    "leagues": [
     "Q154069"
    ],
-   "tier": 3,
+   "tier": 4,
    "venue": "Leuna-Chemie-Stadion",
    "capacity": 15057,
    "lat": 51.465278,
    "lon": 11.961944,
    "city": null,
-   "competition": "3. Liga"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
+   "manual": true,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q316865",
@@ -1194,10 +1221,13 @@
    ],
    "tier": 3,
    "venue": "Preußenstadion",
-   "capacity": 45000,
+   "capacity": 14300,
    "lat": 51.929722,
    "lon": 7.624583,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_3._Liga",
+   "note": "CONTESTED CAPACITY. In use: 14300 (the English Wikipedia 3. Liga stadiums table). Not taken: 15050 (StadiumDB - 5% apart, at the edge of agreeing); 45000 (Wikidata, which the map held until now and which is out by a factor of three). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "3. Liga"
   },
   {
@@ -1208,10 +1238,13 @@
    ],
    "tier": 4,
    "venue": "Stadion Zwickau",
-   "capacity": null,
+   "capacity": 10134,
    "lat": 50.728539,
    "lon": 12.519325,
    "city": null,
+   "source": "https://stadiumdb.com/stadiums/ger",
+   "note": "CONTESTED CAPACITY. In use: 10134 (OpenStreetMap and StadiumDB, which agree exactly). Not taken: (blank) (Wikidata, which has no figure at all for this club). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "Regionalliga Nordost"
   },
   {
@@ -1298,10 +1331,13 @@
    ],
    "tier": 1,
    "venue": "Deutsche Bank Park",
-   "capacity": 51500,
+   "capacity": 59500,
    "lat": 50.068611,
    "lon": 8.645278,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga",
+   "note": "CONTESTED CAPACITY. In use: 59500 (the English Wikipedia Bundesliga stadiums table). Not taken: 60100 (StadiumDB - 1% apart, so the two agree); 51500 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "Bundesliga"
   },
   {
@@ -1310,13 +1346,16 @@
    "leagues": [
     "Q154069"
    ],
-   "tier": 3,
+   "tier": 4,
    "venue": "Weserstadion Platz 11",
    "capacity": 5500,
    "lat": 53.0636,
    "lon": 8.84286,
    "city": null,
-   "competition": "3. Liga"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
+   "manual": true,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q41420",
@@ -1516,6 +1555,23 @@
    "lat": 49.767194,
    "lon": 9.932944,
    "city": null,
+   "competition": "3. Liga"
+  },
+  {
+   "id": "Q537301",
+   "name": "TSV Havelse",
+   "leagues": [
+    "Q2188121"
+   ],
+   "tier": 3,
+   "venue": "Wilhelm-Langrehr-Stadion",
+   "capacity": 3500,
+   "lat": 52.4083,
+   "lon": 9.60222,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_3._Liga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. This club reaches the map only through Q2188121, the GENERIC 'Regionalliga' item, which was added to league-tiers.csv at tier 4 on the same day because two clubs that really are in the Regionalliga carry nothing else. This one is not: the 2026-27 3. Liga article lists it, so it is tier 3. The generic item is a league history rather than a current division, so expect to have to say this again for the next club that carries it",
+   "manual": true,
    "competition": "3. Liga"
   },
   {
@@ -1754,13 +1810,16 @@
    "leagues": [
     "Q154069"
    ],
-   "tier": 3,
+   "tier": 4,
    "venue": "Stadion an der Lohmühle",
    "capacity": 10434,
    "lat": 53.881111,
    "lon": 10.668889,
    "city": null,
-   "competition": "3. Liga"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
+   "manual": true,
+   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q666000",
@@ -1782,13 +1841,16 @@
    "leagues": [
     "Q555836"
    ],
-   "tier": 4,
+   "tier": 3,
    "venue": "Stadion an der Poststraße",
    "capacity": 5001,
    "lat": 51.8833,
    "lon": 8.51444,
    "city": null,
-   "competition": "Regionalliga West"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_3._Liga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 3. Liga article lists this club and the 2026-27 Regionalliga article does not, so tier 3 is what the leagues themselves say. Wikidata still tags it Q555836 Regionalliga West, which is where the old tier came from.",
+   "manual": true,
+   "competition": "3. Liga"
   },
   {
    "id": "Q666024",
@@ -1913,10 +1975,13 @@
    ],
    "tier": 1,
    "venue": "Red Bull Arena",
-   "capacity": 42000,
+   "capacity": 47800,
    "lat": 51.345833,
    "lon": 12.348056,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga",
+   "note": "CONTESTED CAPACITY. In use: 47800 (the English Wikipedia Bundesliga stadiums table, with StadiumDB agreeing exactly). Not taken: 42000 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "Bundesliga"
   },
   {
@@ -1982,6 +2047,23 @@
    "competition": "Regionalliga Suedwest"
   },
   {
+   "id": "Q819400",
+   "name": "SV Meppen",
+   "leagues": [
+    "Q2188121"
+   ],
+   "tier": 3,
+   "venue": "Hänsch-Arena",
+   "capacity": 13663,
+   "lat": 52.7081,
+   "lon": 7.29806,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_3._Liga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. This club reaches the map only through Q2188121, the GENERIC 'Regionalliga' item, which was added to league-tiers.csv at tier 4 on the same day because two clubs that really are in the Regionalliga carry nothing else. This one is not: the 2026-27 3. Liga article lists it, so it is tier 3. The generic item is a league history rather than a current division, so expect to have to say this again for the next club that carries it",
+   "manual": true,
+   "competition": "3. Liga"
+  },
+  {
    "id": "Q819419",
    "name": "Wormatia Worms",
    "leagues": [
@@ -2008,6 +2090,20 @@
    "lon": 10.9947,
    "city": null,
    "competition": "Regionalliga Bayern"
+  },
+  {
+   "id": "Q826212",
+   "name": "VfB Oldenburg",
+   "leagues": [
+    "Q2188121"
+   ],
+   "tier": 4,
+   "venue": "Marschweg-Stadion",
+   "capacity": 32000,
+   "lat": 53.129167,
+   "lon": 8.206389,
+   "city": null,
+   "competition": "Regionalliga (the generic fourth-division item)"
   },
   {
    "id": "Q831867",
@@ -2081,11 +2177,14 @@
     "Q555836"
    ],
    "tier": 4,
-   "venue": "Signal Iduna Park",
-   "capacity": 81359,
+   "venue": "Stadion Rote Erde",
+   "capacity": 9999,
    "lat": 51.4925,
    "lon": 7.451667,
    "city": null,
+   "source": "https://stadiumdb.com/stadiums/ger",
+   "note": "COPIED GROUND, corrected. Wikidata gave this reserve side the first team's Signal Iduna Park and its 81359, exactly the shape of error that put TSV 1860 Muenchen II on the Gruenwalder. StadiumDB names Stadion Rote Erde in Dortmund at 9999 for Borussia II specifically, and lists Signal Iduna Park separately for Borussia. THE COORDINATES ARE DELIBERATELY LEFT ALONE and are still the first team's - Rote Erde is next door to Signal Iduna Park, a couple of hundred metres away, and no source read here gives its position. So the pin is close but not checked; clear both lat and lon, or fill in a confirmed position, if that matters",
+   "manual": true,
    "competition": "Regionalliga West"
   },
   {
@@ -2143,13 +2242,16 @@
     "Q548937",
     "Q154069"
    ],
-   "tier": 3,
+   "tier": 4,
    "venue": "Karl-Liebknecht-Stadion",
    "capacity": 10787,
    "lat": 52.399083,
    "lon": 13.094806,
    "city": null,
-   "competition": "3. Liga"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
+   "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so it is tier 4. Wikidata's Q97927380 carries BOTH Q548937 and Q154069 and the builder takes the lowest mapped tier, which is how it arrived at 3. Q97927380 is the men's-first-team item; the club item Q571553 carries 21 sitelinks and no P118 at all, so the map can only see this club through the team item and a skip row here would remove it entirely",
+   "manual": true,
+   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q994701",

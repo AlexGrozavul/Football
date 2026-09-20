@@ -421,10 +421,13 @@
    ],
    "tier": 1,
    "venue": "Stadionul Municipal (Sfântu Gheorghe)",
-   "capacity": 4774,
+   "capacity": 8400,
    "lat": 45.862917,
    "lon": 25.776139,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_I",
+   "note": "CONTESTED CAPACITY. In use: 8400 (the English Wikipedia Liga I stadiums table, with StadiumDB agreeing exactly). Not taken: 4774 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "SuperLiga Romaniei"
   },
   {
@@ -849,10 +852,13 @@
    ],
    "tier": 1,
    "venue": "Stadionul Francisc von Neumann",
-   "capacity": 7287,
+   "capacity": 11500,
    "lat": 46.1925,
    "lon": 21.3114,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_I",
+   "note": "CONTESTED CAPACITY. In use: 11500 (Romania's own Superliga site and Romanian Wikipedia, and the English Wikipedia Liga I stadiums table agrees). Not taken: 12584 (StadiumDB, stadiumdb.com/stadiums/rou); 7287 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement.",
+   "manual": true,
    "competition": "SuperLiga Romaniei"
   },
   {
