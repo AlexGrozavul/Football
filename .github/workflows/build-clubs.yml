@@ -41,16 +41,6 @@ jobs:
           set -o pipefail
           python3 tools/fetch_clubs.py | tee /tmp/clubs.log
 
-      # TEMPORARY, removed after this branch's verification run: the
-      # roster check, so data/clubs/roster-review.csv is rebuilt against
-      # the map this run just produced instead of the one before it.
-      # check-rosters.yml is not on the default branch, so it cannot be
-      # dispatched against a working branch of its own.
-      - name: Re-run the roster check against the fresh map
-        run: |
-          set -o pipefail
-          python3 tools/check_rosters.py 2>&1 | tee /tmp/rosters.log
-
       - name: Write the run summary
         if: always()
         run: |
@@ -59,12 +49,6 @@ jobs:
             echo
             echo '```'
             cat /tmp/clubs.log 2>/dev/null || echo "fetch did not run"
-            echo '```'
-            echo
-            echo '## Roster check'
-            echo
-            echo '```'
-            cat /tmp/rosters.log 2>/dev/null || echo "the check did not run"
             echo '```'
             if [ -f data/clubs/unmapped-leagues.csv ]; then
               echo

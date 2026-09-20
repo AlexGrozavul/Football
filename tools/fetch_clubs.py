@@ -651,13 +651,22 @@ def novalue_fallback(code, lang, values, main_rows, tiers):
         return [], surfaced, notes
 
     time.sleep(REQUEST_GAP_SECONDS)
+    # How long this takes, every run, for the same reason the discovery
+    # query prints its own time: this one asks the query service a
+    # harder question than CLUB_QUERY does, and how close it runs to the
+    # 60-second ceiling is worth knowing before it starts failing rather
+    # than after.
+    started = time.monotonic()
     data, error = sparql_with_retry(
         NOVALUE_FALLBACK_QUERY % {"leagues": values, "lang": lang})
+    took = time.monotonic() - started
     if error:
-        notes.append(f"novalue fallback: the query failed ({error}) - no club was "
-                     f"surfaced this run. A club that only reaches the map through "
-                     f"the fallback is missing from this build")
+        notes.append(f"novalue fallback: the query failed ({error}) after "
+                     f"{took:.1f}s including retries - no club was surfaced this "
+                     f"run. A club that only reaches the map through the fallback "
+                     f"is missing from this build")
         return [], surfaced, notes
+    notes.append(f"novalue fallback: query answered in {took:.1f}s")
 
     rows = data.get("results", {}).get("bindings", [])
     already = {qid(cell(row, "club")) for row in main_rows}
@@ -678,18 +687,25 @@ def novalue_fallback(code, lang, values, main_rows, tiers):
             entry["leagues"].append(lid)
 
     if not candidates:
-        notes.append("novalue fallback: no club in this country's mapped leagues is "
-                     "hidden by a preferred-rank statement asserting no league")
+        notes.append("    no club in this country's mapped leagues is hidden by a "
+                     "preferred-rank statement asserting no league, so no roster "
+                     "was fetched")
         return [], surfaced, notes
 
     # Only now is a roster worth fetching. Where nothing is hidden this
     # costs no request at all, which is the case for Germany.
     names = ", ".join(f"{c['name'] or cid} ({cid})" for cid, c in sorted(candidates.items()))
-    notes.append(f"novalue fallback: {len(candidates)} candidate(s) hidden by a "
-                 f"preferred-rank no-league statement - {names}")
+    notes.append(f"    {len(candidates)} candidate(s) hidden by a preferred-rank "
+                 f"no-league statement - {names}")
     notes.append("    asking the roster articles which of them is actually playing")
 
-    named, roster_failures = check_rosters.roster_qids(code, tiers)
+    # Only the leagues actually mapped. A `skip` row in league-tiers.csv
+    # means no club reaches the map through that league, and the roster
+    # check reads a config row pointing at one as skipped rather than as
+    # mapped - so the same view of the file is handed over here, not
+    # fetch_clubs's own dict, which keeps "skip" as a value.
+    mapped = {lid: t for lid, t in tiers.items() if t != "skip"}
+    named, roster_failures = check_rosters.roster_qids(code, mapped)
     if roster_failures:
         for failure in roster_failures:
             notes.append(f"    ! roster read failed: {failure}")
