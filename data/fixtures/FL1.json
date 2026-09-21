@@ -1059,7 +1059,7 @@
   {
    "id": 559676,
    "utcDate": "2026-09-20T13:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 5,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1077,14 +1077,14 @@
     "tla": "BRE",
     "crest": "https://crests.football-data.org/512.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559678,
    "utcDate": "2026-09-20T15:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 5,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1102,14 +1102,14 @@
     "tla": "LIL",
     "crest": "https://crests.football-data.org/521.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559675,
    "utcDate": "2026-09-20T18:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 5,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1127,9 +1127,9 @@
     "tla": "PSG",
     "crest": "https://crests.football-data.org/524.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 559669,

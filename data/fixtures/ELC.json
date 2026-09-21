@@ -2334,7 +2334,7 @@
   {
    "id": 561851,
    "utcDate": "2026-09-20T11:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2352,14 +2352,14 @@
     "tla": "WBA",
     "crest": "https://crests.football-data.org/74.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561850,
    "utcDate": "2026-09-20T12:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2377,9 +2377,9 @@
     "tla": "BOL",
     "crest": "https://crests.football-data.org/60.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 4,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561862,
