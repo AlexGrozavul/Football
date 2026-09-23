@@ -580,6 +580,97 @@ def _hop(ordered, found, failures):
     return found, failures
 
 
+# ------------------------------------- the roster, for another tool
+
+def roster_qids(country, tiers, config=None):
+    """
+    Which clubs the current-season roster articles name for ONE country,
+    as Q-ids: {qid: [(tier, article title)]}, plus the failures.
+
+    THIS EXISTS FOR fetch_clubs.py, not for main(). The club layer's
+    novalue fallback has to ask "does a division this project already
+    tracks say this club is playing", and that question is this file's
+    question - so it is answered by this file's reader rather than by a
+    second copy of it. All three of the bugs this check has had failed
+    SILENTLY, and they were in the two steps this function reuses - two
+    in the sitelink hop and one in the redirect hop. A duplicate of
+    those steps somewhere else would earn its own three.
+
+    It returns Q-ids and nothing else. It says which divisions name a
+    club, never which tier the club should be given - the article is
+    evidence that a club is PLAYING, and this project does not write a
+    tier off one English Wikipedia table. That decision stays in
+    clubs-manual.csv, by hand.
+
+    The grouping rules are main()'s: one article may serve several
+    leagues (the Regionalliga's five divisions are one page), so
+    articles are fetched once each, and a row whose league is not in
+    league-tiers.csv is read and skipped because no club reaches the map
+    through it.
+
+    A failure is a FAILURE, never an empty division. A caller that gets
+    a non-empty failure list has only part of the answer and must not
+    read a missing club as a club the roster does not name.
+    """
+    failures = []
+    if config is None:
+        config, problems = load_config()
+        failures.extend(problems)
+
+    articles = {}          # article title -> set of tiers it is read for
+    for entry in config:
+        if entry["country"] != country:
+            continue
+        if entry.get("leagueQid") and entry["leagueQid"] not in tiers:
+            continue
+        articles.setdefault(entry["article"], set()).add(int(entry["tier"]))
+
+    titles = {}            # article title -> [club article titles]
+    for article, article_tiers in sorted(articles.items()):
+        print(f"  {country}  reading the roster of {article!r}")
+        page, real_title, error = fetch_article(article)
+        if error:
+            failures.append(f"{country}: {article!r} - {error}")
+            continue
+        tables, shape = roster_tables(page)
+        if not tables:
+            # Zero tables is a changed page, not an empty division.
+            failures.append(
+                f"{country}: {real_title!r} parsed, but no table on it looks like a "
+                f"membership list. The page layout has probably changed")
+            continue
+        here = []
+        for table, headers in tables:
+            for title, _capacity in rows_of(table, headers):
+                if title not in here:
+                    here.append(title)
+        if not here:
+            failures.append(
+                f"{country}: the tables on {real_title!r} parsed but no club came out "
+                f"of them. That is a failed parse, not an empty division")
+            continue
+        print(f"      {len(tables)} {shape} table(s), {len(here)} clubs")
+        titles[article] = here
+        time.sleep(REQUEST_GAP_SECONDS)
+
+    all_titles = [t for names in titles.values() for t in names]
+    if not all_titles:
+        return {}, failures
+
+    print(f"  turning {len(set(all_titles))} article titles into Q-ids")
+    qid_by_title, hop_failures = qids_for_titles(all_titles)
+    failures.extend(hop_failures)
+
+    named = {}
+    for article, names in titles.items():
+        for tier in sorted(articles[article]):
+            for title in names:
+                qid = qid_by_title.get(title)
+                if qid:
+                    named.setdefault(qid, []).append((tier, article))
+    return named, failures
+
+
 # ------------------------------------------------------ wikidata diagnosis
 
 # The five properties this asks about, and why each one is here. They are
