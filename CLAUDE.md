@@ -111,6 +111,29 @@ a subscribed calendar reads as a schedule regardless of its description.
   `opponentTier` is part of it because a club may publish two prices for
   the same seat in the same round depending on who is visiting, and
   Bayern does — see the Conventions entry.
+- `data/club-ticket-phases.csv` — added 2026-09-23. One row per
+  **phase** of a window in `club-ticket-windows.csv`, numbered in the
+  order they open: who may buy, how the phase opens relative to
+  something (`opensRelative`, loose text, never a date), the ticket cap,
+  and — in `pastCycle`, with `pastCycleFor` — the dated **past** phase a
+  source recorded. The only day-level date a phase row may hold is a
+  past one with a source, which is what `pastCycle` already meant.
+- `data/club-ticket-rules.csv` — added 2026-09-23. **One sourced fact
+  per row**, each with its own `confidence`, `basis`, `ref` and
+  `sourceRefs`, and a `scope`: `general`, or a derby override
+  (`derby-home`, `derby-away`) naming the opponent in `opponentQid`.
+  Sector separation, away-end restrictions, personalisation or its
+  absence, resale platforms and price caps live here. See the
+  Conventions entry on layering.
+- `data/club-ticket-demand.csv` — added 2026-09-23. A sell-out **track
+  record**: one row per club per fixture per season, with `outcome`,
+  loose-text `timing`, `attendance` where a source gives it, and its own
+  confidence. Several seasons side by side, not one estimate.
+- `data/ticket-sources.csv` — added 2026-09-23. **Every citation as its
+  own row**: publisher, whether it is the club or a third party
+  (`publisherKind`), title, date, URL, and `urlComplete`, which records
+  a URL the source document itself cut short rather than repairing it.
+  The other ticket files point at it through `sourceRefs`.
 - `data/league-rosters.csv` — one line per league, telling the roster
   check which Wikipedia season article holds that league's membership:
   `leagueQid`, `country`, `tier`, `season`, `article`, `note`. The
@@ -163,8 +186,11 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
   clubs Wikidata cannot place. Matches on names, proposes only, and
   flags anything ambiguous rather than settling it with a rule.
-- `tools/check_tickets.py` — read-back and checks for the three ticket
-  files. Reads, never writes; exits 1 on a problem.
+- `tools/check_tickets.py` — read-back and checks for the seven ticket
+  files (the original three plus phases, rules, demand and sources).
+  Reads, never writes; exits 1 on a problem. Also prints a **layered**
+  view of what applies to each derby, and every `unverified` row in one
+  list.
 - `tools/crosscheck_stadiumdb.py` — StadiumDB capacity comparison, the
   third opinion. Matches by club name and country because StadiumDB
   publishes no coordinates; reports, never corrects.
@@ -485,12 +511,15 @@ branch still needs a `workflow_dispatch`.
 
 **Closed vocabularies are the ones this file actually lists**, and a
 value outside them rejects the row: `dateSource`, `basis`, `cutoff`,
-`kind`, `priceBasis`.
+`kind`, `priceBasis`, and since 2026-09-23 `confidence`, `scope` and
+`urlComplete`.
 
 **Open vocabularies are every other controlled column** — `access`,
 `salesModel`, `requestTypes`, `closesEarly`, `demand`, `resale`, `team`,
 `window`, `competition`, `stage`, `category`, `placeType`,
-`opponentTier`. Nobody has written down what their allowed values are,
+`opponentTier`, and since 2026-09-23 `updateTracking`,
+`minorEligibility`, `priceClass`, `eligibility`, `topic`, `outcome` and
+`publisherKind`. Nobody has written down what their allowed values are,
 because there is one club in the file and whatever Bayern needed is all
 that exists. A closed list
 for them would reject the first legitimate value a second club needs, so
@@ -548,6 +577,98 @@ A repeated `resale-observed` row is **reported, not rejected** — two
 sightings of one category at two prices is a real thing, and a file that
 records observations has to be able to hold more than one. A repeated
 `face-value` row is rejected: a category has one published price.
+
+**The derby PDF extended the ticket schema, 2026-09-23, and every
+extension was forced by something the PDF held that the three files
+could not.** The source is *Derby ticket rule set, compiled 23 Sep 2026*
+(1. FC Nürnberg v Greuther Fürth, Inter v AC Milan), supplied by
+Alexandru and read directly, not from a retyped summary. Every one of
+its 47 numbered items, N-1 to N-22 and I-1 to I-25, is carried in some
+file with its number in `ref`, so any row can be traced back to the
+page it came from.
+
+| what the PDF had | why the old files could not hold it | where it went |
+|---|---|---|
+| several sale phases in order, each with its own past date | one window row holds one `opensEstimate` | `club-ticket-phases.csv` |
+| derby rules layered over the club's general ones | `club-tickets.csv` is one row per club, no fixture | `club-ticket-rules.csv`, `scope` + `opponentQid` |
+| a confidence tag on **each** fact | the old files carry confidence per row, in prose | `confidence` column |
+| a source list, 32 citations with titles and dates | `source` is a bare URL list | `ticket-sources.csv` + `sourceRefs` |
+| resale platform and price-cap **rules** | `resale-observed` is one price somebody saw | rules rows, topics `resale-platform`, `resale-price-cap` |
+| sell-outs across several seasons | `demand` is one word per club | `club-ticket-demand.csv` |
+| a normal and a member price for one seat | the price key had no column for it | `priceClass` in the price key |
+| a price given as a range, 420–440 | `price` holds one number | `priceMax`; nothing picks a point |
+
+**The confidence mapping, applied exactly and not reinterpreted:**
+`[VERIFIED]` → `confirmed` with `basis` `published`; `[INFERENCE]` →
+`inferred` with `basis` `observed-past-cycle`; `[UNVERIFIED]` →
+`unverified` with `basis` `unknown`, **kept and flagged** rather than
+dropped. `confidence` is a new column and deliberately **not** a
+fourth `dateSource` value: `dateSource` decides what a calendar does
+with a date, and `confidence` decides nothing — it only says how sure
+anybody is. `unverified` is also not `disputed`: disputed is "possibly
+the wrong year or the wrong event", unverified is "somebody looked and
+could not confirm it". The checker prints every `unverified` row in one
+list so an honest gap cannot hide inside a long read-back.
+**One item fits the mapping badly and was mapped anyway**: N-14 (the
+derby is probably price category A) is reasoned from the club's labels
+for two *other* 2026-27 fixtures, not from a past cycle, so its
+`observed-past-cycle` is the mapping's word and not a description. Its
+note says so. **One table carries no tag at all**: the Inter sale
+sequence. Its phases are marked `confirmed` because its only sources
+are the club's own pages — a judgement made on 2026-09-23, not the PDF's
+tag, and every row of it says so.
+
+**Layering.** A `derby-home` row in `club-ticket-rules.csv` replaces the
+club's `general` rows **on the same topic, for that fixture only**; a
+topic the derby does not mention falls through to the general rule.
+Inter's derby transfer rule (I-16) overrides its general one (I-2) and
+nothing else. A **`derby-away` row does not fall through at all**: a
+club's general rows describe its own home sales, and at the other
+club's ground the other club's rules apply. The checker prints the
+merged result for each derby, so nobody has to do the merge by eye.
+
+**Rule 1 still holds, and the phases file is how.** The PDF's exact
+per-phase dates are all **past** — the 2025-26 Inter derby, the December
+2025 Frankenderby, the 2026-27 Wolfsburg home game — and they live in
+`pastCycle`, which was always the place for a sourced past window. No
+2026-27 sale date exists in the PDF, because neither club had
+announced one, and none was written. The only forward-looking cells are
+two month-level estimates in `opensEstimate`: `late November or early
+December` for Nürnberg (N-19) and `early to mid January` for Inter
+(I-9), both `inferred`. The fixture dates were **not** written to the
+ticket files either; they belong in `football-rules.json`, which no
+tool writes.
+
+**The price key was one column short a third time.** Before
+`priceClass` existed the checker rejected nine Nürnberg member rows as
+duplicates of the normal rows beside them. Same shape as `kind` and
+`opponentTier`: the file already held the proof. The key is now club,
+team, season, competition, stage, category, `kind`, `opponentTier`,
+`priceClass`, `scope`, `opponentQid`. Nürnberg's `category-a` and
+`category-b` are **the club's own** Preiskategorie labels, unlike
+Bayern's `top-opponent` / `standard-opponent`, which are ours.
+
+**A citation the source document cut short is recorded as cut short.**
+Three goal.com/Calciomercato URLs are printed with `…` in the middle in
+the PDF itself, one cross-check is a bare domain, and one SSC Napoli URL
+carries a probable HTML-entity artefact (`&root;=3448`). All five are
+kept exactly as printed, marked in `urlComplete`, and reported on every
+run. None is reconstructed. The checker splits a `source` list only at a
+`;` followed by the next `http`, so a URL that itself contains a `;`
+survives.
+
+**The two standing fields.** `club-tickets.csv` gained
+`updateTracking` — how the club announces a sale, as tokens
+(`newsletter;per-match-article` for Nürnberg,
+`notify-button;news-section` for Inter) — and `minorEligibility`,
+whether an under-18 can buy. **Nürnberg's `minorEligibility` is
+`unknown`, and that is the finding, not a gap left by accident**: the
+PDF established that minors can be members from 7 and that child rates
+exist, neither of which says a U18 may buy. Inter's is
+`via-guardian-account` (I-13: a profile can link the cards of minors
+the holder is responsible for). Bayern's two cells are blank and
+reported blank on every run. `football-rules.json` has its own
+`ageRules.minAgeToBuy` for each club; the two were not reconciled.
 
 **A contested figure is written down whole: every number, every source,
 and which one is in use.** Added 2026-09-20, when a third capacity source
@@ -779,6 +900,45 @@ a page anyone can already view in their browser's network tab.
 ---
 
 ## Known open problems
+
+- **The derby PDF contradicts `football-rules.json` on Inter, and
+  nothing has been changed on either side.** Found 2026-09-23 while
+  incorporating the PDF. `football-rules.json` is hand-written and no
+  tool writes to it, so the contradictions are listed here for
+  Alexandru to settle:
+  - **Phase 1.** `football-rules.json` says Inter's home-derby phase 1
+    is *"OPEN TO EVERYONE WORLDWIDE, primo anello rosso/arancio only.
+    The route from abroad"*, and the `derby-madonnina` fixture's
+    `saleRoute` repeats it. The PDF's 2025-26 sequence, from the club's
+    own announcement (I2), has **four season-ticket-holder phases
+    first** and no open-to-everyone phase until open sale on the eighth.
+  - **The Siamo Noi phase.** `football-rules.json`: *"In 2025 the
+    allocation sold out after phase 2, so the SiamoNoi phase never
+    opened"*, *"up to 4 tickets"*, and *"the free card"*. The PDF: the
+    Siamo Noi phase ran 24–26 Oct 2025 with **2** tickets per holder,
+    the card costs **EUR 15** (I-4), and in 2024-25 the Siamo Noi
+    allocation ran out five days before that phase was due to close,
+    so it did open.
+  - **Name changes.** `ageRules.note` says no name changes for the
+    derby; I-16 says season-ticket holders could not transfer but
+    single PLUS tickets could change user once from 48 h before kickoff
+    (2025-26).
+  - **Prices.** `procedure.pricing` gives *"primo rosso centrale up to
+    EUR 230"*; the PDF's 2025-26 figures are Secondo Arancio Centrale
+    230, Primo Rosso Laterale 240 and Poltroncina Rossa 420–440, all
+    unverified and third-party.
+  - **The Frankenderby window.** `frankenderby.nextFixture` estimates
+    30 Jan–1 Feb 2027; the PDF's fixture table says 29–31 Jan 2027,
+    citing the DFL schedule (N1). Small, but they are not the same.
+  **The PDF also disagrees with itself once**, and both halves are kept:
+  I-20 says the 2025-26 Inter derby sold out before open sale, while its
+  own price table heads the 2025-26 column *"free sale, sectors still
+  available"*.
+  **Two Q-ids rest on memory.** Inter `Q631` and AC Milan `Q1543` were
+  written without being read from Wikidata — the sandbox answers 403 to
+  it and there is no Italian club file to check against. Every Inter
+  row says so. Verify them through the Actions-dispatch route before
+  anything joins on them.
 
 - **Both new checks are built and have run for real, 2026-09-20. These
   are the numbers they left behind.** `crosscheck_stadiumdb.py` and
@@ -2823,6 +2983,10 @@ a page anyone can already view in their browser's network tab.
    the Conventions entry on it above.
    **What is still not built is the display.** `index.html` does not
    show any of these files. Item 2 below is where that belongs.
+   **Three clubs now, not one.** 1. FC Nürnberg and Inter were added on
+   2026-09-23 from the derby PDF, and the four files that took to hold
+   them — phases, rules, demand, sources — are described under Files
+   and Conventions above.
 2. Club detail sheet: a pull-up panel replacing the map popup, showing
    name, ground, capacity, competition name with tier in brackets,
    distance, fixtures and ticket info, each saying "unavailable" rather

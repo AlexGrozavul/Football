@@ -1,11 +1,15 @@
 name: Check ticket files
 
-# Reads the three hand-written ticket files, prints back what it
-# understood, and complains about anything it could not.
+# Reads the hand-written ticket files, prints back what it understood,
+# and complains about anything it could not.
 #
 #   data/club-tickets.csv
 #   data/club-ticket-windows.csv
 #   data/club-ticket-prices.csv
+#   data/club-ticket-phases.csv
+#   data/club-ticket-rules.csv
+#   data/club-ticket-demand.csv
+#   data/ticket-sources.csv
 #
 # It never writes to them, so there is nothing to commit. It exists so a
 # typo in a vocabulary column - "inferrred", "face_value" - is caught
@@ -28,6 +32,10 @@ on:
       - "data/club-tickets.csv"
       - "data/club-ticket-windows.csv"
       - "data/club-ticket-prices.csv"
+      - "data/club-ticket-phases.csv"
+      - "data/club-ticket-rules.csv"
+      - "data/club-ticket-demand.csv"
+      - "data/ticket-sources.csv"
       - "tools/check_tickets.py"
       - ".github/workflows/check-tickets.yml"
   pull_request:
@@ -35,6 +43,10 @@ on:
       - "data/club-tickets.csv"
       - "data/club-ticket-windows.csv"
       - "data/club-ticket-prices.csv"
+      - "data/club-ticket-phases.csv"
+      - "data/club-ticket-rules.csv"
+      - "data/club-ticket-demand.csv"
+      - "data/ticket-sources.csv"
       - "tools/check_tickets.py"
   workflow_dispatch:
 
