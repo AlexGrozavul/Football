@@ -2257,34 +2257,9 @@
    "winner": "DRAW"
   },
   {
-   "id": 564718,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 10,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 87,
-    "name": "Rayo Vallecano de Madrid",
-    "shortName": "Rayo Vallecano",
-    "tla": "RAY",
-    "crest": "https://crests.football-data.org/87.png"
-   },
-   "away": {
-    "id": 285,
-    "name": "Elche CF",
-    "shortName": "Elche",
-    "tla": "ELC",
-    "crest": "https://crests.football-data.org/285.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 564719,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-23T19:00:00Z",
+   "status": "TIMED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2307,50 +2282,50 @@
    "winner": null
   },
   {
-   "id": 564720,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 564718,
+   "utcDate": "2026-10-24T12:00:00Z",
+   "status": "TIMED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 77,
-    "name": "Athletic Club",
-    "shortName": "Athletic",
-    "tla": "ATH",
-    "crest": "https://crests.football-data.org/77.png"
+    "id": 87,
+    "name": "Rayo Vallecano de Madrid",
+    "shortName": "Rayo Vallecano",
+    "tla": "RAY",
+    "crest": "https://crests.football-data.org/87.png"
    },
    "away": {
-    "id": 82,
-    "name": "Getafe CF",
-    "shortName": "Getafe",
-    "tla": "GET",
-    "crest": "https://crests.football-data.org/82.png"
+    "id": 285,
+    "name": "Elche CF",
+    "shortName": "Elche",
+    "tla": "ELC",
+    "crest": "https://crests.football-data.org/285.png"
    },
    "homeGoals": null,
    "awayGoals": null,
    "winner": null
   },
   {
-   "id": 564721,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 564727,
+   "utcDate": "2026-10-24T14:15:00Z",
+   "status": "TIMED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 559,
-    "name": "Sevilla FC",
-    "shortName": "Sevilla FC",
-    "tla": "SEV",
-    "crest": "https://crests.football-data.org/559.png"
+    "id": 5335,
+    "name": "Real Racing Club de Santander",
+    "shortName": "Santander",
+    "tla": "SAN",
+    "crest": "https://crests.football-data.org/5335.png"
    },
    "away": {
-    "id": 79,
-    "name": "CA Osasuna",
-    "shortName": "Osasuna",
-    "tla": "OSA",
-    "crest": "https://crests.football-data.org/79.png"
+    "id": 80,
+    "name": "RCD Espanyol de Barcelona",
+    "shortName": "Espanyol",
+    "tla": "ESP",
+    "crest": "https://crests.football-data.org/80.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -2358,8 +2333,8 @@
   },
   {
    "id": 564722,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-24T16:30:00Z",
+   "status": "TIMED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2382,34 +2357,9 @@
    "winner": null
   },
   {
-   "id": 564723,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 10,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 81,
-    "name": "FC Barcelona",
-    "shortName": "Barça",
-    "tla": "FCB",
-    "crest": "https://crests.football-data.org/81.png"
-   },
-   "away": {
-    "id": 86,
-    "name": "Real Madrid CF",
-    "shortName": "Real Madrid",
-    "tla": "RMA",
-    "crest": "https://crests.football-data.org/86.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 564724,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-24T19:00:00Z",
+   "status": "TIMED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2432,9 +2382,34 @@
    "winner": null
   },
   {
+   "id": 564720,
+   "utcDate": "2026-10-25T13:00:00Z",
+   "status": "TIMED",
+   "matchday": 10,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 77,
+    "name": "Athletic Club",
+    "shortName": "Athletic",
+    "tla": "ATH",
+    "crest": "https://crests.football-data.org/77.png"
+   },
+   "away": {
+    "id": 82,
+    "name": "Getafe CF",
+    "shortName": "Getafe",
+    "tla": "GET",
+    "crest": "https://crests.football-data.org/82.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 564725,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-25T15:15:00Z",
+   "status": "TIMED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2458,8 +2433,8 @@
   },
   {
    "id": 564726,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-25T17:30:00Z",
+   "status": "TIMED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2482,25 +2457,50 @@
    "winner": null
   },
   {
-   "id": 564727,
-   "utcDate": "2026-10-25T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 564723,
+   "utcDate": "2026-10-25T20:00:00Z",
+   "status": "TIMED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 5335,
-    "name": "Real Racing Club de Santander",
-    "shortName": "Santander",
-    "tla": "SAN",
-    "crest": "https://crests.football-data.org/5335.png"
+    "id": 81,
+    "name": "FC Barcelona",
+    "shortName": "Barça",
+    "tla": "FCB",
+    "crest": "https://crests.football-data.org/81.png"
    },
    "away": {
-    "id": 80,
-    "name": "RCD Espanyol de Barcelona",
-    "shortName": "Espanyol",
-    "tla": "ESP",
-    "crest": "https://crests.football-data.org/80.png"
+    "id": 86,
+    "name": "Real Madrid CF",
+    "shortName": "Real Madrid",
+    "tla": "RMA",
+    "crest": "https://crests.football-data.org/86.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564721,
+   "utcDate": "2026-10-26T20:00:00Z",
+   "status": "TIMED",
+   "matchday": 10,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 559,
+    "name": "Sevilla FC",
+    "shortName": "Sevilla FC",
+    "tla": "SEV",
+    "crest": "https://crests.football-data.org/559.png"
+   },
+   "away": {
+    "id": 79,
+    "name": "CA Osasuna",
+    "shortName": "Osasuna",
+    "tla": "OSA",
+    "crest": "https://crests.football-data.org/79.png"
    },
    "homeGoals": null,
    "awayGoals": null,
