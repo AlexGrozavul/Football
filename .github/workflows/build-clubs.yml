@@ -29,7 +29,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  probe:
+    # TEMPORARY - removed in the same branch.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 tools/_probe_openligadb.py
+
   clubs:
+    if: false  # TEMPORARY while the probe runs
     runs-on: ubuntu-latest
 
     steps:
