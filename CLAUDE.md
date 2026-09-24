@@ -98,6 +98,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   window can close before it, how demand behaves, and whether official
   resale exists. **No cell in this file ever holds a date.** `cutoff`
   says whether a stated deadline *exists*, not when it falls.
+  Since 2026-09-24 it has an optional, hand-written `country` — the
+  country of the club's ground — which is how the layered view knows
+  which national rows apply. A blank is reported, never filled from
+  `data/clubs/*.json`; where the club is in one of those files a
+  disagreement is reported and the hand-written value wins.
 - `data/club-ticket-windows.csv` — one row per club per team per sales
   window. This is where a pattern-based estimate of when a recurring
   window tends to open is allowed to live, and the only place it is.
@@ -133,7 +138,22 @@ a subscribed calendar reads as a schedule regardless of its description.
   own row**: publisher, whether it is the club or a third party
   (`publisherKind`), title, date, URL, and `urlComplete`, which records
   a URL the source document itself cut short rather than repairing it.
-  The other ticket files point at it through `sourceRefs`.
+  The other ticket files point at it through `sourceRefs`. Since
+  2026-09-24 it also has an optional `country` column, filled on a
+  source a country row cites; a source cited by both files keeps one
+  row and one id.
+- `data/country-ticket-rules.csv` — added 2026-09-24. Rules **no club
+  decides** — a country's law, ministry, police or league — held once
+  and inherited by every club whose ground is in that country. Same
+  shape as `club-ticket-rules.csv` plus `country`, `authority`,
+  `authorityKind`, `appliesTo`, `condition` and `clubLatitude`.
+  `appliesTo` and `condition` are required and **never blank**: a blank
+  read as "all" or "always" is the default-fill rule 2 forbids.
+  `clubLatitude` (`none`, `may-add`, `implements`) says how to read a
+  club row on the same topic; a club row **never replaces** a country
+  row. The design, including where a fact belongs when it could sit in
+  either file, is `docs/country-ticket-rules-design.md`. Holds Italy's
+  four rows today, moved out of Inter's club rows rather than copied.
 - `data/league-rosters.csv` — one line per league, telling the roster
   check which Wikipedia season article holds that league's membership:
   `leagueQid`, `country`, `tier`, `season`, `article`, `note`. The
@@ -186,11 +206,14 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
   clubs Wikidata cannot place. Matches on names, proposes only, and
   flags anything ambiguous rather than settling it with a rule.
-- `tools/check_tickets.py` — read-back and checks for the seven ticket
-  files (the original three plus phases, rules, demand and sources).
-  Reads, never writes; exits 1 on a problem. Also prints a **layered**
-  view of what applies to each derby, and every `unverified` row in one
-  list.
+- `tools/check_tickets.py` — read-back and checks for the eight ticket
+  files (the original three plus phases, rules, demand, sources and,
+  since 2026-09-24, country rules). Reads, never writes; exits 1 on a
+  problem. Also prints a **layered** view of what applies to each club
+  and each derby — the club's rows, then its country's rows marked
+  `[national]` with their `appliesTo` and `condition`, never filtered
+  by them — plus a **CHECK THESE AGREE** list and every `unverified`
+  row in one list.
 - `tools/crosscheck_stadiumdb.py` — StadiumDB capacity comparison, the
   third opinion. Matches by club name and country because StadiumDB
   publishes no coordinates; reports, never corrects.
@@ -511,15 +534,18 @@ branch still needs a `workflow_dispatch`.
 
 **Closed vocabularies are the ones this file actually lists**, and a
 value outside them rejects the row: `dateSource`, `basis`, `cutoff`,
-`kind`, `priceBasis`, and since 2026-09-23 `confidence`, `scope` and
-`urlComplete`.
+`kind`, `priceBasis`, since 2026-09-23 `confidence`, `scope` and
+`urlComplete`, and since 2026-09-24 `clubLatitude`.
 
 **Open vocabularies are every other controlled column** — `access`,
 `salesModel`, `requestTypes`, `closesEarly`, `demand`, `resale`, `team`,
 `window`, `competition`, `stage`, `category`, `placeType`,
 `opponentTier`, and since 2026-09-23 `updateTracking`,
 `minorEligibility`, `priceClass`, `eligibility`, `topic`, `outcome` and
-`publisherKind`. Nobody has written down what their allowed values are,
+`publisherKind`, and since 2026-09-24 `authorityKind` and `condition`
+(both `;`-lists, checked token by token). The country file's `topic`
+is **the same list** as the rules file's, not a copy: layering
+matches on topic, and two lists would drift apart. Nobody has written down what their allowed values are,
 because there is one club in the file and whatever Bayern needed is all
 that exists. A closed list
 for them would reject the first legitimate value a second club needs, so
@@ -934,11 +960,15 @@ a page anyone can already view in their browser's network tab.
   I-20 says the 2025-26 Inter derby sold out before open sale, while its
   own price table heads the 2025-26 column *"free sale, sectors still
   available"*.
-  **Two Q-ids rest on memory.** Inter `Q631` and AC Milan `Q1543` were
-  written without being read from Wikidata — the sandbox answers 403 to
-  it and there is no Italian club file to check against. Every Inter
-  row says so. Verify them through the Actions-dispatch route before
-  anything joins on them.
+  **The two Q-ids that rested on memory are verified, 2026-09-24.**
+  Inter `Q631` and AC Milan `Q1543` were written on 2026-09-23 without
+  being read from Wikidata. A throwaway probe dispatched through
+  `build-clubs.yml` read them on a runner: enwiki *Inter Milan*
+  resolves to `Q631` and *AC Milan* to `Q1543`, both typed association
+  football club (AC Milan also carries men's football team), `P17`
+  Italy, `P115` `Q133566` San Siro. Every Inter row's note now says
+  verified and how. The probe and its temporary job were removed in
+  the same branch.
 
 - **Both new checks are built and have run for real, 2026-09-20. These
   are the numbers they left behind.** `crosscheck_stadiumdb.py` and
@@ -3175,8 +3205,20 @@ a page anyone can already view in their browser's network tab.
    be sitting on the wrong pin.
 
 Every change must actually land in the repository. Write files to disk, commit them, and push the branch — do not finish a task with changes left only in the working tree or described in the reply. When the task is done, state which files were committed and what the branch is called, so the diff can be reviewed.
-8. **Country-level ticket rules — designed 2026-09-23, not built, not
-   populated.** `data/country-ticket-rules.csv`: rules no club decides
+8. ~~Country-level ticket rules~~ **— built 2026-09-24.** The file,
+   the checker change and the `country` column on `club-tickets.csv`
+   landed together, and Italy's rows were **moved** out of Inter's
+   (legal framework, named tickets, and the national half of the
+   residency-limits row; its club half — Inter's 2025-26 derby had no
+   limit — stayed a derby-home row). Two things the checker now says
+   out loud that it could not before: the Inter–Milan **away** leg gets
+   **no** national layer, because `Q1543` has no ticket row and no
+   Italian club file exists, so nothing records the venue country; and
+   `appliesTo` is `unknown` on all four Italian rows, because no source
+   names which competitions the rules cover. The design text below is
+   kept as written.
+   **Country-level ticket rules — designed 2026-09-23.**
+   `data/country-ticket-rules.csv`: rules no club decides
    and every club in a country inherits — Italy's named tickets,
    fidelity-card requirement for high-risk matches and reserved sectors,
    and Osservatorio/Questura residency limits are the model case, today

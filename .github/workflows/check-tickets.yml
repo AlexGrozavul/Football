@@ -10,6 +10,7 @@ name: Check ticket files
 #   data/club-ticket-rules.csv
 #   data/club-ticket-demand.csv
 #   data/ticket-sources.csv
+#   data/country-ticket-rules.csv
 #
 # It never writes to them, so there is nothing to commit. It exists so a
 # typo in a vocabulary column - "inferrred", "face_value" - is caught
@@ -36,6 +37,7 @@ on:
       - "data/club-ticket-rules.csv"
       - "data/club-ticket-demand.csv"
       - "data/ticket-sources.csv"
+      - "data/country-ticket-rules.csv"
       - "tools/check_tickets.py"
       - ".github/workflows/check-tickets.yml"
   pull_request:
@@ -47,6 +49,7 @@ on:
       - "data/club-ticket-rules.csv"
       - "data/club-ticket-demand.csv"
       - "data/ticket-sources.csv"
+      - "data/country-ticket-rules.csv"
       - "tools/check_tickets.py"
   workflow_dispatch:
 

@@ -1,9 +1,30 @@
 # country-ticket-rules.csv — design, 2026-09-23
 
-**Status: proposed, not built, not populated.** The file does not exist
-yet, deliberately: a hand-written file that `tools/check_tickets.py`
-does not read would break the read-back convention from its first
-row. The file and the checker change land together or not at all.
+**Status: built 2026-09-24.** The file, the checker change and the
+`country` column on `club-tickets.csv` landed in one change, and
+Italy's rows were moved out of Inter's club rows, as open question 3
+recommended. Open questions 3 and 4 are therefore answered; 1 and 2
+are not needed yet and stay open.
+
+**Two things were built differently from the text below**, both
+small, both said here rather than left for someone to find:
+
+- `authorityKind` and `condition` are **`;`-lists**, checked token by
+  token. The residency-limits rule has two authorities (the
+  Osservatorio and the local Questura/Prefettura), and the fidelity-card
+  rule bites under two conditions (`high-risk-match;reserved-sector`).
+  One value per cell would have meant two copies of each rule.
+- For a `derby-away` leg the venue country is the opponent's
+  `country` in `club-tickets.csv`, else the `data/clubs/*.json` file
+  the opponent is in, else **not known**, and the view says so and
+  applies no national rows. That is the case for Inter away at AC
+  Milan today.
+
+*Original status line:* proposed, not built, not populated. The file
+did not exist yet, deliberately: a hand-written file that
+`tools/check_tickets.py` does not read would break the read-back
+convention from its first row. The file and the checker change land
+together or not at all.
 
 ---
 
