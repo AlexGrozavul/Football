@@ -29,19 +29,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TEMPORARY: verify Inter/AC Milan Q-ids. Removed in the same branch.
-  probe:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Probe Q631 and Q1543
-        run: |
-          set -o pipefail
-          python3 tools/probe_italian_qids.py | tee /tmp/probe.log
-          { echo '```'; cat /tmp/probe.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
-
   clubs:
-    if: false  # TEMPORARY while the probe runs
     runs-on: ubuntu-latest
 
     steps:
