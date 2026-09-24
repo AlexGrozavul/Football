@@ -10,6 +10,9 @@ check_tickets.py -- read-back and validation for the ticket files.
                                   a derby override
     data/club-ticket-demand.csv   sell-out track record, one row a season
     data/ticket-sources.csv       every citation, one row each
+    data/country-ticket-rules.csv rules no club decides: a country's law,
+                                  ministry, police or league, inherited
+                                  by every club whose ground is there
 
 The first three were written by hand and, until this tool existed,
 nothing read them at all. So a typo in a vocabulary column - "inferrred"
@@ -17,7 +20,8 @@ for "inferred", "face_value" for "face-value" - sat in the file looking
 exactly like a checked fact, and the read-back convention this project
 relies on was not honoured for them. The other four were added on
 2026-09-23 for the derby PDF, whose structure the first three could not
-hold without losing something - see CLAUDE.md.
+hold without losing something - see CLAUDE.md. The country file was
+added on 2026-09-24, to the design in docs/country-ticket-rules-design.md.
 
 This tool never writes to any of these files. It reads them, prints
 back what it understood, and complains. Nothing here corrects anything:
@@ -78,12 +82,18 @@ PHASES_FILE = "data/club-ticket-phases.csv"
 RULES_FILE = "data/club-ticket-rules.csv"
 DEMAND_FILE = "data/club-ticket-demand.csv"
 SOURCES_FILE = "data/ticket-sources.csv"
+# Added 2026-09-24. Rules no club decides - see
+# docs/country-ticket-rules-design.md for where a fact belongs when it
+# could sit here or in the club rules file.
+COUNTRY_FILE = "data/country-ticket-rules.csv"
+LEAGUE_TIERS_FILE = "data/league-tiers.csv"
+CLUBS_DIR = "data/clubs"
 
 # Sources first, because every other file's sourceRefs are resolved
 # against it; windows before phases, because a phase must name a window
 # that exists.
-FILES = [SOURCES_FILE, TICKETS_FILE, WINDOWS_FILE, PHASES_FILE,
-         PRICES_FILE, RULES_FILE, DEMAND_FILE]
+FILES = [SOURCES_FILE, TICKETS_FILE, COUNTRY_FILE, WINDOWS_FILE,
+         PHASES_FILE, PRICES_FILE, RULES_FILE, DEMAND_FILE]
 
 # ------------------------------------------------------------- csv safety
 
@@ -127,6 +137,11 @@ SCHEMA = {
                      # buy. Both are standing facts about the club, which
                      # is why they are columns here and not rules rows.
                      "updateTracking", "minorEligibility",
+                     # country: ISO code of the club's ground, hand-written.
+                     # It is how the layered view knows which national
+                     # rows apply. Blank is allowed and reported; it is
+                     # never filled from data/clubs/*.json (rule 3).
+                     "country",
                      "checked", "source", "note", "ref", "sourceRefs"],
         # One row per club per team. A derby is not a second row here: a
         # derby override is a scope in club-ticket-rules.csv.
@@ -188,9 +203,30 @@ SCHEMA = {
         # a later document with its own codes must prefix them, and a
         # repeated id is rejected rather than silently shadowed.
         "required": ["sourceId", "publisher", "publisherKind", "url"],
-        "optional": ["club", "title", "published", "urlComplete",
+        # country: filled on a source a country row cites. A source cited
+        # by both a club row and a country row keeps one row and one id.
+        "optional": ["club", "country", "title", "published", "urlComplete",
                      "document", "note"],
         "key": ["sourceId"],
+    },
+    COUNTRY_FILE: {
+        # The same shape as the club rules file, so a row can move between
+        # them with the least rewriting. appliesTo and condition are both
+        # required and may never be blank: a blank read as "all" or
+        # "always" is exactly the default-fill rule 2 forbids, and Italy's
+        # card rule read without its condition says "you always need a
+        # card", which is false.
+        "required": ["country", "authority", "authorityKind", "appliesTo",
+                     "condition", "topic", "rule", "clubLatitude",
+                     "confidence", "basis"],
+        "optional": ["season", "ref", "sourceRefs", "source", "checked",
+                     "note"],
+        # condition is in the key because one topic can have an
+        # unconditional rule and a conditional one; appliesTo because a
+        # league's rule and the law can speak on the same topic; ref for
+        # the reason it is in the rules key.
+        "key": ["country", "topic", "condition", "appliesTo", "season",
+                "ref"],
     },
     PRICES_FILE: {
         "required": ["clubQid", "club", "team", "season", "competition",
@@ -282,6 +318,18 @@ CLOSED = {
     (PHASES_FILE, "basis"): BASIS,
     (RULES_FILE, "basis"): BASIS,
     (DEMAND_FILE, "basis"): BASIS,
+    (COUNTRY_FILE, "confidence"): CONFIDENCE,
+    (COUNTRY_FILE, "basis"): BASIS,
+    # How to read a club row on the same topic. Closed, because the
+    # layered view's behaviour depends on it:
+    #   none        clubs comply; a club row on the topic is printed
+    #               beside it and listed under CHECK THESE AGREE
+    #   may-add     a floor; a club row is an addition, not a conflict
+    #   implements  the rule requires a scheme each club runs itself; a
+    #               club row is its implementation
+    # A club row never replaces a country row - a club cannot override
+    # a law. That is the difference from derby layering.
+    (COUNTRY_FILE, "clubLatitude"): ["none", "may-add", "implements"],
     (WINDOWS_FILE, "scope"): SCOPE,
     (PRICES_FILE, "scope"): SCOPE,
     (RULES_FILE, "scope"): SCOPE,
@@ -367,12 +415,25 @@ KNOWN = {
                                       "government", "other-club"],
 }
 
+# The country file shares the rules file's topic list - the SAME list
+# object, not a copy - because layering matches on topic, and two lists
+# would drift until the layers silently stopped meeting.
+KNOWN[(COUNTRY_FILE, "topic")] = KNOWN[(RULES_FILE, "topic")]
+
 # Semicolon-separated lists, so their tokens are checked one at a time
 # rather than the whole cell.
 KNOWN_TOKENS = {
     (TICKETS_FILE, "requestTypes"): ["home", "away", "ucl", "pokal"],
     (TICKETS_FILE, "updateTracking"): ["newsletter", "per-match-article",
                                        "notify-button", "news-section"],
+    # A list because one rule can have two authorities (the Osservatorio
+    # sets residency limits with the local Questura/Prefettura) and bite
+    # under two conditions (high-risk matches and reserved sectors).
+    (COUNTRY_FILE, "authorityKind"): ["law", "government",
+                                      "national-observatory", "police",
+                                      "federation", "league"],
+    (COUNTRY_FILE, "condition"): ["always", "high-risk-match",
+                                  "away-sector", "reserved-sector"],
 }
 
 # ---- the columns that must never hold a date.
@@ -403,6 +464,10 @@ NO_DATE_COLUMNS = {
     # DFL scheduled the Dec 2025 derby on 5 Nov 2025"). That is note-like
     # prose, not a deadline.
     RULES_FILE: ["topic"],
+    # Unlike rules.rule, a country rule IS guarded: a national rule has
+    # no reason to carry a day, and a law's own date belongs in
+    # ticket-sources.csv's published column.
+    COUNTRY_FILE: ["topic", "condition", "rule"],
 }
 
 MONTHS = ("januar|february|februar|january|märz|maerz|march|april|mai|may|"
@@ -424,6 +489,40 @@ SEASON_RE = re.compile(r"^\d{4}-\d{2}$")       # 2026-27
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 QID_RE = re.compile(r"^Q\d+$")
 CURRENCY_RE = re.compile(r"^[A-Z]{3}$")
+COUNTRY_RE = re.compile(r"^[A-Z]{2}$")        # ISO 3166-1 alpha-2
+
+
+def mapped_league_qids():
+    """The league Q-ids in league-tiers.csv, for appliesTo. Read, never
+    written. An unreadable file gives an empty set, so every Q-id is
+    reported rather than silently accepted."""
+    try:
+        with open(LEAGUE_TIERS_FILE, encoding="utf-8-sig", newline="") as fh:
+            return {_s(r.get("leagueQid")) for r in csv.DictReader(fh)}
+    except OSError:
+        return set()
+
+
+def club_file_countries():
+    """Which data/clubs/*.json each club Q-id is in, as {qid: country}.
+    Used only to REPORT a disagreement with club-tickets.csv's country,
+    and to find the venue country of a derby opponent that has no ticket
+    row. Never used to fill club-tickets.csv's own blank."""
+    import glob
+    import json
+    found = {}
+    for path in sorted(glob.glob(os.path.join(CLUBS_DIR, "*.json"))):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        if not isinstance(data, dict):
+            continue
+        for club in data.get("clubs", []):
+            if club.get("id"):
+                found[club["id"]] = data.get("country", "")
+    return found
 
 
 def split_urls(value):
@@ -655,6 +754,11 @@ def read_file(path, today, sources=None):
 
             # ---- the two standing fields. Blank is allowed - nobody may
             #      know yet - but a blank is reported, never left silent.
+            if path == TICKETS_FILE and "country" in headers and not row.get("country"):
+                notices.append(
+                    f"{path} line {line}: country is empty for "
+                    f"{row.get('club')}, so no national rules are applied "
+                    f"to it in the layered view.")
             if path == TICKETS_FILE:
                 for field in ("updateTracking", "minorEligibility"):
                     if field in headers and not row.get(field):
@@ -701,7 +805,8 @@ def check_row(path, line, row, today, sources=None):
     conf, basis = row.get("confidence", ""), row.get("basis", "")
     expected = {"confirmed": "published", "inferred": "observed-past-cycle",
                 "unverified": "unknown"}
-    if conf and basis and path in (PHASES_FILE, RULES_FILE, DEMAND_FILE):
+    if conf and basis and path in (PHASES_FILE, RULES_FILE, DEMAND_FILE,
+                                   COUNTRY_FILE):
         if basis != expected[conf] and basis != "user-supplied":
             notices.append(
                 f"{path} line {line}: confidence is {conf!r} but basis is "
@@ -753,12 +858,42 @@ def check_row(path, line, row, today, sources=None):
                            f"cycle like 2025-26. A past date needs its "
                            f"season. Reported, not rejected.")
 
-    if path in (RULES_FILE, DEMAND_FILE):
+    if path in (RULES_FILE, DEMAND_FILE, COUNTRY_FILE):
         season = row.get("season", "")
         if season and not SEASON_RE.match(season):
             problems.append(f"{path} line {line}: season is {season!r}, "
                             f"which is not a season like 2026-27. Row "
                             f"ignored.")
+
+    if path == TICKETS_FILE:
+        country = row.get("country", "")
+        if country and not COUNTRY_RE.match(country):
+            problems.append(f"{path} line {line}: country is {country!r}, "
+                            f"which is not a two-letter upper-case code like "
+                            f"DE or IT. Row ignored.")
+
+    if path == COUNTRY_FILE:
+        if not COUNTRY_RE.match(row["country"]):
+            problems.append(f"{path} line {line}: country is "
+                            f"{row['country']!r}, which is not a two-letter "
+                            f"upper-case code like DE or IT. Row ignored.")
+        applies = row["appliesTo"]
+        if applies not in ("all", "unknown"):
+            qids = [q.strip() for q in applies.split(";") if q.strip()]
+            bad = [q for q in qids if not QID_RE.match(q)]
+            if bad or not qids:
+                problems.append(
+                    f"{path} line {line}: appliesTo is {applies!r}. It must "
+                    f"be all, unknown, or a ;-list of league Q-ids. Row "
+                    f"ignored.")
+            else:
+                mapped = mapped_league_qids()
+                for q in qids:
+                    if q not in mapped:
+                        notices.append(
+                            f"{path} line {line}: appliesTo names {q}, which "
+                            f"is not in {LEAGUE_TIERS_FILE}. Reported, not "
+                            f"rejected.")
 
     if path == DEMAND_FILE:
         att = row.get("attendance", "")
@@ -940,10 +1075,41 @@ def main():
                 f"{sorted(numbers)}, which do not run 1, 2, 3... without a "
                 f"gap.")
 
+    # ---- cross-file: the hand-written country of a club against the
+    #      club file it sits in, where it sits in one. REPORTED only, and
+    #      a blank is never filled from there: two sources for one fact
+    #      is a conflict waiting to happen, and the hand-written one wins.
+    in_club_files = club_file_countries()
+    ticket_country = {}
+    for row in by_file[TICKETS_FILE]:
+        mine, theirs = row.get("country", ""), in_club_files.get(row["clubQid"], "")
+        if mine:
+            ticket_country[row["clubQid"]] = mine
+        if mine and theirs and mine != theirs:
+            all_notices.append(
+                f"{TICKETS_FILE} line {row['_line']}: country for "
+                f"{row.get('club')} is {mine}, but {row['clubQid']} is in "
+                f"{CLUBS_DIR}/{theirs}.json. The hand-written {mine} is "
+                f"used. Reported, not rejected.")
+
+    # ---- cross-file: a source a country row cites should say which
+    #      country it speaks for.
+    country_rows = by_file[COUNTRY_FILE]
+    if sources:
+        for row in country_rows:
+            for sid in (x.strip() for x in row.get("sourceRefs", "").split(";")):
+                if sid in sources and sources[sid].get("country", "") != row["country"]:
+                    all_notices.append(
+                        f"{SOURCES_FILE} line {sources[sid]['_line']}: {sid} "
+                        f"is cited by {COUNTRY_FILE} line {row['_line']} "
+                        f"({row['country']}) but its country cell is "
+                        f"{sources[sid].get('country') or '(empty)'!r}. "
+                        f"Reported, not rejected.")
+
     # ---- cross-file: a cited source nobody cites is worth a line
     if sources:
         used = set()
-        for path in CLUB_FILES:
+        for path in CLUB_FILES + [COUNTRY_FILE]:
             for row in by_file[path]:
                 used.update(s.strip() for s in row.get("sourceRefs", "").split(";"))
         for sid, srow in sources.items():
@@ -961,15 +1127,86 @@ def main():
     for path in FILES:
         read_back(path, by_file[path], full)
 
-    # ---- LAYERING. A derby row in club-ticket-rules.csv overrides the
-    #      club's general rows on the SAME topic, for that fixture only;
-    #      a topic with no derby row falls through to the general rule.
-    #      This prints the result for each derby, so what applies to the
-    #      match is visible without doing the merge by eye.
+    # ---- LAYERING. Two layers meet here.
+    #
+    #      A derby row in club-ticket-rules.csv overrides the club's
+    #      general rows on the SAME topic, for that fixture only; a topic
+    #      with no derby row falls through to the general rule.
+    #
+    #      A NATIONAL row from country-ticket-rules.csv is never
+    #      overridden - a club cannot override a law. It is printed after
+    #      the club's rows, marked [national], with its appliesTo and
+    #      condition, and NOT filtered by them: the ticket files record
+    #      neither a club's league nor whether a match is high-risk, so
+    #      the reading is left to a person rather than guessed. Its
+    #      clubLatitude says how to read a club row on the same topic.
+    #      Where there is nothing to print, the view says so.
     print("=" * 70)
-    print("LAYERED - what applies to each derby: its own rows first, then")
-    print("every general topic it does not override.")
+    print("LAYERED - what applies to each club, and to each derby: its own")
+    print("rows first, then every general topic a derby does not override,")
+    print("then the national rows of the country the match is played in.")
     rules = by_file[RULES_FILE]
+    agree = []   # (country row, club row) pairs under clubLatitude none
+
+    def show_rule(r, what):
+        print(f"    {r['topic']:22s} {r['confidence']:10s} "
+              f"{r.get('ref', ''):8s} line {r['_line']} - {what}")
+
+    def show_national(country, how_known, club_rows):
+        """Prints the national layer for a match in `country`. club_rows
+        are the club rows already shown, so each national row can say
+        how a club row on its topic is to be read."""
+        def say(text):
+            for k, part in enumerate(_wrap(text, width=56)):
+                print(("    [national] " if k == 0 else " " * 15) + part)
+        if not country:
+            say(f"{how_known} - no national rules applied.")
+            return
+        mine = [r for r in country_rows if r["country"] == country]
+        if not mine:
+            say(f"no national rows for {country} ({how_known}). That means "
+                f"nobody has written one, not that {country} has no "
+                f"national rule.")
+            return
+        for r in mine:
+            print(f"    [national] {r['topic']:22s} {r['confidence']:10s} "
+                  f"{r.get('ref', ''):8s} country line {r['_line']}")
+            for text in _wrap(
+                    f"{country} ({how_known}), {r['authority']}. Applies "
+                    f"to: {r['appliesTo']}. Only when: {r['condition']}. "
+                    f"clubLatitude: {r['clubLatitude']}.", width=56):
+                print(f"               {text}")
+            for c in (c for c in club_rows if c["topic"] == r["topic"]):
+                reading = {
+                    "none": "CHECK THESE AGREE - clubs simply comply "
+                            "with this, so the club row must not "
+                            "contradict it",
+                    "may-add": "an addition to the national floor, not a "
+                               "contradiction",
+                    "implements": "this club's implementation of it",
+                }[r["clubLatitude"]]
+                for k, text in enumerate(_wrap(
+                        f"club row line {c['_line']}: {reading}.", width=56)):
+                    print(f"               {'-> ' if k == 0 else '   '}{text}")
+                if r["clubLatitude"] == "none":
+                    agree.append((r, c))
+
+    # Each club on its own: its general rules, then its country's.
+    for t in by_file[TICKETS_FILE]:
+        qid, team = t["clubQid"], t.get("team", "")
+        general = [r for r in rules if r["clubQid"] == qid
+                   and r.get("team", "") == team
+                   and r.get("scope", "") in ("", "general")]
+        print()
+        print(f"  {t.get('club')} ({qid}), general - any home match")
+        for r in general:
+            show_rule(r, "general")
+        if not general:
+            print("    (no general rows in the club rules file)")
+        country = t.get("country", "")
+        show_national(country, "club-tickets.csv" if country
+                      else f"country not given in {TICKETS_FILE}", general)
+
     fixtures = sorted({(r["clubQid"], r.get("team", ""), r["scope"],
                         r["opponentQid"], r.get("club", ""))
                        for r in rules if r.get("scope", "").startswith("derby-")})
@@ -985,25 +1222,64 @@ def main():
         for r in own:
             over = " [overrides general]" if any(g["topic"] == r["topic"]
                                                  for g in general) else ""
-            print(f"    {r['topic']:22s} {r['confidence']:10s} "
-                  f"{r.get('ref', ''):8s} line {r['_line']} - derby{over}")
-        # An AWAY derby does not fall through. A club's general rows
-        # describe how it sells its own home games; at the other club's
-        # ground the other club's box office, channels and terms apply,
-        # and printing this club's as though they did would be wrong.
+            show_rule(r, f"derby{over}")
+        # An AWAY derby does not fall through to the club's general rows.
+        # Those describe how it sells its own home games; at the other
+        # club's ground the other club's box office, channels and terms
+        # apply. National rows DO apply to an away leg - the VENUE
+        # country's, which is the opponent's.
         if scope == "derby-away":
-            print("    (away leg: only the rows above. This club's general "
-                  "rules are")
-            print("     about its own home sales and are not carried over.)")
+            print("    (away leg: none of this club's general rows. They "
+                  "are about its")
+            print("     own home sales and are not carried over.)")
+            if opp in ticket_country:
+                venue, how = ticket_country[opp], (
+                    f"venue country: {opp}'s row in {TICKETS_FILE}")
+            elif in_club_files.get(opp):
+                venue, how = in_club_files[opp], (
+                    f"venue country: {opp} is in "
+                    f"{CLUBS_DIR}/{in_club_files[opp]}.json")
+            else:
+                venue, how = "", (
+                    f"venue country not recorded - {opp} has no row in "
+                    f"{TICKETS_FILE} and is in no {CLUBS_DIR} file")
+            show_national(venue, how, own)
             continue
+        shown = list(own)
         for r in general:
             if r["topic"] not in overridden:
-                print(f"    {r['topic']:22s} {r['confidence']:10s} "
-                      f"{r.get('ref', ''):8s} line {r['_line']} - general")
+                show_rule(r, "general")
+                shown.append(r)
+        country = ticket_country.get(qid, "")
+        show_national(country, "club-tickets.csv" if country
+                      else f"country not given in {TICKETS_FILE}", shown)
+
+    # ---- every clubLatitude none row with a club row on its topic, in
+    #      one place. Both are hand-written; if they disagree one of them
+    #      is wrong, and which one is Alexandru's call, not this tool's.
+    unique = []
+    for r, c in agree:
+        if (r["_line"], c["_line"]) not in [(a["_line"], b["_line"]) for a, b in unique]:
+            unique.append((r, c))
+    print()
+    print("=" * 70)
+    print(f"CHECK THESE AGREE ({len(unique)}) - a national rule clubs must "
+          f"simply comply with,")
+    print("beside a club row on the same topic. Nothing picks one.")
+    for r, c in unique:
+        for k, text in enumerate(_wrap(
+                f"{COUNTRY_FILE} line {r['_line']} ({r['country']}, "
+                f"{r['topic']}): {r['rule']}", width=66)):
+            print(("  = " if k == 0 else "    ") + text)
+        for text in _wrap(f"{RULES_FILE} line {c['_line']} ({c.get('club')}, "
+                          f"{c.get('scope') or 'general'}): {c['rule']}",
+                          width=64):
+            print("      " + text)
 
     # ---- LOW CONFIDENCE. Every unverified row, in one place, so an
     #      honest gap cannot hide inside a long read-back.
-    low = [(path, r) for path in CLUB_FILES for r in by_file[path]
+    low = [(path, r) for path in CLUB_FILES + [COUNTRY_FILE]
+           for r in by_file[path]
            if r.get("confidence") == "unverified"]
     print()
     print("=" * 70)
