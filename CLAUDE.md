@@ -3175,3 +3175,19 @@ a page anyone can already view in their browser's network tab.
    be sitting on the wrong pin.
 
 Every change must actually land in the repository. Write files to disk, commit them, and push the branch — do not finish a task with changes left only in the working tree or described in the reply. When the task is done, state which files were committed and what the branch is called, so the diff can be reviewed.
+8. **Country-level ticket rules — designed 2026-09-23, not built, not
+   populated.** `data/country-ticket-rules.csv`: rules no club decides
+   and every club in a country inherits — Italy's named tickets,
+   fidelity-card requirement for high-risk matches and reserved sectors,
+   and Osservatorio/Questura residency limits are the model case, today
+   written as Inter's rows in `club-ticket-rules.csv` lines 28–30. The
+   full design, including **where a fact belongs when it could sit in
+   either file**, is in `docs/country-ticket-rules-design.md`. The short
+   version of the boundary: the requirement is the country's, the
+   implementation is the club's; one fixture's facts are neither; a club
+   doing something is never evidence the country requires it; and when
+   in doubt a fact stays in the club file, because a wrong country row
+   silently applies to every club in that country. The file does not
+   exist yet on purpose — it lands together with the checker change,
+   or a hand-written file would go unread. Four open questions in that
+   document are Alexandru's to answer first.
