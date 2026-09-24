@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: python3 tools/_probe_openligadb.py
+      - run: python3 tools/fetch_openligadb.py
 
   clubs:
     if: false  # TEMPORARY while the probe runs
