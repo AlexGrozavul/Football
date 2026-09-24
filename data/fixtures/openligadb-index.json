@@ -1,0 +1,51 @@
+{
+ "source": "OpenLigaDB (api.openligadb.de)",
+ "note": "One file per competition in this folder, named openligadb-<shortcut>.json. Map and app only. The Bundesliga is not here: see index.json (football-data.org).",
+ "competitions": {
+  "bl2": {
+   "label": "2. Bundesliga",
+   "tier": 2,
+   "name": "2. Fußball-Bundesliga 2026/2027",
+   "season": "2026",
+   "matches": 306,
+   "teams": 18
+  },
+  "bl3": {
+   "label": "3. Liga",
+   "tier": 3,
+   "name": "3. Liga 2026/2027",
+   "season": "2026",
+   "matches": 380,
+   "teams": 20
+  },
+  "dfb": {
+   "label": "DFB-Pokal",
+   "tier": null,
+   "name": "DFB Pokal 2026/2027",
+   "season": "2026",
+   "matches": 48,
+   "teams": 64
+  },
+  "rln": {
+   "label": "Regionalliga Nord",
+   "tier": 4,
+   "name": "Fußball-Regionalliga Nord",
+   "season": "2026",
+   "matches": 306,
+   "teams": 18
+  },
+  "rlno": {
+   "label": "Regionalliga Nordost",
+   "tier": 4,
+   "name": "NOFV Regionalliga NordOst",
+   "season": "2026",
+   "matches": 306,
+   "teams": 18
+  }
+ },
+ "notCarried": [
+  "Regionalliga Bayern",
+  "Regionalliga Südwest",
+  "Regionalliga West"
+ ]
+}
