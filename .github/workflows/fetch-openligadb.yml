@@ -1,0 +1,85 @@
+name: Fetch OpenLigaDB fixtures
+
+# 2. Bundesliga, 3. Liga, DFB-Pokal and the Regionalliga divisions
+# OpenLigaDB carries, into data/fixtures/openligadb-*.json.
+# The Bundesliga is NOT fetched here - football-data.org has it, in the
+# Build calendars workflow.
+#
+# Fetched fixtures feed the map and the app only. Nothing here touches
+# calendars/: the .ics feeds stay hand-curated.
+#
+# OpenLigaDB is free and keyless. There is no secret to configure.
+
+on:
+  schedule:
+    # 05:37 UTC daily - the same daily cadence as the football-data.org
+    # fetch (05:17), twenty minutes behind it so the two commits do not
+    # race each other. Off the hour for the same reason that one is.
+    - cron: "37 5 * * *"
+  push:
+    branches: [main]
+    paths:
+      - "tools/fetch_openligadb.py"
+      - ".github/workflows/fetch-openligadb.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-openligadb
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Fetch fixtures from OpenLigaDB
+        # Exits 1 when a competition that should have come back did not.
+        # The files that did come back are still committed below, and
+        # the run shows red rather than a green tick over a gap.
+        run: |
+          set -o pipefail
+          python3 tools/fetch_openligadb.py | tee /tmp/openligadb.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## OpenLigaDB fixture fetch"
+            echo
+            echo '```'
+            cat /tmp/openligadb.log 2>/dev/null || echo "fetch did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit only if the output changed
+        # Runs after a failed fetch too: a failure keeps the last good
+        # file for that competition, and the others are still worth
+        # committing.
+        if: success() || failure()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/fixtures/openligadb-*.json 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+
+          echo "Changed files:"
+          git diff --cached --name-only
+
+          git commit -m "chore: fetch OpenLigaDB fixtures ($(date -u +%Y-%m-%d))"
+
+          git push || {
+            echo "Push rejected, rebasing onto origin and retrying."
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }
