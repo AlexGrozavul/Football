@@ -157,6 +157,9 @@ a subscribed calendar reads as a schedule regardless of its description.
 
 - `calendars/*.ics`, `calendars/skipped.md`, `calendars/.stamps.json`
 - `data/fixtures/*.json` — football-data.org, one file per competition
+- `data/fixtures/openligadb-*.json` — OpenLigaDB, one file per
+  competition, and `openligadb-index.json` beside them. Kept apart from
+  `index.json` because `fetch_fixtures.py` rewrites that one whole
 - `data/clubs/*.json` — Wikidata plus manual corrections
 - `data/clubs/unmapped-leagues.csv` — seed list for `league-tiers.csv`
 - `data/clubs/capacity-review.csv` — disagreements for Alexandru to judge
@@ -177,6 +180,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   CDN, three tabs: map, bucket list, ticket info.
 - `tools/build_calendars.py` — `.ics` generation
 - `tools/fetch_fixtures.py` — football-data.org
+- `tools/fetch_openligadb.py` — OpenLigaDB: 2. Bundesliga, 3. Liga,
+  DFB-Pokal and the Regionalliga divisions it carries. **Never the
+  Bundesliga.** Daily, `fetch-openligadb.yml`, no secret. Exits 1 when a
+  competition that should have come back did not; the files that did
+  come back are still committed
 - `tools/fetch_clubs.py` — Wikidata club layer, and the **novalue
   fallback**: the only route by which a club hidden from the club
   query by a preferred-rank "no league" statement reaches the map.
@@ -2954,10 +2962,70 @@ a page anyone can already view in their browser's network tab.
   cannot be the sole source of tier data. It can generate a draft of
   `league-tiers.csv` for review, which is the plan for expanding beyond
   Germany and Romania.
-- OpenLigaDB is not yet wired up. It would cover 2. Bundesliga, 3. Liga,
-  DFB-Pokal and Regionalliga. Bundesliga is deliberately excluded there,
-  since football-data.org already covers it and two sources would mean
-  reconciling two sets of ids.
+- **OpenLigaDB is wired up, 2026-09-24, and it covers less of the
+  Regionalliga than this file used to assume.** This entry used to say
+  it "would cover 2. Bundesliga, 3. Liga, DFB-Pokal and Regionalliga".
+  Three of the four are true. The fourth is **two of five divisions**.
+  Read from the API on a GitHub runner, because the sandbox answers 403
+  to CONNECT for `api.openligadb.de` the same way it does for Wikidata.
+  - **The API.** Base `https://api.openligadb.de` (the old
+    `https://www.openligadb.de/api` still answers identically).
+    `getavailableleagues` lists every league (832 on the day);
+    `getmatchdata/<shortcut>/<season>` gives one league-season's
+    matches; `getavailableteams/<shortcut>/<season>` its teams. Season is
+    the **start year**: `2026` is 2026/27. Keyless.
+  - **The shortcuts used, and what came back on 2026-09-24:**
+
+    | shortcut | OpenLigaDB's name | matches | played | teams | crests |
+    |---|---|---|---|---|---|
+    | `bl2` | 2. Fußball-Bundesliga 2026/2027 | 306 | 54 | 18 | 18 |
+    | `bl3` | 3. Liga 2026/2027 | 380 | 69 | 20 | 20 |
+    | `dfb` | DFB Pokal 2026/2027 | 48 | 32 | 64 | 64 |
+    | `rln` | Fußball-Regionalliga Nord | 306 | 90 | 18 | 18 |
+    | `rlno` | NOFV Regionalliga NordOst | 306 | 90 | 18 | 18 |
+
+    The Pokal's 48 is the first round (32, played) and the second (16,
+    scheduled); later rounds appear once they are drawn.
+  - **The Regionalliga is five divisions and OpenLigaDB carries two of
+    them this season.** Nord and Nordost are complete. **Bayern** is a
+    stub, `regio-bayern`: four teams, no matches — the tool watches it
+    and says so, and starts writing a file the day it fills.
+    **West and Südwest are not there under any name** — the full 2025
+    to 2027 league list was read, not searched for a guessed code.
+    West was carried in some past seasons (`rlw` 2023, `RLW` 2024) and
+    not in others, which is the shape of this site: its leagues are
+    maintained by volunteers, season by season.
+  - **Its league list is community-edited, and that is the founding
+    assumption that was most wrong.** Anyone can create a league: the
+    list carries test leagues, darts, ice hockey, and **copies** — `bl2h`
+    is a second 2. Bundesliga 2026/27 with the same 306 fixtures and no
+    results entered. So the tool **names its shortcuts by hand** and
+    never picks one by matching a league name.
+  - **"Nothing" looks like success.** `getmatchdata` answers **HTTP 200
+    with `[]`** for a shortcut that does not exist at all. So an empty
+    answer is a failed fetch, the last good file is kept, and the run
+    goes red — exactly the rule this project already had, applied to an
+    API that would otherwise make it easy to break.
+  - **A missing kickoff is written as `1970-01-01`.** Seen in a women's
+    league, not in any of ours today; the tool reads it as "no date",
+    leaves the field blank and counts it.
+  - **There is no match status**, only `matchIsFinished`, so the files
+    say `finished: true/false` and nothing is invented to fill
+    football-data.org's `SCHEDULED`/`POSTPONED`. The final score is the
+    result OpenLigaDB labels `Endergebnis` and nothing else.
+  - **Stadium is mostly absent**: 0 of 380 3. Liga matches carry one.
+  - **Crests: a URL on every team, and not a licensing answer.** 138
+    team entries, 138 with a crest. They are hotlinks to wherever each
+    image was found — 116 to `upload.wikimedia.org`, 13 to `i.imgur.com`,
+    4 to `derivates.kicker.de`, and single ones to fussballdaten.de,
+    dfb.de, bundesliga-reisefuehrer.de and openligadb.de. Many of the
+    Wikimedia ones will be the non-free crests the badge item already
+    rules out. So for badge work it is a second **list of URLs**, not a
+    second **source of usable images**; each would need its own licence
+    checked. The run summary prints this breakdown every day.
+  - **The ids are OpenLigaDB's own** and share nothing with
+    football-data.org's or Wikidata's. Joining a team to a club on the
+    map is not done and would need its own matching step.
 
 ---
 
