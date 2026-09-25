@@ -31,14 +31,14 @@
   },
   "FR": {
    "name": "France",
-   "onMap": 39,
+   "onMap": 36,
    "byTier": {
     "1": 18,
-    "2": 21
+    "2": 18
    },
-   "withVenueName": 39,
-   "withCapacity": 37,
-   "handCorrected": 0
+   "withVenueName": 36,
+   "withCapacity": 34,
+   "handCorrected": 1
   }
  }
 }

@@ -19,20 +19,6 @@
    "competition": "Ligue 1"
   },
   {
-   "id": "Q1132418",
-   "name": "FC Martigues",
-   "leagues": [
-    "Q217374"
-   ],
-   "tier": 2,
-   "venue": "stade Francis-Turcan",
-   "capacity": 11500,
-   "lat": 43.407277,
-   "lon": 5.04935,
-   "city": null,
-   "competition": "Ligue 2"
-  },
-  {
    "id": "Q1140695",
    "name": "Football Club d'Annecy",
    "leagues": [
@@ -86,6 +72,9 @@
    "lat": 43.727778,
    "lon": 7.415556,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_1",
+   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. The country check flags this club every run because Wikidata's P17 on Q180305 is Q235 Monaco, not France, and that is TRUE: the ground, Stade Louis-II, is in Monaco. It is in FR.json because it plays in Ligue 1 (P118 Q13394, start 2013), and the 2026-27 Ligue 1 article lists it - so the file is France's league pyramid, not France's territory. Removing it would take a Ligue 1 club off the map. Which country's ticket rules would apply to it is a separate question and nothing is decided here; club-tickets.csv has no row for it",
+   "manual": true,
    "competition": "Ligue 1"
   },
   {
@@ -327,20 +316,6 @@
    "competition": "Ligue 2"
   },
   {
-   "id": "Q2619514",
-   "name": "Avenir sportif Béziers",
-   "leagues": [
-    "Q217374"
-   ],
-   "tier": 2,
-   "venue": "stade Raoul-Barrière",
-   "capacity": 18555,
-   "lat": 43.33633,
-   "lon": 3.26658,
-   "city": null,
-   "competition": "Ligue 2"
-  },
-  {
    "id": "Q288419",
    "name": "Pau Football Club",
    "leagues": [
@@ -395,20 +370,6 @@
    "lon": 0.1697,
    "city": null,
    "competition": "Ligue 1"
-  },
-  {
-   "id": "Q369349",
-   "name": "Union sportive Orléans",
-   "leagues": [
-    "Q217374"
-   ],
-   "tier": 2,
-   "venue": "stade de la Source",
-   "capacity": 6863,
-   "lat": 47.84069,
-   "lon": 1.94169,
-   "city": null,
-   "competition": "Ligue 2"
   },
   {
    "id": "Q459148",

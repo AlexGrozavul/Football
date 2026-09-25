@@ -1,2 +1,2 @@
 clubQid,name,inFile,tier,venue,lat,lon,handCorrected,signal,detail
-Q180305,AS Monaco FC,FR,1,stade Louis-II,43.727778,7.415556,no,Wikidata says another country,"P17 on the item says Monaco (Q235), not France"
+Q180305,AS Monaco FC,FR,1,stade Louis-II,43.727778,7.415556,yes,Wikidata says another country,"P17 on the item says Monaco (Q235), not France"
