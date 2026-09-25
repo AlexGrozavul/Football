@@ -88,6 +88,7 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 COUNTRIES = [
     ("DE", "Q183", "Germany"),
     ("RO", "Q218", "Romania"),
+    ("FR", "Q142", "France"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -745,9 +746,17 @@ def novalue_fallback(code, lang, values, main_rows, tiers):
 #       Sylt), west 5.8663 (Selfkant), east 15.0419 (Neissaue)
 #   RO  south 43.6187 (Zimnicea), north 48.2673 (Horodistea),
 #       west 20.2619 (Beba Veche), east 29.6912 (Sulina)
+#   FR  metropolitan France and Corsica only - no overseas department
+#       has a club in Ligue 1 or Ligue 2. south 41.3334 (Cap de
+#       Pertusato, Corsica), north 51.0891 (Bray-Dunes), west -5.1412
+#       (Pointe de Pern, Ouessant), east 9.5600 (Cap Corse). A box this
+#       size also holds Monaco, Andorra, Luxembourg, Geneva and a strip
+#       of Belgium, so it catches nothing near a border - Wikidata's P17
+#       is the signal that does that, exactly as it was for Veltheim.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
+    "FR": {"lat": (41.25, 51.20), "lon": (-5.25, 9.65)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -763,7 +772,8 @@ COUNTRY_NAMES = {
     "Q38": "Italy", "Q29": "Spain", "Q145": "United Kingdom",
     "Q41": "Greece", "Q43": "Turkey", "Q184": "Belarus",
     "Q32": "Luxembourg", "Q33": "Finland", "Q34": "Sweden",
-    "Q20": "Norway", "Q35": "Denmark",
+    "Q20": "Norway", "Q35": "Denmark", "Q235": "Monaco",
+    "Q228": "Andorra",
 }
 
 
@@ -1139,7 +1149,7 @@ def main():
     for position, (code, country_qid, name) in enumerate(COUNTRIES):
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
-        lang = {"DE": "de", "RO": "ro"}.get(code, "en")
+        lang = {"DE": "de", "RO": "ro", "FR": "fr"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,

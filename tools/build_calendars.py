@@ -62,6 +62,7 @@ FIXTURE_MATCH_HOURS = 2
 COUNTRY_TZ = {
     "DE": "Europe/Berlin",
     "RO": "Europe/Bucharest",
+    "FR": "Europe/Paris",
     "IT": "Europe/Rome",
     "FR": "Europe/Paris",
     "AT": "Europe/Vienna",

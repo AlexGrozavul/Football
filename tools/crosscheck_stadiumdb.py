@@ -95,10 +95,13 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # wrong guess looks exactly like a country with no grounds in it. Both
 # of these were confirmed against the site: /stadiums/germany,
 # /stadiums/de, /stadiums/rom, /stadiums/romania and /stadiums/ro are
-# all genuine 404s.
+# all genuine 404s. France's "fra" was confirmed the same way on
+# 2026-09-25, from a runner: /stadiums/fra answers 200 with the country
+# table, and /stadiums/france, /stadiums/fr and /stadiums/fre are 404s.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
+    "FR": ("fra", "France"),
 }
 
 # Below this the two sources are treated as agreeing. Same threshold

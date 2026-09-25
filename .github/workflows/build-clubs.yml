@@ -34,10 +34,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: python3 tools/_probe_fr.py
+      - run: python3 tools/diagnose_p118_rank.py
 
   clubs:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
