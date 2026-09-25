@@ -13,8 +13,11 @@ if title:
         "format": "json", "formatversion": "2", "redirects": "1"})
     d, err = cr.get_json_with_retry("https://it.wikipedia.org/w/api.php?" + q, title)
     html = (d or {}).get("parse", {}).get("text", "")
-    m = re.search(r'<table class="sinottico.*?</table>', html, re.S)
-    print("INFOBOX", err, cr.text_of(m.group(0))[:1500] if m else "no infobox table", flush=True)
+    html = re.sub(r"<style.*?</style>", " ", html, flags=re.S)
     body = cr.text_of(html)
-    print("LEAD", body[:1200], flush=True)
+    for key in ("Fondazione", "Scioglimento", "Stadio", "Campionato", "Colori"):
+        for mm in re.finditer(key + r".{0,160}", body):
+            print("FIELD", mm.group(0), flush=True)
+            break
+    print("LEAD", body[:1500], flush=True)
 print("=== END OF PROBE 3 ===")
