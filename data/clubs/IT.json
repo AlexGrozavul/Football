@@ -5,48 +5,6 @@
  "countryName": "Italy",
  "clubs": [
   {
-   "id": "Q107688507",
-   "name": "Unione Calcio Sampdoria 2021-2022",
-   "leagues": [
-    "Q15804"
-   ],
-   "tier": 1,
-   "venue": "stadio Luigi Ferraris",
-   "capacity": 33205,
-   "lat": 44.416431,
-   "lon": 8.952428,
-   "city": null,
-   "competition": "Serie A"
-  },
-  {
-   "id": "Q107723242",
-   "name": "Reggina 1914 2021-2022",
-   "leagues": [
-    "Q194052"
-   ],
-   "tier": 2,
-   "venue": "stadio Oreste Granillo",
-   "capacity": 27543,
-   "lat": 38.092778,
-   "lon": 15.635278,
-   "city": null,
-   "competition": "Serie B"
-  },
-  {
-   "id": "Q107976143",
-   "name": "Cosenza Calcio 2021-2022",
-   "leagues": [
-    "Q194052"
-   ],
-   "tier": 2,
-   "venue": "stadio San Vito-Gigi Marulla",
-   "capacity": 20987,
-   "lat": 39.31,
-   "lon": 16.2308,
-   "city": null,
-   "competition": "Serie B"
-  },
-  {
    "id": "Q1120838",
    "name": "Como 1907",
    "leagues": [
@@ -59,20 +17,6 @@
    "lon": 9.072222,
    "city": null,
    "competition": "Serie A"
-  },
-  {
-   "id": "Q121000659",
-   "name": "Unione Sportiva Catanzaro 1929 2023-2024",
-   "leagues": [
-    "Q194052"
-   ],
-   "tier": 2,
-   "venue": "stadio Nicola Ceravolo",
-   "capacity": 14650,
-   "lat": 38.919722,
-   "lon": 16.587778,
-   "city": null,
-   "competition": "Serie B"
   },
   {
    "id": "Q13391",
@@ -99,34 +43,6 @@
    "capacity": 5500,
    "lat": 46.49234,
    "lon": 11.345385,
-   "city": null,
-   "competition": "Serie B"
-  },
-  {
-   "id": "Q140457427",
-   "name": "Unione Sportiva Catanzaro 1929 2026-2027",
-   "leagues": [
-    "Q194052"
-   ],
-   "tier": 2,
-   "venue": "stadio Nicola Ceravolo",
-   "capacity": 14650,
-   "lat": 38.919722,
-   "lon": 16.587778,
-   "city": null,
-   "competition": "Serie B"
-  },
-  {
-   "id": "Q140664600",
-   "name": "Palermo Football Club 2026-2027",
-   "leagues": [
-    "Q194052"
-   ],
-   "tier": 2,
-   "venue": "stadio Renzo Barbera",
-   "capacity": 36365,
-   "lat": 38.152767,
-   "lon": 13.342275,
    "city": null,
    "competition": "Serie B"
   },
@@ -645,34 +561,6 @@
    "capacity": 31045,
    "lat": 45.435356,
    "lon": 10.968647,
-   "city": null,
-   "competition": "Serie B"
-  },
-  {
-   "id": "Q97671268",
-   "name": "Football Club Crotone 2020-2021",
-   "leagues": [
-    "Q15804"
-   ],
-   "tier": 1,
-   "venue": "stadio Ezio Scida",
-   "capacity": 16108,
-   "lat": 39.079167,
-   "lon": 17.116667,
-   "city": null,
-   "competition": "Serie A"
-  },
-  {
-   "id": "Q98607551",
-   "name": "Reggina 1914 2020-2021",
-   "leagues": [
-    "Q194052"
-   ],
-   "tier": 2,
-   "venue": "stadio Oreste Granillo",
-   "capacity": 27543,
-   "lat": 38.092778,
-   "lon": 15.635278,
    "city": null,
    "competition": "Serie B"
   }
