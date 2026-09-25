@@ -1,26 +1,40 @@
 leagueQid,tier,label,country,clubsSeen
+Q973312,,championnat de France de football de cinquième division,FR,111
+Q1061291,,championnat de France de football de quatrième division,FR,77
+Q864298,,championnat de France de football de troisième division,FR,31
 Q316686,,Fußball-Oberliga Nordost,DE,28
 Q15735,,Fußball-Bayernliga,DE,27
+Q2951169,,championnat de France féminin de football de deuxième division,FR,27
 Q878642,,Fußball-Oberliga Baden-Württemberg,DE,27
+Q1231102,,Première Ligue,FR,25
 Q175762,,Handball-Bundesliga,DE,25
 Q26223,,Fußball-Oberliga Rheinland-Pfalz/Saar,DE,25
 Q316340,,Fußball-Hessenliga,DE,21
 Q322918,,Fußball-Oberliga Niederrhein,DE,21
+Q101885125,,European League of Football,DE;FR,20
 Q316113,,Oberliga Westfalen,DE,20
 Q821097,,Berlin-Liga,DE,20
 Q317927,,Fußball-Oberliga Hamburg,DE,19
 Q561845,,Rugby-Bundesliga,DE,19
+Q5798,,championnat de France de rugby à XV,FR,19
 Q609757,,Frauen-Bundesliga,DE,19
 Q113159,,2. Frauen-Bundesliga,DE,18
 Q317868,,Fußball-Oberliga Niedersachsen,DE,18
+Q1424175,,championnat de France masculin de basket-ball de deuxième division,FR,17
 Q14919807,,DEL2,DE,17
 Q20025024,,Bayernliga Süd,DE,17
 Q540636,,Basketball-Bundesliga,DE,17
+Q15062840,,championnat de France masculin de basket-ball,FR,16
 Q209970,,2. Handball-Bundesliga,DE,16
+Q203172,,championnat de France masculin de handball,FR,15
+Q5904,,championnat de France de rugby à XV de 2e division,FR,15
+Q1142995,,Super League,FR,14
 Q1477071,,Fußball-Verbandsliga Hessen,DE,14
 Q1770303,,Kreisliga,DE,14
+Q2955893,,Championship,FR,14
 Q1231323,,Liga Națională,RO,13
 Q2111375,,ProB,DE,13
+Q2261921,,championnat de La Réunion de football,FR,13
 Q1309841,,Fußball-Landesliga Westfalen,DE,12
 Q1476473,,Fußball-Landesliga Niederrhein,DE,12
 Q1477042,,Fußball-Sachsenliga,DE,12
@@ -31,7 +45,8 @@ Q247040,,Fußball-Westfalenliga,DE,11
 Q2494381,,Floorball-Bundesliga,DE,11
 Q44151,,Bezirksliga,DE,11
 Q875706,,Fußball-Verbandsliga Mecklenburg-Vorpommern,DE,11
-Q101885125,,European League of Football,DE,10
+Q1249149,,championnat de France féminin de basket-ball,FR,10
+Q2331632,,championnat de Polynésie française de football,FR,10
 Q322171,,ProA,DE,10
 Q324154,,Fußball-Oberliga Schleswig-Holstein,DE,10
 Q324698,,Mittelrheinliga,DE,10
@@ -39,9 +54,12 @@ Q475887,,Bremen-Liga,DE,10
 Q1467826,,Rugby-Union-Europameisterschaft,DE,9
 Q20028073,,Bayernliga Nord,DE,9
 Q5511145,,Landesliga Mitte (1963-2012),DE,9
+Q600302,,division d'Honneur,FR,9
 Q641369,,Fußball-Verbandsliga Württemberg,DE,9
+Q891072,,championnat de Guyane de football,FR,9
 Q1477067,,Fußball-Thüringenliga,DE,8
 Q23308278,,2. Bundesliga Herren,DE,8
+Q3240443,,ligue de la Méditerranée de football,FR,8
 Q5284652,,Liga Națională,RO,8
 Q993765,,Fußball-Verbandsliga Baden,DE,8
 Q3712183,,Liga I,RO,7
@@ -56,6 +74,7 @@ Q18547858,,Liga a IV-a Sibiu,RO,6
 Q2952038,,Liga I Feminin,RO,6
 Q5511147,,Landesliga Nordost,DE,6
 Q686699,,DHB-Pokal,DE,6
+Q933242,,ligue de football de la Martinique,FR,6
 Q1477019,,Fußball-Regionalliga Nord,DE,5
 Q1477021,,Fußball-Regionalliga Nordost,DE,5
 Q300020,,Deutsche Volleyball-Bundesliga,DE,5
@@ -68,6 +87,7 @@ Q1477024,,Fußball-Regionalliga Süd,DE,4
 Q18548570,,Liga a IV-a Timiș,RO,4
 Q2120557,,Pétanque-Bundesliga,DE,4
 Q223351,,3. Liga,DE,4
+Q2951508,,championnat de France masculin de water-polo,FR,4
 Q315442,,Eishockey-Oberliga,DE,4
 Q6954875,,Fußball-Oberliga Nordost (Staffel Nord),DE,4
 Q826516,,Fußball-Landesliga Bremen,DE,4
@@ -78,10 +98,16 @@ Q12732224,,Liga a IV-a Ialomița,RO,3
 Q12732227,,Liga a IV-a Mureș,RO,3
 Q12732231,,Liga a IV-a Vâlcea,RO,3
 Q1477025,,Fußball-Regionalliga Südwest,DE,3
+Q23021345,,championnat de France féminin de rugby à XV de 2e division,FR,3
+Q2604199,,ligue guadeloupéenne de football,FR,3
+Q2951366,,championnat de France féminin de rugby à XV,FR,3
 Q305104,,Liga Națională de hochei,RO,3
 Q5511149,,Landesliga Südost,DE,3
 Q5511150,,Landesliga Südwest,DE,3
+Q60847120,,championnat de France féminin de rugby à XV de 2e division fédérale,FR,3
 Q1049208,,Liga MOL,RO,2
+Q112625442,,championnat de France de rugby à XV de Nationale 2,FR,2
+Q1231272,,ligue régionale de football,FR,2
 Q12732203,,Liga a IV-a Alba,RO,2
 Q12732207,,Liga a IV-a Brăila,RO,2
 Q12732210,,Liga a IV-a Cluj,RO,2
@@ -97,6 +123,7 @@ Q12732230,,Liga a IV-a Satu Mare,RO,2
 Q1476961,,Fußball-Regionalliga,DE,2
 Q1574545,,Handball-Oberliga Baden-Württemberg der Frauen,DE,2
 Q1574547,,Handball-Oberliga Baden-Württemberg der Männer,DE,2
+Q16642,,tournoi des Six Nations,FR,2
 Q1756562,,Divizia A1 de volei feminin,RO,2
 Q18538278,,Liga a IV-a Brașov,RO,2
 Q18541340,,Liga a IV-a Bacău,RO,2
@@ -105,6 +132,14 @@ Q18548729,,Liga a IV-a Tulcea,RO,2
 Q20798387,,BeNe League,DE,2
 Q209827,,2. Floorball-Bundesliga,DE,2
 Q209968,,2. Handball-Bundesliga,DE,2
+Q2950711,,championnat de France de rugby à XV de Régionale 1,FR,2
+Q2950973,,championnat de France de basket-ball de Nationale masculine 1,FR,2
+Q2951043,,championnat de France féminin de floorball,FR,2
+Q2951241,,championnat de France masculin de handball de deuxième division,FR,2
+Q3091830,,Fédération française de natation,FR,2
+Q3240347,,ligue de Midi-Pyrénées de football,FR,2
+Q3883111,,tournoi de tennis d'Andrézieux-Bouthéon,FR,2
+Q429206,,championnat de France de rugby à XV de 2e division fédérale,FR,2
 Q4900351,,Bezirksliga Mittelfranken Nord,DE,2
 Q5511148,,Landesliga Nordwest,DE,2
 Q558216,,German Football League,DE,2
@@ -115,12 +150,14 @@ Q878505,,Landesliga,DE,2
 Q1050620,,Liga a V-a,RO,1
 Q106977877,,Liga I,RO,1
 Q106977879,,Liga II,RO,1
+Q107977527,,championnat de France de basket-ball 2021-2022,FR,1
 Q1112545,,Handball-Oberliga Niedersachsen,DE,1
 Q112155972,,Handball-Regionalliga Süd,DE,1
 Q1136446,,SuperLiga,RO,1
 Q1152882,,DEB-Pokal der Frauen,DE,1
 Q1158340,,Damen-Basketball-Bundesligen,DE,1
 Q117536457,,2. Bundesliga Pro,DE,1
+Q1231259,,championnat de France de hockey sur glace D4,FR,1
 Q126924470,,Handball-Regionalliga Baden-Württemberg,DE,1
 Q12732217,,Liga a IV-a Covasna,RO,1
 Q12732219,,Liga a IV-a Giurgiu,RO,1
@@ -134,6 +171,8 @@ Q1435997,,Football-Bundesliga (Damen),DE,1
 Q1476469,,Fußball-Landesliga Bayern,DE,1
 Q1477038,,Fußball-Rheinlandliga,DE,1
 Q15819154,,Handball-Oberliga Hessen,DE,1
+Q1617018,,championnat de France de rugby à XIII,FR,1
+Q16537560,,championnat de France féminin de rugby à XIII,FR,1
 Q169519,,Deutsche Eishockey Liga,DE,1
 Q17342725,,Basketball-Bundesliga 2014/15,DE,1
 Q18417282,,Cupa României,RO,1
@@ -144,18 +183,39 @@ Q18549264,,Liga a IV-a Vrancea,RO,1
 Q18549770,,Liga a IV-a Teleorman,RO,1
 Q209738,,2. Deutsche Volleyball-Bundesliga,DE,1
 Q209740,,2. Deutsche Volleyball-Bundesliga,DE,1
+Q23021344,,championnat de France féminin de rugby à XV de 1re division fédérale,FR,1
+Q2359623,,tournoi des Six Nations féminin,FR,1
 Q247481,,Fußball-Landesliga Niedersachsen,DE,1
+Q2941183,,championnat de France de football américain D1,FR,1
+Q2950578,,championnat de Bretagne de football gaélique,FR,1
+Q2950772,,championnat de France Pro B de tennis de table,FR,1
+Q2951195,,championnat de France de football gaélique,FR,1
+Q2951214,,championnat de France féminin de handball de Nationale 1,FR,1
+Q2951245,,championnat de France féminin de hockey sur glace,FR,1
+Q29919148,,championnat de France de football des moins de 17 ans et des moins de 19 ans,FR,1
+Q2999849,,Coupe de Bretagne de football gaélique,FR,1
 Q300016,,Deutsche Volleyball-Bundesliga,DE,1
+Q30084427,,championnat de France de rugby à XV 2017-2018,FR,1
 Q30668116,,Liga I Feminin,RO,1
+Q3240336,,ligue de Bourgogne de football,FR,1
+Q3240516,,Ligue Centre-Val de Loire de football,FR,1
 Q480019,,Ringer-Bundesliga,DE,1
+Q483020,,Paris Saint-Germain FC,FR,1
+Q48750368,,Ligue régionale Auvergne-Rhône-Alpes de rugby,FR,1
 Q5194425,,Cupa României,RO,1
 Q5511144,,Gruppenliga,DE,1
+Q576434,,prix de Rome,FR,1
 Q61974506,,Liga a V-a Suceava,RO,1
 Q63967570,,Eishockey-Hessenliga,DE,1
 Q6436644,,Kreisliga Schwaben-Mitte,DE,1
 Q6484470,,Landesliga Weser-Ems,DE,1
+Q653544,,Trophée des champions,FR,1
 Q6545746,,Liga I (futsal),RO,1
 Q68935792,,Futsal-Bundesliga,DE,1
+Q739643,,Fédération internationale de football américain,FR,1
 Q7920950,,Verbandsliga Hessen-Süd,DE,1
 Q832896,,Fußball-NRW-Liga,DE,1
 Q8438,,Olympische Sommerspiele 1972,DE,1
+Q9075661,,New Caledonia Second Level,FR,1
+Q928872,,championnat de France masculin de volley-ball,FR,1
+Q96240387,,championnat de France de rugby à XV de Nationale,FR,1

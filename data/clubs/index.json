@@ -28,6 +28,17 @@
    "withVenueName": 64,
    "withCapacity": 43,
    "handCorrected": 7
+  },
+  "FR": {
+   "name": "France",
+   "onMap": 40,
+   "byTier": {
+    "1": 19,
+    "2": 21
+   },
+   "withVenueName": 40,
+   "withCapacity": 38,
+   "handCorrected": 0
   }
  }
 }

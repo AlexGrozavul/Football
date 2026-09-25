@@ -1,0 +1,568 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "FR",
+ "countryName": "France",
+ "clubs": [
+  {
+   "id": "Q1051013",
+   "name": "Paris FC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Charléty",
+   "capacity": 20000,
+   "lat": 48.81716,
+   "lon": 2.34511,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q1132418",
+   "name": "FC Martigues",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Francis-Turcan",
+   "capacity": 11500,
+   "lat": 43.407277,
+   "lon": 5.04935,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q1140695",
+   "name": "Football Club d'Annecy",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "parc des Sports",
+   "capacity": 15660,
+   "lat": 45.91722,
+   "lon": 6.11972,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q126334",
+   "name": "RC Strasbourg Alsace",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade de la Meinau",
+   "capacity": 26109,
+   "lat": 48.55942,
+   "lon": 7.75738,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q132885",
+   "name": "Olympique de Marseille",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Vélodrome",
+   "capacity": 67394,
+   "lat": 43.269241,
+   "lon": 5.394907,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q180305",
+   "name": "AS Monaco FC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Louis-II",
+   "capacity": 18523,
+   "lat": 43.727778,
+   "lon": 7.415556,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q1815297",
+   "name": "USL Dunkerque",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Marcel-Tribut",
+   "capacity": 4200,
+   "lat": 51.035556,
+   "lon": 2.390278,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q182876",
+   "name": "AJ Auxerre",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "Stade de l'Abbé-Deschamps",
+   "capacity": 18541,
+   "lat": 47.78672,
+   "lon": 3.58871,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q185163",
+   "name": "OGC Nice",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "Allianz Riviera",
+   "capacity": 36178,
+   "lat": 43.70513,
+   "lon": 7.19262,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q191843",
+   "name": "RC Lens",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Bollaert-Delelis",
+   "capacity": 38223,
+   "lat": 50.4329,
+   "lon": 2.81491,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q192071",
+   "name": "Football Club de Nantes",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade de la Beaujoire",
+   "capacity": 35318,
+   "lat": 47.2561,
+   "lon": -1.52466,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q19509",
+   "name": "Stade rennais FC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "Roazhon Park",
+   "capacity": 31127,
+   "lat": 48.10743,
+   "lon": -1.71282,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q19512",
+   "name": "Football Club Sochaux-Montbéliard",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Auguste-Bonal",
+   "capacity": 20025,
+   "lat": 47.51238,
+   "lon": 6.81116,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q19513",
+   "name": "Montpellier Hérault SC",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade de la Mosson",
+   "capacity": 32900,
+   "lat": 43.62061,
+   "lon": 3.81279,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q19516",
+   "name": "Lille OSC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Pierre-Mauroy",
+   "capacity": 50000,
+   "lat": 50.611962,
+   "lon": 3.130631,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q19518",
+   "name": "Toulouse FC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "Stadium municipal de Toulouse",
+   "capacity": 33150,
+   "lat": 43.583296,
+   "lon": 1.434055,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q19521",
+   "name": "AS Saint-Étienne",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Geoffroy-Guichard",
+   "capacity": 41965,
+   "lat": 45.460749,
+   "lon": 4.390171,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q19523",
+   "name": "AS Nancy-Lorraine",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Marcel-Picot",
+   "capacity": 20087,
+   "lat": 48.696,
+   "lon": 6.21222,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q208228",
+   "name": "Stade de Reims",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Auguste-Delaune",
+   "capacity": 21684,
+   "lat": 49.24716,
+   "lon": 4.02478,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q209509",
+   "name": "Grenoble Foot 38",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade des Alpes",
+   "capacity": 20068,
+   "lat": 45.187474,
+   "lon": 5.740194,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q210864",
+   "name": "Le Mans Football Club",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Marie-Marvingt",
+   "capacity": 25000,
+   "lat": 47.95958,
+   "lon": 0.22129,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q218372",
+   "name": "Stade brestois 29",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Francis-Le Blé",
+   "capacity": 15097,
+   "lat": 48.40293,
+   "lon": -4.46148,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q221525",
+   "name": "FC Metz",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Saint-Symphorien",
+   "capacity": 26671,
+   "lat": 49.109945,
+   "lon": 6.159532,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q24937450",
+   "name": "saison 2016-2017 du Stade rennais FC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "Roazhon Park",
+   "capacity": 31127,
+   "lat": 48.10743,
+   "lon": -1.71282,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q2619514",
+   "name": "Avenir sportif Béziers",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Raoul-Barrière",
+   "capacity": 18555,
+   "lat": 43.33633,
+   "lon": 3.26658,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q288419",
+   "name": "Pau Football Club",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "Nouste Camp",
+   "capacity": null,
+   "lat": 43.307677,
+   "lon": -0.325234,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q292231",
+   "name": "Rodez Aveyron Football",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Paul-Lignon",
+   "capacity": null,
+   "lat": 44.35161,
+   "lon": 2.56376,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q309400",
+   "name": "US Boulogne CO",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade de la Libération",
+   "capacity": 6600,
+   "lat": 50.7244,
+   "lon": 1.61907,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q328658",
+   "name": "Le Havre AC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Océane",
+   "capacity": 25178,
+   "lat": 49.4988,
+   "lon": 0.1697,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q369349",
+   "name": "Union sportive Orléans",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade de la Source",
+   "capacity": 6863,
+   "lat": 47.84069,
+   "lon": 1.94169,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q459148",
+   "name": "En avant Guingamp",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade de Roudourou",
+   "capacity": 18250,
+   "lat": 48.56516,
+   "lon": -3.16552,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q483020",
+   "name": "Paris Saint-Germain FC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "Parc des Princes",
+   "capacity": 47930,
+   "lat": 48.84145,
+   "lon": 2.25305,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q48911",
+   "name": "FC Lorient",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade du Moustoir",
+   "capacity": 18500,
+   "lat": 47.74869,
+   "lon": -3.36929,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q501693",
+   "name": "ES Troyes AC",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade de l'Aube",
+   "capacity": 20400,
+   "lat": 48.30616,
+   "lon": 4.0982,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q503317",
+   "name": "Dijon FCO",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Gaston-Gérard",
+   "capacity": 15995,
+   "lat": 47.32616,
+   "lon": 5.06757,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q522283",
+   "name": "Red Star FC",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Bauer",
+   "capacity": 8000,
+   "lat": 48.9061,
+   "lon": 2.34105,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q704",
+   "name": "Olympique lyonnais",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "Parc Olympique lyonnais",
+   "capacity": 59286,
+   "lat": 45.765224,
+   "lon": 4.982131,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q760736",
+   "name": "Stade lavallois",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Francis-Le-Basser",
+   "capacity": 11107,
+   "lat": 48.08387,
+   "lon": -0.75351,
+   "city": null,
+   "competition": "Ligue 2"
+  },
+  {
+   "id": "Q845137",
+   "name": "Angers SCO",
+   "leagues": [
+    "Q13394"
+   ],
+   "tier": 1,
+   "venue": "stade Raymond-Kopa",
+   "capacity": 18000,
+   "lat": 47.45905,
+   "lon": -0.53163,
+   "city": null,
+   "competition": "Ligue 1"
+  },
+  {
+   "id": "Q870182",
+   "name": "Clermont Foot 63",
+   "leagues": [
+    "Q217374"
+   ],
+   "tier": 2,
+   "venue": "stade Gabriel-Montpied",
+   "capacity": 9190,
+   "lat": 45.81584,
+   "lon": 3.12162,
+   "city": null,
+   "competition": "Ligue 2"
+  }
+ ]
+}
