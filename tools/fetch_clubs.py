@@ -694,7 +694,7 @@ def build_clubs(rows, tiers):
 
 # --------------------------------------------- the novalue fallback
 
-def novalue_fallback(code, lang, values, main_rows, tiers):
+def novalue_fallback(code, lang, values, main_rows, tiers, hand_tiers=None):
     """
     The clubs a preferred-rank "no league" statement hides, that a
     current-season roster this project already tracks says are playing.
@@ -727,6 +727,17 @@ def novalue_fallback(code, lang, values, main_rows, tiers):
     Measured on 2026-09-20: twenty clubs were hidden by rank across both
     countries, eighteen of them by a preferred novalue, and only a
     roster tells the live ones from the rest.
+
+    A TIER THE ROSTER CONTRADICTS KEEPS THE CLUB OFF - added 2026-09-25,
+    when the second shape surfaced FC Inter Sibiu at tier 2 (a stale
+    normal-rank Liga II tag) while the 2026-27 Liga III article lists
+    it. The roster is not authority for the tier, so it is not WRITTEN;
+    but a club drawn at a tier its own division contradicts is a wrong
+    fact on the map, so it is not DRAWN either. It is named in the
+    summary, and a hand row in clubs-manual.csv giving its tier -
+    Alexandru's call, as Farul's was - is what lets it through, since
+    hand_tiers is read before anything is surfaced. Farul has that row,
+    so this changes nothing for Farul.
 
     A FAILED ROSTER FETCH SURFACES NOTHING, and says so loudly. The
     alternative - treating "the article did not load" as "no club is
@@ -825,6 +836,21 @@ def novalue_fallback(code, lang, values, main_rows, tiers):
             notes.append(f"    left out: {label} ({cid}) - no current-season roster "
                          f"in data/league-rosters.csv names it, so nothing here says "
                          f"it is playing")
+            continue
+        roster_tiers = sorted({tier for tier, _article in where})
+        ordinary = [tiers[l] for l in entry["leagues"]
+                    if l in tiers and tiers[l] != "skip"]
+        ordinary = min(ordinary) if ordinary else None
+        if ordinary is not None and ordinary not in roster_tiers \
+                and cid not in (hand_tiers or {}):
+            notes.append(
+                f"    left out: {label} ({cid}) - named by "
+                f"{', '.join(sorted({a for _t, a in where}))} at tier "
+                f"{'/'.join(map(str, roster_tiers))}, but its normal-rank tags "
+                f"({', '.join(entry['leagues'])}) give tier {ordinary}. Not drawn "
+                f"at a tier its own division contradicts, and the roster's tier is "
+                f"not written for it. A row in {MANUAL_FILE} with this clubQid "
+                f"and a tier puts it on the map at that tier - Alexandru's call")
             continue
         extra_rows.extend(entry["rows"])
         surfaced[cid] = {
@@ -1320,8 +1346,10 @@ def main():
             #     says the club is playing. AFTER the main query, and
             #     given its rows, so that a club the main query can
             #     already see is never a candidate here.
+            hand_tiers = {r["clubQid"]: int(r["tier"]) for r in manual_rows
+                          if r.get("clubQid") and (r.get("tier") or "").isdigit()}
             extra_rows, surfaced, fallback_notes = novalue_fallback(
-                code, lang, values, rows, tiers)
+                code, lang, values, rows, tiers, hand_tiers)
 
             clubs, _leagues, ambiguous, dropped, club_countries = build_clubs(
                 rows + extra_rows, tiers)

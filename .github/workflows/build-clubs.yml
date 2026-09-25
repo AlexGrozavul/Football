@@ -29,17 +29,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TEMPORARY (2026-09-25, branch claude/vicenza-fixture-links-setup-rc0o0l):
-  # a new workflow cannot be dispatched until it is on main, so the rank
-  # diagnostic rides here for one branch run. Removed before merge.
-  diagnose-tmp:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - run: |
-          set -o pipefail
-          python3 tools/diagnose_p118_rank.py | tee /tmp/rank.log
-
   clubs:
     runs-on: ubuntu-latest
 
