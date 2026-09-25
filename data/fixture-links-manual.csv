@@ -1,1 +1,6 @@
 clubQid,source,teamId,action,note
+Q157463,openligadb,417,link,1. FC Saarbrücken fields two OpenLigaDB team ids one per competition (3. Liga and DFB-Pokal); both are this club
+Q157463,openligadb,3078,link,1. FC Saarbrücken fields two OpenLigaDB team ids one per competition (3. Liga and DFB-Pokal); both are this club
+Q535785,openligadb,398,link,Würzburger Kickers fields two OpenLigaDB team ids one per competition (3. Liga and DFB-Pokal); both are this club
+Q535785,openligadb,5276,link,Würzburger Kickers fields two OpenLigaDB team ids one per competition (3. Liga and DFB-Pokal); both are this club
+Q2207914,openligadb,4762,link,"II here is the village name Jeddeloh II not a reserve-team marker; the automatic matcher correctly refused this without a hint"

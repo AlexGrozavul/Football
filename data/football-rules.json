@@ -8,8 +8,8 @@
  "settings": {
   "home": {
    "label": "Leonberg, DE",
-   "lat": null,
-   "lon": null
+   "lat": 48.8014,
+   "lon": 9.0131
   },
   "distanceMode": "estimate",
   "estimateMultiplier": 1.25,
