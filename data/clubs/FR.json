@@ -327,20 +327,6 @@
    "competition": "Ligue 2"
   },
   {
-   "id": "Q24937450",
-   "name": "saison 2016-2017 du Stade rennais FC",
-   "leagues": [
-    "Q13394"
-   ],
-   "tier": 1,
-   "venue": "Roazhon Park",
-   "capacity": 31127,
-   "lat": 48.10743,
-   "lon": -1.71282,
-   "city": null,
-   "competition": "Ligue 1"
-  },
-  {
    "id": "Q2619514",
    "name": "Avenir sportif Béziers",
    "leagues": [
