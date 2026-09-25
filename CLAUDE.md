@@ -413,7 +413,12 @@ article, and is left out. A preferred statement naming a league that
 **is** mapped is not this shape: the club is on the map already, at
 the preferred league's tier, and a wrong tier there is the roster
 check's `wrong-tier` and a hand row, as before. If either shape's
-query fails, **nothing** is surfaced by either.
+query fails, **nothing** is surfaced by either. **And, for both
+shapes, a surfaced club whose ordinary-rule tier its roster
+contradicts is not drawn** until a hand row in `clubs-manual.csv`
+gives it a tier — the roster's tier is never written for it, and a
+club is never drawn at a tier its own division contradicts. FC Inter
+Sibiu is the case (Known open problems).
 **This is not the shape-5 resolution, and the difference matters.**
 Augsburg was settled by keeping a *second item* whose own tag is
 already truthy; nothing was read through. Vicenza is one item, and
