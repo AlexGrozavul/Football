@@ -42,14 +42,14 @@
   },
   "IT": {
    "name": "Italy",
-   "onMap": 40,
+   "onMap": 37,
    "byTier": {
-    "1": 21,
-    "2": 19
+    "1": 20,
+    "2": 17
    },
-   "withVenueName": 40,
-   "withCapacity": 40,
-   "handCorrected": 0
+   "withVenueName": 37,
+   "withCapacity": 37,
+   "handCorrected": 3
   }
  }
 }
