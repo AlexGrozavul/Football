@@ -64,7 +64,7 @@ ENTITY_BATCH = 50
 # league-tiers.csv maps to that country - because P17 is exactly the
 # field the missing clubs already lack, and a census that trusted it
 # alone would miss the clubs it is meant to find.
-COUNTRIES = {"Q183": "DE", "Q218": "RO", "Q142": "FR"}
+COUNTRIES = {"Q183": "DE", "Q218": "RO", "Q142": "FR", "Q38": "IT"}
 
 P_LEAGUE = "P118"
 P_VENUE = "P115"
@@ -126,6 +126,35 @@ WHERE {
   OPTIONAL { ?club wdt:P115 ?venue }
   OPTIONAL { ?club wdt:P625 ?coord }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en,de,ro" }
+}
+"""
+
+
+# QUERY C - a third shape, found by the roster check on 2026-09-25 and
+# invisible to query B by construction. LR Vicenza (Q56542463) carries
+# Serie B at NORMAL rank and Serie C Group A at PREFERRED rank, with an
+# end date. The preferred statement is a real league, not a <novalue>,
+# so wdt:P118 yields Serie C, which is not mapped, and the club never
+# reaches the map. Query B asks only about clubs with NO truthy P118 at
+# all, so it cannot see this. Query C asks: a mapped league at normal
+# rank, a preferred statement naming some other league on top of it,
+# and no mapped league among what wdt:P118 yields. The novalue fallback
+# in fetch_clubs.py deliberately does not read through this shape, and
+# this query does not suggest it should - it measures.
+QUERY_STALE_PREFERRED = """
+SELECT ?club ?clubLabel ?league ?shown ?dissolved ?coord ?groundCoord
+WHERE {
+  VALUES ?league { %(leagues)s }
+  ?club p:P118 ?st .
+  ?st ps:P118 ?league ; wikibase:rank wikibase:NormalRank .
+  ?club p:P118 ?pref .
+  ?pref ps:P118 ?shown ; wikibase:rank wikibase:PreferredRank .
+  FILTER NOT EXISTS { ?club wdt:P118 ?m . FILTER(?m IN (%(inlist)s)) }
+  FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
+  OPTIONAL { ?club wdt:P576 ?dissolved }
+  OPTIONAL { ?club wdt:P625 ?coord }
+  OPTIONAL { ?club wdt:P115/wdt:P625 ?groundCoord }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,it,de,ro,fr" }
 }
 """
 
@@ -525,7 +554,8 @@ def main():
     ours.sort(key=lambda f: (f["countryCode"] or "zz", f["label"]))
 
     print("=" * 74)
-    print("GERMANY AND ROMANIA - every club hidden from the club query by rank")
+    print(f"{'/'.join(COUNTRIES.values())} - every club hidden from the club "
+          f"query by rank")
     print("=" * 74)
     print()
     if not ours:
@@ -592,6 +622,56 @@ def main():
                    default=None)
         print(f"    {fact['qid']:<12} {fact['label']:<28} most senior hidden "
               f"tier: {best}")
+    print()
+    return stale_preferred(tiers, mapped)
+
+
+def stale_preferred(tiers, mapped):
+    """Query C - see QUERY_STALE_PREFERRED. Prints, exits 1 on failure."""
+    print("=" * 74)
+    print("QUERY C - a mapped league at normal rank, hidden under a preferred "
+          "statement naming a DIFFERENT league")
+    print("=" * 74)
+    values = " ".join(f"wd:{q}" for q in mapped)
+    inlist = ", ".join(f"wd:{q}" for q in mapped)
+    began = time.time()
+    data, error = sparql_with_retry(
+        QUERY_STALE_PREFERRED % {"leagues": values, "inlist": inlist},
+        "stale preferred")
+    if error:
+        print(f"  QUERY C FAILED: {error}. Nothing here is a finding.")
+        return 1
+    rows = data.get("results", {}).get("bindings", [])
+    print(f"  answered in {round(time.time() - began, 1)}s with {len(rows)} rows")
+    clubs = {}
+    for row in rows:
+        club = qid(cell(row, "club"))
+        if not club:
+            continue
+        fact = clubs.setdefault(club, {"label": cell(row, "clubLabel") or club,
+                                       "hidden": set(), "shown": set(),
+                                       "dissolved": None, "placed": False})
+        fact["hidden"].add(qid(cell(row, "league")))
+        fact["shown"].add(qid(cell(row, "shown")) or cell(row, "shown"))
+        fact["dissolved"] = fact["dissolved"] or cell(row, "dissolved")
+        fact["placed"] = fact["placed"] or bool(cell(row, "coord")
+                                                or cell(row, "groundCoord"))
+    print(f"  {len(clubs)} distinct clubs")
+    for club, fact in sorted(clubs.items(), key=lambda kv: kv[1]["label"]):
+        hidden = ", ".join(f"{q} ({tiers[q][2]} = tier {tiers[q][0]} {tiers[q][1]})"
+                           for q in sorted(fact["hidden"]) if q in tiers)
+        print(f"    {club:<12} {fact['label']}")
+        print(f"                 hides {hidden}")
+        print(f"                 wdt:P118 yields instead: "
+              f"{' '.join(sorted(fact['shown']))}")
+        if fact["dissolved"]:
+            print(f"                 P576 dissolved {fact['dissolved'][:4]} - "
+                  f"excluded from the club query anyway")
+        if not fact["placed"]:
+            print("                 and has no position, so reading the rank "
+                  "alone would not place it")
+    print("  A club listed here is NOT therefore in the hidden league now - "
+          "only a roster says that.")
     return 0
 
 

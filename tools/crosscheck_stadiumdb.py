@@ -98,10 +98,13 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # all genuine 404s. France's "fra" was confirmed the same way on
 # 2026-09-25, from a runner: /stadiums/fra answers 200 with the country
 # table, and /stadiums/france, /stadiums/fr and /stadiums/fre are 404s.
+# Italy's "ita" likewise on 2026-09-25: /stadiums/ita answers 200,
+# /stadiums/italy and /stadiums/it are 404s.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
     "FR": ("fra", "France"),
+    "IT": ("ita", "Italy"),
 }
 
 # Below this the two sources are treated as agreeing. Same threshold

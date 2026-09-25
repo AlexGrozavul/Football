@@ -203,7 +203,7 @@ function zoomForTier(tier){
   return TIER_FROM_ZOOM[tier] ?? (tier >= 4 ? DEEP_TIER_ZOOM : undefined);
 }
 
-const COUNTRY_FILES = ['data/clubs/DE.json','data/clubs/RO.json','data/clubs/FR.json'];
+const COUNTRY_FILES = ['data/clubs/DE.json','data/clubs/RO.json','data/clubs/FR.json','data/clubs/IT.json'];
 
 /* Fallback only. The real value comes from settings.home in
    football-rules.json once you fill in its lat/lon. */
@@ -622,6 +622,8 @@ async function fixturesHtml(club){
       ? "football-data.org's free tier carries no Romanian competition and OpenLigaDB is German only."
       : club.country === 'FR' && club.tier >= 2
       ? "football-data.org's free tier carries Ligue 1 only, not Ligue 2, and OpenLigaDB is German only."
+      : club.country === 'IT' && club.tier >= 2
+      ? "football-data.org's free tier carries Serie A only, not Serie B, and OpenLigaDB is German only."
       : club.tier >= 5
       ? "No fixture source this project fetches goes below the Regionalliga."
       : club.tier === 4

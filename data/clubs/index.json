@@ -39,6 +39,17 @@
    "withVenueName": 36,
    "withCapacity": 35,
    "handCorrected": 9
+  },
+  "IT": {
+   "name": "Italy",
+   "onMap": 37,
+   "byTier": {
+    "1": 20,
+    "2": 17
+   },
+   "withVenueName": 37,
+   "withCapacity": 37,
+   "handCorrected": 3
   }
  }
 }

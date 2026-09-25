@@ -89,6 +89,7 @@ COUNTRIES = [
     ("DE", "Q183", "Germany"),
     ("RO", "Q218", "Romania"),
     ("FR", "Q142", "France"),
+    ("IT", "Q38", "Italy"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -482,12 +483,22 @@ def load_tiers():
 # type label (French, since the club query asks in the country's own
 # language) and the name pattern is anchored to a season title's shape:
 # the word, then a year.
+#
+# Italy brought eight more on 2026-09-25, in a second shape: the club's
+# name followed by the season, "Palermo Football Club 2026-2027",
+# "Reggina 1914 2020-2021". "stagione" is the Italian type word, and the
+# name pattern takes a trailing year RANGE - a club's own name ends in a
+# single founding year ("Como 1907", "Reggina 1914"), never in two.
+# Checked against every club in the German, Romanian, French and
+# Italian files before it went in: it matches those eight and nothing
+# else.
 NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ",
-                    "season", "saison", "sezon")
+                    "season", "saison", "sezon", "stagione")
 
 NOT_A_CLUB_NAME = re.compile(
     r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b"
-    r"|^\s*(saison|season|sezonul|sezon|spielzeit)\s+\d{4}", re.IGNORECASE)
+    r"|^\s*(saison|season|sezonul|sezon|spielzeit|stagione)\s+\d{4}"
+    r"|\s(19|20)\d{2}\s*[-–/]\s*((19|20)\d{2}|\d{2})\s*$", re.IGNORECASE)
 
 
 def not_a_club(name, kinds):
@@ -501,7 +512,7 @@ def not_a_club(name, kinds):
             if word in low:
                 return (f"Wikidata says it is a {kind!r}, which is a list or a "
                         f"season, not a club")
-    if name and NOT_A_CLUB_NAME.match(name):
+    if name and NOT_A_CLUB_NAME.search(name):
         return ("its name is the title of a squad list or a season, not the name of a club "
                 "(Wikidata gives it no type that says so)")
     return None
@@ -765,10 +776,16 @@ def novalue_fallback(code, lang, values, main_rows, tiers):
 #       size also holds Monaco, Andorra, Luxembourg, Geneva and a strip
 #       of Belgium, so it catches nothing near a border - Wikidata's P17
 #       is the signal that does that, exactly as it was for Veltheim.
+#   IT  south 35.4929 (Punta Pesce Spada, Lampedusa), north 47.0921
+#       (Testa Gemella Occidentale), west 6.6267 (Rocca Bernauda),
+#       east 18.5204 (Punta Palascia). The box also holds San Marino,
+#       the Vatican, Malta, Corsica, Monaco, Ticino and a strip of
+#       Slovenia, so again P17 is what catches a club across a border.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
     "FR": {"lat": (41.25, 51.20), "lon": (-5.25, 9.65)},
+    "IT": {"lat": (35.40, 47.20), "lon": (6.50, 18.65)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -785,7 +802,7 @@ COUNTRY_NAMES = {
     "Q41": "Greece", "Q43": "Turkey", "Q184": "Belarus",
     "Q32": "Luxembourg", "Q33": "Finland", "Q34": "Sweden",
     "Q20": "Norway", "Q35": "Denmark", "Q235": "Monaco",
-    "Q228": "Andorra",
+    "Q228": "Andorra", "Q238": "San Marino",
 }
 
 
@@ -1161,7 +1178,7 @@ def main():
     for position, (code, country_qid, name) in enumerate(COUNTRIES):
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
-        lang = {"DE": "de", "RO": "ro", "FR": "fr"}.get(code, "en")
+        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,
