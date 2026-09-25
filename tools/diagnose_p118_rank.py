@@ -544,7 +544,7 @@ def main():
     print()
 
     print("-" * 74)
-    print(f"the same census outside Germany and Romania: "
+    print(f"the same census outside {'/'.join(COUNTRIES.values())}: "
           f"{len(elsewhere)} items, not this project's business and listed "
           f"only so the number is not mistaken for zero")
     for fact in sorted(elsewhere, key=lambda f: f["qid"])[:40]:
@@ -562,7 +562,7 @@ def main():
     print("=" * 74)
     print(f"  preferred-rank no-league statements, worldwide: "
           f"{len(set(census_qids))} items")
-    print(f"  clubs hidden from the club query in DE/RO:      {len(ours)}")
+    print(f"  clubs hidden from the club query in {'/'.join(COUNTRIES.values())}:   {len(ours)}")
     for fact in ours:
         why = ("preferred <novalue>" if fact["qid"] in census_shape
                else "every statement deprecated")

@@ -473,10 +473,21 @@ def load_tiers():
 # dropped 44 leagues' worth of clubs whose type is simply not filled in.
 # This one says which items to THROW OUT, and an item with no type at
 # all passes it untouched.
-NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ")
+#
+# A SEASON is the same kind of thing, and France brought the first one,
+# 2026-09-25: "saison 2016-2017 du Stade rennais FC" (Q24937450) carries
+# P118 Ligue 1 and borrows Roazhon Park's coordinates, so it reached the
+# map at tier 1 on Rennes' own pin. A club season is an event in a
+# club's history, not a club. The words below are matched inside the
+# type label (French, since the club query asks in the country's own
+# language) and the name pattern is anchored to a season title's shape:
+# the word, then a year.
+NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ",
+                    "season", "saison", "sezon")
 
 NOT_A_CLUB_NAME = re.compile(
-    r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b", re.IGNORECASE)
+    r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b"
+    r"|^\s*(saison|season|sezonul|sezon|spielzeit)\s+\d{4}", re.IGNORECASE)
 
 
 def not_a_club(name, kinds):
@@ -488,9 +499,10 @@ def not_a_club(name, kinds):
         low = kind.lower()
         for word in NOT_A_CLUB_TYPES:
             if word in low:
-                return f"Wikidata says it is a {kind!r}, which is a list, not a club"
+                return (f"Wikidata says it is a {kind!r}, which is a list or a "
+                        f"season, not a club")
     if name and NOT_A_CLUB_NAME.match(name):
-        return ("its name is the title of a squad list, not the name of a club "
+        return ("its name is the title of a squad list or a season, not the name of a club "
                 "(Wikidata gives it no type that says so)")
     return None
 
