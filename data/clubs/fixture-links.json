@@ -2091,6 +2091,25 @@
     }
    ]
   },
+  "Q210864": {
+   "name": "Le Mans Football Club",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "535",
+     "teamName": "Le Mans FC",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
   "Q19516": {
    "name": "Lille OSC",
    "links": [

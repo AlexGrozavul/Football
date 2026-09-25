@@ -29,7 +29,7 @@ def show(ent, qid):
 
 # 1. league items and the two Milan clubs, by enwiki title
 q = urllib.parse.urlencode({"action": "wbgetentities", "sites": "enwiki",
-    "titles": "Serie A|Serie B|Inter Milan|AC Milan", "props": "claims|labels|sitelinks",
+    "titles": "Inter Milan|AC Milan", "props": "claims|labels|sitelinks",
     "languages": "en|it", "format": "json"})
 data, err = cr.get_json_with_retry("https://www.wikidata.org/w/api.php?" + q, "entities")
 p("TITLES", err)
@@ -39,15 +39,16 @@ time.sleep(3)
 
 # 2. every item on a Serie A or Serie B tag (any rank) whose label names Inter or Milan
 Q = """SELECT DISTINCT ?club ?clubLabel ?rank ?league WHERE {
-  VALUES ?league { wd:Q15804 wd:Q15817 }
+  VALUES ?league { wd:Q15804 wd:Q194052 }
   ?club p:P118 ?st . ?st ps:P118 ?league ; wikibase:rank ?rank .
   ?club rdfs:label ?l . FILTER(LANG(?l) IN ("en","it"))
   FILTER(CONTAINS(LCASE(?l), "inter") || CONTAINS(LCASE(?l), "milan"))
   SERVICE wikibase:label { bd:serviceParam wikibase:language "it,en" }
 }"""
-rows, err = fc.sparql_with_retry(Q)
-p("MILAN-CANDIDATES", err)
-for r in rows or []:
+res, err = fc.sparql_with_retry(Q)
+rows = (res or {}).get("results", {}).get("bindings", [])
+p("MILAN-CANDIDATES", err, len(rows))
+for r in rows:
     p("  ", fc.cell(r, "club"), fc.cell(r, "clubLabel"), fc.cell(r, "league"), fc.cell(r, "rank"))
 time.sleep(3)
 
