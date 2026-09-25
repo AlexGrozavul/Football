@@ -1,0 +1,680 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "IT",
+ "countryName": "Italy",
+ "clubs": [
+  {
+   "id": "Q107688507",
+   "name": "Unione Calcio Sampdoria 2021-2022",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Luigi Ferraris",
+   "capacity": 33205,
+   "lat": 44.416431,
+   "lon": 8.952428,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q107723242",
+   "name": "Reggina 1914 2021-2022",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Oreste Granillo",
+   "capacity": 27543,
+   "lat": 38.092778,
+   "lon": 15.635278,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q107976143",
+   "name": "Cosenza Calcio 2021-2022",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio San Vito-Gigi Marulla",
+   "capacity": 20987,
+   "lat": 39.31,
+   "lon": 16.2308,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q1120838",
+   "name": "Como 1907",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Giuseppe Sinigaglia",
+   "capacity": 13602,
+   "lat": 45.813889,
+   "lon": 9.072222,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q121000659",
+   "name": "Unione Sportiva Catanzaro 1929 2023-2024",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Nicola Ceravolo",
+   "capacity": 14650,
+   "lat": 38.919722,
+   "lon": 16.587778,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q13391",
+   "name": "US Lecce",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Via del Mare",
+   "capacity": 31461,
+   "lat": 40.365278,
+   "lon": 18.208889,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q1387710",
+   "name": "FC Südtirol",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Druso",
+   "capacity": 5500,
+   "lat": 46.49234,
+   "lon": 11.345385,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q140457427",
+   "name": "Unione Sportiva Catanzaro 1929 2026-2027",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Nicola Ceravolo",
+   "capacity": 14650,
+   "lat": 38.919722,
+   "lon": 16.587778,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q140664600",
+   "name": "Palermo Football Club 2026-2027",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Renzo Barbera",
+   "capacity": 36365,
+   "lat": 38.152767,
+   "lon": 13.342275,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q1422",
+   "name": "Juventus FC",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Juventus Stadium",
+   "capacity": 41689,
+   "lat": 45.109594,
+   "lon": 7.641247,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q1457",
+   "name": "UC Sampdoria",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Luigi Ferraris",
+   "capacity": 33205,
+   "lat": 44.416431,
+   "lon": 8.952428,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q1543",
+   "name": "AC Milan",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Giuseppe Meazza",
+   "capacity": 75817,
+   "lat": 45.478056,
+   "lon": 9.123889,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q16848949",
+   "name": "Cesena Football Club",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "Stadio Dino Manuzzi",
+   "capacity": 23860,
+   "lat": 44.140556,
+   "lon": 12.261944,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q1886",
+   "name": "Atalanta Bergamasca Calcio",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio di Bergamo",
+   "capacity": 24950,
+   "lat": 45.708889,
+   "lon": 9.680833,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q1893",
+   "name": "Bologna FC 1909",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Renato Dall'Ara",
+   "capacity": 36462,
+   "lat": 44.4922,
+   "lon": 11.3098,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q1900",
+   "name": "Cagliari Calcio",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Unipol Domus",
+   "capacity": 16416,
+   "lat": 39.199694,
+   "lon": 9.137417,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q2037",
+   "name": "Associazione Calcio ChievoVerona",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Marcantonio Bentegodi",
+   "capacity": 31045,
+   "lat": 45.435356,
+   "lon": 10.968647,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q2052",
+   "name": "ACF Fiorentina",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Artemio Franchi",
+   "capacity": 43325,
+   "lat": 43.780822,
+   "lon": 11.282258,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q2074",
+   "name": "Genoa CFC",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Luigi Ferraris",
+   "capacity": 33205,
+   "lat": 44.416431,
+   "lon": 8.952428,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q2276413",
+   "name": "Virtus Entella",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "Stadio comunale (Chiavari)",
+   "capacity": 5587,
+   "lat": 44.3156,
+   "lon": 9.33732,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q2609",
+   "name": "SS Lazio",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Stadio Olimpico",
+   "capacity": 70634,
+   "lat": 41.933889,
+   "lon": 12.454722,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q2641",
+   "name": "SSC Napoli",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Stadio Diego Armando Maradona",
+   "capacity": 54726,
+   "lat": 40.827967,
+   "lon": 14.193008,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q2674",
+   "name": "Palermo FC",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Renzo Barbera",
+   "capacity": 36365,
+   "lat": 38.152767,
+   "lon": 13.342275,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q2693",
+   "name": "Parma Calcio 1913",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Ennio Tardini",
+   "capacity": 22352,
+   "lat": 44.794917,
+   "lon": 10.338444,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q2739",
+   "name": "AS Roma",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Stadio Olimpico",
+   "capacity": 70634,
+   "lat": 41.933889,
+   "lon": 12.454722,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q2768",
+   "name": "Torino FC",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Stadio Olimpico Grande Torino",
+   "capacity": 28177,
+   "lat": 45.041667,
+   "lon": 7.65,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q2798",
+   "name": "Udinese Calcio",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Friuli",
+   "capacity": 25312,
+   "lat": 46.081603,
+   "lon": 13.200136,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q289482",
+   "name": "AC Monza",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Brianteo",
+   "capacity": 17102,
+   "lat": 45.582778,
+   "lon": 9.308056,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q289613",
+   "name": "Pisa Sporting Club",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Arena Garibaldi-Romeo Anconetani",
+   "capacity": 10442,
+   "lat": 43.725278,
+   "lon": 10.4,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q297430",
+   "name": "SS Arezzo",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Città di Arezzo",
+   "capacity": 13128,
+   "lat": 43.451111,
+   "lon": 11.894444,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q298217",
+   "name": "US Avellino 1912",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Partenio-Adriano Lombardi",
+   "capacity": 10125,
+   "lat": 40.926944,
+   "lon": 14.7925,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q3626037",
+   "name": "Associazione Calcio La Dominante",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Giuseppe Grezar",
+   "capacity": 8000,
+   "lat": 45.623815,
+   "lon": 13.794258,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q430993",
+   "name": "Mantova 1911",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Danilo Martelli",
+   "capacity": 7367,
+   "lat": 45.146111,
+   "lon": 10.794167,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q501245",
+   "name": "Venezia FC",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Pier Luigi Penzo",
+   "capacity": 10500,
+   "lat": 45.427761,
+   "lon": 12.363731,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q501372",
+   "name": "US Catanzaro 1929",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Nicola Ceravolo",
+   "capacity": 14650,
+   "lat": 38.919722,
+   "lon": 16.587778,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q534448",
+   "name": "Football Club Torinese",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Velodromo Umberto I",
+   "capacity": 15000,
+   "lat": 45.0569,
+   "lon": 7.66028,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q631",
+   "name": "FC Inter",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Giuseppe Meazza",
+   "capacity": 75817,
+   "lat": 45.478056,
+   "lon": 9.123889,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q652516",
+   "name": "Benevento Calcio",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "Stadio Ciro Vigorito",
+   "capacity": 25000,
+   "lat": 41.116389,
+   "lon": 14.781111,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q6630",
+   "name": "Ascoli Calcio 1898 FC",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "Stadio Cino e Lillo Del Duca",
+   "capacity": 13708,
+   "lat": 42.861111,
+   "lon": 13.594167,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q6703",
+   "name": "Empoli Football Club",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "Stadio Carlo Castellani",
+   "capacity": 19847,
+   "lat": 43.726389,
+   "lon": 10.955,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q6748",
+   "name": "SS Juve Stabia",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Romeo Menti",
+   "capacity": 13000,
+   "lat": 40.706667,
+   "lon": 14.494444,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q759482",
+   "name": "US Cremonese",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Giovanni Zini",
+   "capacity": 15191,
+   "lat": 45.140278,
+   "lon": 10.034722,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q8408",
+   "name": "Modena Football Club 2018",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Alberto Braglia",
+   "capacity": 21151,
+   "lat": 44.653611,
+   "lon": 10.923333,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q845043",
+   "name": "Frosinone Calcio",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Stadio Benito Stirpe",
+   "capacity": 16227,
+   "lat": 41.63426,
+   "lon": 13.321866,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q8603",
+   "name": "Unione Sportiva Sassuolo Calcio",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "Mapei Stadium - Città del Tricolore",
+   "capacity": 21525,
+   "lat": 44.714722,
+   "lon": 10.649722,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q8639",
+   "name": "H. Verona",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Marcantonio Bentegodi",
+   "capacity": 31045,
+   "lat": 45.435356,
+   "lon": 10.968647,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
+   "id": "Q97671268",
+   "name": "Football Club Crotone 2020-2021",
+   "leagues": [
+    "Q15804"
+   ],
+   "tier": 1,
+   "venue": "stadio Ezio Scida",
+   "capacity": 16108,
+   "lat": 39.079167,
+   "lon": 17.116667,
+   "city": null,
+   "competition": "Serie A"
+  },
+  {
+   "id": "Q98607551",
+   "name": "Reggina 1914 2020-2021",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Oreste Granillo",
+   "capacity": 27543,
+   "lat": 38.092778,
+   "lon": 15.635278,
+   "city": null,
+   "competition": "Serie B"
+  }
+ ]
+}
