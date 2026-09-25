@@ -47,6 +47,22 @@ football only until this rule changes, so don't reach for a women's
 team, a women's competition, or a women's-team crest just because a
 men's counterpart already has one.
 
+**7. Sessions merge their own work once its checks pass clean.**
+Standing policy from 2026-09-25, at Alexandru's instruction: a session
+does not stop and ask before merging each time. It works on its branch,
+opens a pull request so the diff can be read, and merges it itself
+once everything it touched has come back clean — the workflows it
+dispatched are green on the branch, `check_tickets.py` exits 0, no
+hand-written row was rejected, and the read-back says what was meant.
+**Clean means clean**: a red run, a rejected row, or a review file
+that was left unchanged because a fetch failed is not a pass, and the
+branch is not merged over it. **Merging is not deciding.** Anything
+that is Alexandru's call — a tier written off one table, a `skip`, a
+Q-id identity question, a link in `fixture-links-manual.csv` he did
+not ask for — is still left undone and written up under Known open
+problems; the merge carries the write-up, never the decision. Rules 1
+to 6 are unchanged by this and outrank it.
+
 ---
 
 ## dateSource
@@ -765,6 +781,34 @@ other, nothing is changed and the row stays contested. FC Botoșani is
 that case: 12,000 on the map, 8,500 from StadiumDB, 7,782 from
 Wikipedia, no two of them within the band, so it is still contested and
 says so.
+
+**A country's club file is that country's league pyramid, not its
+territory — and a club based across the border is a real exception,
+not a bug.** Written 2026-09-25 from AS Monaco (`Q180305`), and framed
+this way on purpose. Its `P17` is Monaco and its ground is in Monaco,
+so the country check in `fetch_clubs.py` flags it on every run; it is
+in `FR.json` because it plays in Ligue 1, which is exactly what that
+file is for. The flag is the check **working**: it says "this club is
+not in France", which is true, and the reason it is still right is
+something only a person can supply. A note-only row in
+`clubs-manual.csv` records that, so the flag is read once and not
+rediscovered.
+**It is not a pattern to hunt for and it must not be "fixed" in
+either direction.** Do not remove Monaco, do not move it to a file of
+its own, do not change its `P17`-derived country, and do not widen
+`COUNTRY_BOX` so the flag goes quiet — a box that swallows Monaco
+swallows everything else within the same distance of the border.
+The difference from SC Veltheim and FC Triesenberg is the whole point:
+those two were flagged because a **wrong** league tag put them on a
+German map; Monaco is flagged because a **right** one put it on a
+French one. Same signal, opposite meaning, and only the roster can
+tell them apart — Monaco is in the 2026–27 Ligue 1 article, Veltheim
+and Triesenberg were in no German one.
+The same shape exists elsewhere in football (Welsh clubs in the
+English pyramid, Liechtenstein's in the Swiss one) and none of them is
+on this map today. If one arrives, it gets its own note-only row, the
+Monaco way, only after the division's own article confirms it plays
+there.
 
 **Fixture teams are joined to map clubs once, in a file, and never by
 the page.** Built 2026-09-25. Neither football-data.org nor OpenLigaDB

@@ -29,13 +29,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  probe:
-    # TEMPORARY - Italy rank diagnostic, removed in the same branch
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - run: python3 tools/diagnose_p118_rank.py
-
   clubs:
     runs-on: ubuntu-latest
 
