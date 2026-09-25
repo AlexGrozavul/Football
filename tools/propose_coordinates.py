@@ -755,7 +755,7 @@ def main():
     for position, (code, _country_qid, country_name) in enumerate(COUNTRIES):
         if position:
             time.sleep(COUNTRY_GAP_SECONDS)
-        lang = {"DE": "de", "RO": "ro", "FR": "fr"}.get(code, "en")
+        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it"}.get(code, "en")
         print(f"  {code}  {country_name}")
 
         clubs = missing_clubs(code, lang, tiers, labels, manual_rows, failures,

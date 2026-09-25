@@ -173,6 +173,7 @@ ENTITY_BATCH = 50         # wbgetentities takes 50 ids per call
 SECOND_SOURCE = {
     ("DE", 1): "BL1.json",
     ("FR", 1): "FL1.json",
+    ("IT", 1): "SA.json",
 }
 
 

@@ -126,7 +126,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from crosscheck_stadiumdb import CLUB_FORMS, TEAM_MARKERS, ground_signal, words  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CLUB_FILES = ["data/clubs/DE.json", "data/clubs/RO.json", "data/clubs/FR.json"]
+CLUB_FILES = ["data/clubs/DE.json", "data/clubs/RO.json", "data/clubs/FR.json",
+              "data/clubs/IT.json"]
 FD_INDEX = "data/fixtures/index.json"
 OLDB_INDEX = "data/fixtures/openligadb-index.json"
 MANUAL_FILE = "data/fixture-links-manual.csv"

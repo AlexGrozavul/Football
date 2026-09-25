@@ -30,14 +30,13 @@ concurrency:
 
 jobs:
   probe:
-    # TEMPORARY - Italy tier 1/2 probe, removed in the same branch
+    # TEMPORARY - Italy rank diagnostic, removed in the same branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: python3 tools/_probe_it.py
+      - run: python3 tools/diagnose_p118_rank.py
 
   clubs:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
