@@ -131,6 +131,39 @@
     }
    ]
   },
+  "Q157463": {
+   "name": "1. FC Saarbrücken",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "3078",
+     "teamName": "1. FC Saarbrücken",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "417",
+     "teamName": "1. FC Saarbrücken",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
   "Q141971": {
    "name": "1. FC Union Berlin",
    "links": [
@@ -1386,6 +1419,30 @@
     }
    ]
   },
+  "Q2207914": {
+   "name": "SSV Jeddeloh",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "4762",
+     "teamName": "SSV Jeddeloh II",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      },
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
   "Q97927380": {
    "name": "SV Babelsberg 03",
    "links": [
@@ -1886,10 +1943,40 @@
      ]
     }
    ]
+  },
+  "Q535785": {
+   "name": "Würzburger Kickers",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "398",
+     "teamName": "Würzburger Kickers",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "5276",
+     "teamName": "Würzburger Kickers",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
   }
  },
- "notLinked": {
-  "Q157463": "More than one fixture team matches this club's name (openligadb 417 1. FC Saarbrücken; openligadb 3078 1. FC Saarbrücken), so none was linked. See data/clubs/fixture-link-review.csv; a row in data/fixture-links-manual.csv settles it.",
-  "Q535785": "More than one fixture team matches this club's name (openligadb 398 Würzburger Kickers; openligadb 5276 Würzburger Kickers), so none was linked. See data/clubs/fixture-link-review.csv; a row in data/fixture-links-manual.csv settles it."
- }
+ "notLinked": {}
 }
