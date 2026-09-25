@@ -1225,6 +1225,29 @@ a page anyone can already view in their browser's network tab.
     (34,700), where it has played since 2021. That is Wikidata catching
     up, not a change made here.
 
+- **`coordinate-review.csv` is stale: it is still the 2026-09-18 file,
+  Germany and Romania only, with no French or Italian row.** Checked on
+  2026-09-25 rather than assumed. `propose_coordinates.py` crashed on
+  every run from the France merge until PR #31 fixed the unpacking of
+  `build_clubs`' fifth return value. The two runs since then (#6 on
+  the Italy branch, #7 from the PR #31 merge) both **ran to the end
+  and went green, and both left the file unchanged**, because Overpass
+  did not answer everything: 504s on nearly every step, read timeouts,
+  a 429 on Romanian pitches, and France's 19-name place lookup timing
+  out twice in each run. That is the review-file guard doing its job —
+  115 rows were thrown away rather than written over a whole file —
+  but **a green tick on this workflow does not mean the file is
+  current**. The summary's "review file unchanged from the last
+  successful run" line is what says so. What the runs did learn,
+  though it is not in the file: 3 German clubs without coordinates
+  (down from 31 once the europlan rows landed), 106 Romanian, 3 French
+  (0 proposals), 3 Italian (1 ambiguous).
+  Worth watching: France's place lookup is **19 names** and failed in
+  both runs, while Germany's 17 and Italy's 17 came back. It may be
+  load, or the French place query may simply be heavier than the
+  others. Two runs cannot tell those apart, and nothing has been
+  changed.
+
 - **A mapped league can be hidden under a preferred statement naming a
   DIFFERENT league. That is a third rank shape, the diagnostic could
   not see it until 2026-09-25, and it is much the biggest of the
