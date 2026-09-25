@@ -57,8 +57,10 @@ hand-written row was rejected, and the read-back says what was meant.
 **Clean means clean**: a red run, a rejected row, or a review file
 that was left unchanged because a fetch failed is not a pass, and the
 branch is not merged over it. **Merging is not deciding.** Anything
-that is Alexandru's call — a tier written off one table, a `skip`, a
-Q-id identity question, a link in `fixture-links-manual.csv` he did
+that is Alexandru's call — a tier written off one table, a `skip`
+that does not meet the documented standard (two complete division
+articles agreeing on the absence **and** an independent statement of
+the reason, the Hermannstadt standard), a Q-id identity question, a link in `fixture-links-manual.csv` he did
 not ask for — is still left undone and written up under Known open
 problems; the merge carries the write-up, never the decision. Rules 1
 to 6 are unchanged by this and outrank it.
