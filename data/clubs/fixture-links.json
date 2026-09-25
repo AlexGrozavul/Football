@@ -2333,6 +2333,344 @@
      ]
     }
    ]
+  },
+  "Q1543": {
+   "name": "AC Milan",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "98",
+     "teamName": "AC Milan",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q289482": {
+   "name": "AC Monza",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5911",
+     "teamName": "AC Monza",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2052": {
+   "name": "ACF Fiorentina",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "99",
+     "teamName": "ACF Fiorentina",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2739": {
+   "name": "AS Roma",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "100",
+     "teamName": "AS Roma",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1893": {
+   "name": "Bologna FC 1909",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "103",
+     "teamName": "Bologna FC 1909",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1900": {
+   "name": "Cagliari Calcio",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "104",
+     "teamName": "Cagliari Calcio",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1120838": {
+   "name": "Como 1907",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "7397",
+     "teamName": "Como 1907",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q845043": {
+   "name": "Frosinone Calcio",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "470",
+     "teamName": "Frosinone Calcio",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2074": {
+   "name": "Genoa CFC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "107",
+     "teamName": "Genoa CFC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1422": {
+   "name": "Juventus FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "109",
+     "teamName": "Juventus FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2693": {
+   "name": "Parma Calcio 1913",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "112",
+     "teamName": "Parma Calcio 1913",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2609": {
+   "name": "SS Lazio",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "110",
+     "teamName": "SS Lazio",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2641": {
+   "name": "SSC Napoli",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "113",
+     "teamName": "SSC Napoli",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2768": {
+   "name": "Torino FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "586",
+     "teamName": "Torino FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q13391": {
+   "name": "US Lecce",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5890",
+     "teamName": "US Lecce",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2798": {
+   "name": "Udinese Calcio",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "115",
+     "teamName": "Udinese Calcio",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q501245": {
+   "name": "Venezia FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "454",
+     "teamName": "Venezia FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
   }
  },
  "notLinked": {}
