@@ -85,10 +85,13 @@
    ],
    "tier": 2,
    "venue": "stade Marcel-Tribut",
-   "capacity": 4200,
+   "capacity": 4933,
    "lat": 51.035556,
    "lon": 2.390278,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_2",
+   "note": "CONTESTED CAPACITY. In use: 4933 (the English Wikipedia 2026-27 Ligue 2 stadiums table; OpenStreetMap 4996 and StadiumDB 5000 both agree with it within 2%). Not taken: 4200 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement. Read 2026-09-25.",
+   "manual": true,
    "competition": "Ligue 2"
   },
   {
@@ -309,10 +312,13 @@
    ],
    "tier": 2,
    "venue": "stade Saint-Symphorien",
-   "capacity": 26671,
+   "capacity": 28786,
    "lat": 49.109945,
    "lon": 6.159532,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_2",
+   "note": "CONTESTED CAPACITY. In use: 28786 (the English Wikipedia 2026-27 Ligue 2 stadiums table, StadiumDB and OpenStreetMap, all three exactly). Not taken: 26671 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement. Read 2026-09-25.",
+   "manual": true,
    "competition": "Ligue 2"
   },
   {
@@ -323,10 +329,13 @@
    ],
    "tier": 2,
    "venue": "Nouste Camp",
-   "capacity": null,
+   "capacity": 4031,
    "lat": 43.307677,
    "lon": -0.325234,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_2",
+   "note": "CONTESTED CAPACITY. In use: 4031 (the English Wikipedia 2026-27 Ligue 2 stadiums table, and OpenStreetMap agrees exactly). Not taken: (blank) (Wikidata, which has no figure at all for this club). StadiumDB has no row for the Nouste Camp. Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement. Read 2026-09-25.",
+   "manual": true,
    "competition": "Ligue 2"
   },
   {
@@ -421,10 +430,13 @@
    ],
    "tier": 1,
    "venue": "stade de l'Aube",
-   "capacity": 20400,
+   "capacity": 21877,
    "lat": 48.30616,
    "lon": 4.0982,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_1",
+   "note": "CONTESTED CAPACITY. In use: 21877 (the English Wikipedia 2026-27 Ligue 1 stadiums table, and StadiumDB agrees exactly). Not taken: 20400 (Wikidata, which the map held until now). OpenStreetMap has no figure. Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement. Read 2026-09-25.",
+   "manual": true,
    "competition": "Ligue 1"
   },
   {
@@ -449,10 +461,13 @@
    ],
    "tier": 2,
    "venue": "stade Bauer",
-   "capacity": 8000,
+   "capacity": 10000,
    "lat": 48.9061,
    "lon": 2.34105,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_2",
+   "note": "CONTESTED CAPACITY. In use: 10000 (the English Wikipedia 2026-27 Ligue 2 stadiums table, and StadiumDB agrees exactly). Not taken: 8000 (Wikidata, which the map held until now). OpenStreetMap has no figure. Stade Bauer has been rebuilt in stages, so expect this one to move again. Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement. Read 2026-09-25.",
+   "manual": true,
    "competition": "Ligue 2"
   },
   {
@@ -477,10 +492,13 @@
    ],
    "tier": 2,
    "venue": "stade Francis-Le-Basser",
-   "capacity": 11107,
+   "capacity": 18607,
    "lat": 48.08387,
    "lon": -0.75351,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_2",
+   "note": "CONTESTED CAPACITY. In use: 18607 (the English Wikipedia 2026-27 Ligue 2 stadiums table, and StadiumDB agrees exactly). Not taken: 11107 (Wikidata, which the map held until now - the largest gap in the French pass, 40%). OpenStreetMap has no figure. Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement. Read 2026-09-25.",
+   "manual": true,
    "competition": "Ligue 2"
   },
   {
@@ -491,10 +509,13 @@
    ],
    "tier": 1,
    "venue": "stade Raymond-Kopa",
-   "capacity": 18000,
+   "capacity": 19800,
    "lat": 47.45905,
    "lon": -0.53163,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_1",
+   "note": "CONTESTED CAPACITY. In use: 19800 (the English Wikipedia 2026-27 Ligue 1 stadiums table, and StadiumDB stadiumdb.com/stadiums/fra agrees exactly). Not taken: 18000 (Wikidata, which the map held until now, 10% under). OpenStreetMap has no figure for this ground. Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement. Read 2026-09-25.",
+   "manual": true,
    "competition": "Ligue 1"
   },
   {
@@ -505,10 +526,13 @@
    ],
    "tier": 2,
    "venue": "stade Gabriel-Montpied",
-   "capacity": 9190,
+   "capacity": 11980,
    "lat": 45.81584,
    "lon": 3.12162,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_2",
+   "note": "CONTESTED CAPACITY. In use: 11980 (the English Wikipedia 2026-27 Ligue 2 stadiums table, and OpenStreetMap agrees exactly). Not taken: 12678 (StadiumDB, 5.5% over the two that agree); 9190 (Wikidata, which the map held until now). Every figure is written down on purpose - the one not in use is recorded rather than dropped, so nobody has to rediscover the disagreement. Read 2026-09-25.",
+   "manual": true,
    "competition": "Ligue 2"
   }
  ]
