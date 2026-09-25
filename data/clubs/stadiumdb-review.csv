@@ -12,15 +12,9 @@ Q692586,VfR Aalen,DE,,,,,,,,,13271,14500,,OSTALB Arena,Aalen,VfR Aalen,https://s
 Q316896,FSV Zwickau,DE,,,,,,,,,10134,10134,,GGZ-Arena,Zwickau,FSV Zwickau,https://stadiumdb.com/stadiums/ger/stadion_zwickau,name-exact+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"
 Q158121,SpVgg Unterhaching,DE,,,,,,,,,15053,15053,,Uhlsport Park,Unterhaching,SpVgg Unterhaching,https://stadiumdb.com/stadiums/ger/sportpark_unterhaching,name-exact+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"
 Q19516,Lille OSC,FR,,,,,,,,,50000,,,,,,,ambiguous,"Stade Pierre Mauroy (Lille, 50000); Stade Lille-Métropole (Lille, 18185)","2 StadiumDB grounds fit this club and nothing here says which, so no figure was compared"
-Q1815297,USL Dunkerque,FR,,,,,,,,,4200,5000,4996,Stade Marcel-Tribut,Dunkirk,USL Dunkerque,https://stadiumdb.com/stadiums/fra/stade_marcel_tribut,name-exact+ground,,sources differ by 16%
-Q522283,Red Star FC,FR,,,,,,,,,8000,10000,,Stade Bauer,Saint-Ouen-sur-Seine,Red Star,https://stadiumdb.com/stadiums/fra/stade_bauer,name-contained+ground,,sources differ by 20%
-Q870182,Clermont Foot 63,FR,,,,,,,,,9190,12678,11980,Stade Gabriel Montpied,Clermont-Ferrand,Clermont Foot,https://stadiumdb.com/stadiums/fra/stade_gabriel_montpied,name-contained+ground,,sources differ by 28%
-Q760736,Stade lavallois,FR,,,,,,,,,11107,18607,,Stade Francis Le Basser,Laval,Stade Lavallois,https://stadiumdb.com/stadiums/fra/stade_francis_le_basser,name-exact+ground,,sources differ by 40%
 Q208228,Stade de Reims,FR,,,,,,,,,21684,20519,,Stade Auguste-Delaune,Reims,Stade Reims,https://stadiumdb.com/stadiums/fra/stade_auguste_delaune,name-contained+city,,sources differ by 5%
 Q309400,US Boulogne CO,FR,,,,,,,,,6600,15034,,Stade de la Libération,Boulogne-sur-Mer,US Boulogne,https://stadiumdb.com/stadiums/fra/stade_de_la_liberation_boulogne,name-contained+ground,,sources differ by 56%
-Q501693,ES Troyes AC,FR,,,,,,,,,20400,21877,,Stade de l’Aube,Troyes,ES Troyes,https://stadiumdb.com/stadiums/fra/stade_de_laube,name-contained+city,,sources differ by 7%
-Q221525,FC Metz,FR,,,,,,,,,26671,28786,28786,Stade Saint-Symphorien,Metz,Metz,https://stadiumdb.com/stadiums/fra/stade_saint_symphorien,name-contained+city,,sources differ by 7%
-Q845137,Angers SCO,FR,,,,,,,,,18000,19800,,Stade Raymond Kopa,Angers,Angers SCO,https://stadiumdb.com/stadiums/fra/stade_raymond_kopa,name-exact+city,,sources differ by 9%
+Q870182,Clermont Foot 63,FR,,,,,,,,,11980,12678,,Stade Gabriel Montpied,Clermont-Ferrand,Clermont Foot,https://stadiumdb.com/stadiums/fra/stade_gabriel_montpied,name-contained+ground,,sources differ by 6%
 Q48911,FC Lorient,FR,,,,,,,,,18500,16787,,Stade du Moustoir,Lorient,FC Lorient,https://stadiumdb.com/stadiums/fra/stade_du_moustoir,name-exact+city,,sources differ by 9%
 Q5424763,Avântul Reghin,RO,,,,,,,,,,3000,,Stadionul Avântul,Reghin,Avântul Reghin,https://stadiumdb.com/stadiums/rou/stadionul_avantul,name-exact?ground-unchecked+city,,only StadiumDB has a figure
 Q1262822,FC Botoșani,RO,,,,,,,,,12000,8500,,Stadionul Municipal Botoșani,Botoșani,FC Botoșani,https://stadiumdb.com/stadiums/rou/stadionul_municipal_botosani,name-exact?ground-unchecked+city,,sources differ by 29%
