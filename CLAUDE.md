@@ -181,7 +181,8 @@ a subscribed calendar reads as a schedule regardless of its description.
   OpenLigaDB sometimes gives one club. Empty at creation: every
   ambiguity it could settle is Alexandru's to settle. Since
   2026-09-25 it also holds Le Mans (`Q210864` → football-data 535),
-  added on his instruction.
+  and Inter (`Q631` → 108), Atalanta (`Q1886` → 102) and Sassuolo
+  (`Q8603` → 471), all added on his instruction.
 - `data/league-rosters.csv` — one line per league, telling the roster
   check which Wikipedia season article holds that league's membership:
   `leagueQid`, `country`, `tier`, `season`, `article`, `note`. The
@@ -289,7 +290,16 @@ a subscribed calendar reads as a schedule regardless of its description.
   statement naming a *different* league. Reads `P576` so a
   `<novalue>` on a club that folded is not mistaken for an error.
   Reads and writes **nothing** — not a club file, not a review file —
-  and exits 1 on a failed call.
+  and exits 1 on a failed call. Since 2026-09-25 query C ends with
+  **the bill** — which of the clubs it lists a tracked roster names,
+  i.e. which ones the next club build surfaces — and the tool refuses
+  to run at all if `league-tiers.csv` maps a country its `COUNTRIES`
+  does not list, rather than half-check it. It has its own workflow,
+  `diagnose-rank.yml`, which runs on every push to `main` that touches
+  `league-tiers.csv` or `league-rosters.csv` — the moment a new
+  country is mapped — and weekly after the club build. **All three
+  rank shapes are therefore checked for every country by default**,
+  not by somebody remembering to.
 
 ---
 
@@ -386,6 +396,30 @@ so that nothing downstream can forget them:
    club is playing**, it means only that nobody has recorded a
    dissolution. A league's own membership list is evidence; an absent
    property is not.
+
+**Since 2026-09-25 the fallback asks a second shape, under exactly
+the same three conditions**: a preferred statement naming a
+**different, unmapped** league over a mapped one at normal rank — LR
+Vicenza's shape, found in the Italy pass. Alexandru's instruction:
+the normal-rank Serie B is current, the preferred Serie C is stale,
+use the live one. It is `STALE_PREFERRED_FALLBACK_QUERY` in
+`fetch_clubs.py`, and the run summary says which shape surfaced each
+club. **Condition 3 matters more here than for a `<novalue>`**: a
+club relegated last season, with its new lower league correctly
+preferred and its old mapped league left at normal rank, has the
+Vicenza shape with the ranks the right way round. Only the roster
+tells them apart — the relegated club is not in the mapped division's
+article, and is left out. A preferred statement naming a league that
+**is** mapped is not this shape: the club is on the map already, at
+the preferred league's tier, and a wrong tier there is the roster
+check's `wrong-tier` and a hand row, as before. If either shape's
+query fails, **nothing** is surfaced by either.
+**This is not the shape-5 resolution, and the difference matters.**
+Augsburg was settled by keeping a *second item* whose own tag is
+already truthy; nothing was read through. Vicenza is one item, and
+the builder reads *past* its preferred statement. Same outcome — the
+live league wins — by a different mechanism with a different risk,
+which is why the roster condition is not optional.
 
 **Condition 3 earns its place on a real club rather than a
 hypothetical one.** Fotbal Comuna Recea `Q55625920` is **named by the
