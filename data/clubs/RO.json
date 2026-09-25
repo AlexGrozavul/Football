@@ -707,21 +707,6 @@
    "competition": "Liga a III-a"
   },
   {
-   "id": "Q533005",
-   "name": "FC Inter Sibiu",
-   "leagues": [
-    "Q386384",
-    "Q1707697"
-   ],
-   "tier": 2,
-   "venue": "Stadionul Municipal Sibiu",
-   "capacity": 14200,
-   "lat": 45.783056,
-   "lon": 24.143611,
-   "city": null,
-   "competition": "Liga a II-a"
-  },
-  {
    "id": "Q5424763",
    "name": "Avântul Reghin",
    "leagues": [
