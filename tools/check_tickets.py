@@ -517,10 +517,14 @@ def club_file_countries():
                 data = json.load(fh)
         except (OSError, ValueError):
             continue
-        if not isinstance(data, dict):
+        # A country file's "clubs" is a list. fixture-links.json sits in
+        # the same directory and its "clubs" is a dict keyed by Q-id, so
+        # anything that is not a list is not a country file.
+        clubs = data.get("clubs") if isinstance(data, dict) else None
+        if not isinstance(clubs, list):
             continue
-        for club in data.get("clubs", []):
-            if club.get("id"):
+        for club in clubs:
+            if isinstance(club, dict) and club.get("id"):
                 found[club["id"]] = data.get("country", "")
     return found
 
