@@ -181,7 +181,8 @@ a subscribed calendar reads as a schedule regardless of its description.
   OpenLigaDB sometimes gives one club. Empty at creation: every
   ambiguity it could settle is Alexandru's to settle. Since
   2026-09-25 it also holds Le Mans (`Q210864` → football-data 535),
-  added on his instruction.
+  and Inter (`Q631` → 108), Atalanta (`Q1886` → 102) and Sassuolo
+  (`Q8603` → 471), all added on his instruction.
 - `data/league-rosters.csv` — one line per league, telling the roster
   check which Wikipedia season article holds that league's membership:
   `leagueQid`, `country`, `tier`, `season`, `article`, `note`. The
@@ -289,7 +290,16 @@ a subscribed calendar reads as a schedule regardless of its description.
   statement naming a *different* league. Reads `P576` so a
   `<novalue>` on a club that folded is not mistaken for an error.
   Reads and writes **nothing** — not a club file, not a review file —
-  and exits 1 on a failed call.
+  and exits 1 on a failed call. Since 2026-09-25 query C ends with
+  **the bill** — which of the clubs it lists a tracked roster names,
+  i.e. which ones the next club build surfaces — and the tool refuses
+  to run at all if `league-tiers.csv` maps a country its `COUNTRIES`
+  does not list, rather than half-check it. It has its own workflow,
+  `diagnose-rank.yml`, which runs on every push to `main` that touches
+  `league-tiers.csv` or `league-rosters.csv` — the moment a new
+  country is mapped — and weekly after the club build. **All three
+  rank shapes are therefore checked for every country by default**,
+  not by somebody remembering to.
 
 ---
 
@@ -386,6 +396,35 @@ so that nothing downstream can forget them:
    club is playing**, it means only that nobody has recorded a
    dissolution. A league's own membership list is evidence; an absent
    property is not.
+
+**Since 2026-09-25 the fallback asks a second shape, under exactly
+the same three conditions**: a preferred statement naming a
+**different, unmapped** league over a mapped one at normal rank — LR
+Vicenza's shape, found in the Italy pass. Alexandru's instruction:
+the normal-rank Serie B is current, the preferred Serie C is stale,
+use the live one. It is `STALE_PREFERRED_FALLBACK_QUERY` in
+`fetch_clubs.py`, and the run summary says which shape surfaced each
+club. **Condition 3 matters more here than for a `<novalue>`**: a
+club relegated last season, with its new lower league correctly
+preferred and its old mapped league left at normal rank, has the
+Vicenza shape with the ranks the right way round. Only the roster
+tells them apart — the relegated club is not in the mapped division's
+article, and is left out. A preferred statement naming a league that
+**is** mapped is not this shape: the club is on the map already, at
+the preferred league's tier, and a wrong tier there is the roster
+check's `wrong-tier` and a hand row, as before. If either shape's
+query fails, **nothing** is surfaced by either. **And, for both
+shapes, a surfaced club whose ordinary-rule tier its roster
+contradicts is not drawn** until a hand row in `clubs-manual.csv`
+gives it a tier — the roster's tier is never written for it, and a
+club is never drawn at a tier its own division contradicts. FC Inter
+Sibiu is the case (Known open problems).
+**This is not the shape-5 resolution, and the difference matters.**
+Augsburg was settled by keeping a *second item* whose own tag is
+already truthy; nothing was read through. Vicenza is one item, and
+the builder reads *past* its preferred statement. Same outcome — the
+live league wins — by a different mechanism with a different risk,
+which is why the roster condition is not optional.
 
 **Condition 3 earns its place on a real club rather than a
 hypothetical one.** Fotbal Comuna Recea `Q55625920` is **named by the
@@ -1067,9 +1106,9 @@ a page anyone can already view in their browser's network tab.
 ## Known open problems
 
 - **Italy's top two tiers are on the map, 2026-09-25. Serie A came
-  back exact, 20 of 20; Serie B is 17 of 20 with nothing extra, and
-  each of the three missing clubs is missing for a different, named
-  reason.** Same pipeline and same standard as Germany, Romania and
+  back exact, 20 of 20; Serie B is 18 of 20 with nothing extra since
+  LR Vicenza was surfaced later the same day, and each of the two
+  still missing is missing for a different, named reason.** Same pipeline and same standard as Germany, Romania and
   France, run on a GitHub runner because the sandbox still answers 403
   to CONNECT for Wikidata, Wikipedia and StadiumDB. Tiers 1 and 2 only;
   Serie C and below were deliberately not touched.
@@ -1101,6 +1140,7 @@ a page anyone can already view in their browser's network tab.
     |---|---|---|
     | first build | 23 | 25 |
     | after this pass | **20** | **17** |
+    | after Vicenza, same day | **20** | **18** |
   - **Eight of the extra items were club SEASONS, not clubs** —
     *Palermo Football Club 2026-2027*, *Reggina 1914 2020-2021* and
     six more, each on its club's pin. The Rennes shape in a second
@@ -1120,8 +1160,9 @@ a page anyone can already view in their browser's network tab.
     so the reason is the **Italian** infobox: *Scioglimento 1931*).
     Chievo was sitting on the Bentegodi beside Hellas Verona, so that
     shared pin went with it.
-  - **The three missing Serie B clubs are three different things, and
-    none of them is fixable by a hand row today:**
+  - **The three missing Serie B clubs were three different things.
+    Two are still missing, and neither is fixable by a hand row today;
+    Alexandru has said to leave both as they are:**
     - **Carrarese** `Q650365` has no ground and no coordinates:
       `unplaced-no-coordinates`, the `coordinate-review.csv` route.
     - **Calcio Padova** `Q8428` carries **`P576` 2014**, so the
@@ -1135,8 +1176,9 @@ a page anyone can already view in their browser's network tab.
       roster check's `missing-from-wikidata` verdict undersells it —
       the club is on Wikidata, the gate that removes dead clubs removed
       it.
-    - **LR Vicenza** `Q56542463` is **a new rank shape** — see the
-      next entry.
+    - **LR Vicenza** `Q56542463` was **a new rank shape** and is now
+      **on the map at tier 2**, surfaced by the fallback's second
+      shape — see the next entry. The roster check reads it `ok`.
   - **The rank blind spot was checked for Italy rather than assumed,
     and the first answer was incomplete.** The diagnostic's queries A
     and B found four Italian items, **all the deprecated shape** and
@@ -1161,21 +1203,50 @@ a page anyone can already view in their browser's network tab.
     **1 agrees and 38 have a Wikidata figure only**. Italy is Romania's
     shape, not Germany's or France's — StadiumDB and the league table
     are the only second opinions there are.
-  - **Fixtures: 17 of 20 Serie A clubs link to football-data.org's SA.**
-    The other three are abbreviations the matcher correctly refuses:
+  - **Fixtures: 20 of 20 Serie A clubs link to football-data.org's SA**
+    since the evening of 2026-09-25. Seventeen matched automatically;
+    the other three are abbreviations the matcher correctly refuses —
     **Inter** (football-data 108 "FC Internazionale Milano" against
     "FC Inter"), **Atalanta** (102 "Atalanta BC" against "Atalanta
     Bergamasca Calcio") and **Sassuolo** (471 "US Sassuolo Calcio"
-    against "Unione Sportiva Sassuolo Calcio"). One `link` row each
-    would settle them; **not added, because that file is Alexandru's**
-    and only Le Mans was asked for. Inter is the one worth doing first:
-    it is the club with ticket rows, and its sheet shows ticket info
-    but no fixtures until the row exists. Serie B has no fixture
-    source; the club sheet says so.
+    against "Unione Sportiva Sassuolo Calcio") — and each now has a
+    `link` row in `fixture-links-manual.csv`, added on Alexandru's
+    instruction, the Le Mans way. Checked in the real page: each
+    club's sheet lists its Serie A fixtures, and Inter's its Champions
+    League ones too, beside the ticket info it already had.
+    **The review file still lists all four hand-linked teams** (Le Mans
+    too) as `unmatched-team`: `link_fixtures.py` writes that row before
+    it applies the hand rows, and does not drop it afterwards. It is
+    the same trap as `coordinate-review.csv` offering resolved rows
+    again — the link is right, the review row is stale. Not fixed here.
+    Serie B has no fixture source; the club sheet says so.
   - **Not Italian, but it moved in the same rebuild**: SC Freiburg's
     ground went from the Dreisamstadion to the **Europa-Park-Stadion**
     (34,700), where it has played since 2021. That is Wikidata catching
     up, not a change made here.
+
+- **`coordinate-review.csv` is stale: it is still the 2026-09-18 file,
+  Germany and Romania only, with no French or Italian row.** Checked on
+  2026-09-25 rather than assumed. `propose_coordinates.py` crashed on
+  every run from the France merge until PR #31 fixed the unpacking of
+  `build_clubs`' fifth return value. The two runs since then (#6 on
+  the Italy branch, #7 from the PR #31 merge) both **ran to the end
+  and went green, and both left the file unchanged**, because Overpass
+  did not answer everything: 504s on nearly every step, read timeouts,
+  a 429 on Romanian pitches, and France's 19-name place lookup timing
+  out twice in each run. That is the review-file guard doing its job —
+  115 rows were thrown away rather than written over a whole file —
+  but **a green tick on this workflow does not mean the file is
+  current**. The summary's "review file unchanged from the last
+  successful run" line is what says so. What the runs did learn,
+  though it is not in the file: 3 German clubs without coordinates
+  (down from 31 once the europlan rows landed), 106 Romanian, 3 French
+  (0 proposals), 3 Italian (1 ambiguous).
+  Worth watching: France's place lookup is **19 names** and failed in
+  both runs, while Germany's 17 and Italy's 17 came back. It may be
+  load, or the French place query may simply be heavier than the
+  others. Two runs cannot tell those apart, and nothing has been
+  changed.
 
 - **A mapped league can be hidden under a preferred statement naming a
   DIFFERENT league. That is a third rank shape, the diagnostic could
@@ -1208,17 +1279,30 @@ a page anyone can already view in their browser's network tab.
   clean absence at tiers 1–2" was a statement about queries A and B,
   and the shape was there all along.** A clean result from a query is
   a clean result for the question it asked.
-  **Nothing was changed for Vicenza, on purpose.** Reading through a
-  preferred statement that names a real league is a bigger decision
-  than reading through a `<novalue>`: a preferred Serie C tag with an
-  end date is *probably* stale, but a club relegated last season looks
-  identical with the ranks the right way round. The narrow fallback
-  was built so this could not happen by accident. Options for
-  Alexandru: extend the fallback to this shape under the same three
-  conditions (roster confirms; tier by the ordinary rule — which here
-  would give tier 2, agreeing with the roster); or leave Vicenza off
-  until Wikidata's ranks are fixed. **No hand row can reach it** — the
-  `apply_manual` guard, as with Farul before the fallback existed.
+  **Alexandru chose the first option later on 2026-09-25**: the
+  fallback now reads through this shape under the same three
+  conditions (see the Conventions entry on the novalue fallback), and
+  Vicenza is on the map at **tier 2**, which its normal-rank Serie B
+  tags give and the Serie B roster agrees with. His instruction called
+  it "the same resolution as shape 5"; it is the same *outcome* — the
+  live league wins — by a different mechanism, since Augsburg needed
+  nothing read through. Of the 63, the roster confirms exactly
+  **three**: Vicenza, **FCSB II** (surfaced, but it has no position,
+  so still off the map) and **FC Inter Sibiu** `Q533005` — below.
+  **FC Inter Sibiu is left off, and its tier is Alexandru's call.**
+  The first build with the new shape drew it at **tier 2**, because its
+  normal-rank tags include Liga II — while the 2026–27 Liga III article
+  lists it and the Liga II one does not. Drawing a club at a tier its
+  own division contradicts is a wrong fact on the map, and writing
+  tier 3 off one table is the Farul decision, which was his. So the
+  fallback gained one rule the same day: **a surfaced club whose
+  ordinary-rule tier the roster contradicts stays off the map until a
+  hand row in `clubs-manual.csv` gives it a tier.** Farul has that row,
+  so nothing changed for it. For Inter Sibiu, one row — `Q533005`, tier
+  3 or whatever he decides — puts it on the map; the run summary names
+  it every run until then. Note also that the Liga III union is not a
+  clean division list (see the Liga III entry below), so tier 3 rests
+  on a weaker table than Farul's tier 1 did.
 
 - **Romania's Liga II moved between 2026-09-20 and 2026-09-25, and it
   was Wikidata, not this project.** The figures above say seven

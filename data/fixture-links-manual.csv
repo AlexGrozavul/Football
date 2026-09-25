@@ -5,3 +5,6 @@ Q535785,openligadb,398,link,Würzburger Kickers fields two OpenLigaDB team ids o
 Q535785,openligadb,5276,link,Würzburger Kickers fields two OpenLigaDB team ids one per competition (3. Liga and DFB-Pokal); both are this club
 Q2207914,openligadb,4762,link,"II here is the village name Jeddeloh II not a reserve-team marker; the automatic matcher correctly refused this without a hint"
 Q210864,football-data,535,link,"Le Mans Football Club on Wikidata is Le Mans FC on football-data.org (FL1); an abbreviation is not an equality so the matcher correctly refused it. Added 2026-09-25 on Alexandru's instruction"
+Q631,football-data,108,link,"FC Inter on Wikidata (Q631 - verified 2026-09-24 and returned by the Serie A club query) is FC Internazionale Milano on football-data.org (SA and CL); a different name is not an equality so the matcher correctly refused it. Added 2026-09-25 on Alexandru's instruction"
+Q1886,football-data,102,link,"Atalanta Bergamasca Calcio on Wikidata is Atalanta BC on football-data.org (SA); an abbreviation is not an equality so the matcher correctly refused it. Added 2026-09-25 on Alexandru's instruction"
+Q8603,football-data,471,link,"Unione Sportiva Sassuolo Calcio on Wikidata is US Sassuolo Calcio on football-data.org (SA); an abbreviation is not an equality so the matcher correctly refused it. Added 2026-09-25 on Alexandru's instruction"
