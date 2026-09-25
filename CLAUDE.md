@@ -154,6 +154,14 @@ a subscribed calendar reads as a schedule regardless of its description.
   row. The design, including where a fact belongs when it could sit in
   either file, is `docs/country-ticket-rules-design.md`. Holds Italy's
   four rows today, moved out of Inter's club rows rather than copied.
+- `data/fixture-links-manual.csv` — added 2026-09-25. Hand corrections
+  to which fixture-source team a map club is: `clubQid`, `source`
+  (`football-data` or `openligadb`), `teamId`, `action` (`link` or
+  `reject`), `note`. Wins over everything `link_fixtures.py` decides.
+  The `link` rows for one club and one source are together that club's
+  whole answer for that source, so two rows can link both of the ids
+  OpenLigaDB sometimes gives one club. Empty at creation: every
+  ambiguity it could settle is Alexandru's to settle.
 - `data/league-rosters.csv` — one line per league, telling the roster
   check which Wikipedia season article holds that league's membership:
   `leagueQid`, `country`, `tier`, `season`, `article`, `note`. The
@@ -190,6 +198,14 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `data/clubs/stadiumdb-review.csv` — a **third** capacity opinion,
   beside Wikidata and OpenStreetMap. Disagreements only, with every
   figure and every source on the row. It picks no winner
+- `data/clubs/fixture-links.json` — which football-data.org and
+  OpenLigaDB team each map club is, and which fixture files hold its
+  matches. What the club sheet reads. A club not in it has no
+  confident link and its sheet says fixtures are unavailable
+- `data/clubs/fixture-link-review.csv` — everything the fixture
+  matcher would not decide: ambiguous teams and clubs, teams with no
+  country, cross-country name clashes, venue disagreements and German
+  fixture teams with no club on the map
 - `data/clubs/roster-review.csv` — one row per club per division, with
   a verdict saying whether the club is on the map, and if not, **which
   kind of missing** it is
@@ -197,7 +213,16 @@ a subscribed calendar reads as a schedule regardless of its description.
 ### Code
 
 - `index.html` — the whole app. Single file, no framework, Leaflet from
-  CDN, three tabs: map, bucket list, ticket info.
+  CDN, three tabs: map, bucket list, ticket info. Tapping a club opens
+  the **club detail sheet** (built 2026-09-25), a pull-up panel that
+  replaced the map popup: ground, capacity, competition by name,
+  distance, fixtures and ticket info, each saying "unavailable" with a
+  reason rather than being hidden.
+- `tools/link_fixtures.py` — joins fixture-source teams to map clubs
+  and writes `fixture-links.json` and `fixture-link-review.csv`. Reads
+  committed files only, no network. Run by `link-fixtures.yml` after
+  each fixture fetch and club build. Also reads back the Q-id join
+  between `club-tickets.csv` and the map. See Conventions.
 - `tools/build_calendars.py` — `.ics` generation
 - `tools/fetch_fixtures.py` — football-data.org
 - `tools/fetch_openligadb.py` — OpenLigaDB: 2. Bundesliga, 3. Liga,
@@ -740,6 +765,61 @@ other, nothing is changed and the row stays contested. FC Botoșani is
 that case: 12,000 on the map, 8,500 from StadiumDB, 7,782 from
 Wikipedia, no two of them within the band, so it is still contested and
 says so.
+
+**Fixture teams are joined to map clubs once, in a file, and never by
+the page.** Built 2026-09-25. Neither football-data.org nor OpenLigaDB
+publishes a Wikidata id, so `link_fixtures.py` matches by name, with
+the lessons of the StadiumDB and roster work applied:
+
+- **Equality, not containment.** Both sources give full names, so after
+  legal forms (`FC`, `SV`, `TSG`, from the StadiumDB matcher's own list,
+  imported rather than copied) and founding years are set aside, the
+  remaining words must be the same words. Containment would put
+  "1. FC Köln" inside "Fortuna Köln".
+- **The reserve marker must agree on both sides.** `II`, `U23` and the
+  rest. This refused **SSV Jeddeloh II**, and that is worth knowing:
+  Jeddeloh II is a *village*, not a reserve side, and the club is very
+  likely the map's `Q2207914` SSV Jeddeloh. The guard is right to
+  refuse — a hand row is the remedy, not a looser rule.
+- **A legal form or year may be absent, never different.**
+- **A short name counts only with two words or more.**
+- **A team's country comes from its competition, never its name.** A
+  team seen only in the Champions League has no country here and is
+  never linked; a would-be match goes to the review file.
+- **Ambiguity links nothing.** A name matching two clubs, or a club
+  matched by two teams of one source, is reported. A venue may settle
+  it only when OpenLigaDB records a ground and exactly one candidate's
+  agrees, and the link then says `name+venue`. A disagreeing venue
+  never breaks a name match — sponsors again — it is reported.
+
+**First run, 2026-09-25: 75 of 212 map clubs linked.** All 18
+Bundesliga clubs (football-data.org for the league and Champions
+League, OpenLigaDB for the Pokal), all 18 of the 2. Bundesliga, 18 of
+the 3. Liga's 20, and 21 at tier 4 — the Regionalliga Nord and Nordost
+plus DFB-Pokal sides. **No Romanian club**, because neither source
+carries a Romanian competition, and that is the expected state.
+Two 3. Liga clubs are **ambiguous by OpenLigaDB's own doing**: it gives
+1. FC Saarbrücken ids 417 (3. Liga) and 3078 (Pokal), and Würzburger
+Kickers 398 and 5276. Same name, same country, two ids, so nothing was
+linked and a pair of `link` rows would settle each. "1. FC Lok
+Leipzig" is not matched to "1. FC Lokomotive Leipzig" — an abbreviation
+is not an equality, and the review file lists it as a pointer.
+
+**Ticket info joins by `clubQid`**, which is exact, so no name is
+matched for it. `FC Bayern München II` cannot pick up Bayern's rows
+because it is a different Q-id. Inter `Q631` has ticket rows and is not
+on the map (Italy is not mapped), which the linker's read-back says on
+every run.
+
+**The club sheet does not trust the club file's `competition` field.**
+Until 2026-09-25 `fetch_clubs.py` filled it, for a club whose own tags
+did not name a league at its tier, with the **first** league mapped at
+that tier — which put Wacker Burghausen, Hallescher FC, VfB Lübeck,
+Werder Bremen II, SSV Ulm 1846 and 1. FSV Mainz 05 II in the
+"Regionalliga Suedwest", a guess dressed as a fact. The fallback now
+fires only when the country maps exactly one league at that tier, and
+the sheet applies the same rule itself from `league-tiers.csv`, so it
+is right before the next rebuild and stays right if the field drifts.
 
 **Six feeds plus admin**: `bayern`, `germany-nt`, `local`, `italy`,
 `romania`, `uefa-finals`, `admin`. `local` means within day-trip range of
@@ -3085,10 +3165,13 @@ a page anyone can already view in their browser's network tab.
    2026-09-23 from the derby PDF, and the four files that took to hold
    them — phases, rules, demand, sources — are described under Files
    and Conventions above.
-2. Club detail sheet: a pull-up panel replacing the map popup, showing
-   name, ground, capacity, competition name with tier in brackets,
-   distance, fixtures and ticket info, each saying "unavailable" rather
-   than being hidden when there is nothing.
+2. ~~Club detail sheet~~ **— built 2026-09-25**, with the fixture
+   join it needed. See `index.html`, `link_fixtures.py` and the
+   Conventions entry. **Not linked on purpose:** the hand-written
+   `clubs` in `football-rules.json` (VfB, KSC, FCK, Kickers, Poli,
+   UTA, Dumbrăvița …) carry ticket procedures but no Q-id, so the sheet
+   does not show them — joining them by name, or adding a Q-id to a
+   file whose structure is decided, is Alexandru's call.
 3. Search box on the map, top right, live matches, enter flies to the club.
 4. Badges. 284 crest URLs already sit unused in `data/fixtures/`.
    Wikidata `P154` covers German clubs patchily and Romanian ones barely.

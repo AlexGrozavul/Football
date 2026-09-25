@@ -1236,12 +1236,19 @@ def main():
             label = meta.get("label")
             if not label:
                 # Hand-added or hand-retiered clubs carry no league tag,
-                # so fall back to the league mapped at that tier here.
-                for other, t in tiers.items():
-                    info = labels.get(other, {})
-                    if t == club["tier"] and info.get("country") == code:
-                        label = info.get("label")
-                        break
+                # so fall back to the league mapped at that tier here -
+                # but ONLY when this country maps exactly one league at
+                # that tier. Germany maps six at tier 4, and taking the
+                # first put Wacker Burghausen, Hallescher FC and VfB
+                # Luebeck in the Regionalliga Suedwest, a division none
+                # of them plays in. Several leagues at one tier is a
+                # blank, not a pick - rule 2.
+                at_tier = [labels.get(other, {}).get("label")
+                           for other, t in tiers.items()
+                           if t == club["tier"]
+                           and labels.get(other, {}).get("country") == code]
+                if len(at_tier) == 1:
+                    label = at_tier[0]
             club["competition"] = label or None
         no_coord = sum(1 for c in clubs.values()
                        if c["tier"] is not None
