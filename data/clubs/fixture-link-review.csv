@@ -1,0 +1,30 @@
+_verdict,source,teamId,teamName,teamCountry,competitions,clubQid,clubName,candidates,note
+ambiguous-club,,,,,,Q157463,1. FC Saarbrücken,openligadb 417 1. FC Saarbrücken; openligadb 3078 1. FC Saarbrücken,more than one openligadb team matches this club; none linked
+ambiguous-club,,,,,,Q535785,Würzburger Kickers,openligadb 398 Würzburger Kickers; openligadb 5276 Würzburger Kickers,more than one openligadb team matches this club; none linked
+venue-disagrees,openligadb,1979,FSV Zwickau,DE,rlno,Q316896,FSV Zwickau,ours: Stadion Zwickau; theirs: GGZ Arena,"linked on the name; the ground names differ, which is often a sponsor's name against the old one - worth one look"
+venue-disagrees,openligadb,1763,Hertha BSC II,DE,rlno,Q920263,Hertha BSC II,ours: Stadion auf dem Wurfplatz; theirs: Amateur-Stadion Olympia-Gelände,"linked on the name; the ground names differ, which is often a sponsor's name against the old one - worth one look"
+unmatched-team,openligadb,1584,1. FC Lok Leipzig,DE,rlno,,,Q162317 1. FC Lokomotive Leipzig; Q1921747 BSG Chemie Leipzig; Q20994272 RB Leipzig II; Q702455 RB Leipzig,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,7332,1. FC Magdeburg II,DE,rlno,,,Q155730 1. FC Magdeburg,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,6326,1. FC Phönix Lübeck,DE,dfb;rln,,,Q665920 VfB Lübeck,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,5024,Atlas Delmenhorst,DE,rln,,,,no club on the map has this name
+unmatched-team,openligadb,4344,BFC Preussen,DE,rlno,,,Q316865 Preußen Münster,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,2727,Bremer SV,DE,rln,,,,no club on the map has this name
+unmatched-team,openligadb,8803,Eimsbütteler TV,DE,rln,,,,no club on the map has this name
+unmatched-team,openligadb,4342,Eintracht Norderstedt,DE,rln,,,Q154053 Eintracht Braunschweig; Q16559523 Eintracht Braunschweig II; Q38245 Eintracht Frankfurt; Q647893 Eintracht Trier,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,1765,FC St. Pauli II,DE,rln,,,Q6463 FC St. Pauli,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,5798,FSV 63 Luckenwalde,DE,rlno,,,,no club on the map has this name
+unmatched-team,openligadb,8802,FSV Schöningen,DE,rln,,,,no club on the map has this name
+unmatched-team,openligadb,5389,Greifswalder FC,DE,rlno,,,,no club on the map has this name
+unmatched-team,openligadb,8804,HSC Hannover,DE,rln,,,Q16573990 Hannover 96 II; Q33748 Hannover 96,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,7595,Hamburg Eimsbütteler BC,DE,dfb,,,,no club on the map has this name
+unmatched-team,openligadb,4550,Lüneburger SK Hansa,DE,dfb,,,Q142005 Hansa Rostock,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,6904,RSV Eintracht 1949,DE,rlno,,,Q154053 Eintracht Braunschweig; Q16559523 Eintracht Braunschweig II; Q38245 Eintracht Frankfurt; Q647893 Eintracht Trier,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,5712,SC St. Tönis,DE,dfb,,,,no club on the map has this name
+unmatched-team,openligadb,4762,SSV Jeddeloh II,DE,dfb;rln,,,Q2207914 SSV Jeddeloh,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,6905,SV Hemelingen,DE,dfb,,,,no club on the map has this name
+unmatched-team,openligadb,5213,SV Todesfelde,DE,rln,,,,no club on the map has this name
+unmatched-team,openligadb,4568,SV Westfalia Rhynern,DE,dfb,,,,no club on the map has this name
+unmatched-team,openligadb,4341,SpVgg Drochtersen/Assel,DE,rln,,,,no club on the map has this name
+unmatched-team,openligadb,4555,TSV Schott Mainz,DE,dfb,,,Q105254 1. FSV Mainz 05; Q16525419 1. FSV Mainz 05 II,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,4600,VSG Altglienicke Berlin,DE,dfb;rlno,,,Q13426883 FC Viktoria 1889 Berlin; Q141971 1. FC Union Berlin; Q1565781 SV Tasmania Berlin,"no club on the map has this name; candidates share a word and are listed for a look, not proposed"
+unmatched-team,openligadb,7594,VfB 1921 Krieschow,DE,dfb,,,,no club on the map has this name

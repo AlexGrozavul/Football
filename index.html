@@ -78,8 +78,6 @@
   .ground .gclub i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
   .ground .gclub em{margin-left:auto;padding-left:9px;color:var(--faint);
     font-style:normal;font-size:11.5px;white-space:nowrap}
-  .ground .gback{display:block;background:none;border:0;padding:0 0 7px;margin:0;
-    color:var(--dim);font:inherit;font-size:12.5px;cursor:pointer}
 
   .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);
     border:1px solid var(--line);border-radius:10px}
@@ -89,6 +87,55 @@
   .leaflet-container{background:#0a0e13;font-family:inherit}
   .leaflet-control-attribution{background:rgba(13,17,23,.85)!important;color:var(--faint)!important}
   .leaflet-control-attribution a{color:var(--dim)!important}
+
+  /* Club detail sheet: pulls up from the bottom of the map and replaces
+     the old popup. Capped at most of the screen so the map above stays
+     visible and tappable, and scrolls inside itself. */
+  .sheet{position:absolute;z-index:1000;left:0;right:0;bottom:0;max-height:74%;
+    max-width:720px;margin:0 auto;display:flex;flex-direction:column;
+    background:var(--panel);border:1px solid var(--line);border-bottom:0;
+    border-radius:14px 14px 0 0;box-shadow:0 -8px 28px rgba(0,0,0,.45);
+    transform:translateY(0);transition:transform .22s ease}
+  .sheet[hidden]{display:flex;transform:translateY(105%);visibility:hidden;
+    transition:transform .22s ease,visibility 0s .22s}
+  .sheet .grip{padding:7px 0 2px;display:flex;justify-content:center;cursor:grab;
+    touch-action:none}
+  .sheet .grip i{width:38px;height:4px;border-radius:3px;background:var(--line);display:block}
+  .sheet .shead{display:flex;align-items:flex-start;gap:10px;padding:2px 14px 10px;
+    border-bottom:1px solid var(--line);touch-action:none}
+  .sheet .shead h3{margin:0;font-size:17px;font-weight:600;line-height:1.25;flex:1;
+    overflow-wrap:anywhere}
+  .sheet .shead .meta{margin-top:6px}
+  .sheet .x{background:none;border:1px solid var(--line);border-radius:8px;color:var(--dim);
+    font:inherit;font-size:13px;padding:4px 10px;cursor:pointer;flex-shrink:0}
+  .sheet .sbody{overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:4px 14px calc(18px + env(safe-area-inset-bottom))}
+  .sheet h4{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
+    margin:16px 0 6px;font-weight:600}
+  .sheet .row span:last-child{overflow-wrap:anywhere;min-width:0}
+  .sheet .sub{color:var(--faint);font-size:12px;margin-top:2px}
+  .sheet .unavail{color:var(--dim);font-size:13.5px;font-style:italic;margin:4px 0 0}
+  .sheet .unavail b{font-style:normal;color:var(--warn);font-weight:600}
+  .sheet a{color:var(--t3)}
+  .fx{display:flex;gap:9px;align-items:baseline;font-size:13.5px;padding:6px 0;
+    border-top:1px solid var(--line)}
+  .fx:first-of-type{border-top:0}
+  .fx .when{color:var(--dim);font-size:12.5px;min-width:98px;flex-shrink:0}
+  .fx .who{flex:1;min-width:0;overflow-wrap:anywhere}
+  .fx .who em{font-style:normal;color:var(--faint);font-size:11.5px;margin-right:5px}
+  .fx .res{font-weight:600;white-space:nowrap}
+  .fx .comp{display:block;color:var(--faint);font-size:11.5px}
+  .sheet details{border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin-top:7px}
+  .sheet summary{cursor:pointer;font-size:13.5px;color:var(--ink)}
+  .sheet summary em{font-style:normal;color:var(--faint);font-size:12px}
+  .sheet .item{font-size:13px;padding:6px 0;border-top:1px solid var(--line)}
+  .sheet .item:first-of-type{border-top:0}
+  .sheet .item .meta{margin-top:4px}
+  .sheet .mates{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .sheet .mates button{display:flex;align-items:center;gap:6px;background:#1b2230;
+    border:1px solid var(--line);border-radius:7px;padding:5px 8px;color:var(--ink);
+    font:inherit;font-size:13px;cursor:pointer}
+  .sheet .mates i{width:9px;height:9px;border-radius:50%}
 
   .note{color:var(--faint);font-size:12.5px;margin:14px 0 0;line-height:1.5}
   .err{color:var(--bad);font-size:13px;margin:8px 0}
@@ -104,6 +151,12 @@
         <div class="chip" id="homeChip">home not set</div>
       </div>
       <div class="legend" id="legend"></div>
+      <div class="sheet" id="sheet" hidden role="dialog" aria-label="Club details">
+        <div class="grip"><i></i></div>
+        <div class="shead"><div style="flex:1;min-width:0" id="sheetHead"></div>
+          <button class="x" id="sheetClose" aria-label="Close">Close</button></div>
+        <div class="sbody" id="sheetBody"></div>
+      </div>
     </div>
     <div class="pane" id="pane-bucket"><div class="wrap" id="bucketBody"></div></div>
     <div class="pane" id="pane-tickets"><div class="wrap" id="ticketBody"></div></div>
@@ -213,18 +266,6 @@ function radiusFor(tier, zoom){
   return zoom >= 10 ? base + 1.5 : base;
 }
 
-/* What one club's popup says. Shared by the ordinary marker and by the
-   per-club view inside a shared ground's marker, so a club reads the
-   same either way. */
-function clubPopup(club){
-  const km = roadEstimate(club.lat, club.lon);
-  return `<b>${esc(club.name || club.id)}</b><br>` +
-    `<span style="color:#8b949e">${TIER_NAME[club.tier]} · ${esc(club.country || '')}</span><br>` +
-    `${esc(club.venue || 'ground not recorded')}` +
-    (club.capacity ? ` · ${club.capacity.toLocaleString()} seats` : '') +
-    (km !== null ? `<br><span style="color:#8b949e">≈ ${km} km from ${esc(HOME.label)}</span>` : '');
-}
-
 /* Dark or light text on a tier colour, from the colour itself, so a new
    tier colour cannot end up with a digit nobody can read. */
 function inkOn(hex){
@@ -233,18 +274,22 @@ function inkOn(hex){
   return lum > 0.45 ? '#0d1117' : '#f0f4f8';
 }
 
+/* bubblingMouseEvents is off so that tapping a circle does not also
+   count as tapping the map, which closes the sheet it just opened. */
 function soloMarker(club, zoom){
   return L.circleMarker([club.lat, club.lon], {
     radius: radiusFor(club.tier, zoom),
     color: '#0d1117', weight: 1.5,
-    fillColor: TIER_COLOUR[club.tier] || '#888', fillOpacity: .95
-  }).bindPopup(clubPopup(club));
+    fillColor: TIER_COLOUR[club.tier] || '#888', fillOpacity: .95,
+    bubblingMouseEvents: false
+  }).on('click', () => openSheet(club));
 }
 
 /* One marker for one ground, carrying the number of clubs on it. Tapping
-   it lists them; tapping a name opens that club's own popup, with a way
-   back to the list. Nothing is merged: the list is a way in to each
-   club, not a club made out of several. */
+   it lists them; tapping a name opens that club's own sheet, which lists
+   the other clubs here so there is always a way across to them. Nothing
+   is merged: the list is a way in to each club, not a club made out of
+   several. */
 function groundMarker(clubs, zoom){
   const top   = Math.min(...clubs.map(c => c.tier));
   const fill  = TIER_COLOUR[top] || '#888';
@@ -265,11 +310,13 @@ function groundMarker(clubs, zoom){
 
   /* Only a venue name every club here agrees on is shown once at the top.
      If the items disagree, no shared name is invented - each club's own
-     view still carries its own. */
+     sheet still carries its own. */
   const venues = [...new Set(clubs.map(c => c.venue).filter(Boolean))];
   const km = roadEstimate(clubs[0].lat, clubs[0].lon);
 
-  const list = () =>
+  const box = document.createElement('div');
+  box.className = 'ground';
+  box.innerHTML =
     `<b>${clubs.length} clubs at this ground</b>` +
     (venues.length === 1 ? `<div class="gsub">${esc(venues[0])}</div>` : '') +
     (km !== null ? `<div class="gsub">≈ ${km} km from ${esc(HOME.label)}</div>` : '') +
@@ -278,20 +325,11 @@ function groundMarker(clubs, zoom){
       `<i style="background:${TIER_COLOUR[c.tier] || '#888'}"></i>` +
       `<span>${esc(c.name || c.id)}</span>` +
       `<em>${TIER_NAME[c.tier]}</em></button>`).join('');
-
-  const detail = i =>
-    `<button class="gback">‹ all ${clubs.length} clubs here</button>` +
-    clubPopup(clubs[i]);
-
-  const box = document.createElement('div');
-  box.className = 'ground';
-  box.innerHTML = list();
   box.addEventListener('click', ev => {
     const pick = ev.target.closest('.gclub');
-    if(pick)                        box.innerHTML = detail(Number(pick.dataset.i));
-    else if(ev.target.closest('.gback')) box.innerHTML = list();
-    else return;
-    marker.getPopup().update();
+    if(!pick) return;
+    MAP.closePopup();
+    openSheet(clubs[Number(pick.dataset.i)], clubs);
   });
 
   return marker.bindPopup(box);
@@ -367,6 +405,7 @@ async function initMap(){
 
   buildLegend();
   MAP.on('zoomend', drawClubs);
+  MAP.on('click', closeSheet);
 
   const loaded = [];
   for(const path of COUNTRY_FILES){
@@ -391,6 +430,370 @@ async function initMap(){
   }
   drawClubs();
 }
+
+/* ------------------------------------------------ club detail sheet */
+
+/* Tapping a club opens this sheet. Everything in its top block is in the
+   club file already. Fixtures and ticket info are joined to the club by
+   files built for the purpose, never by matching names here:
+
+   - fixtures through data/clubs/fixture-links.json, which
+     tools/link_fixtures.py writes and reports on. A club it did not link
+     confidently is not in that file, and the sheet says fixtures are
+     unavailable rather than guessing a team by its name.
+   - ticket info through the clubQid column the ticket files already
+     carry, which is an exact join. A club with no row says so.
+
+   Each section fetches its files the first time a sheet needs them and
+   keeps them for the rest of the visit. */
+
+const LOADS = {};
+function loadOnce(key, fn){
+  if(!LOADS[key]) LOADS[key] = fn().then(v => ({ok:true, v}), err => ({ok:false, err:err.message}));
+  return LOADS[key];
+}
+
+async function getText(path){
+  const res = await fetch(path, {cache:'no-cache'});
+  if(!res.ok) throw new Error(path + ' → ' + res.status);
+  return res.text();
+}
+
+/* A plain CSV reader: quoted cells, doubled quotes inside them, commas
+   and line breaks inside quotes. The hand-written files quote any cell
+   holding a comma, so this is the whole grammar they use. */
+function parseCSV(text){
+  const rows = []; let row = [], cell = '', q = false;
+  for(let i = 0; i < text.length; i++){
+    const ch = text[i];
+    if(q){
+      if(ch === '"' && text[i+1] === '"'){ cell += '"'; i++; }
+      else if(ch === '"') q = false;
+      else cell += ch;
+    }else if(ch === '"') q = true;
+    else if(ch === ',') { row.push(cell); cell = ''; }
+    else if(ch === '\n' || ch === '\r'){
+      if(ch === '\r' && text[i+1] === '\n') i++;
+      row.push(cell); rows.push(row); row = []; cell = '';
+    }else cell += ch;
+  }
+  if(cell !== '' || row.length){ row.push(cell); rows.push(row); }
+  const head = rows.shift() || [];
+  return rows.filter(r => r.some(c => c.trim() !== ''))
+             .map(r => Object.fromEntries(head.map((h, i) => [h.trim(), (r[i] ?? '').trim()])));
+}
+
+const csvFile  = path => loadOnce(path, async () => parseCSV(await getText(path)));
+const jsonFile = path => loadOnce(path, () => getJSON(path));
+
+/* The competition a club plays in, by name. Worked out from the club's
+   own league tags and data/league-tiers.csv rather than trusted from the
+   club file's "competition" field, because that field used to fall back
+   to the FIRST league mapped at a club's tier - which put Wacker
+   Burghausen and Hallescher FC in the Regionalliga Suedwest. A name is
+   given only when it is the club's own tag at its tier, or when the
+   country maps exactly one league at that tier. Otherwise it is left
+   blank and the sheet says why. */
+function competitionOf(club, tiers){
+  const leagues = tiers.filter(l => String(l.tier) === String(club.tier));
+  const own = leagues.filter(l => (club.leagues || []).includes(l.leagueQid));
+  if(own.length === 1) return {name: own[0].label};
+  const here = leagues.filter(l => l.country === club.country);
+  if(!own.length && here.length === 1)
+    return {name: here[0].label,
+            how: "the only league mapped at this tier; the club's own Wikidata tag names a different one"};
+  if(own.length > 1) return {why: `its tags name ${own.length} leagues at this tier`};
+  if(here.length > 1)
+    return {why: `${here.length} leagues are mapped at tier ${club.tier} and nothing on the club says which`};
+  return {why: `no league at tier ${club.tier} is mapped in data/league-tiers.csv`};
+}
+
+let SHEET_FOR = null;          // the club the sheet is showing
+
+function closeSheet(){
+  document.getElementById('sheet').hidden = true;
+  SHEET_FOR = null;
+}
+
+function unavailable(what, why){
+  return `<p class="unavail"><b>${esc(what)} unavailable.</b> ${why}</p>`;
+}
+
+function openSheet(club, mates){
+  SHEET_FOR = club.id;
+  const colour = TIER_COLOUR[club.tier] || '#888';
+  document.getElementById('sheetHead').innerHTML =
+    `<h3>${esc(club.name || club.id)}</h3>` +
+    `<div class="meta">` +
+      `<span class="tag" style="color:${colour};border-color:${colour}55">${esc(TIER_NAME[club.tier] || 'tier ' + club.tier)}</span>` +
+      `<span class="tag">${esc(club.country || '')}</span>` +
+      (club.manual ? '<span class="tag warn">hand-corrected</span>' : '') +
+    `</div>`;
+
+  const km = roadEstimate(club.lat, club.lon);
+  const others = (mates || []).filter(c => c.id !== club.id);
+  document.getElementById('sheetBody').innerHTML =
+    `<h4>Club</h4>` +
+    field('Ground', club.venue) +
+    field('Capacity', club.capacity ? club.capacity.toLocaleString('en-GB') : null) +
+    `<div id="sheetComp">${field('Competition', '…')}</div>` +
+    field('Distance', km !== null ? `≈ ${km} km by road (estimate) from ${HOME.label}` : null) +
+    `<div class="sub">Straight line × ${MULTIPLIER}. Not a travel time.
+      <a href="https://www.wikidata.org/wiki/${esc(club.id)}" target="_blank" rel="noopener">${esc(club.id)}</a></div>` +
+    (others.length ? `<h4>Also at this ground</h4><div class="mates">` +
+      others.map(c => `<button data-id="${esc(c.id)}"><i style="background:${TIER_COLOUR[c.tier] || '#888'}"></i>${esc(c.name || c.id)}</button>`).join('') +
+      `</div>` : '') +
+    `<h4>Fixtures</h4><div id="sheetFix"><p class="unavail">Loading…</p></div>` +
+    `<h4>Ticket info</h4><div id="sheetTix"><p class="unavail">Loading…</p></div>`;
+
+  document.querySelectorAll('#sheetBody .mates button').forEach(b =>
+    b.addEventListener('click', () =>
+      openSheet(mates.find(c => c.id === b.dataset.id), mates)));
+
+  const sheet = document.getElementById('sheet');
+  sheet.hidden = false;
+  sheet.querySelector('.sbody').scrollTop = 0;
+
+  /* Keep the club's own marker in sight above the sheet. */
+  const pt = MAP.latLngToContainerPoint([club.lat, club.lon]);
+  const open = MAP.getSize().y - sheet.offsetHeight;
+  if(pt.y > open - 30) MAP.panBy([0, pt.y - open / 2], {animate: true});
+
+  const fill = (id, html) => {
+    if(SHEET_FOR !== club.id) return;   // the sheet has moved on to another club
+    document.getElementById(id).innerHTML = html;
+  };
+  competitionHtml(club).then(h => fill('sheetComp', h));
+  fixturesHtml(club).then(h => fill('sheetFix', h));
+  ticketsHtml(club).then(h => fill('sheetTix', h));
+}
+
+async function competitionHtml(club){
+  const t = await csvFile('data/league-tiers.csv');
+  if(!t.ok) return field('Competition', null) +
+    `<div class="sub">data/league-tiers.csv could not be loaded (${esc(t.err)}).</div>`;
+  const c = competitionOf(club, t.v);
+  if(c.name) return field('Competition', `${c.name} (tier ${club.tier})`) +
+    (c.how ? `<div class="sub">${esc(c.how)}.</div>` : '');
+  return `<div class="row"><span>Competition</span><span><span class="blank">not recorded</span>` +
+    ` (tier ${esc(club.tier)})</span></div><div class="sub">${esc(c.why)}.</div>`;
+}
+
+/* ---- fixtures */
+
+const FX_DATE = new Intl.DateTimeFormat('en-GB',
+  {timeZone:'Europe/Berlin', weekday:'short', day:'numeric', month:'short'});
+const FX_TIME = new Intl.DateTimeFormat('en-GB',
+  {timeZone:'Europe/Berlin', hour:'2-digit', minute:'2-digit'});
+
+function fxWhen(iso){
+  if(!iso) return 'date not set';
+  const d = new Date(iso);
+  const y = d.getUTCFullYear() !== new Date().getUTCFullYear() ? ' ' + d.getUTCFullYear() : '';
+  return `${FX_DATE.format(d)}${y} · ${FX_TIME.format(d)}`;
+}
+
+/* football-data.org says FINISHED; OpenLigaDB has only finished: true. */
+const isFinished = m => m.status === 'FINISHED' || m.finished === true;
+
+function fxRow(m, teamId){
+  const home = String(m.home?.id) === teamId;
+  const opp  = home ? m.away : m.home;
+  const score = isFinished(m) && m.homeGoals != null
+    ? `<span class="res">${home ? m.homeGoals : m.awayGoals}–${home ? m.awayGoals : m.homeGoals}</span>` : '';
+  const odd = m.status && !['SCHEDULED','TIMED','FINISHED'].includes(m.status)
+    ? ` <span class="tag warn">${esc(m.status.toLowerCase())}</span>` : '';
+  const noResult = !isFinished(m) && m.utcDate && new Date(m.utcDate) < new Date()
+    ? ' <span class="tag">no result recorded</span>' : '';
+  return `<div class="fx"><span class="when">${esc(fxWhen(m.utcDate))}</span>` +
+    `<span class="who"><em>${home ? 'H' : 'A'}</em>${home ? 'v' : 'at'} ${esc(opp?.name || 'opponent not set')}${odd}${noResult}` +
+    `<span class="comp">${esc(m._comp)}</span></span>${score}</div>`;
+}
+
+async function fixturesHtml(club){
+  const links = await jsonFile('data/clubs/fixture-links.json');
+  if(!links.ok) return unavailable('Fixtures',
+    `The link file data/clubs/fixture-links.json could not be loaded (${esc(links.err)}).`);
+  const entry = links.v.clubs?.[club.id];
+  if(!entry){
+    const held = links.v.notLinked?.[club.id];
+    if(held) return unavailable('Fixtures', esc(held));
+    return unavailable('Fixtures', club.country === 'RO'
+      ? "football-data.org's free tier carries no Romanian competition and OpenLigaDB is German only."
+      : club.tier >= 5
+      ? "No fixture source this project fetches goes below the Regionalliga."
+      : club.tier === 4
+      ? "OpenLigaDB carries the Regionalliga Nord and Nordost only - not Bayern, Südwest or " +
+        "West - and no team in either matched this club's name with confidence."
+      : "No team in the fixture files matched this club's name with confidence. " +
+        "See data/clubs/fixture-link-review.csv.");
+  }
+
+  const matches = [], failed = [], seen = new Set();
+  for(const link of entry.links){
+    for(const comp of link.competitions){
+      const f = await jsonFile(comp.file);
+      if(!f.ok){ failed.push(comp.label); continue; }
+      for(const m of f.v.matches || []){
+        const key = link.source + ':' + m.id;
+        if(seen.has(key)) continue;
+        if(String(m.home?.id) === link.teamId || String(m.away?.id) === link.teamId){
+          seen.add(key);
+          matches.push(Object.assign({_comp: comp.label, _team: link.teamId}, m));
+        }
+      }
+    }
+  }
+
+  const now = Date.now() - 3*3600e3;   // a match that kicked off within 3h is still "next"
+  const time = m => m.utcDate ? new Date(m.utcDate).getTime() : Infinity;
+  const ahead = matches.filter(m => !isFinished(m) && time(m) >= now)
+                       .sort((a, b) => time(a) - time(b));
+  const past  = matches.filter(m => isFinished(m) || time(m) < now)
+                       .sort((a, b) => time(b) - time(a));
+
+  const sources = entry.links.map(l =>
+    `${l.source === 'football-data' ? 'football-data.org' : 'OpenLigaDB'} ` +
+    `(${l.competitions.map(c => c.label).join(', ')})` +
+    (l.basis === 'manual' ? ', linked by hand' : '') +
+    (l.basis.includes('venue') ? ', name and venue' : '')).join(' · ');
+
+  let html = '';
+  if(ahead.length) html += ahead.slice(0, 6).map(m => fxRow(m, m._team)).join('') +
+    (ahead.length > 6 ? `<div class="sub">${ahead.length - 6} more ahead.</div>` : '');
+  else html += `<p class="unavail">No match ahead in the fetched files.</p>`;
+  if(past.length) html += `<details><summary>Recent <em>— ${past.length} played</em></summary>` +
+    past.slice(0, 5).map(m => fxRow(m, m._team)).join('') + `</details>`;
+  if(failed.length) html += `<p class="err">Could not load: ${esc(failed.join(', '))}.</p>`;
+  html += `<div class="sub">Times are German time. From ${esc(sources)}. Fetched data - it feeds
+    the app, never the calendars.</div>`;
+  return html;
+}
+
+/* ---- ticket info */
+
+const words = v => (v || '').split(';').map(x => x.trim()).filter(Boolean).join(', ');
+
+function confTag(v){
+  if(v === 'confirmed')  return '<span class="tag ok">confirmed</span>';
+  if(v === 'inferred')   return '<span class="tag warn">inferred</span>';
+  if(v === 'unverified') return '<span class="tag bad">unverified</span>';
+  return v ? `<span class="tag">${esc(v)}</span>` : '';
+}
+
+function scopeTag(r, names){
+  if(!r.scope || r.scope === 'general') return '';
+  const opp = r.opponentQid ? (names[r.opponentQid] || r.opponentQid) : '';
+  return `<span class="tag">${esc(r.scope)}${opp ? ' v ' + esc(opp) : ''}</span>`;
+}
+
+async function ticketsHtml(club){
+  const base = await csvFile('data/club-tickets.csv');
+  if(!base.ok) return unavailable('Ticket info',
+    `data/club-tickets.csv could not be loaded (${esc(base.err)}).`);
+  const row = base.v.find(r => r.clubQid === club.id && r.team === 'men');
+  if(!row) return unavailable('Ticket info',
+    'data/club-tickets.csv has no row for this club. That is the ordinary state: only a ' +
+    'few clubs have been researched.');
+
+  const [win, rules, demand, prices, national] = await Promise.all([
+    csvFile('data/club-ticket-windows.csv'), csvFile('data/club-ticket-rules.csv'),
+    csvFile('data/club-ticket-demand.csv'),  csvFile('data/club-ticket-prices.csv'),
+    csvFile('data/country-ticket-rules.csv')]);
+  const mine = f => f.ok ? f.v.filter(r => r.clubQid === club.id && (r.team || 'men') === 'men') : null;
+
+  /* Opponent names for derby rows, from the ticket file itself. */
+  const names = Object.fromEntries(base.v.map(r => [r.clubQid, r.club]));
+  CLUBS.forEach(c => names[c.id] ??= c.name);
+
+  const warn = [];
+  if(row.country && row.country !== club.country)
+    warn.push(`club-tickets.csv says ${row.country}, the map file says ${club.country}.`);
+
+  let h =
+    (row.ticketUrl ? `<div class="row"><span>Ticket page</span><span><a href="${esc(row.ticketUrl)}" target="_blank" rel="noopener">${esc(row.ticketUrl)}</a></span></div>` : field('Ticket page', null)) +
+    field('Who may buy', words(row.access)) +
+    field('How it sells', words(row.salesModel)) +
+    (row.requestTypes ? field('Requests for', words(row.requestTypes)) : '') +
+    field('Deadline', {stated:'the club states one', none:'the club states none',
+                       unknown:'not known whether there is one'}[row.cutoff] || row.cutoff) +
+    field('Closes early', words(row.closesEarly)) +
+    field('Demand', words(row.demand)) +
+    field('Resale', words(row.resale)) +
+    field('Under-18s', words(row.minorEligibility)) +
+    field('Announced via', words(row.updateTracking)) +
+    field('Checked', row.checked) +
+    warn.map(w => `<p class="err">${esc(w)}</p>`).join('');
+
+  const section = (title, list, render, empty) => {
+    if(list === null) return `<p class="err">${esc(title)}: file could not be loaded.</p>`;
+    if(!list.length) return empty ? `<div class="sub">${esc(empty)}</div>` : '';
+    return `<details><summary>${esc(title)} <em>— ${list.length}</em></summary>` +
+      list.map(render).join('') + `</details>`;
+  };
+
+  h += section('Sales windows', mine(win), r =>
+    `<div class="item"><b>${esc(r.label || r.window)}</b>` +
+    (r.opensEstimate ? ` — opens ${esc(r.opensEstimate)}${r.estimateFor ? ' (' + esc(r.estimateFor) + ')' : ''}` : '') +
+    (r.pastCycle ? `<div class="sub">past cycle: ${esc(r.pastCycle)}</div>` : '') +
+    `<div class="meta">${sourceTag(r.dateSource)}${r.basis ? `<span class="tag">${esc(r.basis)}</span>` : ''}${scopeTag(r, names)}</div></div>`,
+    'No sales-window rows.');
+
+  h += section('Rules', mine(rules), r =>
+    `<div class="item"><b>${esc(r.topic)}</b>${r.season ? ' · ' + esc(r.season) : ''}` +
+    `<div>${esc(r.rule)}</div><div class="meta">${confTag(r.confidence)}${scopeTag(r, names)}</div></div>`);
+
+  const country = row.country || club.country;
+  const nat = national.ok ? national.v.filter(r => r.country === country) : null;
+  h += section(`National rules [${country}]`, nat, r =>
+    `<div class="item"><b>${esc(r.topic)}</b> · ${esc(r.authority)}` +
+    `<div>${esc(r.rule)}</div>` +
+    `<div class="sub">applies to: ${esc(words(r.appliesTo))} · when: ${esc(words(r.condition))} · club latitude: ${esc(r.clubLatitude)}</div>` +
+    `<div class="meta">${confTag(r.confidence)}</div></div>`,
+    `No national rows for ${country} in data/country-ticket-rules.csv.`);
+
+  h += section('Sell-out record', mine(demand), r =>
+    `<div class="item"><b>${esc(r.season)}</b> ${scopeTag(r, names)} ${esc(r.outcome)}` +
+    (r.timing ? ` — ${esc(r.timing)}` : '') + (r.attendance ? ` · ${esc(r.attendance)}` : '') +
+    `<div class="meta">${confTag(r.confidence)}</div></div>`);
+
+  h += section('Prices', mine(prices), r =>
+    `<div class="item">${esc(r.season)} · ${esc(r.competition)}${r.stage ? ' · ' + esc(r.stage) : ''}` +
+    ` · ${esc(r.category)}${r.opponentTier ? ' · ' + esc(r.opponentTier) : ''}${r.priceClass ? ' · ' + esc(r.priceClass) : ''}: ` +
+    `<b>${esc(r.price)}${r.priceMax ? '–' + esc(r.priceMax) : ''} ${esc(r.currency)}</b>` +
+    `<div class="meta"><span class="tag${r.kind === 'resale-observed' ? ' warn' : ''}">${esc(r.kind)}</span>` +
+    `${r.priceBasis ? `<span class="tag">${esc(r.priceBasis)}</span>` : ''}${confTag(r.confidence)}${scopeTag(r, names)}</div></div>`);
+
+  h += `<div class="sub">Hand-written in data/club-tickets.csv and the ticket files beside it,
+    joined to this club by its Wikidata id. Nothing here is generated, and no sale date is.</div>`;
+  return h;
+}
+
+(function wireSheet(){
+  const sheet = document.getElementById('sheet');
+  document.getElementById('sheetClose').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSheet(); });
+
+  /* Drag the handle or the title down to close. */
+  let y0 = null;
+  const grab = sheet.querySelectorAll('.grip, .shead');
+  grab.forEach(el => el.addEventListener('pointerdown', e => {
+    if(e.target.closest('button')) return;
+    y0 = e.clientY; sheet.style.transition = 'none';
+    el.setPointerCapture(e.pointerId);
+  }));
+  grab.forEach(el => el.addEventListener('pointermove', e => {
+    if(y0 === null) return;
+    sheet.style.transform = `translateY(${Math.max(0, e.clientY - y0)}px)`;
+  }));
+  const drop = e => {
+    if(y0 === null) return;
+    const dy = e.clientY - y0; y0 = null;
+    sheet.style.transition = ''; sheet.style.transform = '';
+    if(dy > 70) closeSheet();
+  };
+  grab.forEach(el => { el.addEventListener('pointerup', drop); el.addEventListener('pointercancel', drop); });
+})();
 
 /* ------------------------------------------------------- bucket list */
 

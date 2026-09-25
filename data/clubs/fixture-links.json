@@ -1,0 +1,1895 @@
+{
+ "source": "tools/link_fixtures.py, from data/fixtures/ and data/clubs/",
+ "note": "Which fixture-source team each map club is. Generated - do not edit; hand corrections go in data/fixture-links-manual.csv. A club that is not listed has no confident link, and its sheet says fixtures are unavailable.",
+ "clubs": {
+  "Q162251": {
+   "name": "1. FC Heidenheim 1846",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "199",
+     "teamName": "1. FC Heidenheim 1846",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8466": {
+   "name": "1. FC Kaiserslautern",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "76",
+     "teamName": "1. FC Kaiserslautern",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q104770": {
+   "name": "1. FC Köln",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1",
+     "teamName": "1. FC Köln",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "65",
+     "teamName": "1. FC Köln",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q155730": {
+   "name": "1. FC Magdeburg",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "78",
+     "teamName": "1. FC Magdeburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q15786": {
+   "name": "1. FC Nürnberg",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "79",
+     "teamName": "1. FC Nürnberg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q141971": {
+   "name": "1. FC Union Berlin",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "28",
+     "teamName": "1. FC Union Berlin",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "80",
+     "teamName": "1. FC Union Berlin",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q105254": {
+   "name": "1. FSV Mainz 05",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "15",
+     "teamName": "1. FSV Mainz 05",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "81",
+     "teamName": "1. FSV Mainz 05",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q153535": {
+   "name": "Alemannia Aachen",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "23",
+     "teamName": "Alemannia Aachen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q105844": {
+   "name": "Arminia Bielefeld",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "83",
+     "teamName": "DSC Arminia Bielefeld",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q159930": {
+   "name": "BFC Dynamo",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "2964",
+     "teamName": "BFC Dynamo",
+     "basis": "name",
+     "venue": {
+      "theirs": "Sportforum Hohenschönhausen",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1921747": {
+   "name": "BSG Chemie Leipzig",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "4599",
+     "teamName": "BSG Chemie Leipzig",
+     "basis": "name",
+     "venue": {
+      "theirs": "Alfred-Kunze-Sportpark",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q176850": {
+   "name": "Bahlinger SC",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "2499",
+     "teamName": "Bahlinger SC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q104761": {
+   "name": "Bayer 04 Leverkusen",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "3",
+     "teamName": "Bayer 04 Leverkusen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "6",
+     "teamName": "Bayer 04 Leverkusen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q41420": {
+   "name": "Borussia Dortmund",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "4",
+     "teamName": "Borussia Dortmund",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      },
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "7",
+     "teamName": "Borussia Dortmund",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q101959": {
+   "name": "Borussia Mönchengladbach",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "18",
+     "teamName": "Borussia Mönchengladbach",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "87",
+     "teamName": "Borussia Mönchengladbach",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q161554": {
+   "name": "Chemnitzer FC",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "202",
+     "teamName": "Chemnitzer FC",
+     "basis": "name",
+     "venue": {
+      "theirs": "eins-Stadion an der Gellertstraße",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q141931": {
+   "name": "Dynamo Dresden",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "177",
+     "teamName": "Dynamo Dresden",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q154053": {
+   "name": "Eintracht Braunschweig",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "74",
+     "teamName": "Eintracht Braunschweig",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q38245": {
+   "name": "Eintracht Frankfurt",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "19",
+     "teamName": "Eintracht Frankfurt",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "91",
+     "teamName": "Eintracht Frankfurt",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q647893": {
+   "name": "Eintracht Trier",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "1071",
+     "teamName": "Eintracht Trier",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q107818": {
+   "name": "Energie Cottbus",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "93",
+     "teamName": "Energie Cottbus",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q97905916": {
+   "name": "FC Augsburg",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "16",
+     "teamName": "FC Augsburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "95",
+     "teamName": "FC Augsburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q15789": {
+   "name": "FC Bayern München",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5",
+     "teamName": "FC Bayern München",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      },
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "40",
+     "teamName": "FC Bayern München",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q155186": {
+   "name": "FC Carl Zeiss Jena",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "69",
+     "teamName": "FC Carl Zeiss Jena",
+     "basis": "name",
+     "venue": {
+      "theirs": "Ernst-Abbe-Sportfeld",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      },
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q97927365": {
+   "name": "FC Erzgebirge Aue",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "66",
+     "teamName": "Erzgebirge Aue",
+     "basis": "name",
+     "venue": {
+      "theirs": "Erzgebirgsstadion",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      },
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q170117": {
+   "name": "FC Ingolstadt 04",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "171",
+     "teamName": "FC Ingolstadt 04",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q170107": {
+   "name": "FC Rot-Weiß Erfurt",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "2111",
+     "teamName": "Rot-Weiß Erfurt",
+     "basis": "name",
+     "venue": {
+      "theirs": "Steigerwaldstadion",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q32494": {
+   "name": "FC Schalke 04",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "6",
+     "teamName": "FC Schalke 04",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "9",
+     "teamName": "FC Schalke 04",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q6463": {
+   "name": "FC St. Pauli",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "98",
+     "teamName": "FC St. Pauli",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q695008": {
+   "name": "FC Viktoria Köln",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "2199",
+     "teamName": "Viktoria Köln",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q316896": {
+   "name": "FSV Zwickau",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "1979",
+     "teamName": "FSV Zwickau",
+     "basis": "name",
+     "venue": {
+      "theirs": "GGZ Arena",
+      "agrees": false
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q151747": {
+   "name": "Fortuna Düsseldorf",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "185",
+     "teamName": "Fortuna Düsseldorf",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q316855": {
+   "name": "Hallescher FC",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "208",
+     "teamName": "Hallescher FC",
+     "basis": "name",
+     "venue": {
+      "theirs": "Leuna Chemie Stadion",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      },
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q51974": {
+   "name": "Hamburger SV",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "7",
+     "teamName": "Hamburger SV",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "100",
+     "teamName": "Hamburger SV",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q5644342": {
+   "name": "Hamburger SV II",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "1761",
+     "teamName": "Hamburger SV II",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
+  "Q33748": {
+   "name": "Hannover 96",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "55",
+     "teamName": "Hannover 96",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q16573990": {
+   "name": "Hannover 96 II",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "1766",
+     "teamName": "Hannover 96 II",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
+  "Q142005": {
+   "name": "Hansa Rostock",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "102",
+     "teamName": "Hansa Rostock",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q102720": {
+   "name": "Hertha BSC",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "54",
+     "teamName": "Hertha BSC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q920263": {
+   "name": "Hertha BSC II",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "1763",
+     "teamName": "Hertha BSC II",
+     "basis": "name",
+     "venue": {
+      "theirs": "Amateur-Stadion Olympia-Gelände",
+      "agrees": false
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q157828": {
+   "name": "Holstein Kiel",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "104",
+     "teamName": "Holstein Kiel",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q105853": {
+   "name": "Karlsruher SC",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "105",
+     "teamName": "Karlsruher SC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q319167": {
+   "name": "Kickers Emden",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "180",
+     "teamName": "Kickers Emden",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
+  "Q154293": {
+   "name": "MSV Duisburg",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "107",
+     "teamName": "MSV Duisburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q316865": {
+   "name": "Preußen Münster",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "188",
+     "teamName": "Preußen Münster",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q702455": {
+   "name": "RB Leipzig",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "721",
+     "teamName": "RB Leipzig",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      },
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "1635",
+     "teamName": "RB Leipzig",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q155218": {
+   "name": "Rot-Weiss Essen",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "109",
+     "teamName": "Rot-Weiss Essen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q310608": {
+   "name": "SC Fortuna Köln",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "1718",
+     "teamName": "Fortuna Köln",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q106394": {
+   "name": "SC Freiburg",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "17",
+     "teamName": "SC Freiburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "112",
+     "teamName": "SC Freiburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q160532": {
+   "name": "SC Paderborn 07",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "29",
+     "teamName": "SC Paderborn 07",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "31",
+     "teamName": "SC Paderborn 07",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q666010": {
+   "name": "SC Verl",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "114",
+     "teamName": "SC Verl",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q831867": {
+   "name": "SC Weiche Flensburg 08",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "2393",
+     "teamName": "SC Weiche Flensburg 08",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
+  "Q692755": {
+   "name": "SG Sonnenhof Großaspach",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "529",
+     "teamName": "SG Sonnenhof Großaspach",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q265570": {
+   "name": "SSV Jahn Regensburg",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "181",
+     "teamName": "Jahn Regensburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q97927380": {
+   "name": "SV Babelsberg 03",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "117",
+     "teamName": "SV Babelsberg 03",
+     "basis": "name",
+     "venue": {
+      "theirs": "Karl-Liebknecht-Stadion",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q479351": {
+   "name": "SV Darmstadt 98",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "118",
+     "teamName": "SV Darmstadt 98",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q692691": {
+   "name": "SV Elversberg",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "719",
+     "teamName": "SV 07 Elversberg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "198",
+     "teamName": "SV 07 Elversberg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q819400": {
+   "name": "SV Meppen",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "599",
+     "teamName": "SV Meppen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1565781": {
+   "name": "SV Tasmania Berlin",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "8788",
+     "teamName": "Tasmania Berlin",
+     "basis": "name",
+     "venue": {
+      "theirs": "Werner-Seelenbinder-Sportpark",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q170134": {
+   "name": "SV Waldhof Mannheim",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "553",
+     "teamName": "SV Waldhof Mannheim",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q310621": {
+   "name": "SV Wehen Wiesbaden",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "174",
+     "teamName": "SV Wehen Wiesbaden",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q153539": {
+   "name": "SpVgg Greuther Fürth",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "115",
+     "teamName": "SpVgg Greuther Fürth",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q22707": {
+   "name": "TSG 1899 Hoffenheim",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "2",
+     "teamName": "TSG 1899 Hoffenheim",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "175",
+     "teamName": "TSG Hoffenheim",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q16637410": {
+   "name": "TSG 1899 Hoffenheim II",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "2396",
+     "teamName": "TSG 1899 Hoffenheim II",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q131603": {
+   "name": "TSV 1860 München",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "125",
+     "teamName": "TSV 1860 München",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q537301": {
+   "name": "TSV Havelse",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "126",
+     "teamName": "TSV Havelse",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q665920": {
+   "name": "VfB Lübeck",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "532",
+     "teamName": "VfB Lübeck",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
+  "Q826212": {
+   "name": "VfB Oldenburg",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "600",
+     "teamName": "VfB Oldenburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
+  "Q4512": {
+   "name": "VfB Stuttgart",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "10",
+     "teamName": "VfB Stuttgart",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      },
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "16",
+     "teamName": "VfB Stuttgart",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q107421": {
+   "name": "VfB Stuttgart II",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "184",
+     "teamName": "VfB Stuttgart II",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl3",
+       "file": "data/fixtures/openligadb-bl3.json",
+       "label": "3. Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q105861": {
+   "name": "VfL Bochum",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "129",
+     "teamName": "VfL Bochum",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q160530": {
+   "name": "VfL Osnabrück",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "36",
+     "teamName": "VfL Osnabrück",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q101859": {
+   "name": "VfL Wolfsburg",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "131",
+     "teamName": "VfL Wolfsburg",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "bl2",
+       "file": "data/fixtures/openligadb-bl2.json",
+       "label": "2. Bundesliga"
+      },
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q51976": {
+   "name": "Werder Bremen",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "12",
+     "teamName": "SV Werder Bremen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "BL1",
+       "file": "data/fixtures/BL1.json",
+       "label": "Bundesliga"
+      }
+     ]
+    },
+    {
+     "source": "openligadb",
+     "teamId": "134",
+     "teamName": "SV Werder Bremen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q4107588": {
+   "name": "Werder Bremen II",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "135",
+     "teamName": "Werder Bremen II",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "notLinked": {
+  "Q157463": "More than one fixture team matches this club's name (openligadb 417 1. FC Saarbrücken; openligadb 3078 1. FC Saarbrücken), so none was linked. See data/clubs/fixture-link-review.csv; a row in data/fixture-links-manual.csv settles it.",
+  "Q535785": "More than one fixture team matches this club's name (openligadb 398 Würzburger Kickers; openligadb 5276 Würzburger Kickers), so none was linked. See data/clubs/fixture-link-review.csv; a row in data/fixture-links-manual.csv settles it."
+ }
+}
