@@ -1242,11 +1242,20 @@ a page anyone can already view in their browser's network tab.
   though it is not in the file: 3 German clubs without coordinates
   (down from 31 once the europlan rows landed), 106 Romanian, 3 French
   (0 proposals), 3 Italian (1 ambiguous).
-  Worth watching: France's place lookup is **19 names** and failed in
-  both runs, while Germany's 17 and Italy's 17 came back. It may be
-  load, or the French place query may simply be heavier than the
-  others. Two runs cannot tell those apart, and nothing has been
-  changed.
+  France's place lookup (**19 names**) failed in both of those runs
+  while Germany's and Italy's came back, which looked as if the French
+  query might be too heavy. **A third run, #8, dispatched on `main`
+  after PR #32, settled it as load:** France came back whole (17
+  places, 5 pitches, 2 ambiguous proposals, 1 nothing), and this time
+  it was **Romania's** country-wide stadium query that got three 504s
+  in a row, so the file was again correctly left alone. Three partial
+  runs in one evening, each missing something different, is Overpass
+  being overloaded, not a bug in the tool. Nothing was changed in it.
+  One more attempt was scheduled for a quiet hour (03:30 UTC on
+  2026-09-26) rather than hitting a volunteer service a fourth time
+  that evening; failing that, the monthly cron on the 11th is the next
+  run. **Until a run commits, read `coordinate-review.csv` as the
+  2026-09-18 German and Romanian list and nothing more.**
 
 - **A mapped league can be hidden under a preferred statement naming a
   DIFFERENT league. That is a third rank shape, the diagnostic could
