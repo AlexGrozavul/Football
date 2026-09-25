@@ -389,6 +389,20 @@
    "competition": "Serie B"
   },
   {
+   "id": "Q56542463",
+   "name": "L.R. Vicenza",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "stadio Romeo Menti",
+   "capacity": 12163,
+   "lat": 45.544167,
+   "lon": 11.555556,
+   "city": null,
+   "competition": "Serie B"
+  },
+  {
    "id": "Q631",
    "name": "FC Inter",
    "leagues": [
