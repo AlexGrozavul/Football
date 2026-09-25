@@ -924,8 +924,11 @@ def main():
 
     # The club layer, indexed by Q-id and by (country, tier).
     layer, by_country_tier = {}, {}
+    # A country file is named by its two-letter code. fixture-links.json
+    # lives in the same folder and is not one - reading it as a country
+    # file crashed this tool on 2026-09-25.
     for path in sorted(glob.glob(os.path.join(CLUB_DIR, "*.json"))):
-        if os.path.basename(path) == "index.json":
+        if not re.match(r"^[A-Z]{2}\.json$", os.path.basename(path)):
             continue
         code = os.path.basename(path)[:-5]
         with open(path, encoding="utf-8") as fh:

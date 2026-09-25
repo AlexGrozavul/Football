@@ -160,8 +160,11 @@ def main():
     if not os.path.isdir(CLUB_DIR):
         sys.exit(f"{CLUB_DIR} does not exist - run the club layer first")
 
+    # A country file is named by its two-letter code. fixture-links.json
+    # lives in the same folder and is not one - reading it as a country
+    # file crashed this tool on 2026-09-25.
     files = sorted(f for f in os.listdir(CLUB_DIR)
-                   if f.endswith(".json") and f != "index.json")
+                   if re.match(r"^[A-Z]{2}\.json$", f))
     if not files:
         sys.exit(f"no country files in {CLUB_DIR}")
 
