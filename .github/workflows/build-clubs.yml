@@ -29,7 +29,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  probe:
+    # TEMPORARY - France tier 1/2 probe, removed in the same branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 tools/_probe_fr.py
+
   clubs:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
