@@ -16,7 +16,8 @@ Q = """SELECT ?club ?clubLabel ?league WHERE {
   FILTER NOT EXISTS { ?club wdt:P115/wdt:P625 ?vc }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "fr,en" }
 }"""
-rows, err = fc.sparql_with_retry(Q)
+data, err = fc.sparql_with_retry(Q)
+rows = (data or {}).get("results", {}).get("bindings", [])
 p("DROPPED-NO-COORD", err)
 for r in rows or []:
     p("  ", fc.cell(r, "club"), fc.cell(r, "clubLabel"), fc.cell(r, "league"))
