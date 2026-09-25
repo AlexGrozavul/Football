@@ -1015,6 +1015,96 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **France's top two tiers are on the map, 2026-09-25, and came back
+  exact: Ligue 1 18 of 18, Ligue 2 18 of 18, nothing missing, nothing
+  extra, nothing at the wrong tier.** Same pipeline and same standard
+  as Germany and Romania, all of it run on a GitHub runner because the
+  sandbox still answers 403 to CONNECT for Wikidata, Wikipedia and
+  StadiumDB. France is tiers 1 and 2 only; Ligue 3 and below were
+  deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q13394` Ligue 1
+    and **`Q217374`** Ligue 2, both `P17` France. The Ligue 2 id first
+    written from memory was wrong, which is why a probe went first.
+    StadiumDB's slug is `fra` (`france`, `fr` and `fre` are 404s).
+    Both season articles are one stadiums-and-locations table of 18
+    clubs; Ligue 2 needed the redirect hop for one title.
+  - **What the first build brought, 40 clubs against 36:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 19 | 21 |
+    | after this pass | **18** | **18** |
+  - **The nineteenth tier-1 item was not a club.** *saison 2016-2017
+    du Stade rennais FC* (`Q24937450`) carries `P118` Ligue 1 and
+    borrowed Roazhon Park's coordinates, so it sat on Rennes' own pin.
+    It is the squad-list class, not one of the five duplicate shapes,
+    and the not-a-club net in `fetch_clubs.py` now names **seasons**
+    as well as lists, by type word and by a title anchored to "season"
+    plus a year. Checked against all three country files: it drops
+    that one item and nothing else.
+  - **Three tier-2 clubs carried a stale Ligue 2 tag and are
+    `skip`ped**: US Orléans (`Q369349`, now Ligue 3), AS Béziers
+    (`Q2619514`, Régional 1 Occitanie) and FC Martigues (`Q1132418`,
+    administratively relegated in 2024-25, now Départemental 3). Each
+    has exactly one `P118`, Ligue 2, normal rank, no dates. The
+    standard is the one Hermannstadt and Politehnica Iași were held
+    to: **both** division articles complete (18 of 18 resolved each),
+    **neither** lists them, and **each club's own infobox** states the
+    reason. No tier is written for any of them — France is tracked at
+    tiers 1-2 only and a tier is not written off one Wikipedia table —
+    and each row says how to bring the club back.
+  - **The rank pattern was looked for, and it does not recur in
+    France.** `diagnose_p118_rank.py` now counts France: no French item
+    is in the worldwide census of preferred-rank no-league statements,
+    no club in Ligue 1 or Ligue 2 is hidden by a deprecated or
+    suppressed `P118`, and the novalue fallback found no French
+    candidate, so no roster was fetched on its account. That is a
+    measurement for tiers 1-2 on 2026-09-25, not a promise about
+    Ligue 3.
+  - **No duplicate shape appeared.** No ground carries two French
+    clubs, no two pins are within a kilometre, and the roster check
+    reports no club twice, so there is no shape-5 club/men's-team
+    pair either. Three items with Ligue 1 or 2 tags die at the
+    coordinates gate and none is current: Sporting Club fivois, the
+    wartime *équipe fédérale Reims-Champagne*, and SC Bastia B.
+  - **AS Monaco is flagged by the country check on every run, and
+    that is correct and left alone.** Its `P17` is Monaco and its
+    ground is in Monaco; it is in `FR.json` because it plays in
+    Ligue 1. A note-only row in `clubs-manual.csv` says so, the Bihor
+    way. The file is France's league pyramid, not France's territory.
+  - **Capacities: eight corrected, three contested, one blank.** The
+    league's stadiums table is now the fourth figure beside Wikidata,
+    OpenStreetMap and StadiumDB, and the UTA Arad rule was applied
+    exactly. **Corrected**, each with every figure in its note: Angers
+    19,800, Clermont 11,980, Troyes 21,877, Metz 28,786, Red Star
+    10,000, Laval 18,607 (Wikidata said 11,107), Dunkerque 4,933, and
+    Pau 4,031 where Wikidata had nothing. **Contested, nothing
+    changed**, because no two sources agree: AS Monaco (18,523 against
+    the table's 16,360, and neither OpenStreetMap nor StadiumDB looks
+    in Monaco), RC Strasbourg (26,109 / 29,000 / 32,000 — the Meinau is
+    being rebuilt) and US Boulogne (6,600 / 15,034 / 9,534).
+    **Rodez** has only the table's 5,955 and stays blank: one source
+    is not two — and OpenStreetMap's nearest stadium to Rodez's pin is
+    8.8 km away, so either the Stade Paul-Lignon is untagged there or
+    the pin is off; nobody has looked. Auxerre, Lorient, Nantes and Reims show up in the
+    review files but the map's figure agrees with the table, so the
+    outlier is the other source. StadiumDB could not choose between two
+    Lille grounds and says so.
+  - **Fixtures: 17 of 18 Ligue 1 clubs link to football-data.org's
+    FL1**, which was already being fetched. **Le Mans is the
+    eighteenth**: football-data calls it "Le Mans FC", Wikidata "Le
+    Mans Football Club", and an abbreviation is not an equality. One
+    `link` row in `fixture-links-manual.csv` (football-data team 535)
+    settles it, and that file's entries are Alexandru's call. Ligue 2
+    has no fixture source; the club sheet says so.
+  - **Found on the way, and on `main` before this pass:** since
+    `fixture-links.json` landed in `data/clubs/` on 2026-09-25,
+    `check_tickets.py`, `check_rosters.py`, `crosscheck_capacity.py`
+    and `crosscheck_stadiumdb.py` all crashed on it, because each read
+    every `.json` in that folder as a country file. They now read only
+    two-letter country files (`check_tickets.py` skips anything whose
+    `clubs` is not a list). The scheduled runs of all four would have
+    gone red on their next run.
+
 - **The derby PDF contradicts `football-rules.json` on Inter, and
   nothing has been changed on either side.** Found 2026-09-23 while
   incorporating the PDF. `football-rules.json` is hand-written and no
