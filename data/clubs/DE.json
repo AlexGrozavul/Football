@@ -366,7 +366,7 @@
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_in_German_football",
    "note": "Relegated from 3. Liga to Regionalliga in summer 2026. This is the item that survives the duplicate check: read on 2026-09-19 it has 21 Wikipedia sitelinks against Q701290's 14, so Q701290 gets the skip row. Its own P118 is still 2. Bundesliga and 3. Liga, which is why the tier 4 correction has to stay.",
    "manual": true,
-   "competition": "Regionalliga Suedwest"
+   "competition": null
   },
   {
    "id": "Q1514109",
@@ -755,7 +755,7 @@
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
    "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
    "manual": true,
-   "competition": "Regionalliga Suedwest"
+   "competition": null
   },
   {
    "id": "Q161554",
@@ -834,7 +834,7 @@
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
    "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
    "manual": true,
-   "competition": "Regionalliga Suedwest"
+   "competition": null
   },
   {
    "id": "Q16536906",
@@ -1211,7 +1211,7 @@
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
    "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
    "manual": true,
-   "competition": "Regionalliga Suedwest"
+   "competition": null
   },
   {
    "id": "Q316865",
@@ -1355,7 +1355,7 @@
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
    "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
    "manual": true,
-   "competition": "Regionalliga Suedwest"
+   "competition": null
   },
   {
    "id": "Q41420",
@@ -1819,7 +1819,7 @@
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Regionalliga",
    "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 Regionalliga article lists this club and the 2026-27 3. Liga article does not, so tier 4 is what the leagues themselves say. Wikidata still tags it Q154069 3. Liga, which is where the old tier came from.",
    "manual": true,
-   "competition": "Regionalliga Suedwest"
+   "competition": null
   },
   {
    "id": "Q666000",

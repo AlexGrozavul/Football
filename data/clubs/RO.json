@@ -908,6 +908,20 @@
    "lon": 26.183889,
    "city": null,
    "competition": "Liga a III-a"
+  },
+  {
+   "id": "Q99446805",
+   "name": "CSM Olimpia Satu Mare",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Daniel Prodan",
+   "capacity": 18000,
+   "lat": 47.799611,
+   "lon": 22.891028,
+   "city": null,
+   "competition": "Liga a III-a"
   }
  ]
 }
