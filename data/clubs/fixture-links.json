@@ -1976,6 +1976,344 @@
      ]
     }
    ]
+  },
+  "Q182876": {
+   "name": "AJ Auxerre",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "519",
+     "teamName": "AJ Auxerre",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q180305": {
+   "name": "AS Monaco FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "548",
+     "teamName": "AS Monaco FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q845137": {
+   "name": "Angers SCO",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "532",
+     "teamName": "Angers SCO",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q501693": {
+   "name": "ES Troyes AC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "531",
+     "teamName": "ES Troyes AC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q48911": {
+   "name": "FC Lorient",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "525",
+     "teamName": "FC Lorient",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q328658": {
+   "name": "Le Havre AC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "533",
+     "teamName": "Le Havre AC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19516": {
+   "name": "Lille OSC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "521",
+     "teamName": "Lille OSC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q185163": {
+   "name": "OGC Nice",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "522",
+     "teamName": "OGC Nice",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q132885": {
+   "name": "Olympique de Marseille",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "516",
+     "teamName": "Olympique de Marseille",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q704": {
+   "name": "Olympique lyonnais",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "523",
+     "teamName": "Olympique Lyonnais",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1051013": {
+   "name": "Paris FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1045",
+     "teamName": "Paris FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q483020": {
+   "name": "Paris Saint-Germain FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "524",
+     "teamName": "Paris Saint-Germain FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q191843": {
+   "name": "RC Lens",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "546",
+     "teamName": "Racing Club de Lens",
+     "basis": "short-name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q126334": {
+   "name": "RC Strasbourg Alsace",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "576",
+     "teamName": "RC Strasbourg Alsace",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q218372": {
+   "name": "Stade brestois 29",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "512",
+     "teamName": "Stade Brestois 29",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19509": {
+   "name": "Stade rennais FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "529",
+     "teamName": "Stade Rennais FC 1901",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19518": {
+   "name": "Toulouse FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "511",
+     "teamName": "Toulouse FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "FL1",
+       "file": "data/fixtures/FL1.json",
+       "label": "Ligue 1"
+      }
+     ]
+    }
+   ]
   }
  },
  "notLinked": {}
