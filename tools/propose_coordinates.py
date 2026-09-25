@@ -626,7 +626,7 @@ def missing_clubs(code, lang, tiers, labels, manual_rows, failures, incomplete,
         failures.append(f"{code} clubs from Wikidata: {error}")
         incomplete.append(f"{code} clubs from Wikidata: {error}")
         return []
-    clubs, _leagues, _ambiguous, dropped = build_clubs(
+    clubs, _leagues, _ambiguous, dropped, _countries = build_clubs(
         data.get("results", {}).get("bindings", []), tiers)
     # The items that carry a league tag and are not clubs - squad lists,
     # most often - used to arrive here and take up a row each in the
