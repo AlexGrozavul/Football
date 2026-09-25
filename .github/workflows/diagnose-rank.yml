@@ -1,0 +1,59 @@
+name: Diagnose hidden leagues
+
+# Runs tools/diagnose_p118_rank.py: which clubs the club query's truthy
+# wdt:P118 join hides, in all three known shapes - a preferred
+# <novalue>, every statement deprecated (FC Augsburg), and a preferred
+# statement naming a DIFFERENT, unmapped league (LR Vicenza) - and, for
+# the last, which of them a tracked roster names.
+#
+# It runs whenever data/league-tiers.csv changes on main, which is the
+# moment a new country's leagues are mapped, so a country pass gets the
+# check by default instead of by somebody remembering it. And weekly,
+# after the Sunday club build, so a Wikidata rank edit shows up.
+#
+# READS AND WRITES NOTHING in the repository and commits nothing. The
+# answer is the job log and the run summary. It exits 1 when a call
+# failed, because "nothing found" after a failed fetch is not a result.
+
+on:
+  schedule:
+    - cron: "41 6 * * 0"
+  push:
+    branches: [main]
+    paths:
+      - "data/league-tiers.csv"
+      - "data/league-rosters.csv"
+      - "tools/diagnose_p118_rank.py"
+      - ".github/workflows/diagnose-rank.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: diagnose-rank
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Ask Wikidata which clubs rank hides
+        run: |
+          set -o pipefail
+          python3 tools/diagnose_p118_rank.py | tee /tmp/rank.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Hidden leagues (P118 rank)"
+            echo
+            echo '```'
+            tail -n 150 /tmp/rank.log 2>/dev/null || echo "the tool did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

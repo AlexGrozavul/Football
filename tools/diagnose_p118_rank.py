@@ -12,7 +12,8 @@ not in data/clubs/, so no review file mentions it, and not in the club
 query's answer, so nothing counts it. That is a shape of invisibility
 that no other pass in this project can see.
 
-Two statement shapes cause it, and this tool asks about both:
+Three statement shapes cause it, and this tool asks about all three,
+every run, for every country league-tiers.csv maps:
 
   a PREFERRED-rank statement carrying NO VALUE.  Wikidata's <novalue>
       is an assertion - "this item has no league" - and at preferred
@@ -24,6 +25,12 @@ Two statement shapes cause it, and this tool asks about both:
       FC Augsburg's Q15755 is the case: one statement, P118 =
       Q82595 Bundesliga, deprecated, and the club reaches the map not
       at all through that item.
+
+  a PREFERRED-rank statement naming a DIFFERENT, unmapped league.
+      Query C. LR Vicenza's Q56542463 is the case: Serie B at normal
+      rank, a stale Serie C Group A at preferred rank, so wdt:P118
+      yields Serie C and the club never reaches the map. Found
+      2026-09-25, invisible to the first two queries by construction.
 
 IT READS AND WRITES NOTHING. Not a club file, not a review file, not a
 seed list. It prints what it found and exits 1 if any call failed,
@@ -45,6 +52,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import check_rosters  # noqa: E402 - the roster reader, reused, never copied
 
 ROOT = Path(__file__).resolve().parent.parent
 TIERS_FILE = ROOT / "data" / "league-tiers.csv"
@@ -138,9 +148,16 @@ WHERE {
 # reaches the map. Query B asks only about clubs with NO truthy P118 at
 # all, so it cannot see this. Query C asks: a mapped league at normal
 # rank, a preferred statement naming some other league on top of it,
-# and no mapped league among what wdt:P118 yields. The novalue fallback
-# in fetch_clubs.py deliberately does not read through this shape, and
-# this query does not suggest it should - it measures.
+# and no mapped league among what wdt:P118 yields.
+#
+# Since 2026-09-25, on Alexandru's instruction, the fallback in
+# fetch_clubs.py DOES read through this shape, under the novalue
+# fallback's three conditions (normal rank, no P576, a current roster
+# names the club). So this query now ends with the BILL as well as the
+# census: which of the clubs it lists a tracked roster names, i.e.
+# which ones the next club build will surface. It runs on every
+# invocation, for every country league-tiers.csv maps - it is part of
+# the standing pass, not something to remember.
 QUERY_STALE_PREFERRED = """
 SELECT ?club ?clubLabel ?league ?shown ?dissolved ?coord ?groundCoord
 WHERE {
@@ -457,6 +474,16 @@ def print_club(fact, tiers):
 def main():
     tiers = load_tiers()
     mapped = sorted(tiers)
+    # A country added to league-tiers.csv and not to COUNTRIES would be
+    # counted by queries B and C (they are bounded by league) but not by
+    # the census's country split - a half-checked country that reads as
+    # a checked one. Refuse rather than print a partial answer.
+    unlisted = sorted({t[1] for t in tiers.values()} - set(COUNTRIES.values()))
+    if unlisted:
+        print(f"league-tiers.csv maps leagues for {', '.join(unlisted)}, which "
+              f"COUNTRIES in this tool does not list. Add the country's Q-id to "
+              f"COUNTRIES first; nothing was asked.")
+        return 1
     print(f"league-tiers.csv read back: {len(mapped)} mapped leagues - "
           + ", ".join(f"{q}={tiers[q][0]}{tiers[q][1]}" for q in mapped))
     print()
@@ -672,7 +699,43 @@ def stale_preferred(tiers, mapped):
                   "alone would not place it")
     print("  A club listed here is NOT therefore in the hidden league now - "
           "only a roster says that.")
-    return 0
+    print()
+
+    # The bill: which of these a tracked roster names. Only clubs with no
+    # P576 and a position can reach the map, so only those are asked
+    # about - and a country with none of them costs no roster request.
+    live = {c: f for c, f in clubs.items() if not f["dissolved"] and f["placed"]}
+    by_country = {}
+    for club, fact in live.items():
+        for league in fact["hidden"]:
+            if league in tiers:
+                by_country.setdefault(tiers[league][1], set()).add(club)
+    print("  THE BILL - which of the live, placed ones a current-season roster "
+          "names")
+    if not by_country:
+        print("    none is live and placed, so no roster was read")
+    tier_map = {q: t[0] for q, t in tiers.items()}
+    failed = False
+    for country in sorted(by_country):
+        named, failures = check_rosters.roster_qids(country, tier_map)
+        if failures:
+            failed = True
+            for failure in failures:
+                print(f"    ! {country} roster read failed: {failure}")
+            print(f"    {country}: NO verdict - a roster that did not come back is "
+                  f"a failed fetch, not a division with nobody in it")
+            continue
+        for club in sorted(by_country[country], key=lambda c: live[c]["label"]):
+            where = named.get(club)
+            label = live[club]["label"]
+            if where:
+                arts = ", ".join(sorted({a for _t, a in where}))
+                print(f"    {country}  {club:<12} {label} - named by {arts}: the "
+                      f"club build's fallback surfaces it")
+            else:
+                print(f"    {country}  {club:<12} {label} - no tracked roster names "
+                      f"it; stays off the map")
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

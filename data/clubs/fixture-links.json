@@ -2415,6 +2415,25 @@
     }
    ]
   },
+  "Q1886": {
+   "name": "Atalanta Bergamasca Calcio",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "102",
+     "teamName": "Atalanta BC",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
   "Q1893": {
    "name": "Bologna FC 1909",
    "links": [
@@ -2461,6 +2480,30 @@
      "teamId": "7397",
      "teamName": "Como 1907",
      "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q631": {
+   "name": "FC Inter",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "108",
+     "teamName": "FC Internazionale Milano",
+     "basis": "manual",
      "venue": null,
      "competitions": [
       {
@@ -2642,6 +2685,25 @@
      "teamId": "115",
      "teamName": "Udinese Calcio",
      "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "SA",
+       "file": "data/fixtures/SA.json",
+       "label": "Serie A"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8603": {
+   "name": "Unione Sportiva Sassuolo Calcio",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "471",
+     "teamName": "US Sassuolo Calcio",
+     "basis": "manual",
      "venue": null,
      "competitions": [
       {
