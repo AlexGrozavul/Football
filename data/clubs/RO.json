@@ -75,6 +75,23 @@
    "competition": "Liga a II-a"
   },
   {
+   "id": "Q106779019",
+   "name": "FC Bacău",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Ruși-Ciutea Sportsbase",
+   "capacity": 700,
+   "lat": 46.521722,
+   "lon": 26.953861,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/Ru%C8%99i-Ciutea_Sportsbase; https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II",
+   "note": "Resolved before applying (2026-09-26): the club is active - the 2026-27 Liga II article lists it with Ruși-Ciutea as its ground, and its English and Romanian infoboxes say the same. The OpenStreetMap proposal was WRONG: it was the Stadionul Municipal Bacău, closed since 2014 (English and Romanian Wikipedia) and not this club's ground. Coordinates from the stadium article's own coord (46°31'18.2\"N 26°57'13.9\"E); its Wikidata item Q131850809 has none. CAPACITY: in use 700 (Liga II table, English club infobox and stadium article agree). Not taken: 1500 (Romanian club infobox). The 2026-27 Liga III article's 'Bacău II' links this same item - that is the reserve side, which is why roster-review.csv names Q106779019 in Liga III too",
+   "manual": true,
+   "competition": "Liga a II-a"
+  },
+  {
    "id": "Q107724768",
    "name": "SR Brașov",
    "leagues": [
@@ -86,6 +103,23 @@
    "lat": 45.664806,
    "lon": 25.585583,
    "city": null,
+   "competition": "Liga a III-a"
+  },
+  {
+   "id": "Q113331350",
+   "name": "ACS Mediaș 2022",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Gaz Metan",
+   "capacity": null,
+   "lat": 46.172584,
+   "lon": 24.352687,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/105611613",
+   "note": "Coordinates from OpenStreetMap (confident match in coordinate-review.csv, 2026-09-26), applied on Alexandru's instruction. Club confirmed by the 2026-27 Liga III article. Ground confirmed by English and Romanian Wikipedia (club infobox: Gaz Metan; the stadium article lists ACS Mediaș as tenant since 2022, the phoenix club of the dissolved Gaz Metan Mediaș Q856790). Capacity left blank: 7814 is Wikidata and the stadium article, not an independent second source",
+   "manual": true,
    "competition": "Liga a III-a"
   },
   {
@@ -118,6 +152,40 @@
    "note": "Not a duplicate of Q204237. CS Dinamo Bucuresti is a separate club, currently in Liga 2, established by Alexandru from its Wikipedia article and the club's own csdinamofotbal accounts. Wikidata gives the club item the senior club's ground by mistake - its P115 is Q1226240, Stadionul Dinamo - and the capacity and coordinates follow from that. Name, venue, capacity and now coordinates are corrected here. The coordinates 44.5481/25.9811 are Q7596368's own P625, read on 2026-09-19 from a GitHub runner because the session doing the work could not reach wikidata.org. That is 14.1 km from Stadionul Dinamo, so the two Dinamos are now two separate pins. CAPACITY DISAGREES AND IS NOT CHANGED: Q7596368 says 450, the 1600 here is Alexandru's and wins. Worth a look - either Wikidata is low, or Q7596368 Stadionul Buftea is not the same ground as the CNF Buftea pitch the club actually uses. The coordinate is trusted because this row already named Q7596368 as its source.",
    "manual": true,
    "competition": "Liga a II-a"
+  },
+  {
+   "id": "Q118904605",
+   "name": "CSM Vaslui",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Municipal Vaslui",
+   "capacity": null,
+   "lat": 46.633551,
+   "lon": 27.73325,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/256557708",
+   "note": "Coordinates from OpenStreetMap (coordinate-review.csv, 2026-09-26). Resolved before applying: club confirmed by the 2026-27 Liga III article; ground confirmed by English Wikipedia (club infobox and the Vaslui Municipal Stadium article, tenant since 2018), and Wikidata's ground item Q549018 sits 3 m away. Capacity 9240 there and on Q549018 - not independent, left blank. The same ground was proposed for CS Sporting Juniorul Vaslui Q99448017, which no roster names; that one is held in data/coordinate-reviews.csv",
+   "manual": true,
+   "competition": "Liga a III-a"
+  },
+  {
+   "id": "Q120784310",
+   "name": "CSO Băicoi",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Petrolul",
+   "capacity": null,
+   "lat": 45.031099,
+   "lon": 25.837318,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/14357372",
+   "note": "Coordinates from OpenStreetMap (confident match in coordinate-review.csv, 2026-09-26), applied on Alexandru's instruction. Club confirmed by the 2026-27 Liga III article. Ground confirmed by English Wikipedia's club infobox (Stadionul Petrolul (Băicoi), capacity 1500 - one source, so left blank)",
+   "manual": true,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q1262822",
@@ -795,6 +863,40 @@
    "competition": "Liga a II-a"
   },
   {
+   "id": "Q55864953",
+   "name": "ACS Înainte Modelu",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Vasile Enache",
+   "capacity": null,
+   "lat": 44.202239,
+   "lon": 27.384969,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/Vasile_Enache_Stadium",
+   "note": "Resolved before applying (2026-09-26): club confirmed by the 2026-27 Liga III article; ground Vasile Enache per its English infobox and the stadium article (tenant since 2009). Coordinates are the stadium article's own, identical to Wikidata's P625 on Q7596446 (labelled Stadionul Prefab, same site in Modelu). The OpenStreetMap proposal was WRONG: it was Dunărea Călărași's own pin, 4.6 km away. Capacity left blank: 1000 (stadium article) against 1150 (club infobox), not within 5%. Q74127553 'Înainte Modelu' looks like a thin duplicate of this item - see data/coordinate-reviews.csv",
+   "manual": true,
+   "competition": "Liga a III-a"
+  },
+  {
+   "id": "Q56677281",
+   "name": "Gloria Bistrița",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Jean Pădureanu",
+   "capacity": 7814,
+   "lat": 47.130833,
+   "lon": 24.502778,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II; https://www.wikidata.org/wiki/Q1532041",
+   "note": "Resolved before applying (2026-09-26): club confirmed by the 2026-27 Liga II article, whose stadiums table gives Jean Pădureanu. Coordinates are the ground item Q1532041's own P625, the same point FC Bistrița Q24895825 already sits on, so the two share one marker instead of two overlapping ones. CAPACITY: in use 7814 (the Liga II stadiums table); 7800 from Wikidata Q1532041 and the stadium article agrees within 5%. NOT THE SAME CLUB AS FC Bistrița Q24895825: that one was founded 2013 and dissolved 2017 per English Wikipedia; this one was founded 2018 as the unofficial successor of ACF Gloria Bistrița",
+   "manual": true,
+   "competition": "Liga a II-a"
+  },
+  {
    "id": "Q584629",
    "name": "FCU Craiova",
    "leagues": [
@@ -834,6 +936,23 @@
    "lat": 45.258058,
    "lon": 27.94715,
    "city": null,
+   "competition": "Liga a III-a"
+  },
+  {
+   "id": "Q66424146",
+   "name": "SCM Zalău",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Municipal (Zalău)",
+   "capacity": null,
+   "lat": 47.173092,
+   "lon": 23.059818,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/172811034",
+   "note": "Coordinates from OpenStreetMap (confident match in coordinate-review.csv, 2026-09-26), applied on Alexandru's instruction. Club confirmed by the 2026-27 Liga III article. Ground confirmed by English Wikipedia: club infobox and the stadium article (tenant since 2019), whose own coordinate 47.172806/23.059778 is about 30 m from this one. Capacity 3500 there, one source, left blank",
+   "manual": true,
    "competition": "Liga a III-a"
   },
   {
