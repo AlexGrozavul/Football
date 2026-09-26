@@ -1318,9 +1318,22 @@ a page anyone can already view in their browser's network tab.
     sports hall tagged `leisure=stadium` ("Sala de sport Treapt") was
     accepted as a ground. An object whose `sport` tag names only other
     sports, or whose name says hall, pool or rink, is now left out and
-    listed in the run summary. **Neither fix has run against Overpass
-    yet**; the next monthly run is the first, and its summary shows
-    what the second guard left out.
+    listed in the run summary. **`athletics` is not one of the "other
+    sports"**: the first real run left out 488 German, 291 French, 211
+    Italian and 13 Romanian objects, and athletics-only stadiums among
+    them, which is often a football ground with a track. Leaving the
+    true ground out can make a wrong one the only candidate, so
+    athletics now counts as possibly football.
+  - **What the rejections turned up on the real run.** With the wrong
+    grounds out of the way, two clubs got a new confident proposal:
+    **ARO Muscelul Câmpulung → Stadionul Muscelul** (OpenStreetMap links
+    that ground to the club's own Q-id — the strongest evidence the tool
+    has) and **Gilortul Târgu Cărbunești → a "Teren de Fotbal" in
+    Târgu Cărbunești**. Three rows are confident for the first time:
+    KSE Târgu Secuiesc, Șoimii Gura Humorului and Lotus Băile Felix,
+    and the last is a **"Teren Minifotbal"**, a small-sided pitch, which
+    is very probably not a club's ground. None of the five was applied;
+    they are new rows to judge.
   - **New open questions this turned up, all Alexandru's:**
     **FC Bistrița `Q24895825` is on the map at tier 3 and dissolved in
     2017** (English Wikipedia; `roster-review.csv` already reads it

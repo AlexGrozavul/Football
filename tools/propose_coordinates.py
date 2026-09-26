@@ -58,7 +58,9 @@ Two guards against the obvious ways name matching goes wrong:
   * An object OpenStreetMap tags as a stadium is not a ground if its
     sport tag names only other sports, or its name says hall, pool or
     rink. Added 2026-09-26 after a sports hall was proposed as a
-    ground. What is left out this way is listed in the run summary.
+    ground. Athletics counts as possibly football: a ground with a
+    running track is often tagged athletics alone. What is left out
+    this way is listed in the run summary.
 
 What a person already decided is not asked again. data/coordinate-
 reviews.csv, hand-written, records a proposal that was rejected, held
@@ -180,7 +182,12 @@ QUALIFIER_WORDS = {"bei", "am", "an", "im", "in", "ob", "auf", "vor",
 # of them is football, or when its name says it is a hall, a pool or a
 # rink. A ground with no sport tag at all is kept: most football
 # grounds carry none, and dropping them would be the bigger error.
-FOOTBALL_SPORTS = {"soccer", "football", "multi", "association_football"}
+# 'athletics' is kept for the same reason: a town's football ground
+# with a running track round it is very often tagged athletics alone,
+# and throwing it out can leave a wrong ground as the only candidate -
+# worse than proposing nothing.
+FOOTBALL_SPORTS = {"soccer", "football", "multi", "association_football",
+                   "athletics"}
 NOT_A_GROUND_NAME = re.compile(
     r"\b(sala|hala|sporthalle|turnhalle|mehrzweckhalle|palatul|"
     r"patinoar|bazin|schwimm\w*|eishalle|eisstadion|velodrom\w*|"
