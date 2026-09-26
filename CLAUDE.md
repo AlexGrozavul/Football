@@ -198,9 +198,9 @@ a subscribed calendar reads as a schedule regardless of its description.
   five rows share one article and it is fetched once.
   A row whose country has no file in `data/clubs/`, or whose
   `leagueQid` is not in `league-tiers.csv`, is **read back and
-  skipped** rather than compared against nothing. That is what the
-  Austrian row is for: it holds the corrected article title against the
-  day Austria is added, and generates no findings meanwhile.
+  skipped** rather than compared against nothing. The Austrian 2. Liga
+  row was that case until 2026-09-26, holding its corrected title
+  against the day Austria was added; it is now a live row.
 - `data/coordinate-reviews.csv` — added 2026-09-26. **What a person
   already decided about a row of `coordinate-review.csv`**, so the
   monthly run cannot offer it again as though it were new: `clubQid`,
@@ -274,6 +274,10 @@ a subscribed calendar reads as a schedule regardless of its description.
   query by a preferred-rank "no league" statement reaches the map.
   It decides **visibility and never tier**, and it surfaces nothing
   unless a current-season roster names the club. See Conventions.
+  Since 2026-09-26 it also names, on every run, each club on the map
+  whose item carries **more than one truthy ground**, and says whether
+  a hand row pins it — the SC Freiburg shape, reported rather than
+  found by accident. It picks no ground itself.
 - `tools/crosscheck_capacity.py` — OpenStreetMap capacity comparison
 - `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
   clubs Wikidata cannot place. Matches on names, proposes only, and
@@ -291,7 +295,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   publishes no coordinates; reports, never corrects.
 - `tools/check_rosters.py` — the roster check. Asks, from the league's
   side, whether a club that should be on the map is missing from it.
-  Reads, never writes to a club file.
+  Reads, never writes to a club file. Since 2026-09-26 it **leaves out,
+  and names**, a table row whose first link is a parent club under a
+  reserve side's name ("SK Rapid II" linking SK Rapid Wien), or whose
+  team cell has no link at all, so the first link is a city
+  ("Austria Wien II" linking Vienna).
   It also exports `roster_qids(country, tiers)`, which is how
   `fetch_clubs.py` asks "does a division this project tracks say this
   club is playing" for the novalue fallback. The question belongs to
@@ -1034,7 +1042,11 @@ club off a shared pin. Counted against the rebuild of 2026-09-19:
 **190 clubs on 182 grounds, 8 of them shared by 16 clubs**, and every
 one of the eight is now exactly two clubs — six reserve sides at their
 first team's ground, plus the Waldau-Stadion and the Stadionul Ion
-Oblemenco, which two unrelated clubs really do share. No ground on
+Oblemenco, which two unrelated clubs really do share. *(Corrected
+2026-09-26: the Waldau was never really VfB Stuttgart II's. It was one
+of two grounds on that club's Wikidata item, and in 2026-27 the club
+plays at neither - see the entry on two grounds under Known open
+problems.)* No ground on
 either map carries three clubs any more.
 
 Clubs are now grouped by coordinate *before* anything is drawn. A
@@ -1139,6 +1151,193 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **Austria's top two tiers are on the map, 2026-09-26: Bundesliga 12
+  of 12, exact; 2. Liga 9 of 16, with nothing extra and nothing at the
+  wrong tier, and each of the seven missing is missing for a named
+  reason.** Same pipeline and standard as the other five countries, run
+  on a GitHub runner through four throwaway probes (removed in the same
+  branch). Tiers 1 and 2 only; the Regionalliga and below were
+  deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q219592`
+    Bundesliga (`P3983` 1, enwiki *Austrian Football Bundesliga*) and
+    `Q650236` 2. Liga (enwiki *2. Liga (Austria)*; it carries **no**
+    `P3983`, and its 2025–26 season item's `P3450` points at it).
+    StadiumDB's slug is `aut` (`austria`, `at` and `ost` are 404s). The
+    2. Liga row in `league-rosters.csv`, parked since the design pass
+    under its corrected title, is now live. Both articles are one
+    stadiums-and-locations table: 12 of 12 resolved (one through a
+    redirect), and 16 rows in the 2. Liga table.
+  - **The 2. Liga table links three reserve sides wrongly, and the
+    roster check now says so instead of believing it.** Reserve sides
+    have no English article, so "SK Rapid II" links SK Rapid Wien,
+    "Sturm Graz II" links SK Sturm Graz, and "Austria Wien II" has no
+    link at all, so the row's first link was the **city of Vienna**. Read
+    as written, that made Rapid and Sturm `wrong-tier` and Vienna a
+    division member. `check_rosters.py` now leaves out both row shapes
+    and names them in its run summary (see Files). It changed five
+    Romanian verdicts too - see the Liga III entry.
+  - **What the first build brought, 25 clubs against 28 teams:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 14 | 11 |
+    | after this pass | **12** | **9** |
+  - **Two tier-1 extras.** **FC Blau-Weiß Linz `Q696525`** is at tier 2
+    by a hand row: its only `P118` is the Bundesliga, the complete
+    Bundesliga article omits it, the complete 2. Liga article lists it
+    and says it was relegated, and its infobox agrees - the FC Wil
+    shape, reviewable. **VSE St. Pölten `Q731715`** is `skip`ped: a
+    Bundesliga tag dated 1988–1994, no `P576`, drawn at tier 1 at the
+    Voithplatz; the German infobox says *aufgelöst 1998*. Shape 4.
+  - **Four tier-2 extras `skip`ped** to the Hermannstadt standard (both
+    articles complete, neither lists them, an infobox or the article
+    states the reason): **FC Gratkorn** `Q697322` (Unterliga Central),
+    **FC Juniors OÖ** `Q1387445` (Regionalliga), **FC Lustenau 07**
+    `Q692186` (Regionalliga West) and **SK Austria Klagenfurt**
+    `Q699184`, relegated to the third tier after an insolvency
+    application, which the 2. Liga article itself says.
+  - **SV Austria Salzburg `Q22866` placed** at the Max Aicher Stadion,
+    1,566 (2. Liga table, StadiumDB and infobox agree; the position is
+    the ground's own item, `Q20180568`). It was `unplaced-no-coordinates`.
+  - **Young Violets Austria Wien `Q60967849` is Austria Wien II and
+    stays.** The roster check will keep calling it `extra-not-in-roster`,
+    because its table row has no link and so names no Q-id. A note-only
+    row says so.
+  - **The seven 2. Liga teams still missing, and why:**
+    - **Five promoted clubs whose tags did not follow** - SKU Amstetten
+      `Q2206406`, SC Schwarz-Weiß Bregenz `Q699686`, Floridsdorfer AC
+      `Q696474`, ASK Voitsberg `Q297832` (each tagged with a Regionalliga
+      only) and FC Hertha Wels `Q63168427` (no `P118` at all). The
+      Rapperswil-Jona shape exactly: `missing-from-wikidata`, and only a
+      no-Q-id add row reaches them, at two false roster findings each.
+      **Not added**, because Alexandru's instruction to use that route
+      named the two Swiss clubs only. **His call.**
+    - **SK Rapid Wien II `Q98228613` and SK Sturm Graz II `Q98217947`**
+      exist on Wikidata but carry no 2. Liga tag, and the article links
+      their parents, so the roster check cannot name them either. Rapid
+      II plays at the Allianz Stadion (German infobox); Sturm II's
+      German infobox names the Solarstadion Gleisdorf **and** the
+      Stadion Donawitz, so its ground is not settled.
+  - **Capacities: seven written, and each note names every figure.**
+    By the UTA Arad rule: Red Bull Salzburg 31,895 → **30,188**, Grazer
+    AK and Sturm Graz 15,400 → **16,364** (they genuinely share the
+    Merkur Arena), TSV Hartberg 4,500 → **5,024**, WSG Tirol 17,400 →
+    **16,008**. Filled where Wikidata had none: SK Rapid Wien **28,600**,
+    FC Blau-Weiß Linz **5,595** (StadiumDB and infobox; OpenStreetMap's
+    5,565 on the first branch run agrees too). **LASK's ground was wrong**: Wikidata's
+    `P115` is the old Linzer Stadion (1952, 18,000); the club has played
+    at the **Raiffeisen Arena**, rebuilt on the same site, since 2023 -
+    19,080 on three sources, its own item `Q116693275` for the position.
+    **Left alone**: Admira Wacker (12,000 / 10,600 / 7,010, no two
+    agree), SC Austria Lustenau (8,800 on Wikidata against 5,138 on
+    English Wikipedia twice - one source), Wolfsberger AC, First Vienna
+    and Kapfenberg (the map agrees with one other source), and **FC
+    Wacker Innsbruck**, which shares the Tivoli with WSG Tirol: its own
+    division's table (17,000) agrees with Wikidata (17,400), so by the
+    same rule its figure stands - **one ground now carries two figures on
+    two rows**, written down in WSG's note rather than smoothed over.
+    **FC Liefering** is drawn at the Red Bull Arena (Wikidata's `P115`,
+    a copied first-team ground); the 2. Liga table says the
+    Untersberg-Arena in Grödig, its English infobox lists both, and
+    StadiumDB has neither for Liefering. Two against one, not
+    corrected; worth a look.
+  - **StadiumDB's Austrian page has 27 grounds, and is as thin as
+    measured in 2026-09-19.** It has nothing for SC Austria Lustenau,
+    Liefering's Untersberg-Arena or Wacker Innsbruck by name. After the
+    corrections its review file holds three Austrian rows: Admira
+    (contested), First Vienna (map agrees with the table) and Altach (a
+    sponsor's name). **Silence is not agreement**, as for Switzerland.
+  - **The rank blind spot, all three shapes.** Query C's only Austrian
+    candidate is SC Wiener Neustadt `Q134073`, bill 0 (1. Landesliga
+    per its infobox). No Austrian item carries a preferred `<novalue>`.
+    One carries a tracked league at deprecated rank, ASV Hertha Wien,
+    dissolved 1940.
+  - **The stale-active-club pattern (shape 6) was looked for.** Every
+    item carrying either Austrian tag at any rank was listed (61
+    statements, about fifty items) and
+    read against both articles, `P576` and its infobox. Three would have
+    been offered as coordinate proposals and now have whole-club
+    `rejected` rows in `coordinate-reviews.csv`: **SV Horn** `Q689889`
+    and **SV Lafnitz** `Q15137936` (alive, in the Regionalliga - the
+    relegated relative of shape 6) and **Wiener AC** `Q581990` (no
+    longer plays football). **Five more are Alexandru's call**:
+    Brigittenauer AC, FC Wien, SC Wacker Wien, SK Admira Wien and the
+    Vienna Cricket and Football-Club carry Bundesliga tags **dated**
+    between 1911 and 1971, no `P576`, and no coordinates, so they are
+    off the map today and may be proposed next month. Their only
+    evidence of being gone is those dates and their absence from both
+    articles, and the La Dominante precedent looked for an infobox as
+    well - none of them has one that says so. **The club query does not
+    read `P582` on a league tag**; that is why a 1930s tag counts as
+    current.
+  - **Fixtures: none.** football-data.org's free tier carries no
+    Austrian competition and OpenLigaDB is German only; the club sheet
+    says so.
+
+- **Two truthy grounds on one club item - the SC Freiburg shape - was
+  looked for in every country on 2026-09-26, and it is on six clubs on
+  the map, not one.** CLAUDE.md said Freiburg's ground "moved" because
+  Wikidata was catching up; that was asserted, not checked, and it was
+  a flap (see the Italy entry). The question asked this time: which
+  club, in any mapped league of all six countries, carries two or more
+  `P115` values at its best rank. `fetch_clubs.py` builds a club from
+  whichever query row arrives first, and the query service promises no
+  order, so such a club's ground can change between rebuilds - and
+  worse, the builder can take the **name** from one ground's row and
+  the **capacity or position** from the other's. **Two clubs were
+  drawing exactly that mixed record** when looked at.
+  **Every rebuild now names these clubs** and says whether a hand row
+  pins each one. The remedy, as for Freiburg, is a hand row with venue,
+  capacity, lat and lon, and only on **three sources agreeing**.
+
+  | club | Wikidata's two grounds | what the map showed | now |
+  |---|---|---|---|
+  | SC Freiburg | Dreisamstadion; Europa-Park-Stadion | alternated | pinned 2026-09-26 (earlier pass) |
+  | Borussia Dortmund II | Rote Erde; Westfalenstadion | Rote Erde's name and capacity (a hand row), **the Westfalenstadion's position** | position pinned to Rote Erde's own item: StadiumDB, infobox and the item agree |
+  | VfB Stuttgart II | Robert-Schlienz-Stadion; Waldau | the Waldau, shared with Stuttgarter Kickers | **neither** - the 3. Liga table, StadiumDB and the infobox all say the WIRmachenDRUCK Arena in Aspach, 10,001 |
+  | FC Rapid București | Giulești; Regie | **the Regie**, 10,020 | Giulești, 14,047: Liga I table, StadiumDB and infobox |
+  | FC Lugano | Cornaredo (ends 2026); AIL Arena (starts 2026) | the Cornaredo | the AIL Arena, whose Wikidata item exists after all (`Q140038602`); capacity still cleared, 8,093 against 8,793 |
+  | BFC Dynamo | Sportforum Hohenschönhausen; Jahn-Sportpark | the Sportforum's name and pin **with the Jahn-Sportpark's 19,708** | capacity cleared; **ground open** - the infobox says the Sportforum, StadiumDB still says the Jahn-Sportpark |
+
+  **Also found, and not a flap today**: Olympique Lyonnais carries the
+  Parc OL and the Stade de Gerland (dated 1950–2015) at the same rank
+  when the statements are read one by one, but the club query itself
+  returned only the Parc OL on 2026-09-26, so nothing was pinned; the
+  rebuild report will say so if that changes. Știința Poli Timișoara
+  has two grounds and was already pinned by hand. **No Austrian club
+  has the shape.** The Waldau is now Stuttgarter Kickers' alone, which
+  corrects the old claim that it was genuinely shared.
+
+- **FC Rapperswil-Jona and FC Stade Nyonnais are on the map at tier 2,
+  2026-09-26, as hand-added clubs with no Q-id - on Alexandru's
+  instruction, and at a cost that is written down.** Switzerland's
+  Challenge League is now **10 of 10 drawn**. Both season articles were
+  re-read first, as he asked: the complete Challenge League article
+  lists both (with 2026-27 results for both), the Super League article
+  names neither except Nyon in its navigation box, under the Challenge
+  League. Rapperswil-Jona is at the **Stadion Grünfeld** (the ground's
+  own item `Q26868807` for the position; capacity **blank** - 2,500,
+  2,700, 3,200 and 4,350 in four places, no two independent ones
+  agreeing). Stade Nyonnais is at the **Stade de Colovray**, 7,200, the
+  ground on its own `P115`.
+  **The instruction's premise was not quite right, and it matters for
+  the next one.** It said to add them "the same way CSC Dumbrăvița was
+  originally added - blank clubQid". Dumbrăvița's row has carried its
+  Q-id, `Q55618976`, since the file's first commit: it **corrects** a
+  club the query already returned, which is why it costs nothing. A
+  row with no Q-id is a different thing - an **add** - and its cost is
+  the one the Switzerland entry named: the roster check joins on Q-ids,
+  so each club now reads as `missing-from-wikidata` under its real
+  Q-id **and** `extra-not-in-roster` under its `MANUAL-` id, on every
+  run. `_sameNameOnMap` does fire on the missing side, because the rows
+  use the article's exact names, so the pair at least points at itself.
+  **A route with no false findings exists and was not built**, because
+  it is a design change and his to choose: a third fallback shape that
+  surfaces a club a current roster names even when none of its tags is
+  mapped, **without a tier**, so that it stays off the map until an
+  ordinary `clubQid` hand row gives it one - the Inter Sibiu rule. It
+  would reach both Swiss clubs and the five Austrian ones above under
+  their own Q-ids.
+
 - **Switzerland's top two tiers are on the map, 2026-09-26: Super
   League 12 of 12, exact; Challenge League 8 of 10, nothing extra and
   nothing at the wrong tier, and the two missing are missing for a
@@ -1179,6 +1378,10 @@ a page anyone can already view in their browser's network tab.
     the Babelsberg shape, not the Farul one, so it was written rather
     than left. Still Alexandru's to overrule; emptying the cell puts it
     back at tier 1.
+  - **Both are on the map since 2026-09-26, as hand-added clubs with
+    no Q-id, on Alexandru's instruction** - see the entry on the
+    Austria pass. What follows is why that was the only route, and what
+    it costs; it is kept as written.
   - **The two Challenge League clubs still missing, and why neither is
     fixable by a hand row today.** **FC Rapperswil-Jona `Q681483`**
     carries only `Q672305` 1. Liga; **FC Stade Nyonnais `Q673268`**
@@ -1228,6 +1431,9 @@ a page anyone can already view in their browser's network tab.
     - **FC Sion 16,263 → 14,283**, the UTA Arad rule: the Super League
       table and OpenStreetMap agree exactly; StadiumDB's 20,187 and
       Wikidata's 16,263 are recorded as not taken.
+    - **FC Lugano: ground pinned to the AIL Arena on 2026-09-26, capacity
+      still cleared** - see the entry on two grounds. What follows was
+      true when written.
     - **FC Lugano: capacity cleared, ground open.** No source supports
       Wikidata's 15,000. The club infobox and the Super League table say
       the club now plays at the **AIL Arena**, at 8,093 and 8,793
@@ -1389,17 +1595,20 @@ a page anyone can already view in their browser's network tab.
     Serie B has no fixture source; the club sheet says so.
   - **Not Italian, but it moved in the same rebuild**: SC Freiburg's
     ground went from the Dreisamstadion to the **Europa-Park-Stadion**
-    (34,700), where it has played since 2021. ~~That is Wikidata catching
-    up, not a change made here.~~ **That reading was wrong, corrected
-    2026-09-26**: it was not a move but a **flap**. `Q106394` carries two
-    truthy `P115` values and `fetch_clubs.py` keeps whichever row the
-    query service returns first, so the ground alternated on every
-    rebuild since 2026-09-25 (seven checked). A hand row now pins the
-    Europa-Park-Stadion, 34,700 (the 2026–27 Bundesliga table and
-    Wikidata's figure for the ground agree, and StadiumDB's
-    Europa-Park Stadion matched it at 34,700 on the next run). Freiburg is the only club
-    in any country file whose ground changed between rebuilds in that
-    window; the first-row-wins choice itself is not fixed.
+    (34,700), where it has played since 2021. **This entry first said
+    that was Wikidata catching up. That was asserted without being
+    checked, and it was wrong.** It was not a move but a **flap**:
+    `Q106394` carries two truthy `P115` values with nothing between them
+    that the club query reads, and `fetch_clubs.py` keeps whichever row
+    the query service returns first, so the ground alternated on every
+    rebuild since 2026-09-25 (seven checked). A hand row pins the
+    Europa-Park-Stadion, 34,700 (the 2026–27 Bundesliga table, Wikidata's
+    figure for the ground and StadiumDB agree). **Freiburg was not the
+    only one**: the same shape was looked for in every country on
+    2026-09-26 and found on five more clubs on the map, two of them
+    drawing a mixed record - see the entry on two grounds under Known
+    open problems. The first-row-wins choice is still not changed; every
+    rebuild now names each club it touches instead.
 
 - **The 38 confident Romanian rows were judged, 2026-09-26, and the
   judgement is now remembered.** `data/coordinate-reviews.csv` holds 31
@@ -2376,6 +2585,13 @@ a page anyone can already view in their browser's network tab.
   Timișoara is in Liga II. Their own division's article gets them right,
   so no harm is done - but a `wrong-tier` from the Liga III row alone is
   not evidence, and nothing should be changed on the strength of one.
+  **Since 2026-09-26 those rows are no longer read at all.** The
+  Austria pass taught the roster check to leave out a row whose team
+  cell has no link of its own, and five Liga III rows had exactly that
+  shape: FC Voluntari, Sepsi OSK, SC Oțelul Galați, Știința Poli
+  Timișoara and FC Bacău, whose `wrong-tier` findings are gone. Checked
+  against the previous `roster-review.csv`: those five verdicts and
+  nothing else changed in Romania.
 
 - **Liga II's shortfall, taken apart club by club on 2026-09-20: it is
   coordinates, and the figure of six hides how it is made.** The table
@@ -2742,9 +2958,11 @@ a page anyone can already view in their browser's network tab.
   *after* the shape is settled, never to settle the shape.
 
   The remaining shared grounds are genuine. FCU Craiova and
-  Universitatea Craiova really do share the Stadionul Ion Oblemenco,
-  and the Waldau-Stadion really is Stuttgarter Kickers and VfB
-  Stuttgart II. The rest are a first team with its own reserve side.
+  Universitatea Craiova really do share the Stadionul Ion Oblemenco.
+  **This line used to say the Waldau-Stadion really is Stuttgarter
+  Kickers and VfB Stuttgart II. It was not**: the Waldau was one of two
+  truthy `P115` values on VfB Stuttgart II's item, and the club plays
+  its 2026-27 home games in Aspach (corrected 2026-09-26). The rest are a first team with its own reserve side.
   The Grünwalder was three at once — TSV 1860 München, TSV 1860 München
   II and FC Bayern München II — until TSV 1860 München II's ground was
   cleared; it is two now, and the third was never really there, only
@@ -3860,10 +4078,10 @@ a page anyone can already view in their browser's network tab.
     before anyone looked. **A third opinion is a third opinion, not a
     tie-breaker.**
   - **So the verdict is: yes for France and Italy, no for
-    Switzerland, Austria, Serbia and Greece.** (Switzerland was added
-    to `crosscheck_stadiumdb.py` anyway on 2026-09-26, slug `sui`, as a
-    thin third opinion, never as agreement by silence - see the
-    Switzerland entry under Known open problems.) As a second opinion on
+    Switzerland, Austria, Serbia and Greece.** (Switzerland and Austria
+    were added to `crosscheck_stadiumdb.py` anyway on 2026-09-26, slugs
+    `sui` and `aut`, each as a thin third opinion, never as agreement by
+    silence - see their entries under Known open problems.) As a second opinion on
     a ground StadiumDB happens to hold it is excellent — clean to
     parse, independent of both OpenStreetMap and Wikidata, and
     editorially curated rather than crowd-sourced. As the systematic
