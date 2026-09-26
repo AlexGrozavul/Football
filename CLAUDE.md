@@ -201,6 +201,24 @@ a subscribed calendar reads as a schedule regardless of its description.
   skipped** rather than compared against nothing. That is what the
   Austrian row is for: it holds the corrected article title against the
   day Austria is added, and generates no findings meanwhile.
+- `data/coordinate-reviews.csv` — added 2026-09-26. **What a person
+  already decided about a row of `coordinate-review.csv`**, so the
+  monthly run cannot offer it again as though it were new: `clubQid`,
+  `name`, `country`, `decision`, `osmRef`, `reviewed`, `reason`.
+  `decision` is closed: `rejected` with an `osmRef` (that ground is
+  wrong for that club and is never proposed for it again), `rejected`
+  without one (the club itself is not to be placed — dissolved, not a
+  club, below every tracked tier), `held` (the ground looks right and is
+  kept back on purpose; needs the `osmRef`), `open` (under
+  investigation). `propose_coordinates.py` reads it, prints it back with
+  line numbers, rejects a malformed row by line, and writes the decision
+  into the review row's `_verdict` (`held`, `open`, `rejected`) and
+  `_reviewed` columns, keeping the tool's own finding as evidence. A
+  held row whose ground the tool no longer proposes stays as the tool
+  says, with a note that the held ground was a different one. A row for
+  a club that has since been placed is named in the summary as inert.
+  Applying a proposal is still a `clubs-manual.csv` row; this file never
+  places anything.
 
 ### Generated — safe to overwrite
 
@@ -1238,6 +1256,81 @@ a page anyone can already view in their browser's network tab.
     ground went from the Dreisamstadion to the **Europa-Park-Stadion**
     (34,700), where it has played since 2021. That is Wikidata catching
     up, not a change made here.
+
+- **The 38 confident Romanian rows were judged, 2026-09-26, and the
+  judgement is now remembered.** `data/coordinate-reviews.csv` holds 31
+  decisions and `clubs-manual.csv` seven placements. Wikidata and
+  Wikipedia were read on a runner, the dispatch route, in two probes
+  that were removed in the same branch.
+  - **Placed, seven clubs, every one of them named by a 2026-27
+    roster:** ACS Mediaș 2022, CSO Băicoi and SCM Zalău (Alexandru's
+    instruction, the OpenStreetMap ground confirmed against each
+    club's infobox), CSM Vaslui (same ground as proposed, confirmed
+    by the stadium article's tenant list), and three where the
+    proposal was **wrong** and a different ground was placed:
+    **FC Bacău** at the Ruși-Ciutea Sportsbase (Liga II stadiums
+    table; the proposal was the Stadionul Municipal Bacău, **closed
+    since 2014**), **Gloria Bistrița** at the Jean Pădureanu (the
+    proposal was right; the coordinate is Wikidata's ground item, so
+    it shares one marker with FC Bistrița) and **ACS Înainte Modelu**
+    at the Vasile Enache (the proposal was Dunărea Călărași's own
+    pin). Capacities only where two sources agree: FC Bacău 700,
+    Gloria 7,814.
+  - **Rejected, and never proposed again:** ten grounds that were a
+    nearby but different town's own ground — six were matcher bugs,
+    below — plus Ștefăneștii de Jos's Afumați proposal, which is CS
+    Afumați's Comunal, not a shared ground. **CSL Ștefănești stays
+    unplaced**: its ground is the Stadionul Dumitru Mătărău (Liga II
+    table), whose Wikidata item `Q28230311` has no coordinates.
+    Rejected as whole clubs: **CSM Bacău** and **Sparta Râmnicu
+    Vâlcea** (both dissolved 2025 per English Wikipedia — the
+    Hermannstadt pattern), both Darabani items (the club is in Liga V)
+    and `Q74127553`, the thin Înainte Modelu duplicate.
+  - **Held, 16 rows:** the seven Batch D clubs, the eight Batch C
+    clubs and CS Sporting Juniorul Vaslui. The ground match is kept as
+    a lead and no coordinate was written.
+  - **Batch A and Batch C were not named in the instruction, and which
+    rows they are was inferred.** Batch A is the six rows the two
+    matcher bugs explain (ARO Muscelul Câmpulung, Cozia Călimănești,
+    Avântul Periam, Gilortul Târgu Cărbunești, Recolta Gheorghe Doja,
+    Flacăra Horezu); Batch C is the eight confident rows left over.
+    Every row's reason says which batch it was put in. **If the
+    inference is wrong, the fix is to edit `decision` on those rows.**
+  - **Five held clubs ARE in a 2026-27 roster**, so "no roster behind
+    it" does not hold for them: Bradul Putna (Batch D), CS Blejoi,
+    CSO Filiași, FC Pucioasa and Oltul Curtișoara (Batch C). They
+    are held as instructed. Each row says so. Two Batch C rows also
+    look like the rejected shape: Olimpic Zărnești's pitch is in the
+    **Buzău-county** Zărnești, and Oltul Curtișoara's is the
+    neighbouring village of Moșteni's pitch. The roster check also
+    labels `Q39058326` "FC Aninoasa", not FC Pucioasa.
+  - **Rejected is not the end for two clubs that are playing**: ARO
+    Muscelul Câmpulung and Recolta Gheorghe Doja are in the 2026-27
+    Liga III article and still need their real ground.
+  - **Two matcher bugs, fixed in `propose_coordinates.py`.** (1) A
+    place whose name was only **partly** in the club's name was
+    accepted on its first word: Periam Port, Târgu Jiu, Gheorghe
+    Lazăr, Câmpulung Moldovenesc. A partial match now counts only where
+    the rest of the place name is a German qualifier (`bei`, `am` …,
+    the Garching bei München case it was written for) or in brackets.
+    Romanian and French place names are deliberately **not**
+    shortened: Galda de Jos and Galda de Sus are two villages. (2) A
+    sports hall tagged `leisure=stadium` ("Sala de sport Treapt") was
+    accepted as a ground. An object whose `sport` tag names only other
+    sports, or whose name says hall, pool or rink, is now left out and
+    listed in the run summary. **Neither fix has run against Overpass
+    yet**; the next monthly run is the first, and its summary shows
+    what the second guard left out.
+  - **New open questions this turned up, all Alexandru's:**
+    **FC Bistrița `Q24895825` is on the map at tier 3 and dissolved in
+    2017** (English Wikipedia; `roster-review.csv` already reads it
+    `extra-not-in-roster`). Shape 4: the next `skip`, once two division
+    articles and the infobox are read to the Hermannstadt standard.
+    It now shares its marker with Gloria Bistrița, the club really
+    playing there. **Q74127553** is a `skip` candidate (shape 1).
+    **CS Afumați** is drawn at its Comunal ground, but the Liga II
+    table says it plays 2026-27 at the CNAF in Buftea while the Comunal
+    is renovated. That is not changed here.
 
 - **`coordinate-review.csv` is current again, 2026-09-26: all four
   countries, 115 rows, from run #10.** It had been the 2026-09-18

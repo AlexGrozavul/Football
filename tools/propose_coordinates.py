@@ -49,6 +49,24 @@ Two guards against the obvious ways name matching goes wrong:
   * A reserve team ("II", "U21", "Amateure") is never called confident
     on a town match. Its town is the first team's town and says nothing
     about which of the club's grounds it plays on.
+  * A place counts only if its WHOLE name is in the club's name. A
+    leading part of it is enough only where the rest is a German
+    qualifier ('Garching bei München') or sits in brackets. Added
+    2026-09-26: 'Periam Port', 'Târgu Jiu', 'Gheorghe Lazăr' and
+    'Câmpulung Moldovenesc' had each been read as a club's own town on
+    their first word.
+  * An object OpenStreetMap tags as a stadium is not a ground if its
+    sport tag names only other sports, or its name says hall, pool or
+    rink. Added 2026-09-26 after a sports hall was proposed as a
+    ground. What is left out this way is listed in the run summary.
+
+What a person already decided is not asked again. data/coordinate-
+reviews.csv, hand-written, records a proposal that was rejected, held
+back or is under investigation. A rejected ground never comes back for
+that club, a held or open one reads 'held' or 'open' instead of
+'confident', and a club rejected as a whole gets no proposal at all.
+The finding stays in the row as evidence either way, with the decision
+in its _reviewed column, so a reviewed row never reads as new.
 
 Free, no key. Overpass is a volunteer service, so this asks for one
 country at a time and waits between requests.
@@ -71,13 +89,17 @@ import urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from fetch_clubs import (                                    # noqa: E402
-    CLUB_QUERY, COUNTRIES, apply_manual, build_clubs, cell,
-    load_manual, load_tiers, qid, sparql_with_retry)
+    CLUB_QUERY, COUNTRIES, OVERFLOW, _s, apply_manual, build_clubs, cell,
+    load_manual, load_tiers, overflow_problem, qid, sparql_with_retry)
 
 # ---------------------------------------------------------------- config
 
 CLUB_DIR = "data/clubs"
 REVIEW_FILE = os.path.join(CLUB_DIR, "coordinate-review.csv")
+# Hand-written: what a person already decided about a proposal. Read,
+# never written. See load_reviews().
+REVIEWED_FILE = "data/coordinate-reviews.csv"
+DECISIONS = ("rejected", "held", "open")
 
 OVERPASS = "https://overpass-api.de/api/interpreter"
 USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
@@ -136,6 +158,33 @@ LEVELS = ("wikidata-link", "club-name", "ground-name", "stadium-in-town",
           "pitch-in-town")
 
 RESERVE_WORDS = {"ii", "u21", "u23", "amateure", "amateur"}
+
+# A place's name may be matched on its leading words alone only where
+# what is cut off is a qualifier: 'Garching bei München', 'Rain am
+# Lech', 'Frankfurt (Oder)'. Cutting anywhere else matches a DIFFERENT
+# place that happens to share a first word - 'Periam Port' is not
+# Periam, 'Târgu Jiu' is not Târgu Cărbunești, 'Gheorghe Lazăr' is not
+# Gheorghe Doja, 'Câmpulung Moldovenesc' is not Câmpulung Muscel. All
+# four came back 'confident' in run #10 before this list existed.
+#
+# German only, on purpose. In Romanian 'Galda de Jos' and 'Galda de Sus'
+# are two villages, and in French 'Bourg-en-Bresse' and 'Bourg-la-Reine'
+# two towns: there the words after 'de' or 'en' are part of the name,
+# not a qualifier, and the whole name has to match.
+QUALIFIER_WORDS = {"bei", "am", "an", "im", "in", "ob", "auf", "vor",
+                   "unter", "ueber", "b", "a", "i", "d"}
+
+# A 'stadium' in OpenStreetMap is not always a football ground. A sports
+# hall tagged leisure=stadium was proposed as Flacăra Horezu's ground in
+# run #10. A ground is left out when its sport tag names sports and none
+# of them is football, or when its name says it is a hall, a pool or a
+# rink. A ground with no sport tag at all is kept: most football
+# grounds carry none, and dropping them would be the bigger error.
+FOOTBALL_SPORTS = {"soccer", "football", "multi", "association_football"}
+NOT_A_GROUND_NAME = re.compile(
+    r"\b(sala|hala|sporthalle|turnhalle|mehrzweckhalle|palatul|"
+    r"patinoar|bazin|schwimm\w*|eishalle|eisstadion|velodrom\w*|"
+    r"sports? hall|gymnase|palazzetto|palasport)\b")
 
 # Every stadium in the country, the same net the capacity cross-check
 # uses, plus football pitches that carry a name. An unnamed pitch is no
@@ -327,15 +376,37 @@ def club_forms(name):
     return forms
 
 
+def place_cuts(place_name, parts):
+    """
+    How many leading words of a place's name may stand for the whole
+    place: all of them, and a shorter run only where the words cut off
+    are a qualifier - they begin with a word like 'bei' or 'am', or sat
+    in brackets or after a comma or slash in the name as written.
+    """
+    sizes = [len(parts)]
+    for cut in range(1, len(parts)):
+        if parts[cut] in QUALIFIER_WORDS:
+            sizes.append(cut)
+    head = re.split(r"[(,/]", place_name or "", maxsplit=1)[0]
+    if head != place_name:
+        size = len(fold(head).split())
+        if 0 < size < len(parts):
+            sizes.append(size)
+    return sorted(set(sizes), reverse=True)
+
+
 def place_in_club(place_name, forms, parts=None):
     """
     Does this place's name sit inside the club's name? OpenStreetMap
     often carries the long official form - 'Garching bei München' for
     Garching, 'Rain am Lech' for Rain - so a leading run of its words
-    counts too. Returns what matched and any caveat, longest first.
+    counts too, but ONLY where the rest is such a qualifier. Everywhere
+    else the whole name has to be in the club's name: a first word
+    shared with another town is not the town. Returns what matched and
+    any caveat, longest first.
     """
     parts = parts if parts is not None else fold(place_name).split()
-    for size in range(len(parts), 0, -1):
+    for size in place_cuts(place_name, parts):
         lead = " ".join(parts[:size])
         if len(lead.replace(" ", "")) < 3:
             continue
@@ -351,11 +422,36 @@ def is_reserve(name):
         any(p in RESERVE_WORDS for p in parts) or parts[-1] == "2")
 
 
-def elements(payload, default_kind):
-    """Flatten an Overpass answer into ground records."""
+def not_a_football_ground(tags):
+    """
+    Why this OpenStreetMap object is not a football ground, or None.
+    Only what the object says about itself is used.
+    """
+    sports = {s.strip().lower() for s in re.split(r"[;,]", tags.get("sport", ""))
+              if s.strip()}
+    if sports and not sports & FOOTBALL_SPORTS:
+        return f"its sport tag is {tags['sport']!r}"
+    for tag in ("name", "official_name"):
+        if tags.get(tag) and NOT_A_GROUND_NAME.search(fold(tags[tag])):
+            return f"its {tag} {tags[tag]!r} is a hall, pool or rink"
+    return None
+
+
+def elements(payload, default_kind, excluded=None):
+    """
+    Flatten an Overpass answer into ground records. Objects that say they
+    are not football grounds are left out, and named in `excluded` if a
+    dict is passed, so the summary can say what was passed over.
+    """
     out = {}
     for el in payload.get("elements", []):
         tags = el.get("tags") or {}
+        reason = not_a_football_ground(tags)
+        if reason:
+            if excluded is not None:
+                ref = f"{el.get('type')}/{el.get('id')}"
+                excluded[ref] = f"{tags.get('name') or 'unnamed'} [{ref}]: {reason}"
+            continue
         lat = el.get("lat") if el.get("lat") is not None else (el.get("center") or {}).get("lat")
         lon = el.get("lon") if el.get("lon") is not None else (el.get("center") or {}).get("lon")
         if lat is None or lon is None:
@@ -388,6 +484,100 @@ def places(payload):
 
 def km(distance_m):
     return round(distance_m / 1000.0, 1)
+
+
+# ------------------------------------------------------ reviewed before
+
+REVIEW_COLUMNS = ["clubQid", "name", "country", "decision", "osmRef",
+                  "reviewed", "reason"]
+
+
+def load_reviews():
+    """
+    data/coordinate-reviews.csv -- what a person already decided about a
+    proposal, so it does not come back next month looking brand new.
+    Hand-written; this tool reads it and never writes it.
+
+    One row per club per decision:
+      rejected + osmRef   that ground is wrong for that club. It is taken
+                          out of the club's candidates, so it can never be
+                          proposed again; any OTHER ground is still judged
+                          on its merits and the row says a ground was
+                          rejected before.
+      rejected, no osmRef the club itself is not to be placed - dissolved,
+                          or not a club. Nothing is proposed for it while
+                          the row stands; what would have been proposed
+                          is still listed as evidence.
+      held + osmRef       the ground looks right and is being kept back on
+                          purpose (no roster behind the club, say). If the
+                          tool proposes that same ground again the row
+                          reads 'held', not 'confident'. If it proposes a
+                          different one, the row stays as the tool says
+                          and notes that the held ground was another.
+      open (osmRef optional) a question is being worked on; the proposal
+                          is kept as evidence and reads 'open'.
+
+    Returns ({clubQid: [review, ...]}, readback lines, problems).
+    """
+    reviews, readback, problems = {}, [], []
+    if not os.path.exists(REVIEWED_FILE):
+        readback.append(f"{REVIEWED_FILE} does not exist - no proposal has "
+                        f"been reviewed before")
+        return reviews, readback, problems
+    seen = set()
+    with open(REVIEWED_FILE, encoding="utf-8-sig", newline="") as fh:
+        reader = csv.DictReader(fh, restkey=OVERFLOW)
+        headers = [_s(h) for h in (reader.fieldnames or [])]
+        missing = [c for c in REVIEW_COLUMNS if c not in headers]
+        if missing:
+            problems.append(f"{REVIEWED_FILE} line 1: missing column(s) "
+                            f"{', '.join(missing)} - the file was not read")
+            return reviews, readback, problems
+        for raw in reader:
+            line = reader.line_num
+            extra = raw.pop(OVERFLOW, None)
+            if extra:
+                problems.append(overflow_problem(
+                    REVIEWED_FILE, line, len(reader.fieldnames), extra))
+                continue
+            row = {_s(k): _s(v) for k, v in raw.items()}
+            if not any(row.values()):
+                continue
+            why = None
+            if not re.match(r"^Q\d+$", row["clubQid"]):
+                why = f"clubQid {row['clubQid']!r} is not a Q-id"
+            elif row["decision"] not in DECISIONS:
+                why = (f"decision {row['decision']!r} is not one of "
+                       f"{', '.join(DECISIONS)}")
+            elif row["osmRef"] and not re.match(r"^(node|way|relation)/\d+$",
+                                                row["osmRef"]):
+                why = f"osmRef {row['osmRef']!r} is not node/, way/ or relation/<id>"
+            elif row["decision"] == "held" and not row["osmRef"]:
+                why = "a 'held' row needs the osmRef of the ground being held"
+            elif not re.match(r"^\d{4}-\d{2}-\d{2}$", row["reviewed"]):
+                why = f"reviewed {row['reviewed']!r} is not a date like 2026-09-26"
+            elif not row["reason"]:
+                why = "reason is empty - a decision nobody can read back is not kept"
+            elif (row["clubQid"], row["osmRef"]) in seen:
+                why = (f"{row['clubQid']} {row['osmRef'] or '(whole club)'} is "
+                       f"already decided on an earlier line")
+            if why:
+                problems.append(f"{REVIEWED_FILE} line {line}: {why} - row ignored")
+                continue
+            seen.add((row["clubQid"], row["osmRef"]))
+            row["line"] = line
+            reviews.setdefault(row["clubQid"], []).append(row)
+            readback.append(
+                f"line {line:3d}  {row['country']:2s} {row['clubQid']:11s} "
+                f"{row['name'][:28]:28s} {row['decision']:8s} "
+                f"{row['osmRef'] or '(whole club)':18s} {row['reviewed']}")
+    return reviews, readback, problems
+
+
+def review_note(review):
+    return (f"{review['decision']} {review['reviewed']}"
+            f"{' ' + review['osmRef'] if review['osmRef'] else ''}: "
+            f"{review['reason']}")
 
 
 # ------------------------------------------------------------- proposing
@@ -473,11 +663,62 @@ def describe(candidate):
     return f"{label}{where} [{ground['ref']}]"
 
 
-def propose(club, grounds, place_list):
+def propose(club, grounds, place_list, reviews=()):
     """Returns the review row for one club with no coordinates."""
+    row = propose_unreviewed(club, grounds, place_list, reviews)
+    return apply_reviews(row, reviews)
+
+
+def apply_reviews(row, reviews):
+    """
+    Lay what a person already decided over what the tool found. The tool's
+    own finding stays in the row as evidence; only the verdict says the
+    decision, so a reviewed row never reads as new.
+    """
+    if not reviews:
+        return row
+    row["_reviewed"] = " | ".join(review_note(r) for r in reviews)
+    whole = next((r for r in reviews
+                  if r["decision"] == "rejected" and not r["osmRef"]), None)
+    if whole:
+        found = row["_osmRef"] or row["_alternatives"]
+        row["_alternatives"] = "; ".join(filter(None, [
+            (f"would have proposed {row['_osmName'] or 'a ground'} "
+             f"[{row['_osmRef']}]") if row["_osmRef"] else "",
+            row["_alternatives"]]))
+        row["_verdict"] = (f"rejected - the club itself was rejected on "
+                           f"{whole['reviewed']}, nothing is proposed while "
+                           f"{REVIEWED_FILE} line {whole['line']} stands"
+                           + ("" if found else "; the tool found nothing anyway"))
+        row["venue"] = row["lat"] = row["lon"] = row["source"] = ""
+        return row
+    if row["_verdict"] != "confident":
+        return row
+    for review in reviews:
+        if review["decision"] == "rejected":
+            continue
+        if review["osmRef"] and review["osmRef"] != row["_osmRef"]:
+            row["_reviewed"] += (f" | NOTE: the {review['decision']} ground was "
+                                 f"{review['osmRef']}; this proposal "
+                                 f"({row['_osmRef']}) is new")
+            continue
+        word = "held" if review["decision"] == "held" else "open"
+        row["_verdict"] = (f"{word} - reviewed {review['reviewed']}, "
+                           f"{REVIEWED_FILE} line {review['line']}: do not "
+                           f"paste this row while that line stands")
+        return row
+    return row
+
+
+def propose_unreviewed(club, grounds, place_list, reviews=()):
     name = club.get("name") or club["id"]
     city = club.get("_city") or {}
     found = candidates_for(club, grounds, place_list)
+    # A ground somebody already rejected for this club never comes back.
+    rejected = {r["osmRef"] for r in reviews
+                if r["decision"] == "rejected" and r["osmRef"]}
+    if rejected:
+        found = [c for c in found if c["ground"]["ref"] not in rejected]
 
     too_far = []
     if city.get("lat") is not None:
@@ -491,6 +732,7 @@ def propose(club, grounds, place_list):
 
     row = {
         "name": name,
+        "_reviewed": "",
         "_city": city.get("name", ""),
         "_cityKm": "",
         "_osmName": "", "_osmTown": "", "_osmRef": "",
@@ -726,7 +968,7 @@ def fetch_places(code, names, failures):
     return found, missing
 
 
-def fetch_pitches(code, place_list, failures):
+def fetch_pitches(code, place_list, failures, excluded=None):
     """
     Named football pitches around these places, in small batches. Returns
     the pitches found and, separately, the places whose batch never came
@@ -745,7 +987,7 @@ def fetch_pitches(code, place_list, failures):
                             f"in this batch were not asked about")
             missing.extend(batch)
             continue
-        found.update(elements(payload, "pitch"))
+        found.update(elements(payload, "pitch", excluded))
     return found, missing
 
 
@@ -772,6 +1014,13 @@ def main():
     tiers, labels, problems = load_tiers()
     manual_rows, manual_problems = load_manual()
     problems.extend(manual_problems)
+    reviews, review_readback, review_problems = load_reviews()
+    problems.extend(review_problems)
+    print(f"  {REVIEWED_FILE}, read back:")
+    for line in review_readback:
+        print("    " + line)
+    reviews_used = set()
+    excluded_all = {}
 
     summary, failures, readback = [], [], []
 
@@ -816,8 +1065,10 @@ def main():
                     "name": club.get("name") or club["id"],
                     "_city": (club.get("_city") or {}).get("name", "")}))
             continue
-        grounds = elements(payload, "stadium")
-        print(f"      {len(grounds)} stadiums")
+        excluded = {}
+        grounds = elements(payload, "stadium", excluded)
+        print(f"      {len(grounds)} stadiums, and {len(excluded)} object(s) "
+              f"tagged as a stadium left out as not a football ground")
 
         grams = {club["id"]: name_ngrams(club.get("name") or "") for club in clubs}
         asked = sorted({gram for one in grams.values() for gram in one})
@@ -860,11 +1111,11 @@ def main():
             print(f"      asking for named football pitches around "
                   f"{len(wanted_places)} place(s), {requests} request(s) of up "
                   f"to {PLACES_PER_REQUEST}")
-            pitches, lost = fetch_pitches(code, wanted_places, failures)
+            pitches, lost = fetch_pitches(code, wanted_places, failures, excluded)
             if lost:
                 print(f"      {len(lost)} place(s) did not come back, asking again")
                 time.sleep(REQUEST_GAP_SECONDS)
-                second, lost = fetch_pitches(code, lost, failures)
+                second, lost = fetch_pitches(code, lost, failures, excluded)
                 pitches.update(second)
             if lost:
                 incomplete.append(
@@ -879,9 +1130,13 @@ def main():
                     pitch_count += 1
             print(f"      {pitch_count} named football pitch(es) nearby")
 
-        counts = {"confident": 0, "ambiguous": 0, "no": 0, "not": 0}
+        excluded_all[code] = excluded
+        counts = {w: 0 for w in VERDICT_ORDER}
         for club in sorted(clubs, key=lambda c: (c.get("name") or c["id"]).lower()):
-            result = propose(club, grounds, place_list)
+            mine = reviews.get(club["id"], [])
+            if mine:
+                reviews_used.add(club["id"])
+            result = propose(club, grounds, place_list, mine)
             counts[result["_verdict"].split(" ")[0]] += 1
             rows.append(review_row(club, code, result))
             readback.append((code, result))
@@ -894,7 +1149,9 @@ def main():
         summary.append(
             f"{code}  {len(clubs)} club(s) with no coordinates  |  "
             f"{counts['confident']} confident  |  {counts['ambiguous']} ambiguous  |  "
-            f"{counts['no'] + counts['not']} nothing")
+            f"{counts['no'] + counts['not']} nothing  |  already reviewed: "
+            f"{counts['held']} held, {counts['open']} open, "
+            f"{counts['rejected']} rejected")
         summary.append(
             f"    {tiers_seen}  |  asked OpenStreetMap about {len(grounds)} "
             f"ground(s) and {len(place_list)} place name(s)")
@@ -935,6 +1192,26 @@ def main():
         print(f"  Rows for countries this run does not cover were kept as they "
               f"were: {', '.join(others)}")
     print()
+    looked_at = {code for code in results if code in written + partial}
+    inert = [r for q, rs in reviews.items() if q not in reviews_used
+             for r in rs if r["country"] in looked_at]
+    if inert:
+        print(f"  {REVIEWED_FILE}: {len(inert)} row(s) matched no club this run "
+              f"left without coordinates - placed since, or no longer tracked. "
+              f"They did nothing; delete them when you are sure:")
+        for r in inert:
+            print(f"    line {r['line']:3d}  {r['clubQid']} {r['name']}")
+        print()
+    for code, excluded in sorted(excluded_all.items()):
+        if not excluded:
+            continue
+        print(f"  {code}  {len(excluded)} object(s) left out as not a football "
+              f"ground:")
+        for line in sorted(excluded.values())[:15]:
+            print("    " + line)
+        if len(excluded) > 15:
+            print(f"    ... and {len(excluded) - 15} more")
+    print()
     if not written and not partial:
         print(f"  No country came back complete. {REVIEW_FILE} was NOT rewritten.")
         print("=" * 74)
@@ -948,6 +1225,8 @@ def main():
 
     for title, wanted in (("Confident - read these back before you use them",
                            ("confident",)),
+                          ("Already reviewed and kept back - not to be pasted",
+                           ("held", "open", "rejected")),
                           ("Ambiguous - nothing was filled in", ("ambiguous",)),
                           ("Nothing found", ("no", "not"))):
         chosen = [(code, r) for code, r in readback
@@ -972,6 +1251,8 @@ def main():
                 print(f"{head} {result['_verdict']}")
                 if result["_alternatives"]:
                     print(f"         candidates: {result['_alternatives']}")
+            if result.get("_reviewed"):
+                print(f"         reviewed before: {result['_reviewed']}")
 
     if shared:
         print()
@@ -993,9 +1274,10 @@ def main():
 HEADER = ["clubQid", "name", "country", "tier", "venue", "capacity",
           "lat", "lon", "ticketUrl", "source", "note",
           "_tier", "_isA", "_city", "_cityKm", "_osmName", "_osmTown",
-          "_osmRef", "_how", "_alternatives", "_verdict"]
+          "_osmRef", "_how", "_alternatives", "_verdict", "_reviewed"]
 
-VERDICT_ORDER = {"confident": 0, "ambiguous": 1, "no": 2, "not": 3}
+VERDICT_ORDER = {"confident": 0, "open": 1, "held": 2, "ambiguous": 3,
+                 "rejected": 4, "no": 5, "not": 6}
 
 
 def write_review(results):
@@ -1083,6 +1365,7 @@ def review_row(club, code, result):
         "_how": result.get("_how", ""),
         "_alternatives": result.get("_alternatives", ""),
         "_verdict": result["_verdict"],
+        "_reviewed": result.get("_reviewed", ""),
     }
 
 
