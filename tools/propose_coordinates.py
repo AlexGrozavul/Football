@@ -1064,7 +1064,7 @@ def main():
     for position, (code, _country_qid, country_name) in enumerate(COUNTRIES):
         if position:
             time.sleep(COUNTRY_GAP_SECONDS)
-        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it"}.get(code, "en")
+        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de"}.get(code, "en")
         print(f"  {code}  {country_name}")
         rows, incomplete = [], []
         results[code] = {"rows": rows, "incomplete": incomplete}

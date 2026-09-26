@@ -1,0 +1,332 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "AT",
+ "countryName": "Austria",
+ "clubs": [
+  {
+   "id": "Q124007617",
+   "name": "SK Sturm Graz",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Merkur Arena",
+   "capacity": 16364,
+   "lat": 47.046111,
+   "lon": 15.454444,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut",
+   "note": "CONTESTED CAPACITY. In use: 16,364 (the 2026-27 Bundesliga stadiums table; StadiumDB's 16,764 is within 5% of it). Not taken: 16,764 (StadiumDB), 15,400 (Wikidata's figure for Q696491 Merkur Arena, which the map held until now). Shared ground with Grazer AK, genuinely. Q124007617 is the item the English Wikipedia article SK Sturm Graz links, with 51 sitelinks - checked for a second Sturm item and there is none carrying a league tag; SK Sturm Graz II is Q98217947",
+   "manual": true,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q131209",
+   "name": "FK Austria Wien",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Generali Arena",
+   "capacity": 17656,
+   "lat": 48.162306,
+   "lon": 16.386694,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q131215",
+   "name": "SK Rapid Wien",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Allianz Stadion",
+   "capacity": 28600,
+   "lat": 48.1981,
+   "lon": 16.2653,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut",
+   "note": "CAPACITY FILLED, 2026-09-26. Wikidata has no P1083 on Q17310225 Allianz Stadion, so the map had none. In use: 28,600 (the 2026-27 Bundesliga stadiums table; StadiumDB's 28,666 is within 1%). Not taken: 28,666 (StadiumDB), 28,345 (the 2. Liga table's figure on the SK Rapid II row)",
+   "manual": true,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q1387293",
+   "name": "FC Liefering",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Red Bull Arena",
+   "capacity": 31895,
+   "lat": 47.81625,
+   "lon": 12.998222,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q22866",
+   "name": "SV Austria Salzburg",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Max Aicher Stadion",
+   "capacity": 1566,
+   "lat": 47.79238,
+   "lon": 13.01373,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://stadiumdb.com/stadiums/aut; https://en.wikipedia.org/wiki/SV_Austria_Salzburg; https://www.wikidata.org/wiki/Q20180568",
+   "note": "PLACED - the roster check had it as unplaced-no-coordinates: Q22866 carries Q650236 2. Liga at preferred rank, so the club query sees it, but neither it nor any ground on it has a position. Its ground is the Max Aicher Stadion on three independent reads, 2026-09-26: the 2026-27 2. Liga stadiums table (Max Aicher Stadion, 1,566), StadiumDB's Austrian page (Max-Aicher-Stadion, Salzburg, 'Austria', 1,566) and the club's English Wikipedia infobox (Max Aicher Stadion, 1,566); the German Wikipedia stadium article names SV Austria Salzburg as its club. Position: the ground's Wikidata item Q20180568, 47.79238/13.01373, which the German article gives too. Checked before it was written: in the 2026-27 article, no P576, infobox 2025-26 2. Liga 9th of 16 - not shape 6",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q261813",
+   "name": "FC Wacker Innsbruck",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Tivoli Stadion Tirol",
+   "capacity": 17400,
+   "lat": 47.255972,
+   "lon": 11.410789,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q392310",
+   "name": "LASK",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Raiffeisen Arena",
+   "capacity": 19080,
+   "lat": 48.293717,
+   "lon": 14.276595,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut; https://en.wikipedia.org/wiki/Raiffeisen_Arena_(Linz); https://www.wikidata.org/wiki/Q116693275",
+   "note": "GROUND CORRECTED 2026-09-26. Wikidata's P115 on Q392310 is Q686798, the old Linzer Stadion (opened 1952, 18,000). LASK has played at the Raiffeisen Arena, built on the same site and opened 17 February 2023, and that ground has its own Wikidata item, Q116693275 (tenant LASK). Three sources agree on it and its capacity: the 2026-27 Bundesliga stadiums table (Raiffeisen Arena, 19,080), StadiumDB (Raiffeisen Arena, LASK, 19,080) and the club's English Wikipedia infobox (19,080). Position: Q116693275's P625, about 40 m from the old stadium's. Not taken: 18,000 (the Linzer Stadion's)",
+   "manual": true,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q427491",
+   "name": "SKN St. Pölten",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "NV Arena",
+   "capacity": 8000,
+   "lat": 48.2209,
+   "lon": 15.6531,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q457460",
+   "name": "SV Ried",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Innviertel Arena",
+   "capacity": 7680,
+   "lat": 48.207778,
+   "lon": 13.478333,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q60967849",
+   "name": "Young Violets Austria Wien",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Generali Arena",
+   "capacity": 17656,
+   "lat": 48.162306,
+   "lon": 16.386694,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League",
+   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. This is FK Austria Wien's reserve side, which the 2026-27 2. Liga article lists as 'Austria Wien II' at the Generali Arena. The roster check reports it as extra-not-in-roster because that row of the table has no link of its own - its first link is the city of Vienna - so the article names no Q-id for it and there is nothing to join on. Since 2026-09-26 check_rosters.py leaves such a row out and names it in the run summary rather than reading the city as a club. The club belongs at tier 2 and stays",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q659780",
+   "name": "Grazer AK",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Merkur Arena",
+   "capacity": 16364,
+   "lat": 47.046111,
+   "lon": 15.454444,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut",
+   "note": "CONTESTED CAPACITY. In use: 16,364 (the 2026-27 Bundesliga stadiums table; StadiumDB's 16,764 is within 5% of it). Not taken: 16,764 (StadiumDB), 15,400 (Wikidata's figure for Q696491 Merkur Arena, which the map held until now, 6% below the table). The ground is shared with SK Sturm Graz, genuinely - StadiumDB and the ground's Wikidata tenants both name both clubs - and that row carries the same figure",
+   "manual": true,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q670438",
+   "name": "SCR Altach",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Cashpoint-Arena",
+   "capacity": 8500,
+   "lat": 47.3536,
+   "lon": 9.6372,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q686659",
+   "name": "WSG Tirol",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Tivoli Stadion Tirol",
+   "capacity": 16008,
+   "lat": 47.255972,
+   "lon": 11.410789,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut",
+   "note": "CONTESTED CAPACITY. In use: 16,008 (the 2026-27 Bundesliga stadiums table and StadiumDB agree exactly). Not taken: 17,400 (Wikidata's figure for Q204484 Tivoli Stadion Tirol, which the map held until now), and 17,000 (the 2. Liga table's figure for the same ground, on FC Wacker Innsbruck's row). FC Wacker Innsbruck shares the ground and is NOT changed: its own division's table (17,000) agrees with Wikidata (17,400) within 5%, so by the same rule the map's figure stands there, and the one ground carries two figures on two rows. Written down rather than smoothed over",
+   "manual": true,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q686826",
+   "name": "First Vienna FC 1894",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Stadion Hohe Warte",
+   "capacity": 5500,
+   "lat": 48.2489,
+   "lon": 16.3597,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q694484",
+   "name": "Wolfsberger AC",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Lavanttal-Arena",
+   "capacity": 7300,
+   "lat": 46.8253,
+   "lon": 14.8514,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q696507",
+   "name": "SC Austria Lustenau",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Reichshofstadion",
+   "capacity": 8800,
+   "lat": 47.4211,
+   "lon": 9.65278,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q696525",
+   "name": "FC Blau-Weiß Linz",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 2,
+   "venue": "Hofmann Personal Stadion",
+   "capacity": 5595,
+   "lat": 48.3163,
+   "lon": 14.2983,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://en.wikipedia.org/wiki/FC_Blau-Wei%C3%9F_Linz; https://stadiumdb.com/stadiums/aut",
+   "note": "TIER CORRECTED FROM 1 TO 2 - reviewable, and Alexandru's to overrule. Wikidata's only P118 on Q696525 is Q219592 Bundesliga (from 2023, normal rank, no end date), so it arrived at tier 1. Read on a runner 2026-09-26: the complete 2026-27 Bundesliga article (12 of 12 resolved) does not list it, the complete 2026-27 2. Liga article lists it and says 'FC Blau-Weiss Linz was relegated from the Bundesliga in 2025-26', and the club's English Wikipedia infobox says 2025-26 Austrian Bundesliga, 12th of 12 (relegated). Three reads, two of them complete division lists - the FC Wil shape. CAPACITY 5,595: StadiumDB and the club infobox agree exactly on the Hofmann Personal Stadion; Wikidata had none. Not taken: 5,000 (2. Liga table). Empty the tier cell and the club goes back to tier 1",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q698702",
+   "name": "Admira Wacker",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Datenpol Arena",
+   "capacity": 12000,
+   "lat": 48.0976,
+   "lon": 16.3109,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q699746",
+   "name": "TSV Hartberg",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Stadion Hartberg",
+   "capacity": 5024,
+   "lat": 47.281,
+   "lon": 15.9772,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut",
+   "note": "CONTESTED CAPACITY. In use: 5,024 (the 2026-27 Bundesliga stadiums table and StadiumDB agree exactly). Not taken: 4,500 (Wikidata's figure for Q1232645 Stadion Hartberg, which the map held until now)",
+   "manual": true,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q741382",
+   "name": "Kapfenberger SV",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Alpenstadion",
+   "capacity": 12000,
+   "lat": 47.4439,
+   "lon": 15.3006,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q994811",
+   "name": "FC Red Bull Salzburg",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Red Bull Arena",
+   "capacity": 30188,
+   "lat": 47.81625,
+   "lon": 12.998222,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut",
+   "note": "CONTESTED CAPACITY. In use: 30,188 (the 2026-27 Bundesliga stadiums table and StadiumDB agree exactly). Not taken: 31,895 (Wikidata's figure for Q206135 Red Bull Arena, which the map held until now). The UTA Arad rule: two independent sources agree and the map's figure is the outlier",
+   "manual": true,
+   "competition": "Bundesliga (Austria)"
+  }
+ ]
+}
