@@ -488,6 +488,20 @@ left exactly as the last good run left it and the summary says so:
 run." The first run is the one exception: with no file there is nothing
 to protect, so a partial list is written and labelled as partial.
 
+**`coordinate-review.csv` is decided country by country, since
+2026-09-26.** The rule above is unchanged in strictness and applied per
+country instead of per run: a country whose answer came back complete
+replaces **its own** rows; a country with anything missing keeps its
+rows exactly as its last good run left them, byte for byte, and the
+summary prints `WRITTEN` or `UNCHANGED` against every country. Until
+then one country's failed step threw away every country's answer — run
+#9 discarded complete German, French and Italian results because
+Romania's pitch lookup did not come back. The first-run exception
+still applies to the whole file only: an incomplete country is never
+written into an existing file, even one that holds no rows for it yet.
+**A green tick still does not mean every country is current** — read
+the per-country lines.
+
 `unmapped-leagues.csv` now follows the same rule. It is read from and
 pasted out of exactly like a review file, and it used to be rewritten
 unconditionally — so a run where one country's league discovery failed
@@ -1225,54 +1239,40 @@ a page anyone can already view in their browser's network tab.
     (34,700), where it has played since 2021. That is Wikidata catching
     up, not a change made here.
 
-- **`coordinate-review.csv` is stale: it is still the 2026-09-18 file,
-  Germany and Romania only, with no French or Italian row.** Checked on
-  2026-09-25 rather than assumed. `propose_coordinates.py` crashed on
-  every run from the France merge until PR #31 fixed the unpacking of
-  `build_clubs`' fifth return value. The two runs since then (#6 on
-  the Italy branch, #7 from the PR #31 merge) both **ran to the end
-  and went green, and both left the file unchanged**, because Overpass
-  did not answer everything: 504s on nearly every step, read timeouts,
-  a 429 on Romanian pitches, and France's 19-name place lookup timing
-  out twice in each run. That is the review-file guard doing its job —
-  115 rows were thrown away rather than written over a whole file —
-  but **a green tick on this workflow does not mean the file is
-  current**. The summary's "review file unchanged from the last
-  successful run" line is what says so. What the runs did learn,
-  though it is not in the file: 3 German clubs without coordinates
-  (down from 31 once the europlan rows landed), 106 Romanian, 3 French
-  (0 proposals), 3 Italian (1 ambiguous).
-  France's place lookup (**19 names**) failed in both of those runs
-  while Germany's and Italy's came back, which looked as if the French
-  query might be too heavy. **A third run, #8, dispatched on `main`
-  after PR #32, settled it as load:** France came back whole (17
-  places, 5 pitches, 2 ambiguous proposals, 1 nothing), and this time
-  it was **Romania's** country-wide stadium query that got three 504s
-  in a row, so the file was again correctly left alone. Three partial
-  runs in one evening, each missing something different, is Overpass
-  being overloaded, not a bug in the tool. Nothing was changed in it.
-  **The off-peak attempt, run #9 at 03:30 UTC on 2026-09-26, came
-  closest and still did not commit.** Germany, France and Italy came
-  back whole, and so did Romania's stadiums and places; the one thing
-  missing was **Romania's pitch lookup** — two read timeouts and then a
-  504. The file was correctly left alone again.
-  **That one is no longer bad luck.** Romania's pitch lookup has now
-  failed in **every run that reached it** — #6, #7 and #9 (#8 stopped
-  earlier, on Romania's stadiums) — at 03:30 UTC as well as in the
-  evening. It asks for named pitches around every place a needy club's
-  name matches, in batches of `PLACES_PER_REQUEST` (50) `around`
-  clauses, and for Romania that is two requests over some thirty
-  clubs' worth of villages. Germany, France and Italy send one small
-  request each and it comes back. **The likely remedy is a smaller
-  batch for that query** — the same lesson `NAMES_PER_REQUEST` records
-  for the place lookup, "one lost request took a whole stretch of the
-  alphabet with it". **Not built and not measured**; until it is, the
-  monthly cron on the 11th will probably stop at the same step.
-  **Until a run commits, read `coordinate-review.csv` as the
-  2026-09-18 German and Romanian list and nothing more.** What the runs
-  learned, though it is in no file: Germany 3 clubs without
-  coordinates (0 confident, 2 ambiguous, 1 nothing), Romania 106 (31 /
-  31 / 44), France 3 (0 / 2 / 1), Italy 3 (0 / 1 / 2).
+- **`coordinate-review.csv` is current again, 2026-09-26: all four
+  countries, 115 rows, from run #10.** It had been the 2026-09-18
+  German and Romanian file through four runs. #6 and #7 (after PR #31
+  fixed the crash on `build_clubs`' fifth return value), #8 and #9 all
+  went green and left the file alone, because Overpass did not answer
+  everything and the guard then discarded the whole run. What each run
+  missed was different except for one step: **Romania's pitch lookup
+  failed in every run that reached it** (#6, #7, #9), while Germany,
+  France and Italy sent one small pitch request each and got answers.
+  **Two changes, both in `propose_coordinates.py`:**
+  - `PLACES_PER_REQUEST` went from 50 to **10**, and a pitch batch that
+    does not come back is asked once more, the way the place lookup
+    already worked. In run #10 Romania's 53 places went as 6 requests
+    and **all 6 came back** — but batch 2 needed its third and last
+    attempt after two 504s. That is one run under visible load, not
+    proof the step can no longer fail. If it fails again, the next
+    change is a smaller batch or a longer wait. More retries would be
+    the wrong fix.
+  - The file is now **decided country by country** (see Conventions).
+    Run #10 did not exercise that path, because every country came
+    back. It was checked offline with Overpass mocked: a failing
+    Romanian pitch step left Romania's 107 old rows byte-identical and
+    wrote Germany, France and Italy; every country failing left the
+    whole file byte-identical.
+  **What the file now says:** Germany 3 (0 confident / 2 ambiguous /
+  1 nothing), Romania 106 (**38** / 31 / 37, against 31 / 32 / 44 in
+  the 2026-09-18 file), France 3 (0 / 2 / 1), Italy 3 (0 / 1 / 2).
+  Nothing was applied to any club file. Every confident row still
+  needs a person to read it before it goes into `clubs-manual.csv`.
+  Some rows describe clubs already dealt with elsewhere. Torgelower FC
+  Greif and Teutonia Watzenborn-Steinberg are the merged-away shape 4
+  and are Alexandru's call. TSV 1860 München II's ground was cleared
+  on purpose. Carrarese is the Italian club still missing from Serie B.
+  So the file is a list to judge, not a to-do list.
 
 - **A mapped league can be hidden under a preferred statement naming a
   DIFFERENT league. That is a third rank shape, the diagnostic could

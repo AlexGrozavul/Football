@@ -112,8 +112,13 @@ BUSY_WAIT_SECONDS = 60
 COUNTRY_GAP_SECONDS = 60
 
 # Overpass takes one "around" clause per place, and a country's worth of
-# them in one request is neither polite nor reliable.
-PLACES_PER_REQUEST = 50
+# them in one request is neither polite nor reliable. 50 was the figure
+# until 2026-09-26, and Romania's pitch lookup - two requests of up to 50
+# villages each - failed in every run that reached it (#6, #7, #9, read
+# timeouts and 504s) while every other country's single small request
+# came back. Same lesson as NAMES_PER_REQUEST below: a smaller request
+# is likelier to come back, and losing one loses less.
+PLACES_PER_REQUEST = 10
 
 # Place names per lookup. A long list in one request is what failed on
 # the second real run: one lost request took a whole stretch of the
@@ -721,6 +726,29 @@ def fetch_places(code, names, failures):
     return found, missing
 
 
+def fetch_pitches(code, place_list, failures):
+    """
+    Named football pitches around these places, in small batches. Returns
+    the pitches found and, separately, the places whose batch never came
+    back - the same split fetch_places makes, for the same reason: a
+    place nobody asked about is not a place with no pitch.
+    """
+    found, missing = {}, []
+    batches = [place_list[i:i + PLACES_PER_REQUEST]
+               for i in range(0, len(place_list), PLACES_PER_REQUEST)]
+    for number, batch in enumerate(batches, 1):
+        time.sleep(SMALL_GAP_SECONDS)
+        payload, error = overpass_with_retry(
+            pitch_query(batch), f"pitches {number}/{len(batches)}")
+        if error:
+            failures.append(f"{code} pitches: {error} - {len(batch)} place(s) "
+                            f"in this batch were not asked about")
+            missing.extend(batch)
+            continue
+        found.update(elements(payload, "pitch"))
+    return found, missing
+
+
 def pitch_query(place_list):
     around = "\n".join(
         '  nwr["leisure"="pitch"]["sport"="soccer"]["name"]'
@@ -745,24 +773,30 @@ def main():
     manual_rows, manual_problems = load_manual()
     problems.extend(manual_problems)
 
-    rows, summary, failures, readback = [], [], [], []
+    summary, failures, readback = [], [], []
 
-    # Anything that makes this run less than the whole picture. While this
-    # list is empty the run may replace the review file; once it is not,
-    # the file is left exactly as the last good run left it.
-    incomplete = []
+    # One entry per country: its rows, and anything that made this run's
+    # answer for THAT country less than the whole picture. The decision
+    # whether to replace a country's rows is taken per country, from its
+    # own list - see write_review(). Registered before any work is done,
+    # so a country that stops half-way still has an entry saying why.
+    results = {}
 
     for position, (code, _country_qid, country_name) in enumerate(COUNTRIES):
         if position:
             time.sleep(COUNTRY_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it"}.get(code, "en")
         print(f"  {code}  {country_name}")
+        rows, incomplete = [], []
+        results[code] = {"rows": rows, "incomplete": incomplete}
 
         clubs = missing_clubs(code, lang, tiers, labels, manual_rows, failures,
                               incomplete, summary)
         if not clubs:
-            summary.append(f"{code}  no club is missing its coordinates, "
-                           f"or the club list could not be fetched")
+            if incomplete:
+                summary.append(f"{code}  the club list could not be fetched")
+            else:
+                summary.append(f"{code}  no club is missing its coordinates")
             continue
         print(f"      {len(clubs)} club(s) have a tier but no coordinates")
 
@@ -821,26 +855,28 @@ def main():
         if needy:
             print(f"      {len(needy)} club(s) matched no stadium at all")
         pitch_count = 0
-        batches = [wanted_places[i:i + PLACES_PER_REQUEST]
-                   for i in range(0, len(wanted_places), PLACES_PER_REQUEST)]
-        if batches:
-            print(f"      asking for named football pitches around those places, "
-                  f"{len(batches)} request(s)")
-        for batch in batches:
-            time.sleep(SMALL_GAP_SECONDS)
-            payload, error = overpass_with_retry(pitch_query(batch), "pitches")
-            if error:
-                failures.append(f"{code} pitches: {error} - some of the country's "
-                                f"named pitches were not considered")
-                incomplete.append(f"{code} pitches: {error} - a club whose only "
-                                  f"ground is a pitch could read as 'no match'")
-                continue
-            pitches = elements(payload, "pitch")
+        if wanted_places:
+            requests = -(-len(wanted_places) // PLACES_PER_REQUEST)
+            print(f"      asking for named football pitches around "
+                  f"{len(wanted_places)} place(s), {requests} request(s) of up "
+                  f"to {PLACES_PER_REQUEST}")
+            pitches, lost = fetch_pitches(code, wanted_places, failures)
+            if lost:
+                print(f"      {len(lost)} place(s) did not come back, asking again")
+                time.sleep(REQUEST_GAP_SECONDS)
+                second, lost = fetch_pitches(code, lost, failures)
+                pitches.update(second)
+            if lost:
+                incomplete.append(
+                    f"{code} pitches: {len(lost)} of {len(wanted_places)} place(s) "
+                    f"were never asked about - a club whose only ground is a "
+                    f"pitch could read as 'no match'")
+            else:
+                print(f"      every pitch request came back")
             for ref, ground in pitches.items():
                 if ref not in grounds:
                     grounds[ref] = ground
                     pitch_count += 1
-        if batches:
             print(f"      {pitch_count} named football pitch(es) nearby")
 
         counts = {"confident": 0, "ambiguous": 0, "no": 0, "not": 0}
@@ -863,32 +899,11 @@ def main():
             f"    {tiers_seen}  |  asked OpenStreetMap about {len(grounds)} "
             f"ground(s) and {len(place_list)} place name(s)")
 
-    header = ["clubQid", "name", "country", "tier", "venue", "capacity",
-              "lat", "lon", "ticketUrl", "source", "note",
-              "_tier", "_isA", "_city", "_cityKm", "_osmName", "_osmTown",
-              "_osmRef", "_how", "_alternatives", "_verdict"]
-    shared = flag_shared_grounds(rows)
-    order = {"confident": 0, "ambiguous": 1, "no": 2, "not": 3}
-    rows.sort(key=lambda r: (r["country"], order.get(r["_verdict"].split(" ")[0], 9),
-                             r["name"].lower()))
+    shared = {code: flag_shared_grounds(result["rows"])
+              for code, result in results.items()}
 
-    # A request that did not come back turns real proposals into rows that
-    # read "not checked", or drops a whole country from the list. Writing
-    # that over the file would replace evidence you have not worked
-    # through yet, and the cron would commit the deletion the same
-    # morning - with a green tick. So when anything went wrong the file is
-    # left exactly as the last good run left it.
-    #
-    # The first run is the one exception: there is nothing there to
-    # protect, so a partial list is better than no list.
-    existing = os.path.exists(REVIEW_FILE)
-    kept = bool(incomplete) and existing
-    if not kept:
-        with open(REVIEW_FILE, "w", encoding="utf-8", newline="") as fh:
-            writer = csv.DictWriter(fh, fieldnames=header)
-            writer.writeheader()
-            for row in rows:
-                writer.writerow(row)
+    written, kept, partial, others = write_review(results)
+    shared = [line for code in written + partial for line in shared[code]]
 
     print()
     print("=" * 74)
@@ -897,20 +912,36 @@ def main():
     for line in summary:
         print("  " + line)
     print()
-    if kept:
-        print("  Overpass unreachable, review file unchanged from the last")
-        print(f"  successful run. {REVIEW_FILE} was NOT rewritten.")
-        print(f"  This run only got as far as {len(rows)} row(s), which is not the")
-        print("  whole picture, so those were thrown away rather than the file.")
-        print("  What did not come back:")
-        for reason in incomplete:
-            print(f"    {reason}")
+    # Country by country, because that is how the file is now decided. A
+    # green tick on this workflow says only that the tool ran; these lines
+    # say which countries in the file are this run's and which are not.
+    for code in results:
+        count = len(results[code]["rows"])
+        if code in written:
+            print(f"  {code}  WRITTEN - complete answer, {count} row(s) replace "
+                  f"this country's rows")
+        elif code in partial:
+            print(f"  {code}  WRITTEN AS PARTIAL - {REVIEW_FILE} did not exist, so "
+                  f"there was nothing to protect; {count} row(s), missing "
+                  f"whatever is listed below")
+        else:
+            print(f"  {code}  UNCHANGED - Overpass or Wikidata did not answer "
+                  f"everything for this country, so its rows are exactly as the "
+                  f"last successful run for {code} left them ({kept[code]} "
+                  f"row(s)). This run's {count} row(s) for it were thrown away.")
+        for reason in results[code]["incomplete"]:
+            print(f"        did not come back: {reason}")
+    if others:
+        print(f"  Rows for countries this run does not cover were kept as they "
+              f"were: {', '.join(others)}")
+    print()
+    if not written and not partial:
+        print(f"  No country came back complete. {REVIEW_FILE} was NOT rewritten.")
         print("=" * 74)
         return
-    if incomplete:
-        print(f"  {REVIEW_FILE} did not exist yet, so a partial list was written.")
-        print("  It is missing whatever is listed at the bottom.")
-    print(f"  {len(rows)} club(s) written to {REVIEW_FILE}")
+    fresh = sum(len(results[c]["rows"]) for c in written + partial)
+    print(f"  {fresh} club(s) written to {REVIEW_FILE} for "
+          f"{', '.join(written + partial)}")
     print("  Nothing was applied. A confident row carries a ground, a lat and a")
     print("  lon and can be pasted into data/clubs-manual.csv once you agree with")
     print("  it; an ambiguous one is deliberately left blank for you to settle.")
@@ -920,7 +951,8 @@ def main():
                           ("Ambiguous - nothing was filled in", ("ambiguous",)),
                           ("Nothing found", ("no", "not"))):
         chosen = [(code, r) for code, r in readback
-                  if r["_verdict"].split(" ")[0] in wanted]
+                  if code in written + partial
+                  and r["_verdict"].split(" ")[0] in wanted]
         if not chosen:
             continue
         print()
@@ -956,6 +988,78 @@ def main():
         for failure in failures:
             print("  ! " + failure)
     print("=" * 74)
+
+
+HEADER = ["clubQid", "name", "country", "tier", "venue", "capacity",
+          "lat", "lon", "ticketUrl", "source", "note",
+          "_tier", "_isA", "_city", "_cityKm", "_osmName", "_osmTown",
+          "_osmRef", "_how", "_alternatives", "_verdict"]
+
+VERDICT_ORDER = {"confident": 0, "ambiguous": 1, "no": 2, "not": 3}
+
+
+def write_review(results):
+    """
+    Decide, COUNTRY BY COUNTRY, whose rows this run may replace, and write
+    the file. Returns (written, kept, partial, others).
+
+    The rule is the one this file always had, applied to one country at a
+    time instead of to the whole run: a request that did not come back
+    turns real proposals into rows that read "not checked" or "no match",
+    and writing that over a country's rows would delete evidence nobody
+    has worked through yet - with a green tick. So a country whose answer
+    is incomplete keeps exactly the rows the last good run for it left,
+    byte for byte, and a country whose answer is complete replaces its own
+    rows and nobody else's. Until 2026-09-26 one country's failed step
+    threw away every country's answer; Germany, France and Italy came back
+    whole in run #9 and were discarded because Romania's pitches did not.
+
+    The first run is still the one exception, and still for the whole
+    file: with no file there is nothing to protect, so a partial list is
+    written and the summary says so. It is NOT extended to "a country
+    with no rows yet": an incomplete country is never written into an
+    existing file, even where that file has nothing for it.
+    """
+    existing = os.path.exists(REVIEW_FILE)
+    old = {}
+    if existing:
+        with open(REVIEW_FILE, encoding="utf-8", newline="") as fh:
+            for row in csv.DictReader(fh):
+                old.setdefault(row.get("country", ""), []).append(row)
+
+    written, partial, kept = [], [], {}
+    out = {}
+    for code, result in results.items():
+        if not result["incomplete"]:
+            written.append(code)
+            out[code] = result["rows"]
+        elif not existing:
+            partial.append(code)
+            out[code] = result["rows"]
+        else:
+            kept[code] = len(old.get(code, []))
+            out[code] = old.get(code, [])
+    # A country in the file that this run did not look at at all - one
+    # taken out of COUNTRIES - is not this run's to delete either.
+    others = sorted(c for c in old if c not in results)
+    for code in others:
+        out[code] = old[code]
+
+    if not written and not partial:
+        return written, kept, partial, others
+
+    with open(REVIEW_FILE, "w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=HEADER)
+        writer.writeheader()
+        for code in sorted(out):
+            rows = out[code]
+            if code in written or code in partial:
+                rows = sorted(rows, key=lambda r: (
+                    VERDICT_ORDER.get(r["_verdict"].split(" ")[0], 9),
+                    r["name"].lower()))
+            for row in rows:
+                writer.writerow({k: row.get(k, "") for k in HEADER})
+    return written, kept, partial, others
 
 
 def review_row(club, code, result):
