@@ -2493,7 +2493,7 @@
   {
    "id": 84813,
    "utcDate": "2026-09-25T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -2508,18 +2508,18 @@
     "shortName": "Fortuna Köln",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg/250px-SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg.png"
    },
-   "homeGoals": 0,
-   "awayGoals": 0,
+   "homeGoals": 1,
+   "awayGoals": 3,
    "results": [
     {
      "name": "Halbzeit",
      "home": 0,
-     "away": 0
+     "away": 1
     },
     {
      "name": "Endergebnis",
-     "home": 0,
-     "away": 0
+     "home": 1,
+     "away": 3
     }
    ],
    "stadium": null,
