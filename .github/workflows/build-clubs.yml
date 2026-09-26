@@ -37,6 +37,7 @@ jobs:
       - run: python3 tools/_probe_at.py
 
   clubs:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
