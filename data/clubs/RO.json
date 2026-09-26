@@ -553,11 +553,14 @@
     "Q237753"
    ],
    "tier": 1,
-   "venue": "Stadionul Regie",
-   "capacity": 10020,
-   "lat": 44.448194,
-   "lon": 26.052872,
+   "venue": "Stadionul Rapid-Giulești",
+   "capacity": 14047,
+   "lat": 44.455889,
+   "lon": 26.056806,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_I; https://stadiumdb.com/stadiums/rou; https://en.wikipedia.org/wiki/FC_Rapid_Bucure%C8%99ti; https://www.wikidata.org/wiki/Q97889239",
+   "note": "GROUND CORRECTED AND PINNED 2026-09-26. Q245162 carries two truthy P115 values, the Stadionul Rapid-Giulesti (Q97889239) and the Stadionul Regie (Q1888199), and the map showed the REGIE at 10,020 - the ground StadiumDB lists for Sportul, not Rapid. Three sources agree the club plays at Giulesti: the 2026-27 Liga I stadiums table (Superbet Arena-Giulesti, 14,047), StadiumDB (Stadionul Rapid-Giulesti, Rapid, 14,047) and the club's English Wikipedia infobox (Rapid-Giulesti, 14,048). Capacity 14,047, the league table's figure, which StadiumDB matches exactly. Not taken: 14,048 (infobox), 14,000 (Q97889239 on Wikidata), 10,020 (the Regie, which the map held). Position: Q97889239's P625",
+   "manual": true,
    "competition": "SuperLiga Romaniei"
   },
   {

@@ -5,6 +5,36 @@
  "countryName": "Switzerland",
  "clubs": [
   {
+   "id": "MANUAL-fc-rapperswil-jona",
+   "name": "FC Rapperswil-Jona",
+   "leagues": [],
+   "tier": 2,
+   "venue": "Stadion Grünfeld",
+   "capacity": null,
+   "lat": 47.222062,
+   "lon": 8.843983,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Challenge_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League; https://en.wikipedia.org/wiki/FC_Rapperswil-Jona; https://www.wikidata.org/wiki/Q26868807",
+   "note": "ADDED BY HAND WITH NO clubQid, on Alexandru's instruction of 2026-09-26. The club is Q681483 on Wikidata, and it is NOT used here on purpose: Q681483's only league tag is Q672305 1. Liga, which is not mapped (and must not be - it is a real lower tier), so the club query never returns the item and fetch_clubs.py refuses a clubQid it did not fetch. TIER 2 rests on both season articles, read on a runner 2026-09-26: the complete 2026-27 Challenge League article lists it (Stadion Gruenfeld, 3,200) and has its 2026-27 matches in the statistics, the complete 2026-27 Super League article does not mention it, and its English Wikipedia infobox says League: Challenge League, promoted as 2024-25 Promotion League champions. Ground: Stadion Gruenfeld on the table and both Wikipedias' infoboxes; position is the ground's Wikidata item Q26868807 ('football stadium in Rapperswil-Jona'), 47.222062/8.843983, about 230 m from the German Wikipedia article's coordinate. CAPACITY BLANK: 2,500 (English and German club infoboxes, one source twice), 2,700 (German stadium article), 3,200 (Challenge League table), 4,350 (Q26868807) - no two independent sources agree. THE COST, known and accepted: the roster check will report Q681483 as missing-from-wikidata AND this MANUAL- club as extra-not-in-roster on every run - one club, two findings - because it joins on Q-ids. Delete this row, and correct Q681483's P118 on Wikidata, and the club comes back under its own Q-id",
+   "manual": true,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "MANUAL-fc-stade-nyonnais",
+   "name": "FC Stade Nyonnais",
+   "leagues": [],
+   "tier": 2,
+   "venue": "Stade de Colovray",
+   "capacity": 7200,
+   "lat": 46.370711,
+   "lon": 6.226201,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Challenge_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League; https://en.wikipedia.org/wiki/FC_Stade_Nyonnais; https://www.wikidata.org/wiki/Q663758",
+   "note": "ADDED BY HAND WITH NO clubQid, on Alexandru's instruction of 2026-09-26. The club is Q673268 on Wikidata, and it is NOT used here on purpose: Q673268's only league tag is Q25762 Promotion League, which is not mapped (and must not be - it is a real lower tier), so the club query never returns the item and fetch_clubs.py refuses a clubQid it did not fetch. TIER 2 rests on both season articles, read on a runner 2026-09-26: the complete 2026-27 Challenge League article lists it (Stade de Colovray, 7,200) and has its 2026-27 matches in the statistics, the complete 2026-27 Super League article names it only in the navigation box, under Challenge League, and its English Wikipedia infobox says League: Challenge League, 2025-26 9th of 10. Ground and position: Q673268's own P115 is Q663758 Centre sportif de Colovray, whose P625 46.370711/6.226201 is written here and whose tenant (P466) is this club. Capacity 7,200: Q663758's P1083, the Challenge League table and the club infobox agree. THE COST, known and accepted: the roster check will report Q673268 as missing-from-wikidata AND this MANUAL- club as extra-not-in-roster on every run - one club, two findings - because it joins on Q-ids. Delete this row, and correct Q673268's P118 on Wikidata, and the club comes back under its own Q-id",
+   "manual": true,
+   "competition": "Challenge League"
+  },
+  {
    "id": "Q166496",
    "name": "Étoile Carouge",
    "leagues": [
@@ -233,13 +263,13 @@
     "Q202699"
    ],
    "tier": 1,
-   "venue": "Stadio di Cornaredo",
+   "venue": "AIL Arena",
    "capacity": null,
-   "lat": 46.023611,
-   "lon": 8.961667,
+   "lat": 46.023088,
+   "lon": 8.96012,
    "city": null,
-   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League; https://en.wikipedia.org/wiki/FC_Lugano; https://en.wikipedia.org/wiki/Stadio_di_Cornaredo",
-   "note": "CAPACITY CLEARED, GROUND LEFT AS IT IS AND OPEN. Wikidata gives the Stadio di Cornaredo at 15,000. No source read on 2026-09-26 supports 15,000: the Cornaredo's own article now says 6,330, and both the 2026-27 Super League stadiums table and the club's infobox say the club plays at the new AIL Arena - at 8,793 (table) or 8,093 (infobox), which differ by 8%, so neither is written. The AIL Arena has no English Wikipedia article and no Wikidata item was found for it, so it has no coordinate here; the venue name and the pin are left at the Cornaredo rather than a new ground being claimed at an unverified position. What would settle it: the AIL Arena's position and one capacity two sources agree on",
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League; https://en.wikipedia.org/wiki/FC_Lugano; https://www.wikidata.org/wiki/Q140038602; https://www.wikidata.org/wiki/Q671287",
+   "note": "GROUND PINNED TO THE AIL ARENA 2026-09-26; CAPACITY STILL CLEARED. Q633521 carries two truthy P115 values - the Stadio di Cornaredo (Q671287, with an end date of 2026) and the AIL Arena (Q140038602, start date 2026, tenant FC Lugano) - so the fetched ground is whichever row the query service returns first, the Freiburg shape. Earlier the same day this row said no Wikidata item for the AIL Arena had been found; one exists, Q140038602, and it carries a position. Three sources agree on the ground: the 2026-27 Super League stadiums table (AIL Arena), the club's English Wikipedia infobox (AIL Arena) and Wikidata's own dated statements. Position: Q140038602's P625, 46.023088/8.96012 - about 130 m from the Cornaredo's, the new ground is on the old site. CAPACITY IS NOT WRITTEN: 8,093 on Wikidata and in the club infobox, 8,793 in the Super League table, 8% apart and no third figure (StadiumDB has no Lugano ground). 15,000, the Cornaredo's Wikidata figure, stays cleared. What would settle it: one more source for the AIL Arena's capacity",
    "manual": true,
    "competition": "Super League"
   },

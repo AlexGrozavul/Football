@@ -14,8 +14,8 @@
     "8": 1
    },
    "withVenueName": 149,
-   "withCapacity": 141,
-   "handCorrected": 59
+   "withCapacity": 140,
+   "handCorrected": 61
   },
   "RO": {
    "name": "Romania",
@@ -27,7 +27,7 @@
    },
    "withVenueName": 73,
    "withCapacity": 44,
-   "handCorrected": 17
+   "handCorrected": 18
   },
   "FR": {
    "name": "France",
@@ -53,25 +53,25 @@
   },
   "CH": {
    "name": "Switzerland",
-   "onMap": 20,
+   "onMap": 22,
    "byTier": {
     "1": 12,
-    "2": 8
+    "2": 10
    },
-   "withVenueName": 20,
-   "withCapacity": 19,
-   "handCorrected": 6
+   "withVenueName": 22,
+   "withCapacity": 20,
+   "handCorrected": 8
   },
   "AT": {
    "name": "Austria",
-   "onMap": 25,
+   "onMap": 21,
    "byTier": {
-    "1": 14,
-    "2": 11
+    "1": 12,
+    "2": 9
    },
-   "withVenueName": 25,
-   "withCapacity": 23,
-   "handCorrected": 0
+   "withVenueName": 21,
+   "withCapacity": 21,
+   "handCorrected": 10
   }
  }
 }

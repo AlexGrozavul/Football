@@ -167,11 +167,14 @@
     "Q154069"
    ],
    "tier": 3,
-   "venue": "Waldau-Stadion",
-   "capacity": 11436,
-   "lat": 48.753944,
-   "lon": 9.188417,
+   "venue": "WIRmachenDRUCK Arena",
+   "capacity": 10001,
+   "lat": 48.980485,
+   "lon": 9.393005,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_3._Liga; https://stadiumdb.com/stadiums/ger; https://en.wikipedia.org/wiki/VfB_Stuttgart_II; https://www.wikidata.org/wiki/Q1122869",
+   "note": "GROUND CORRECTED AND PINNED 2026-09-26. Q107421 carries two truthy P115 values, the Robert-Schlienz-Stadion (Q2156256) and the Gazi-Stadion auf der Waldau (Q317837), and the map showed whichever came back first - the Waldau, shared with Stuttgarter Kickers. NEITHER IS WHERE THE CLUB PLAYS. Three sources agree on a third ground: the 2026-27 3. Liga stadiums table (WIRmachenDRUCK Arena, Aspach, 10,001), StadiumDB (WIRmachenDRUCK Arena, Aspach, 'SG Sonnenhof, VfB Stuttgart II', 10,001) and the club's English Wikipedia infobox (WIRmachenDRUCK Arena, Aspach, 10,001). Capacity 10,001; not taken: the ground item's own P1083 10,000 (within the band), the Waldau's 11,436 and the Schlienz-Stadion's 5,000. Position: Q1122869, the WIRmachenDRUCK Arena's Wikidata item, carries TWO P625 values about 100 m apart, both on the ground; the more precise one is written. The Waldau pin is Stuttgarter Kickers' alone from now on",
+   "manual": true,
    "competition": "3. Liga"
   },
   {
@@ -695,10 +698,13 @@
    ],
    "tier": 4,
    "venue": "Sportforum Hohenschönhausen",
-   "capacity": 19708,
+   "capacity": null,
    "lat": 52.54,
    "lon": 13.4764,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/Berliner_FC_Dynamo; https://stadiumdb.com/stadiums/ger; https://www.wikidata.org/wiki/Q551837; https://www.wikidata.org/wiki/Q656063",
+   "note": "CAPACITY CLEARED 2026-09-26, GROUND LEFT OPEN. Q159930 carries two truthy P115 values, Sportforum Hohenschoenhausen (Q551837, no capacity on Wikidata) and the Friedrich-Ludwig-Jahn-Sportpark (Q656063, 19,708), and fetch_clubs.py builds a club from whichever rows come back first - so the map showed the Sportforum's name and position with the JAHN-SPORTPARK's 19,708: a figure for a ground the pin is not on. Whichever ground is right, 19,708 is not the Sportforum's, so it is cleared. THE GROUND IS NOT PINNED because the sources do not agree on it: the club's English Wikipedia infobox says Stadion im Sportforum, 4,500 (coordinates 52 32 27 N 13 28 34 E, which match Q551837), while StadiumDB still lists the Jahn-Sportpark for 'Dynamo' at 19,708. Two against one is not the three-source agreement the Freiburg pin rested on, and the Regionalliga has no stadiums table to be the third. What would settle it: a current source naming the ground, then a hand row with venue, capacity, lat and lon",
+   "manual": true,
    "competition": "Regionalliga Nordost"
   },
   {
@@ -2183,10 +2189,10 @@
    "venue": "Stadion Rote Erde",
    "capacity": 9999,
    "lat": 51.4925,
-   "lon": 7.451667,
+   "lon": 7.454444,
    "city": null,
-   "source": "https://stadiumdb.com/stadiums/ger",
-   "note": "COPIED GROUND, corrected. Wikidata gave this reserve side the first team's Signal Iduna Park and its 81359, exactly the shape of error that put TSV 1860 Muenchen II on the Gruenwalder. StadiumDB names Stadion Rote Erde in Dortmund at 9999 for Borussia II specifically, and lists Signal Iduna Park separately for Borussia. THE COORDINATES ARE DELIBERATELY LEFT ALONE and are still the first team's - Rote Erde is next door to Signal Iduna Park, a couple of hundred metres away, and no source read here gives its position. So the pin is close but not checked; clear both lat and lon, or fill in a confirmed position, if that matters",
+   "source": "https://stadiumdb.com/stadiums/ger; https://www.wikidata.org/wiki/Q628059; https://en.wikipedia.org/wiki/Borussia_Dortmund_II",
+   "note": "COPIED GROUND, corrected. Wikidata gave this reserve side the first team's Signal Iduna Park and its 81359, exactly the shape of error that put TSV 1860 Muenchen II on the Gruenwalder. StadiumDB names Stadion Rote Erde in Dortmund at 9999 for Borussia II specifically, and lists Signal Iduna Park separately for Borussia. COORDINATES PINNED 2026-09-26, and the reason is worse than the note used to say. Q865720 carries TWO truthy P115 values, Stadion Rote Erde (Q628059) and the Westfalenstadion (Q150928), and fetch_clubs.py builds a club from whichever query rows come back first - so the map took the venue name and capacity from this row but the POSITION from the Westfalenstadion's row (7.451667): a mixed record, the Freiburg flap in a quieter form. Three sources agree on the ground: StadiumDB (Stadion Rote Erde, Borussia II, 9,999), the club's English Wikipedia infobox (Stadion Rote Erde, 9,999) and Rote Erde's own Wikidata item Q628059, whose P625 51.4925/7.454444 is what is written here. Not taken: Q628059's P1083 25,000, which the stadium article gives as the athletics-meeting figure; 9,999 is its football figure",
    "manual": true,
    "competition": "Regionalliga West"
   },
