@@ -91,7 +91,7 @@ import urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from fetch_clubs import (                                    # noqa: E402
-    CLUB_QUERY, COUNTRIES, OVERFLOW, _s, apply_manual, build_clubs, cell,
+    CLUB_QUERY, COUNTRIES, COUNTRY_BOX, OVERFLOW, _s, apply_manual, build_clubs, cell,
     load_manual, load_tiers, overflow_problem, qid, sparql_with_retry)
 
 # ---------------------------------------------------------------- config
@@ -208,12 +208,34 @@ out tags center;
 
 # Only the places whose names actually occur in a club name. Asking for
 # every village in Germany would be a far heavier request for no gain.
+#
+# Also inside the country's hand-written box from fetch_clubs.py, the
+# one the country check uses. Added 2026-09-26 for France: its national
+# boundary includes the overseas departments, so the area's bounding box
+# spans half the globe and Overpass scans place nodes across all of it.
+# France's lookup was ONE request of 19 names and failed in three runs
+# running (504s, then read timeouts), while Germany's single request of
+# 17 names came back in two minutes - so the size of the request was not
+# the problem and splitting it would only have repeated it. The box
+# keeps the area filter too, so nothing outside the country is added;
+# what it drops is a place outside the box, which for France is the
+# overseas departments, where no tracked club plays.
 PLACE_QUERY = """
 [out:json][timeout:240];
 area["ISO3166-1"="%(iso)s"][admin_level=2]->.a;
-node["place"~"^(city|town|village|suburb)$"]["name"~"^(%(names)s)([ /,-].*)?$",i](area.a);
+node["place"~"^(city|town|village|suburb)$"]["name"~"^(%(names)s)([ /,-].*)?$",i](area.a)%(box)s;
 out tags center;
 """
+
+
+def box_filter(code):
+    """The Overpass (south,west,north,east) filter for a country's box,
+    or nothing where fetch_clubs.py has no box for it."""
+    box = COUNTRY_BOX.get(code)
+    if not box:
+        return ""
+    return "(%.2f,%.2f,%.2f,%.2f)" % (box["lat"][0], box["lon"][0],
+                                      box["lat"][1], box["lon"][1])
 
 # Named football pitches, but only around the places a club name
 # pointed at. Country-wide this would be tens of thousands of objects.
@@ -965,7 +987,8 @@ def fetch_places(code, names, failures):
             time.sleep(SMALL_GAP_SECONDS)
         pattern = "|".join(re.escape(gram) for gram in batch)
         payload, error = overpass_with_retry(
-            PLACE_QUERY % {"iso": code, "names": pattern}, "places")
+            PLACE_QUERY % {"iso": code, "names": pattern,
+                           "box": box_filter(code)}, "places")
         if error:
             failures.append(f"{code} places: {error} - {len(batch)} name(s) in "
                             f"this batch were not looked up")
@@ -1080,7 +1103,9 @@ def main():
         grams = {club["id"]: name_ngrams(club.get("name") or "") for club in clubs}
         asked = sorted({gram for one in grams.values() for gram in one})
         time.sleep(REQUEST_GAP_SECONDS)
-        print(f"      looking up {len(asked)} name(s) from the club names")
+        print(f"      looking up {len(asked)} name(s) from the club names"
+              + (f", inside the box {box_filter(code)}" if box_filter(code)
+                 else ", with no box for this country"))
         place_list, missing = fetch_places(code, asked, failures)
         if missing:
             print(f"      {len(missing)} name(s) did not come back, asking again")
