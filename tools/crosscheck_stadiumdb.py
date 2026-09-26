@@ -100,11 +100,17 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # table, and /stadiums/france, /stadiums/fr and /stadiums/fre are 404s.
 # Italy's "ita" likewise on 2026-09-25: /stadiums/ita answers 200,
 # /stadiums/italy and /stadiums/it are 404s.
+# Switzerland's "sui" on 2026-09-26: /stadiums/sui answers 200, and
+# /stadiums/swi, /stadiums/che, /stadiums/switzerland and /stadiums/ch
+# are 404s. The page is THIN - under twenty grounds for a country whose
+# top two divisions field 22 clubs - so a Swiss club with no StadiumDB
+# match is the expected case, not a finding, and it is never agreement.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
     "FR": ("fra", "France"),
     "IT": ("ita", "Italy"),
+    "CH": ("sui", "Switzerland"),
 }
 
 # Below this the two sources are treated as agreeing. Same threshold

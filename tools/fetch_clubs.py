@@ -90,6 +90,7 @@ COUNTRIES = [
     ("RO", "Q218", "Romania"),
     ("FR", "Q142", "France"),
     ("IT", "Q38", "Italy"),
+    ("CH", "Q39", "Switzerland"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -886,11 +887,20 @@ def novalue_fallback(code, lang, values, main_rows, tiers, hand_tiers=None):
 #       east 18.5204 (Punta Palascia). The box also holds San Marino,
 #       the Vatican, Malta, Corsica, Monaco, Ticino and a strip of
 #       Slovenia, so again P17 is what catches a club across a border.
+#   CH  south 45.8180 (Chiasso), north 47.8084 (Oberbargen), west 5.9559
+#       (Chancy), east 10.4921 (Piz Chavalatsch). The box holds ALL of
+#       Liechtenstein and strips of Germany, France, Italy and Austria,
+#       so P17 is the only signal that can catch FC Vaduz - which plays
+#       in the Swiss pyramid and is the Monaco shape, not a mistag.
+#       Three languages, so the club query asks for labels in German,
+#       then French, then Italian: a label in the club's own language
+#       where there is one, never an invented translation.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
     "FR": {"lat": (41.25, 51.20), "lon": (-5.25, 9.65)},
     "IT": {"lat": (35.40, 47.20), "lon": (6.50, 18.65)},
+    "CH": {"lat": (45.75, 47.85), "lon": (5.90, 10.55)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -1283,7 +1293,7 @@ def main():
     for position, (code, country_qid, name) in enumerate(COUNTRIES):
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
-        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it"}.get(code, "en")
+        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,

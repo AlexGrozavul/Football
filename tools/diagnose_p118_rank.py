@@ -74,7 +74,7 @@ ENTITY_BATCH = 50
 # league-tiers.csv maps to that country - because P17 is exactly the
 # field the missing clubs already lack, and a census that trusted it
 # alone would miss the clubs it is meant to find.
-COUNTRIES = {"Q183": "DE", "Q218": "RO", "Q142": "FR", "Q38": "IT"}
+COUNTRIES = {"Q183": "DE", "Q218": "RO", "Q142": "FR", "Q38": "IT", "Q39": "CH"}
 
 P_LEAGUE = "P118"
 P_VENUE = "P115"

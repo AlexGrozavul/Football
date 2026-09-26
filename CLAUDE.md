@@ -1369,6 +1369,43 @@ a page anyone can already view in their browser's network tab.
     the slow half, and without it a same-named place just over a border
     could come back as a candidate, so it needs checking before it is
     built.
+    **Run #16 (the push to `main` after PR #37, 15:18–16:00 UTC) made
+    two more findings, and together they point away from France.**
+    (1) **France came back complete a second time in a row** — `WRITTEN`
+    on #15 and again on #16, the first two in a row since run #10. It
+    was still not clean: the 19-name place request timed out twice
+    (15:38 and 15:42) and came back on the retry pass, 14 minutes in.
+    (2) **Germany's place lookup failed in the same run.** 17 names,
+    inside Germany's box (47.15–55.15 N, 5.75–15.15 E), a compact
+    request with no overseas departments in it: one HTTP 504, then a
+    read timeout, then "17 name(s) did not come back". It came back on
+    the retry pass and Germany was `WRITTEN`, so it failed the first
+    pass and not the run. In run #13 the same German request had come
+    back in two minutes. **It was not only those two**: Romania's
+    whole-country stadium request got three 504s and Romania was left
+    `UNCHANGED` (95 rows kept from the last good run). Italy hit two
+    504s on its place lookup and three on its pitch lookup before
+    finishing. Every country's Overpass steps struggled in that run.
+    **What this changes.** The earlier idea was that France's request
+    shape was the cause: its national area, its overseas bounding box,
+    its 19 names. A German request of about the same size and a much
+    smaller area failing the same way, in the same run, **weakens that
+    idea a lot**. The better-supported explanation is general Overpass
+    server load in a long, heavy run, which hits whichever country is
+    asking at the time. That is better supported, not proven: it rests
+    on one run's log. **So the next look at this tool should be at its
+    retry and backoff behaviour as a whole, not another per-country
+    fix aimed at whichever country failed last.** Three things in
+    `propose_coordinates.py` are worth that look, none of them changed
+    here: the waits are fixed (60 s after a busy answer, 30 s after a
+    timeout, `MAX_RETRIES` 3, a single retry pass) with no growing
+    backoff and no jitter; the client gives up after
+    `TIMEOUT_SECONDS` 180 s while the queries ask Overpass for
+    `[timeout:240]`, so an answer Overpass would deliver between 180
+    and 240 s is thrown away; and there is only one Overpass instance,
+    `overpass-api.de`. Whether any of these is the real limit has not
+    been measured. **The "box alone, no country area" idea above is
+    now less promising**, because it was aimed at France's shape.
   - **New open questions this turned up, all Alexandru's:**
     **FC Bistrița `Q24895825` is on the map at tier 3 and dissolved in
     2017** (English Wikipedia; `roster-review.csv` already reads it
