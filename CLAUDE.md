@@ -488,6 +488,20 @@ left exactly as the last good run left it and the summary says so:
 run." The first run is the one exception: with no file there is nothing
 to protect, so a partial list is written and labelled as partial.
 
+**`coordinate-review.csv` is decided country by country, since
+2026-09-26.** The rule above is unchanged in strictness and applied per
+country instead of per run: a country whose answer came back complete
+replaces **its own** rows; a country with anything missing keeps its
+rows exactly as its last good run left them, byte for byte, and the
+summary prints `WRITTEN` or `UNCHANGED` against every country. Until
+then one country's failed step threw away every country's answer — run
+#9 discarded complete German, French and Italian results because
+Romania's pitch lookup did not come back. The first-run exception
+still applies to the whole file only: an incomplete country is never
+written into an existing file, even one that holds no rows for it yet.
+**A green tick still does not mean every country is current** — read
+the per-country lines.
+
 `unmapped-leagues.csv` now follows the same rule. It is read from and
 pasted out of exactly like a review file, and it used to be rewritten
 unconditionally — so a run where one country's league discovery failed
