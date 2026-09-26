@@ -91,6 +91,7 @@ COUNTRIES = [
     ("FR", "Q142", "France"),
     ("IT", "Q38", "Italy"),
     ("CH", "Q39", "Switzerland"),
+    ("AT", "Q40", "Austria"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -693,6 +694,31 @@ def build_clubs(rows, tiers):
     return clubs, leagues, ambiguous, dropped, countries
 
 
+def club_grounds(rows):
+    """
+    Every distinct ground the query returned for each club, as
+    {club id: {venue id: venue label}}.
+
+    A club with two truthy P115 statements comes back as two rows, and
+    build_clubs keeps whichever arrives first - and the query service
+    does not promise an order. SC Freiburg is the case: its item names
+    the Dreisamstadion and the Europa-Park-Stadion at the same rank, and
+    the map alternated between them on every rebuild. build_clubs can
+    even take the ground's NAME from one row and its capacity or
+    coordinates from the other. Nothing here picks a winner - which
+    ground is current is a fact to be read, not a rule to apply - so the
+    run summary names every club this touches and says whether a hand
+    row pins it.
+    """
+    grounds = {}
+    for row in rows:
+        cid, vid = qid(cell(row, "club")), qid(cell(row, "venue"))
+        if cid and vid:
+            label = cell(row, "venueLabel") or vid
+            grounds.setdefault(cid, {})[vid] = label
+    return grounds
+
+
 # --------------------------------------------- the novalue fallback
 
 def novalue_fallback(code, lang, values, main_rows, tiers, hand_tiers=None):
@@ -895,12 +921,18 @@ def novalue_fallback(code, lang, values, main_rows, tiers, hand_tiers=None):
 #       Three languages, so the club query asks for labels in German,
 #       then French, then Italian: a label in the club's own language
 #       where there is one, never an invented translation.
+#   AT  south 46.3723 (Seebergsattel), north 49.0205 (Haugschlag), west
+#       9.5307 (the Rhine by Hoechst), east 17.1607 (Deutsch Jahrndorf).
+#       The box holds most of Liechtenstein, Bratislava, eastern St.
+#       Gallen and strips of Bavaria, Slovenia, Czechia and Hungary, so
+#       once again P17 is what catches a club across the border.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
     "FR": {"lat": (41.25, 51.20), "lon": (-5.25, 9.65)},
     "IT": {"lat": (35.40, 47.20), "lon": (6.50, 18.65)},
     "CH": {"lat": (45.75, 47.85), "lon": (5.90, 10.55)},
+    "AT": {"lat": (46.30, 49.10), "lon": (9.45, 17.25)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -1293,7 +1325,7 @@ def main():
     for position, (code, country_qid, name) in enumerate(COUNTRIES):
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
-        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it"}.get(code, "en")
+        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,
@@ -1340,6 +1372,7 @@ def main():
                   if t != "skip" and labels.get(lid, {}).get("country", code) == code]
         clubs = {}
         surfaced, fallback_notes = {}, []
+        grounds = {}
         if wanted:
             time.sleep(REQUEST_GAP_SECONDS)
             values = " ".join("wd:" + lid for lid in wanted)
@@ -1363,6 +1396,7 @@ def main():
 
             clubs, _leagues, ambiguous, dropped, club_countries = build_clubs(
                 rows + extra_rows, tiers)
+            grounds = club_grounds(rows + extra_rows)
 
             # The tier the fallback gave it, before any hand row is
             # applied - so the summary can show the hand correction
@@ -1500,6 +1534,20 @@ def main():
             report.append(f"    off the map, position cleared by hand in {MANUAL_FILE}: "
                           + ", ".join(gone_by_clear) +
                           " - put it back by replacing the coordinates")
+        pinned = {r["clubQid"] for r in manual_rows
+                  if r.get("clubQid") and r.get("venue") and r.get("lat") and r.get("lon")}
+        for cid in sorted(keep, key=lambda c: keep[c].get("name") or c):
+            several = grounds.get(cid, {})
+            if len(several) < 2:
+                continue
+            names = "; ".join(f"{label} ({vid})" for vid, label in sorted(several.items()))
+            state = (f"pinned by a hand row in {MANUAL_FILE}, so the map is steady"
+                     if cid in pinned else
+                     f"NOT pinned - the ground shown is whichever row came back first "
+                     f"and may change on the next rebuild; a hand row with venue, "
+                     f"capacity, lat and lon settles it once a source says which is current")
+            report.append(f"    {len(several)} grounds on Wikidata for "
+                          f"{keep[cid].get('name') or cid} ({cid}): {names} - {state}")
         if ambiguous:
             report.append(f"    {len(ambiguous)} club(s) in more than one mapped tier; "
                           f"took the highest. First: {ambiguous[0]}")

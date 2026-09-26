@@ -105,12 +105,18 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # are 404s. The page is THIN - under twenty grounds for a country whose
 # top two divisions field 22 clubs - so a Swiss club with no StadiumDB
 # match is the expected case, not a finding, and it is never agreement.
+# Austria's "aut" on 2026-09-26: /stadiums/aut answers 200, and
+# /stadiums/austria, /stadiums/at and /stadiums/ost are 404s. Measured
+# in 2026-09-19 at 27 grounds for a country whose top two divisions field
+# 28 teams - bare coverage at best, so the same rule as Switzerland:
+# silence is not agreement.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
     "FR": ("fra", "France"),
     "IT": ("ita", "Italy"),
     "CH": ("sui", "Switzerland"),
+    "AT": ("aut", "Austria"),
 }
 
 # Below this the two sources are treated as agreeing. Same threshold
