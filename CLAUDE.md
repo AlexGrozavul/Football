@@ -1334,6 +1334,18 @@ a page anyone can already view in their browser's network tab.
     and the last is a **"Teren Minifotbal"**, a small-sided pitch, which
     is very probably not a club's ground. None of the five was applied;
     they are new rows to judge.
+  - **Not merged on its own authority, because France did not come
+    back.** Both proposal runs on the branch (2026-09-26, 11:01 and
+    11:52 UTC) wrote Germany, Romania and Italy and left France
+    `UNCHANGED`: the same batch of **19 French place names** timed out
+    at Overpass both times (HTTP 504, then a read timeout, on both
+    attempts of each run). The French place lookup runs before any code
+    this branch changed and asks the same names as before, so it is not
+    this branch's failure — but a review file left unchanged because a
+    fetch failed is not a pass, so the merge is Alexandru's call. Twice
+    in a row is not a flake; if it recurs on the monthly run, the next
+    step is splitting France's place lookup into smaller requests, the
+    way Romania's pitch lookup was split.
   - **New open questions this turned up, all Alexandru's:**
     **FC Bistrița `Q24895825` is on the map at tier 3 and dissolved in
     2017** (English Wikipedia; `roster-review.csv` already reads it
