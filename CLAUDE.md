@@ -882,10 +882,12 @@ French one. Same signal, opposite meaning, and only the roster can
 tell them apart — Monaco is in the 2026–27 Ligue 1 article, Veltheim
 and Triesenberg were in no German one.
 The same shape exists elsewhere in football (Welsh clubs in the
-English pyramid, Liechtenstein's in the Swiss one) and none of them is
-on this map today. If one arrives, it gets its own note-only row, the
-Monaco way, only after the division's own article confirms it plays
-there.
+English pyramid, Liechtenstein's in the Swiss one). **The second one
+arrived on 2026-09-26: FC Vaduz `Q216773`**, `P17` Liechtenstein, in
+`CH.json` because it plays in the Swiss Super League, which the complete
+2026–27 article confirms. It has its note-only row, the Monaco way. If
+another arrives, it gets the same, only after the division's own article
+confirms it plays there.
 
 **Fixture teams are joined to map clubs once, in a file, and never by
 the page.** Built 2026-09-25. Neither football-data.org nor OpenLigaDB
@@ -1137,6 +1139,139 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **Switzerland's top two tiers are on the map, 2026-09-26: Super
+  League 12 of 12, exact; Challenge League 8 of 10, nothing extra and
+  nothing at the wrong tier, and the two missing are missing for a
+  named reason.** Same pipeline and standard as Germany, Romania,
+  France and Italy, run on a GitHub runner through four throwaway
+  probes (removed in the same branch). Tiers 1 and 2 only; the
+  Promotion League and below were deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q202699` Super
+    League and `Q669073` Challenge League, each confirmed by its enwiki
+    sitelink and `P3983` 1 and 2. **`Q202699` carries `P17`
+    Liechtenstein** as well; nothing depends on it, because tier comes
+    from `league-tiers.csv`. StadiumDB's slug is `sui` (`swi`, `che`,
+    `switzerland` and `ch` are 404s). The Challenge League article is
+    one stadiums table, 10 of 10 resolved (2 through a redirect). **The
+    Super League article's stadiums table is laid out with the clubs as
+    its header row**, so `check_rosters.py` does not recognise it and
+    reads the league table instead: 12 of 12 resolved, but no capacity
+    column for that division. The table was read by hand in a probe.
+  - **What the first build brought, 24 clubs against 22:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 13 | 11 |
+    | after this pass | **12** | **8** |
+  - **Five tier-2 clubs carried a stale Challenge League tag and are
+    `skip`ped**: FC Biel-Bienne `Q674799`, FC Chiasso `Q668573`, FC
+    Gossau `Q690074`, FC Locarno `Q368675`, FC Wohlen `Q583599`. Each has
+    one `P118`, Challenge League, normal rank, no `P576`. The standard is
+    Orléans/Béziers/Martigues: both articles complete, neither lists
+    them, and each club's own infobox names a lower league (Promotion
+    League, 2. Liga Ticino, 2. Liga Interregional twice, 1. Liga
+    Classic). No tier is written; each row says how to bring the club
+    back.
+  - **FC Wil `Q187091` is at tier 2 by a hand row, and that one is
+    reviewable.** Its only truthy `P118` is Super League, so it arrived
+    at tier 1. The complete Super League article does not list it, the
+    complete Challenge League article does, and the club's infobox says
+    Challenge League. Three reads, two of them complete division lists:
+    the Babelsberg shape, not the Farul one, so it was written rather
+    than left. Still Alexandru's to overrule; emptying the cell puts it
+    back at tier 1.
+  - **The two Challenge League clubs still missing, and why neither is
+    fixable by a hand row today.** **FC Rapperswil-Jona `Q681483`**
+    carries only `Q672305` 1. Liga; **FC Stade Nyonnais `Q673268`**
+    carries only `Q25762` Promotion League. Both were promoted and
+    their tags did not follow, so the club query never sees them
+    (`missing-from-wikidata`). Mapping either league would be wrong,
+    since both are genuinely lower tiers. And `apply_manual` rejects a
+    `clubQid` the query did not return, so only an add row with no
+    Q-id would reach them, at the cost of two permanent false findings
+    each. That is the Farul obstacle before the fallback existed.
+    **Alexandru's call**; the roster check names both every run.
+  - **The stale-active-club pattern (shape 6) was looked for, not
+    waited for, and it is here once.** Every item carrying a Swiss tier
+    1 or 2 tag at any rank was listed (112 rows, most of them players,
+    which the `Q5` filter already drops) and each club was checked
+    against both articles, `P576` and its infobox. **Anglo-American Club
+    Zürich `Q339492`**: normal-rank Super League tag, no `P576`, no
+    coordinates, infobox *dissolved 1900*. It dies at the coordinates
+    gate today and would have been offered as a coordinate proposal on
+    the next monthly run; it now has a whole-club `rejected` row in
+    `data/coordinate-reviews.csv`. FC Neuchâtel `Q3063128` carries `P576`
+    1906 and the dissolution gate already drops it. No other Swiss item
+    has the shape.
+  - **The rank blind spot, all three shapes.** No Swiss item carries a
+    tracked league at deprecated rank, and the preferred-`<novalue>`
+    query found nothing. Query C found one: **AC Bellinzona `Q289112`**,
+    Challenge League at normal rank under a preferred statement naming
+    another league. Its bill is 0: the Challenge League article's team
+    changes and its own infobox both say it was relegated to the
+    Promotion League, so it stays off, correctly.
+  - **FC Vaduz is the Monaco shape** (see Conventions): flagged by the
+    country check every run because its `P17` is Liechtenstein, which is
+    true, and kept because it plays in the Super League. A note-only row
+    says so.
+  - **Grounds and capacities.**
+    - **FC Lausanne-Sport was on the wrong ground.** Wikidata's `P115`
+      is still the Pontaise, at 50,000, which the club left in 2020. It
+      is corrected to the **Stade de la Tuilière, 12,544** (Super League
+      table, StadiumDB and the ground's Wikidata item agree), at that
+      item's own `P625`.
+    - **FC Stade Lausanne-Ouchy `Q869907` was placed** at the Pontaise,
+      15,850. Its ground was named by the Challenge League table,
+      StadiumDB and the Pontaise's own tenant list; the coordinate is
+      the Pontaise item's `P625`. It is in the 2026–27 article with no
+      `P576`, checked before the row was written. So the Pontaise pin
+      moved from one Lausanne club to the other, and neither shares.
+    - **FC Sion 16,263 → 14,283**, the UTA Arad rule: the Super League
+      table and OpenStreetMap agree exactly; StadiumDB's 20,187 and
+      Wikidata's 16,263 are recorded as not taken.
+    - **FC Lugano: capacity cleared, ground open.** No source supports
+      Wikidata's 15,000. The club infobox and the Super League table say
+      the club now plays at the **AIL Arena**, at 8,093 and 8,793
+      respectively (8% apart), and the AIL Arena has no enwiki article
+      or Wikidata item this pass found, so no coordinate. The pin and
+      venue name stay at the Cornaredo. What settles it is the AIL
+      Arena's position and one capacity two sources agree on.
+    - **Two figures, no arbiter, unchanged**: SC Kriens (5,360 on
+      Wikidata and the stadium's infobox, 3,500 in the Challenge League
+      table), Yverdon-Sport (6,600 against 4,200) and Étoile Carouge
+      (7,200 on Wikidata against 3,600 in both the table and the
+      stadium's infobox, which are one source, Wikipedia, twice).
+      **FC Aarau** is the Magdeburg case: 9,249 on the map, StadiumDB
+      and the stadium's infobox, against the table's 8,000.
+    - **FC Zürich and Grasshopper share the Letzigrund**, and that is
+      genuine: StadiumDB and the stadium's tenant list both say so.
+  - **StadiumDB covers Switzerland as thinly as measured in 2026-09-19,
+    and its silence is not agreement.** 17 grounds on the Swiss page. Of
+    the 20 clubs now on the map it has **no figure for eight**: FC
+    Lugano, FC Vaduz (Liechtenstein is not on the Swiss page), FC Wil,
+    Grasshopper (StadiumDB lists the Letzigrund under FC Zürich and
+    "Grasshoppers", and the matcher paired only FC Zürich), SC Kriens,
+    Yverdon-Sport, Étoile Carouge and FC Lausanne-Sport. StadiumDB
+    does list the Tuilière at 12,544, under the club name
+    "Lausanne-Sports", and the matcher, rightly, does not treat
+    "Sports" as "Sport"; that figure was read by hand for the row
+    above. After the corrections the check reads 20 clubs, 9 agree,
+    2 differ (Sion, where StadiumDB is the outlier, and Basel, 38,512
+    against 36,000, where the Super League table's 37,994 sides with
+    the map), 1 ground-name clash (Thun: Stockhorn Arena against
+    Visana Stadion, figures within 5%), 8 not matched. Those eight
+    clubs' capacities rest on Wikidata and at most Wikipedia.
+  - **OpenStreetMap confirms nothing in Switzerland either**: of 24
+    clubs on the first build, 0 agree, 1 differs (Sion, which is what
+    settled it), 18 have a Wikidata figure only and 5 have no OSM ground
+    nearby. Italy's and Romania's shape, not Germany's.
+  - **Fixtures: none.** football-data.org's free tier carries no Swiss
+    competition and OpenLigaDB is German only; the club sheet says so.
+  - **Found on the way, not Swiss**: SC Freiburg's flapping ground (see
+    the Italy entry, corrected), and the OpenStreetMap capacity
+    cross-check hitting HTTP 504 on Germany on its first branch run and
+    leaving its review file unchanged. It was re-run and came back
+    complete before the merge.
+
 - **Italy's top two tiers are on the map, 2026-09-25. Serie A came
   back exact, 20 of 20; Serie B is 18 of 20 with nothing extra since
   LR Vicenza was surfaced later the same day, and each of the two
@@ -1254,8 +1389,17 @@ a page anyone can already view in their browser's network tab.
     Serie B has no fixture source; the club sheet says so.
   - **Not Italian, but it moved in the same rebuild**: SC Freiburg's
     ground went from the Dreisamstadion to the **Europa-Park-Stadion**
-    (34,700), where it has played since 2021. That is Wikidata catching
-    up, not a change made here.
+    (34,700), where it has played since 2021. ~~That is Wikidata catching
+    up, not a change made here.~~ **That reading was wrong, corrected
+    2026-09-26**: it was not a move but a **flap**. `Q106394` carries two
+    truthy `P115` values and `fetch_clubs.py` keeps whichever row the
+    query service returns first, so the ground alternated on every
+    rebuild since 2026-09-25 (seven checked). A hand row now pins the
+    Europa-Park-Stadion, 34,700 (the 2026–27 Bundesliga table and
+    Wikidata's figure for the ground agree, and StadiumDB's
+    Europa-Park Stadion matched it at 34,700 on the next run). Freiburg is the only club
+    in any country file whose ground changed between rebuilds in that
+    window; the first-row-wins choice itself is not fixed.
 
 - **The 38 confident Romanian rows were judged, 2026-09-26, and the
   judgement is now remembered.** `data/coordinate-reviews.csv` holds 31
@@ -3716,7 +3860,10 @@ a page anyone can already view in their browser's network tab.
     before anyone looked. **A third opinion is a third opinion, not a
     tie-breaker.**
   - **So the verdict is: yes for France and Italy, no for
-    Switzerland, Austria, Serbia and Greece.** As a second opinion on
+    Switzerland, Austria, Serbia and Greece.** (Switzerland was added
+    to `crosscheck_stadiumdb.py` anyway on 2026-09-26, slug `sui`, as a
+    thin third opinion, never as agreement by silence - see the
+    Switzerland entry under Known open problems.) As a second opinion on
     a ground StadiumDB happens to hold it is excellent — clean to
     parse, independent of both OpenStreetMap and Wikidata, and
     editorially curated rather than crowd-sourced. As the systematic
