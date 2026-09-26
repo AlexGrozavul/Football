@@ -61,6 +61,17 @@
    "withVenueName": 20,
    "withCapacity": 19,
    "handCorrected": 6
+  },
+  "AT": {
+   "name": "Austria",
+   "onMap": 25,
+   "byTier": {
+    "1": 14,
+    "2": 11
+   },
+   "withVenueName": 25,
+   "withCapacity": 23,
+   "handCorrected": 0
   }
  }
 }

@@ -1,0 +1,358 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "AT",
+ "countryName": "Austria",
+ "clubs": [
+  {
+   "id": "Q124007617",
+   "name": "SK Sturm Graz",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Merkur Arena",
+   "capacity": 15400,
+   "lat": 47.046111,
+   "lon": 15.454444,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q131209",
+   "name": "FK Austria Wien",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Generali Arena",
+   "capacity": 17656,
+   "lat": 48.162306,
+   "lon": 16.386694,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q131215",
+   "name": "SK Rapid Wien",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Allianz Stadion",
+   "capacity": null,
+   "lat": 48.1981,
+   "lon": 16.2653,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q1387293",
+   "name": "FC Liefering",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Red Bull Arena",
+   "capacity": 31895,
+   "lat": 47.81625,
+   "lon": 12.998222,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q1387445",
+   "name": "FC Juniors OÖ",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Waldstadion",
+   "capacity": 7152,
+   "lat": 48.235556,
+   "lon": 14.226667,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q261813",
+   "name": "FC Wacker Innsbruck",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Tivoli Stadion Tirol",
+   "capacity": 17400,
+   "lat": 47.255972,
+   "lon": 11.410789,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q392310",
+   "name": "LASK",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Linzer Stadion",
+   "capacity": 18000,
+   "lat": 48.293333,
+   "lon": 14.276389,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q427491",
+   "name": "SKN St. Pölten",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "NV Arena",
+   "capacity": 8000,
+   "lat": 48.2209,
+   "lon": 15.6531,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q457460",
+   "name": "SV Ried",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Innviertel Arena",
+   "capacity": 7680,
+   "lat": 48.207778,
+   "lon": 13.478333,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q60967849",
+   "name": "Young Violets Austria Wien",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Generali Arena",
+   "capacity": 17656,
+   "lat": 48.162306,
+   "lon": 16.386694,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q659780",
+   "name": "Grazer AK",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Merkur Arena",
+   "capacity": 15400,
+   "lat": 47.046111,
+   "lon": 15.454444,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q670438",
+   "name": "SCR Altach",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Cashpoint-Arena",
+   "capacity": 8500,
+   "lat": 47.3536,
+   "lon": 9.6372,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q686659",
+   "name": "WSG Tirol",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Tivoli Stadion Tirol",
+   "capacity": 17400,
+   "lat": 47.255972,
+   "lon": 11.410789,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q686826",
+   "name": "First Vienna FC 1894",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Stadion Hohe Warte",
+   "capacity": 5500,
+   "lat": 48.2489,
+   "lon": 16.3597,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q692186",
+   "name": "FC Lustenau 07",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Reichshofstadion",
+   "capacity": 8800,
+   "lat": 47.4211,
+   "lon": 9.65278,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q694484",
+   "name": "Wolfsberger AC",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Lavanttal-Arena",
+   "capacity": 7300,
+   "lat": 46.8253,
+   "lon": 14.8514,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q696507",
+   "name": "SC Austria Lustenau",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Reichshofstadion",
+   "capacity": 8800,
+   "lat": 47.4211,
+   "lon": 9.65278,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q696525",
+   "name": "FC Blau-Weiß Linz",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Hofmann Personal Stadion",
+   "capacity": null,
+   "lat": 48.3163,
+   "lon": 14.2983,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q697322",
+   "name": "FC Gratkorn",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Sportstadion Marktgemeinde Gratkorn",
+   "capacity": 3000,
+   "lat": 47.1298,
+   "lon": 15.3385,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q698702",
+   "name": "Admira Wacker",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Datenpol Arena",
+   "capacity": 12000,
+   "lat": 48.0976,
+   "lon": 16.3109,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q699184",
+   "name": "SK Austria Klagenfurt",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Wörthersee Stadion",
+   "capacity": 32000,
+   "lat": 46.608847,
+   "lon": 14.278281,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q699746",
+   "name": "TSV Hartberg",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Stadion Hartberg",
+   "capacity": 4500,
+   "lat": 47.281,
+   "lon": 15.9772,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q731715",
+   "name": "VSE St. Pölten",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Voithplatz",
+   "capacity": 8000,
+   "lat": 48.1924,
+   "lon": 15.6267,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q741382",
+   "name": "Kapfenberger SV",
+   "leagues": [
+    "Q650236"
+   ],
+   "tier": 2,
+   "venue": "Alpenstadion",
+   "capacity": 12000,
+   "lat": 47.4439,
+   "lon": 15.3006,
+   "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q994811",
+   "name": "FC Red Bull Salzburg",
+   "leagues": [
+    "Q219592"
+   ],
+   "tier": 1,
+   "venue": "Red Bull Arena",
+   "capacity": 31895,
+   "lat": 47.81625,
+   "lon": 12.998222,
+   "city": null,
+   "competition": "Bundesliga (Austria)"
+  }
+ ]
+}

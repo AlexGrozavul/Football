@@ -6,10 +6,11 @@ Q2949998,,Serie A,IT,69
 Q175976,,Serie A Élite,IT,64
 Q607965,,Serie C,IT,62
 Q672305,,1. Liga,CH,43
+Q101885125,,European League of Football,AT;CH;DE;FR,40
 Q645148,,Eccellenza,IT,33
 Q657405,,Promozione,IT,32
 Q864298,,championnat de France de football de troisième division,FR,31
-Q101885125,,European League of Football,CH;DE;FR,30
+Q1330821,,European Women's Hockey League,AT;IT,30
 Q316686,,Fußball-Oberliga Nordost,DE,28
 Q15735,,Fußball-Bayernliga,DE,27
 Q2951169,,championnat de France féminin de football de deuxième division,FR,27
@@ -18,8 +19,10 @@ Q878642,,Fußball-Oberliga Baden-Württemberg,DE,27
 Q1231102,,Première Ligue,FR,25
 Q175762,,Handball-Bundesliga,DE,25
 Q26223,,Fußball-Oberliga Rheinland-Pfalz/Saar,DE,25
+Q683390,,Fußball-Regionalliga,AT,25
 Q738154,,Serie A Élite,IT,25
 Q929124,,Serie A,IT,25
+Q301660,,Österreichische Eishockey-Liga,AT;IT,24
 Q1063016,,Prima Categoria,IT,22
 Q316340,,Fußball-Hessenliga,DE,21
 Q322918,,Fußball-Oberliga Niederrhein,DE,21
@@ -42,7 +45,6 @@ Q15062840,,championnat de France masculin de basket-ball,FR,16
 Q20025024,,Bayernliga Süd,DE,16
 Q209970,,2. Handball-Bundesliga,DE,16
 Q24448,,2. Liga,CH,16
-Q1330821,,European Women's Hockey League,IT,15
 Q203172,,championnat de France masculin de handball,FR,15
 Q5904,,championnat de France de rugby à XV de 2e division,FR,15
 Q1142995,,Super League,FR,14
@@ -60,7 +62,7 @@ Q1476473,,Fußball-Landesliga Niederrhein,DE,12
 Q1477042,,Fußball-Sachsenliga,DE,12
 Q1645341,,Landesliga Württemberg,DE,12
 Q24008224,,Nationalliga A,CH,12
-Q301660,,Österreichische Eishockey-Liga,IT,12
+Q266043,,Dameneishockey-Bundesliga,AT,12
 Q667660,,Swiss League,CH,12
 Q688866,,National League A,CH,12
 Q832856,,Brandenburg-Liga,DE,12
@@ -68,6 +70,7 @@ Q223352,,3. Liga,DE,11
 Q247040,,Fußball-Westfalenliga,DE,11
 Q2494381,,Floorball-Bundesliga,DE,11
 Q44151,,Bezirksliga,DE,11
+Q4825491,,Fußball-Regionalliga Ost,AT,11
 Q694394,,2. Liga interregional,CH,11
 Q875706,,Fußball-Verbandsliga Mecklenburg-Vorpommern,DE,11
 Q1249149,,championnat de France féminin de basket-ball,FR,10
@@ -89,14 +92,18 @@ Q23308278,,2. Bundesliga Herren,DE,8
 Q2999793,,Coppa Italia di pallacanestro femminile,IT,8
 Q3240443,,ligue de la Méditerranée de football,FR,8
 Q3957792,,Serie C,IT,8
+Q4825490,,Fußball-Regionalliga Mitte,AT,8
 Q492245,,Schweizer Fussballmeisterschaft der Frauen,CH,8
 Q5284652,,Liga Națională,RO,8
+Q687207,,ÖFB Frauen Bundesliga,AT,8
 Q993765,,Fußball-Verbandsliga Baden,DE,8
+Q19601853,,EUHL,AT,7
 Q3712183,,Liga I,RO,7
 Q3718114,,Eccellenza Lombardia,IT,7
 Q880029,,Deutsche Frauen Eishockey Liga,DE,7
 Q114672261,,Serie A,IT,6
 Q1153511,,DHB-Pokal,DE,6
+Q11903339,,Österreichische Floorball-Bundesliga,AT,6
 Q127699,,Fußball-Verbandsliga Sachsen-Anhalt,DE,6
 Q1476475,,Fußball-Landesliga Mittelrhein,DE,6
 Q1477028,,Fußball-Regionalliga West,DE,6
@@ -108,9 +115,11 @@ Q3718064,,Eccellenza Lazio,IT,6
 Q5511147,,Landesliga Nordost,DE,6
 Q686699,,DHB-Pokal,DE,6
 Q933242,,ligue de football de la Martinique,FR,6
+Q130532384,,Austrian Women's Hockey League,AT,5
 Q1477019,,Fußball-Regionalliga Nord,DE,5
 Q1477021,,Fußball-Regionalliga Nordost,DE,5
 Q17652315,,Serie A2,IT,5
+Q2436235,,Tiroler Landesliga,AT,5
 Q300020,,Deutsche Volleyball-Bundesliga,DE,5
 Q30560738,,League of Legends European Championship,DE,5
 Q322125,,Handball-Bundesliga,DE,5
@@ -123,7 +132,9 @@ Q16642,,Sei Nazioni,FR;IT,4
 Q18548570,,Liga a IV-a Timiș,RO,4
 Q2120557,,Pétanque-Bundesliga,DE,4
 Q223351,,3. Liga,DE,4
+Q23933712,,Alps Hockey League,AT;IT,4
 Q2951508,,championnat de France masculin de water-polo,FR,4
+Q29784192,,Erste Judo Bundesliga,AT,4
 Q315442,,Eishockey-Oberliga,DE,4
 Q6954875,,Fußball-Oberliga Nordost (Staffel Nord),DE,4
 Q826516,,Fußball-Landesliga Bremen,DE,4
@@ -135,6 +146,7 @@ Q12732224,,Liga a IV-a Ialomița,RO,3
 Q12732227,,Liga a IV-a Mureș,RO,3
 Q12732231,,Liga a IV-a Vâlcea,RO,3
 Q1477025,,Fußball-Regionalliga Südwest,DE,3
+Q2215992,,Salzburger Liga,AT,3
 Q2252279,,Terza Categoria,IT,3
 Q23021345,,championnat de France féminin de rugby à XV de 2e division,FR,3
 Q23793903,,Swiss Women’s Hockey League B,CH,3
@@ -146,6 +158,7 @@ Q3654182,,Campionato italiano di hockey su ghiaccio femminile,IT,3
 Q3712068,,Serie B Nazionale,IT,3
 Q3956381,,Serie A1,IT,3
 Q429662,,Eccellenza Emilia-Romagna,IT,3
+Q4825492,,Fußball-Regionalliga West,AT,3
 Q5511149,,Landesliga Südost,DE,3
 Q5511150,,Landesliga Südwest,DE,3
 Q60847120,,championnat de France féminin de rugby à XV de 2e division fédérale,FR,3
@@ -153,6 +166,7 @@ Q686954,,Lidl Unihockey Prime League,CH,3
 Q1049208,,Liga MOL,RO,2
 Q112625442,,championnat de France de rugby à XV de Nationale 2,FR,2
 Q1231272,,ligue régionale de football,FR,2
+Q123511135,,Frauen Judo Bundesliga,AT,2
 Q12732203,,Liga a IV-a Alba,RO,2
 Q12732207,,Liga a IV-a Brăila,RO,2
 Q12732210,,Liga a IV-a Cluj,RO,2
@@ -165,6 +179,7 @@ Q12732223,,Liga a IV-a Hunedoara,RO,2
 Q12732225,,Liga a IV-a Ilfov,RO,2
 Q12732229,,Liga a IV-a Olt,RO,2
 Q12732230,,Liga a IV-a Satu Mare,RO,2
+Q127804527,,Floorball-Bundesliga Österreich 2024/25,AT,2
 Q1476961,,Fußball-Regionalliga,DE,2
 Q1574545,,Handball-Oberliga Baden-Württemberg der Frauen,DE,2
 Q1574547,,Handball-Oberliga Baden-Württemberg der Männer,DE,2
@@ -173,11 +188,11 @@ Q18538278,,Liga a IV-a Brașov,RO,2
 Q18541340,,Liga a IV-a Bacău,RO,2
 Q18541679,,Liga a IV-a Maramureș,RO,2
 Q18548729,,Liga a IV-a Tulcea,RO,2
+Q2043131,,OÖ Liga,AT,2
 Q20798387,,BeNe League,DE,2
 Q209827,,2. Floorball-Bundesliga,DE,2
 Q209968,,2. Handball-Bundesliga,DE,2
 Q2359623,,Sei Nazioni femminile,FR;IT,2
-Q23933712,,Alps Hockey League,IT,2
 Q2950711,,championnat de France de rugby à XV de Régionale 1,FR,2
 Q2950973,,championnat de France de basket-ball de Nationale masculine 1,FR,2
 Q2951043,,championnat de France féminin de floorball,FR,2
@@ -187,22 +202,28 @@ Q3091830,,Fédération française de natation,FR,2
 Q3240347,,ligue de Midi-Pyrénées de football,FR,2
 Q3712074,,Divisione Nazionale C,IT,2
 Q3718091,,Eccellenza Liguria,IT,2
+Q375693,,Women VolleyLeague,AT,2
 Q3883111,,tournoi de tennis d'Andrézieux-Bouthéon,FR,2
 Q3956990,,Serie A,IT,2
 Q3957473,,Serie B (calcio femminile),IT,2
 Q429206,,championnat de France de rugby à XV de 2e division fédérale,FR,2
+Q4825462,,Austrian 2. Landesliga,AT,2
 Q48851752,,Campionato Primavera 1,IT,2
 Q4900351,,Bezirksliga Mittelfranken Nord,DE,2
 Q5511148,,Landesliga Nordwest,DE,2
 Q558216,,German Football League,DE,2
+Q633135,,Handball Liga Austria,AT,2
 Q6954881,,Fußball-Oberliga Nordost (Staffel Süd),DE,2
+Q74116528,,Austrian Basketball Superliga,AT,2
 Q821999,,Liga Națională,RO,2
 Q828056,,Fußball-Landesliga Hamburg,DE,2
 Q878505,,Landesliga,DE,2
 Q980206,,Italian Football League,IT,2
 Q1050620,,Liga a V-a,RO,1
+Q105962727,,Regionalliga Salzburg,AT,1
 Q106977877,,Liga I,RO,1
 Q106977879,,Liga II,RO,1
+Q107067405,,2. Landesliga Ost (Niederösterreich),AT,1
 Q107977527,,championnat de France de basket-ball 2021-2022,FR,1
 Q1112545,,Handball-Oberliga Niedersachsen,DE,1
 Q112155972,,Handball-Regionalliga Süd,DE,1
@@ -211,11 +232,13 @@ Q1152882,,DEB-Pokal der Frauen,DE,1
 Q1158340,,Damen-Basketball-Bundesligen,DE,1
 Q117536457,,2. Bundesliga Pro,DE,1
 Q1231259,,championnat de France de hockey sur glace D4,FR,1
+Q123511675,,Zweite Judo Bundesliga,AT,1
 Q123984566,,Serie C (pallacanestro maschile),IT,1
 Q126924470,,Handball-Regionalliga Baden-Württemberg,DE,1
 Q12732217,,Liga a IV-a Covasna,RO,1
 Q12732219,,Liga a IV-a Giurgiu,RO,1
 Q12732228,,Liga a IV-a Mehedinți,RO,1
+Q1280206,,Landesliga Steiermark,AT,1
 Q129029119,,Handball-Regionalliga Bayern,DE,1
 Q1313769,,Eishockey-Bezirksliga Bayern,DE,1
 Q1314880,,Eishockey-Landesliga Bayern,DE,1
@@ -236,12 +259,16 @@ Q16571719,,Swiss Women’s Hockey League C,CH,1
 Q169519,,Deutsche Eishockey Liga,DE,1
 Q169918,,Coppa Italia,IT,1
 Q17342725,,Basketball-Bundesliga 2014/15,DE,1
+Q17355248,,Women Handball Austria,AT,1
+Q1802366,,Vorarlbergliga,AT,1
 Q18417282,,Cupa României,RO,1
 Q18541339,,Liga a IV-a Arad,RO,1
 Q18541351,,Liga a VI-a,RO,1
 Q18548358,,Liga a IV-a Sălaj,RO,1
 Q18549264,,Liga a IV-a Vrancea,RO,1
 Q18549770,,Liga a IV-a Teleorman,RO,1
+Q204918,,Österreichische Basketball Bundesliga,AT,1
+Q20745851,,II. Liga Nord,AT,1
 Q209738,,2. Deutsche Volleyball-Bundesliga,DE,1
 Q209740,,2. Deutsche Volleyball-Bundesliga,DE,1
 Q23021344,,championnat de France féminin de rugby à XV de 1re division fédérale,FR,1
@@ -250,6 +277,7 @@ Q247481,,Fußball-Landesliga Niedersachsen,DE,1
 Q252836,,Coppa Italia Serie C,IT,1
 Q25408693,,Serie A1,IT,1
 Q2572190,,Campionato italiano di pallavolo maschile,IT,1
+Q288041,,Fußball-Landesliga,AT,1
 Q2941183,,championnat de France de football américain D1,FR,1
 Q2949872,,Serie A,IT,1
 Q2949877,,Campionato italiano di football americano,IT,1
@@ -281,6 +309,7 @@ Q3956646,,Superlega (pallavolo),IT,1
 Q3956717,,Serie A2,IT,1
 Q3957480,,Serie B,IT,1
 Q3984855,,Terza Divisione 1924-1925,IT,1
+Q43146900,,Wiener Frauen Landesliga,AT,1
 Q480019,,Ringer-Bundesliga,DE,1
 Q483020,,Paris Saint-Germain FC,FR,1
 Q48750368,,Ligue régionale Auvergne-Rhône-Alpes de rugby,FR,1
