@@ -1251,11 +1251,28 @@ a page anyone can already view in their browser's network tab.
   in a row, so the file was again correctly left alone. Three partial
   runs in one evening, each missing something different, is Overpass
   being overloaded, not a bug in the tool. Nothing was changed in it.
-  One more attempt was scheduled for a quiet hour (03:30 UTC on
-  2026-09-26) rather than hitting a volunteer service a fourth time
-  that evening; failing that, the monthly cron on the 11th is the next
-  run. **Until a run commits, read `coordinate-review.csv` as the
-  2026-09-18 German and Romanian list and nothing more.**
+  **The off-peak attempt, run #9 at 03:30 UTC on 2026-09-26, came
+  closest and still did not commit.** Germany, France and Italy came
+  back whole, and so did Romania's stadiums and places; the one thing
+  missing was **Romania's pitch lookup** — two read timeouts and then a
+  504. The file was correctly left alone again.
+  **That one is no longer bad luck.** Romania's pitch lookup has now
+  failed in **every run that reached it** — #6, #7 and #9 (#8 stopped
+  earlier, on Romania's stadiums) — at 03:30 UTC as well as in the
+  evening. It asks for named pitches around every place a needy club's
+  name matches, in batches of `PLACES_PER_REQUEST` (50) `around`
+  clauses, and for Romania that is two requests over some thirty
+  clubs' worth of villages. Germany, France and Italy send one small
+  request each and it comes back. **The likely remedy is a smaller
+  batch for that query** — the same lesson `NAMES_PER_REQUEST` records
+  for the place lookup, "one lost request took a whole stretch of the
+  alphabet with it". **Not built and not measured**; until it is, the
+  monthly cron on the 11th will probably stop at the same step.
+  **Until a run commits, read `coordinate-review.csv` as the
+  2026-09-18 German and Romanian list and nothing more.** What the runs
+  learned, though it is in no file: Germany 3 clubs without
+  coordinates (0 confident, 2 ambiguous, 1 nothing), Romania 106 (31 /
+  31 / 44), France 3 (0 / 2 / 1), Italy 3 (0 / 1 / 2).
 
 - **A mapped league can be hidden under a preferred statement naming a
   DIFFERENT league. That is a third rank shape, the diagnostic could
