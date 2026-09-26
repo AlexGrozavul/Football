@@ -1357,6 +1357,51 @@ a page anyone can already view in their browser's network tab.
     **CS Afumați** is drawn at its Comunal ground, but the Liga II
     table says it plays 2026-27 at the CNAF in Buftea while the Comunal
     is renovated. That is not changed here.
+  - **Second pass, same day, a separate session on Alexandru's
+    instruction — and what was already done before it.** Checked
+    first, from the files: FC Bistrița was **still in `RO.json` at
+    tier 3** with no hand row, and Q74127553 had its whole-club
+    `rejected` row in `coordinate-reviews.csv` (line 27) but **no
+    `skip` row** in `clubs-manual.csv`. So neither had been done as
+    asked. Everything below was read on a runner through a throwaway
+    probe, removed in the same branch.
+    - **`skip` rows added for both.** FC Bistrița: its English
+      infobox says *dissolved 2017*; no `P576`; neither 2026-27 Liga II
+      nor Liga III names it. The Liga III article is not a complete
+      division list, so this is **weaker than the Hermannstadt
+      standard** and rests on the infobox date, on Alexandru's
+      instruction — the row says so. Gloria Bistrița is now alone on
+      the Jean Pădureanu pin. Q74127553: 0 sitelinks, no `P159`, and
+      the Liga III article links `Q55864953` — shape 1.
+    - **Placed: ARO Muscelul Câmpulung** (Stadionul Muscelul; the OSM
+      way carries the club's own Q-id, and infoboxes, Wikidata's `P115`
+      and the Liga III map pin agree), **KSE Târgu Secuiesc** (Dr.
+      Sinkovits; infoboxes and map pin agree) and **Oltul Curtișoara**
+      (Stadionul Tineretului; the stadium article's coordinate and an
+      OSM pitch agree within 10 m). All three are in the 2026-27 Liga
+      III article with no `P576` and no withdrawal. Capacities blank:
+      each figure came from English and Romanian Wikipedia only.
+    - **Not placed, though asked for: Gilortul Târgu Cărbunești** —
+      *"Relegated to Liga IV"* in the 2026-27 Liga III article, so the
+      pitch would have drawn a Liga IV club at tier 3. **Șoimii Gura
+      Humorului** — *"had withdrawn and were formally excluded by the
+      FRF"*, and the article links a different item, `Q140089397`,
+      whose ground is the Areni in Suceava. Both are whole-club
+      rejections; Șoimii is the third instance of shape 6. **Lotus
+      Băile Felix**'s mini-pitch is rejected as a ground; the club
+      itself is fine.
+    - **Held → rejected, both.** Olimpic Zărnești's held pitch is in
+      Buzău county; the Liga III article (Series II) pins the club in
+      the **Brașov** Zărnești. So the earlier "held with roster
+      support" was half right: the club **is** in the 2026-27 article —
+      linked as a red link, which is why `roster-review.csv` never
+      resolved it and the list above missed it — and the ground is
+      wrong. Its real ground is **not known**: OSM has several unnamed
+      pitches in the Brașov town and nothing ties the club to one.
+      Oltul Curtișoara's Moșteni pitch is rejected and the club placed
+      at its real ground, above. **A Wikipedia map pin can be wrong**:
+      the Liga III article pins Oltul on the Curtișoara in Dolj, 30 km
+      from the Olt one where it plays.
 
 - **`coordinate-review.csv` is current again, 2026-09-26: all four
   countries, 115 rows, from run #10.** It had been the 2026-09-18
@@ -2376,12 +2421,14 @@ a page anyone can already view in their browser's network tab.
   the "2" marker is what makes the symptom visible at all. Before it,
   the second pin sat exactly under the first and nothing counted it.
 
-  **The five shapes have names now, because the next one will not
+  **The six shapes have names now, because the next one will not
   arrive with a label on it.** The first three look identical on the
   map — two items, one name, one ground — and each wants a different
-  remedy. The last two never appear as two pins at all, because one
-  item of the pair never reaches the map: only the roster check can see
-  them, and it sees them as one club reported twice.
+  remedy. The fourth and fifth never appear as two pins at all, because
+  one item of the pair never reaches the map: only the roster check can
+  see them, and it sees them as one club reported twice. The sixth
+  never reaches the map either, and arrives by a third route: as a
+  confident coordinate proposal.
   Getting the shape wrong is not a cosmetic mistake: `skip` the wrong
   item in the second shape and a real club disappears from the map for
   good, with nothing to notice it had gone, and `skip` the wrong item
@@ -2431,6 +2478,41 @@ a page anyone can already view in their browser's network tab.
      with a live `P118` — the team item in all three — and `skip`
      neither. Never the reverse.** The entry above names these three
      pairs as verified and protected from cleanup.
+  6. **A club recently gone, offered as a coordinate proposal.** Named
+     2026-09-26, at Alexandru's instruction. *Sparta Râmnicu Vâlcea
+     `Q130235269` (dissolved 2025), CSM Bacău `Q66423967` (dissolved
+     2025), Șoimii Gura Humorului `Q130234791` (withdrew and was
+     excluded by the FRF before 2026-27).* The club stopped playing in
+     the last season or two; Wikidata still carries its Liga III tag
+     and **no `P576`**, so the club query keeps it; it has no
+     coordinates, so it never reaches the map; and
+     `propose_coordinates.py` then finds it a perfectly plausible
+     ground and calls the row **confident**. Nothing about the row
+     looks wrong — the ground is usually real and in the right town.
+     **What is wrong is the club.** Applying the proposal is what would
+     create the error: a dead club drawn at tier 3 with a real pin.
+     **How it differs from shape 4.** Same underlying fact — a club
+     that stopped, a tag that did not — but shape 4's clubs were on the
+     map or hidden at the coordinates gate and needed a `skip`. These
+     are caught one step earlier, at judging time, and the remedy is a
+     **whole-club `rejected` row in `data/coordinate-reviews.csv`**
+     (blank `osmRef`), which stops the tool proposing anything for
+     them. A `skip` is not needed while they have no coordinates.
+     **A close relative, not the same thing:** a club *relegated* below
+     every tracked tier with the old tier still preferred on Wikidata —
+     Gilortul Târgu Cărbunești `Q20647345`, *"Relegated to Liga IV"* in
+     the 2026-27 Liga III article — is alive, just out of scope. Same
+     remedy, different reason, and the row says which.
+     **Standing practice from 2026-09-26: every `confident` or `held`
+     proposal is checked for dissolution before it is applied**, the
+     same way a `skip` is checked before it is written. Three reads, in
+     this order: the item's `P576`; the club's own Wikipedia infobox
+     (`dissolved`, and `league`/`season`/`position` for a relegation or
+     withdrawal); and the current-season division article, **including
+     its Team changes section** — that is where *withdrew*, *excluded*
+     and *relegated to* are written, and a club listed there is not in
+     the division even though its name is on the page. **A missing
+     `P576` proves nothing**: none of the three clubs above has one.
 
   **What to look at, in this order.** `P31` first: *association
   football club* on one item and *sports club* or *multisports club* on
