@@ -1347,6 +1347,26 @@ a page anyone can already view in their browser's network tab.
     in a row is not a flake; if it recurs on the monthly run, the next
     step is splitting France's place lookup into smaller requests, the
     way Romania's pitch lookup was split.
+    **That next step was the wrong one, and France came back on
+    2026-09-26 — but not cleanly, and the cause is not proven.** Run
+    #13's log showed the failing step was one request of **19 names**,
+    while Germany's single request of 17 names came back in two
+    minutes, so a smaller batch would only have repeated it. The
+    change made instead: the place lookup also stays inside
+    `COUNTRY_BOX` from `fetch_clubs.py`, because France's national
+    boundary includes the overseas departments and its bounding box
+    spans half the globe. On the branch run (15:07 UTC) France was
+    **`WRITTEN`** and all four countries were complete, the first time
+    since run #10. **But France's lookup still timed out four times**
+    (three on the first pass, one on the retry) and came back on the
+    fifth attempt, 17 minutes in. So the box did not make the request
+    fast; it may have made it possible, or Overpass may simply have
+    been less busy. **One success after five attempts is not a fix
+    confirmed.** France's rows were written and are unchanged in
+    content from run #10. If the monthly run leaves France `UNCHANGED`
+    again, the untried idea is to replace the country area with the box
+    alone for the place lookup — the area filter is the expensive half
+    — and let the town check that already follows do the country's job.
   - **New open questions this turned up, all Alexandru's:**
     **FC Bistrița `Q24895825` is on the map at tier 3 and dissolved in
     2017** (English Wikipedia; `roster-review.csv` already reads it
