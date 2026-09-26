@@ -389,11 +389,30 @@ def roster_tables(page_html):
     return table_shaped, "league-table"
 
 
-def rows_of(table, headers):
+def rows_of(table, headers, skipped=None):
     """
     (article title, capacity) for each row: the FIRST linked article in
     the row is the club, and the capacity is whichever cell sits under a
     capacity header, when there is one.
+
+    TWO ROWS ARE NOT READ, and each is added to `skipped`, when given,
+    as (row text, reason) so the run summary can name it. Both were
+    found in the Austrian 2. Liga table on 2026-09-26, where reserve
+    sides have no English article of their own:
+
+      the first link is a PARENT club under a reserve side's name -
+      "SK Rapid II" linking SK Rapid Wien. Read as written it put the
+      first team at tier 2 as well as tier 1 and reported it wrong-tier.
+      The reserve marker must agree on both sides, the rule the
+      StadiumDB and fixture matchers already follow.
+
+      the team cell has NO link, so the first link in the row is the
+      next cell's - "Austria Wien II", whose first link is the city of
+      Vienna. Read as written it made a city a member of the division.
+      Caught by a cell before the linked one that holds words rather
+      than a position number.
+
+    Neither is guessed at. The row is left out and said to be left out.
     """
     cap_index = None
     for i, h in enumerate(headers):
@@ -406,21 +425,47 @@ def rows_of(table, headers):
         cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)
         if not cells:
             continue
-        title = None
-        for cell in cells:
+        title, at = None, None
+        for i, cell in enumerate(cells):
             link = re.search(r'<a[^>]+href="/wiki/([^"#:]+)"', cell)
             if link:
                 title = urllib.parse.unquote(link.group(1)).replace("_", " ")
+                at = i
                 break
         if not title:
             continue
+        before = [text_of(c) for c in cells[:at]]
+        if any(re.search(r"[^\W\d_]", t) for t in before):
+            if skipped is not None:
+                skipped.append((" | ".join(text_of(c) for c in cells[:3]),
+                                f"the team cell has no link of its own - the first link "
+                                f"in the row is {title!r}, which is not this team"))
+            continue
+        shown, linked = team_markers(text_of(cells[at])), team_markers(title)
+        if shown != linked:
+            if skipped is not None:
+                skipped.append((text_of(cells[at]),
+                                f"a reserve side linked to {title!r} - the reserve marker "
+                                f"does not agree, so it is not read as that club"))
+            continue
         capacity = None
         if cap_index is not None and cap_index < len(cells):
-            digits = re.sub(r"[^\d]", "", text_of(cells[cap_index]).replace(" ", ""))
+            digits = re.sub(r"[^\d]", "", text_of(cells[cap_index]).replace(" ", ""))
             if digits and 100 <= int(digits) <= 200000:
                 capacity = int(digits)
         out.append((title, capacity))
     return out
+
+
+# The reserve markers, the same set crosscheck_stadiumdb.py and
+# link_fixtures.py use, kept here as words of a folded name. Not
+# imported, because this file is imported by fetch_clubs.py and must
+# not pull the StadiumDB matcher in with it.
+RESERVE_MARKERS = {"ii", "iii", "u21", "u23", "u19", "amateure"}
+
+
+def team_markers(name):
+    return {w for w in re.split(r"[^a-z0-9]+", fold(name)) if w in RESERVE_MARKERS}
 
 
 def fetch_article(title):
@@ -990,10 +1035,13 @@ def main():
                 failed = True
                 break
             for table, headers in tables:
-                for title, capacity in rows_of(table, headers):
+                left_out = []
+                for title, capacity in rows_of(table, headers, left_out):
                     clubs_here.setdefault(title, capacity)
                     if capacity is not None and capacities.get(title) is None:
                         capacities[title] = capacity
+                for text, why in left_out:
+                    print(f"      row not read: {text!r} - {why}")
             print(f"      {len(tables)} {shape} table(s), {len(clubs_here)} clubs so far")
             sources.append((real_title, season, shape))
             time.sleep(REQUEST_GAP_SECONDS)
