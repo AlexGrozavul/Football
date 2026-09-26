@@ -50,6 +50,17 @@
    "withVenueName": 38,
    "withCapacity": 38,
    "handCorrected": 3
+  },
+  "CH": {
+   "name": "Switzerland",
+   "onMap": 24,
+   "byTier": {
+    "1": 13,
+    "2": 11
+   },
+   "withVenueName": 24,
+   "withCapacity": 24,
+   "handCorrected": 0
   }
  }
 }

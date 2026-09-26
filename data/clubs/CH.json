@@ -1,0 +1,344 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "CH",
+ "countryName": "Switzerland",
+ "clubs": [
+  {
+   "id": "Q166496",
+   "name": "Étoile Carouge",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stade de la Fontenette",
+   "capacity": 7200,
+   "lat": 46.185861,
+   "lon": 6.149833,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q187091",
+   "name": "FC Wil",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Lidl Arena",
+   "capacity": 6958,
+   "lat": 47.458456,
+   "lon": 9.036692,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q189671",
+   "name": "FC Basel",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "St. Jakob-Park",
+   "capacity": 38512,
+   "lat": 47.541389,
+   "lon": 7.62,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q190526",
+   "name": "BSC Young Boys",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Stadion Wankdorf",
+   "capacity": 32000,
+   "lat": 46.962778,
+   "lon": 7.465,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q201360",
+   "name": "Grasshopper Club Zürich",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Letzigrund",
+   "capacity": 25000,
+   "lat": 47.382791,
+   "lon": 8.503801,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q201969",
+   "name": "FC Winterthur",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stadion Schützenwiese",
+   "capacity": 8700,
+   "lat": 47.501389,
+   "lon": 8.716389,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q206692",
+   "name": "FC Zürich",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Letzigrund",
+   "capacity": 25000,
+   "lat": 47.382791,
+   "lon": 8.503801,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q216773",
+   "name": "FC Vaduz",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Rheinpark Stadion Vaduz",
+   "capacity": 7584,
+   "lat": 47.140278,
+   "lon": 9.510278,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q219235",
+   "name": "Servette FC Genève",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Stade de Genève",
+   "capacity": 30084,
+   "lat": 46.177778,
+   "lon": 6.1275,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q223262",
+   "name": "FC Luzern",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "thermoplan arena",
+   "capacity": 16800,
+   "lat": 47.033264,
+   "lon": 8.305187,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q309456",
+   "name": "FC Lausanne-Sport",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Stade Olympique de la Pontaise",
+   "capacity": 50000,
+   "lat": 46.534,
+   "lon": 6.625,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q321061",
+   "name": "FC Sion",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Stade de Tourbillon",
+   "capacity": 16263,
+   "lat": 46.233333,
+   "lon": 7.376389,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q335195",
+   "name": "Neuchâtel Xamax",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stade de la Maladière",
+   "capacity": 12000,
+   "lat": 46.9952,
+   "lon": 6.944,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q368675",
+   "name": "FC Locarno",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stadio Lido",
+   "capacity": 11000,
+   "lat": 46.162687,
+   "lon": 8.801544,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q464775",
+   "name": "FC Thun",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Visana Stadion",
+   "capacity": 10000,
+   "lat": 46.744817,
+   "lon": 7.606075,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q583599",
+   "name": "FC Wohlen",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stadion Niedermatten",
+   "capacity": 3734,
+   "lat": 47.356997,
+   "lon": 8.264067,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q603271",
+   "name": "FC Aarau",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stadion Brügglifeld",
+   "capacity": 9249,
+   "lat": 47.383333,
+   "lon": 8.06,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q633521",
+   "name": "FC Lugano",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Stadio di Cornaredo",
+   "capacity": 15000,
+   "lat": 46.023611,
+   "lon": 8.961667,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q659212",
+   "name": "FC St. Gallen",
+   "leagues": [
+    "Q202699"
+   ],
+   "tier": 1,
+   "venue": "Kybunpark",
+   "capacity": 19694,
+   "lat": 47.408333,
+   "lon": 9.306389,
+   "city": null,
+   "competition": "Super League"
+  },
+  {
+   "id": "Q668573",
+   "name": "FC Chiasso",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stadio comunale Riva IV",
+   "capacity": 11160,
+   "lat": 45.834089,
+   "lon": 9.016686,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q669130",
+   "name": "Yverdon-Sport FC",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stade Municipal",
+   "capacity": 6600,
+   "lat": 46.783297,
+   "lon": 6.647056,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q671950",
+   "name": "SC Kriens",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stadion Kleinfeld",
+   "capacity": 5360,
+   "lat": 47.029836,
+   "lon": 8.287797,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q674799",
+   "name": "FC Biel-Bienne",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Stadion Gurzelen",
+   "capacity": 1500,
+   "lat": 47.1453,
+   "lon": 7.26104,
+   "city": null,
+   "competition": "Challenge League"
+  },
+  {
+   "id": "Q690074",
+   "name": "FC Gossau",
+   "leagues": [
+    "Q669073"
+   ],
+   "tier": 2,
+   "venue": "Sportanlage Buechenwald",
+   "capacity": 3500,
+   "lat": 47.4104,
+   "lon": 9.2543,
+   "city": null,
+   "competition": "Challenge League"
+  }
+ ]
+}
