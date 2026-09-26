@@ -216,6 +216,23 @@
    "competition": "Liga a II-a"
   },
   {
+   "id": "Q130199486",
+   "name": "Oltul Curtișoara",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Tineretului",
+   "capacity": null,
+   "lat": 44.484307,
+   "lon": 24.331631,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/Tineretului_Stadium_(Curti%C8%99oara); https://www.openstreetmap.org/way/659012696; https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_III",
+   "note": "Placed 2026-09-26 on Alexandru's instruction to re-examine the held Moșteni proposal, which was the wrong ground and is now rejected in data/coordinate-reviews.csv. Two independent positions agree within about 10 m: the English article 'Tineretului Stadium (Curtișoara)' (Q131850846), which names Oltul Curtișoara as tenant since 2013 and gives 44°29'03.8\"N 24°19'53.6\"E, and OpenStreetMap way/659012696, an unnamed soccer pitch - the coordinates are the OSM way's. Dissolution checked: no P576, and the club is in Series VI of the 2026-27 Liga III article. That article's map pin for the club, 44.5121/23.9434, is on a different Curtișoara in Dolj county and was not used. CAPACITY left blank: 500 in the stadium article and the club infobox, both English Wikipedia.",
+   "manual": true,
+   "competition": "Liga a III-a"
+  },
+  {
    "id": "Q130302376",
    "name": "CSM Târgu Jiu (fotbal)",
    "leagues": [
@@ -544,20 +561,6 @@
    "competition": "SuperLiga Romaniei"
   },
   {
-   "id": "Q24895825",
-   "name": "FC Bistrița",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Jean Pădureanu",
-   "capacity": 7800,
-   "lat": 47.130833,
-   "lon": 24.502778,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q28230355",
    "name": "Metaloglobus București",
    "leagues": [
@@ -831,6 +834,23 @@
    "competition": "Liga a II-a"
   },
   {
+   "id": "Q55583717",
+   "name": "KSE Târgu Secuiesc",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Dr. Sinkovits",
+   "capacity": null,
+   "lat": 45.998451,
+   "lon": 26.124657,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/157916749; https://en.wikipedia.org/wiki/KSE_T%C3%A2rgu_Secuiesc; https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_III",
+   "note": "Placed 2026-09-26 on Alexandru's instruction, checked first. Coordinates are OpenStreetMap way/157916749 'Stadionul Sinkovits' (leisure=stadium). The English and Romanian infoboxes give the ground as Dr. Sinkovits, and the 2026-27 Liga III article's map pin, 45.998/26.125, sits on this way. Dissolution checked: no P576, the club is in the 2026-27 Liga III article, and the 'withdrew' in its history is the 1992 Metalul withdrawal, not a current one. CAPACITY left blank: 3,000 in both infoboxes, the same two-Wikipedias caveat as ARO Muscelul.",
+   "manual": true,
+   "competition": "Liga a III-a"
+  },
+  {
    "id": "Q55585581",
    "name": "Progresul Spartac",
    "leagues": [
@@ -892,7 +912,7 @@
    "lon": 24.502778,
    "city": null,
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II; https://www.wikidata.org/wiki/Q1532041",
-   "note": "Resolved before applying (2026-09-26): club confirmed by the 2026-27 Liga II article, whose stadiums table gives Jean Pădureanu. Coordinates are the ground item Q1532041's own P625, the same point FC Bistrița Q24895825 already sits on, so the two share one marker instead of two overlapping ones. CAPACITY: in use 7814 (the Liga II stadiums table); 7800 from Wikidata Q1532041 and the stadium article agrees within 5%. NOT THE SAME CLUB AS FC Bistrița Q24895825: that one was founded 2013 and dissolved 2017 per English Wikipedia; this one was founded 2018 as the unofficial successor of ACF Gloria Bistrița",
+   "note": "Resolved before applying (2026-09-26): club confirmed by the 2026-27 Liga II article, whose stadiums table gives Jean Pădureanu. Coordinates are the ground item Q1532041's own P625, the same point FC Bistrița Q24895825 already sat on. UPDATE 2026-09-26: FC Bistrița now has a skip row (dissolved 2017), so this club is alone on the pin. CAPACITY: in use 7814 (the Liga II stadiums table); 7800 from Wikidata Q1532041 and the stadium article agrees within 5%. NOT THE SAME CLUB AS FC Bistrița Q24895825: that one was founded 2013 and dissolved 2017 per English Wikipedia; this one was founded 2018 as the unofficial successor of ACF Gloria Bistrița",
    "manual": true,
    "competition": "Liga a II-a"
   },
@@ -985,6 +1005,23 @@
    "lon": 23.572222,
    "city": null,
    "competition": "SuperLiga Romaniei"
+  },
+  {
+   "id": "Q7579573",
+   "name": "ACS ARO Muscelul Câmpulung",
+   "leagues": [
+    "Q1707697"
+   ],
+   "tier": 3,
+   "venue": "Stadionul Muscelul",
+   "capacity": null,
+   "lat": 45.26626,
+   "lon": 25.048275,
+   "city": null,
+   "source": "https://www.openstreetmap.org/way/304104666; https://en.wikipedia.org/wiki/ARO_Muscelul_C%C3%A2mpulung; https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_III",
+   "note": "Placed 2026-09-26 on Alexandru's instruction, checked first. Coordinates are OpenStreetMap way/304104666 'Stadionul Muscelul', whose wikidata tag is this club's own Q-id. Three things agree: the English and Romanian infoboxes give the ground as Muscelul (Câmpulung); Wikidata's own P115 is Q7596435 Stadionul Muscelul (which has no P625, hence the gap); and the 2026-27 Liga III article's map pin, 45.2671/25.0443, is 0.3 km from this way. Dissolution checked: no P576, and the club is in the 2026-27 Liga III article. One oddity recorded, not acted on: the same OSM way's wikipedia tag says 'en:ACS Inter Câmpulung', a different article from the wikidata tag. CAPACITY left blank: 6,000 is in both the English and Romanian infoboxes, but two Wikipedias copying each other are not two sources.",
+   "manual": true,
+   "competition": "Liga a III-a"
   },
   {
    "id": "Q841245",
