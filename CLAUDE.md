@@ -1364,9 +1364,11 @@ a page anyone can already view in their browser's network tab.
     been less busy. **One success after five attempts is not a fix
     confirmed.** France's rows were written and are unchanged in
     content from run #10. If the monthly run leaves France `UNCHANGED`
-    again, the untried idea is to replace the country area with the box
-    alone for the place lookup — the area filter is the expensive half
-    — and let the town check that already follows do the country's job.
+    again, one untried idea is to ask for the place lookup with the box
+    alone and no country area. Nobody has measured whether the area is
+    the slow half, and without it a same-named place just over a border
+    could come back as a candidate, so it needs checking before it is
+    built.
   - **New open questions this turned up, all Alexandru's:**
     **FC Bistrița `Q24895825` is on the map at tier 3 and dissolved in
     2017** (English Wikipedia; `roster-review.csv` already reads it
