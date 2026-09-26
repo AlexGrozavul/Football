@@ -1,4 +1,12 @@
 clubQid,name,country,tier,venue,capacity,lat,lon,ticketUrl,source,note,_ours,_stadiumdb,_osm,_sdbGround,_sdbCity,_sdbClub,_sdbUrl,_match,_candidates,_verdict
+Q696525,FC Blau-Weiß Linz,AT,,,,,,,,,,5595,,Hofmann Personal Stadion,Linz,Blau-Weiß,https://stadiumdb.com/stadiums/aut/neues_donauparkstadion,name-contained+city,,only StadiumDB has a figure
+Q131215,SK Rapid Wien,AT,,,,,,,,,,28666,,Allianz Stadion,Vienna,Rapid,https://stadiumdb.com/stadiums/aut/allianz_stadion,name-contained+ground,,only StadiumDB has a figure
+Q699746,TSV Hartberg,AT,,,,,,,,,4500,5024,,Profertil Arena Hartberg,Hartberg,TSV Hartberg,https://stadiumdb.com/stadiums/aut/profertil_arena_hartberg,name-exact+city,,sources differ by 10%
+Q698702,Admira Wacker,AT,,,,,,,,,12000,7010,,Datenpol Arena,Vienna,Admira Wacker,https://stadiumdb.com/stadiums/aut/bundesstadion_sudstadt,name-exact+ground,,sources differ by 42%
+Q686826,First Vienna FC 1894,AT,,,,,,,,,5500,6000,,Hohe Warte,Vienna,First Vienna,https://stadiumdb.com/stadiums/aut/hohe_warte,name-contained+city,,sources differ by 8%
+Q659780,Grazer AK,AT,,,,,,,,,15400,16764,,Merkur Arena,Graz,"Grazer AK, SK Sturm",https://stadiumdb.com/stadiums/aut/stadion_graz_liebenau,name-exact+ground,,sources differ by 8%
+Q124007617,SK Sturm Graz,AT,,,,,,,,,15400,16764,,Merkur Arena,Graz,"Grazer AK, SK Sturm",https://stadiumdb.com/stadiums/aut/stadion_graz_liebenau,name-contained+city,,sources differ by 8%
+Q670438,SCR Altach,AT,,,,,,,,,8500,8200,,Stadion Schnabelholz,Altach,SCR,https://stadiumdb.com/stadiums/aut/stadion_schnabelholz,name-contained+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"
 Q321061,FC Sion,CH,,,,,,,,,14283,20187,,Tourbillon,Sion,FC Sion,https://stadiumdb.com/stadiums/sui/stade_tourbillon,name-exact+city,,sources differ by 29%
 Q189671,FC Basel,CH,,,,,,,,,38512,36000,,St. Jakob-Park,Basel,FC Basel,https://stadiumdb.com/stadiums/sui/st_jakob_park,name-exact+city,,sources differ by 7%
 Q464775,FC Thun,CH,,,,,,,,,10000,9500,,Stockhorn Arena,Thun,FC Thun,https://stadiumdb.com/stadiums/sui/arena_thun,name-exact+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"
