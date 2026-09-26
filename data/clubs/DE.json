@@ -150,11 +150,14 @@
     "Q82595"
    ],
    "tier": 1,
-   "venue": "Dreisamstadion",
-   "capacity": 24000,
-   "lat": 47.988889,
-   "lon": 7.893056,
+   "venue": "Europa-Park-Stadion",
+   "capacity": 34700,
+   "lat": 48.021536,
+   "lon": 7.830006,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga; https://www.wikidata.org/wiki/Q106394",
+   "note": "PINNED BECAUSE THE FETCHED GROUND FLAPS. Wikidata's Q106394 carries two truthy P115 values, the Dreisamstadion and the Europa-Park-Stadion, and fetch_clubs.py keeps whichever row the query service happens to return first - so the map has alternated between the two on every rebuild since 2026-09-25 (seven rebuilds checked, 2026-09-26), and CLAUDE.md's 'Wikidata catching up' was a misreading of one flip. The club has played at the Europa-Park-Stadion since 2021. Capacity 34,700: the 2026-27 Bundesliga stadiums table and the Europa-Park-Stadion's figure on Wikidata agree exactly. Not taken: 24,000 (the Dreisamstadion's, which the map showed on alternate builds). Coordinates are the ones the Europa-Park-Stadion's Wikidata item supplied on the builds that picked it. SC Freiburg is the only club in any country file whose ground changed between rebuilds in that window",
+   "manual": true,
    "competition": "Bundesliga"
   },
   {

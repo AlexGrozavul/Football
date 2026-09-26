@@ -15,7 +15,7 @@
    },
    "withVenueName": 149,
    "withCapacity": 141,
-   "handCorrected": 58
+   "handCorrected": 59
   },
   "RO": {
    "name": "Romania",
@@ -53,14 +53,14 @@
   },
   "CH": {
    "name": "Switzerland",
-   "onMap": 24,
+   "onMap": 20,
    "byTier": {
-    "1": 13,
-    "2": 11
+    "1": 12,
+    "2": 8
    },
-   "withVenueName": 24,
-   "withCapacity": 24,
-   "handCorrected": 0
+   "withVenueName": 20,
+   "withCapacity": 19,
+   "handCorrected": 6
   }
  }
 }

@@ -24,13 +24,16 @@
    "leagues": [
     "Q202699"
    ],
-   "tier": 1,
+   "tier": 2,
    "venue": "Lidl Arena",
    "capacity": 6958,
    "lat": 47.458456,
    "lon": 9.036692,
    "city": null,
-   "competition": "Super League"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Challenge_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League; https://en.wikipedia.org/wiki/FC_Wil_1900",
+   "note": "TIER CORRECTED FROM 1 TO 2, AND THIS IS NOT WRITTEN OFF ONE TABLE - REVIEWABLE, AND ALEXANDRU'S TO OVERRULE. Wikidata's only truthy P118 on Q187091 is Q202699 Super League, normal rank, a tag left from the club's top-flight years, so it arrived at tier 1. Read on a runner 2026-09-26: the complete 2026-27 Super League article (12 of 12 resolved) does not list it, the complete 2026-27 Challenge League article (10 of 10 resolved) lists it with its ground, the Lidl Arena, and the club's own English Wikipedia infobox says 'League: Swiss Challenge League'. Three reads, two of them complete division lists - the Babelsberg shape, not the Farul one. Empty this cell and the club goes back to tier 1",
+   "manual": true,
+   "competition": "Challenge League"
   },
   {
    "id": "Q189671",
@@ -114,6 +117,9 @@
    "lat": 47.140278,
    "lon": 9.510278,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League",
+   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. The Monaco shape. The country check flags this club every run because Wikidata's P17 on Q216773 is Q347 Liechtenstein, not Switzerland, and that is TRUE: the ground, the Rheinpark Stadion, is in Vaduz. It is in CH.json because it plays in the Swiss pyramid - Liechtenstein has no league of its own - and the complete 2026-27 Super League article lists it ('FC Vaduz return to the top tier after a five-year absence'). The file is Switzerland's league pyramid, not Switzerland's territory. Not the Veltheim/Triesenberg shape, where a WRONG league tag put a club on a German map: here a right one put it on the Swiss one",
+   "manual": true,
    "competition": "Super League"
   },
   {
@@ -151,11 +157,14 @@
     "Q202699"
    ],
    "tier": 1,
-   "venue": "Stade Olympique de la Pontaise",
-   "capacity": 50000,
-   "lat": 46.534,
-   "lon": 6.625,
+   "venue": "Stade de la Tuilière",
+   "capacity": 12544,
+   "lat": 46.543869,
+   "lon": 6.622844,
    "city": null,
+   "source": "https://www.wikidata.org/wiki/Q53843608; https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League; https://stadiumdb.com/stadiums/sui",
+   "note": "WRONG GROUND CORRECTED. Wikidata's P115 on Q309456 is still Q668606 Stade Olympique de la Pontaise, capacity 50,000 - the ground the club left in 2020 (the Pontaise article lists Lausanne-Sport as tenant 1954-2020) and a figure from its old athletics-bowl days. The club has played at the Stade de la Tuiliere since it opened on 29 November 2020: the 2026-27 Super League stadiums table, the club's infobox and the stadium's own article all say so. Capacity 12,544: the Super League table, StadiumDB and the Tuiliere's Wikidata item Q53843608 all give exactly that. Not taken: 50,000 (Wikidata, the Pontaise). Coordinates are Q53843608's own P625, read on a runner 2026-09-26; the English Wikipedia infobox coordinate for the ground is about 70 m away. The Pontaise pin now belongs to FC Stade Lausanne-Ouchy, which really does play there",
+   "manual": true,
    "competition": "Super League"
   },
   {
@@ -166,10 +175,13 @@
    ],
    "tier": 1,
    "venue": "Stade de Tourbillon",
-   "capacity": 16263,
+   "capacity": 14283,
    "lat": 46.233333,
    "lon": 7.376389,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League; https://www.openstreetmap.org/",
+   "note": "CONTESTED CAPACITY, SETTLED BY TWO SOURCES AGREEING. In use: 14,283 (the 2026-27 Super League stadiums table, and OpenStreetMap's capacity tag on the Stade de Tourbillon - identical; the stadium's Wikipedia article gives the same, citing the league's site). Not taken: 16,263 (Wikidata, which the map held until now); 20,187 (StadiumDB). The UTA Arad rule: two independent sources within 5%, the map's figure outside it, so the map's figure is the outlier; the league table's figure is the one taken",
+   "manual": true,
    "competition": "Super League"
   },
   {
@@ -187,20 +199,6 @@
    "competition": "Challenge League"
   },
   {
-   "id": "Q368675",
-   "name": "FC Locarno",
-   "leagues": [
-    "Q669073"
-   ],
-   "tier": 2,
-   "venue": "Stadio Lido",
-   "capacity": 11000,
-   "lat": 46.162687,
-   "lon": 8.801544,
-   "city": null,
-   "competition": "Challenge League"
-  },
-  {
    "id": "Q464775",
    "name": "FC Thun",
    "leagues": [
@@ -213,20 +211,6 @@
    "lon": 7.606075,
    "city": null,
    "competition": "Super League"
-  },
-  {
-   "id": "Q583599",
-   "name": "FC Wohlen",
-   "leagues": [
-    "Q669073"
-   ],
-   "tier": 2,
-   "venue": "Stadion Niedermatten",
-   "capacity": 3734,
-   "lat": 47.356997,
-   "lon": 8.264067,
-   "city": null,
-   "competition": "Challenge League"
   },
   {
    "id": "Q603271",
@@ -250,10 +234,13 @@
    ],
    "tier": 1,
    "venue": "Stadio di Cornaredo",
-   "capacity": 15000,
+   "capacity": null,
    "lat": 46.023611,
    "lon": 8.961667,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Super_League; https://en.wikipedia.org/wiki/FC_Lugano; https://en.wikipedia.org/wiki/Stadio_di_Cornaredo",
+   "note": "CAPACITY CLEARED, GROUND LEFT AS IT IS AND OPEN. Wikidata gives the Stadio di Cornaredo at 15,000. No source read on 2026-09-26 supports 15,000: the Cornaredo's own article now says 6,330, and both the 2026-27 Super League stadiums table and the club's infobox say the club plays at the new AIL Arena - at 8,793 (table) or 8,093 (infobox), which differ by 8%, so neither is written. The AIL Arena has no English Wikipedia article and no Wikidata item was found for it, so it has no coordinate here; the venue name and the pin are left at the Cornaredo rather than a new ground being claimed at an unverified position. What would settle it: the AIL Arena's position and one capacity two sources agree on",
+   "manual": true,
    "competition": "Super League"
   },
   {
@@ -269,20 +256,6 @@
    "lon": 9.306389,
    "city": null,
    "competition": "Super League"
-  },
-  {
-   "id": "Q668573",
-   "name": "FC Chiasso",
-   "leagues": [
-    "Q669073"
-   ],
-   "tier": 2,
-   "venue": "Stadio comunale Riva IV",
-   "capacity": 11160,
-   "lat": 45.834089,
-   "lon": 9.016686,
-   "city": null,
-   "competition": "Challenge League"
   },
   {
    "id": "Q669130",
@@ -313,31 +286,20 @@
    "competition": "Challenge League"
   },
   {
-   "id": "Q674799",
-   "name": "FC Biel-Bienne",
+   "id": "Q869907",
+   "name": "FC Stade Lausanne-Ouchy",
    "leagues": [
     "Q669073"
    ],
    "tier": 2,
-   "venue": "Stadion Gurzelen",
-   "capacity": 1500,
-   "lat": 47.1453,
-   "lon": 7.26104,
+   "venue": "Stade Olympique de la Pontaise",
+   "capacity": 15850,
+   "lat": 46.534,
+   "lon": 6.625,
    "city": null,
-   "competition": "Challenge League"
-  },
-  {
-   "id": "Q690074",
-   "name": "FC Gossau",
-   "leagues": [
-    "Q669073"
-   ],
-   "tier": 2,
-   "venue": "Sportanlage Buechenwald",
-   "capacity": 3500,
-   "lat": 47.4104,
-   "lon": 9.2543,
-   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Swiss_Challenge_League; https://stadiumdb.com/stadiums/sui; https://www.wikidata.org/wiki/Q668606",
+   "note": "PLACED - the roster check had it as unplaced-no-coordinates: neither Q869907 nor a ground on it has a position. Its ground is the Stade Olympique de la Pontaise on three independent reads, 2026-09-26: the 2026-27 Challenge League stadiums table ('Stade Olympique', 15,850), StadiumDB's Swiss page (Pontaise, 'Stade Lausanne Ouchy', 15,850) and the Pontaise's own English Wikipedia infobox (tenants: FC Stade Lausanne Ouchy 2020-present). Coordinates are the Pontaise's Wikidata item Q668606's own P625; its Wikipedia infobox coordinate agrees within about 100 m. Capacity 15,850: the league's table and StadiumDB agree exactly. Not taken: 15,700 (the Pontaise's Wikipedia infobox, within 1%); 50,000 (Wikidata's figure for the Pontaise, from its athletics-bowl days). In the 2026-27 article and no P576 - the stale-active-club check was made before this row was written",
+   "manual": true,
    "competition": "Challenge League"
   }
  ]

@@ -1,3 +1,3 @@
 clubQid,name,inFile,tier,venue,lat,lon,handCorrected,signal,detail
 Q180305,AS Monaco FC,FR,1,stade Louis-II,43.727778,7.415556,yes,Wikidata says another country,"P17 on the item says Monaco (Q235), not France"
-Q216773,FC Vaduz,CH,1,Rheinpark Stadion Vaduz,47.140278,9.510278,no,Wikidata says another country,"P17 on the item says Liechtenstein (Q347), not Switzerland"
+Q216773,FC Vaduz,CH,1,Rheinpark Stadion Vaduz,47.140278,9.510278,yes,Wikidata says another country,"P17 on the item says Liechtenstein (Q347), not Switzerland"
