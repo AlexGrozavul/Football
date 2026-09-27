@@ -1746,6 +1746,9 @@ def main():
                 where = "ON THE MAP"
             elif club is None:
                 where = "removed again by a skip row in " + MANUAL_FILE
+            elif {"lat", "lon"} <= set(cleared.get(cid, ())):
+                where = ("off the map on purpose - its hand row clears the position, "
+                         "and says why")
             else:
                 where = ("still off the map - neither the hand row, the club nor its "
                          "ground gives a position")
