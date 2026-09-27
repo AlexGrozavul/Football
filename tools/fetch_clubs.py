@@ -92,6 +92,7 @@ COUNTRIES = [
     ("IT", "Q38", "Italy"),
     ("CH", "Q39", "Switzerland"),
     ("AT", "Q40", "Austria"),
+    ("RS", "Q403", "Serbia"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -1099,6 +1100,24 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
 #       The box holds most of Liechtenstein, Bratislava, eastern St.
 #       Gallen and strips of Bavaria, Slovenia, Czechia and Hungary, so
 #       once again P17 is what catches a club across the border.
+#   RS  Serbia without Kosovo, whose clubs play in their own league and
+#       carry P17 Kosovo. North 46.18, east 23.0063 and west 18.8385 are
+#       Wikidata's own P1332, P1334 and P1335 on Q403, read on a runner
+#       2026-09-27. Its southernmost point, P1333 41.8577, is in Kosovo,
+#       so the south edge is set instead just below Presevo municipality,
+#       the southern tip of Serbia outside Kosovo, at about 42.23 - a
+#       figure from memory, not read from a source, and the margin below
+#       it is wider than elsewhere for that reason. The box holds the northern
+#       half of Kosovo, a strip of Bosnia and Herzegovina along the
+#       Drina, eastern Croatia's Danube bank, Timisoara's hinterland and
+#       a slice of Bulgaria, so P17 is once more the signal that catches
+#       a club across the border. LABELS ARE ASKED IN ENGLISH FIRST,
+#       then Serbian Latin: Wikidata's English labels on Serbian clubs are
+#       the clubs' own Latin names ("FK Crvena zvezda"), while its Serbian
+#       Latin ones are patchier and sometimes a sponsor's ("FK Spartak
+#       Zlatibor voda"). The Serbian label proper is Cyrillic and is not
+#       asked for - it would put a script on the map that nothing else
+#       on it uses, which is a choice for Alexandru, not for a default.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
@@ -1106,6 +1125,7 @@ COUNTRY_BOX = {
     "IT": {"lat": (35.40, 47.20), "lon": (6.50, 18.65)},
     "CH": {"lat": (45.75, 47.85), "lon": (5.90, 10.55)},
     "AT": {"lat": (46.30, 49.10), "lon": (9.45, 17.25)},
+    "RS": {"lat": (42.10, 46.27), "lon": (18.73, 23.09)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -1123,6 +1143,8 @@ COUNTRY_NAMES = {
     "Q32": "Luxembourg", "Q33": "Finland", "Q34": "Sweden",
     "Q20": "Norway", "Q35": "Denmark", "Q235": "Monaco",
     "Q228": "Andorra", "Q238": "San Marino",
+    "Q1246": "Kosovo", "Q225": "Bosnia and Herzegovina", "Q224": "Croatia",
+    "Q236": "Montenegro", "Q221": "North Macedonia",
 }
 
 
@@ -1502,7 +1524,8 @@ def main():
     for position, (code, country_qid, name) in enumerate(COUNTRIES):
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
-        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de"}.get(code, "en")
+        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de",
+                "RS": "en,sr-el"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,

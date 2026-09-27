@@ -86,6 +86,30 @@ WHAT THE FIRST REAL RUN FOUND THAT THE DESIGN DID NOT EXPECT
   leaving it to be worked out twice.
 
 
+ONE CLUB IS ONE FINDING - the double count, fixed 2026-09-27
+
+Until then one club could read as two errors on every run, in three
+shapes, and all three are now joined id to id:
+
+  a club added by hand with no clubQid carried a made-up MANUAL- id,
+  so its real Q-id read missing and the MANUAL- club extra (FC
+  Rapperswil-Jona, FC Stade Nyonnais). Fixed in fetch_clubs.py, not
+  here: the hand-named fallback brings such a club onto the map under
+  its own Q-id, and this check simply finds it.
+
+  the article links the CLUB item and the map carries the MEN'S TEAM
+  item (FC Augsburg, FC Erzgebirge Aue, SV Babelsberg 03). Each team
+  item names its club item in P831 (parent club), so a map club the
+  roster does not name, whose P831 is a roster club not on the map,
+  with the same reserve marker, is that club - verdict ok, one row.
+
+  the article's row cannot be read as written - a reserve side linked
+  to its parent club, or a team cell with no link - so the club had no
+  roster Q-id and read extra. A hand link in
+  data/roster-links-manual.csv now says which Q-id that row is, and
+  the run summary reads every link back with what the article linked.
+
+
 THE SOURCE, AND WHY IT IS WIKIPEDIA
 
 Wikidata's own P1923 (participant list) was tried first, because it
@@ -148,6 +172,7 @@ CLUB_DIR = "data/clubs"
 CONFIG_FILE = "data/league-rosters.csv"
 TIERS_FILE = "data/league-tiers.csv"
 MANUAL_FILE = "data/clubs-manual.csv"
+LINKS_FILE = "data/roster-links-manual.csv"
 FIXTURE_DIR = "data/fixtures"
 REVIEW_FILE = os.path.join(CLUB_DIR, "roster-review.csv")
 
@@ -337,6 +362,134 @@ def load_skips():
     return skips
 
 
+def load_cleared_positions():
+    """
+    The clubs whose position a hand row clears on purpose - <clear> in
+    both lat and lon. Such a club is off the map by decision, and the
+    verdict says so rather than blaming Wikidata for it: FK Zemun, whose
+    2026-27 home ground in Ub has no known position, is the case.
+    """
+    cleared = {}
+    if not os.path.exists(MANUAL_FILE):
+        return cleared
+    with open(MANUAL_FILE, encoding="utf-8-sig", newline="") as fh:
+        for row in csv.DictReader(fh, restkey=OVERFLOW):
+            row.pop(OVERFLOW, None)
+            if (_s(row.get("clubQid")) and _s(row.get("lat")).lower() == "<clear>"
+                    and _s(row.get("lon")).lower() == "<clear>"):
+                cleared[_s(row["clubQid"])] = _s(row.get("name"))
+    return cleared
+
+
+def load_links(config):
+    """
+    data/roster-links-manual.csv -- hand-written, one row per table row
+    this reader cannot join to a Q-id by itself: article, team, clubQid,
+    note. Added 2026-09-27.
+
+    The article links the wrong thing for a few rows, and the reader
+    rightly refuses them: a reserve side with no English article of its
+    own links its PARENT club ("SK Rapid II" linking SK Rapid Wien), and
+    a row whose team cell has no link at all has the city as its first
+    link ("Austria Wien II" linking Vienna). Both used to be left out and
+    named - correct, and it meant the division's own membership list
+    could not name that club, so a club on the map for it read as extra.
+
+    A hand link says which Q-id a row IS. It is matched on the article
+    title exactly as data/league-rosters.csv writes it and on the team as
+    the row shows it (footnote and qualification marks set aside, case
+    and accents folded), so no name is ever matched against a club's.
+    It can also re-point a row the reader did read; the read-back then
+    says what the article linked, so an override is never silent.
+
+    Returns ({(article, folded team): link}, problems). A malformed row
+    is a problem with its line number, and so - once the articles are
+    read - is a link that matched no row: a table edited under a link is
+    exactly the change a person should look at.
+    """
+    links, problems = {}, []
+    if not os.path.exists(LINKS_FILE):
+        return links, problems
+    articles = {entry["article"] for entry in config}
+    with open(LINKS_FILE, encoding="utf-8-sig", newline="") as fh:
+        reader = csv.DictReader(fh, restkey=OVERFLOW)
+        if not reader.fieldnames:
+            problems.append(f"{LINKS_FILE} is empty - it needs a header row")
+            return links, problems
+        headers = [_s(h) for h in reader.fieldnames]
+        for need in ("article", "team", "clubQid"):
+            if need not in headers:
+                problems.append(f"{LINKS_FILE} line 1: missing required column {need!r}")
+                return links, problems
+        for h in headers:
+            if h and h not in ("article", "team", "clubQid", "note"):
+                problems.append(f"{LINKS_FILE} line 1: column {h!r} not recognised, ignored")
+        for raw in reader:
+            line = reader.line_num
+            extra = raw.pop(OVERFLOW, None)
+            if extra:
+                problems.append(overflow_problem(LINKS_FILE, line, len(reader.fieldnames), extra))
+                continue
+            row = {_s(k): _s(v) for k, v in raw.items()}
+            if not any(row.values()):
+                continue
+            if not re.match(r"^Q\d+$", row.get("clubQid", "")):
+                problems.append(f"{LINKS_FILE} line {line}: clubQid {row.get('clubQid')!r} "
+                                f"is not a Q-id. Row ignored")
+                continue
+            if row.get("article") not in articles:
+                problems.append(f"{LINKS_FILE} line {line}: article {row.get('article')!r} is "
+                                f"not an article in {CONFIG_FILE} - it has to be written "
+                                f"exactly as that file writes it, en dash included. Row ignored")
+                continue
+            team = fold(clean_team(row.get("team", "")))
+            if not team:
+                problems.append(f"{LINKS_FILE} line {line}: team is required. Row ignored")
+                continue
+            key = (row["article"], team)
+            if key in links:
+                problems.append(f"{LINKS_FILE} line {line}: {row['team']!r} in {row['article']!r} "
+                                f"is already linked on line {links[key]['line']}. Row ignored")
+                continue
+            links[key] = {"line": line, "article": row["article"], "team": row["team"],
+                          "qid": row["clubQid"], "note": row.get("note", "")}
+    return links, problems
+
+
+def read_membership(article, tables, links, used):
+    """
+    One article's membership, with the hand links applied.
+
+    Returns (entries, forced, left_out):
+      entries   [(key, capacity)] in table order. The key is the linked
+                article title for a row read as written, or the row's
+                team text for a row only a hand link could read
+      forced    {key: link} - the Q-id a hand link gives that key
+      left_out  [(row text, reason)] for the rows still not read
+
+    `used` collects the line numbers of the links that matched, so the
+    caller can name the ones that matched nothing.
+    """
+    entries, forced, left_out = [], {}, []
+    for table, headers in tables:
+        for row in table_rows(table, headers):
+            link = links.get((article, fold(row["team"]))) if row["team"] else None
+            if link:
+                used.add(link["line"])
+                key = row["title"] if (row["title"] and not row["why"]) else row["team"]
+                forced[key] = dict(link, read=bool(row["title"] and not row["why"]),
+                                   linked=row["title"], why=row["why"])
+            elif not row["title"]:
+                continue
+            elif row["why"]:
+                left_out.append((row["shown"], row["why"]))
+                continue
+            else:
+                key = row["title"]
+            entries.append((key, row["capacity"]))
+    return entries, forced, left_out
+
+
 # ------------------------------------------------------ wikipedia tables
 
 TAG = re.compile(r"<[^>]+>")
@@ -389,6 +542,76 @@ def roster_tables(page_html):
     return table_shaped, "league-table"
 
 
+def table_rows(table, headers):
+    """
+    Every row of a membership table, as a dict:
+
+      title     the FIRST linked article in the row, or None
+      capacity  whichever cell sits under a capacity header, when there is one
+      team      the team as the row SHOWS it - the first cell holding words
+                rather than a position number. What a hand link in
+                data/roster-links-manual.csv is matched against
+      shown     the text the run summary prints for a row left out
+      why       None for a row read as written; otherwise the reason it is
+                not - see rows_of
+
+    A row with no link anywhere comes back with title None and why None,
+    and is dropped without a word unless a hand link names it, because
+    that is what the reader always did with a row like that.
+    """
+    cap_index = None
+    for i, h in enumerate(headers):
+        if "capacit" in h:
+            cap_index = i
+            break
+
+    out = []
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", table, re.S)[1:]:
+        cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)
+        if not cells:
+            continue
+        texts = [text_of(c) for c in cells]
+        team = next((clean_team(t) for t in texts if re.search(r"[^\W\d_]", t)), "")
+        capacity = None
+        if cap_index is not None and cap_index < len(cells):
+            digits = re.sub(r"[^\d]", "", texts[cap_index].replace(" ", ""))
+            if digits and 100 <= int(digits) <= 200000:
+                capacity = int(digits)
+        row = {"title": None, "capacity": capacity, "team": team, "shown": team, "why": None}
+        title, at = None, None
+        for i, cell in enumerate(cells):
+            link = re.search(r'<a[^>]+href="/wiki/([^"#:]+)"', cell)
+            if link:
+                title = urllib.parse.unquote(link.group(1)).replace("_", " ")
+                at = i
+                break
+        if not title:
+            out.append(row)
+            continue
+        row["title"] = title
+        before = texts[:at]
+        if any(re.search(r"[^\W\d_]", t) for t in before):
+            row["shown"] = " | ".join(texts[:3])
+            row["why"] = (f"the team cell has no link of its own - the first link "
+                          f"in the row is {title!r}, which is not this team")
+        else:
+            shown, linked = team_markers(texts[at]), team_markers(title)
+            if shown != linked:
+                row["shown"] = texts[at]
+                row["why"] = (f"a reserve side linked to {title!r} - the reserve marker "
+                              f"does not agree, so it is not read as that club")
+        out.append(row)
+    return out
+
+
+def clean_team(text):
+    """A team cell without its footnote and qualification marks - "[a]",
+    "(C)", "(P)" - so a hand link does not have to copy them."""
+    text = re.sub(r"\[[^\]]{1,4}\]", "", text)
+    text = re.sub(r"\((?:[A-Z]|[A-Z], ?[A-Z])\)", "", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
 def rows_of(table, headers, skipped=None):
     """
     (article title, capacity) for each row: the FIRST linked article in
@@ -412,48 +635,19 @@ def rows_of(table, headers, skipped=None):
       Caught by a cell before the linked one that holds words rather
       than a position number.
 
-    Neither is guessed at. The row is left out and said to be left out.
+    Neither is guessed at. The row is left out and said to be left out -
+    unless a hand link in data/roster-links-manual.csv names it, which
+    read_membership below applies. This function never reads that file.
     """
-    cap_index = None
-    for i, h in enumerate(headers):
-        if "capacit" in h:
-            cap_index = i
-            break
-
     out = []
-    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", table, re.S)[1:]:
-        cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)
-        if not cells:
+    for row in table_rows(table, headers):
+        if not row["title"]:
             continue
-        title, at = None, None
-        for i, cell in enumerate(cells):
-            link = re.search(r'<a[^>]+href="/wiki/([^"#:]+)"', cell)
-            if link:
-                title = urllib.parse.unquote(link.group(1)).replace("_", " ")
-                at = i
-                break
-        if not title:
-            continue
-        before = [text_of(c) for c in cells[:at]]
-        if any(re.search(r"[^\W\d_]", t) for t in before):
+        if row["why"]:
             if skipped is not None:
-                skipped.append((" | ".join(text_of(c) for c in cells[:3]),
-                                f"the team cell has no link of its own - the first link "
-                                f"in the row is {title!r}, which is not this team"))
+                skipped.append((row["shown"], row["why"]))
             continue
-        shown, linked = team_markers(text_of(cells[at])), team_markers(title)
-        if shown != linked:
-            if skipped is not None:
-                skipped.append((text_of(cells[at]),
-                                f"a reserve side linked to {title!r} - the reserve marker "
-                                f"does not agree, so it is not read as that club"))
-            continue
-        capacity = None
-        if cap_index is not None and cap_index < len(cells):
-            digits = re.sub(r"[^\d]", "", text_of(cells[cap_index]).replace(" ", ""))
-            if digits and 100 <= int(digits) <= 200000:
-                capacity = int(digits)
-        out.append((title, capacity))
+        out.append((row["title"], row["capacity"]))
     return out
 
 
@@ -663,6 +857,12 @@ def roster_qids(country, tiers, config=None):
     if config is None:
         config, problems = load_config()
         failures.extend(problems)
+    # The hand links apply here exactly as in main(): a reserve side the
+    # article links to its parent club is named under its own Q-id or not
+    # at all. A malformed links file is a failure like any other, so
+    # nothing is surfaced on half an answer.
+    links, link_problems = load_links(config)
+    failures.extend(link_problems)
 
     articles = {}          # article title -> set of tiers it is read for
     for entry in config:
@@ -673,6 +873,7 @@ def roster_qids(country, tiers, config=None):
         articles.setdefault(entry["article"], set()).add(int(entry["tier"]))
 
     titles = {}            # article title -> [club article titles]
+    forced, used = {}, set()
     for article, article_tiers in sorted(articles.items()):
         print(f"  {country}  reading the roster of {article!r}")
         page, real_title, error = fetch_article(article)
@@ -687,10 +888,11 @@ def roster_qids(country, tiers, config=None):
                 f"membership list. The page layout has probably changed")
             continue
         here = []
-        for table, headers in tables:
-            for title, _capacity in rows_of(table, headers):
-                if title not in here:
-                    here.append(title)
+        entries, forced_here, _left_out = read_membership(article, tables, links, used)
+        forced.update(forced_here)
+        for title, _capacity in entries:
+            if title not in here:
+                here.append(title)
         if not here:
             failures.append(
                 f"{country}: the tables on {real_title!r} parsed but no club came out "
@@ -700,21 +902,26 @@ def roster_qids(country, tiers, config=None):
         titles[article] = here
         time.sleep(REQUEST_GAP_SECONDS)
 
-    all_titles = [t for names in titles.values() for t in names]
-    if not all_titles:
+    all_titles = [t for names in titles.values() for t in names if t not in forced]
+    if not all_titles and not forced:
         return {}, failures
 
-    print(f"  turning {len(set(all_titles))} article titles into Q-ids")
-    qid_by_title, hop_failures = qids_for_titles(all_titles)
-    failures.extend(hop_failures)
+    qid_by_title = {}
+    if all_titles:
+        print(f"  turning {len(set(all_titles))} article titles into Q-ids")
+        qid_by_title, hop_failures = qids_for_titles(all_titles)
+        failures.extend(hop_failures)
 
     named = {}
     for article, names in titles.items():
         for tier in sorted(articles[article]):
             for title in names:
-                qid = qid_by_title.get(title)
+                link = forced.get(title)
+                qid = link["qid"] if link else qid_by_title.get(title)
+                where = (f"{article} (row {link['team']!r}, joined by a hand link in "
+                         f"{LINKS_FILE} line {link['line']})" if link else article)
                 if qid:
-                    named.setdefault(qid, []).append((tier, article))
+                    named.setdefault(qid, []).append((tier, where))
     return named, failures
 
 
@@ -728,6 +935,7 @@ P_VENUE = "P115"         # home venue - where the coordinates usually come from
 P_COORD = "P625"         # a position, on the club or on its ground
 P_TYPE = "P31"           # instance of - the club query throws out people
 P_DISSOLVED = "P576"     # dissolved - the club query throws these out too
+P_PARENT_CLUB = "P831"   # parent club - a men's team item names its club item here
 
 
 def diagnose(qids):
@@ -965,8 +1173,12 @@ def main():
         sys.exit(f"{CLUB_DIR} does not exist - run the club layer first")
 
     config, config_problems = load_config()
+    links, link_problems = load_links(config)
+    config_problems.extend(link_problems)
+    links_used, forced, articles_read = set(), {}, set()
     tiers = load_tiers()
     skips = load_skips()
+    cleared_positions = load_cleared_positions()
 
     # The club layer, indexed by Q-id and by (country, tier).
     layer, by_country_tier = {}, {}
@@ -1034,14 +1246,19 @@ def main():
                 incomplete.append(f"{country} tier {tier}: no membership table on {article!r}")
                 failed = True
                 break
-            for table, headers in tables:
-                left_out = []
-                for title, capacity in rows_of(table, headers, left_out):
-                    clubs_here.setdefault(title, capacity)
-                    if capacity is not None and capacities.get(title) is None:
-                        capacities[title] = capacity
-                for text, why in left_out:
-                    print(f"      row not read: {text!r} - {why}")
+            entries, forced_here, left_out = read_membership(
+                article, tables, links, links_used)
+            articles_read.add(article)
+            forced.update(forced_here)
+            for title, capacity in entries:
+                clubs_here.setdefault(title, capacity)
+                if capacity is not None and capacities.get(title) is None:
+                    capacities[title] = capacity
+            for text, why in left_out:
+                print(f"      row not read: {text!r} - {why}")
+            for key, link in sorted(forced_here.items()):
+                print(f"      row joined by hand: {link['team']!r} -> {link['qid']} "
+                      f"({LINKS_FILE} line {link['line']})")
             print(f"      {len(tables)} {shape} table(s), {len(clubs_here)} clubs so far")
             sources.append((real_title, season, shape))
             time.sleep(REQUEST_GAP_SECONDS)
@@ -1057,8 +1274,12 @@ def main():
             "clubs": clubs_here, "capacities": capacities,
             "sources": sources, "leagues": group["leagues"]}
 
-    # ---- one sitelink hop and one diagnosis for everything
-    all_titles = [t for r in rosters.values() for t in r["clubs"]]
+    # ---- one sitelink hop and one diagnosis for everything. A row only a
+    #      hand link could read has no article title of its own, so it is
+    #      not sent; a row the reader did read still is, so the read-back
+    #      can say what the article linked before the hand link re-pointed it
+    all_titles = [t for r in rosters.values() for t in r["clubs"]
+                  if not (t in forced and not forced[t]["read"])]
     qid_by_title, hop_failures = ({}, [])
     if all_titles:
         print(f"  turning {len(set(all_titles))} article titles into Q-ids")
@@ -1066,6 +1287,24 @@ def main():
         failures.extend(hop_failures)
         if hop_failures:
             incomplete.append("at least one sitelink lookup failed")
+    link_readback = []
+    for key, link in sorted(forced.items(), key=lambda kv: kv[1]["line"]):
+        if link["read"]:
+            said = (f"the article links {link['linked']!r} = "
+                    f"{qid_by_title.get(key) or 'no Wikidata item'}, re-pointed")
+        else:
+            said = f"a row the reader leaves out - {link['why']}" if link["why"] else \
+                "a row with no link at all"
+        link_readback.append(f"line {link['line']}: {link['article']} | {link['team']!r} -> "
+                             f"{link['qid']}  ({said})" +
+                             (f"  - {link['note']}" if link["note"] else ""))
+        qid_by_title[key] = link["qid"]
+    for link in sorted(links.values(), key=lambda l: l["line"]):
+        if link["line"] not in links_used and link["article"] in articles_read:
+            config_problems.append(
+                f"{LINKS_FILE} line {link['line']}: no row of {link['article']!r} shows "
+                f"{link['team']!r}, so this link joined nothing. The table has probably been "
+                f"edited - read the article and correct or delete the row")
 
     needed = sorted(set(qid_by_title.values()))
     facts, diag_failures = ({}, [])
@@ -1075,6 +1314,33 @@ def main():
         failures.extend(diag_failures)
         if diag_failures:
             incomplete.append("at least one Wikidata diagnosis failed")
+
+    # ---- one club, two items (shape 5), joined id to id. Wikidata keeps a
+    #      CLUB item and a MEN'S FIRST TEAM item for some clubs; the article
+    #      links the club item and the map carries the team item, which
+    #      read as one club missing and another extra - FC Augsburg, FC
+    #      Erzgebirge Aue and SV Babelsberg 03 on every run until
+    #      2026-09-27. Each team item names its club item in P831 (parent
+    #      club), so the two are joined on that statement, never on a name.
+    #      Only map clubs the roster does NOT name are asked, and a reserve
+    #      side never stands in for its first team: the reserve marker must
+    #      agree on both sides, the rule every matcher here follows.
+    named_here = {key: {qid_by_title.get(t) for t in r["clubs"]} - {None}
+                  for key, r in rosters.items()}
+    unnamed = sorted({q for key, qs in named_here.items()
+                      for q in by_country_tier.get(key, set()) - qs
+                      if q.startswith("Q")})
+    parent_of = {}
+    if unnamed:
+        print(f"  asking Wikidata which of {len(unnamed)} map clubs the rosters do not "
+              f"name carry a parent club (P831)")
+        got, parent_failures = fetch_entities(unnamed, "clubs the rosters do not name")
+        if parent_failures:
+            failures.extend(parent_failures)
+            incomplete.append("reading the parent-club (P831) links failed, so a club "
+                              "with a club item and a team item would read as two")
+        for q, entity in got.items():
+            parent_of[q] = set(claim_qids(entity.get("claims") or {}, P_PARENT_CLUB))
 
     # ---- the verdicts
     for (country, tier), roster in sorted(rosters.items()):
@@ -1127,10 +1393,35 @@ def main():
                            and tiers[q][1] == country]
 
             club = layer.get(qid)
+            team_item = None
+            if club is None:
+                for other in sorted(by_country_tier.get((country, tier), set())
+                                    - named_here.get((country, tier), set())):
+                    if qid in parent_of.get(other, ()) and other not in seen_qids and \
+                            team_markers(layer[other].get("name")) == \
+                            team_markers(fact.get("label") or title):
+                        team_item = other
+                        break
+            if team_item:
+                club = layer[team_item]
+                seen_qids.add(team_item)
             if club is not None:
                 base["_ourTier"] = club.get("tier") or ""
 
-            if club is not None and club.get("tier") == tier and club["_country"] == country:
+            link = forced.get(title)
+            if link and not link["read"]:
+                base["source"] = (f"https://en.wikipedia.org/wiki/"
+                                  f"{urllib.parse.quote(roster['sources'][0][0].replace(' ', '_'))}")
+
+            if team_item:
+                base["clubQid"] = team_item
+                base["_verdict"] = "ok"
+                base["_why"] = (
+                    f"in the division and on the map at this tier, as {team_item}: the "
+                    f"article links {qid}, and {team_item} - the item on the map - names "
+                    f"{qid} as its parent club (P831). One club with a club item and a "
+                    f"men's-team item, joined id to id rather than by name")
+            elif club is not None and club.get("tier") == tier and club["_country"] == country:
                 base["_verdict"] = "ok"
                 base["_why"] = "in the division and on the map at this tier"
             elif club is not None:
@@ -1145,6 +1436,12 @@ def main():
                 base["_why"] = (
                     f"a skip row in {MANUAL_FILE} removes this club, but the league "
                     f"lists it in the division now. Re-read that decision")
+            elif qid in cleared_positions:
+                base["_verdict"] = "unplaced-no-coordinates"
+                base["_why"] = (
+                    f"a hand row in {MANUAL_FILE} clears this club's position on "
+                    f"purpose, so it is off the map by decision - the row's note "
+                    f"says why and what brings it back")
             elif fact.get("dissolved"):
                 base["_verdict"] = "missing-from-wikidata"
                 base["_why"] = (
@@ -1178,6 +1475,9 @@ def main():
                     "is still not on the map. Nothing here explains that - read the club "
                     "layer run summary for this Q-id")
 
+            if link:
+                base["_why"] += (f" (this row is joined to {link['qid']} by a hand link, "
+                                 f"{LINKS_FILE} line {link['line']})")
             twin = same_name_on_map(base["name"], qid, country, tier,
                                     layer, by_country_tier)
             if twin and base["_verdict"] != "ok":
@@ -1250,6 +1550,11 @@ def main():
     if readback:
         print("  Read back - the leagues checked, exactly as understood:")
         for line in readback:
+            print("    " + line)
+        print()
+    if links:
+        print(f"  Hand links in {LINKS_FILE}, exactly as understood:")
+        for line in link_readback or ["none of them matched a row this run"]:
             print("    " + line)
         print()
     for line in summary:

@@ -9,7 +9,9 @@ name: Roster check
 #
 # Weekly, on the morning the club layer is rebuilt, so the comparison is
 # against a fresh map. Also whenever data/league-rosters.csv is edited,
-# because that file is what decides which leagues are checked at all.
+# because that file is what decides which leagues are checked at all, and
+# whenever data/roster-links-manual.csv is edited, because a hand link
+# changes which Q-id a table row is read as.
 
 on:
   schedule:
@@ -20,6 +22,7 @@ on:
     paths:
       - "data/league-rosters.csv"
       - "data/league-tiers.csv"
+      - "data/roster-links-manual.csv"
       - "tools/check_rosters.py"
       - ".github/workflows/check-rosters.yml"
   workflow_dispatch:
