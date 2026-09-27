@@ -1411,6 +1411,15 @@ a page anyone can already view in their browser's network tab.
       of 28 clubs, 1 agrees, 18 have a Wikidata figure only. Five
       capacities are blank on purpose (Mačva, Železničar, OFK Beograd,
       Vršac, Grafičar), each because its only figures are one source's.
+      The OpenStreetMap cross-check needed **three runs** on the branch
+      before one came back complete - Austria and Germany answered HTTP
+      504 on the first, Serbia on the second, and each time the review
+      file was rightly left alone. The complete run found no disagreement
+      in Austria, Switzerland or Serbia. It did find **no stadium within
+      500 m of OFK Beograd's SC FSS pin**, so that position rests on the
+      Serbian FA centre's own Wikidata item alone - worth a look. (It
+      also found OpenStreetMap's "Stadion im Sportforum" 63 m from BFC
+      Dynamo's new pin.)
     - **Fixtures: none.** football-data.org's free tier carries no
       Serbian competition; the club sheet says so.
 
