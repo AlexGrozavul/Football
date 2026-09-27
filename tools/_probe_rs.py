@@ -131,177 +131,83 @@ def section(name, fn):
 
 
 # ======================================================================
-def a1():
-    """Brigittenauer AC: how did it end."""
-    t = plain("Brigittenauer AC", "de")
-    for h in around(t, [r"aufgel", r"Auflösung", r"eingestellt", r"Fusion", r"fusion", r"existiert"], 260, 3):
-        p("BAC ...", h)
-    p("BAC-TAIL", t[-900:])
-
-
-def a2():
-    """Austrian grounds, by title and by search."""
-    for site, title in [("enwiki", "Ertl Glas Stadion"), ("enwiki", "Union-Platz"), ("dewiki", "Ertl-Glas-Stadion"),
-                        ("dewiki", "FAC-Platz"), ("enwiki", "FAC-Platz"), ("dewiki", "eww Stadion"),
-                        ("dewiki", "Solarstadion Gleisdorf"), ("dewiki", "Stadion Donawitz"),
-                        ("enwiki", "Allianz Stadion"), ("enwiki", "Untersberg-Arena"), ("dewiki", "MGG Arena"),
-                        ("enwiki", "Liebenauer Stadium"), ("dewiki", "Hans-Blümel-Stadion"),
-                        ("dewiki", "Casino-Stadion (Bregenz)")]:
-        q, x = by_title(site, title)
-        p("GTITLE", site, title, "->", q, "|", lab(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083")[:3],
-          "| P466", [v[0] for v in vals(x, "P466")][:6], "| P131", [v[0] for v in vals(x, "P131")][:2])
-        time.sleep(0.5)
-    for s in ["Münzer Bioindustrie Sportpark", "Hans Blümel Stadion", "Huber Arena", "eww Stadion", "FAC-Platz",
-              "Ertl Glas Stadion", "Solarstadion Gleisdorf", "Stadion Donawitz", "Sportplatz Voitsberg"]:
-        p("GSEARCH", s, search(s, "de"))
-        time.sleep(0.5)
-    for t in ["Ertl-Glas-Stadion", "FAC-Platz", "eww Stadion", "Solarstadion Gleisdorf", "MGG Arena"]:
-        p("GINFO de", t, "|", infobox(t, "de"))
-    for t in ["Ertl-Glas-Stadion", "FAC-Platz", "eww Stadion"]:
-        p("GTEXT de", t, "|", plain(t, "de")[:500])
-
-
-def a3():
-    """OpenStreetMap objects for the Austrian grounds with no Wikidata position."""
-    q = """[out:json][timeout:120];
-    area["ISO3166-1"="AT"][admin_level=2]->.a;
-    ( nwr["leisure"~"stadium|pitch|sports_centre"]["name"~"Blümel|Münzer|Huber|eww|FAC|Ertl|Solarstadion|Hertha|Mauth|Union-Platz|Voitsberg|Floridsdorf|Donawitz|Gleisdorf",i](area.a); );
-    out center tags;"""
-    body = urllib.parse.urlencode({"data": q}).encode()
-    req = urllib.request.Request("https://overpass-api.de/api/interpreter", data=body,
-                                 headers={"User-Agent": cr.USER_AGENT})
-    try:
-        with urllib.request.urlopen(req, timeout=180) as r:
-            d = json.loads(r.read().decode())
-    except Exception as ex:
-        p("OVERPASS-ERROR", ex); return
-    for el in d.get("elements", []):
-        c = el.get("center") or {"lat": el.get("lat"), "lon": el.get("lon")}
-        t = el.get("tags", {})
-        p("OSM", f"{el['type']}/{el['id']}", round(c.get("lat") or 0, 6), round(c.get("lon") or 0, 6), "|",
-          {k: t[k] for k in ("name", "leisure", "sport", "operator", "capacity", "addr:city", "wikidata", "club") if k in t})
-
-
-def a4():
-    """The league's own site and the clubs' own sites: robots first."""
-    for base in ["https://www.2liga.at", "https://www.bundesliga.at", "https://www.wsg-fussball.at",
-                 "https://www.fcliefering.at"]:
-        st, body, url = fetch(base + "/robots.txt")
-        p("ROBOTS", base, st, "|", body[:400].replace("\n", " / "))
+def c1():
+    """The Austrian league's own site: team stadium pages, found through its sitemap (robots.txt: Allow /)."""
+    st, body, url = fetch("https://www.2liga.at/sitemap.xml")
+    p("SITEMAP", st, len(body))
+    locs = re.findall(r"<loc>([^<]+)</loc>", body)
+    p("SITEMAP-LOCS", len(locs), locs[:8])
+    subs = [l for l in locs if l.endswith(".xml")]
+    team_urls = [l for l in locs if "/team/" in l]
+    for sub in subs[:12]:
+        st2, b2, _ = fetch(sub)
+        more = re.findall(r"<loc>([^<]+)</loc>", b2)
+        team_urls += [l for l in more if "/team/" in l]
         time.sleep(1)
-    st, body, url = fetch("https://www.2liga.at/de/")
-    p("2LIGA-HOME", st, url, len(body))
-    links = sorted(set(re.findall(r'href="(/de/team/[^"]+)"', body)))
-    p("2LIGA-TEAMLINKS", len(links), links[:40])
-    for path in links:
-        if not any(k in path for k in ("liefering", "amstetten", "bregenz", "floridsdorf", "fac", "voitsberg",
-                                       "hertha", "rapid", "sturm", "wacker")):
-            continue
-        base = re.sub(r"/(kader|spielplan|stadion|news|statistik)?$", "", path.rstrip("/"))
-        st, body2, url2 = fetch("https://www.2liga.at" + base + "/stadion")
-        t = text(body2)
-        hits = around(t, [r"Kapazit", r"Stadion", r"Fassungs", r"Plätze", r"Adresse", r"Zuschauer"], 120, 2)
-        p("2LIGA-STADION", base, st, "|", " ## ".join(hits)[:900])
+    team_urls = sorted(set(team_urls))
+    p("TEAM-URLS", len(team_urls), team_urls[:60])
+    wanted = ("liefering", "amstetten", "bregenz", "floridsdorf", "fac-", "voitsberg", "hertha", "rapid", "sturm",
+              "wacker")
+    bases = sorted({re.sub(r"(/\d+)/.*$", r"\1", u) for u in team_urls if any(k in u.lower() for k in wanted)})
+    p("TEAM-BASES", bases)
+    for base in bases[:14]:
+        st3, b3, u3 = fetch(base.rstrip("/") + "/stadion")
+        t = text(b3)
+        i = t.find("Stadion")
+        p("2LIGA", base, st3, "|", " ## ".join(around(t, [r"Kapazit", r"Fassungs", r"Zuschauer", r"Adresse", r"Sitzpl", r"Stehpl"], 140, 2))[:900])
         time.sleep(2)
-    for url in ["https://www.wsg-fussball.at/de/verein/stadion/", "https://www.wsg-fussball.at/en/club/stadium/"]:
-        st, body, u = fetch(url)
-        t = text(body)
-        p("WSG", url, st, "|", " ## ".join(around(t, [r"Kapazit", r"capacity", r"Plätze", r"seats", r"Sitzpl", r"Zuschauer"], 150, 3))[:1200])
+    # the Bundesliga's page for WSG Tirol's ground
+    st, body, url = fetch("https://www.bundesliga.at/sitemap.xml")
+    locs = re.findall(r"<loc>([^<]+)</loc>", body)
+    subs = [l for l in locs if l.endswith(".xml")]
+    urls = [l for l in locs if "wsg" in l.lower() or "tirol" in l.lower()]
+    for sub in subs[:12]:
+        st2, b2, _ = fetch(sub)
+        urls += [l for l in re.findall(r"<loc>([^<]+)</loc>", b2) if "wsg" in l.lower()]
+        time.sleep(1)
+    urls = sorted(set(urls))
+    p("BL-WSG-URLS", len(urls), urls[:20])
+    for u in [x for x in urls if "stadion" in x.lower()][:3] + [x for x in urls if "stadion" not in x.lower()][:1]:
+        st4, b4, _ = fetch(u.rstrip("/") + ("" if "stadion" in u.lower() else "/stadion"))
+        t = text(b4)
+        p("BL-WSG", u, st4, "|", " ## ".join(around(t, [r"Kapazit", r"Fassungs", r"Zuschauer", r"Sitzpl"], 140, 2))[:900])
         time.sleep(2)
-    st, body, u = fetch("https://www.fcliefering.at/")
-    t = text(body)
-    p("LIEFERING-HOME", st, "|", " ## ".join(around(t, [r"Untersberg", r"MGG", r"Grödig", r"Red Bull Arena", r"Heimspiel"], 120, 3))[:1200])
 
 
-def a5():
-    """Liefering: the Untersberg-Arena item and German article."""
-    for t in ["MGG Arena", "FC Liefering"]:
+def c2():
+    """German Wikipedia on where Sturm II and Rapid II play, and Liefering's move."""
+    for t, kws in [("SK Sturm Graz II", [r"Gleisdorf", r"Donawitz", r"Merkur", r"Heimspiel", r"Stadion"]),
+                   ("SK Rapid Wien II", [r"Allianz", r"Heimspiel", r"Stadion", r"Hütteldorf"]),
+                   ("FC Liefering", [r"Red Bull Arena", r"Untersberg", r"MGG", r"Grödig", r"Heimspiel"]),
+                   ("FC Hertha Wels", [r"Stadion", r"Mauth", r"eww", r"Huber", r"Heimspiel"]),
+                   ("ASK Voitsberg", [r"Stadion", r"Sportpark", r"Blümel", r"Münzer", r"Heimspiel"])]:
         tx = plain(t, "de")
-        p("LIEF-DE", t, "|", " ## ".join(around(tx, [r"Liefering", r"Heimspiel", r"Grödig", r"Red Bull Arena", r"Saison 2025", r"Saison 2026"], 180, 3))[:1800])
-    q, x = by_title("enwiki", "Untersberg-Arena")
-    p("UA", q, lab(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"), "| P466", vals(x, "P466"), "| sl", sl(x))
+        p("DETEXT", t, len(tx), "|", " ## ".join(around(tx, kws, 160, 2))[:1600])
+        time.sleep(0.5)
+    E = ents(["Q140456746", "Q65167618", "Q38244305", "Q85760247", "Q3280007", "Q13567334"])
+    for q, x in E.items():
+        p("ITEMC", q, lab(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"), "| P131", [v[0] for v in vals(x, "P131")][:2],
+          "| P466", [v[0] for v in vals(x, "P466")][:4], "| P31", [v[0] for v in vals(x, "P31")][:3], "| sl", sl(x))
 
 
-# ======================================================================
-RS = {
-    # extras (tier 1 or 2 by tags, in neither article)
-    "Q651198": "FK BSK Borča", "Q2407113": "OFK Bečej 1918", "Q953621": "FK Bežanija", "Q5426069": "FK Bačinci",
-    "Q2513289": "FK Budućnost Banatski Dvor", "Q591746": "FK Inđija", "Q5426189": "FK Jedinstvo Putevi",
-    "Q2662732": "FK Kolubara", "Q5426249": "FK Mladost Novi Sad", "Q2505780": "FK Proleter Novi Sad",
-    "Q2561958": "FK Proleter Zrenjanin", "Q757098": "FK Rad", "Q5426363": "FK Radnički Nova Pazova",
-    "Q995113": "FK Sloboda Užice", "Q2335020": "FK Sloga Kraljevo", "Q9257379": "FK Sloga 33",
-    "Q2505672": "FK Srem", "Q9257386": "FK Tekstilac Odžaci", "Q3544941": "FK Timok", "Q5426474": "FK Zlatibor Čajetina",
-    "Q284077": "OFK Bačka", "Q749049": "OFK Mladenovac", "Q2523663": "RFK Novi Sad 1921",
-    # at the wrong tier by tags
-    "Q218724": "FK Javor Ivanjica", "Q843210": "FK Napredak Kruševac", "Q421940": "FK Smederevo 1924",
-    "Q94605": "FK Spartak Subotica", "Q828297": "FK TSC", "Q2614598": "FK Mačva Šabac",
-    # missing
-    "Q2123289": "FK Bor 1919", "Q4863629": "FK Loznica", "Q140302346": "FK Proleter 023", "Q1323373": "FK Zemun",
-    "Q5426131": "GFK Dubočica", "Q61130291": "OFK Vršac", "Q3063273": "RFK Grafičar Beograd",
-    # on the map but unplaced, or with no ground on Wikidata
-    "Q31181880": "FK IMT", "Q12760457": "FK Železničar Pančevo", "Q1388917": "FK Jedinstvo Ub",
-}
+def c3():
+    """Serbia: the country's extreme points, for the country box."""
+    E = ents(["Q403"])
+    x = E.get("Q403", {})
+    for prop in ("P1332", "P1333", "P1334", "P1335"):
+        for c in x.get("claims", {}).get(prop, []):
+            v = c["mainsnak"].get("datavalue", {}).get("value", {})
+            quals = c.get("qualifiers", {})
+            coord = [q.get("datavalue", {}).get("value") for q in quals.get("P625", [])]
+            p("EXTREME", prop, v, coord[:1], "| rank", c.get("rank"))
 
 
-def b1():
-    E = ents(list(RS))
-    for q, title in RS.items():
-        x = E.get(q, {})
-        s = x.get("sitelinks") or {}
-        en = (s.get("enwiki") or {}).get("title")
-        p("RSCLUB", q, title, "| P576", vals(x, "P576") or "-", "| P1366", vals(x, "P1366"), "| P31", [v[0] for v in vals(x, "P31")][:3])
-        if en:
-            p("   EN", en, "|", infobox(en, "en"))
-        else:
-            srt = (s.get("srwiki") or {}).get("title")
-            if srt: p("   SR", srt, "|", infobox(srt, "sr"))
-        time.sleep(0.4)
-
-
-def b2():
-    for art in ["2026–27 Serbian SuperLiga", "2026–27 Serbian First League"]:
-        page, real, err = cr.fetch_article(art)
-        if err: p("ART", art, err); continue
-        m = re.search(r'id="Team_changes".*?(<table.*?</table>)', page, re.S)
-        if m:
-            for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", m.group(1), re.S):
-                p("  CHANGES", art[:14], [cr.text_of(c) for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)])
-        t = cr.text_of(page)
-        for h in around(t, [r"withdr", r"expell", r"exclu", r"licen", r"dissol", r"merged", r"replac"], 200, 3):
-            p("  NOTE", art[:14], "...", h)
-
-
-def b3():
-    """Serbian grounds for the clubs that will need a position."""
-    for site, title in [("enwiki", "Lagator Stadium"), ("enwiki", "Zemun Stadium"), ("enwiki", "Dubočica Stadium"),
-                        ("enwiki", "Stadion Karađorđev park"), ("enwiki", "TSC Arena"), ("enwiki", "Mladost Stadium (Kruševac)"),
-                        ("enwiki", "Stadion Bor"), ("enwiki", "Rajko Mitić Stadium"), ("enwiki", "Serbian FA Sports Center"),
-                        ("enwiki", "Javor Stadium"), ("enwiki", "Čačak Stadium"), ("enwiki", "Metalac Stadium"),
-                        ("enwiki", "Smederevo Stadium"), ("enwiki", "Subotica City Stadium"), ("enwiki", "SC Partizan-Teleoptik"),
-                        ("enwiki", "Voždovac Stadium"), ("enwiki", "Čukarički Stadium"), ("enwiki", "Novi Pazar City Stadium"),
-                        ("enwiki", "Surdulica City Stadium"), ("enwiki", "Karađorđe Stadium"), ("enwiki", "Partizan Stadium"),
-                        ("enwiki", "Čair Stadium"), ("enwiki", "Čika Dača Stadium"), ("enwiki", "Omladinski Stadium")]:
-        q, x = by_title(site, title)
-        p("RSG", title, "->", q, "|", lab(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083")[:3],
-          "| P466", [v[0] for v in vals(x, "P466")][:6], "| P131", [v[0] for v in vals(x, "P131")][:1])
-        time.sleep(0.4)
-    for s, lang in [("Stadion FK Mačva", "sr"), ("Mačva Šabac stadium", "en"), ("Gradski stadion Vršac", "sr"),
-                    ("Stadion Mladost Pančevo", "sr"), ("Stadion Dragan Džajić Ub", "sr"), ("Gradski stadion Bor", "sr"),
-                    ("Stadion Dragan Džajić", "en"), ("SRC Mr Radoš Milovanović", "en")]:
-        p("RSGSEARCH", s, search(s, lang))
-        time.sleep(0.4)
-    for t in ["FK Mačva Šabac", "FK Železničar Pančevo", "FK Jedinstvo Ub", "OFK Vršac", "FK Bor 1919", "FK IMT",
-              "FK Loznica", "RFK Grafičar Beograd", "GFK Dubočica", "FK Proleter 023", "FK Zemun", "OFK Beograd",
-              "FK Mladost Lučani", "FK TSC"]:
-        p("RSINFO", t, "|", infobox(t, "en"))
-        time.sleep(0.3)
-
-
-def b4():
-    """OpenStreetMap: named football grounds in the Serbian towns that need one."""
+def c4():
+    """Serbia: grounds in Ub, Pancevo and Vrsac, from OpenStreetMap, whatever they are called."""
     q = """[out:json][timeout:150];
-    area["ISO3166-1"="RS"][admin_level=2]->.a;
-    ( nwr["leisure"~"stadium|pitch"]["name"~"Мачв|Mačv|Вршац|Vršac|Младост|Mladost|Џајић|Džajić|Бор|Лагатор|Lagator|Дубочиц|Dubočic|ТСЦ|TSC|Железничар|Železničar|Пролетер|Proleter|Карађорђев|Земун|Zemun|Графичар|Grafičar",i](area.a); );
+    ( nwr["leisure"~"stadium|pitch"](around:3500,44.456,20.074);
+      nwr["leisure"~"stadium|pitch"](around:4500,44.871,20.640);
+      nwr["leisure"~"stadium|pitch"](around:3500,45.117,21.303); );
     out center tags;"""
     body = urllib.parse.urlencode({"data": q}).encode()
     req = urllib.request.Request("https://overpass-api.de/api/interpreter", data=body, headers={"User-Agent": cr.USER_AGENT})
@@ -313,14 +219,45 @@ def b4():
     for el in d.get("elements", []):
         c = el.get("center") or {"lat": el.get("lat"), "lon": el.get("lon")}
         t = el.get("tags", {})
+        if t.get("sport") not in (None, "soccer", "football", "athletics;soccer", "soccer;athletics", "multi") and t.get("leisure") == "pitch":
+            continue
         if t.get("leisure") == "pitch" and not t.get("name"):
             continue
-        p("RSOSM", f"{el['type']}/{el['id']}", round(c.get("lat") or 0, 6), round(c.get("lon") or 0, 6), "|",
-          {k: t[k] for k in ("name", "name:sr-Latn", "leisure", "sport", "operator", "capacity", "addr:city", "wikidata") if k in t})
+        p("RSOSM2", f"{el['type']}/{el['id']}", round(c.get("lat") or 0, 6), round(c.get("lon") or 0, 6), "|",
+          {k: t[k] for k in ("name", "name:sr-Latn", "leisure", "sport", "operator", "capacity", "wikidata") if k in t})
 
 
-for name, fn in [("A1 BAC", a1), ("A2 AT grounds", a2), ("A3 AT OSM", a3), ("A4 AT sites", a4), ("A5 Liefering", a5),
-                 ("B1 RS clubs", b1), ("B2 RS changes", b2), ("B3 RS grounds", b3), ("B4 RS OSM", b4)]:
+def c5():
+    """Serbia: the leagues' own sites, robots first, then the clubs whose ground is in question."""
+    for base in ["https://www.superliga.rs", "https://superliga.rs", "https://www.prvaliga.rs", "https://prvaliga.rs",
+                 "https://www.fss.rs"]:
+        st, body, url = fetch(base + "/robots.txt")
+        p("RSROBOTS", base, st, url, "|", body[:300].replace("\n", " / "))
+        time.sleep(1)
+    st, body, url = fetch("https://www.superliga.rs/")
+    p("SUPERLIGA-HOME", st, url, len(body))
+    links = sorted(set(re.findall(r'href="([^"]*(?:klub|club|tim|team)[^"]*)"', body, re.I)))
+    p("SUPERLIGA-LINKS", len(links), links[:60])
+
+
+def c6():
+    """Serbian Wikipedia infoboxes for the clubs whose ground is in question."""
+    E = ents(["Q2123289", "Q1323373", "Q209619", "Q12760457", "Q1388917", "Q61130291", "Q3063273", "Q2614598"])
+    for q, x in E.items():
+        s = x.get("sitelinks") or {}
+        t = (s.get("srwiki") or {}).get("title")
+        if t:
+            p("SRINFO", q, t, "|", infobox(t, "sr"))
+            tx = plain(t, "sr")
+            p("SRTEXT", q, "|", " ## ".join(around(tx, [r"стадион", r"Стадион", r"игра", r"домаћ"], 150, 3))[:1200])
+        time.sleep(0.5)
+    for t in ["2026–27 Serbian SuperLiga", "2026–27 Serbian First League"]:
+        tx = plain(t, "en")
+        p("RSART", t, "|", " ## ".join(around(tx, [r"temporar", r"reconstruct", r"renovat", r" Ub\b", r"FSS", r"Kruševac"], 200, 4))[:2000])
+
+
+for name, fn in [("C1 AT league site", c1), ("C2 AT de text + items", c2), ("C3 RS extremes", c3),
+                 ("C4 RS OSM", c4), ("C5 RS league sites", c5), ("C6 RS sr infoboxes", c6)]:
     section(name, fn)
     time.sleep(2)
-p("=== END OF PROBE RS2 ===")
+p("=== END OF PROBE RS3 ===")
