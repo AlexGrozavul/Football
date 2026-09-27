@@ -131,81 +131,62 @@ def section(name, fn):
 
 
 # ======================================================================
-SL_TEAMS = ["crvena-zvezda", "cukaricki", "imt", "macva", "mladost", "novi-pazar", "ofk-beograd", "partizan",
-            "radnicki-1923", "radnicki-nis", "radnik", "vojvodina", "zeleznicar", "zemun"]
-
-
-def d1():
-    """The SuperLiga's own team pages (robots.txt: /tim/ allowed)."""
-    for slug in SL_TEAMS:
-        st, body, url = fetch(f"https://www.superliga.rs/tim/{slug}/")
+def e1():
+    """Where the home games of 2026-27 were actually played: each league site lists a venue per match."""
+    for base, slug, team in [("https://www.superliga.rs", "zemun", "ZEMUN"), ("https://www.superliga.rs", "ofk-beograd", "OFK BEOGRAD"),
+                             ("https://www.superliga.rs", "imt", "IMT"), ("https://www.superliga.rs", "zeleznicar", "ŽELEZNIČAR"),
+                             ("https://www.superliga.rs", "macva", "MAČVA"),
+                             ("https://www.prvaliga.rs", "bor-1919", "BOR 1919"), ("https://www.prvaliga.rs", "jedinstvo", "JEDINSTVO"),
+                             ("https://www.prvaliga.rs", "ofk-vrsac", "OFK VRŠAC"), ("https://www.prvaliga.rs", "rfk-graficar", "RFK GRAFIČAR")]:
+        st, body, url = fetch(f"{base}/tim/{slug}/")
         t = text(body)
-        hits = around(t, [r"Stadion", r"Kapacitet", r"Стадион", r"Капацитет", r"Adresa"], 110, 3)
-        p("SLTEAM", slug, st, "|", " ## ".join(hits)[:800])
+        hits = [t[max(0, m.start() - 170):m.end() + 40] for m in re.finditer(re.escape(team), t)]
+        p("VENUES", slug, st, len(hits))
+        for h in hits[:10]:
+            p("    ", h)
+        links = sorted(set(re.findall(r'href="([^"]*(?:utakmic|match|raspored|kolo)[^"]*)"', body, re.I)))[:15]
+        p("   LINKS", links)
         time.sleep(2)
+    for base in ["https://www.superliga.rs", "https://www.prvaliga.rs"]:
+        for path in ["/raspored/", "/rezultati/", "/raspored-i-rezultati/"]:
+            st, body, url = fetch(base + path)
+            t = text(body)
+            p("SCHED", base + path, st, len(t))
+            for team in ("ZEMUN", "OFK BEOGRAD", "IMT", "BOR 1919", "Zemun", "OFK Beograd", "Bor 1919"):
+                for m in list(re.finditer(re.escape(team), t))[:6]:
+                    p("   ", team, "...", t[max(0, m.start() - 150):m.end() + 40])
+            time.sleep(2)
 
 
-def d2():
-    """The First League's own site: sitemap first (robots.txt: all allowed but wp-admin)."""
-    st, body, url = fetch("https://www.prvaliga.rs/sitemap_index.xml")
-    subs = re.findall(r"<loc>([^<]+)</loc>", body)
-    p("PL-SITEMAPS", st, subs[:20])
-    urls = []
-    for sub in subs[:20]:
-        st2, b2, _ = fetch(sub)
-        urls += re.findall(r"<loc>([^<]+)</loc>", b2)
-        time.sleep(1)
-    teamish = sorted({u for u in urls if re.search(r"/(tim|klub|klubovi|team|ekip)", u, re.I)})
-    p("PL-TEAMURLS", len(teamish), teamish[:80])
-    for u in teamish[:24]:
-        st3, b3, _ = fetch(u)
-        t = text(b3)
-        hits = around(t, [r"Stadion", r"Kapacitet", r"Стадион", r"Капацитет"], 110, 2)
-        if hits:
-            p("PLTEAM", u, st3, "|", " ## ".join(hits)[:700])
-        time.sleep(1.5)
-
-
-def d3():
-    """Wikidata items for the Serbian grounds, by their Serbian Wikipedia titles."""
-    for t in ["Градски стадион у Вршцу", "Стадион Драган Џајић", "СРЦ Младост Панчево", "Стадион крај Пирита",
-              "Градски стадион у Земуну", "Омладински стадион", "Фудбалски стадион Мачва", "Спортски центар ФСС"]:
-        q, x = by_title("srwiki", t)
-        p("SRG", t, "->", q, "|", lab(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083")[:3],
-          "| P466", [v[0] for v in vals(x, "P466")][:5], "| P131", [v[0] for v in vals(x, "P131")][:1])
-        time.sleep(0.5)
-    for t in ["Стадион Драган Џајић", "СРЦ Младост Панчево", "Градски стадион у Вршцу"]:
-        p("SRGINFO", t, "|", infobox(t, "sr"))
-
-
-def d4():
-    """OpenStreetMap, one small request per town, with a retry."""
-    for label, lat, lon in [("Ub", 44.456, 20.074), ("Pancevo", 44.871, 20.640), ("Vrsac", 45.117, 21.303)]:
+def e2():
+    """OpenStreetMap around the Ub ground and SRC Mladost in Pancevo, any sports object."""
+    for label, lat, lon, r in [("Ub", 44.456, 20.074, 2500), ("SRC Mladost", 44.879086, 20.662633, 600)]:
         q = f"""[out:json][timeout:60];
-        nwr["leisure"="stadium"](around:4000,{lat},{lon});
+        nwr["leisure"~"stadium|pitch|sports_centre"](around:{r},{lat},{lon});
         out center tags;"""
+        d = None
         for attempt in range(3):
             body = urllib.parse.urlencode({"data": q}).encode()
             req = urllib.request.Request("https://overpass-api.de/api/interpreter", data=body,
                                          headers={"User-Agent": cr.USER_AGENT})
             try:
-                with urllib.request.urlopen(req, timeout=90) as r:
-                    d = json.loads(r.read().decode())
+                with urllib.request.urlopen(req, timeout=90) as rr:
+                    d = json.loads(rr.read().decode())
                 break
             except Exception as ex:
                 p("OVERPASS-RETRY", label, ex)
-                d = None
                 time.sleep(30)
         for el in (d or {}).get("elements", []):
             c = el.get("center") or {"lat": el.get("lat"), "lon": el.get("lon")}
             t = el.get("tags", {})
-            p("RSOSM3", label, f"{el['type']}/{el['id']}", round(c.get("lat") or 0, 6), round(c.get("lon") or 0, 6), "|",
-              {k: t[k] for k in ("name", "name:sr-Latn", "sport", "operator", "capacity", "wikidata") if k in t})
+            if t.get("sport") and not any(k in t.get("sport") for k in ("soccer", "football", "multi", "athletics")):
+                continue
+            p("RSOSM4", label, f"{el['type']}/{el['id']}", round(c.get("lat") or 0, 6), round(c.get("lon") or 0, 6), "|",
+              {k: t[k] for k in ("name", "name:sr-Latn", "leisure", "sport", "operator", "capacity", "wikidata", "surface") if k in t})
         time.sleep(5)
 
 
-for name, fn in [("D1 SuperLiga site", d1), ("D2 First League site", d2), ("D3 RS grounds by srwiki", d3),
-                 ("D4 RS OSM towns", d4)]:
+for name, fn in [("E1 match venues", e1), ("E2 OSM Ub Pancevo", e2)]:
     section(name, fn)
     time.sleep(2)
-p("=== END OF PROBE RS4 ===")
+p("=== END OF PROBE RS5 ===")
