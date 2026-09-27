@@ -2857,8 +2857,58 @@
    "winner": null
   },
   {
-   "id": 558524,
+   "id": 558521,
    "utcDate": "2026-11-22T11:30:00Z",
+   "status": "TIMED",
+   "matchday": 12,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 109,
+    "name": "Juventus FC",
+    "shortName": "Juventus",
+    "tla": "JUV",
+    "crest": "https://crests.football-data.org/109.png"
+   },
+   "away": {
+    "id": 454,
+    "name": "Venezia FC",
+    "shortName": "Venezia FC",
+    "tla": "VEN",
+    "crest": "https://crests.football-data.org/454.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558522,
+   "utcDate": "2026-11-22T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 12,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 103,
+    "name": "Bologna FC 1909",
+    "shortName": "Bologna",
+    "tla": "BOL",
+    "crest": "https://crests.football-data.org/103.png"
+   },
+   "away": {
+    "id": 115,
+    "name": "Udinese Calcio",
+    "shortName": "Udinese",
+    "tla": "UDI",
+    "crest": "https://crests.football-data.org/115.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558524,
+   "utcDate": "2026-11-22T14:00:00Z",
    "status": "TIMED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
@@ -2883,7 +2933,7 @@
   },
   {
    "id": 558523,
-   "utcDate": "2026-11-22T14:00:00Z",
+   "utcDate": "2026-11-22T17:00:00Z",
    "status": "TIMED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
@@ -2901,31 +2951,6 @@
     "shortName": "Frosinone",
     "tla": "FRO",
     "crest": "https://crests.football-data.org/470.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558522,
-   "utcDate": "2026-11-22T17:00:00Z",
-   "status": "TIMED",
-   "matchday": 12,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 103,
-    "name": "Bologna FC 1909",
-    "shortName": "Bologna",
-    "tla": "BOL",
-    "crest": "https://crests.football-data.org/103.png"
-   },
-   "away": {
-    "id": 115,
-    "name": "Udinese Calcio",
-    "shortName": "Udinese",
-    "tla": "UDI",
-    "crest": "https://crests.football-data.org/115.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -2958,7 +2983,7 @@
   },
   {
    "id": 558519,
-   "utcDate": "2026-11-23T17:30:00Z",
+   "utcDate": "2026-11-23T19:45:00Z",
    "status": "TIMED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
@@ -2982,125 +3007,25 @@
    "winner": null
   },
   {
-   "id": 558521,
-   "utcDate": "2026-11-23T19:45:00Z",
+   "id": 558515,
+   "utcDate": "2026-11-27T19:45:00Z",
    "status": "TIMED",
-   "matchday": 12,
+   "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 109,
-    "name": "Juventus FC",
-    "shortName": "Juventus",
-    "tla": "JUV",
-    "crest": "https://crests.football-data.org/109.png"
-   },
-   "away": {
     "id": 454,
     "name": "Venezia FC",
     "shortName": "Venezia FC",
     "tla": "VEN",
     "crest": "https://crests.football-data.org/454.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558509,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 471,
-    "name": "US Sassuolo Calcio",
-    "shortName": "Sassuolo",
-    "tla": "SAS",
-    "crest": "https://crests.football-data.org/471.png"
-   },
    "away": {
-    "id": 113,
-    "name": "SSC Napoli",
-    "shortName": "Napoli",
-    "tla": "NAP",
-    "crest": "https://crests.football-data.org/113.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558510,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 104,
-    "name": "Cagliari Calcio",
-    "shortName": "Cagliari",
-    "tla": "CAG",
-    "crest": "https://crests.football-data.org/104.png"
-   },
-   "away": {
-    "id": 98,
-    "name": "AC Milan",
-    "shortName": "Milan",
-    "tla": "MIL",
-    "crest": "https://crests.football-data.org/98.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558511,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 7397,
-    "name": "Como 1907",
-    "shortName": "Como 1907",
-    "tla": "COM",
-    "crest": "https://crests.football-data.org/7397.png"
-   },
-   "away": {
-    "id": 109,
-    "name": "Juventus FC",
-    "shortName": "Juventus",
-    "tla": "JUV",
-    "crest": "https://crests.football-data.org/109.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558512,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 100,
-    "name": "AS Roma",
-    "shortName": "Roma",
-    "tla": "ROM",
-    "crest": "https://crests.football-data.org/100.png"
-   },
-   "away": {
-    "id": 5911,
-    "name": "AC Monza",
-    "shortName": "Monza",
-    "tla": "MON",
-    "crest": "https://crests.football-data.org/5911.png"
+    "id": 103,
+    "name": "Bologna FC 1909",
+    "shortName": "Bologna",
+    "tla": "BOL",
+    "crest": "https://crests.football-data.org/103.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -3108,8 +3033,8 @@
   },
   {
    "id": 558513,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-28T14:00:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3133,8 +3058,8 @@
   },
   {
    "id": 558514,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-28T17:00:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3157,25 +3082,125 @@
    "winner": null
   },
   {
-   "id": 558515,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 558518,
+   "utcDate": "2026-11-28T19:45:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 454,
-    "name": "Venezia FC",
-    "shortName": "Venezia FC",
-    "tla": "VEN",
-    "crest": "https://crests.football-data.org/454.png"
+    "id": 108,
+    "name": "FC Internazionale Milano",
+    "shortName": "Inter",
+    "tla": "INT",
+    "crest": "https://crests.football-data.org/108.png"
    },
    "away": {
-    "id": 103,
-    "name": "Bologna FC 1909",
-    "shortName": "Bologna",
-    "tla": "BOL",
-    "crest": "https://crests.football-data.org/103.png"
+    "id": 107,
+    "name": "Genoa CFC",
+    "shortName": "Genoa",
+    "tla": "GEN",
+    "crest": "https://crests.football-data.org/107.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558517,
+   "utcDate": "2026-11-29T11:30:00Z",
+   "status": "TIMED",
+   "matchday": 13,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 115,
+    "name": "Udinese Calcio",
+    "shortName": "Udinese",
+    "tla": "UDI",
+    "crest": "https://crests.football-data.org/115.png"
+   },
+   "away": {
+    "id": 99,
+    "name": "ACF Fiorentina",
+    "shortName": "Fiorentina",
+    "tla": "FIO",
+    "crest": "https://crests.football-data.org/99.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558509,
+   "utcDate": "2026-11-29T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 13,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 471,
+    "name": "US Sassuolo Calcio",
+    "shortName": "Sassuolo",
+    "tla": "SAS",
+    "crest": "https://crests.football-data.org/471.png"
+   },
+   "away": {
+    "id": 113,
+    "name": "SSC Napoli",
+    "shortName": "Napoli",
+    "tla": "NAP",
+    "crest": "https://crests.football-data.org/113.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558512,
+   "utcDate": "2026-11-29T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 13,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 100,
+    "name": "AS Roma",
+    "shortName": "Roma",
+    "tla": "ROM",
+    "crest": "https://crests.football-data.org/100.png"
+   },
+   "away": {
+    "id": 5911,
+    "name": "AC Monza",
+    "shortName": "Monza",
+    "tla": "MON",
+    "crest": "https://crests.football-data.org/5911.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558511,
+   "utcDate": "2026-11-29T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 13,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 7397,
+    "name": "Como 1907",
+    "shortName": "Como 1907",
+    "tla": "COM",
+    "crest": "https://crests.football-data.org/7397.png"
+   },
+   "away": {
+    "id": 109,
+    "name": "Juventus FC",
+    "shortName": "Juventus",
+    "tla": "JUV",
+    "crest": "https://crests.football-data.org/109.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -3183,8 +3208,8 @@
   },
   {
    "id": 558516,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-30T17:30:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3207,125 +3232,25 @@
    "winner": null
   },
   {
-   "id": 558517,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 558510,
+   "utcDate": "2026-11-30T19:45:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 115,
-    "name": "Udinese Calcio",
-    "shortName": "Udinese",
-    "tla": "UDI",
-    "crest": "https://crests.football-data.org/115.png"
+    "id": 104,
+    "name": "Cagliari Calcio",
+    "shortName": "Cagliari",
+    "tla": "CAG",
+    "crest": "https://crests.football-data.org/104.png"
    },
    "away": {
-    "id": 99,
-    "name": "ACF Fiorentina",
-    "shortName": "Fiorentina",
-    "tla": "FIO",
-    "crest": "https://crests.football-data.org/99.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558518,
-   "utcDate": "2026-11-29T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 108,
-    "name": "FC Internazionale Milano",
-    "shortName": "Inter",
-    "tla": "INT",
-    "crest": "https://crests.football-data.org/108.png"
-   },
-   "away": {
-    "id": 107,
-    "name": "Genoa CFC",
-    "shortName": "Genoa",
-    "tla": "GEN",
-    "crest": "https://crests.football-data.org/107.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558499,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 14,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 107,
-    "name": "Genoa CFC",
-    "shortName": "Genoa",
-    "tla": "GEN",
-    "crest": "https://crests.football-data.org/107.png"
-   },
-   "away": {
-    "id": 586,
-    "name": "Torino FC",
-    "shortName": "Torino",
-    "tla": "TOR",
-    "crest": "https://crests.football-data.org/586.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558500,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 14,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 109,
-    "name": "Juventus FC",
-    "shortName": "Juventus",
-    "tla": "JUV",
-    "crest": "https://crests.football-data.org/109.png"
-   },
-   "away": {
-    "id": 115,
-    "name": "Udinese Calcio",
-    "shortName": "Udinese",
-    "tla": "UDI",
-    "crest": "https://crests.football-data.org/115.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558501,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 14,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 470,
-    "name": "Frosinone Calcio",
-    "shortName": "Frosinone",
-    "tla": "FRO",
-    "crest": "https://crests.football-data.org/470.png"
-   },
-   "away": {
-    "id": 108,
-    "name": "FC Internazionale Milano",
-    "shortName": "Inter",
-    "tla": "INT",
-    "crest": "https://crests.football-data.org/108.png"
+    "id": 98,
+    "name": "AC Milan",
+    "shortName": "Milan",
+    "tla": "MIL",
+    "crest": "https://crests.football-data.org/98.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -3333,8 +3258,8 @@
   },
   {
    "id": 558502,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-04T19:45:00Z",
+   "status": "TIMED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3357,25 +3282,100 @@
    "winner": null
   },
   {
-   "id": 558503,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 558507,
+   "utcDate": "2026-12-05T14:00:00Z",
+   "status": "TIMED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 99,
-    "name": "ACF Fiorentina",
-    "shortName": "Fiorentina",
-    "tla": "FIO",
-    "crest": "https://crests.football-data.org/99.png"
+    "id": 5911,
+    "name": "AC Monza",
+    "shortName": "Monza",
+    "tla": "MON",
+    "crest": "https://crests.football-data.org/5911.png"
    },
    "away": {
-    "id": 104,
-    "name": "Cagliari Calcio",
-    "shortName": "Cagliari",
-    "tla": "CAG",
-    "crest": "https://crests.football-data.org/104.png"
+    "id": 7397,
+    "name": "Como 1907",
+    "shortName": "Como 1907",
+    "tla": "COM",
+    "crest": "https://crests.football-data.org/7397.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558501,
+   "utcDate": "2026-12-05T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 14,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 470,
+    "name": "Frosinone Calcio",
+    "shortName": "Frosinone",
+    "tla": "FRO",
+    "crest": "https://crests.football-data.org/470.png"
+   },
+   "away": {
+    "id": 108,
+    "name": "FC Internazionale Milano",
+    "shortName": "Inter",
+    "tla": "INT",
+    "crest": "https://crests.football-data.org/108.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558508,
+   "utcDate": "2026-12-05T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 14,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 113,
+    "name": "SSC Napoli",
+    "shortName": "Napoli",
+    "tla": "NAP",
+    "crest": "https://crests.football-data.org/113.png"
+   },
+   "away": {
+    "id": 5890,
+    "name": "US Lecce",
+    "shortName": "Lecce",
+    "tla": "USL",
+    "crest": "https://crests.football-data.org/5890.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558499,
+   "utcDate": "2026-12-06T11:30:00Z",
+   "status": "TIMED",
+   "matchday": 14,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 107,
+    "name": "Genoa CFC",
+    "shortName": "Genoa",
+    "tla": "GEN",
+    "crest": "https://crests.football-data.org/107.png"
+   },
+   "away": {
+    "id": 586,
+    "name": "Torino FC",
+    "shortName": "Torino",
+    "tla": "TOR",
+    "crest": "https://crests.football-data.org/586.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -3383,8 +3383,8 @@
   },
   {
    "id": 558504,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-06T14:00:00Z",
+   "status": "TIMED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3407,9 +3407,34 @@
    "winner": null
   },
   {
+   "id": 558500,
+   "utcDate": "2026-12-06T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 14,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 109,
+    "name": "Juventus FC",
+    "shortName": "Juventus",
+    "tla": "JUV",
+    "crest": "https://crests.football-data.org/109.png"
+   },
+   "away": {
+    "id": 115,
+    "name": "Udinese Calcio",
+    "shortName": "Udinese",
+    "tla": "UDI",
+    "crest": "https://crests.football-data.org/115.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 558505,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-06T19:45:00Z",
+   "status": "TIMED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3433,8 +3458,8 @@
   },
   {
    "id": 558506,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-07T17:30:00Z",
+   "status": "TIMED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3457,100 +3482,25 @@
    "winner": null
   },
   {
-   "id": 558507,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 558503,
+   "utcDate": "2026-12-07T19:45:00Z",
+   "status": "TIMED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 5911,
-    "name": "AC Monza",
-    "shortName": "Monza",
-    "tla": "MON",
-    "crest": "https://crests.football-data.org/5911.png"
+    "id": 99,
+    "name": "ACF Fiorentina",
+    "shortName": "Fiorentina",
+    "tla": "FIO",
+    "crest": "https://crests.football-data.org/99.png"
    },
    "away": {
-    "id": 7397,
-    "name": "Como 1907",
-    "shortName": "Como 1907",
-    "tla": "COM",
-    "crest": "https://crests.football-data.org/7397.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558508,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 14,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 113,
-    "name": "SSC Napoli",
-    "shortName": "Napoli",
-    "tla": "NAP",
-    "crest": "https://crests.football-data.org/113.png"
-   },
-   "away": {
-    "id": 5890,
-    "name": "US Lecce",
-    "shortName": "Lecce",
-    "tla": "USL",
-    "crest": "https://crests.football-data.org/5890.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558489,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 113,
-    "name": "SSC Napoli",
-    "shortName": "Napoli",
-    "tla": "NAP",
-    "crest": "https://crests.football-data.org/113.png"
-   },
-   "away": {
-    "id": 98,
-    "name": "AC Milan",
-    "shortName": "Milan",
-    "tla": "MIL",
-    "crest": "https://crests.football-data.org/98.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558490,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 7397,
-    "name": "Como 1907",
-    "shortName": "Como 1907",
-    "tla": "COM",
-    "crest": "https://crests.football-data.org/7397.png"
-   },
-   "away": {
-    "id": 103,
-    "name": "Bologna FC 1909",
-    "shortName": "Bologna",
-    "tla": "BOL",
-    "crest": "https://crests.football-data.org/103.png"
+    "id": 104,
+    "name": "Cagliari Calcio",
+    "shortName": "Cagliari",
+    "tla": "CAG",
+    "crest": "https://crests.football-data.org/104.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -3558,8 +3508,8 @@
   },
   {
    "id": 558491,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-11T19:45:00Z",
+   "status": "TIMED",
    "matchday": 15,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3582,59 +3532,9 @@
    "winner": null
   },
   {
-   "id": 558492,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5890,
-    "name": "US Lecce",
-    "shortName": "Lecce",
-    "tla": "USL",
-    "crest": "https://crests.football-data.org/5890.png"
-   },
-   "away": {
-    "id": 471,
-    "name": "US Sassuolo Calcio",
-    "shortName": "Sassuolo",
-    "tla": "SAS",
-    "crest": "https://crests.football-data.org/471.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558493,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 112,
-    "name": "Parma Calcio 1913",
-    "shortName": "Parma",
-    "tla": "PAR",
-    "crest": "https://crests.football-data.org/112.png"
-   },
-   "away": {
-    "id": 99,
-    "name": "ACF Fiorentina",
-    "shortName": "Fiorentina",
-    "tla": "FIO",
-    "crest": "https://crests.football-data.org/99.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 558494,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-12T14:00:00Z",
+   "status": "TIMED",
    "matchday": 15,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3657,9 +3557,84 @@
    "winner": null
   },
   {
+   "id": 558492,
+   "utcDate": "2026-12-12T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5890,
+    "name": "US Lecce",
+    "shortName": "Lecce",
+    "tla": "USL",
+    "crest": "https://crests.football-data.org/5890.png"
+   },
+   "away": {
+    "id": 471,
+    "name": "US Sassuolo Calcio",
+    "shortName": "Sassuolo",
+    "tla": "SAS",
+    "crest": "https://crests.football-data.org/471.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558490,
+   "utcDate": "2026-12-12T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 7397,
+    "name": "Como 1907",
+    "shortName": "Como 1907",
+    "tla": "COM",
+    "crest": "https://crests.football-data.org/7397.png"
+   },
+   "away": {
+    "id": 103,
+    "name": "Bologna FC 1909",
+    "shortName": "Bologna",
+    "tla": "BOL",
+    "crest": "https://crests.football-data.org/103.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558498,
+   "utcDate": "2026-12-13T11:30:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 110,
+    "name": "SS Lazio",
+    "shortName": "Lazio",
+    "tla": "LAZ",
+    "crest": "https://crests.football-data.org/110.png"
+   },
+   "away": {
+    "id": 100,
+    "name": "AS Roma",
+    "shortName": "Roma",
+    "tla": "ROM",
+    "crest": "https://crests.football-data.org/100.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 558495,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-13T14:00:00Z",
+   "status": "TIMED",
    "matchday": 15,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3682,9 +3657,84 @@
    "winner": null
   },
   {
+   "id": 558493,
+   "utcDate": "2026-12-13T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 112,
+    "name": "Parma Calcio 1913",
+    "shortName": "Parma",
+    "tla": "PAR",
+    "crest": "https://crests.football-data.org/112.png"
+   },
+   "away": {
+    "id": 99,
+    "name": "ACF Fiorentina",
+    "shortName": "Fiorentina",
+    "tla": "FIO",
+    "crest": "https://crests.football-data.org/99.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558489,
+   "utcDate": "2026-12-13T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 113,
+    "name": "SSC Napoli",
+    "shortName": "Napoli",
+    "tla": "NAP",
+    "crest": "https://crests.football-data.org/113.png"
+   },
+   "away": {
+    "id": 98,
+    "name": "AC Milan",
+    "shortName": "Milan",
+    "tla": "MIL",
+    "crest": "https://crests.football-data.org/98.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558497,
+   "utcDate": "2026-12-14T17:30:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 102,
+    "name": "Atalanta BC",
+    "shortName": "Atalanta",
+    "tla": "ATA",
+    "crest": "https://crests.football-data.org/102.png"
+   },
+   "away": {
+    "id": 107,
+    "name": "Genoa CFC",
+    "shortName": "Genoa",
+    "tla": "GEN",
+    "crest": "https://crests.football-data.org/107.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 558496,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-14T19:45:00Z",
+   "status": "TIMED",
    "matchday": 15,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3707,134 +3757,9 @@
    "winner": null
   },
   {
-   "id": 558497,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 102,
-    "name": "Atalanta BC",
-    "shortName": "Atalanta",
-    "tla": "ATA",
-    "crest": "https://crests.football-data.org/102.png"
-   },
-   "away": {
-    "id": 107,
-    "name": "Genoa CFC",
-    "shortName": "Genoa",
-    "tla": "GEN",
-    "crest": "https://crests.football-data.org/107.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558498,
-   "utcDate": "2026-12-13T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 110,
-    "name": "SS Lazio",
-    "shortName": "Lazio",
-    "tla": "LAZ",
-    "crest": "https://crests.football-data.org/110.png"
-   },
-   "away": {
-    "id": 100,
-    "name": "AS Roma",
-    "shortName": "Roma",
-    "tla": "ROM",
-    "crest": "https://crests.football-data.org/100.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558479,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 98,
-    "name": "AC Milan",
-    "shortName": "Milan",
-    "tla": "MIL",
-    "crest": "https://crests.football-data.org/98.png"
-   },
-   "away": {
-    "id": 7397,
-    "name": "Como 1907",
-    "shortName": "Como 1907",
-    "tla": "COM",
-    "crest": "https://crests.football-data.org/7397.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558480,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 471,
-    "name": "US Sassuolo Calcio",
-    "shortName": "Sassuolo",
-    "tla": "SAS",
-    "crest": "https://crests.football-data.org/471.png"
-   },
-   "away": {
-    "id": 112,
-    "name": "Parma Calcio 1913",
-    "shortName": "Parma",
-    "tla": "PAR",
-    "crest": "https://crests.football-data.org/112.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558481,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 100,
-    "name": "AS Roma",
-    "shortName": "Roma",
-    "tla": "ROM",
-    "crest": "https://crests.football-data.org/100.png"
-   },
-   "away": {
-    "id": 109,
-    "name": "Juventus FC",
-    "shortName": "Juventus",
-    "tla": "JUV",
-    "crest": "https://crests.football-data.org/109.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 558482,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-18T17:30:00Z",
+   "status": "TIMED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3857,84 +3782,9 @@
    "winner": null
   },
   {
-   "id": 558483,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 102,
-    "name": "Atalanta BC",
-    "shortName": "Atalanta",
-    "tla": "ATA",
-    "crest": "https://crests.football-data.org/102.png"
-   },
-   "away": {
-    "id": 113,
-    "name": "SSC Napoli",
-    "shortName": "Napoli",
-    "tla": "NAP",
-    "crest": "https://crests.football-data.org/113.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558484,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 99,
-    "name": "ACF Fiorentina",
-    "shortName": "Fiorentina",
-    "tla": "FIO",
-    "crest": "https://crests.football-data.org/99.png"
-   },
-   "away": {
-    "id": 103,
-    "name": "Bologna FC 1909",
-    "shortName": "Bologna",
-    "tla": "BOL",
-    "crest": "https://crests.football-data.org/103.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558485,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 107,
-    "name": "Genoa CFC",
-    "shortName": "Genoa",
-    "tla": "GEN",
-    "crest": "https://crests.football-data.org/107.png"
-   },
-   "away": {
-    "id": 115,
-    "name": "Udinese Calcio",
-    "shortName": "Udinese",
-    "tla": "UDI",
-    "crest": "https://crests.football-data.org/115.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 558486,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-18T19:45:00Z",
+   "status": "TIMED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3957,9 +3807,109 @@
    "winner": null
   },
   {
+   "id": 558480,
+   "utcDate": "2026-12-19T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 471,
+    "name": "US Sassuolo Calcio",
+    "shortName": "Sassuolo",
+    "tla": "SAS",
+    "crest": "https://crests.football-data.org/471.png"
+   },
+   "away": {
+    "id": 112,
+    "name": "Parma Calcio 1913",
+    "shortName": "Parma",
+    "tla": "PAR",
+    "crest": "https://crests.football-data.org/112.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558479,
+   "utcDate": "2026-12-19T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 98,
+    "name": "AC Milan",
+    "shortName": "Milan",
+    "tla": "MIL",
+    "crest": "https://crests.football-data.org/98.png"
+   },
+   "away": {
+    "id": 7397,
+    "name": "Como 1907",
+    "shortName": "Como 1907",
+    "tla": "COM",
+    "crest": "https://crests.football-data.org/7397.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558481,
+   "utcDate": "2026-12-19T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 100,
+    "name": "AS Roma",
+    "shortName": "Roma",
+    "tla": "ROM",
+    "crest": "https://crests.football-data.org/100.png"
+   },
+   "away": {
+    "id": 109,
+    "name": "Juventus FC",
+    "shortName": "Juventus",
+    "tla": "JUV",
+    "crest": "https://crests.football-data.org/109.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558484,
+   "utcDate": "2026-12-20T11:30:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 99,
+    "name": "ACF Fiorentina",
+    "shortName": "Fiorentina",
+    "tla": "FIO",
+    "crest": "https://crests.football-data.org/99.png"
+   },
+   "away": {
+    "id": 103,
+    "name": "Bologna FC 1909",
+    "shortName": "Bologna",
+    "tla": "BOL",
+    "crest": "https://crests.football-data.org/103.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 558487,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-20T14:00:00Z",
+   "status": "TIMED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3983,8 +3933,8 @@
   },
   {
    "id": 558488,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-20T14:00:00Z",
+   "status": "TIMED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4007,93 +3957,43 @@
    "winner": null
   },
   {
-   "id": 558469,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
+   "id": 558485,
+   "utcDate": "2026-12-20T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
+    "id": 107,
+    "name": "Genoa CFC",
+    "shortName": "Genoa",
+    "tla": "GEN",
+    "crest": "https://crests.football-data.org/107.png"
+   },
+   "away": {
     "id": 115,
     "name": "Udinese Calcio",
     "shortName": "Udinese",
     "tla": "UDI",
     "crest": "https://crests.football-data.org/115.png"
    },
-   "away": {
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558483,
+   "utcDate": "2026-12-20T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
     "id": 102,
     "name": "Atalanta BC",
     "shortName": "Atalanta",
     "tla": "ATA",
     "crest": "https://crests.football-data.org/102.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558470,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 7397,
-    "name": "Como 1907",
-    "shortName": "Como 1907",
-    "tla": "COM",
-    "crest": "https://crests.football-data.org/7397.png"
-   },
-   "away": {
-    "id": 5890,
-    "name": "US Lecce",
-    "shortName": "Lecce",
-    "tla": "USL",
-    "crest": "https://crests.football-data.org/5890.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558471,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 100,
-    "name": "AS Roma",
-    "shortName": "Roma",
-    "tla": "ROM",
-    "crest": "https://crests.football-data.org/100.png"
-   },
-   "away": {
-    "id": 470,
-    "name": "Frosinone Calcio",
-    "shortName": "Frosinone",
-    "tla": "FRO",
-    "crest": "https://crests.football-data.org/470.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558472,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 112,
-    "name": "Parma Calcio 1913",
-    "shortName": "Parma",
-    "tla": "PAR",
-    "crest": "https://crests.football-data.org/112.png"
    },
    "away": {
     "id": 113,
@@ -4108,8 +4008,8 @@
   },
   {
    "id": 558473,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-02T11:30:00Z",
+   "status": "TIMED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4133,8 +4033,8 @@
   },
   {
    "id": 558474,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-02T14:00:00Z",
+   "status": "TIMED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4157,9 +4057,59 @@
    "winner": null
   },
   {
+   "id": 558478,
+   "utcDate": "2027-01-02T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 17,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 99,
+    "name": "ACF Fiorentina",
+    "shortName": "Fiorentina",
+    "tla": "FIO",
+    "crest": "https://crests.football-data.org/99.png"
+   },
+   "away": {
+    "id": 110,
+    "name": "SS Lazio",
+    "shortName": "Lazio",
+    "tla": "LAZ",
+    "crest": "https://crests.football-data.org/110.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558471,
+   "utcDate": "2027-01-02T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 17,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 100,
+    "name": "AS Roma",
+    "shortName": "Roma",
+    "tla": "ROM",
+    "crest": "https://crests.football-data.org/100.png"
+   },
+   "away": {
+    "id": 470,
+    "name": "Frosinone Calcio",
+    "shortName": "Frosinone",
+    "tla": "FRO",
+    "crest": "https://crests.football-data.org/470.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 558475,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-02T19:45:00Z",
+   "status": "TIMED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4183,8 +4133,8 @@
   },
   {
    "id": 558476,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-03T11:30:00Z",
+   "status": "TIMED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4207,9 +4157,84 @@
    "winner": null
   },
   {
+   "id": 558469,
+   "utcDate": "2027-01-03T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 17,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 115,
+    "name": "Udinese Calcio",
+    "shortName": "Udinese",
+    "tla": "UDI",
+    "crest": "https://crests.football-data.org/115.png"
+   },
+   "away": {
+    "id": 102,
+    "name": "Atalanta BC",
+    "shortName": "Atalanta",
+    "tla": "ATA",
+    "crest": "https://crests.football-data.org/102.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558470,
+   "utcDate": "2027-01-03T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 17,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 7397,
+    "name": "Como 1907",
+    "shortName": "Como 1907",
+    "tla": "COM",
+    "crest": "https://crests.football-data.org/7397.png"
+   },
+   "away": {
+    "id": 5890,
+    "name": "US Lecce",
+    "shortName": "Lecce",
+    "tla": "USL",
+    "crest": "https://crests.football-data.org/5890.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558472,
+   "utcDate": "2027-01-03T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 17,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 112,
+    "name": "Parma Calcio 1913",
+    "shortName": "Parma",
+    "tla": "PAR",
+    "crest": "https://crests.football-data.org/112.png"
+   },
+   "away": {
+    "id": 113,
+    "name": "SSC Napoli",
+    "shortName": "Napoli",
+    "tla": "NAP",
+    "crest": "https://crests.football-data.org/113.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 558477,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-03T19:45:00Z",
+   "status": "TIMED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4232,84 +4257,9 @@
    "winner": null
   },
   {
-   "id": 558478,
-   "utcDate": "2027-01-03T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 99,
-    "name": "ACF Fiorentina",
-    "shortName": "Fiorentina",
-    "tla": "FIO",
-    "crest": "https://crests.football-data.org/99.png"
-   },
-   "away": {
-    "id": 110,
-    "name": "SS Lazio",
-    "shortName": "Lazio",
-    "tla": "LAZ",
-    "crest": "https://crests.football-data.org/110.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558459,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 18,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 470,
-    "name": "Frosinone Calcio",
-    "shortName": "Frosinone",
-    "tla": "FRO",
-    "crest": "https://crests.football-data.org/470.png"
-   },
-   "away": {
-    "id": 103,
-    "name": "Bologna FC 1909",
-    "shortName": "Bologna",
-    "tla": "BOL",
-    "crest": "https://crests.football-data.org/103.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558460,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 18,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 471,
-    "name": "US Sassuolo Calcio",
-    "shortName": "Sassuolo",
-    "tla": "SAS",
-    "crest": "https://crests.football-data.org/471.png"
-   },
-   "away": {
-    "id": 115,
-    "name": "Udinese Calcio",
-    "shortName": "Udinese",
-    "tla": "UDI",
-    "crest": "https://crests.football-data.org/115.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 558461,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-05T17:30:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4333,8 +4283,8 @@
   },
   {
    "id": 558462,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-05T17:30:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4357,34 +4307,9 @@
    "winner": null
   },
   {
-   "id": 558463,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 18,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 113,
-    "name": "SSC Napoli",
-    "shortName": "Napoli",
-    "tla": "NAP",
-    "crest": "https://crests.football-data.org/113.png"
-   },
-   "away": {
-    "id": 104,
-    "name": "Cagliari Calcio",
-    "shortName": "Cagliari",
-    "tla": "CAG",
-    "crest": "https://crests.football-data.org/104.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 558464,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-05T19:45:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4408,8 +4333,8 @@
   },
   {
    "id": 558465,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-06T11:30:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4432,9 +4357,59 @@
    "winner": null
   },
   {
+   "id": 558459,
+   "utcDate": "2027-01-06T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 18,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 470,
+    "name": "Frosinone Calcio",
+    "shortName": "Frosinone",
+    "tla": "FRO",
+    "crest": "https://crests.football-data.org/470.png"
+   },
+   "away": {
+    "id": 103,
+    "name": "Bologna FC 1909",
+    "shortName": "Bologna",
+    "tla": "BOL",
+    "crest": "https://crests.football-data.org/103.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558468,
+   "utcDate": "2027-01-06T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 18,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5890,
+    "name": "US Lecce",
+    "shortName": "Lecce",
+    "tla": "USL",
+    "crest": "https://crests.football-data.org/5890.png"
+   },
+   "away": {
+    "id": 112,
+    "name": "Parma Calcio 1913",
+    "shortName": "Parma",
+    "tla": "PAR",
+    "crest": "https://crests.football-data.org/112.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 558466,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-06T17:00:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4458,8 +4433,8 @@
   },
   {
    "id": 558467,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-06T19:45:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4482,100 +4457,50 @@
    "winner": null
   },
   {
-   "id": 558468,
-   "utcDate": "2027-01-06T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 558460,
+   "utcDate": "2027-01-07T17:30:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 5890,
-    "name": "US Lecce",
-    "shortName": "Lecce",
-    "tla": "USL",
-    "crest": "https://crests.football-data.org/5890.png"
+    "id": 471,
+    "name": "US Sassuolo Calcio",
+    "shortName": "Sassuolo",
+    "tla": "SAS",
+    "crest": "https://crests.football-data.org/471.png"
    },
    "away": {
-    "id": 112,
-    "name": "Parma Calcio 1913",
-    "shortName": "Parma",
-    "tla": "PAR",
-    "crest": "https://crests.football-data.org/112.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558449,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 19,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 99,
-    "name": "ACF Fiorentina",
-    "shortName": "Fiorentina",
-    "tla": "FIO",
-    "crest": "https://crests.football-data.org/99.png"
-   },
-   "away": {
-    "id": 5890,
-    "name": "US Lecce",
-    "shortName": "Lecce",
-    "tla": "USL",
-    "crest": "https://crests.football-data.org/5890.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558450,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 19,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
     "id": 115,
     "name": "Udinese Calcio",
     "shortName": "Udinese",
     "tla": "UDI",
     "crest": "https://crests.football-data.org/115.png"
    },
-   "away": {
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558463,
+   "utcDate": "2027-01-07T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 18,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
     "id": 113,
     "name": "SSC Napoli",
     "shortName": "Napoli",
     "tla": "NAP",
     "crest": "https://crests.football-data.org/113.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558451,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 19,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 586,
-    "name": "Torino FC",
-    "shortName": "Torino",
-    "tla": "TOR",
-    "crest": "https://crests.football-data.org/586.png"
-   },
    "away": {
-    "id": 102,
-    "name": "Atalanta BC",
-    "shortName": "Atalanta",
-    "tla": "ATA",
-    "crest": "https://crests.football-data.org/102.png"
+    "id": 104,
+    "name": "Cagliari Calcio",
+    "shortName": "Cagliari",
+    "tla": "CAG",
+    "crest": "https://crests.football-data.org/104.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4583,8 +4508,8 @@
   },
   {
    "id": 558452,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-09T14:00:00Z",
+   "status": "TIMED",
    "matchday": 19,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4607,50 +4532,25 @@
    "winner": null
   },
   {
-   "id": 558453,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 558458,
+   "utcDate": "2027-01-09T17:00:00Z",
+   "status": "TIMED",
    "matchday": 19,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 108,
-    "name": "FC Internazionale Milano",
-    "shortName": "Inter",
-    "tla": "INT",
-    "crest": "https://crests.football-data.org/108.png"
+    "id": 100,
+    "name": "AS Roma",
+    "shortName": "Roma",
+    "tla": "ROM",
+    "crest": "https://crests.football-data.org/100.png"
    },
    "away": {
-    "id": 109,
-    "name": "Juventus FC",
-    "shortName": "Juventus",
-    "tla": "JUV",
-    "crest": "https://crests.football-data.org/109.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 558454,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 19,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 112,
-    "name": "Parma Calcio 1913",
-    "shortName": "Parma",
-    "tla": "PAR",
-    "crest": "https://crests.football-data.org/112.png"
-   },
-   "away": {
-    "id": 454,
-    "name": "Venezia FC",
-    "shortName": "Venezia FC",
-    "tla": "VEN",
-    "crest": "https://crests.football-data.org/454.png"
+    "id": 98,
+    "name": "AC Milan",
+    "shortName": "Milan",
+    "tla": "MIL",
+    "crest": "https://crests.football-data.org/98.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4658,8 +4558,8 @@
   },
   {
    "id": 558455,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-09T19:45:00Z",
+   "status": "TIMED",
    "matchday": 19,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4682,34 +4582,9 @@
    "winner": null
   },
   {
-   "id": 558456,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 19,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 104,
-    "name": "Cagliari Calcio",
-    "shortName": "Cagliari",
-    "tla": "CAG",
-    "crest": "https://crests.football-data.org/104.png"
-   },
-   "away": {
-    "id": 471,
-    "name": "US Sassuolo Calcio",
-    "shortName": "Sassuolo",
-    "tla": "SAS",
-    "crest": "https://crests.football-data.org/471.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 558457,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-10T11:30:00Z",
+   "status": "TIMED",
    "matchday": 19,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4732,25 +4607,150 @@
    "winner": null
   },
   {
-   "id": 558458,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 558449,
+   "utcDate": "2027-01-10T14:00:00Z",
+   "status": "TIMED",
    "matchday": 19,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 100,
-    "name": "AS Roma",
-    "shortName": "Roma",
-    "tla": "ROM",
-    "crest": "https://crests.football-data.org/100.png"
+    "id": 99,
+    "name": "ACF Fiorentina",
+    "shortName": "Fiorentina",
+    "tla": "FIO",
+    "crest": "https://crests.football-data.org/99.png"
    },
    "away": {
-    "id": 98,
-    "name": "AC Milan",
-    "shortName": "Milan",
-    "tla": "MIL",
-    "crest": "https://crests.football-data.org/98.png"
+    "id": 5890,
+    "name": "US Lecce",
+    "shortName": "Lecce",
+    "tla": "USL",
+    "crest": "https://crests.football-data.org/5890.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558454,
+   "utcDate": "2027-01-10T14:00:00Z",
+   "status": "TIMED",
+   "matchday": 19,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 112,
+    "name": "Parma Calcio 1913",
+    "shortName": "Parma",
+    "tla": "PAR",
+    "crest": "https://crests.football-data.org/112.png"
+   },
+   "away": {
+    "id": 454,
+    "name": "Venezia FC",
+    "shortName": "Venezia FC",
+    "tla": "VEN",
+    "crest": "https://crests.football-data.org/454.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558451,
+   "utcDate": "2027-01-10T17:00:00Z",
+   "status": "TIMED",
+   "matchday": 19,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 586,
+    "name": "Torino FC",
+    "shortName": "Torino",
+    "tla": "TOR",
+    "crest": "https://crests.football-data.org/586.png"
+   },
+   "away": {
+    "id": 102,
+    "name": "Atalanta BC",
+    "shortName": "Atalanta",
+    "tla": "ATA",
+    "crest": "https://crests.football-data.org/102.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558453,
+   "utcDate": "2027-01-10T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 19,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 108,
+    "name": "FC Internazionale Milano",
+    "shortName": "Inter",
+    "tla": "INT",
+    "crest": "https://crests.football-data.org/108.png"
+   },
+   "away": {
+    "id": 109,
+    "name": "Juventus FC",
+    "shortName": "Juventus",
+    "tla": "JUV",
+    "crest": "https://crests.football-data.org/109.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558456,
+   "utcDate": "2027-01-11T17:30:00Z",
+   "status": "TIMED",
+   "matchday": 19,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 104,
+    "name": "Cagliari Calcio",
+    "shortName": "Cagliari",
+    "tla": "CAG",
+    "crest": "https://crests.football-data.org/104.png"
+   },
+   "away": {
+    "id": 471,
+    "name": "US Sassuolo Calcio",
+    "shortName": "Sassuolo",
+    "tla": "SAS",
+    "crest": "https://crests.football-data.org/471.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 558450,
+   "utcDate": "2027-01-11T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 19,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 115,
+    "name": "Udinese Calcio",
+    "shortName": "Udinese",
+    "tla": "UDI",
+    "crest": "https://crests.football-data.org/115.png"
+   },
+   "away": {
+    "id": 113,
+    "name": "SSC Napoli",
+    "shortName": "Napoli",
+    "tla": "NAP",
+    "crest": "https://crests.football-data.org/113.png"
    },
    "homeGoals": null,
    "awayGoals": null,
