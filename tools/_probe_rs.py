@@ -131,62 +131,44 @@ def section(name, fn):
 
 
 # ======================================================================
-def e1():
-    """Where the home games of 2026-27 were actually played: each league site lists a venue per match."""
-    for base, slug, team in [("https://www.superliga.rs", "zemun", "ZEMUN"), ("https://www.superliga.rs", "ofk-beograd", "OFK BEOGRAD"),
-                             ("https://www.superliga.rs", "imt", "IMT"), ("https://www.superliga.rs", "zeleznicar", "ŽELEZNIČAR"),
-                             ("https://www.superliga.rs", "macva", "MAČVA"),
-                             ("https://www.prvaliga.rs", "bor-1919", "BOR 1919"), ("https://www.prvaliga.rs", "jedinstvo", "JEDINSTVO"),
-                             ("https://www.prvaliga.rs", "ofk-vrsac", "OFK VRŠAC"), ("https://www.prvaliga.rs", "rfk-graficar", "RFK GRAFIČAR")]:
-        st, body, url = fetch(f"{base}/tim/{slug}/")
-        t = text(body)
-        hits = [t[max(0, m.start() - 170):m.end() + 40] for m in re.finditer(re.escape(team), t)]
-        p("VENUES", slug, st, len(hits))
-        for h in hits[:10]:
-            p("    ", h)
-        links = sorted(set(re.findall(r'href="([^"]*(?:utakmic|match|raspored|kolo)[^"]*)"', body, re.I)))[:15]
-        p("   LINKS", links)
-        time.sleep(2)
-    for base in ["https://www.superliga.rs", "https://www.prvaliga.rs"]:
-        for path in ["/raspored/", "/rezultati/", "/raspored-i-rezultati/"]:
-            st, body, url = fetch(base + path)
-            t = text(body)
-            p("SCHED", base + path, st, len(t))
-            for team in ("ZEMUN", "OFK BEOGRAD", "IMT", "BOR 1919", "Zemun", "OFK Beograd", "Bor 1919"):
-                for m in list(re.finditer(re.escape(team), t))[:6]:
-                    p("   ", team, "...", t[max(0, m.start() - 150):m.end() + 40])
-            time.sleep(2)
+def f1():
+    """The Ub ground: pitches with their size, and any grandstand, around Ub."""
+    q = """[out:json][timeout:60];
+    ( way["leisure"~"pitch|stadium"](around:1500,44.456,20.071);
+      way["building"~"grandstand|stadium"](around:1500,44.456,20.071);
+      way["man_made"~"grandstand"](around:1500,44.456,20.071); );
+    out tags bb;"""
+    for attempt in range(3):
+        body = urllib.parse.urlencode({"data": q}).encode()
+        req = urllib.request.Request("https://overpass-api.de/api/interpreter", data=body, headers={"User-Agent": cr.USER_AGENT})
+        try:
+            with urllib.request.urlopen(req, timeout=90) as r:
+                d = json.loads(r.read().decode())
+            break
+        except Exception as ex:
+            p("OVERPASS-RETRY", ex); d = None; time.sleep(30)
+    import math
+    for el in (d or {}).get("elements", []):
+        b = el.get("bounds") or {}
+        if not b: continue
+        lat = (b["minlat"] + b["maxlat"]) / 2; lon = (b["minlon"] + b["maxlon"]) / 2
+        h = (b["maxlat"] - b["minlat"]) * 111320; w = (b["maxlon"] - b["minlon"]) * 111320 * math.cos(math.radians(lat))
+        p("UBOSM", f"way/{el['id']}", round(lat, 6), round(lon, 6), f"{round(w)}x{round(h)} m bbox", el.get("tags"))
 
 
-def e2():
-    """OpenStreetMap around the Ub ground and SRC Mladost in Pancevo, any sports object."""
-    for label, lat, lon, r in [("Ub", 44.456, 20.074, 2500), ("SRC Mladost", 44.879086, 20.662633, 600)]:
-        q = f"""[out:json][timeout:60];
-        nwr["leisure"~"stadium|pitch|sports_centre"](around:{r},{lat},{lon});
-        out center tags;"""
-        d = None
-        for attempt in range(3):
-            body = urllib.parse.urlencode({"data": q}).encode()
-            req = urllib.request.Request("https://overpass-api.de/api/interpreter", data=body,
-                                         headers={"User-Agent": cr.USER_AGENT})
-            try:
-                with urllib.request.urlopen(req, timeout=90) as rr:
-                    d = json.loads(rr.read().decode())
-                break
-            except Exception as ex:
-                p("OVERPASS-RETRY", label, ex)
-                time.sleep(30)
-        for el in (d or {}).get("elements", []):
-            c = el.get("center") or {"lat": el.get("lat"), "lon": el.get("lon")}
-            t = el.get("tags", {})
-            if t.get("sport") and not any(k in t.get("sport") for k in ("soccer", "football", "multi", "athletics")):
-                continue
-            p("RSOSM4", label, f"{el['type']}/{el['id']}", round(c.get("lat") or 0, 6), round(c.get("lon") or 0, 6), "|",
-              {k: t[k] for k in ("name", "name:sr-Latn", "leisure", "sport", "operator", "capacity", "wikidata", "surface") if k in t})
-        time.sleep(5)
+def f2():
+    """Where Zeleznicar has played its home games."""
+    st, body, url = fetch("https://www.superliga.rs/raspored-i-rezultati/")
+    t = text(body)
+    for m in list(re.finditer(r"Železničar \d+:\d+ ", t))[:8]:
+        p("ZEL", t[m.start():m.end() + 60])
+    st, body, url = fetch("https://www.prvaliga.rs/raspored-i-rezultati/")
+    t = text(body)
+    for m in list(re.finditer(r"(Jedinstvo|Bor 1919) \d+:\d+ ", t))[:8]:
+        p("PLHOME", t[m.start():m.end() + 60])
 
 
-for name, fn in [("E1 match venues", e1), ("E2 OSM Ub Pancevo", e2)]:
+for name, fn in [("F1 Ub", f1), ("F2 home venues", f2)]:
     section(name, fn)
     time.sleep(2)
-p("=== END OF PROBE RS5 ===")
+p("=== END OF PROBE RS6 ===")
