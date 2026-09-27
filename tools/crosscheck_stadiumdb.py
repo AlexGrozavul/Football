@@ -110,6 +110,11 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # in 2026-09-19 at 27 grounds for a country whose top two divisions field
 # 28 teams - bare coverage at best, so the same rule as Switzerland:
 # silence is not agreement.
+# Serbia's "ser" on 2026-09-27: /stadiums/ser answers 200 with 29 grounds,
+# and /stadiums/srb is a 404. Measured in 2026-09-19 at 29 grounds for a
+# country whose top two divisions field 30 teams (14 and 16 in 2026-27),
+# the same bare coverage as Austria and Switzerland - so the same rule:
+# a Serbian club with no StadiumDB match is unchecked, never agreement.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
@@ -117,6 +122,7 @@ COUNTRY_PAGES = {
     "IT": ("ita", "Italy"),
     "CH": ("sui", "Switzerland"),
     "AT": ("aut", "Austria"),
+    "RS": ("ser", "Serbia"),
 }
 
 # Below this the two sources are treated as agreeing. Same threshold

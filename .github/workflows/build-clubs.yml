@@ -17,6 +17,7 @@ on:
     paths:
       - "data/league-tiers.csv"
       - "data/clubs-manual.csv"
+      - "data/roster-links-manual.csv"
       - "tools/fetch_clubs.py"
       - ".github/workflows/build-clubs.yml"
   workflow_dispatch:

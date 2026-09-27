@@ -107,6 +107,15 @@ a subscribed calendar reads as a schedule regardless of its description.
   *leave the fetched value alone*, `<clear>` means *delete it and put
   nothing back*. See the convention below. Same column set as
   `capacity-review.csv`.
+  **Since 2026-09-27 a row may name a club the club query does not
+  return**, provided it carries the club's own `clubQid`, a `country`
+  and a `tier`: the **hand-named fallback** brings the club in under
+  its own Q-id when Wikidata has the item and a tracked 2026-27 roster
+  names it (Conventions). That is how a promoted club whose league tag
+  did not follow reaches the map now. A row with **no** `clubQid` still
+  adds a club, under a made-up `MANUAL-` id the roster check cannot join
+  to its division - one club read as two errors on every run, which is
+  what the fallback was built to end. Prefer the Q-id.
 - `data/league-tiers.csv` — maps a league's Wikidata Q-id to a tier.
   Tier comes from this file and never from a league name: Wikidata's
   league items are fragmented and undated, so names cannot be trusted.
@@ -201,6 +210,24 @@ a subscribed calendar reads as a schedule regardless of its description.
   skipped** rather than compared against nothing. The Austrian 2. Liga
   row was that case until 2026-09-26, holding its corrected title
   against the day Austria was added; it is now a live row.
+- `data/roster-links-manual.csv` — added 2026-09-27. **Which Q-id a
+  season-table row is, where the table cannot say**: `article` (exactly
+  as `league-rosters.csv` writes it, en dash included), `team` (the team
+  as the row shows it; footnote marks like `[a]` and `(P)` are set
+  aside, case and accents folded), `clubQid`, `note`. Read by
+  `check_rosters.py` and, through `roster_qids()`, by the club builder.
+  It exists for the rows the reader rightly refuses: a reserve side with
+  no English article of its own links its **parent** ("SK Rapid II"
+  linking SK Rapid Wien), and a team cell with no link has the city as
+  its first link ("Austria Wien II" linking Vienna). It can re-point a
+  row the reader did read, and the read-back then says what the article
+  linked, so an override is never silent. A malformed row is rejected by
+  line, and a link that matched no row once its article was read is a
+  problem that turns the run red - a table edited under a link is the
+  change a person should look at. Holds three rows today, all 2. Liga:
+  Rapid II and Sturm II (added on Alexandru's instruction) and Austria
+  Wien II. **A link is a hand-written identity claim** - the same kind of
+  decision as a `fixture-links-manual.csv` row, and Alexandru's to make.
 - `data/coordinate-reviews.csv` — added 2026-09-26. **What a person
   already decided about a row of `coordinate-review.csv`**, so the
   monthly run cannot offer it again as though it were new: `clubQid`,
@@ -278,6 +305,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   whose item carries **more than one truthy ground**, and says whether
   a hand row pins it — the SC Freiburg shape, reported rather than
   found by accident. It picks no ground itself.
+  Since 2026-09-27 it has a third route, the **hand-named fallback**:
+  a `clubs-manual.csv` row naming a Q-id no query returned, with a
+  country and a tier, brings that club in under its own Q-id when a
+  tracked roster names it. One roster read per country per run is
+  shared by both fallbacks. See Conventions.
 - `tools/crosscheck_capacity.py` — OpenStreetMap capacity comparison
 - `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
   clubs Wikidata cannot place. Matches on names, proposes only, and
@@ -300,6 +332,14 @@ a subscribed calendar reads as a schedule regardless of its description.
   reserve side's name ("SK Rapid II" linking SK Rapid Wien), or whose
   team cell has no link at all, so the first link is a city
   ("Austria Wien II" linking Vienna).
+  Since 2026-09-27 **one club is one finding**: a row it leaves out
+  can be joined to its Q-id by hand in `data/roster-links-manual.csv`,
+  read back every run; a map club whose `P831` (parent club) is a
+  roster club not on the map, with the same reserve marker, is read as
+  that club - the club-and-men's-team shape, joined id to id, never by
+  name; and a club whose position a hand row clears on purpose reads
+  `unplaced-no-coordinates` with that reason, not as missing from
+  Wikidata.
   It also exports `roster_qids(country, tiers)`, which is how
   `fetch_clubs.py` asks "does a division this project tracks say this
   club is playing" for the novalue fallback. The question belongs to
@@ -502,6 +542,44 @@ failed on both runs, HTTP 503 after 166.1s and HTTP 502 after 191.1s.
 `unmapped-leagues.csv` was correctly left as the last good run left it
 both times, which is the review-file guard doing exactly its job. It
 is unrelated to the fallback and was already the known behaviour.
+
+**A club the club query cannot see at all reaches the map under its
+own Q-id through a hand row - the hand-named fallback, built
+2026-09-27.** Written from FC Rapperswil-Jona and FC Stade Nyonnais, at
+Alexandru's instruction to fix the roster check's double count
+properly. A club promoted into a tracked division whose only league tag
+still names the lower league it left carries no mapped tag, so neither
+the club query nor either rank shape returns it, and
+`apply_manual`'s guard - rightly - refuses a `clubQid` the queries did
+not return. Until then the only way onto the map was a hand row with no
+`clubQid`, a made-up `MANUAL-` id, and the roster check, which joins on
+Q-ids, reported one club as two errors on every run.
+
+The fix is the one the Farul case already taught: **make the club be
+there**, then correct it with an ordinary row. `hand_named_fallback()`
+in `fetch_clubs.py` takes as candidates exactly the Q-ids a hand row
+names - with this country and a numeric tier - that no query returned,
+and holds them to the novalue fallback's three conditions:
+
+1. **a hand row names it with a tier.** The tier is the hand row's,
+   never the roster's and never Wikidata's; where it disagrees with
+   the roster's the summary says so and the hand row still wins.
+2. **Wikidata has the item, it is not a person and it has no `P576`**,
+   asked as flags rather than filters so each left-out candidate is
+   named with its reason - no such item (a typo), a person, dissolved.
+3. **a tracked 2026-27 roster names it** - by the sitelink hop, or by a
+   hand link in `data/roster-links-manual.csv` for a row the reader
+   refuses. This is what makes a typing mistake in `clubQid` harmless:
+   a mistyped Q-id is not in a division's membership list.
+
+Then `apply_manual` corrects the surfaced club like any other, guard
+unchanged. **A failed roster read or a failed query surfaces nothing,
+and says so** - the same rule as the novalue fallback, with the same
+cost: a club that only reaches the map this way (Rapperswil-Jona,
+Nyonnais, the seven Austrian additions, seven Serbian ones) is missing
+from a build whose roster read failed, and is named as missing. One
+roster read per country per run is shared by both fallbacks, so the
+second never asks again or gets a different answer.
 
 **A failed fetch never rewrites a review file.** `capacity-review.csv`
 and `coordinate-review.csv` are evidence waiting to be judged, and the
@@ -1151,6 +1229,200 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **The 2026-09-27 pass: the roster check's double count fixed
+  properly, Serbia's top two tiers on the map, and the Austrian and
+  German questions of 2026-09-26 settled.** Six instructions from
+  Alexandru in one session, all run through throwaway probes on a
+  GitHub runner (six of them, removed in the same branch) because the
+  sandbox still answers 403 to CONNECT for Wikidata, Wikipedia,
+  StadiumDB and OpenStreetMap - and WebFetch is refused for Wikidata too.
+  - **The double count, and the audit of every hand-row club.** The
+    ask: a club present through a hand row and under its real Wikidata
+    id should read as ONE club found. Three shapes were doing it, and
+    each is now joined id to id (see Conventions and Files):
+    - **Rapperswil-Jona and Stade Nyonnais**, the `MANUAL-` shape - now
+      under their real Q-ids through the hand-named fallback.
+    - **FC Erzgebirge Aue and SV Babelsberg 03**, both with hand rows,
+      and **FC Augsburg**, without one - the club-and-men's-team shape.
+      Documented, but still two findings each on every run. Joined on
+      each team item's own `P831` (parent club).
+    - **Young Violets Austria Wien**, a hand-row club reading as one
+      false `extra-not-in-roster` (its table row has no link). Joined by
+      a hand link.
+    **CSC Dumbrăvița was never affected**: its row has carried its real
+    Q-id `Q55618976` since the file's first commit, it corrects a club
+    the query returns, and its verdict was `ok` throughout. Nothing else
+    was silently double-counted. Checked row by row against
+    `roster-review.csv`: the other hand-row clubs with a finding
+    (FC Ismaning, FC Viktoria 1889 Berlin, FSV Optik Rathenow, Germania
+    Egestorf, SV Eichede, SV Heimstetten, TSV 1896 Rain, VfB Auerbach,
+    Wuppertaler SV) each carry ONE `extra-not-in-roster` - tier-4 churn,
+    a real question about the division, not one club counted twice.
+    **Bihor Oradea's pair stays two findings on purpose**: it is two
+    items the sources disagree about, the identity question recorded in
+    its own entry, and joining them would be deciding it. **CSM Olimpia
+    Satu Mare** reads twice under ONE Q-id (`wrong-tier` from Liga II,
+    `extra` from Liga III) - two divisions each saying something true,
+    no hand row involved; unchanged.
+  - **Austria, the seven 2. Liga clubs added** on Alexandru's
+    instruction, each confirmed by the complete 2026-27 2. Liga article
+    and its ground by **the league's own site**, 2liga.at (robots.txt
+    allows everything; one stadium page per team, name, address,
+    capacity). SKU Amstetten (Ertl Glas-Stadion, 3,030), SC Schwarz-Weiß
+    Bregenz (its own `P115`; capacity contested, 12,000 against the
+    league's 5,000, left as Wikidata has it), Floridsdorfer AC (FAC-Platz,
+    3,000), ASK Voitsberg (Münzer Bioindustrie Sportpark, the
+    Hans-Blümel-Stadion's item for the position; capacity blank), FC
+    Hertha Wels (EWW Stadion, 3,000 - the HUBER Arena item sits on the
+    same spot), SK Rapid Wien II (Allianz Stadion, Rapid's pin and
+    Rapid's 28,600) and SK Sturm Graz II (**Solarstadion Gleisdorf** - the
+    league site, the German infobox and article against the English
+    table's Merkur Arena; position from OpenStreetMap; capacity blank).
+    Rapid II and Sturm II are read by the roster check through hand
+    links, because the article links their parent clubs.
+  - **The Tivoli carries one figure, 16,008, on WSG Tirol and FC Wacker
+    Innsbruck.** The league's own pages for both clubs, the 2026-27
+    Bundesliga table and StadiumDB agree exactly. Not taken: 17,000,
+    which WSG's own stadium page gives as the total with standing places
+    (15,200 seats), and the 2. Liga table and the stadium's articles
+    repeat; 17,400, Wikidata's. Both rows say so.
+  - **FC Liefering's ground is the Red Bull Arena**, the map's all
+    along - the league's own team page is the third source that settles
+    the two-to-one split; the Untersberg-Arena was a tenancy in 2014-15
+    and 2018-20 (German article). Its capacity now matches Salzburg's
+    row for the same ground, 30,188, instead of Wikidata's 31,895.
+  - **The five old Vienna clubs are gone, checked rather than left
+    open**: FC Wien dissolved in 1973; SC Wacker Wien and SK Admira Wien
+    merged in 1971 into FC Admira/Wacker (on the map as Admira Wacker);
+    Brigittenauer AC's first team was dissolved in 1933 and the club
+    merged away in 2009, its name gone; the Vienna Cricket and
+    Football-Club still exists but plays no football. German Wikipedia
+    for each, read on a runner. Each has a whole-club `rejected` row in
+    `coordinate-reviews.csv`, the Wiener AC way - they have no
+    coordinates, so a `skip` is not needed while that holds.
+  - **BFC Dynamo is pinned to the Sportforum, capacity blank** -
+    Alexandru's decision to prefer Wikipedia's two infoboxes over
+    StadiumDB's Jahn-Sportpark listing at a tier where StadiumDB is
+    thin. The position is the Sportforum's own item `Q551837`.
+  - **Serbia's top two tiers are on the map: SuperLiga 13 of 14 and
+    First League 15 of 16 drawn, nothing extra and nothing at the wrong
+    tier, and the two not drawn are off for a named reason.** Same
+    pipeline and standard as the six countries before it; tiers 1 and 2
+    only, the Serbian League and below deliberately untouched.
+    - **The league Q-ids were read, not remembered**: `Q235307` SuperLiga
+      (`P3983` 1, enwiki *Serbian SuperLiga*) and `Q1813595` First League
+      (enwiki *Serbian First League*, **no** `P3983`). Both 2026–27
+      articles are one stadiums-and-locations table, 14 of 14 and 16 of
+      16 resolved directly, and each has a Team changes table that
+      turned out to be the most useful thing on the page. StadiumDB's
+      slug is `ser` (`srb` is a 404), 29 grounds - bare coverage, so
+      silence there is unchecked, never agreement. The country box's
+      north, east and west edges are Wikidata's own `P1332`/`P1334`/
+      `P1335` on `Q403`; its south edge sits below Preševo, because
+      Wikidata's southernmost point is in Kosovo. Labels are asked in
+      English first, then Serbian Latin (Conventions-level reasoning in
+      `COUNTRY_BOX`'s comment); Cyrillic is never asked for.
+    - **Serbia is where the club query's blindness to end dates bites
+      hardest.** Every item carrying either tag at any rank was listed
+      (86 statements, about sixty items) and read against both articles,
+      `P576` and its own English infobox. Most Serbian league tags carry
+      `P580`/`P582` qualifiers, and **the club query does not read
+      `P582`**, so a tag that ended in 2013 counts as current. The result
+      read before any build: **fourteen items would have been drawn**
+      in a division they left - five at tier 1 - and nine more would
+      have been offered as coordinate proposals next month.
+      - **`skip`ped, fourteen**, each to the Hermannstadt standard (both
+        articles complete, neither lists it, an infobox states the
+        reason): at tier 1 **FK BSK Borča** (Belgrade First League),
+        **FK Budućnost Banatski Dvor** (dissolved 2006),
+        **FK Proleter Novi Sad** (dissolved 2022, and it was on
+        Vojvodina's pin), **FK Proleter Zrenjanin** (dissolved 2005) and
+        **FK Sloboda Užice** (Serbian League West); at tier 2 **FK
+        Bežanija**, **FK Inđija**, **FK Mladost Novi Sad** (withdrew),
+        **FK Rad**, **FK Sloga Kraljevo** (dissolved 2025), **FK Timok**,
+        **OFK Bačka**, **OFK Mladenovac** and **RFK Novi Sad 1921**.
+      - **Rejected before they were ever proposed, nine**, whole-club
+        rows in `coordinate-reviews.csv`: OFK Bečej 1918, FK Bačinci
+        (merged 2010), FK Jedinstvo Putevi, FK Kolubara, FK Radnički
+        Nova Pazova, FK Sloga 33, FK Srem, FK Tekstilac Odžaci (relegated
+        to the Serbian League, the First League article's own Team
+        changes table says) and FK Zlatibor Čajetina.
+      - Three more carry `P576` and the gate already drops them: FK
+        Hajduk Kula, FK Banat Zrenjanin, FK Sevojno.
+      **Whether the club query should honour `P582` is Alexandru's call**
+      and is written here rather than built. It would have saved most of
+      the fourteen rows. It would also change what every country's
+      builder sees, and LR Vicenza's shape rests on a preferred tag with
+      an end date, so it needs measuring across all seven countries
+      before anyone switches it on.
+    - **Six tiers corrected by hand, all reviewable**, each on two
+      complete division lists plus the club's own infobox, and for five
+      of them the Team changes table too - the FC Wil shape: **FK Javor
+      Ivanjica, FK Napredak Kruševac, FK Spartak Subotica and FK TSC** to
+      tier 2 (relegated from the 2025–26 SuperLiga, their preferred
+      SuperLiga tags stale), **FK Smederevo 1924** to tier 2 (a SuperLiga
+      tag dated 2009–2013), and **FK Mačva Šabac** to tier 1 (promoted,
+      its preferred First League tag stale).
+    - **Seven promoted clubs whose tags did not follow reach the map
+      through the hand-named fallback**, each under its own Q-id: FK
+      Zemun (tier 1), FK Bor 1919, FK Loznica, FK Proleter 023 (a new
+      item for a club refounded on 9 July 2026 - not Proleter Zrenjanin),
+      GFK Dubočica, OFK Vršac and RFK Grafičar Beograd (tier 2).
+    - **Grounds are where the matches are played, read from the leagues'
+      own schedules.** superliga.rs and prvaliga.rs (robots.txt allows
+      the team and schedule pages) list a venue for every match, and for
+      four clubs that settled a disagreement between the club's
+      registered ground - Wikidata, the league's team page, the Serbian
+      infobox - and the one it actually uses in 2026–27:
+      **OFK Beograd** at the Serbian FA's centre in Stara Pazova (both
+      home games so far; the Omladinski is its own), **FK IMT** at the
+      Lagator in Loznica (sharing FK Loznica's pin, genuinely),
+      **FK Bor 1919** at the Mladost in Kruševac, 170 km from Bor (two of
+      its three home games, sharing Napredak's pin) and **FK Zemun** in
+      Ub, below. **FK Železničar Pančevo** (SC Mladost, all six home
+      games), **FK TSC**, **FK Mačva** and **OFK Vršac** were placed from
+      their own ground items or OpenStreetMap, and **RFK Grafičar** on
+      Red Star's auxiliary pitch, sharing Red Star's pin.
+    - **Two clubs are off the map, named, because nobody knows where
+      the ground is**: **FK Jedinstvo Ub** and **FK Zemun** play at the
+      Stadion "Dragan Džajić" in Ub. Its Wikidata item `Q110045992` has
+      no position and OpenStreetMap maps three unnamed full-size pitches
+      in Ub and no grandstand, so which is the stadium is a guess, and a
+      guess is not a pin. Zemun's hand row clears the position it would
+      otherwise take from its own ground in Zemun, where no 2026–27
+      match has been played; Jedinstvo has no position anywhere and is
+      `unplaced-no-coordinates`. Two halves of one coordinate, from any
+      source that names the Ub ground, bring both back.
+    - **Duplicates: none.** No men's-team item, no two items for one
+      club; three shared pins, each genuine (Lagator, Mladost Kruševac,
+      the Rajko Mitić complex). **Hidden leagues**: no preferred
+      `<novalue>`; query C's two Serbian candidates, FK Donji Srem and FK
+      Jagodina, are named by no roster - bill 0.
+    - **Capacities: nothing corrected, and the reasons are written
+      down.** StadiumDB's four Serbian rows: **FK Crvena zvezda** 55,538
+      (Wikidata) / 51,755 (StadiumDB) / 49,167 (the SuperLiga table) and
+      **FK Novi Pazar** 12,000 / 6,900 / 10,000 - no two within 5% in
+      either, so contested and unchanged; **FK Javor Ivanjica**, where the
+      map's 5,000 agrees with the table and StadiumDB's 3,000 is the
+      outlier; and **FK Proleter 023**, where StadiumDB matched the wrong
+      ground - its "Proleter" at the Karađorđe in Novi Sad is the
+      dissolved Proleter Novi Sad, and the map's Zrenjanin figure stands.
+      OpenStreetMap confirms almost nothing, Romania's and Italy's shape:
+      of 28 clubs, 1 agrees, 18 have a Wikidata figure only. Five
+      capacities are blank on purpose (Mačva, Železničar, OFK Beograd,
+      Vršac, Grafičar), each because its only figures are one source's.
+      The OpenStreetMap cross-check needed **three runs** on the branch
+      before one came back complete - Austria and Germany answered HTTP
+      504 on the first, Serbia on the second, and each time the review
+      file was rightly left alone. The complete run found no disagreement
+      in Austria, Switzerland or Serbia. It did find **no stadium within
+      500 m of OFK Beograd's SC FSS pin**, so that position rests on the
+      Serbian FA centre's own Wikidata item alone - worth a look. (It
+      also found OpenStreetMap's "Stadion im Sportforum" 63 m from BFC
+      Dynamo's new pin.)
+    - **Fixtures: none.** football-data.org's free tier carries no
+      Serbian competition; the club sheet says so.
+
 - **Austria's top two tiers are on the map, 2026-09-26: Bundesliga 12
   of 12, exact; 2. Liga 9 of 16, with nothing extra and nothing at the
   wrong tier, and each of the seven missing is missing for a named
@@ -1201,8 +1473,13 @@ a page anyone can already view in their browser's network tab.
   - **Young Violets Austria Wien `Q60967849` is Austria Wien II and
     stays.** The roster check will keep calling it `extra-not-in-roster`,
     because its table row has no link and so names no Q-id. A note-only
-    row says so.
-  - **The seven 2. Liga teams still missing, and why:**
+    row says so. *(Since 2026-09-27 a hand link in
+    `roster-links-manual.csv` joins that row to `Q60967849` and the check
+    reads one club in its division - see the 2026-09-27 entry.)*
+  - **The seven 2. Liga teams still missing, and why** - *all seven were
+    added on 2026-09-27, on Alexandru's instruction, through the
+    hand-named fallback; see the 2026-09-27 entry. What follows was true
+    when written:*
     - **Five promoted clubs whose tags did not follow** - SKU Amstetten
       `Q2206406`, SC Schwarz-Weiß Bregenz `Q699686`, Floridsdorfer AC
       `Q696474`, ASK Voitsberg `Q297832` (each tagged with a Regionalliga
@@ -1235,11 +1512,15 @@ a page anyone can already view in their browser's network tab.
     division's table (17,000) agrees with Wikidata (17,400), so by the
     same rule its figure stands - **one ground now carries two figures on
     two rows**, written down in WSG's note rather than smoothed over.
+    *(Settled 2026-09-27 on Alexandru's instruction: 16,008 on both, the
+    league's own figure for both clubs - see the 2026-09-27 entry.)*
     **FC Liefering** is drawn at the Red Bull Arena (Wikidata's `P115`,
     a copied first-team ground); the 2. Liga table says the
     Untersberg-Arena in Grödig, its English infobox lists both, and
     StadiumDB has neither for Liefering. Two against one, not
-    corrected; worth a look.
+    corrected; worth a look. *(Settled 2026-09-27 by a third source, the
+    league's own team page: the Red Bull Arena, so the map was right; its
+    capacity now matches Salzburg's row for the same ground.)*
   - **StadiumDB's Austrian page has 27 grounds, and is as thin as
     measured in 2026-09-19.** It has nothing for SC Austria Lustenau,
     Liefering's Untersberg-Arena or Wacker Innsbruck by name. After the
@@ -1259,7 +1540,10 @@ a page anyone can already view in their browser's network tab.
     `rejected` rows in `coordinate-reviews.csv`: **SV Horn** `Q689889`
     and **SV Lafnitz** `Q15137936` (alive, in the Regionalliga - the
     relegated relative of shape 6) and **Wiener AC** `Q581990` (no
-    longer plays football). **Five more are Alexandru's call**:
+    longer plays football). **Five more are Alexandru's call** -
+    *checked on his instruction on 2026-09-27 and all five are gone
+    (dissolved, merged away, or no longer playing football), each now a
+    whole-club rejection; see the 2026-09-27 entry. As first written:*
     Brigittenauer AC, FC Wien, SC Wacker Wien, SK Admira Wien and the
     Vienna Cricket and Football-Club carry Bundesliga tags **dated**
     between 1911 and 1971, no `P576`, and no coordinates, so they are
@@ -1296,7 +1580,7 @@ a page anyone can already view in their browser's network tab.
   | VfB Stuttgart II | Robert-Schlienz-Stadion; Waldau | the Waldau, shared with Stuttgarter Kickers | **neither** - the 3. Liga table, StadiumDB and the infobox all say the WIRmachenDRUCK Arena in Aspach, 10,001 |
   | FC Rapid București | Giulești; Regie | **the Regie**, 10,020 | Giulești, 14,047: Liga I table, StadiumDB and infobox |
   | FC Lugano | Cornaredo (ends 2026); AIL Arena (starts 2026) | the Cornaredo | the AIL Arena, whose Wikidata item exists after all (`Q140038602`); capacity still cleared, 8,093 against 8,793 |
-  | BFC Dynamo | Sportforum Hohenschönhausen; Jahn-Sportpark | the Sportforum's name and pin **with the Jahn-Sportpark's 19,708** | capacity cleared; **ground open** - the infobox says the Sportforum, StadiumDB still says the Jahn-Sportpark |
+  | BFC Dynamo | Sportforum Hohenschönhausen; Jahn-Sportpark | the Sportforum's name and pin **with the Jahn-Sportpark's 19,708** | capacity cleared; ground **pinned to the Sportforum on 2026-09-27**, Alexandru's decision: both Wikipedia infoboxes over StadiumDB, whose coverage at this tier is thin; capacity still blank |
 
   **Also found, and not a flap today**: Olympique Lyonnais carries the
   Parc OL and the Stade de Gerland (dated 1950–2015) at the same rank
@@ -1337,6 +1621,11 @@ a page anyone can already view in their browser's network tab.
   ordinary `clubQid` hand row gives it one - the Inter Sibiu rule. It
   would reach both Swiss clubs and the five Austrian ones above under
   their own Q-ids.
+  **Built on 2026-09-27, on Alexandru's instruction, as the hand-named
+  fallback** - the same idea, driven by the hand row rather than by a
+  search: the candidates are the Q-ids a hand row names, and the hand
+  row gives the tier (Conventions). Both clubs now carry their real
+  Q-ids and each reads as one club, `ok`, in its division.
 
 - **Switzerland's top two tiers are on the map, 2026-09-26: Super
   League 12 of 12, exact; Challenge League 8 of 10, nothing extra and
@@ -2769,6 +3058,14 @@ a page anyone can already view in their browser's network tab.
   decision** — the whole value of the sitelink hop is that the
   comparison is id-to-id, and a name is too weak to join on. It is there
   so one club appearing twice does not read as two errors.
+  **Since 2026-09-27 the three pairs read as one club each, `ok`, and
+  the join is id to id after all.** Read on a runner that day: each team
+  item names its club item in `P831` (parent club) - `Q97905916` →
+  `Q15755`, `Q97927365` → `Q141882`, `Q97927380` → `Q571553` (the last
+  in `P361` too). The club items point at nothing. `check_rosters.py` now
+  takes a map club the roster does not name, whose `P831` is a roster
+  club not on the map, with the same reserve marker, as that club. The
+  protection above is unchanged: nothing about which item stays moved.
 
 
 - **Both cases found by grouping clubs on their coordinates are now
@@ -4081,7 +4378,8 @@ a page anyone can already view in their browser's network tab.
     Switzerland, Austria, Serbia and Greece.** (Switzerland and Austria
     were added to `crosscheck_stadiumdb.py` anyway on 2026-09-26, slugs
     `sui` and `aut`, each as a thin third opinion, never as agreement by
-    silence - see their entries under Known open problems.) As a second opinion on
+    silence - see their entries under Known open problems. Serbia
+    followed on 2026-09-27, slug `ser`, on the same terms.) As a second opinion on
     a ground StadiumDB happens to hold it is excellent — clean to
     parse, independent of both OpenStreetMap and Wikidata, and
     editorially curated rather than crowd-sourced. As the systematic

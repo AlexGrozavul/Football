@@ -60,10 +60,30 @@
    ],
    "tier": 2,
    "venue": "Red Bull Arena",
-   "capacity": 31895,
+   "capacity": 30188,
    "lat": 47.81625,
    "lon": 12.998222,
    "city": null,
+   "source": "https://www.2liga.at/de/team/fc-liefering/6526/stadion; https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://en.wikipedia.org/wiki/FC_Liefering; https://de.wikipedia.org/wiki/FC_Liefering; https://www.wikidata.org/wiki/Q2498860",
+   "note": "GROUND SETTLED BY A THIRD SOURCE, 2026-09-27: the Red Bull Arena, which is what the map already showed. Wikidata's P115 on Q1387293 is Q206135 Red Bull Arena; the 2026-27 2. Liga table says the Untersberg-Arena in Groedig (4,128), and the English infobox lists both. The third source is the league's own team page (2liga.at, read on a runner): Red Bull Arena, Stadionstrasse 2/3, Wals-Siezenheim. The German article agrees: the club moved to the Red Bull Arena on promotion in 2013 and played at the Untersberg-Arena as a tenant in 2014-15 and again in 2018-19 and 2019-20, which is where the table's figure comes from. No position was changed. CAPACITY 30,188, the figure in use on FC Red Bull Salzburg's row for the same ground, so one ground carries one figure - until now this row showed Wikidata's 31,895, the Euro 2008 figure. Not taken: 17,318 (the league's page for this club, its league-match figure)",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q2206406",
+   "name": "SKU Amstetten",
+   "leagues": [
+    "Q683390"
+   ],
+   "tier": 2,
+   "venue": "Ertl Glas-Stadion",
+   "capacity": 3030,
+   "lat": 48.115159,
+   "lon": 14.877402,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://en.wikipedia.org/wiki/SKU_Amstetten; https://www.2liga.at/de/team/sku-ertl-glas-amstetten/10308/stadion; https://www.wikidata.org/wiki/Q73438091",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, on Alexandru's instruction of 2026-09-27 to add the clubs promoted into the 2. Liga whose tags did not follow, each only where its season article confirms it. This row names the club's own Q-id with a country and a tier; fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 2. Liga article names it, so the roster check reads ONE club, not a missing one and an extra one. Wikidata gives Q2206406 one P118, a Regionalliga (Q683390). TIER 2: the complete 2026-27 2. Liga article lists it (16 rows, all accounted for) and the complete Bundesliga article (12 of 12) does not; its English infobox says 2. Liga, 2025-26 5th of 16, and the league's own team page (2liga.at, read on a runner 2026-09-27) lists it. GROUND: the Ertl Glas-Stadion on the 2. Liga table, both Wikipedias and the league's page (Stadthallestrasse, Amstetten); position is the ground's own item Q73438091, 48.115159/14.877402, which OpenStreetMap's way/464110963 also names. CAPACITY 3,030: the league's own page, with both club infoboxes' 3,000 within 1%. Not taken: 2,800 (German stadium article), 2,000 (the 2. Liga table). If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
    "competition": "2. Liga (Austria)"
   },
   {
@@ -91,10 +111,30 @@
    ],
    "tier": 2,
    "venue": "Tivoli Stadion Tirol",
-   "capacity": 17400,
+   "capacity": 16008,
    "lat": 47.255972,
    "lon": 11.410789,
    "city": null,
+   "source": "https://www.2liga.at/de/team/fc-wacker-innsbruck/6537/stadion; https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://www.bundesliga.at/de/team/wsg-tirol/6540/stadion; https://stadiumdb.com/stadiums/aut; https://www.wsg-fussball.at/de/verein/stadion/",
+   "note": "ONE GROUND, ONE FIGURE, 2026-09-27 - see WSG Tirol's row, which shares the Tivoli Stadion Tirol and carries the same 16,008 and the whole list of figures. The map showed 17,400 here, Wikidata's figure for Q204484, left standing on 2026-09-26 because this club's own division table (17,000) agreed with it within 5%; the league's own page for this club says 16,008, as it does for WSG, and that settles the two rows on one number. Q261813 is the club founded in 2002 (English Wikipedia 'FC Wacker Innsbruck (2002)'); the article titled 'FC Wacker Innsbruck' is the club dissolved in 1999",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q297832",
+   "name": "ASK Voitsberg",
+   "leagues": [
+    "Q4825490"
+   ],
+   "tier": 2,
+   "venue": "Münzer Bioindustrie Sportpark",
+   "capacity": null,
+   "lat": 47.047632,
+   "lon": 15.155825,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://en.wikipedia.org/wiki/ASK_Voitsberg; https://www.2liga.at/de/team/ask-voitsberg/6418/stadion; https://www.wikidata.org/wiki/Q140456746",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, on Alexandru's instruction of 2026-09-27 to add the clubs promoted into the 2. Liga whose tags did not follow, each only where its season article confirms it. This row names the club's own Q-id with a country and a tier; fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 2. Liga article names it, so the roster check reads ONE club, not a missing one and an extra one. Wikidata gives Q297832 one P118, a Regionalliga (Q4825490). TIER 2: the complete 2026-27 2. Liga article lists it (16 rows, all accounted for) and the complete Bundesliga article (12 of 12) does not; the article says it was promoted from the Regionalliga Central, and its English infobox agrees (2025-26 Regionalliga Central, 1st, promoted). GROUND: the Muenzer Bioindustrie Sportpark (Burggasse 52, Voitsberg) on the 2. Liga table, the German infobox and the league's own page; the English infobox calls it the Hans Bluemel Stadion, the ground's older name, at the same 1,635 the league gives. Position: that ground's Wikidata item Q140456746 ('association football venue in Voitsberg'), 47.047632/15.155825, 60 m from OpenStreetMap's pitch named ASK Voitsberg. CAPACITY BLANK: 1,635 (the league's page, the English infobox) against 2,500 (the 2. Liga table, the German infobox) - two pairs that do not agree. If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
    "competition": "2. Liga (Austria)"
   },
   {
@@ -154,8 +194,23 @@
    "lat": 48.162306,
    "lon": 16.386694,
    "city": null,
-   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League",
-   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. This is FK Austria Wien's reserve side, which the 2026-27 2. Liga article lists as 'Austria Wien II' at the Generali Arena. The roster check reports it as extra-not-in-roster because that row of the table has no link of its own - its first link is the city of Vienna - so the article names no Q-id for it and there is nothing to join on. Since 2026-09-26 check_rosters.py leaves such a row out and names it in the run summary rather than reading the city as a club. The club belongs at tier 2 and stays",
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://www.2liga.at/de/team",
+   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. This is FK Austria Wien's reserve side, which the 2026-27 2. Liga article lists as 'Austria Wien II' at the Generali Arena. That row of the table has no link of its own - its first link is the city of Vienna - so until 2026-09-27 the roster check named no Q-id for it and reported this club extra-not-in-roster on every run. Since then a hand link in data/roster-links-manual.csv joins the row to Q60967849 and the check reads it as one club in its division. The club belongs at tier 2 and stays",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q63168427",
+   "name": "FC Hertha Wels",
+   "leagues": [],
+   "tier": 2,
+   "venue": "EWW Stadion",
+   "capacity": 3000,
+   "lat": 48.159028,
+   "lon": 13.982278,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://de.wikipedia.org/wiki/FC_Hertha_Wels; https://www.2liga.at/de/team/fc-hertha-wels/12378/stadion; https://www.wikidata.org/wiki/Q65167618",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, on Alexandru's instruction of 2026-09-27 to add the clubs promoted into the 2. Liga whose tags did not follow, each only where its season article confirms it. This row names the club's own Q-id with a country and a tier; fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 2. Liga article names it, so the roster check reads ONE club, not a missing one and an extra one. Wikidata gives Q63168427 NO P118 at all. TIER 2: the complete 2026-27 2. Liga article lists it (16 rows, all accounted for) and the complete Bundesliga article (12 of 12) does not; the German article says it has played in the 2. Liga since 2025-26, and the league's own team page lists it. GROUND: the league's page says EWW Stadion (Primelstrasse 30, Wels), the German infobox says eww Stadion, the 2. Liga table and the German article's text say HUBER Arena - sponsor names for one ground: Wikidata's item Q65167618, labelled HUBER Arena, sits 7 m from OpenStreetMap's 'eww Stadion', and its P625 48.159028/13.982278 is the position written here. OpenStreetMap also has a 'Mauth Stadion Wels' 2.4 km away with the club as operator, which the German article gives as the ground's name before 2018 - not used, because the three current sources and the item agree on the other point. CAPACITY 3,000: the league's page, the 2. Liga table and the German article agree. If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
    "manual": true,
    "competition": "2. Liga (Austria)"
   },
@@ -202,8 +257,8 @@
    "lat": 47.255972,
    "lon": 11.410789,
    "city": null,
-   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut",
-   "note": "CONTESTED CAPACITY. In use: 16,008 (the 2026-27 Bundesliga stadiums table and StadiumDB agree exactly). Not taken: 17,400 (Wikidata's figure for Q204484 Tivoli Stadion Tirol, which the map held until now), and 17,000 (the 2. Liga table's figure for the same ground, on FC Wacker Innsbruck's row). FC Wacker Innsbruck shares the ground and is NOT changed: its own division's table (17,000) agrees with Wikidata (17,400) within 5%, so by the same rule the map's figure stands there, and the one ground carries two figures on two rows. Written down rather than smoothed over",
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://stadiumdb.com/stadiums/aut; https://www.bundesliga.at/de/team/wsg-tirol/6540/stadion; https://www.2liga.at/de/team/fc-wacker-innsbruck/6537/stadion; https://www.wsg-fussball.at/de/verein/stadion/",
+   "note": "ONE GROUND, ONE FIGURE, 2026-09-27 - on Alexandru's instruction that the Tivoli be settled the way every confirmed shared ground is. The Tivoli Stadion Tirol is genuinely shared with FC Wacker Innsbruck (its Wikidata tenant, both clubs' league pages, the stadium article), and until today the two rows carried 16,008 and 17,400. In use on both: 16,008 - the league's own team pages for BOTH clubs (bundesliga.at for WSG, 2liga.at for Wacker, read on a runner 2026-09-27), the 2026-27 Bundesliga stadiums table and StadiumDB agree exactly, and both of WSG's Wikipedia infoboxes say the same. Not taken, and written down so nobody rediscovers them: 17,000 (the 2026-27 2. Liga table, the English and German stadium articles, and WSG Tirol's own stadium page, which gives 15,200 seats and 17,000 'in combination with standing places' - the total capacity, where the league's figure is what it licenses); 17,400 (Wikidata's figure for Q204484, which the map held until 2026-09-26). WSG's page adds that its home games open only the east and west stands, about 10,000. FC Wacker Innsbruck's row carries the same figure",
    "manual": true,
    "competition": "Bundesliga (Austria)"
   },
@@ -234,6 +289,23 @@
    "lon": 14.8514,
    "city": null,
    "competition": "Bundesliga (Austria)"
+  },
+  {
+   "id": "Q696474",
+   "name": "Floridsdorfer AC",
+   "leagues": [
+    "Q683390"
+   ],
+   "tier": 2,
+   "venue": "FAC-Platz",
+   "capacity": 3000,
+   "lat": 48.269836,
+   "lon": 16.393717,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://en.wikipedia.org/wiki/Floridsdorfer_AC; https://www.2liga.at/de/team/fac-wien/7613/stadion; https://www.wikidata.org/wiki/Q17124251",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, on Alexandru's instruction of 2026-09-27 to add the clubs promoted into the 2. Liga whose tags did not follow, each only where its season article confirms it. This row names the club's own Q-id with a country and a tier; fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 2. Liga article names it, so the roster check reads ONE club, not a missing one and an extra one. Wikidata gives Q696474 one P118, a Regionalliga (Q683390). TIER 2: the complete 2026-27 2. Liga article lists it (16 rows, all accounted for) and the complete Bundesliga article (12 of 12) does not; its English infobox says 2. Liga, 2025-26 4th of 16, and the league's own team page lists it as FAC Wien. GROUND: the FAC-Platz (Hopfengasse 8, Vienna) on the 2. Liga table, both Wikipedias and the league's page; position is the ground's own item Q17124251, 48.269836/16.393717, 40 m from OpenStreetMap's FAC-Platz. CAPACITY 3,000: the league's own page and every Wikipedia figure agree. If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
   },
   {
    "id": "Q696507",
@@ -281,6 +353,23 @@
    "competition": "2. Liga (Austria)"
   },
   {
+   "id": "Q699686",
+   "name": "SC Schwarz-Weiß Bregenz",
+   "leagues": [
+    "Q4825492"
+   ],
+   "tier": 2,
+   "venue": "ImmoAgentur Stadion",
+   "capacity": 12000,
+   "lat": 47.5034,
+   "lon": 9.73478,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Bundesliga; https://en.wikipedia.org/wiki/Schwarz-Wei%C3%9F_Bregenz; https://www.2liga.at/de/team/schwarz-weiss-bregenz/6521/stadion; https://stadiumdb.com/stadiums/aut",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, on Alexandru's instruction of 2026-09-27 to add the clubs promoted into the 2. Liga whose tags did not follow, each only where its season article confirms it. This row names the club's own Q-id with a country and a tier; fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 2. Liga article names it, so the roster check reads ONE club, not a missing one and an extra one. Q699686 is the club refounded in 2005 (German Wikipedia 'Schwarz-Weiss Bregenz (2005)'), not the one dissolved in 2007. Wikidata gives it one P118, a Regionalliga (Q4825492). TIER 2: the complete 2026-27 2. Liga article lists it (16 rows, all accounted for) and the complete Bundesliga article (12 of 12) does not; its English infobox says 2. Liga, 2025-26 15th of 16, and the league's own team page lists it. GROUND: its own P115, Q643870, with its position - the ImmoAgentur Stadion by its current name on the 2. Liga table, the English infobox and the league's page (Saegerstrasse 1, Bregenz); the venue cell only renames it. CAPACITY CONTESTED, NOT CHANGED: 12,000 (Wikidata, and the 2. Liga table) against 5,000 (the league's own page, and the English infobox), with StadiumDB's 11,112 near neither - two pairs that do not agree with each other, so by the rule nothing is changed and the map shows Wikidata's figure. If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
+  },
+  {
    "id": "Q699746",
    "name": "TSV Hartberg",
    "leagues": [
@@ -309,6 +398,36 @@
    "lat": 47.4439,
    "lon": 15.3006,
    "city": null,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q98217947",
+   "name": "SK Sturm Graz II",
+   "leagues": [],
+   "tier": 2,
+   "venue": "Solarstadion Gleisdorf",
+   "capacity": null,
+   "lat": 47.098238,
+   "lon": 15.704819,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://de.wikipedia.org/wiki/SK_Sturm_Graz_II; https://www.2liga.at/de/team/sk-sturm-graz-ii/10255/stadion; https://www.openstreetmap.org/way/288036646",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, on Alexandru's instruction of 2026-09-27 to add the clubs promoted into the 2. Liga whose tags did not follow, each only where its season article confirms it. This row names the club's own Q-id with a country and a tier; fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 2. Liga article names it through a hand link, so the roster check reads ONE club, not a missing one and an extra one. The article's row 'Sturm Graz II' links the parent club SK Sturm Graz, so the roster reader leaves it out; data/roster-links-manual.csv joins that row to Q98217947, which carries no P118 and no relation to its parent on Wikidata. TIER 2: the complete 2026-27 2. Liga article lists it (16 rows, all accounted for) and the complete Bundesliga article (12 of 12) does not; the German article says it has played in the 2. Liga since 2022-23, and the league's own team page lists it. GROUND SETTLED BY A THIRD SOURCE: the English 2. Liga table says the Merkur Arena (16,364), the first team's; the league's own page says the Solarstadion Gleisdorf (Stadionstrasse 1, Gleisdorf), and so do the German infobox and the German article, which says the side moved there in 2022-23 and had to leave for a season in 2023-24 while the ground lost its licence. Three against one. No Wikidata item for the ground was found, so the position is OpenStreetMap's way/288036646, 'Solarstadion', Gleisdorf, sport soccer, 47.098238/15.704819. CAPACITY BLANK: 1,000 (the league's page) against 700 (the German infobox). If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "2. Liga (Austria)"
+  },
+  {
+   "id": "Q98228613",
+   "name": "SK Rapid Wien II",
+   "leagues": [],
+   "tier": 2,
+   "venue": "Allianz Stadion",
+   "capacity": 28600,
+   "lat": 48.1981,
+   "lon": 16.2653,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Austrian_Football_Second_League; https://de.wikipedia.org/wiki/SK_Rapid_Wien_II; https://www.2liga.at/de/team/sk-rapid-ii/9529/stadion; https://www.wikidata.org/wiki/Q17310225",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, on Alexandru's instruction of 2026-09-27 to add the clubs promoted into the 2. Liga whose tags did not follow, each only where its season article confirms it. This row names the club's own Q-id with a country and a tier; fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 2. Liga article names it through a hand link, so the roster check reads ONE club, not a missing one and an extra one. The article's row 'SK Rapid II' links the parent club SK Rapid Wien, because the reserve side has no English article, so the roster reader leaves it out rather than read Rapid at tier 2; data/roster-links-manual.csv joins that row to Q98228613. Q98228613 carries no P118 and names Q131215 SK Rapid Wien as P361, and Rapid's own item lists it in P527. TIER 2: the complete 2026-27 2. Liga article lists it (16 rows, all accounted for) and the complete Bundesliga article (12 of 12) does not; the German article says it has played in the 2. Liga since 2024-25 ('traegt der Verein die LigaZwa-Spiele wieder im Weststadion aus'), and the league's own team page lists it. GROUND: the Allianz Stadion on the 2. Liga table, the German infobox and the league's page - the first team's ground, so it shares SK Rapid Wien's pin (Q17310225's P625). CAPACITY 28,600, the figure in use on SK Rapid Wien's row for the same ground, so one ground carries one figure. Not taken: 28,345 (the 2. Liga table, the German infobox), 26,000 (the league's own page, for both Rapid teams). If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
    "competition": "2. Liga (Austria)"
   },
   {

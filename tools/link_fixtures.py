@@ -127,7 +127,8 @@ from crosscheck_stadiumdb import CLUB_FORMS, TEAM_MARKERS, ground_signal, words 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CLUB_FILES = ["data/clubs/DE.json", "data/clubs/RO.json", "data/clubs/FR.json",
-              "data/clubs/IT.json", "data/clubs/CH.json", "data/clubs/AT.json"]
+              "data/clubs/IT.json", "data/clubs/CH.json", "data/clubs/AT.json",
+              "data/clubs/RS.json"]
 FD_INDEX = "data/fixtures/index.json"
 OLDB_INDEX = "data/fixtures/openligadb-index.json"
 MANUAL_FILE = "data/fixture-links-manual.csv"

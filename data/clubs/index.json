@@ -64,14 +64,25 @@
   },
   "AT": {
    "name": "Austria",
-   "onMap": 21,
+   "onMap": 28,
    "byTier": {
     "1": 12,
-    "2": 9
+    "2": 16
    },
-   "withVenueName": 21,
-   "withCapacity": 21,
-   "handCorrected": 10
+   "withVenueName": 28,
+   "withCapacity": 26,
+   "handCorrected": 19
+  },
+  "RS": {
+   "name": "Serbia",
+   "onMap": 28,
+   "byTier": {
+    "1": 13,
+    "2": 15
+   },
+   "withVenueName": 28,
+   "withCapacity": 23,
+   "handCorrected": 15
   }
  }
 }

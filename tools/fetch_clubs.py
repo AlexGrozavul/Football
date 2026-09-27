@@ -92,6 +92,7 @@ COUNTRIES = [
     ("IT", "Q38", "Italy"),
     ("CH", "Q39", "Switzerland"),
     ("AT", "Q40", "Austria"),
+    ("RS", "Q403", "Serbia"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -313,6 +314,63 @@ WHERE {
   FILTER NOT EXISTS { ?club wdt:P118 ?m . FILTER(?m IN (%(inlist)s)) }
   FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
   FILTER NOT EXISTS { ?club wdt:P576 ?dissolved }
+  OPTIONAL { ?club wdt:P31 ?type }
+  OPTIONAL { ?club wdt:P17 ?country }
+  OPTIONAL {
+    ?club wdt:P115 ?venue .
+    OPTIONAL { ?venue wdt:P625 ?venueCoord }
+    OPTIONAL { ?venue wdt:P1083 ?capacity }
+  }
+  OPTIONAL { ?club wdt:P625 ?clubCoord }
+  BIND(COALESCE(?venueCoord, ?clubCoord) AS ?coord)
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "%(lang)s,en" }
+}
+"""
+
+# The hand-named fallback, a third route onto the map. Added 2026-09-27
+# on Alexandru's instruction to fix the roster check's double count
+# properly, and written from FC Rapperswil-Jona (Q681483) and FC Stade
+# Nyonnais (Q673268): promoted to the Challenge League, their only league
+# tags still name the lower divisions they left, so no query above
+# returns them. Until now the only way onto the map was a hand row with
+# NO clubQid, which gave the club a made-up MANUAL- id - and the roster
+# check, which joins on Q-ids, then read one club as two errors on every
+# run: its real Q-id missing, its MANUAL- id extra.
+#
+# This is the route CLAUDE.md described as "the one with no false
+# findings": the club reaches the fetched clubs UNDER ITS OWN Q-ID, and
+# an ordinary clubQid hand row then corrects it - so apply_manual's guard
+# against a Q-id the queries did not return is untouched, exactly as it
+# was untouched for Farul. The candidates are not searched for: they are
+# the Q-ids a hand row in clubs-manual.csv names, for this country, with
+# a tier, that no query above returned. Three conditions, all required,
+# the novalue fallback's own shape:
+#
+#   1. a hand row names the Q-id, gives it a country and a TIER. The
+#      tier is the hand row's, never the roster's and never Wikidata's -
+#      visibility is not tier, and here the tier is Alexandru's.
+#   2. Wikidata has the item, it is not a person, and it carries no P576.
+#      Asked below as bound flags rather than filters, so that a
+#      candidate left out is left out WITH ITS REASON.
+#   3. a current-season roster article in league-rosters.csv names it -
+#      through the sitelink hop, or through a hand link in
+#      data/roster-links-manual.csv for a row the article links to the
+#      wrong thing (a reserve side linked to its parent club). This is
+#      what keeps a typing mistake in clubQid from putting a club on the
+#      map under somebody else's Q-id: a mistyped Q-id is not in a
+#      division's membership list.
+#
+# Columns are CLUB_QUERY's, plus the three flags, so a surfaced club is
+# folded, typed and country-checked by the same code as every other.
+HAND_NAMED_QUERY = """
+SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?capacity ?coord ?cityLabel ?typeLabel ?country
+       ?exists ?person ?dissolved
+WHERE {
+  VALUES ?club { %(clubs)s }
+  BIND(EXISTS { ?club schema:version ?anyVersion } AS ?exists)
+  BIND(EXISTS { ?club wdt:P31 wd:Q5 } AS ?person)
+  BIND(EXISTS { ?club wdt:P576 ?anyDissolved } AS ?dissolved)
+  OPTIONAL { ?club wdt:P118 ?league }
   OPTIONAL { ?club wdt:P31 ?type }
   OPTIONAL { ?club wdt:P17 ?country }
   OPTIONAL {
@@ -845,7 +903,7 @@ def novalue_fallback(code, lang, values, main_rows, tiers, hand_tiers=None):
     # mapped - so the same view of the file is handed over here, not
     # fetch_clubs's own dict, which keeps "skip" as a value.
     mapped = {lid: t for lid, t in tiers.items() if t != "skip"}
-    named, roster_failures = check_rosters.roster_qids(code, mapped)
+    named, roster_failures = roster_for(code, mapped)
     if roster_failures:
         for failure in roster_failures:
             notes.append(f"    ! roster read failed: {failure}")
@@ -890,6 +948,122 @@ def novalue_fallback(code, lang, values, main_rows, tiers, hand_tiers=None):
     return extra_rows, surfaced, notes
 
 
+# One roster read per country per run. Both fallbacks ask the same
+# question of the same articles, and asking it twice would double the
+# Wikipedia requests and - worse - let the two answers differ inside one
+# build if a page changed between them. A failure is cached with the
+# answer, so the second asker sees it too and surfaces nothing either.
+_ROSTERS = {}
+
+
+def roster_for(code, mapped):
+    if code not in _ROSTERS:
+        _ROSTERS[code] = check_rosters.roster_qids(code, mapped)
+    return _ROSTERS[code]
+
+
+def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
+    """
+    The clubs a hand row in clubs-manual.csv names by Q-id that none of
+    the queries returned - surfaced under their OWN Q-id when a tracked
+    current-season roster names them. See HAND_NAMED_QUERY for why this
+    exists and its three conditions.
+
+    Returns (extra_rows, surfaced, notes), like novalue_fallback.
+
+    A FAILED ROSTER READ, OR A FAILED QUERY, SURFACES NOTHING, and says
+    so - the novalue fallback's rule, applied unchanged. It has a cost
+    worth knowing: a club that reaches the map only this way is missing
+    from a build whose roster read failed, as Farul already is. It is
+    named as missing rather than quietly dropped.
+    """
+    notes, surfaced = [], {}
+    already = {qid(cell(row, "club")) for row in fetched_rows}
+    candidates = {}
+    for row in manual_rows:
+        cid = row.get("clubQid")
+        if not cid or row.get("country") != code or cid in already:
+            continue
+        if not (row.get("tier") or "").isdigit():
+            continue
+        candidates.setdefault(cid, row)
+    if not candidates:
+        return [], surfaced, notes
+
+    listed = ", ".join(f"{r['name']} ({cid}, line {r['_line']})"
+                       for cid, r in sorted(candidates.items()))
+    notes.append(f"hand-named fallback: {len(candidates)} hand row(s) name a club no "
+                 f"query returned - {listed}")
+    time.sleep(REQUEST_GAP_SECONDS)
+    started = time.monotonic()
+    data, error = sparql_with_retry(HAND_NAMED_QUERY % {
+        "clubs": " ".join("wd:" + c for c in sorted(candidates)), "lang": lang})
+    took = time.monotonic() - started
+    if error:
+        notes.append(f"    ! the hand-named query failed ({error}) after {took:.1f}s "
+                     f"including retries - NOTHING was surfaced this way, so every club "
+                     f"above is missing from this build")
+        return [], surfaced, notes
+    notes.append(f"    answered in {took:.1f}s")
+
+    rows_by = {}
+    for row in data.get("results", {}).get("bindings", []):
+        rows_by.setdefault(qid(cell(row, "club")), []).append(row)
+
+    passed = {}
+    for cid, hand in sorted(candidates.items()):
+        rows = rows_by.get(cid) or []
+        flags = rows[0] if rows else {}
+        label = f"{hand['name']} ({cid}, {MANUAL_FILE} line {hand['_line']})"
+        if not rows or cell(flags, "exists") != "true":
+            notes.append(f"    left out: {label} - Wikidata has no item {cid}. Check the "
+                         f"Q-id")
+        elif cell(flags, "person") == "true":
+            notes.append(f"    left out: {label} - {cid} is a person on Wikidata, not a "
+                         f"club. Check the Q-id")
+        elif cell(flags, "dissolved") == "true":
+            notes.append(f"    left out: {label} - Wikidata marks {cid} dissolved (P576). "
+                         f"The club query excludes dissolved clubs and this route does "
+                         f"too; if the club is playing, the P576 is the thing to fix")
+        else:
+            passed[cid] = rows
+    if not passed:
+        return [], surfaced, notes
+
+    mapped = {lid: t for lid, t in tiers.items() if t != "skip"}
+    named, roster_failures = roster_for(code, mapped)
+    if roster_failures:
+        for failure in roster_failures:
+            notes.append(f"    ! roster read failed: {failure}")
+        notes.append("    NOTHING was surfaced this way, because a roster that did not "
+                     "come back is a failed fetch and not a division with nobody in it. "
+                     "Every club above is missing from this build - it is not gone, it "
+                     "is unconfirmed")
+        return [], surfaced, notes
+
+    extra_rows = []
+    for cid, rows in sorted(passed.items()):
+        hand = candidates[cid]
+        label = f"{hand['name']} ({cid}, {MANUAL_FILE} line {hand['_line']})"
+        where = named.get(cid)
+        if not where:
+            notes.append(
+                f"    left out: {label} - no current-season roster in "
+                f"data/league-rosters.csv names {cid}, so nothing here says it is "
+                f"playing. If the article lists the club under a row that links "
+                f"something else (a reserve side linked to its parent club), a row in "
+                f"data/roster-links-manual.csv joins that row to {cid}")
+            continue
+        extra_rows.extend(rows)
+        surfaced[cid] = {
+            "name": hand["name"], "handTier": int(hand["tier"]),
+            "rosterTiers": sorted({tier for tier, _article in where}),
+            "articles": sorted({article for _tier, article in where}),
+            "line": hand["_line"],
+        }
+    return extra_rows, surfaced, notes
+
+
 # ------------------------------------------------- country sanity check
 
 # A rectangle round each country, with a small margin on every side.
@@ -926,6 +1100,24 @@ def novalue_fallback(code, lang, values, main_rows, tiers, hand_tiers=None):
 #       The box holds most of Liechtenstein, Bratislava, eastern St.
 #       Gallen and strips of Bavaria, Slovenia, Czechia and Hungary, so
 #       once again P17 is what catches a club across the border.
+#   RS  Serbia without Kosovo, whose clubs play in their own league and
+#       carry P17 Kosovo. North 46.18, east 23.0063 and west 18.8385 are
+#       Wikidata's own P1332, P1334 and P1335 on Q403, read on a runner
+#       2026-09-27. Its southernmost point, P1333 41.8577, is in Kosovo,
+#       so the south edge is set instead just below Presevo municipality,
+#       the southern tip of Serbia outside Kosovo, at about 42.23 - a
+#       figure from memory, not read from a source, and the margin below
+#       it is wider than elsewhere for that reason. The box holds the northern
+#       half of Kosovo, a strip of Bosnia and Herzegovina along the
+#       Drina, eastern Croatia's Danube bank, Timisoara's hinterland and
+#       a slice of Bulgaria, so P17 is once more the signal that catches
+#       a club across the border. LABELS ARE ASKED IN ENGLISH FIRST,
+#       then Serbian Latin: Wikidata's English labels on Serbian clubs are
+#       the clubs' own Latin names ("FK Crvena zvezda"), while its Serbian
+#       Latin ones are patchier and sometimes a sponsor's ("FK Spartak
+#       Zlatibor voda"). The Serbian label proper is Cyrillic and is not
+#       asked for - it would put a script on the map that nothing else
+#       on it uses, which is a choice for Alexandru, not for a default.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
@@ -933,6 +1125,7 @@ COUNTRY_BOX = {
     "IT": {"lat": (35.40, 47.20), "lon": (6.50, 18.65)},
     "CH": {"lat": (45.75, 47.85), "lon": (5.90, 10.55)},
     "AT": {"lat": (46.30, 49.10), "lon": (9.45, 17.25)},
+    "RS": {"lat": (42.10, 46.27), "lon": (18.73, 23.09)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -950,6 +1143,8 @@ COUNTRY_NAMES = {
     "Q32": "Luxembourg", "Q33": "Finland", "Q34": "Sweden",
     "Q20": "Norway", "Q35": "Denmark", "Q235": "Monaco",
     "Q228": "Andorra", "Q238": "San Marino",
+    "Q1246": "Kosovo", "Q225": "Bosnia and Herzegovina", "Q224": "Croatia",
+    "Q236": "Montenegro", "Q221": "North Macedonia",
 }
 
 
@@ -1217,8 +1412,12 @@ def apply_manual(clubs, manual_rows, country_code):
             if target is None:
                 problems.append(
                     f"{MANUAL_FILE} line {row['_line']}: {row['clubQid']} is not in this "
-                    f"country's fetched clubs - check the Q-id, or leave it blank to add "
-                    f"the club instead")
+                    f"country's fetched clubs - check the Q-id. A row with this country "
+                    f"and a tier brings a club no query returned onto the map under its "
+                    f"own Q-id when a tracked roster names it (the hand-named fallback "
+                    f"lines above say why this one did not). Leaving clubQid blank adds "
+                    f"it under a made-up MANUAL- id instead, which the roster check "
+                    f"cannot join to its division")
                 continue
 
         # "skip" in the tier column drops the club altogether. Everything
@@ -1325,7 +1524,8 @@ def main():
     for position, (code, country_qid, name) in enumerate(COUNTRIES):
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
-        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de"}.get(code, "en")
+        lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de",
+                "RS": "en,sr-el"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,
@@ -1372,6 +1572,7 @@ def main():
                   if t != "skip" and labels.get(lid, {}).get("country", code) == code]
         clubs = {}
         surfaced, fallback_notes = {}, []
+        hand_surfaced, hand_notes = {}, []
         grounds = {}
         if wanted:
             time.sleep(REQUEST_GAP_SECONDS)
@@ -1394,9 +1595,18 @@ def main():
             extra_rows, surfaced, fallback_notes = novalue_fallback(
                 code, lang, values, rows, tiers, hand_tiers)
 
+            # 2c. the clubs a hand row names by Q-id that neither query
+            #     above returned, where a roster says they are playing -
+            #     so they reach the map under their own Q-id and the
+            #     roster check sees one club, not a missing one and an
+            #     extra one. After 2b, so a club the novalue fallback
+            #     surfaced is never asked about twice.
+            hand_rows, hand_surfaced, hand_notes = hand_named_fallback(
+                code, lang, manual_rows, rows + extra_rows, tiers)
+
             clubs, _leagues, ambiguous, dropped, club_countries = build_clubs(
-                rows + extra_rows, tiers)
-            grounds = club_grounds(rows + extra_rows)
+                rows + extra_rows + hand_rows, tiers)
+            grounds = club_grounds(rows + extra_rows + hand_rows)
 
             # The tier the fallback gave it, before any hand row is
             # applied - so the summary can show the hand correction
@@ -1528,6 +1738,30 @@ def main():
         if surfaced:
             for line in _wrap(FALLBACK_NOTE):
                 report.append("    " + line)
+        for note in hand_notes:
+            report.append(f"    {note}")
+        for cid, info in sorted(hand_surfaced.items()):
+            club = clubs.get(cid)
+            if cid in keep:
+                where = "ON THE MAP"
+            elif club is None:
+                where = "removed again by a skip row in " + MANUAL_FILE
+            elif {"lat", "lon"} <= set(cleared.get(cid, ())):
+                where = ("off the map on purpose - its hand row clears the position, "
+                         "and says why")
+            else:
+                where = ("still off the map - neither the hand row, the club nor its "
+                         "ground gives a position")
+            report.append(
+                f"    surfaced by the hand-named fallback: {info['name']} ({cid}), named by "
+                f"{', '.join(info['articles'])}; tier {info['handTier']} from "
+                f"{MANUAL_FILE} line {info['line']}; {where}")
+            if info["handTier"] not in info["rosterTiers"]:
+                report.append(
+                    f"        TIER DISAGREES: the hand row says tier {info['handTier']}, "
+                    f"the roster names it at tier "
+                    f"{'/'.join(map(str, info['rosterTiers']))}. The hand row wins, "
+                    f"as it always does - re-read it")
         for note in applied:
             report.append(f"    {note}")
         if gone_by_clear:
