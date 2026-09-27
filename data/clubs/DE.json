@@ -697,13 +697,13 @@
     "Q548937"
    ],
    "tier": 4,
-   "venue": "Sportforum Hohenschönhausen",
+   "venue": "Stadion im Sportforum",
    "capacity": null,
    "lat": 52.54,
    "lon": 13.4764,
    "city": null,
-   "source": "https://en.wikipedia.org/wiki/Berliner_FC_Dynamo; https://stadiumdb.com/stadiums/ger; https://www.wikidata.org/wiki/Q551837; https://www.wikidata.org/wiki/Q656063",
-   "note": "CAPACITY CLEARED 2026-09-26, GROUND LEFT OPEN. Q159930 carries two truthy P115 values, Sportforum Hohenschoenhausen (Q551837, no capacity on Wikidata) and the Friedrich-Ludwig-Jahn-Sportpark (Q656063, 19,708), and fetch_clubs.py builds a club from whichever rows come back first - so the map showed the Sportforum's name and position with the JAHN-SPORTPARK's 19,708: a figure for a ground the pin is not on. Whichever ground is right, 19,708 is not the Sportforum's, so it is cleared. THE GROUND IS NOT PINNED because the sources do not agree on it: the club's English Wikipedia infobox says Stadion im Sportforum, 4,500 (coordinates 52 32 27 N 13 28 34 E, which match Q551837), while StadiumDB still lists the Jahn-Sportpark for 'Dynamo' at 19,708. Two against one is not the three-source agreement the Freiburg pin rested on, and the Regionalliga has no stadiums table to be the third. What would settle it: a current source naming the ground, then a hand row with venue, capacity, lat and lon",
+   "source": "https://en.wikipedia.org/wiki/Berliner_FC_Dynamo; https://de.wikipedia.org/wiki/BFC_Dynamo; https://www.wikidata.org/wiki/Q551837; https://stadiumdb.com/stadiums/ger; https://www.wikidata.org/wiki/Q656063",
+   "note": "GROUND PINNED TO THE SPORTFORUM 2026-09-27, CAPACITY STILL BLANK - Alexandru's decision, taken over the two-against-one split left open on 2026-09-26. Q159930 carries two truthy P115 values, Sportforum Hohenschoenhausen (Q551837) and the Friedrich-Ludwig-Jahn-Sportpark (Q656063, 19,708), and fetch_clubs.py builds a club from whichever rows come back first, so until a hand row pinned it the ground could flap between the two. In use: the Sportforum. The club's English and German Wikipedia infoboxes both say Stadion im Sportforum (read on a runner 2026-09-27), and the English infobox's coordinate (52 32 27 N 13 28 34 E) lands on Q551837, whose own P625 52.54/13.4764 is the position written here. Not taken: StadiumDB, which still lists the Jahn-Sportpark for 'Dynamo' at 19,708 - set aside on Alexandru's instruction because StadiumDB's coverage of German football at this tier was measured as thin, so its listing is weaker evidence here than Wikipedia's two editions; it is recorded, not dropped. CAPACITY BLANK ON PURPOSE: 4,500 is the infobox figure, but both infoboxes cite the same Tag24 article (one source twice) and Wikidata has no P1083 on Q551837 - no two independent sources agree, and 19,708 is the other ground's. The <clear> stops the Jahn-Sportpark's figure coming back if the rows arrive in the other order",
    "manual": true,
    "competition": "Regionalliga Nordost"
   },

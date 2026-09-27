@@ -1,0 +1,441 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "RS",
+ "countryName": "Serbia",
+ "clubs": [
+  {
+   "id": "Q1137993",
+   "name": "FK Radnički Niš",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Čair Stadium",
+   "capacity": 18151,
+   "lat": 43.315528,
+   "lon": 21.908533,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q12760457",
+   "name": "FK Železničar Pančevo",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "SC Mladost, Pančevo",
+   "capacity": null,
+   "lat": 44.879086,
+   "lon": 20.662633,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://www.superliga.rs/raspored-i-rezultati/; https://en.wikipedia.org/wiki/FK_%C5%BDelezni%C4%8Dar_Pan%C4%8Devo; https://www.wikidata.org/wiki/Q134966054",
+   "note": "PLACED, 2026-09-27. Q12760457 carries the SuperLiga (from 2023) and is in the complete 2026-27 SuperLiga article, so the club query sees it at tier 1 - but neither it nor any ground on it has a position (no P115, no P625), so it was dropped at the coordinates gate. GROUND: the SC Mladost sports centre in Pancevo - the SuperLiga's own team page ('Stadion SC Mladost'), its schedule (every 2026-27 home game so far, six of them, 'SC Mladost, Pancevo'), and both the English ('SC Mladost Stadium') and Serbian ('SRC Mladost, Pancevo') infoboxes. No stadium item was found; the position is that of Q134966054, the Wikidata item for the complex's Commons category, 44.879086/20.662633, which sits 65 m from the larger grass football pitch OpenStreetMap maps there (way/68406503). CAPACITY BLANK: 2,967 (English table and infobox) against 1,200 (Serbian infobox). Checked before it was written: no P576, in the 2026-27 article, infobox 2025-26 SuperLiga 4th of 16 - not shape 6",
+   "manual": true,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q1389125",
+   "name": "FK Voždovac",
+   "leagues": [
+    "Q1813595"
+   ],
+   "tier": 2,
+   "venue": "Voždovac Stadium",
+   "capacity": 5200,
+   "lat": 44.7749,
+   "lon": 20.4902,
+   "city": null,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q140302346",
+   "name": "FK Proleter 023",
+   "leagues": [],
+   "tier": 2,
+   "venue": "Stadion Karađorđev park",
+   "capacity": 13500,
+   "lat": 45.386769,
+   "lon": 20.398686,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/FK_Proleter_023; https://www.wikidata.org/wiki/Q1638077",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-27, in the Serbia pass: this row names the club's own Q-id with a country and a tier, and fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 First League article names it - so the roster check reads one club, not a missing one and an extra one. Q140302346 is a new item for a club refounded as Proleter 023 on 9 July 2026 (English infobox: founded 1921 as Bratstvo) and carries no P118 and no P17. It is NOT FK Proleter Zrenjanin (Q2561958, dissolved 2005), which has a skip row. TIER 2: the complete First League article lists it and its Team changes table has it promoted from the Serbian League; the complete SuperLiga article does not list it; its infobox: 2025-26 Serbian League Vojvodina, 1st of 16, promoted (read on a runner 2026-09-27). GROUND: the Stadion Karadjordjev park in Zrenjanin on the table and the infobox ('Zrenjanin City Stadium'); position is the ground's own item Q1638077, 45.386769/20.398686, which OpenStreetMap's way/663220314 also names. CAPACITY 13,500: Q1638077's P1083, the table and the infobox agree If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q173009",
+   "name": "FK Crvena zvezda",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Rajko Mitić Stadium",
+   "capacity": 55538,
+   "lat": 44.783333,
+   "lon": 20.464722,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q188656",
+   "name": "FK Partizan",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Partizan Stadium",
+   "capacity": 32710,
+   "lat": 44.788611,
+   "lon": 20.459167,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q1945740",
+   "name": "FK Mladost Lučani",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Mladost Stadium",
+   "capacity": 8000,
+   "lat": 43.860014,
+   "lon": 20.132608,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q207501",
+   "name": "FK Vojvodina",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Karađorđe Stadium",
+   "capacity": 14458,
+   "lat": 45.246667,
+   "lon": 19.842222,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q209619",
+   "name": "OFK Beograd",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "SC FSS, Stara Pazova",
+   "capacity": null,
+   "lat": 44.990528,
+   "lon": 20.192056,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://www.superliga.rs/raspored-i-rezultati/; https://en.wikipedia.org/wiki/OFK_Beograd; https://www.wikidata.org/wiki/Q3280007",
+   "note": "GROUND FOR 2026-27 CORRECTED, 2026-09-27. Wikidata's P115 on Q209619 is Q2749462 Omladinski stadion in Belgrade, 19,100, and the club's English and Serbian infoboxes and the SuperLiga's own team page ('Stadion OFK Beograd') name that ground too - it is the club's own. But the 2026-27 SuperLiga table says 'SC FSS (temporarily)', and the league's own schedule, read on a runner, has both of its home games so far there: OFK Beograd 0:0 Radnik (25 July 2026) and OFK Beograd 2:2 Zeleznicar (9 August 2026), 'SC FSS, Stara Pazova'. For a map of where matches are played, the ground in use wins; the registered one is recorded here, not dropped. Position: the Serbian FA Sports Center's own item Q3280007, 44.990528/20.192056, 25 km from Belgrade. CAPACITY CLEARED: 3,000 is the table's alone, and 19,100 belongs to the Omladinski. When the club returns to the Omladinski, empty venue, capacity, lat and lon",
+   "manual": true,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q2123289",
+   "name": "FK Bor 1919",
+   "leagues": [
+    "Q7227416"
+   ],
+   "tier": 2,
+   "venue": "Stadion Mladost, Kruševac",
+   "capacity": 10331,
+   "lat": 43.583114,
+   "lon": 21.338122,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://www.prvaliga.rs/raspored-i-rezultati/; https://en.wikipedia.org/wiki/FK_Bor_1919; https://www.wikidata.org/wiki/Q3435068",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-27, in the Serbia pass: this row names the club's own Q-id with a country and a tier, and fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 First League article names it - so the roster check reads one club, not a missing one and an extra one. Wikidata gives Q2123289 one P118, Q7227416, a regional league below. TIER 2: the complete First League article lists it and its Team changes table has it promoted from the Serbian League; the complete SuperLiga article does not list it; its English infobox: 2025-26 Serbian League East, 1st of 16, promoted (read on a runner 2026-09-27). GROUND FOR 2026-27, NOT ITS OWN: the club's registered ground is the Stadion kraj Pirita in Bor (the First League's team page, the Serbian infobox, Wikidata's P625 on the item), but the league's own schedule has its home games at the Stadion Mladost in Krusevac (Bor 2:2 Vozdovac, 19 August; Bor 2:1 Proleter 023) and once at the Kraljevica in Zajecar (Bor 0:1 Napredak, 8 August), and the First League table and the English infobox both say Mladost Stadium, Krusevac, 'temporarily'. Two of three home games and two other sources: Krusevac, 170 km from Bor. Position: the ground's own item Q3435068, 43.583114/21.338122 - FK Napredak's ground, so the two share a pin. CAPACITY 10,331, the figure on Napredak's pin for the same ground (Q3435068's P1083, the table and StadiumDB agree); the English infobox's 8,168 is the Kraljevica's figure. When the club goes home to Bor, empty venue, capacity, lat and lon. If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q213161",
+   "name": "FK Čukarički",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Stadion Čukarički",
+   "capacity": 4070,
+   "lat": 44.772658,
+   "lon": 20.421639,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q2184917",
+   "name": "FK Teleoptik",
+   "leagues": [
+    "Q1813595"
+   ],
+   "tier": 2,
+   "venue": "SC Partizan-Teleoptik",
+   "capacity": 2000,
+   "lat": 44.852453,
+   "lon": 20.382454,
+   "city": null,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q218724",
+   "name": "FK Javor Ivanjica",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 2,
+   "venue": "Javor Stadium",
+   "capacity": 5000,
+   "lat": 43.586122,
+   "lon": 20.227239,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/FK_Javor_Ivanjica",
+   "note": "TIER CORRECTED FROM 1 TO 2 - reviewable, and Alexandru's to overrule. Wikidata's preferred P118 on Q218724 is Q235307 SuperLiga, from 2025, no end date, so it arrived at tier 1. Three reads, two of them complete division lists (read on a runner 2026-09-27): the 2026-27 SuperLiga article (14 of 14 resolved) does not list it, the 2026-27 First League article (16 of 16 resolved) does, and the First League article's Team changes table lists it as relegated from the 2025-26 SuperLiga, as does its English infobox (2025-26 SuperLiga, 14th of 16, relegated; league Serbian First League). The table calls it Javor-Matis. The FC Wil shape. Empty the tier cell and it goes back to tier 1",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q2614598",
+   "name": "FK Mačva Šabac",
+   "leagues": [
+    "Q1813595"
+   ],
+   "tier": 1,
+   "venue": "Stadion FK Mačva",
+   "capacity": null,
+   "lat": 44.748424,
+   "lon": 19.685923,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/FK_Ma%C4%8Dva_%C5%A0abac; https://www.superliga.rs/tim/macva/; https://www.wikidata.org/wiki/Q38244305",
+   "note": "TIER CORRECTED FROM 2 TO 1 - reviewable, and Alexandru's to overrule - AND PLACED. Wikidata's preferred P118 on Q2614598 is Q1813595 First League, from 2021, no end date, so it arrived at tier 2; it has no P115 and no P625, so it was dropped at the coordinates gate. TIER: the complete 2026-27 SuperLiga article (14 of 14) lists it and its Team changes table has it promoted from the First League; the complete First League article (16 of 16) does not list it; its English infobox says League: Serbian SuperLiga, 2025-26 First League 2nd, and the SuperLiga's own site has its team page (read on a runner 2026-09-27). The Babelsberg shape. Empty the tier cell and it goes back to tier 2. GROUND: the Stadion FK Macva in Sabac on the SuperLiga table, the English and Serbian infoboxes and the league's own page. Position: the ground's own item Q38244305, 44.748424/19.685923, within 10 m of the English infobox's coordinate and of OpenStreetMap's way/387429367. CAPACITY BLANK: 5,500 (English table and infobox) and 5,494 seats (Serbian infobox) are Wikipedia only, the Serbian article's text says 10,000 seats, and neither StadiumDB nor Wikidata has a figure",
+   "manual": true,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q3063273",
+   "name": "RFK Grafičar Beograd",
+   "leagues": [
+    "Q1506296"
+   ],
+   "tier": 2,
+   "venue": "Rajko Mitić Stadium, auxiliary pitch",
+   "capacity": null,
+   "lat": 44.783333,
+   "lon": 20.464722,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/RFK_Grafi%C4%8Dar_Beograd; https://sr.wikipedia.org/wiki/%D0%A0%D0%A4%D0%9A_%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B0%D1%80; https://www.wikidata.org/wiki/Q478000",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-27, in the Serbia pass: this row names the club's own Q-id with a country and a tier, and fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 First League article names it - so the roster check reads one club, not a missing one and an extra one. Wikidata gives Q3063273 one P118, Q1506296, a Belgrade league below the First League. TIER 2: the complete First League article lists it, the complete SuperLiga article does not, and its English infobox says League: Serbian First League, 2025-26 10th (read on a runner 2026-09-27). GROUND: the auxiliary artificial pitch of the Rajko Mitic Stadium complex - the table ('Rajko Mitic Stadium - South Stand Artificial'), the English infobox ('South artificial grass No. 5 field') and the Serbian infobox ('Pomocni stadion Rajko Mitic') agree, and the Serbian article says the club has played on Red Star's auxiliary pitch since 2018-19 rather than at its old ground in Senjak. No item or OpenStreetMap object for that pitch was found, so the position is the Rajko Mitic Stadium's own, Q478000's P625, and the club shares Red Star's pin - the complex, not the main bowl. CAPACITY BLANK: 1,000 (English table and infobox) against 1,500 (Serbian infobox) If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q31181880",
+   "name": "FK IMT",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Lagator Stadium",
+   "capacity": 8030,
+   "lat": 44.539212,
+   "lon": 19.230742,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/FK_IMT; https://stadiumdb.com/stadiums/ser; https://www.wikidata.org/wiki/Q109652716",
+   "note": "PLACED, 2026-09-27. Q31181880 carries the SuperLiga (from 2023) and is in the complete 2026-27 SuperLiga article, so the club query sees it at tier 1 - but neither it nor any ground on it has a position (no P115, no P625), so it was dropped at the coordinates gate. A Belgrade club that plays its home games in Loznica: the SuperLiga table says the Lagator Stadium, 8,030, and so do its English infobox ('Lagator Stadium, Loznica') and StadiumDB ('Fudbalski stadion Lagator, Loznica, FK Loznica, FK IMT'), read on a runner 2026-09-27. Position: the ground's own item Q109652716, 44.539212/19.230742. Shared with FK Loznica, genuinely. CAPACITY 8,030 as on Loznica's row. Checked before it was written: no P576, in the 2026-27 article, infobox 2025-26 SuperLiga 9th of 16 - not shape 6 The SuperLiga's own team page names the club's registered ground in Belgrade ('Stadion FK IMT', about 1,000 seats), but the league's own schedule has its 2026-27 home games at 'Gradski stadion Lagator, Loznica' (IMT 4:0 Zemun, 25 July; IMT 0:0 Radnicki Nis, 16 August) - the ground in use wins",
+   "manual": true,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q421665",
+   "name": "FK Radnički 1923",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Čika Dača Stadium",
+   "capacity": 15100,
+   "lat": 44.020872,
+   "lon": 20.899194,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q421940",
+   "name": "FK Smederevo 1924",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 2,
+   "venue": "Smederevo City Stadium",
+   "capacity": 17200,
+   "lat": 44.660633,
+   "lon": 20.901733,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/FK_Smederevo_1924",
+   "note": "TIER CORRECTED FROM 1 TO 2 - reviewable, and Alexandru's to overrule. Wikidata gives Q421940 one P118, Q235307 SuperLiga, normal rank, qualified 2009-2013 - the club query does not read end dates, so it arrived at tier 1. Three reads, two of them complete division lists (read on a runner 2026-09-27): the 2026-27 SuperLiga article (14 of 14 resolved) does not list it, the 2026-27 First League article (16 of 16 resolved) does, and its English infobox says League: Serbian First League, 2025-26 First League 7th of 16. The FC Wil shape. Empty the tier cell and it goes back to tier 1",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q4863629",
+   "name": "FK Loznica",
+   "leagues": [
+    "Q388568"
+   ],
+   "tier": 2,
+   "venue": "Lagator Stadium",
+   "capacity": 8030,
+   "lat": 44.539212,
+   "lon": 19.230742,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/FK_Loznica; https://stadiumdb.com/stadiums/ser; https://www.wikidata.org/wiki/Q109652716",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-27, in the Serbia pass: this row names the club's own Q-id with a country and a tier, and fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 First League article names it - so the roster check reads one club, not a missing one and an extra one. Wikidata gives Q4863629 one P118, Q388568 Serbian League West, a tier below. TIER 2: the complete First League article lists it, the complete SuperLiga article does not, and its English infobox says League: Serbian First League, 2025-26 4th (read on a runner 2026-09-27). GROUND: the Lagator Stadium in Loznica on the table, the infobox and StadiumDB ('Fudbalski stadion Lagator, Loznica, FK Loznica, FK IMT'); position is the ground's own item Q109652716, 44.539212/19.230742, which OpenStreetMap's way/1250756948 also names. Shared with FK IMT, genuinely - StadiumDB and both clubs' infoboxes say so. CAPACITY 8,030: Q109652716's P1083, the table and the infobox; StadiumDB's 8,067 is within 1% If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q5426131",
+   "name": "GFK Dubočica",
+   "leagues": [
+    "Q694079"
+   ],
+   "tier": 2,
+   "venue": "Dubočica Stadium",
+   "capacity": 8136,
+   "lat": 42.99017,
+   "lon": 21.959828,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/GFK_Dubo%C4%8Dica; https://stadiumdb.com/stadiums/ser; https://www.wikidata.org/wiki/Q122418128",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-27, in the Serbia pass: this row names the club's own Q-id with a country and a tier, and fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 First League article names it - so the roster check reads one club, not a missing one and an extra one. Wikidata gives Q5426131 one P118, Q694079 Serbian League East, a tier below. TIER 2: the complete First League article lists it, the complete SuperLiga article does not, and its English infobox says League: Serbian First League, 2024-25 First League 11th (read on a runner 2026-09-27). GROUND: the Dubocica Stadium in Leskovac on the table, the infobox and StadiumDB ('Gradski stadion Dubocica, Leskovac, GFK Dubocica Leskovac'); position is the ground's own item Q122418128, 42.99017/21.959828, which OpenStreetMap's way/880155272 also names. CAPACITY 8,136: the table, the infobox, StadiumDB and OpenStreetMap agree If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q5426356",
+   "name": "FK Radnik Surdulica",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Surdulica City Stadium",
+   "capacity": 3312,
+   "lat": 42.6833,
+   "lon": 22.1666,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q61130291",
+   "name": "OFK Vršac",
+   "leagues": [],
+   "tier": 2,
+   "venue": "Gradski stadion Vršac",
+   "capacity": null,
+   "lat": 45.118426,
+   "lon": 21.309806,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/OFK_Vr%C5%A1ac; https://www.prvaliga.rs/tim/ofk-vrsac/; https://www.openstreetmap.org/way/134768056",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-27, in the Serbia pass: this row names the club's own Q-id with a country and a tier, and fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 First League article names it - so the roster check reads one club, not a missing one and an extra one. Wikidata gives Q61130291 NO P118 at all. TIER 2: the complete First League article lists it, the complete SuperLiga article does not, and its English infobox says League: Serbian First League, 2025-26 5th of 16 (read on a runner 2026-09-27); the First League's own site has its team page. GROUND: the city stadium in Vrsac on the table ('Vrsac City Stadium'), both infoboxes and the league's page ('Gradski stadion, Vrsac'). No Wikidata item for the ground was found, so the position is OpenStreetMap's way/134768056, 'Gradski stadion', Vrsac, 45.118426/21.309806 - beside it the same map has a 'Pomocni stadion', the auxiliary pitch, which is not used. CAPACITY BLANK: 5,000 is Wikipedia's only (English table and infobox, Serbian infobox). If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q687178",
+   "name": "FK Metalac Gornji Milanovac",
+   "leagues": [
+    "Q1813595"
+   ],
+   "tier": 2,
+   "venue": "Metalac Stadium",
+   "capacity": 4500,
+   "lat": 44.033333,
+   "lon": 20.45,
+   "city": null,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q754310",
+   "name": "FK Borac Čačak",
+   "leagues": [
+    "Q1813595"
+   ],
+   "tier": 2,
+   "venue": "Čačak Stadium",
+   "capacity": 8000,
+   "lat": 43.897819,
+   "lon": 20.341406,
+   "city": null,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q828297",
+   "name": "FK TSC",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 2,
+   "venue": "TSC Arena",
+   "capacity": 4500,
+   "lat": 45.815822,
+   "lon": 19.627244,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/FK_TSC; https://stadiumdb.com/stadiums/ser; https://www.wikidata.org/wiki/Q108414747",
+   "note": "TIER CORRECTED FROM 1 TO 2 - reviewable, and Alexandru's to overrule - AND PLACED. Wikidata's preferred P118 on Q828297 is Q235307 SuperLiga, from 2019, no end date, so it arrived at tier 1; it has no P115 and no P625, so it was dropped at the coordinates gate and was not drawn at all. TIER: the 2026-27 SuperLiga article (14 of 14) does not list it, the 2026-27 First League article (16 of 16) does, and both its Team changes table and its English infobox (2025-26 SuperLiga, 13th of 16, relegated) say it was relegated (read on a runner 2026-09-27). The FC Wil shape; empty the tier cell and it goes back to tier 1. GROUND: the TSC Arena in Backa Topola on the First League table, the English infobox and StadiumDB ('TSC Arena, Backa Topola, FK TSC'); OpenStreetMap's way/376176822 names FK TSC as operator. Position: the ground's own item Q108414747, 45.815822/19.627244. CAPACITY 4,500: the table and StadiumDB agree, and the infobox says the same",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q843210",
+   "name": "FK Napredak Kruševac",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 2,
+   "venue": "Stadion Mladost",
+   "capacity": 10331,
+   "lat": 43.583114,
+   "lon": 21.338122,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/FK_Napredak_Kru%C5%A1evac",
+   "note": "TIER CORRECTED FROM 1 TO 2 - reviewable, and Alexandru's to overrule. Wikidata's preferred P118 on Q843210 is Q235307 SuperLiga, from 2016, no end date, so it arrived at tier 1. Three reads, two of them complete division lists (read on a runner 2026-09-27): the 2026-27 SuperLiga article (14 of 14 resolved) does not list it, the 2026-27 First League article (16 of 16 resolved) does, and the Team changes table lists it as relegated from the 2025-26 SuperLiga, as does its English infobox (16th of 16, relegated; league Serbian First League). The FC Wil shape. Empty the tier cell and it goes back to tier 1",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q94605",
+   "name": "FK Spartak Subotica",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 2,
+   "venue": "Subotica City Stadium",
+   "capacity": 13000,
+   "lat": 46.081781,
+   "lon": 19.676958,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/FK_Spartak_Subotica",
+   "note": "TIER CORRECTED FROM 1 TO 2 - reviewable, and Alexandru's to overrule. Wikidata gives Q94605 one P118, Q235307 SuperLiga, normal rank, from 2009, no end date, so it arrived at tier 1. Three reads, two of them complete division lists (read on a runner 2026-09-27): the 2026-27 SuperLiga article (14 of 14 resolved) does not list it, the 2026-27 First League article (16 of 16 resolved) does, and the Team changes table lists it as relegated from the 2025-26 SuperLiga (as Spartak ZK), as does its English infobox (15th of 16, relegated; league Serbian First League). The FC Wil shape. Empty the tier cell and it goes back to tier 1",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
+   "id": "Q995069",
+   "name": "FK Novi Pazar",
+   "leagues": [
+    "Q235307"
+   ],
+   "tier": 1,
+   "venue": "Novi Pazar City Stadium",
+   "capacity": 12000,
+   "lat": 43.134236,
+   "lon": 20.516067,
+   "city": null,
+   "competition": "SuperLiga (Serbia)"
+  }
+ ]
+}
