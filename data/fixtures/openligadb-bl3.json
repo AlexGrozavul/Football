@@ -2528,7 +2528,7 @@
   },
   {
    "id": 84815,
-   "utcDate": "2026-10-10T12:00:00Z",
+   "utcDate": "2026-10-09T17:00:00Z",
    "finished": false,
    "round": "8. Spieltag",
    "roundOrder": 8,
@@ -2543,81 +2543,6 @@
     "name": "Rot-Weiss Essen",
     "shortName": "Rot-Weiss Essen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Rot-Weiss_Essen.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84816,
-   "utcDate": "2026-10-10T12:00:00Z",
-   "finished": false,
-   "round": "8. Spieltag",
-   "roundOrder": 8,
-   "home": {
-    "id": 107,
-    "name": "MSV Duisburg",
-    "shortName": "Duisburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/en/c/c8/Msv_duisburg%28new%29.svg"
-   },
-   "away": {
-    "id": 2396,
-    "name": "TSG 1899 Hoffenheim II",
-    "shortName": "TSG 1899 Hoffenheim II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84817,
-   "utcDate": "2026-10-10T12:00:00Z",
-   "finished": false,
-   "round": "8. Spieltag",
-   "roundOrder": 8,
-   "home": {
-    "id": 23,
-    "name": "Alemannia Aachen",
-    "shortName": "Aachen",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/94/Alemannia_Aachen_2010.svg"
-   },
-   "away": {
-    "id": 2199,
-    "name": "Viktoria Köln",
-    "shortName": "Viktoria Köln",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84818,
-   "utcDate": "2026-10-10T12:00:00Z",
-   "finished": false,
-   "round": "8. Spieltag",
-   "roundOrder": 8,
-   "home": {
-    "id": 171,
-    "name": "FC Ingolstadt 04",
-    "shortName": "Ingolstadt",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/5/55/FC-Ingolstadt_logo.svg/960px-FC-Ingolstadt_logo.svg.png"
-   },
-   "away": {
-    "id": 174,
-    "name": "SV Wehen Wiesbaden",
-    "shortName": "Wiesbaden",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/3/3d/Logo_SV_Wehen_Wiesbaden.svg/250px-Logo_SV_Wehen_Wiesbaden.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -2752,8 +2677,83 @@
    "viewers": null
   },
   {
+   "id": 84816,
+   "utcDate": "2026-10-10T14:30:00Z",
+   "finished": false,
+   "round": "8. Spieltag",
+   "roundOrder": 8,
+   "home": {
+    "id": 107,
+    "name": "MSV Duisburg",
+    "shortName": "Duisburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/en/c/c8/Msv_duisburg%28new%29.svg"
+   },
+   "away": {
+    "id": 2396,
+    "name": "TSG 1899 Hoffenheim II",
+    "shortName": "TSG 1899 Hoffenheim II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84818,
+   "utcDate": "2026-10-11T11:30:00Z",
+   "finished": false,
+   "round": "8. Spieltag",
+   "roundOrder": 8,
+   "home": {
+    "id": 171,
+    "name": "FC Ingolstadt 04",
+    "shortName": "Ingolstadt",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/5/55/FC-Ingolstadt_logo.svg/960px-FC-Ingolstadt_logo.svg.png"
+   },
+   "away": {
+    "id": 174,
+    "name": "SV Wehen Wiesbaden",
+    "shortName": "Wiesbaden",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/3/3d/Logo_SV_Wehen_Wiesbaden.svg/250px-Logo_SV_Wehen_Wiesbaden.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84817,
+   "utcDate": "2026-10-11T14:30:00Z",
+   "finished": false,
+   "round": "8. Spieltag",
+   "roundOrder": 8,
+   "home": {
+    "id": 23,
+    "name": "Alemannia Aachen",
+    "shortName": "Aachen",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/94/Alemannia_Aachen_2010.svg"
+   },
+   "away": {
+    "id": 2199,
+    "name": "Viktoria Köln",
+    "shortName": "Viktoria Köln",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 84824,
-   "utcDate": "2026-10-10T12:00:00Z",
+   "utcDate": "2026-10-11T17:30:00Z",
    "finished": false,
    "round": "8. Spieltag",
    "roundOrder": 8,
