@@ -252,20 +252,6 @@
    "competition": "Super League 2 (Greece)"
   },
   {
-   "id": "Q3292636",
-   "name": "F.S. Kozani",
-   "leagues": [
-    "Q63980269"
-   ],
-   "tier": 2,
-   "venue": "Kozani Stadium",
-   "capacity": 4000,
-   "lat": 40.293725,
-   "lon": 21.782756,
-   "city": null,
-   "competition": "Super League 2 (Greece)"
-  },
-  {
    "id": "Q4122219",
    "name": "Panathinaikos F.C.",
    "leagues": [
