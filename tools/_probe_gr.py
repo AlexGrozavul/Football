@@ -70,243 +70,111 @@ def section(name, fn):
 
 
 # ======================================================================
-GR_LEAGUES = {}
+
+def wikitext(title, lang="en", section="0"):
+    args = {"action": "parse", "page": title, "prop": "wikitext", "format": "json",
+            "formatversion": "2", "redirects": "1"}
+    if section is not None: args["section"] = section
+    d, e = cr.get_json_with_retry(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    return (d or {}).get("parse", {}).get("wikitext", "")
 
 
-def s1():
-    Q = """SELECT ?l ?lLabel ?level ?en ?type WHERE {
-      ?l wdt:P17 wd:Q41 ; wdt:P641 wd:Q2736 .
-      OPTIONAL { ?l wdt:P3983 ?level }
-      OPTIONAL { ?l wdt:P31 ?type }
-      OPTIONAL { ?en schema:about ?l ; schema:isPartOf <https://en.wikipedia.org/> }
-      ?l rdfs:label ?lab .
-      FILTER(CONTAINS(LCASE(?lab), "super league") || CONTAINS(LCASE(?lab), "σούπερ λίγκ")
-             || CONTAINS(LCASE(?lab), "football league") || CONTAINS(LCASE(?lab), "gamma ethniki")
-             || CONTAINS(LCASE(?lab), "beta ethniki") || CONTAINS(LCASE(?lab), "alpha ethniki")
-             || CONTAINS(LCASE(?lab), "εθνική"))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,el" }
-    }"""
+def infobox(title, lang="en", keys=r"dissolved|league|season|position|ground|capacity|coordinates|coord|current|fullname|founded|stadium|name|opened|location|home|tenants|γήπεδο|έδρα|χωρητικότητα|πρωτάθλημα|ίδρυση|διάλυση|coordinates|seating|record"):
+    wt = wikitext(title, lang)
+    keep = [l.strip() for l in wt.splitlines() if re.match(r"\s*\|\s*(%s)" % keys, l, re.I)]
+    return " || ".join(keep)[:1000] if keep else ("(no infobox lines)" if wt else "(no article)")
+
+
+def intro(title, lang="en", n=700):
+    args = {"action": "query", "prop": "extracts", "exintro": "1", "explaintext": "1", "titles": title,
+            "redirects": "1", "format": "json", "formatversion": "2"}
+    d, e = cr.get_json_with_retry(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    pages = (d or {}).get("query", {}).get("pages", [])
+    return re.sub(r"\s+", " ", (pages[0].get("extract") if pages else "") or "")[:n]
+
+
+def t1():
+    E = ents(["Q63980269", "Q235114", "Q1436035", "Q1421208", "Q41", "Q30646111"])
+    for q, x in E.items():
+        p("ENT", q, labs(x), "| P31", [v[0] for v in vals(x, "P31")][:5], "| P17", [v[0] for v in vals(x, "P17")],
+          "| P3983", vals(x, "P3983"), "| P1332-5", [vals(x, k) for k in ("P1332", "P1333", "P1334", "P1335")],
+          "| sl", sitelinks(x))
+
+
+def t2():
+    for term in ["Asteras Tripolis B", "Αστέρας Τρίπολης Β", "Asteras Tripoli B"]:
+        for lang in ("en", "el"):
+            args = {"action": "wbsearchentities", "search": term, "language": lang, "limit": "10", "format": "json"}
+            d, e = cr.get_json_with_retry("https://www.wikidata.org/w/api.php?" + urllib.parse.urlencode(args), term)
+            for r in (d or {}).get("search", []):
+                p("SEARCH", term, lang, r.get("id"), r.get("label"), "|", r.get("description"))
+            time.sleep(1)
+    Q = """SELECT ?t ?tLabel WHERE { { ?t wdt:P831 wd:Q757320 } UNION { ?t wdt:P361 wd:Q757320 } UNION { wd:Q757320 wdt:P527 ?t }
+           SERVICE wikibase:label { bd:serviceParam wikibase:language "en,el" } }"""
     res, err = fc.sparql_with_retry(Q)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("GR-LEAGUES", err, len(rows))
-    seen = {}
-    for r in rows:
-        k = q_(fc.cell(r, "l"))
-        s = seen.setdefault(k, [fc.cell(r, "lLabel"), set(), fc.cell(r, "en"), set()])
-        if fc.cell(r, "level"): s[1].add(fc.cell(r, "level"))
-        if fc.cell(r, "type"): s[3].add(q_(fc.cell(r, "type")))
-    for k, (lb, lev, en, ty) in sorted(seen.items(), key=lambda kv: str(sorted(kv[1][1]))):
-        p("  ", k, "|", lb, "| level", sorted(lev), "|", en, "|", sorted(ty))
-    for k, v in seen.items():
-        en = urllib.parse.unquote(v[2] or "")
-        if en.endswith("/Super_League_Greece"): GR_LEAGUES[k] = 1
-        if en.endswith("/Super_League_Greece_2"): GR_LEAGUES[k] = 2
-    p("GR-TOP", GR_LEAGUES)
-    e = ents(list(GR_LEAGUES))
-    for q, x in e.items():
-        p("LEAGUE", q, labs(x), "| P31", vals(x, "P31"), "| P17", vals(x, "P17"), "| P3983", vals(x, "P3983"),
-          "| P3450", vals(x, "P3450")[-3:], "| P1132", vals(x, "P1132"), "| sitelinks", sitelinks(x))
+    for r in (res or {}).get("results", {}).get("bindings", []):
+        p("ASTERAS-REL", q_(fc.cell(r, "t")), fc.cell(r, "tLabel"))
+    E = ents(["Q757320"])
+    x = E.get("Q757320", {})
+    p("ASTERAS", {k: vals(x, k) for k in ("P31", "P527", "P355", "P831", "P361", "P115", "P118")})
 
 
-GR_ROSTER = {}
+def t3():
+    for t in ["Niki Volos F.C.", "Panathinaikos F.C.", "AEK Athens F.C.", "Agia Sophia Stadium", "Anagennisi Karditsa F.C.",
+              "Municipal Stadium of Karditsa", "Athens Kallithea F.C.", "Grigoris Lamprakis Stadium", "A.P.S. Zakynthos",
+              "Hellas Syros F.C.", "Nestos Chrysoupoli F.C.", "Marko 1927 F.C.", "Asteras Tripolis F.C.",
+              "Theodoros Kolokotronis Stadium", "AEL FC Arena", "Atromitos F.C.", "Peristeri Stadium",
+              "Olympiacos F.C. B", "PAOK B", "Panionios F.C.", "Nea Smyrni Stadium", "Panthrakikos F.C.", "Komotini Municipal Stadium",
+              "Kalamata F.C.", "Olympic Stadium (Athens)", "Apostolos Nikolaidis Stadium", "Panetolikos F.C."]:
+        p("INFOBOX", t, "|", infobox(t))
+        time.sleep(0.4)
+    for t in ["Sporting Club fivois", "Équipe fédérale Reims-Champagne", "Società Ginnastica di Torino"]:
+        for lang in ("en", "fr", "it"):
+            ib = infobox(t, lang)
+            if ib != "(no article)":
+                p("INFOBOX-P582", lang, t, "|", ib)
+                p("INTRO-P582", lang, t, "|", intro(t, lang, 500))
+    E = ents(["Q1514915", "Q3590859", "Q116949682", "Q113573418", "Q141319965", "Q5014471"])
+    for q, x in E.items():
+        n, en, _el = sitelinks(x)
+        s = x.get("sitelinks") or {}
+        p("P582ITEM", q, lab(x), "| P31", [v[0] for v in vals(x, "P31")], "| P576", vals(x, "P576"), "| P571", vals(x, "P571"),
+          "| P118", vals(x, "P118"), "| sl", sorted(s)[:8])
+        for site in ("enwiki", "frwiki", "itwiki", "rowiki"):
+            t = (s.get(site) or {}).get("title")
+            if t:
+                lang = site[:2]
+                p("   ", site, t, "| INFOBOX", infobox(t, lang, keys=r"dissolved|desfiin|scioglimento|dissolution|disparition|league|liga|campionato|championnat|season|sezon|stagione|position|founded|fondat|fondazione|fondation|nume|name|nom"))
+                p("   ", site, t, "| INTRO", intro(t, lang, 500))
 
 
-def s2():
-    for art, tier in [("2026–27 Super League Greece", 1), ("2026–27 Super League Greece 2", 2)]:
-        page, real, err = cr.fetch_article(art)
-        if err:
-            p("ARTICLE", art, "ERROR", err); continue
-        tables, shape = cr.roster_tables(page)
-        p("ARTICLE", art, "->", real, "|", shape, "| tables", len(tables))
-        names, caps = [], {}
-        for t, h in tables:
-            p("  HEAD", h[:8])
-            for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", t, re.S)[1:]:
-                cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)
-                links = re.findall(r'<a[^>]+href="/wiki/([^"#:]+)"', tr)
-                p("  ROW", tier, [cr.text_of(c)[:40] for c in cells][:6], "| links",
-                  [urllib.parse.unquote(l) for l in links][:3])
-            left = []
-            for title, cap in cr.rows_of(t, h, left):
-                if title not in names: names.append(title); caps[title] = cap
-            for x in left: p("  LEFT-OUT", x)
-        got, fails = cr.qids_for_titles(names)
-        p("RESOLVED", art, len(got), "of", len(names), "| failures", fails)
-        for n in names:
-            p("   ", got.get(n, "-"), "|", n, "|", caps.get(n))
-            if got.get(n): GR_ROSTER.setdefault(got[n], []).append((tier, n, caps.get(n)))
-        plain = cr.text_of(page)
-        for kw in ("relegat", "promot", "withdr", "exclu", "dissol", "licen", "merg", "renam", "group", "deduct"):
-            hits = [plain[max(0, m.start() - 160):m.start() + 160] for m in re.finditer(kw, plain, re.I)][:6]
-            for h in hits: p("  CHANGE", tier, kw, "...", h)
-        time.sleep(2)
+def overpass(q):
+    data = urllib.parse.urlencode({"data": q}).encode()
+    req = urllib.request.Request("https://overpass-api.de/api/interpreter", data=data, headers={"User-Agent": cr.USER_AGENT})
+    with urllib.request.urlopen(req, timeout=200) as r:
+        return json.loads(r.read().decode())
 
 
-def s3():
-    for slug in ["gre", "grc", "greece", "gr", "hel"]:
+def t4():
+    for town, lat, lon in [("Chrysoupoli", 40.983, 24.700), ("Ermoupoli", 37.444, 24.940), ("Zakynthos", 37.782, 20.897),
+                           ("Markopoulo", 37.884, 23.930), ("Karditsa", 39.365, 21.921), ("Kallithea", 37.955, 23.702)]:
+        q = f"""[out:json][timeout:120];(nwr[leisure=stadium](around:4000,{lat},{lon});nwr[leisure=pitch][sport=soccer](around:4000,{lat},{lon}););out center tags;"""
         try:
-            req = urllib.request.Request(f"https://stadiumdb.com/stadiums/{slug}", headers={"User-Agent": cr.USER_AGENT})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                body = r.read().decode("utf-8", "replace"); st = r.status
-        except urllib.error.HTTPError as ex:
-            st, body = ex.code, ""
+            d = overpass(q)
         except Exception as ex:
-            st, body = str(ex), ""
-        p("STADIUMDB", slug, st, len(body), body.count("<tr"))
-        if st == 200 and body.count("<tr") > 3:
-            for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", body, re.S)[:80]:
-                p("   SDB", [cr.text_of(c) for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)])
-            break
-        time.sleep(4)
+            p("OSM", town, "ERROR", ex); time.sleep(10); continue
+        for el in d.get("elements", []):
+            c = el.get("center") or {"lat": el.get("lat"), "lon": el.get("lon")}
+            t = el.get("tags", {})
+            if t.get("leisure") == "pitch" and not t.get("name"): continue
+            p("OSM", town, f"{el['type']}/{el['id']}", t.get("leisure"), "|", t.get("name"), "|", t.get("name:en"), "|",
+              t.get("capacity"), "|", t.get("wikidata"), "|", t.get("operator"), "|", round(c["lat"], 6), round(c["lon"], 6))
+        unnamed = sum(1 for el in d.get("elements", []) if el.get("tags", {}).get("leisure") == "pitch" and not el.get("tags", {}).get("name"))
+        p("OSM", town, "unnamed soccer pitches:", unnamed)
+        time.sleep(8)
 
 
-def s4():
-    if not GR_LEAGUES:
-        p("NO GR LEAGUES"); return
-    Q = """SELECT ?club ?league ?rank WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; wikibase:rank ?rank .
-      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-    }""" % " ".join("wd:" + l for l in GR_LEAGUES)
-    res, err = fc.sparql_with_retry(Q)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("TAGGED", err, len(rows))
-    tags = {}
-    for r in rows:
-        tags.setdefault(q_(fc.cell(r, "club")), set()).add(
-            (GR_LEAGUES.get(q_(fc.cell(r, "league"))), q_(fc.cell(r, "rank")).split("#")[-1][:4]))
-    allq = set(tags) | set(GR_ROSTER)
-    E = ents(sorted(allq))
-    venues = []
-    for q in sorted(allq, key=lambda q: lab(E.get(q, {})) or q):
-        x = E.get(q, {})
-        types = [v[0] for v in vals(x, "P31")]
-        if "Q5" in types: continue
-        venues += [v[0] for v in vals(x, "P115") if isinstance(v[0], str) and v[0].startswith("Q")]
-        p("ITEM", q, "|", labs(x), "| tags", sorted(tags.get(q, []), key=str), "| roster", GR_ROSTER.get(q),
-          "| P118", vals(x, "P118")[:8], "| P576", vals(x, "P576") or "-", "| P17", [v[0] for v in vals(x, "P17")],
-          "| P115", vals(x, "P115"), "| P625", vals(x, "P625"), "| P31", types[:4],
-          "| P831", vals(x, "P831"), "| P361", vals(x, "P361")[:3], "| sl", sitelinks(x))
-    G = ents(venues)
-    for q, x in G.items():
-        p("GROUND", q, "|", labs(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083")[:4],
-          "| P131", [v[0] for v in vals(x, "P131")][:2], "| sl", sitelinks(x)[:2])
-
-
-# ======================================================================
-# 5. the P582 measurement across every mapped country (and Greece's two)
-def load_tiers():
-    out = {}
-    with open("data/league-tiers.csv", encoding="utf-8") as fh:
-        for r in csv.DictReader(fh):
-            if r["tier"].strip().isdigit():
-                out[r["leagueQid"].strip()] = (int(r["tier"]), r["country"].strip())
-    return out
-
-
-def s5():
-    tiers = load_tiers()
-    for q, t in GR_LEAGUES.items():
-        tiers[q] = (t, "GR")
-    Q = """SELECT ?club ?league ?end ?endPrec ?start WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; a wikibase:BestRank .
-      OPTIONAL { ?st pqv:P582 ?ev . ?ev wikibase:timeValue ?end ; wikibase:timePrecision ?endPrec }
-      OPTIONAL { ?st pq:P580 ?start }
-      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-      FILTER NOT EXISTS { ?club wdt:P576 ?d }
-    }""" % " ".join("wd:" + l for l in tiers)
-    t0 = time.time()
-    res, err = fc.sparql_with_retry(Q)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("P582-QUERY", err, len(rows), "rows in", round(time.time() - t0, 1), "s")
-    stm = {}
-    for r in rows:
-        club, lg = q_(fc.cell(r, "club")), q_(fc.cell(r, "league"))
-        end = fc.cell(r, "end"); prec = fc.cell(r, "endPrec")
-        stm.setdefault(club, []).append((lg, (end or "")[:10], int(prec) if prec else None,
-                                         (fc.cell(r, "start") or "")[:4]))
-
-    def ended(end, prec):
-        if not end: return False
-        if prec is not None and prec <= 9:  # year precision or coarser
-            return end[:4] < TODAY[:4]
-        return end < TODAY
-
-    # the map and the hand rows
-    onmap = {}
-    for f in glob.glob("data/clubs/[A-Z][A-Z].json"):
-        d = json.load(open(f, encoding="utf-8"))
-        for c in d.get("clubs", []):
-            onmap[c["id"]] = (c.get("tier"), c.get("name"), os.path.basename(f)[:2])
-    manual = {}
-    with open("data/clubs-manual.csv", encoding="utf-8") as fh:
-        for r in csv.DictReader(fh):
-            if (r.get("clubQid") or "").strip():
-                manual[r["clubQid"].strip()] = (r.get("tier") or "").strip()
-    rejected = set()
-    with open("data/coordinate-reviews.csv", encoding="utf-8") as fh:
-        for r in csv.DictReader(fh):
-            if r["decision"] == "rejected" and not r["osmRef"]:
-                rejected.add(r["clubQid"])
-    verdicts = {}
-    with open("data/clubs/roster-review.csv", encoding="utf-8") as fh:
-        for r in csv.DictReader(fh):
-            verdicts.setdefault(r["clubQid"], []).append(r["_verdict"])
-
-    E = {}
-    counts = {}
-    detail = []
-    for club, ss in stm.items():
-        mapped = [(tiers[lg][0], tiers[lg][1], lg, end, prec, st) for lg, end, prec, st in ss if lg in tiers]
-        if not mapped: continue
-        country = sorted({m[1] for m in mapped})[0]
-        tier_all = min(m[0] for m in mapped)
-        live = [m for m in mapped if not ended(m[3], m[4])]
-        tier_live = min((m[0] for m in live), default=None)
-        anyend = any(m[3] for m in mapped)
-        c = counts.setdefault(country, {"clubs": 0, "withEnd": 0, "tierByEnded": 0})
-        c["clubs"] += 1
-        if anyend: c["withEnd"] += 1
-        if tier_live == tier_all: continue
-        c["tierByEnded"] += 1
-        # where does this club stand today
-        hand = manual.get(club)
-        if club in onmap:
-            if hand == "skip":
-                state = "skip-row-but-on-map?"
-            elif hand and hand.isdigit():
-                state = f"on-map-tier{onmap[club][0]}-HAND-TIER"
-            else:
-                state = f"on-map-tier{onmap[club][0]}-UNCORRECTED"
-        elif hand == "skip":
-            state = "skipped-by-hand"
-        elif club in rejected:
-            state = "off-map-whole-club-rejected"
-        elif hand and hand.isdigit():
-            state = f"off-map-hand-tier{hand}"
-        else:
-            state = "off-map-no-coords-NOT-REJECTED"
-        key = f"{country}:{state.split('-tier')[0] if state.startswith('on-map') else state}"
-        detail.append((country, state, club, tier_all, tier_live,
-                       [(m[0], m[3] or "-", m[5] or "-") for m in mapped], verdicts.get(club, [])))
-    for k, v in sorted(counts.items()):
-        p("P582-COUNTS", k, v)
-    need = [d[2] for d in detail]
-    E = ents(need, props="labels")
-    agg = {}
-    for d in sorted(detail):
-        agg.setdefault((d[0], d[1].replace("tier1", "tierN").replace("tier2", "tierN").replace("tier3", "tierN").replace("tier4", "tierN")), 0)
-        agg[(d[0], d[1].replace("tier1", "tierN").replace("tier2", "tierN").replace("tier3", "tierN").replace("tier4", "tierN"))] += 1
-        p("P582-CLUB", d[0], "|", d[1], "|", d[2], lab(E.get(d[2], {})), "| tierAll", d[3], "tierLive", d[4],
-          "| tags", d[5], "| roster", d[6])
-    for k, v in sorted(agg.items()):
-        p("P582-STATE", k, v)
-
-
-for name, fn in [("1 GR leagues", s1), ("2 GR articles", s2), ("3 GR StadiumDB", s3), ("4 GR items", s4),
-                 ("5 P582", s5)]:
+for name, fn in [("t1 leagues/box", t1), ("t2 Asteras B", t2), ("t3 infoboxes", t3), ("t4 OSM", t4)]:
     section(name, fn)
     time.sleep(2)
-p("GR-TOP again", GR_LEAGUES)
-p("=== END OF PROBE GR1 ===")
+p("=== END OF PROBE GR2 ===")
