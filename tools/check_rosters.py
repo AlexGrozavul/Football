@@ -655,7 +655,15 @@ def rows_of(table, headers, skipped=None):
 # link_fixtures.py use, kept here as words of a folded name. Not
 # imported, because this file is imported by fetch_clubs.py and must
 # not pull the StadiumDB matcher in with it.
-RESERVE_MARKERS = {"ii", "iii", "u21", "u23", "u19", "amateure"}
+# "b" since 2026-09-29, for Greece: Super League 2 fields reserve sides
+# named "Olympiacos B", "PAOK B" and "Asteras Tripolis B", and the 2026-27
+# table links the last of them to its PARENT club's article. Without the
+# marker that row read as Asteras Tripolis F.C. at tier 2 - the Rapid II
+# shape. No club on the map or in any roster had "b" as a word of its
+# name when it was added, checked across every country file.
+# crosscheck_stadiumdb.py's set carries it too; "2" and "3" are still
+# left out here, because a division name or a year can be a bare digit.
+RESERVE_MARKERS = {"ii", "iii", "u21", "u23", "u19", "amateure", "b"}
 
 
 def team_markers(name):

@@ -14,7 +14,7 @@ def q_(uri): return (uri or "").rsplit("/", 1)[-1]
 LANGS = "en|el|de"
 
 
-def ents(ids, props="claims|labels|sitelinks"):
+def ents(ids, props="claims|labels|sitelinks|descriptions"):
     out = {}
     ids = list(dict.fromkeys(i for i in ids if i))
     for i in range(0, len(ids), 45):
@@ -174,7 +174,39 @@ def t4():
         time.sleep(8)
 
 
-for name, fn in [("t1 leagues/box", t1), ("t2 Asteras B", t2), ("t3 infoboxes", t3), ("t4 OSM", t4)]:
+
+def u1():
+    E = ents(["Q135213959", "Q757320"])
+    for q, x in E.items():
+        p("ITEM", q, labs(x), "| desc", (x.get("descriptions") or {}), "| P31", vals(x, "P31"), "| P118", vals(x, "P118"),
+          "| P831", vals(x, "P831"), "| P361", vals(x, "P361"), "| P527", vals(x, "P527"), "| P115", vals(x, "P115"),
+          "| P571", vals(x, "P571"), "| P576", vals(x, "P576"), "| P17", vals(x, "P17"), "| sl", sitelinks(x),
+          "| claims", sorted((x.get("claims") or {}).keys()))
+    Q = """SELECT ?s ?p WHERE { ?s ?p wd:Q135213959 . FILTER(STRSTARTS(STR(?p), "http://www.wikidata.org/prop/direct/")) } LIMIT 50"""
+    res, err = fc.sparql_with_retry(Q)
+    for r in (res or {}).get("results", {}).get("bindings", []):
+        p("POINTS-AT", q_(fc.cell(r, "s")), q_(fc.cell(r, "p")))
+    page, real, err = cr.fetch_article("2026–27 Super League Greece 2")
+    plain = cr.text_of(page or "")
+    for m in re.finditer(r"Asteras Tripolis B|Hellas Syros|Zakynthos|Nestos", plain):
+        p("SL2-MENTION", plain[max(0, m.start() - 150):m.start() + 200])
+
+
+def u2():
+    for town, lat, lon in [("Ermoupoli", 37.444, 24.940)]:
+        q = f"""[out:json][timeout:120];(nwr[leisure=stadium](around:4000,{lat},{lon});nwr[leisure=pitch][sport=soccer](around:4000,{lat},{lon}););out center tags;"""
+        for attempt in range(3):
+            try:
+                d = overpass(q); break
+            except Exception as ex:
+                p("OSM", town, "ERROR", ex); time.sleep(30); d = None
+        for el in (d or {}).get("elements", []):
+            c = el.get("center") or {"lat": el.get("lat"), "lon": el.get("lon")}
+            t = el.get("tags", {})
+            p("OSM", town, f"{el['type']}/{el['id']}", t.get("leisure"), "|", t.get("name"), "|", t.get("name:en"), "|",
+              t.get("wikidata"), "|", round(c["lat"], 6), round(c["lon"], 6))
+
+
+for name, fn in [("u1 Q135213959", u1), ("u2 Syros", u2)]:
     section(name, fn)
-    time.sleep(2)
-p("=== END OF PROBE GR2 ===")
+p("=== END OF PROBE GR3 ===")
