@@ -1,0 +1,412 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "GR",
+ "countryName": "Greece",
+ "clubs": [
+  {
+   "id": "Q107410262",
+   "name": "Olympiacos B",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Rentis Training Center",
+   "capacity": 3000,
+   "lat": 37.9705,
+   "lon": 23.6833,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q107849577",
+   "name": "P.A.O.K. F.C. B",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Kalamaria Stadium",
+   "capacity": 6500,
+   "lat": 40.581475,
+   "lon": 22.945114,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q123283162",
+   "name": "A.S. Anagennisi Karditsas (football)",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Municipal Stadium of Karditsa",
+   "capacity": 13000,
+   "lat": 39.362552,
+   "lon": 21.935127,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q135213959",
+   "name": "Asteras Tripolis",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Theodoros Kolokotronis Stadium",
+   "capacity": 7616,
+   "lat": 37.502676,
+   "lon": 22.388678,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q1417287",
+   "name": "Panserraikos F.C.",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Serres Municipal Stadium",
+   "capacity": 9500,
+   "lat": 41.084689,
+   "lon": 23.546577,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q1460053",
+   "name": "Panetolikos F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Panetolikos Stadium",
+   "capacity": 7500,
+   "lat": 38.629967,
+   "lon": 21.411747,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q15309584",
+   "name": "G.S. Marko",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Municipal Stadium of Markopoulo",
+   "capacity": null,
+   "lat": 37.872056,
+   "lon": 23.932333,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q1547133",
+   "name": "Athens Kallithea F.C.",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Municipal Stadium of Kallithea \"Grigoris Lambrakis\"",
+   "capacity": 4200,
+   "lat": 37.9601,
+   "lon": 23.7151,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q16245443",
+   "name": "A.E. Kifisia F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Apostolos Nikolaidis Stadium",
+   "capacity": 16003,
+   "lat": 37.987169,
+   "lon": 23.754194,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q19628",
+   "name": "Olympiacos F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Karaiskakis Stadium",
+   "capacity": 33334,
+   "lat": 37.946169,
+   "lon": 23.664536,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q201584",
+   "name": "AEK Athens F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Agia Sophia Stadium",
+   "capacity": 32500,
+   "lat": 38.03715,
+   "lon": 23.74154,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece; https://stadiumdb.com/stadiums/gre; https://en.wikipedia.org/wiki/AEK_Athens_F.C.",
+   "note": "CONTESTED CAPACITY. In use: 32,500 (the 2026-27 Super League table and StadiumDB's Allwyn Arena agree exactly, and the club's English infobox gives the same figure with a 2023 licence document as its reference). Not taken: 34,000 and 31,100 - Wikidata carries BOTH on the ground item Q15284032 at the same rank, so which one the map showed depended on row order; 31,100 is also the stadium article's infobox figure and its record attendance. Every figure is written down on purpose, the UTA Arad rule, read on a runner 2026-09-29",
+   "manual": true,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q204888",
+   "name": "PAOK FC",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Toumba Stadium",
+   "capacity": 28703,
+   "lat": 40.613839,
+   "lon": 22.972422,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q219926",
+   "name": "Aris Thessaloniki F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Kleanthis Vikelidis Stadium",
+   "capacity": 22800,
+   "lat": 40.600069,
+   "lon": 22.9695,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q25535620",
+   "name": "PAS Pyrgos 1968",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Pyrgos Stadium",
+   "capacity": 6750,
+   "lat": 37.6791,
+   "lon": 21.4282,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q2744247",
+   "name": "Kalamata F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Kalamata Municipal Stadium",
+   "capacity": 4496,
+   "lat": 37.02725,
+   "lon": 22.124167,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q275626",
+   "name": "Athlitiki Enosi Larissa F.C.",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "AEL FC Arena",
+   "capacity": 17118,
+   "lat": 39.61561,
+   "lon": 22.39949,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q3180055",
+   "name": "Niki Volos F.C.",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Pantelis Magoulas Stadium",
+   "capacity": 2600,
+   "lat": 39.376339,
+   "lon": 22.936373,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece_2; https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece; https://en.wikipedia.org/wiki/Niki_Volos_F.C.",
+   "note": "TIER 2 BY HAND, 2026-09-29, in the Greece pass - reviewable, the FC Wil shape. Wikidata's P118 on Q3180055 is all normal rank, and the only mapped tag among them is the Super League (Q235114) dated 1961-1966, so the club query - which does not read an end date - would draw it at tier 1. It carries no Super League 2 tag at all. The complete 2026-27 Super League article (14 of 14 resolved) does not list it, the complete 2026-27 Super League 2 article (16 of 16 resolved) does, and the club's own English infobox says league Super League Greece 2, 2025-26 North Group 2nd. Three reads, two of them complete division lists, read on a runner 2026-09-29. Empty the tier cell and it goes back to tier 1",
+   "manual": true,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q3292636",
+   "name": "F.S. Kozani",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Kozani Stadium",
+   "capacity": 4000,
+   "lat": 40.293725,
+   "lon": 21.782756,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q4122219",
+   "name": "Panathinaikos F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Athens Olympic Stadium",
+   "capacity": 69618,
+   "lat": 38.036111,
+   "lon": 23.7875,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece; https://en.wikipedia.org/wiki/Panathinaikos_F.C.; https://stadiumdb.com/stadiums/gre; https://www.wikidata.org/wiki/Q189663",
+   "note": "GROUND PINNED, 2026-09-29, in the Greece pass - the SC Freiburg shape. Q4122219 carries two P115 values at the same rank, the Leoforos Alexandras Stadium (Q620473) and the Olympic Stadium (Q189663), so fetch_clubs.py keeps whichever the query service returns first and the club's ground could change between rebuilds, or mix one ground's name with the other's position. Three sources agree on the Olympic Stadium, 69,618: the 2026-27 Super League table, the club's own English infobox, and StadiumDB (Spiros Louis, Panathinaikos, 69,618); Wikidata's own figure for Q189663 is also 69,618. The Olympic Stadium's infobox lists Panathinaikos as tenant 2024-present, and the Leoforos's infobox names A.E. Kifisia as its tenant from 2026 - Kifisia is drawn there. The position is Q189663's own P625. Read on a runner 2026-09-29",
+   "manual": true,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q433230",
+   "name": "A.P.S. Panthrakikos",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Komotini Municipal Stadium",
+   "capacity": 6198,
+   "lat": 41.114167,
+   "lon": 25.396667,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q43375974",
+   "name": "Volos N.F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Panthessaliko Stadium",
+   "capacity": 22700,
+   "lat": 39.387511,
+   "lon": 22.931067,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q460494",
+   "name": "Panionios F.C.",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Nea Smyrni Stadium",
+   "capacity": 11115,
+   "lat": 37.943033,
+   "lon": 23.709225,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q592241",
+   "name": "G.S. Iraklis Thessalonikis (men's association football)",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Kaftanzoglio National Stadium",
+   "capacity": 27560,
+   "lat": 40.625497,
+   "lon": 22.967003,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q619215",
+   "name": "M.G.S. Apollon Kalamarias (association football)",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Kalamaria Stadium",
+   "capacity": 6500,
+   "lat": 40.581475,
+   "lon": 22.945114,
+   "city": null,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q757320",
+   "name": "Asteras Tripolis F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Theodoros Kolokotronis Stadium",
+   "capacity": 7423,
+   "lat": 37.502676,
+   "lon": 22.388678,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece; https://stadiumdb.com/stadiums/gre; https://en.wikipedia.org/wiki/Theodoros_Kolokotronis_Stadium",
+   "note": "CONTESTED CAPACITY. In use: 7,423 (the 2026-27 Super League table and StadiumDB agree exactly, and so do the club's and the stadium's English infoboxes). Not taken: 7,616, Wikidata's figure for the Theodoros Kolokotronis Stadium (Q4810658), which the map held until now - 2.6% off, inside the 5% band, but the other three are identical and the league table is the one this rule prefers. Recorded rather than dropped, the UTA Arad rule, read on a runner 2026-09-29",
+   "manual": true,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q757754",
+   "name": "Atromitos F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Peristeri Stadium",
+   "capacity": 10200,
+   "lat": 38.004858,
+   "lon": 23.689756,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q824450",
+   "name": "Levadiakos F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Levadia Municipal Stadium",
+   "capacity": 5915,
+   "lat": 38.435897,
+   "lon": 22.882844,
+   "city": null,
+   "competition": "Super League (Greece)"
+  },
+  {
+   "id": "Q931704",
+   "name": "OFI Crete F.C.",
+   "leagues": [
+    "Q235114"
+   ],
+   "tier": 1,
+   "venue": "Pankritio Stadium",
+   "capacity": 26240,
+   "lat": 35.336667,
+   "lon": 25.106111,
+   "city": null,
+   "competition": "Super League (Greece)"
+  }
+ ]
+}
