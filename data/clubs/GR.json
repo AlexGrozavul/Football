@@ -48,16 +48,19 @@
   },
   {
    "id": "Q135213959",
-   "name": "Asteras Tripolis",
+   "name": "Asteras Tripolis B",
    "leagues": [
     "Q63980269"
    ],
    "tier": 2,
    "venue": "Theodoros Kolokotronis Stadium",
-   "capacity": 7616,
+   "capacity": 7423,
    "lat": 37.502676,
    "lon": 22.388678,
    "city": null,
+   "source": "https://www.wikidata.org/wiki/Q135213959; https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece_2",
+   "note": "NAME AND CAPACITY, 2026-09-29, in the Greece pass. Q135213959's English label is just 'Asteras Tripolis' - the first team's name - while its own Greek label is 'Αστέρας Τρίπολης Β΄', its Greek description calls it the men's football reserve section of Asteras Tripolis, its P831 (parent club) is Q757320 Asteras Tripolis F.C., and it was founded in 2024. It shares the Theodoros Kolokotronis Stadium pin with the first team, where two clubs both called 'Asteras Tripolis' would read as one club entered twice. The name here is the item's own, in English; nothing about which club it is was decided. Capacity 7,423 to match the first team's row for the same ground (the 2026-27 Super League 2 table gives the same figure for this side); Wikidata's 7,616 is recorded there as not taken. NOT DONE, and Alexandru's to decide: a line in data/roster-links-manual.csv joining the table row 'Asteras Tripolis B' - which links the parent club's article, so the roster check leaves it out - to Q135213959. Until then the roster check reads this club as extra-not-in-roster",
+   "manual": true,
    "competition": "Super League 2 (Greece)"
   },
   {
