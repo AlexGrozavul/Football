@@ -7507,6 +7507,31 @@
    "winner": null
   },
   {
+   "id": 555047,
+   "utcDate": "2026-10-16T23:00:00Z",
+   "status": "TIMED",
+   "matchday": 31,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 4364,
+    "name": "Mirassol FC",
+    "shortName": "Mirassol",
+    "tla": "MIR",
+    "crest": "https://crests.football-data.org/4364.png"
+   },
+   "away": {
+    "id": 6684,
+    "name": "SC Internacional",
+    "shortName": "Internacional",
+    "tla": "SCI",
+    "crest": "https://crests.football-data.org/6684.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 555042,
    "utcDate": "2026-10-17T00:00:00Z",
    "status": "SCHEDULED",
@@ -7601,31 +7626,6 @@
     "shortName": "Cruzeiro",
     "tla": "CRU",
     "crest": "https://crests.football-data.org/1771.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555047,
-   "utcDate": "2026-10-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 31,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 4364,
-    "name": "Mirassol FC",
-    "shortName": "Mirassol",
-    "tla": "MIR",
-    "crest": "https://crests.football-data.org/4364.png"
-   },
-   "away": {
-    "id": 6684,
-    "name": "SC Internacional",
-    "shortName": "Internacional",
-    "tla": "SCI",
-    "crest": "https://crests.football-data.org/6684.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -7757,6 +7757,31 @@
    "winner": null
   },
   {
+   "id": 555052,
+   "utcDate": "2026-10-23T23:00:00Z",
+   "status": "TIMED",
+   "matchday": 32,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1771,
+    "name": "Cruzeiro EC",
+    "shortName": "Cruzeiro",
+    "tla": "CRU",
+    "crest": "https://crests.football-data.org/1771.png"
+   },
+   "away": {
+    "id": 4287,
+    "name": "Clube do Remo",
+    "shortName": "Clube do Remo",
+    "tla": "CRE",
+    "crest": "https://crests.football-data.org/4287.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 555050,
    "utcDate": "2026-10-24T00:00:00Z",
    "status": "SCHEDULED",
@@ -7801,31 +7826,6 @@
     "shortName": "Grêmio",
     "tla": "FBP",
     "crest": "https://crests.football-data.org/1767.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555052,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 32,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1771,
-    "name": "Cruzeiro EC",
-    "shortName": "Cruzeiro",
-    "tla": "CRU",
-    "crest": "https://crests.football-data.org/1771.png"
-   },
-   "away": {
-    "id": 4287,
-    "name": "Clube do Remo",
-    "shortName": "Clube do Remo",
-    "tla": "CRE",
-    "crest": "https://crests.football-data.org/4287.png"
    },
    "homeGoals": null,
    "awayGoals": null,
