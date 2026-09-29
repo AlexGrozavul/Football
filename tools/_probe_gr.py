@@ -175,38 +175,39 @@ def t4():
 
 
 
-def u1():
-    E = ents(["Q135213959", "Q757320"])
-    for q, x in E.items():
-        p("ITEM", q, labs(x), "| desc", (x.get("descriptions") or {}), "| P31", vals(x, "P31"), "| P118", vals(x, "P118"),
-          "| P831", vals(x, "P831"), "| P361", vals(x, "P361"), "| P527", vals(x, "P527"), "| P115", vals(x, "P115"),
-          "| P571", vals(x, "P571"), "| P576", vals(x, "P576"), "| P17", vals(x, "P17"), "| sl", sitelinks(x),
-          "| claims", sorted((x.get("claims") or {}).keys()))
-    Q = """SELECT ?s ?p WHERE { ?s ?p wd:Q135213959 . FILTER(STRSTARTS(STR(?p), "http://www.wikidata.org/prop/direct/")) } LIMIT 50"""
+
+def v1():
+    Q = """SELECT ?club ?rank WHERE {
+      ?club p:P118 ?st . ?st ps:P118 wd:Q63980269 ; wikibase:rank ?rank .
+      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
+    }"""
     res, err = fc.sparql_with_retry(Q)
-    for r in (res or {}).get("results", {}).get("bindings", []):
-        p("POINTS-AT", q_(fc.cell(r, "s")), q_(fc.cell(r, "p")))
-    page, real, err = cr.fetch_article("2026–27 Super League Greece 2")
+    rows = (res or {}).get("results", {}).get("bindings", [])
+    p("SL2-TAGGED", err, len(rows))
+    tags = {}
+    for r in rows:
+        tags.setdefault(q_(fc.cell(r, "club")), set()).add(q_(fc.cell(r, "rank")).split("#")[-1][:4])
+    E = ents(sorted(tags))
+    for q in sorted(tags, key=lambda q: lab(E.get(q, {})) or q):
+        x = E.get(q, {})
+        if "Q5" in [v[0] for v in vals(x, "P31")]: continue
+        p("SL2ITEM", q, "|", labs(x), "| ranks", sorted(tags[q]), "| P118", vals(x, "P118")[:8], "| P576", vals(x, "P576") or "-",
+          "| P115", vals(x, "P115"), "| P625", vals(x, "P625"), "| P31", [v[0] for v in vals(x, "P31")][:4],
+          "| P831", vals(x, "P831"), "| sl", sitelinks(x))
+    for t in ["F.S. Kozani", "Kozani F.C.", "2025–26 Super League Greece 2", "2026–27 Gamma Ethniki"]:
+        p("INFOBOX", t, "|", infobox(t))
+        p("INTRO", t, "|", intro(t, "en", 600))
+    page, real, err = cr.fetch_article("2025–26 Super League Greece 2")
     plain = cr.text_of(page or "")
-    for m in re.finditer(r"Asteras Tripolis B|Hellas Syros|Zakynthos|Nestos", plain):
-        p("SL2-MENTION", plain[max(0, m.start() - 150):m.start() + 200])
+    for m in re.finditer(r"Kozani", plain):
+        p("SL2-2526", plain[max(0, m.start() - 200):m.start() + 200])
+    page, real, err = cr.fetch_article("2026–27 Gamma Ethniki")
+    plain = cr.text_of(page or "")
+    p("GAMMA", err, real)
+    for m in list(re.finditer(r"Kozani", plain))[:4]:
+        p("GAMMA-KOZANI", plain[max(0, m.start() - 200):m.start() + 200])
 
 
-def u2():
-    for town, lat, lon in [("Ermoupoli", 37.444, 24.940)]:
-        q = f"""[out:json][timeout:120];(nwr[leisure=stadium](around:4000,{lat},{lon});nwr[leisure=pitch][sport=soccer](around:4000,{lat},{lon}););out center tags;"""
-        for attempt in range(3):
-            try:
-                d = overpass(q); break
-            except Exception as ex:
-                p("OSM", town, "ERROR", ex); time.sleep(30); d = None
-        for el in (d or {}).get("elements", []):
-            c = el.get("center") or {"lat": el.get("lat"), "lon": el.get("lon")}
-            t = el.get("tags", {})
-            p("OSM", town, f"{el['type']}/{el['id']}", t.get("leisure"), "|", t.get("name"), "|", t.get("name:en"), "|",
-              t.get("wikidata"), "|", round(c["lat"], 6), round(c["lon"], 6))
-
-
-for name, fn in [("u1 Q135213959", u1), ("u2 Syros", u2)]:
+for name, fn in [("v1 SL2 items", v1)]:
     section(name, fn)
-p("=== END OF PROBE GR3 ===")
+p("=== END OF PROBE GR4 ===")
