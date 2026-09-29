@@ -176,38 +176,16 @@ def t4():
 
 
 
-def v1():
-    Q = """SELECT ?club ?rank WHERE {
-      ?club p:P118 ?st . ?st ps:P118 wd:Q63980269 ; wikibase:rank ?rank .
-      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-    }"""
-    res, err = fc.sparql_with_retry(Q)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("SL2-TAGGED", err, len(rows))
-    tags = {}
-    for r in rows:
-        tags.setdefault(q_(fc.cell(r, "club")), set()).add(q_(fc.cell(r, "rank")).split("#")[-1][:4])
-    E = ents(sorted(tags))
-    for q in sorted(tags, key=lambda q: lab(E.get(q, {})) or q):
-        x = E.get(q, {})
-        if "Q5" in [v[0] for v in vals(x, "P31")]: continue
-        p("SL2ITEM", q, "|", labs(x), "| ranks", sorted(tags[q]), "| P118", vals(x, "P118")[:8], "| P576", vals(x, "P576") or "-",
-          "| P115", vals(x, "P115"), "| P625", vals(x, "P625"), "| P31", [v[0] for v in vals(x, "P31")][:4],
-          "| P831", vals(x, "P831"), "| sl", sitelinks(x))
-    for t in ["F.S. Kozani", "Kozani F.C.", "2025–26 Super League Greece 2", "2026–27 Gamma Ethniki"]:
+
+def w1():
+    for t in ["Kampaniakos F.C."]:
         p("INFOBOX", t, "|", infobox(t))
-        p("INTRO", t, "|", intro(t, "en", 600))
-    page, real, err = cr.fetch_article("2025–26 Super League Greece 2")
-    plain = cr.text_of(page or "")
-    for m in re.finditer(r"Kozani", plain):
-        p("SL2-2526", plain[max(0, m.start() - 200):m.start() + 200])
-    page, real, err = cr.fetch_article("2026–27 Gamma Ethniki")
-    plain = cr.text_of(page or "")
-    p("GAMMA", err, real)
-    for m in list(re.finditer(r"Kozani", plain))[:4]:
-        p("GAMMA-KOZANI", plain[max(0, m.start() - 200):m.start() + 200])
+        p("INTRO", t, "|", intro(t, "en", 700))
+    for t in ["Καμπανιακός Μ.Φ.Α.Ο.Φ."]:
+        p("INFOBOX-EL", t, "|", infobox(t, "el"))
+        p("INTRO-EL", t, "|", intro(t, "el", 700))
 
 
-for name, fn in [("v1 SL2 items", v1)]:
+for name, fn in [("w1 Kampaniakos", w1)]:
     section(name, fn)
-p("=== END OF PROBE GR4 ===")
+p("=== END OF PROBE GR5 ===")
