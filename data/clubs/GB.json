@@ -1,0 +1,624 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "GB",
+ "countryName": "England",
+ "clubs": [
+  {
+   "id": "Q1128631",
+   "name": "Leeds United F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Elland Road",
+   "capacity": 37792,
+   "lat": 53.777778,
+   "lon": -1.572222,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q1130849",
+   "name": "Liverpool F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Anfield",
+   "capacity": 61276,
+   "lat": 53.430833,
+   "lon": -2.960833,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q18519",
+   "name": "Lincoln City F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Sincil Bank",
+   "capacity": 10120,
+   "lat": 53.218289,
+   "lon": -0.540811,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18529",
+   "name": "Wrexham A.F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Racecourse Ground",
+   "capacity": 13341,
+   "lat": 53.051944,
+   "lon": -3.003611,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18656",
+   "name": "Manchester United F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Old Trafford",
+   "capacity": 75731,
+   "lat": 53.463056,
+   "lon": -2.291389,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q18659",
+   "name": "Swansea City A.F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Liberty Stadium",
+   "capacity": 20750,
+   "lat": 51.6422,
+   "lon": -3.9351,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18661",
+   "name": "Middlesbrough F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Riverside Stadium",
+   "capacity": 34742,
+   "lat": 54.578333,
+   "lon": -1.216944,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18662",
+   "name": "Cardiff City F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Cardiff City Stadium",
+   "capacity": 33260,
+   "lat": 51.472778,
+   "lon": -3.203056,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18708",
+   "name": "Fulham F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Craven Cottage",
+   "capacity": 25700,
+   "lat": 51.475,
+   "lon": -0.221667,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q18711",
+   "name": "Aston Villa F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Villa Park",
+   "capacity": 42640,
+   "lat": 52.509167,
+   "lon": -1.884722,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q18716",
+   "name": "Newcastle United F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "St James’ Park",
+   "capacity": 52305,
+   "lat": 54.975556,
+   "lon": -1.621667,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q18721",
+   "name": "Norwich City F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Carrow Road",
+   "capacity": 27244,
+   "lat": 52.622222,
+   "lon": 1.309167,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18723",
+   "name": null,
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Kiyan Prince Foundation Stadium",
+   "capacity": 18439,
+   "lat": 51.509167,
+   "lon": -0.232222,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18732",
+   "name": "Southampton F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "St Mary's Stadium",
+   "capacity": 32589,
+   "lat": 50.905833,
+   "lon": -1.391111,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18736",
+   "name": "Stoke City F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Britannia Stadium",
+   "capacity": 27740,
+   "lat": 52.988333,
+   "lon": -2.175556,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18739",
+   "name": "Sunderland A.F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Stadium of Light",
+   "capacity": 48339,
+   "lat": 54.914429,
+   "lon": -1.388173,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q18741",
+   "name": "Tottenham Hotspur F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Tottenham Hotspur Stadium",
+   "capacity": 62850,
+   "lat": 51.604444,
+   "lon": -0.066389,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q18744",
+   "name": "West Bromwich Albion F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "The Hawthorns",
+   "capacity": 26445,
+   "lat": 52.509167,
+   "lon": -1.963889,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q18747",
+   "name": "West Ham United F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "London Stadium",
+   "capacity": 62500,
+   "lat": 51.538611,
+   "lon": -0.016389,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19444",
+   "name": "Birmingham City F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "St Andrew's",
+   "capacity": 30016,
+   "lat": 52.475703,
+   "lon": -1.868189,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19446",
+   "name": "Blackburn Rovers F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Ewood Park",
+   "capacity": 31367,
+   "lat": 53.728611,
+   "lon": -2.489167,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19451",
+   "name": "Bolton Wanderers F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Toughsheet Community Stadium",
+   "capacity": 28723,
+   "lat": 53.580556,
+   "lon": -2.535556,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19453",
+   "name": "Brighton & Hove Albion F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Brighton Community Stadium",
+   "capacity": 31800,
+   "lat": 50.861822,
+   "lon": -0.083278,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q19456",
+   "name": "Bristol City F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Ashton Gate Stadium",
+   "capacity": 27000,
+   "lat": 51.44,
+   "lon": -2.620278,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19458",
+   "name": "Burnley F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Turf Moor",
+   "capacity": 22546,
+   "lat": 53.789064,
+   "lon": -2.230225,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19462",
+   "name": "Charlton Athletic F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "The Valley",
+   "capacity": 27111,
+   "lat": 51.487489,
+   "lon": 0.035632,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19467",
+   "name": "Crystal Palace F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Selhurst Park",
+   "capacity": 26255,
+   "lat": 51.398333,
+   "lon": -0.085556,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q19470",
+   "name": "Derby County F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Pride Park Stadium",
+   "capacity": 33597,
+   "lat": 52.915,
+   "lon": -1.447222,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19477",
+   "name": "Hull City A.F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "MKM Stadium",
+   "capacity": 25400,
+   "lat": 53.746111,
+   "lon": -0.367778,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q19487",
+   "name": "Millwall F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "The Den",
+   "capacity": 20146,
+   "lat": 51.485833,
+   "lon": -0.050833,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19490",
+   "name": "Nottingham Forest F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "City Ground",
+   "capacity": 30404,
+   "lat": 52.94,
+   "lon": -1.132778,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q19500",
+   "name": "Wolverhampton Wanderers F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Molineux Stadium",
+   "capacity": 30852,
+   "lat": 52.590278,
+   "lon": -2.130278,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19568",
+   "name": "AFC Bournemouth",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Dean Court",
+   "capacity": 12000,
+   "lat": 50.735278,
+   "lon": -1.838333,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q19571",
+   "name": "Brentford F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Griffin Park",
+   "capacity": 14863,
+   "lat": 51.488167,
+   "lon": -0.302639,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q19580",
+   "name": "Coventry City F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Coventry Building Society Arena",
+   "capacity": 32609,
+   "lat": 52.448056,
+   "lon": -1.495556,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q19604",
+   "name": "Portsmouth F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Fratton Park",
+   "capacity": 21100,
+   "lat": 50.796389,
+   "lon": -1.063889,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19607",
+   "name": "Sheffield United F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Bramall Lane",
+   "capacity": 32702,
+   "lat": 53.370278,
+   "lon": -1.470833,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q19612",
+   "name": "Preston North End F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Deepdale",
+   "capacity": 24500,
+   "lat": 53.772222,
+   "lon": -2.688056,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q2714",
+   "name": "Watford F.C.",
+   "leagues": [
+    "Q19510"
+   ],
+   "tier": 2,
+   "venue": "Vicarage Road",
+   "capacity": 22000,
+   "lat": 51.649928,
+   "lon": -0.401606,
+   "city": null,
+   "competition": "EFL Championship"
+  },
+  {
+   "id": "Q50602",
+   "name": "Manchester City F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Etihad Stadium",
+   "capacity": 52900,
+   "lat": 53.483056,
+   "lon": -2.200278,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q5794",
+   "name": "Everton F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Hill Dickinson Stadium",
+   "capacity": 52769,
+   "lat": 53.425,
+   "lon": -3.002778,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q9616",
+   "name": "Chelsea F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Stamford Bridge",
+   "capacity": 41875,
+   "lat": 51.481667,
+   "lon": -0.191111,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q9617",
+   "name": "Arsenal F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Emirates Stadium",
+   "capacity": 60338,
+   "lat": 51.555,
+   "lon": -0.108333,
+   "city": null,
+   "competition": "Premier League"
+  },
+  {
+   "id": "Q9653",
+   "name": "Ipswich Town F.C.",
+   "leagues": [
+    "Q9448"
+   ],
+   "tier": 1,
+   "venue": "Portman Road",
+   "capacity": 30311,
+   "lat": 52.055,
+   "lon": 1.145278,
+   "city": null,
+   "competition": "Premier League"
+  }
+ ]
+}
