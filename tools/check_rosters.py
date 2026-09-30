@@ -499,6 +499,24 @@ def text_of(fragment):
     return re.sub(r"\s+", " ", html.unescape(TAG.sub(" ", fragment))).strip()
 
 
+# A footnote mark is part of the cell's text: "19,840 [ 7 ]". Until
+# 2026-09-30 every digit in the cell was run together, so that cell read
+# as 198,407 - found in the Spain pass, where most capacity cells carry a
+# reference. The mark is now set aside first, and a cell holding two
+# figures ("14,500 14,708", two grounds in one season) gives none rather
+# than either: picking one is a judgement, not parsing.
+FOOTNOTE = re.compile(r"\[[^\]]*\]")
+FIGURE = re.compile(r"\d{1,3}(?:[,. ]\d{3})+(?!\d)|\d+")
+
+
+def capacity_of(cell_text):
+    figures = FIGURE.findall(FOOTNOTE.sub(" ", cell_text))
+    if len(figures) != 1:
+        return None
+    n = int(re.sub(r"\D", "", figures[0]))
+    return n if 100 <= n <= 200000 else None
+
+
 def roster_tables(page_html):
     """
     Which tables on a season article carry the division's membership.
@@ -574,9 +592,7 @@ def table_rows(table, headers):
         team = next((clean_team(t) for t in texts if re.search(r"[^\W\d_]", t)), "")
         capacity = None
         if cap_index is not None and cap_index < len(cells):
-            digits = re.sub(r"[^\d]", "", texts[cap_index].replace(" ", ""))
-            if digits and 100 <= int(digits) <= 200000:
-                capacity = int(digits)
+            capacity = capacity_of(texts[cap_index])
         row = {"title": None, "capacity": capacity, "team": team, "shown": team, "why": None}
         title, at = None, None
         for i, cell in enumerate(cells):

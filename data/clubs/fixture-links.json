@@ -1977,6 +1977,306 @@
     }
    ]
   },
+  "Q8687": {
+   "name": "Athletic Club",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "77",
+     "teamName": "Athletic Club",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q223620": {
+   "name": "Deportivo Alavés",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "263",
+     "teamName": "Deportivo Alavés",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q10512": {
+   "name": "Elche CF",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "285",
+     "teamName": "Elche CF",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q7156": {
+   "name": "FC Barcelona",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "81",
+     "teamName": "FC Barcelona",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8806": {
+   "name": "Getafe CF",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "82",
+     "teamName": "Getafe CF",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8823": {
+   "name": "Levante UD",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "88",
+     "teamName": "Levante UD",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8857": {
+   "name": "Málaga CF",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "84",
+     "teamName": "Málaga CF",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8749": {
+   "name": "RC Celta de Vigo",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "558",
+     "teamName": "RC Celta de Vigo",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8780": {
+   "name": "RCD Espanyol de Barcelona",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "80",
+     "teamName": "RCD Espanyol de Barcelona",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q10300": {
+   "name": "Rayo Vallecano",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "87",
+     "teamName": "Rayo Vallecano de Madrid",
+     "basis": "short-name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8723": {
+   "name": "Real Betis Balompié",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "90",
+     "teamName": "Real Betis Balompié",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q10315": {
+   "name": "Real Sociedad",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "92",
+     "teamName": "Real Sociedad de Fútbol",
+     "basis": "short-name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q10329": {
+   "name": "Sevilla FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "559",
+     "teamName": "Sevilla FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q10333": {
+   "name": "Valencia CF",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "95",
+     "teamName": "Valencia CF",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q12297": {
+   "name": "Villarreal CF",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "94",
+     "teamName": "Villarreal CF",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
   "Q182876": {
    "name": "AJ Auxerre",
    "links": [

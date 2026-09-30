@@ -94,6 +94,17 @@
    "withVenueName": 27,
    "withCapacity": 26,
    "handCorrected": 5
+  },
+  "ES": {
+   "name": "Spain",
+   "onMap": 42,
+   "byTier": {
+    "1": 20,
+    "2": 22
+   },
+   "withVenueName": 42,
+   "withCapacity": 41,
+   "handCorrected": 10
   }
  }
 }

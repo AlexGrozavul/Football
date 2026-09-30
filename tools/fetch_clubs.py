@@ -94,6 +94,7 @@ COUNTRIES = [
     ("AT", "Q40", "Austria"),
     ("RS", "Q403", "Serbia"),
     ("GR", "Q41", "Greece"),
+    ("ES", "Q29", "Spain"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -617,8 +618,19 @@ def load_tiers():
 # Checked against every club in the German, Romanian, French and
 # Italian files before it went in: it matches those eight and nothing
 # else.
+#
+# Spain brought a third kind on 2026-09-30: a MATCH. "Real Madrid v
+# Almeria, 22 March 2009" and two more are typed "association football
+# club match" (Q109623729) and carry P118 La Liga. They have no ground and
+# no position, so they died at the coordinates gate - and would then have
+# been offered a ground by propose_coordinates.py next month, the way the
+# Rennes season was drawn on Rennes' pin. The type label is asked in
+# English first for Spain; "club match" and "football match" are the
+# English shapes, "partido de" the Spanish one. Checked on the rebuild of
+# 2026-09-30: those three items and nothing else in any country.
 NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ",
-                    "season", "saison", "sezon", "stagione")
+                    "season", "saison", "sezon", "stagione",
+                    "club match", "football match", "partido de")
 
 NOT_A_CLUB_NAME = re.compile(
     r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b"
@@ -635,8 +647,8 @@ def not_a_club(name, kinds):
         low = kind.lower()
         for word in NOT_A_CLUB_TYPES:
             if word in low:
-                return (f"Wikidata says it is a {kind!r}, which is a list or a "
-                        f"season, not a club")
+                return (f"Wikidata says it is a {kind!r}, which is a list, a "
+                        f"season or a match, not a club")
     if name and NOT_A_CLUB_NAME.search(name):
         return ("its name is the title of a squad list or a season, not the name of a club "
                 "(Wikidata gives it no type that says so)")
@@ -1133,6 +1145,20 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
 #       FIRST, then Greek: every club item in both 2026-27 divisions had an
 #       English label when read, and a Greek-script name would appear only
 #       where Wikidata has no English one.
+#   ES  north 43.7922 (Estaca de Bares), south 27.6419 and west -18.1333
+#       (both El Hierro, in the Canaries), east 4.3270 (Menorca) - all
+#       Wikidata's own P1332-P1335 on Q29, read on a runner 2026-09-30.
+#       The Canaries are why the box is so wide: UD Las Palmas and CD
+#       Tenerife are in the 2026-27 Segunda Division. It holds all of
+#       Portugal, Andorra, Gibraltar, northern Morocco and a strip of
+#       southern France up to Toulouse, so P17 is the signal that catches a
+#       club across a border here even more than elsewhere. Ceuta and
+#       Melilla are inside it. FC Andorra plays in the Segunda Division
+#       and is the Monaco shape (Conventions). LABELS ARE ASKED IN ENGLISH
+#       FIRST, then Spanish: the English label is usually the short form
+#       ("Villarreal CF", "Getafe CF") that football-data.org also uses,
+#       while the Spanish one is the full legal name ("Villarreal Club de
+#       Futbol"), which no fixture team name equals.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
@@ -1142,6 +1168,7 @@ COUNTRY_BOX = {
     "AT": {"lat": (46.30, 49.10), "lon": (9.45, 17.25)},
     "RS": {"lat": (42.10, 46.27), "lon": (18.73, 23.09)},
     "GR": {"lat": (34.60, 41.85), "lon": (19.30, 29.82)},
+    "ES": {"lat": (27.55, 43.90), "lon": (-18.25, 4.45)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -1542,7 +1569,7 @@ def main():
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de",
-                "RS": "en,sr-el", "GR": "en,el"}.get(code, "en")
+                "RS": "en,sr-el", "GR": "en,el", "ES": "en,es"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,
