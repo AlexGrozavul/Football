@@ -299,10 +299,22 @@ def read_offline(path):
 
 # ------------------------------------------------------------- name keys
 
+# A dotted initialism is one word, not several: "F.C." is "FC", "A.F.C."
+# is "AFC", "P.A.O.K." is "PAOK". Until 2026-09-30 the dots were turned
+# into spaces like any other punctuation, so "Arsenal F.C." folded to
+# "arsenal f c" and could never equal football-data.org's "Arsenal FC" -
+# found in the England pass, where every club item but one is labelled
+# that way and 43 of 44 clubs linked to no fixtures. Only runs of single
+# letters each followed by a dot are joined; "St. Pauli" and "1. FC" are
+# untouched.
+INITIALISM = re.compile(r"(?<![^\W\d_])((?:[^\W\d_]\.){2,})")
+
+
 def fold(text):
     """Lower case, diacritics out, punctuation to spaces, spaces collapsed."""
     if not text:
         return ""
+    text = INITIALISM.sub(lambda m: m.group(1).replace(".", "") + " ", text)
     text = text.replace("ß", "ss")
     text = unicodedata.normalize("NFKD", text)
     text = "".join(c for c in text if not unicodedata.combining(c))

@@ -2758,6 +2758,829 @@
     }
    ]
   },
+  "Q9617": {
+   "name": "Arsenal F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "57",
+     "teamName": "Arsenal FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18711": {
+   "name": "Aston Villa F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "58",
+     "teamName": "Aston Villa FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19444": {
+   "name": "Birmingham City F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "332",
+     "teamName": "Birmingham City FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19446": {
+   "name": "Blackburn Rovers F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "59",
+     "teamName": "Blackburn Rovers FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19451": {
+   "name": "Bolton Wanderers F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "60",
+     "teamName": "Bolton Wanderers FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19571": {
+   "name": "Brentford F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "402",
+     "teamName": "Brentford FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19453": {
+   "name": "Brighton & Hove Albion F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "397",
+     "teamName": "Brighton & Hove Albion FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19456": {
+   "name": "Bristol City F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "387",
+     "teamName": "Bristol City FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19458": {
+   "name": "Burnley F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "328",
+     "teamName": "Burnley FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18662": {
+   "name": "Cardiff City F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "715",
+     "teamName": "Cardiff City FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19462": {
+   "name": "Charlton Athletic F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "348",
+     "teamName": "Charlton Athletic FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q9616": {
+   "name": "Chelsea F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "61",
+     "teamName": "Chelsea FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19580": {
+   "name": "Coventry City F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1076",
+     "teamName": "Coventry City FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19467": {
+   "name": "Crystal Palace F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "354",
+     "teamName": "Crystal Palace FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19470": {
+   "name": "Derby County F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "342",
+     "teamName": "Derby County FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q5794": {
+   "name": "Everton F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "62",
+     "teamName": "Everton FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18708": {
+   "name": "Fulham F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "63",
+     "teamName": "Fulham FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19477": {
+   "name": "Hull City A.F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "322",
+     "teamName": "Hull City AFC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q9653": {
+   "name": "Ipswich Town F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "349",
+     "teamName": "Ipswich Town FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1128631": {
+   "name": "Leeds United F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "341",
+     "teamName": "Leeds United FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18519": {
+   "name": "Lincoln City F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1126",
+     "teamName": "Lincoln City FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1130849": {
+   "name": "Liverpool F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "64",
+     "teamName": "Liverpool FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q50602": {
+   "name": "Manchester City F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "65",
+     "teamName": "Manchester City FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18656": {
+   "name": "Manchester United F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "66",
+     "teamName": "Manchester United FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18661": {
+   "name": "Middlesbrough F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "343",
+     "teamName": "Middlesbrough FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19487": {
+   "name": "Millwall F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "384",
+     "teamName": "Millwall FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18716": {
+   "name": "Newcastle United F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "67",
+     "teamName": "Newcastle United FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18721": {
+   "name": "Norwich City F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "68",
+     "teamName": "Norwich City FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19490": {
+   "name": "Nottingham Forest F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "351",
+     "teamName": "Nottingham Forest FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19604": {
+   "name": "Portsmouth F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "325",
+     "teamName": "Portsmouth FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19612": {
+   "name": "Preston North End F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1081",
+     "teamName": "Preston North End FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19607": {
+   "name": "Sheffield United F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "356",
+     "teamName": "Sheffield United FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18732": {
+   "name": "Southampton F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "340",
+     "teamName": "Southampton FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18736": {
+   "name": "Stoke City F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "70",
+     "teamName": "Stoke City FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18739": {
+   "name": "Sunderland A.F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "71",
+     "teamName": "Sunderland AFC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18659": {
+   "name": "Swansea City A.F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "72",
+     "teamName": "Swansea City AFC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18741": {
+   "name": "Tottenham Hotspur F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "73",
+     "teamName": "Tottenham Hotspur FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
+  "Q2714": {
+   "name": "Watford F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "346",
+     "teamName": "Watford FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18744": {
+   "name": "West Bromwich Albion F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "74",
+     "teamName": "West Bromwich Albion FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18747": {
+   "name": "West Ham United F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "563",
+     "teamName": "West Ham United FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19500": {
+   "name": "Wolverhampton Wanderers F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "76",
+     "teamName": "Wolverhampton Wanderers FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
+  "Q18529": {
+   "name": "Wrexham A.F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "404",
+     "teamName": "Wrexham AFC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
   "Q1543": {
    "name": "AC Milan",
    "links": [
