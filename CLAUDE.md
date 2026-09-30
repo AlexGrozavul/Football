@@ -224,9 +224,10 @@ a subscribed calendar reads as a schedule regardless of its description.
   linked, so an override is never silent. A malformed row is rejected by
   line, and a link that matched no row once its article was read is a
   problem that turns the run red - a table edited under a link is the
-  change a person should look at. Holds three rows today, all 2. Liga:
-  Rapid II and Sturm II (added on Alexandru's instruction) and Austria
-  Wien II. **A link is a hand-written identity claim** - the same kind of
+  change a person should look at. Holds four rows today: three 2. Liga
+  rows - Rapid II and Sturm II (added on Alexandru's instruction) and
+  Austria Wien II - and, since 2026-09-30, the Super League Greece 2 row
+  "Asteras Tripolis B" (also on his instruction). **A link is a hand-written identity claim** - the same kind of
   decision as a `fixture-links-manual.csv` row, and Alexandru's to make.
 - `data/coordinate-reviews.csv` — added 2026-09-26. **What a person
   already decided about a row of `coordinate-review.csv`**, so the
@@ -310,7 +311,10 @@ a subscribed calendar reads as a schedule regardless of its description.
   country and a tier, brings that club in under its own Q-id when a
   tracked roster names it. One roster read per country per run is
   shared by both fallbacks. See Conventions.
-- `tools/crosscheck_capacity.py` — OpenStreetMap capacity comparison
+- `tools/crosscheck_capacity.py` — OpenStreetMap capacity comparison.
+  Since 2026-09-30 it decides `capacity-review.csv` **country by
+  country**, the way `propose_coordinates.py` decides its file (see
+  Conventions)
 - `tools/propose_coordinates.py` — OpenStreetMap coordinates for the
   clubs Wikidata cannot place. Matches on names, proposes only, and
   flags anything ambiguous rather than settling it with a rule.
@@ -605,6 +609,13 @@ still applies to the whole file only: an incomplete country is never
 written into an existing file, even one that holds no rows for it yet.
 **A green tick still does not mean every country is current** — read
 the per-country lines.
+
+**`capacity-review.csv` follows the same per-country rule since
+2026-09-30**, at Alexandru's instruction, after six runs in two days each
+lost a different country to Overpass 504s and so wrote nothing at all. A
+country Overpass answered for replaces its own rows; one it did not
+answer for keeps its rows byte for byte; the summary says `WRITTEN` or
+`UNCHANGED` against each. Same first-run exception, whole file only.
 
 `unmapped-leagues.csv` now follows the same rule. It is read from and
 pasted out of exactly like a review file, and it used to be rewritten
@@ -1229,6 +1240,74 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **The 2026-09-30 pass: Asteras Tripolis B linked, Lotru Brezoi and
+  Victoria Ineu off the map, and the capacity cross-check saved country
+  by country.** Three instructions from Alexandru. The Wikipedia reads
+  went through four throwaway probes on a runner (removed in the same
+  branch); the sandbox still answers 403 to CONNECT for Wikipedia.
+  - **Asteras Tripolis B is one club, `ok`.** The 2026-27 Super League
+    Greece 2 table row reads exactly "Asteras Tripolis B" and links the
+    parent club, Asteras Tripolis F.C. (`Q757320`) - read on a runner
+    with the roster reader's own functions before the line was written.
+    Line 5 of `data/roster-links-manual.csv` joins it to `Q135213959`.
+    The roster check on the branch moved exactly that verdict, from
+    `extra-not-in-roster` to `ok`, and nothing else in Greece.
+  - **CS Lotru Brezoi and Victoria Ineu are `skip`ped.** Checked first,
+    as asked, on each club's own Wikipedia pages at their current
+    revisions:
+    - **Victoria Ineu**: the English article's infobox says `league =
+      Liga VI` (its last season row is 2024-25, Liga VI); the Romanian
+      article's infobox says `Liga a VI-a`, and its lead says the club
+      plays in Liga a VI-a - Arad. Clear.
+    - **Lotru Brezoi has no English article.** Its only page is Romanian,
+      *CS Lotru Brezoi (fotbal)*: infobox `league = IV`, and the text
+      puts it in Liga a IV-a Vâlcea in 2024-25, 16th. Clear about the
+      league; the page names no season later than 2024-25.
+    - **Neither page states a 2026-27 season.** So the removal was
+      backed by one more read: neither club is named by the English
+      2025-26 or 2026-27 Liga III article, by the Romanian *Liga a III-a
+      2025-2026* or *2026-2027*, or by the 2025-26 or 2026-27 Liga II
+      article. One false alarm, recorded so it is not rediscovered: the
+      Romanian 2026-27 Liga III article does name **"Tricotaje Ineu"**,
+      Victoria Ineu's old name (it redirects there), but only in its
+      historical table of 2002-03 promotions.
+    - **The instruction's premise was not quite right, and it matters
+      for the next removal.** It called this "the same standard already
+      used for Hermannstadt and CSM Bacău". Hermannstadt's standard
+      rests on *complete* division lists agreeing on the absence plus an
+      independent reason. Liga III's list is not complete, so that
+      standard cannot be met here. CSM Bacău was never on the map, so it
+      got a whole-club rejection in `coordinate-reviews.csv`, not a
+      `skip`. What was applied is the **FC Bistrița standard**: the
+      club's own page plus Alexandru's instruction. Both rows say so.
+    - The club build on the branch removed exactly these two, both
+      `extra-not-in-roster` rows left `roster-review.csv`, and Romania's
+      tier 3 went from 40 clubs to 38.
+  - **`crosscheck_capacity.py` saves country by country** (Conventions).
+    Checked offline first, with Overpass mocked: a failing country's
+    rows stay byte-identical, every country failing leaves the file
+    byte-identical, and with no file a partial list is written and
+    labelled. **The first real run, across all eight countries, was the
+    test the instruction asked for, and Overpass supplied the failure**:
+    DE, IT and RO answered HTTP 504 and stayed `UNCHANGED`, their rows
+    byte for byte as before. AT, CH, FR, GR and RS were `WRITTEN`. The
+    file's only change was **Greece's first row**, G.S. Marko ("no
+    stadium in OSM within 500m"); the other four countries came back
+    with the same rows they already had. Under the old rule that run
+    would have written nothing.
+    **The second run, straight after, came back complete: all eight
+    `WRITTEN`**, the first complete capacity check since Greece was
+    added. After six failures in a row on 2026-09-29 and 2026-09-30,
+    this is the first run with nothing `UNCHANGED`. Its one change was
+    Victoria Ineu's row going, because the club is off the map. File
+    now: AT 2, CH 2, DE 12, FR 4, GR 1, IT 0, RO 28, RS 5. Greece: 27
+    clubs, 3 agree, 0 differ, 20 Wikidata only, 1 neither, 4 no OSM
+    ground nearby, the same as the two partial runs of 2026-09-29.
+    **Not changed, and worth the look the Greece entry asked for**: the
+    tool's retry behaviour is still the old one (60 s after a busy
+    answer, 30 s after a timeout, three tries, no backoff). Saving per
+    country makes a failure cost less. It does not make one less likely.
+
 - **The 2026-09-29 pass: Greece's top two tiers on the map, the
   league-tag end date measured in every country, the shape-5 join
   checked, and the Ub ground kept unplaced.** Four instructions from
@@ -1302,8 +1381,9 @@ a page anyone can already view in their browser's network tab.
       (`Q113573418`, Liga III tag ended 2023; no article at all). Both
       die at the coordinates gate and neither is a confident proposal
       today. A rejection would rest on the tag alone.
-    - **Two are on the map at tier 3 and wrong, and are Alexandru's
-      call**: CS Lotru Brezoi (`Q141319965`) and Victoria Ineu
+    - **Two were on the map at tier 3 and wrong, and were Alexandru's
+      call** - *he made it on 2026-09-30 and both are `skip`ped; see the
+      2026-09-30 entry. As first written:* CS Lotru Brezoi (`Q141319965`) and Victoria Ineu
       (`Q5014471`), both Liga III tags that ended (2006 and 2023), both
       `extra-not-in-roster`, and their infoboxes say Liga IV Vâlcea and
       Liga VI Arad. Not skipped, because the Liga III article is not a
@@ -1377,9 +1457,10 @@ a page anyone can already view in their browser's network tab.
       leaves it out and names it. Checked before it went in: no club on
       the map or in any roster had "b" as a word of its name, and no
       other country's verdict moved.
-    - **Asteras Tripolis B (`Q135213959`) is on the map but reads
+    - **Asteras Tripolis B (`Q135213959`) was on the map but read
       `extra-not-in-roster`, and one line would fix it - Alexandru's
-      call.** Its English label was just "Asteras Tripolis"; its Greek
+      call.** *He made it on 2026-09-30 and the line is in; see that
+      day's entry. As first written:* Its English label was just "Asteras Tripolis"; its Greek
       label is "Αστέρας Τρίπολης Β΄", its description says reserve
       section, its `P831` is the first team. A hand row gives it that
       name, so the shared pin does not read as one club twice. The line
@@ -1430,7 +1511,8 @@ a page anyone can already view in their browser's network tab.
       eight countries in one all-or-nothing run, a complete run gets less
       likely with every country added. `coordinate-review.csv` has been
       decided country by country since 2026-09-26; `crosscheck_capacity.py`
-      doing the same is the next step, and it is not built.
+      doing the same is the next step, and it is not built. *(Built
+      2026-09-30 - see that day's entry.)*
 
 - **The 2026-09-27 pass: the roster check's double count fixed
   properly, Serbia's top two tiers on the map, and the Austrian and
