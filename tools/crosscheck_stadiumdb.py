@@ -150,8 +150,9 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # Championship clubs with a ground named for them. The three with none
 # are the Welsh clubs - Cardiff City, Swansea City and Wrexham - because
 # StadiumDB files a ground under the country it stands in, not the
-# pyramid its club plays in; they are unchecked, never agreement. So for
-# England the page is as full as Spain's. Short names again: "Albion",
+# pyramid its club plays in. /stadiums/wal holds all three, so GB reads
+# that page as well (EXTRA_PAGES, below): 44 of 44 with a ground named.
+# So for England the coverage is as full as Spain's. Short names again: "Albion",
 # "WBA", "Dons", "Rovers" will not all match ours.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
@@ -164,6 +165,18 @@ COUNTRY_PAGES = {
     "GR": ("gre", "Greece"),
     "ES": ("esp", "Spain"),
     "GB": ("eng", "England"),
+}
+
+# A country file is a league PYRAMID, not a territory (CLAUDE.md, the
+# Monaco entry), and StadiumDB files a ground under the country it
+# stands in. So a pyramid that crosses a border needs a second page, read
+# and added to the first. GB is the case it was written for, 2026-09-30:
+# Cardiff City, Swansea City and Wrexham play in the 2026-27 Championship
+# and their grounds are on /stadiums/wal (read on a runner: 8 grounds, the
+# three of them among them), not on /stadiums/eng. A second page that does
+# not come back makes the country incomplete, exactly as the first would.
+EXTRA_PAGES = {
+    "GB": [("wal", "Wales")],
 }
 
 # Below this the two sources are treated as agreeing. Same threshold
@@ -557,6 +570,22 @@ def main():
                 incomplete.append(f"{code}: {error}")
                 continue
             grounds = parse_country_table(body)
+            extra_failed = None
+            for extra_slug, extra_label in EXTRA_PAGES.get(code, []) if grounds else []:
+                time.sleep(REQUEST_GAP_SECONDS)
+                extra_url = f"{BASE}/stadiums/{extra_slug}"
+                print(f"  {code}  and for {extra_label}, whose clubs play in this pyramid -- {extra_url}")
+                extra_body, extra_error = fetch_with_retry(extra_url)
+                extra = parse_country_table(extra_body) if not extra_error else []
+                if not extra:
+                    extra_failed = (f"{extra_label} page: "
+                                    f"{extra_error or 'no table rows parsed out of it'}")
+                    break
+                grounds = grounds + extra
+            if extra_failed:
+                failures.append(f"{code}: {extra_failed} - no cross-check done for this country")
+                incomplete.append(f"{code}: {extra_failed}")
+                continue
             if not grounds:
                 # A page that parses to nothing is a changed layout, not
                 # an empty country. Reporting the country as unchecked is
