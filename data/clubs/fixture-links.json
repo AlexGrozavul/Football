@@ -1996,6 +1996,49 @@
     }
    ]
   },
+  "Q8701": {
+   "name": "Atlético Madrid",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "78",
+     "teamName": "Club Atlético de Madrid",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q10286": {
+   "name": "Club Atlético Osasuna",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "79",
+     "teamName": "CA Osasuna",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
   "Q223620": {
    "name": "Deportivo Alavés",
    "links": [
@@ -2004,6 +2047,25 @@
      "teamId": "263",
      "teamName": "Deportivo Alavés",
      "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8760": {
+   "name": "Deportivo de A Coruña",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "560",
+     "teamName": "RC Deportivo La Coruña",
+     "basis": "manual",
      "venue": null,
      "competitions": [
       {
@@ -2153,6 +2215,25 @@
     }
    ]
   },
+  "Q12236": {
+   "name": "Racing de Santander",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5335",
+     "teamName": "Real Racing Club de Santander",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
   "Q10300": {
    "name": "Rayo Vallecano",
    "links": [
@@ -2180,6 +2261,30 @@
      "teamId": "90",
      "teamName": "Real Betis Balompié",
      "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PD",
+       "file": "data/fixtures/PD.json",
+       "label": "Primera Division"
+      }
+     ]
+    }
+   ]
+  },
+  "Q8682": {
+   "name": "Real Madrid Club de Fútbol",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "86",
+     "teamName": "Real Madrid CF",
+     "basis": "manual",
      "venue": null,
      "competitions": [
       {
