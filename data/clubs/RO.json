@@ -292,20 +292,6 @@
    "competition": "Liga a II-a"
   },
   {
-   "id": "Q141319965",
-   "name": "CS Lotru Brezoi",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Gheorghe Borchină",
-   "capacity": 700,
-   "lat": 45.339783,
-   "lon": 24.249151,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q1426344",
    "name": "Flacăra Moreni",
    "leagues": [
@@ -735,20 +721,6 @@
    "capacity": 1500,
    "lat": 44.566389,
    "lon": 25.951667,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
-   "id": "Q5014471",
-   "name": "Victoria Ineu",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Central-Parc",
-   "capacity": null,
-   "lat": 46.424639,
-   "lon": 21.83275,
    "city": null,
    "competition": "Liga a III-a"
   },

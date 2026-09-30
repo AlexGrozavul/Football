@@ -6,6 +6,11 @@ name: Cross-check capacities
 # Never edits a club file. The review file is a list for you to judge,
 # not a change to your data.
 #
+# Decided country by country: a country Overpass answered for replaces
+# its own rows, a country it did not answer for keeps its rows exactly
+# as they were. A green tick does not mean every country is current -
+# read the WRITTEN / UNCHANGED line against each country in the summary.
+#
 # Monthly, because capacities barely move and Overpass is a volunteer
 # service that should not be hammered.
 

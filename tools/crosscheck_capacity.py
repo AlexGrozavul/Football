@@ -16,6 +16,15 @@ accept can be pasted straight across.
 Free, no key. Overpass is a shared volunteer service, so this asks for
 one country at a time and waits between requests.
 
+The review file is decided COUNTRY BY COUNTRY, since 2026-09-30, the way
+propose_coordinates.py has decided coordinate-review.csv since
+2026-09-26: a country whose answer came back replaces its own rows, a
+country Overpass did not answer for keeps its rows exactly as its last
+good run left them, and the summary says WRITTEN or UNCHANGED against
+every country. Until then one country's timeout threw away every other
+country's answer - six runs in a row on 2026-09-29 and 2026-09-30, each
+losing a different country.
+
 Usage:  python3 tools/crosscheck_capacity.py
 """
 
@@ -61,6 +70,10 @@ out tags center;
 """
 
 CAPACITY_TAGS = ("capacity", "seats", "capacity:persons", "capacity:seats")
+
+HEADER = ["clubQid", "name", "country", "tier", "venue", "capacity",
+          "lat", "lon", "ticketUrl", "source", "note",
+          "_wikidata", "_osm", "_osmName", "_osmTag", "_metres", "_verdict"]
 
 
 # ------------------------------------------------------------------ http
@@ -168,12 +181,10 @@ def main():
     if not files:
         sys.exit(f"no country files in {CLUB_DIR}")
 
-    rows, summary, failures = [], [], []
-
-    # Anything that makes this run less than the whole picture. While
-    # this list is empty the run may replace the review file; once it is
-    # not, the file is left exactly as the last good run left it.
-    incomplete = []
+    # One entry per country this run looked at: its rows and whatever did
+    # not come back. A country with anything in "incomplete" may not
+    # replace its own rows in the review file; see write_review.
+    results, summary = {}, []
 
     for position, filename in enumerate(files):
         code = filename[:-5]
@@ -188,10 +199,11 @@ def main():
         print(f"  {code}  asking OpenStreetMap for stadiums")
         payload, error = overpass_with_retry(code)
         if error:
-            failures.append(f"{code}: {error} - no cross-check done for this country")
-            incomplete.append(f"{code}: {error}")
+            results[code] = {"rows": [], "incomplete": [f"Overpass: {error}"]}
+            summary.append(f"{code}  {len(clubs)} clubs  |  not checked - Overpass: {error}")
             continue
 
+        rows = []
         stadiums = stadium_points(payload)
         with_cap = sum(1 for s in stadiums if s["capacity"])
         print(f"      {len(stadiums)} stadiums, {with_cap} with a usable capacity")
@@ -245,33 +257,14 @@ def main():
                 "_verdict": verdict,
             })
 
+        results[code] = {"rows": rows, "incomplete": []}
         summary.append(
             f"{code}  {len(clubs)} clubs  |  {agree} agree  |  {differ} differ  |  "
             f"{only_osm} OSM only  |  {only_wd} Wikidata only  |  "
             f"{neither} neither  |  {unmatched} no OSM ground nearby")
 
-    header = ["clubQid", "name", "country", "tier", "venue", "capacity",
-              "lat", "lon", "ticketUrl", "source", "note",
-              "_wikidata", "_osm", "_osmName", "_osmTag", "_metres", "_verdict"]
-
-    rows.sort(key=lambda r: (r["country"], r["_verdict"], r["name"]))
-
-    # A country Overpass could not answer for contributes no rows. Writing
-    # the file anyway would replace a list you have not worked through yet
-    # with a shorter one, and the cron would commit that deletion the same
-    # morning - evidence gone, with a green tick. So when anything went
-    # wrong the file is left exactly as the last good run left it.
-    #
-    # The first run is the one exception: there is nothing there to
-    # protect, so a partial list is better than no list.
-    existing = os.path.exists(REVIEW_FILE)
-    kept = bool(incomplete) and existing
-    if not kept:
-        with open(REVIEW_FILE, "w", encoding="utf-8", newline="") as fh:
-            writer = csv.DictWriter(fh, fieldnames=header)
-            writer.writeheader()
-            for row in rows:
-                writer.writerow(row)
+    written, kept, partial, others = write_review(results)
+    fresh = [row for code in written + partial for row in results[code]["rows"]]
 
     print()
     print("=" * 74)
@@ -280,35 +273,104 @@ def main():
     for line in summary:
         print("  " + line)
     print()
-    if kept:
-        print("  Overpass unreachable, review file unchanged from the last")
-        print(f"  successful run. {REVIEW_FILE} was NOT rewritten.")
-        print(f"  This run could only match {len(rows)} row(s), which is not the")
-        print("  whole picture, so those were thrown away rather than the file.")
-        print("  Not checked this time:")
-        for reason in incomplete:
-            print(f"    {reason}")
-    else:
-        if incomplete:
-            print(f"  {REVIEW_FILE} did not exist yet, so a partial list was")
-            print("  written. It is missing the countries listed at the bottom.")
-        print(f"  {len(rows)} club(s) need your eye - written to {REVIEW_FILE}")
+    # Country by country, because that is how the file is decided. A green
+    # tick on this workflow says only that the tool ran; these lines say
+    # which countries in the file are this run's and which are not.
+    for code in results:
+        count = len(results[code]["rows"])
+        if code in written:
+            print(f"  {code}  WRITTEN - complete answer, {count} row(s) replace "
+                  f"this country's rows")
+        elif code in partial:
+            print(f"  {code}  WRITTEN AS PARTIAL - {REVIEW_FILE} did not exist, so "
+                  f"there was nothing to protect; this country was NOT checked")
+        else:
+            print(f"  {code}  UNCHANGED - Overpass did not answer for this country, "
+                  f"so its rows are exactly as the last successful run for {code} "
+                  f"left them ({kept[code]} row(s))")
+        for reason in results[code]["incomplete"]:
+            print(f"        did not come back: {reason}")
+    if others:
+        print(f"  Rows for countries this run did not check were kept as they "
+              f"were: {', '.join(others)}")
+    print()
+    if written or partial:
+        print(f"  {len(fresh)} row(s) from this run need your eye - written to "
+              f"{REVIEW_FILE}")
         print("  Columns starting with _ are evidence and are ignored by the")
         print("  club builder. Put the figure you trust in the capacity column,")
         print("  then paste the row into data/clubs-manual.csv.")
-    if rows and not kept:
-        print()
-        print("  Biggest disagreements:")
-        ranked = [r for r in rows if r["_wikidata"] and r["_osm"]]
+    else:
+        print(f"  Overpass answered for no country. {REVIEW_FILE} was NOT")
+        print("  rewritten; it is exactly as the last successful runs left it.")
+    if fresh:
+        ranked = [r for r in fresh if r["_wikidata"] != "" and r["_osm"] != ""]
         ranked.sort(key=lambda r: -abs(int(r["_wikidata"]) - int(r["_osm"])))
+        if ranked:
+            print()
+            print("  Biggest disagreements:")
         for row in ranked[:12]:
             print(f"    {row['name'][:34]:34s} wikidata {row['_wikidata']:>7} "
                   f"vs osm {row['_osm']:>7}  ({row['_osmName'] or 'unnamed'})")
-    if failures:
-        print()
-        for f in failures:
-            print("  ! " + f)
     print("=" * 74)
+
+
+def write_review(results):
+    """
+    Decide, COUNTRY BY COUNTRY, whose rows this run may replace, and write
+    the file. Returns (written, kept, partial, others).
+
+    The rule is the one this file always had, applied to one country at a
+    time instead of to the whole run: a country Overpass could not answer
+    for contributes no rows, and writing that over its rows would delete
+    evidence nobody has worked through yet - with a green tick. So a
+    country whose answer did not come back keeps exactly the rows the
+    last good run for it left, byte for byte, and a country whose answer
+    came back replaces its own rows and nobody else's. Until 2026-09-30
+    one country's timeout threw away every country's answer.
+
+    The first run is still the one exception, and still for the whole
+    file: with no file there is nothing to protect, so a partial list is
+    written and the summary says so. It is NOT extended to "a country
+    with no rows yet": a country that did not come back is never written
+    into an existing file, even where that file has nothing for it.
+    """
+    existing = os.path.exists(REVIEW_FILE)
+    old = {}
+    if existing:
+        with open(REVIEW_FILE, encoding="utf-8", newline="") as fh:
+            for row in csv.DictReader(fh):
+                old.setdefault(row.get("country", ""), []).append(row)
+
+    written, partial, kept = [], [], {}
+    out = {}
+    for code, result in results.items():
+        if not result["incomplete"]:
+            written.append(code)
+            out[code] = sorted(result["rows"], key=lambda r: (r["_verdict"], r["name"]))
+        elif not existing:
+            partial.append(code)
+            out[code] = result["rows"]
+        else:
+            kept[code] = len(old.get(code, []))
+            out[code] = old.get(code, [])
+    # A country in the file that this run did not look at at all - one
+    # whose club file is gone or has no placed club - is not this run's
+    # to delete either.
+    others = sorted(c for c in old if c not in results)
+    for code in others:
+        out[code] = old[code]
+
+    if not written and not partial:
+        return written, kept, partial, others
+
+    with open(REVIEW_FILE, "w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=HEADER)
+        writer.writeheader()
+        for code in sorted(out):
+            for row in out[code]:
+                writer.writerow({k: row.get(k, "") for k in HEADER})
+    return written, kept, partial, others
 
 
 if __name__ == "__main__":
