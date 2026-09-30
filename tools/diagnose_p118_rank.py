@@ -74,7 +74,11 @@ ENTITY_BATCH = 50
 # league-tiers.csv maps to that country - because P17 is exactly the
 # field the missing clubs already lack, and a census that trusted it
 # alone would miss the clubs it is meant to find.
-COUNTRIES = {"Q183": "DE", "Q218": "RO", "Q142": "FR", "Q38": "IT", "Q39": "CH", "Q40": "AT", "Q403": "RS", "Q41": "GR", "Q29": "ES"}
+COUNTRIES = {"Q183": "DE", "Q218": "RO", "Q142": "FR", "Q38": "IT", "Q39": "CH", "Q40": "AT", "Q403": "RS", "Q41": "GR", "Q29": "ES",
+             # England: both leagues and every club item read on 2026-09-30 carry
+             # P17 United Kingdom (Q145), not England (Q21); Q21 is listed too so a
+             # club that does say England is counted as GB rather than as nobody's.
+             "Q145": "GB", "Q21": "GB"}
 
 P_LEAGUE = "P118"
 P_VENUE = "P115"
@@ -581,7 +585,7 @@ def main():
     ours.sort(key=lambda f: (f["countryCode"] or "zz", f["label"]))
 
     print("=" * 74)
-    print(f"{'/'.join(COUNTRIES.values())} - every club hidden from the club "
+    print(f"{'/'.join(dict.fromkeys(COUNTRIES.values()))} - every club hidden from the club "
           f"query by rank")
     print("=" * 74)
     print()
@@ -601,7 +605,7 @@ def main():
     print()
 
     print("-" * 74)
-    print(f"the same census outside {'/'.join(COUNTRIES.values())}: "
+    print(f"the same census outside {'/'.join(dict.fromkeys(COUNTRIES.values()))}: "
           f"{len(elsewhere)} items, not this project's business and listed "
           f"only so the number is not mistaken for zero")
     for fact in sorted(elsewhere, key=lambda f: f["qid"])[:40]:
@@ -619,7 +623,7 @@ def main():
     print("=" * 74)
     print(f"  preferred-rank no-league statements, worldwide: "
           f"{len(set(census_qids))} items")
-    print(f"  clubs hidden from the club query in {'/'.join(COUNTRIES.values())}:   {len(ours)}")
+    print(f"  clubs hidden from the club query in {'/'.join(dict.fromkeys(COUNTRIES.values()))}:   {len(ours)}")
     for fact in ours:
         why = ("preferred <novalue>" if fact["qid"] in census_shape
                else "every statement deprecated")

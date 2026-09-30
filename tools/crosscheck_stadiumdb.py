@@ -142,6 +142,17 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 #     - Mallorca, Gijon, Tenerife, Cadiz, Almeria, Castellon, Sabadell,
 #       Ceuta and Espanyol are on the page and did not match by name;
 #       Andorra and Real Sociedad B are not on it.
+# England's "eng" on 2026-09-30: /stadiums/eng answers 200, read on a
+# runner. Measured, not assumed: 125 grounds in five tables - Wembley, the
+# 20 Premier League grounds, the 24 Championship ones minus the three in
+# Wales, 23 League One and 57 others (rugby grounds among them). Against
+# the 2026-27 articles that is 20 of 20 Premier League clubs and 21 of 24
+# Championship clubs with a ground named for them. The three with none
+# are the Welsh clubs - Cardiff City, Swansea City and Wrexham - because
+# StadiumDB files a ground under the country it stands in, not the
+# pyramid its club plays in; they are unchecked, never agreement. So for
+# England the page is as full as Spain's. Short names again: "Albion",
+# "WBA", "Dons", "Rovers" will not all match ours.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
@@ -152,6 +163,7 @@ COUNTRY_PAGES = {
     "RS": ("ser", "Serbia"),
     "GR": ("gre", "Greece"),
     "ES": ("esp", "Spain"),
+    "GB": ("eng", "England"),
 }
 
 # Below this the two sources are treated as agreeing. Same threshold

@@ -95,6 +95,13 @@ COUNTRIES = [
     ("RS", "Q403", "Serbia"),
     ("GR", "Q41", "Greece"),
     ("ES", "Q29", "Spain"),
+    # England's pyramid, under GB because every other tool already used GB
+    # for it (link_fixtures.py for PL and ELC, build_calendars.py for the
+    # time zone) and the OpenStreetMap tools need a real ISO 3166-1 code.
+    # The Q-id is the United Kingdom's, not England's (Q21): both mapped
+    # leagues and every English club item read on 2026-09-30 carry P17
+    # Q145, so Q21 would find no league and flag every club.
+    ("GB", "Q145", "England"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -628,13 +635,24 @@ def load_tiers():
 # English first for Spain; "club match" and "football match" are the
 # English shapes, "partido de" the Spanish one. Checked on the rebuild of
 # 2026-09-30: those three items and nothing else in any country.
+#
+# England brought two more kinds on 2026-09-30. "History of Rotherham
+# United F.C." (Q16840698) is typed "aspect of history", carries P118
+# Championship and names the club's ground in P115, so it would have been
+# drawn at tier 2 on the New York Stadium - an article's subject, not a
+# club. "Melchester Rovers" (Q6811996), Roy of the Rovers' club, is typed
+# "fictional association football team" and carries P118 Premier League;
+# it has no ground, so it died at the coordinates gate, and a fictional
+# club is exactly the thing propose_coordinates.py must never be offered.
 NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ",
                     "season", "saison", "sezon", "stagione",
-                    "club match", "football match", "partido de")
+                    "club match", "football match", "partido de",
+                    "aspect of history", "fictional")
 
 NOT_A_CLUB_NAME = re.compile(
     r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b"
     r"|^\s*(saison|season|sezonul|sezon|spielzeit|stagione)\s+\d{4}"
+    r"|^\s*history of\b"
     r"|\s(19|20)\d{2}\s*[-–/]\s*((19|20)\d{2}|\d{2})\s*$", re.IGNORECASE)
 
 
@@ -648,7 +666,7 @@ def not_a_club(name, kinds):
         for word in NOT_A_CLUB_TYPES:
             if word in low:
                 return (f"Wikidata says it is a {kind!r}, which is a list, a "
-                        f"season or a match, not a club")
+                        f"season, a match, a history or a fiction, not a club")
     if name and NOT_A_CLUB_NAME.search(name):
         return ("its name is the title of a squad list or a season, not the name of a club "
                 "(Wikidata gives it no type that says so)")
@@ -1159,6 +1177,21 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
 #       ("Villarreal CF", "Getafe CF") that football-data.org also uses,
 #       while the Spanish one is the full legal name ("Villarreal Club de
 #       Futbol"), which no fixture team name equals.
+#   GB  England's pyramid. North 55.8 (Marshall Meadows), south 49.85 and
+#       west -6.45 (both the Isles of Scilly), east 1.7628 (Lowestoft Ness)
+#       - Wikidata's own P1332-P1335 on Q21 England, read on a runner
+#       2026-09-30. The box holds ALL OF WALES, the Isle of Man, the
+#       south of Scotland and the east of Northern Ireland (Belfast is at
+#       -5.93), and every English club item read carries P17 United
+#       Kingdom, which says nothing about which of the four it is in. So
+#       for GB BOTH SIGNALS ARE WEAK: a Scottish or Northern Irish club
+#       tagged with an English league would pass unflagged unless it sat
+#       north of 55.9. The roster check is what covers tiers 1 and 2. The
+#       three Welsh clubs in the 2026-27 Championship (Cardiff City,
+#       Swansea City, Wrexham) are the Monaco shape - in this file because
+#       they play in the English pyramid - and are NOT flagged, because
+#       their items say United Kingdom (Wrexham also says Wales); each has
+#       a note-only row in clubs-manual.csv saying so instead.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
@@ -1169,6 +1202,7 @@ COUNTRY_BOX = {
     "RS": {"lat": (42.10, 46.27), "lon": (18.73, 23.09)},
     "GR": {"lat": (34.60, 41.85), "lon": (19.30, 29.82)},
     "ES": {"lat": (27.55, 43.90), "lon": (-18.25, 4.45)},
+    "GB": {"lat": (49.75, 55.90), "lon": (-6.55, 1.85)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
