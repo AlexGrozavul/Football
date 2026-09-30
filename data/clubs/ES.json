@@ -159,20 +159,6 @@
    "competition": "Segunda División"
   },
   {
-   "id": "Q11971",
-   "name": "Sociedad Deportiva Huesca",
-   "leagues": [
-    "Q35615"
-   ],
-   "tier": 2,
-   "venue": "Estadio El Alcoraz",
-   "capacity": 9000,
-   "lat": 42.131944,
-   "lon": -0.424444,
-   "city": null,
-   "competition": "Segunda División"
-  },
-  {
    "id": "Q11979",
    "name": "UD Las Palmas",
    "leagues": [
@@ -183,34 +169,6 @@
    "capacity": 32392,
    "lat": 28.1,
    "lon": -15.456667,
-   "city": null,
-   "competition": "Segunda División"
-  },
-  {
-   "id": "Q11997",
-   "name": "CD Mirandés",
-   "leagues": [
-    "Q35615"
-   ],
-   "tier": 2,
-   "venue": "Estadio Municipal de Anduva",
-   "capacity": 6000,
-   "lat": 42.680833,
-   "lon": -2.935556,
-   "city": null,
-   "competition": "Segunda División"
-  },
-  {
-   "id": "Q12168",
-   "name": "Sociedad Deportiva Ponferradina",
-   "leagues": [
-    "Q35615"
-   ],
-   "tier": 2,
-   "venue": "Estadio El Toralín",
-   "capacity": 8400,
-   "lat": 42.5574,
-   "lon": -6.599972,
    "city": null,
    "competition": "Segunda División"
   },
@@ -227,6 +185,23 @@
    "lon": -3.793333,
    "city": null,
    "competition": "La Liga"
+  },
+  {
+   "id": "Q12260",
+   "name": "CE Sabadell FC",
+   "leagues": [
+    "Q100146559"
+   ],
+   "tier": 2,
+   "venue": "Estadi de la Nova Creu Alta",
+   "capacity": 11981,
+   "lat": 41.554722,
+   "lon": 2.091944,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Segunda_Divisi%C3%B3n; https://en.wikipedia.org/wiki/2026%E2%80%9327_La_Liga; https://en.wikipedia.org/wiki/CE_Sabadell_FC; https://es.wikipedia.org/wiki/Centre_d%27Esports_Sabadell_Futbol_Club",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-30, in the Spain pass - tier 2 by hand, reviewable, the FC Wil standard. Promoted from the Primera Federacion in 2026 and its tag did not follow: the only P118 on Q12260 is the Primera Federacion (Q100146559), which is not mapped, so no query returned it and the roster check read it missing-from-wikidata. Three reads, two of them complete division lists: the complete 2026-27 Segunda Division article (22 of 22) lists it at the Nova Creu Alta and its Team changes table among the clubs promoted from the Primera Federacion; the complete La Liga article (20 of 20) does not; and the club's own articles say 'its first men's team plays in the Segunda Division' (English) and 'En la temporada 2026-27 disputa la Segunda Division' (Spanish). Ground and position come from its own P115, the Nova Creu Alta (Q1313926). Empty the tier cell and the club leaves the map.",
+   "manual": true,
+   "competition": "Segunda División"
   },
   {
    "id": "Q12278",
@@ -263,25 +238,14 @@
     "Q35615"
    ],
    "tier": 2,
-   "venue": "Estadi Nacional",
-   "capacity": 3306,
-   "lat": 42.5046,
-   "lon": 1.51746,
+   "venue": "Estadi de la FAF",
+   "capacity": 5108,
+   "lat": 42.533527,
+   "lon": 1.575941,
    "city": null,
-   "competition": "Segunda División"
-  },
-  {
-   "id": "Q15966154",
-   "name": "Fundación Albacete",
-   "leagues": [
-    "Q35615"
-   ],
-   "tier": 2,
-   "venue": "Ciudad Deportiva Andrés Iniesta",
-   "capacity": null,
-   "lat": 38.967597,
-   "lon": -1.853778,
-   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Segunda_Divisi%C3%B3n; https://en.wikipedia.org/wiki/FC_Andorra; https://en.wikipedia.org/wiki/Estadi_de_la_FAF; https://www.wikidata.org/wiki/Q134706123",
+   "note": "TWO THINGS, 2026-09-30, in the Spain pass. (1) NOT AN ERROR, AND DELIBERATELY NOT CHANGED: the Monaco shape. The country check flags this club every run because Wikidata's P17 on Q1386854 is Q228 Andorra, not Spain, and that is TRUE. It is in ES.json because it plays in the Spanish pyramid - affiliated to the Catalan federation since 1948 - and the complete 2026-27 Segunda Division article lists it. The file is Spain's league pyramid, not Spain's territory. (2) GROUND BY HAND: Wikidata's P115 is the Estadi Nacional in Andorra la Vella (Q18125598, 3,306); the club has played at the Estadi de la FAF in Encamp since it opened in May 2025. The Segunda Division table, the club's English and Spanish infoboxes and the ground's own infobox ('FC Andorra (2025-present)') all say so; the position is the ground's own item, Q134706123. CAPACITY: in use 5,108 - the Segunda Division table (and the English infoboxes, the same source), with Wikidata's 5,250 for the ground within 5%. Not taken: 5,250 (Wikidata), 5,600 (the Spanish infobox). StadiumDB has no Andorran ground.",
+   "manual": true,
    "competition": "Segunda División"
   },
   {
@@ -313,6 +277,23 @@
    "competition": "La Liga"
   },
   {
+   "id": "Q2311865",
+   "name": "RC Celta Fortuna",
+   "leagues": [
+    "Q751826"
+   ],
+   "tier": 2,
+   "venue": "Abanca Balaídos Stadium",
+   "capacity": 24870,
+   "lat": 42.211861,
+   "lon": -8.740328,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Segunda_Divisi%C3%B3n; https://en.wikipedia.org/wiki/RC_Celta_Fortuna; https://stadiumdb.com/stadiums/esp; https://www.wikidata.org/wiki/Q1326578",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-30, in the Spain pass - tier 2 by hand, reviewable, the FC Wil standard; and GROUND BY HAND. Celta Vigo's reserve side, promoted from the Primera Federacion in 2026. The only P118 on Q2311865 is Segunda Division B (Q751826), not mapped, so no query returned it. Tier: the complete 2026-27 Segunda Division article (22 of 22) lists it and its Team changes table among the promoted clubs, the complete La Liga article does not, and its English article says it 'competes in the Segunda Division'. Ground: Wikidata's P115 is the Campo Municipal de Barreiro (Q3393440, 1,500), and so is its Spanish infobox, on a 2025-26 season line; the 2026-27 Segunda Division table, its English infobox and StadiumDB (which lists Balaidos for 'Celta de Vigo, Celta Fortuna') all say Balaidos. Three against two, the newer three, so it is drawn at Balaidos, at Q1326578's own P625 - a genuine shared pin with the first team, like the German reserve sides. Capacity 24,870 is the same figure as on RC Celta de Vigo's row for the same ground (Wikidata and the La Liga table agree; StadiumDB's 22,904 not taken). Emptying the ground cells puts it back at Barreiro.",
+   "manual": true,
+   "competition": "Segunda División"
+  },
+  {
    "id": "Q271574",
    "name": "Real Oviedo",
    "leagues": [
@@ -334,10 +315,13 @@
    ],
    "tier": 2,
    "venue": "Estadio Nuevo Mirandilla",
-   "capacity": 26000,
+   "capacity": 20724,
    "lat": 36.502778,
    "lon": -6.273056,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Segunda_Divisi%C3%B3n; https://stadiumdb.com/stadiums/esp",
+   "note": "CAPACITY CORRECTED, 2026-09-30, in the Spain pass, by the UTA Arad rule. In use: 20,724 - the 2026-27 Segunda Division table, with StadiumDB's 21,061 within 5%. Not taken: 21,061 (StadiumDB); 26,000 (Wikidata, which the map held).",
+   "manual": true,
    "competition": "Segunda División"
   },
   {
@@ -369,20 +353,6 @@
    "competition": "Segunda División"
   },
   {
-   "id": "Q582342",
-   "name": "Cultural y Deportiva Leonesa",
-   "leagues": [
-    "Q35615"
-   ],
-   "tier": 2,
-   "venue": "Estadio Reino de León",
-   "capacity": 13451,
-   "lat": 42.587482,
-   "lon": -5.576699,
-   "city": null,
-   "competition": "Segunda División"
-  },
-  {
    "id": "Q600232",
    "name": "CD Eldense",
    "leagues": [
@@ -390,24 +360,13 @@
    ],
    "tier": 2,
    "venue": "Estadio Municipal Nuevo Pepico Amat",
-   "capacity": null,
+   "capacity": 5776,
    "lat": 38.467356,
    "lon": -0.796031,
    "city": null,
-   "competition": "Segunda División"
-  },
-  {
-   "id": "Q611653",
-   "name": "FC Cartagena",
-   "leagues": [
-    "Q35615"
-   ],
-   "tier": 2,
-   "venue": "Estadio Cartagonova",
-   "capacity": 15105,
-   "lat": 37.609746,
-   "lon": -0.995977,
-   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Segunda_Divisi%C3%B3n; https://stadiumdb.com/stadiums/esp; https://en.wikipedia.org/wiki/Nuevo_Pepico_Amat",
+   "note": "CAPACITY FILLED, 2026-09-30, in the Spain pass, where Wikidata had none. In use: 5,776 - the 2026-27 Segunda Division table and the ground's own infobox, with StadiumDB's 5,800 within 5%. Two independent sources agreeing, so it is written; one would not have been.",
+   "manual": true,
    "competition": "Segunda División"
   },
   {
@@ -418,10 +377,13 @@
    ],
    "tier": 1,
    "venue": "Camp Nou",
-   "capacity": 105000,
+   "capacity": 62652,
    "lat": 41.380833,
    "lon": 2.122778,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_La_Liga; https://stadiumdb.com/stadiums/esp; https://en.wikipedia.org/wiki/Camp_Nou",
+   "note": "CAPACITY CORRECTED, 2026-09-30, in the Spain pass, by the UTA Arad rule. In use: 62,652 - the 2026-27 La Liga table and StadiumDB agree exactly, and the Camp Nou's own infobox gives it as the current figure. Not taken: 105,000 (Wikidata), which the Camp Nou infobox gives as the EXPECTED capacity when the rebuild is finished. When it is, this cell is the one to change.",
+   "manual": true,
    "competition": "La Liga"
   },
   {
@@ -453,34 +415,6 @@
    "competition": "Segunda División"
   },
   {
-   "id": "Q843396",
-   "name": "Racing Club de Ferrol",
-   "leagues": [
-    "Q35615"
-   ],
-   "tier": 2,
-   "venue": "Municipal Stadium of A Malata",
-   "capacity": 11669,
-   "lat": 43.491358,
-   "lon": -8.239274,
-   "city": null,
-   "competition": "Segunda División"
-  },
-  {
-   "id": "Q847030",
-   "name": "Jerez Industrial CF",
-   "leagues": [
-    "Q35615"
-   ],
-   "tier": 2,
-   "venue": "Pedro S. Garrido football stadium",
-   "capacity": 2000,
-   "lat": 36.6728,
-   "lon": -6.13889,
-   "city": null,
-   "competition": "Segunda División"
-  },
-  {
    "id": "Q852079",
    "name": "Burgos CF",
    "leagues": [
@@ -502,10 +436,13 @@
    ],
    "tier": 2,
    "venue": "Estadio Municipal de Butarque",
-   "capacity": 11454,
+   "capacity": 14422,
    "lat": 40.3404,
    "lon": -3.7607,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Segunda_Divisi%C3%B3n; https://stadiumdb.com/stadiums/esp; https://en.wikipedia.org/wiki/Butarque_Stadium",
+   "note": "CAPACITY CORRECTED, 2026-09-30, in the Spain pass, by the UTA Arad rule. In use: 14,422 - the 2026-27 Segunda Division table and StadiumDB agree exactly (the ground's own infobox says 14,500). Not taken: 11,454 (Wikidata, which the map held).",
+   "manual": true,
    "competition": "Segunda División"
   },
   {
@@ -557,11 +494,14 @@
     "Q324867"
    ],
    "tier": 1,
-   "venue": "Estadio Benito Villamarín",
-   "capacity": 60721,
-   "lat": 37.356403,
-   "lon": -5.981611,
+   "venue": "Estadio La Cartuja",
+   "capacity": 70000,
+   "lat": 37.417236,
+   "lon": -6.004564,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_La_Liga; https://en.wikipedia.org/wiki/Real_Betis; https://stadiumdb.com/stadiums/esp; https://www.wikidata.org/wiki/Q368737",
+   "note": "GROUND BY HAND, 2026-09-30, in the Spain pass - where the club plays in 2026-27, not its registered ground. Wikidata's P115 on Q8723 is the Estadio Benito Villamarin (Q126844, 60,721), and so is its Spanish infobox; the club has played at the Estadio La Cartuja since 2025 while the Villamarin is rebuilt. Four reads agree on La Cartuja: the complete 2026-27 La Liga table ('Estadio La Cartuja de Sevilla, 70,000'), the club's English infobox, StadiumDB (which lists Betis at the 'Estadio Olimpico de Sevilla', La Cartuja's old name, and the Villamarin with no club), and La Cartuja's own infobox ('Real Betis (2025-present)'). The position is La Cartuja's own item, Q368737. CAPACITY: in use 70,000 - the La Liga table and StadiumDB agree exactly, as does the club's English infobox. Not taken: 71,374, Wikidata's and La Cartuja's own infobox, a full-stadium figure. TEMPORARY BY NATURE: when Betis goes back to the Villamarin, empty the venue, capacity, lat and lon cells and the map follows Wikidata again.",
+   "manual": true,
    "competition": "La Liga"
   },
   {
@@ -604,6 +544,9 @@
    "lat": 41.347861,
    "lon": 2.075667,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_La_Liga; https://en.wikipedia.org/wiki/RCDE_Stadium; https://stadiumdb.com/stadiums/esp; https://www.wikidata.org/wiki/Q473223",
+   "note": "GROUND PINNED, 2026-09-30, in the Spain pass - the SC Freiburg shape. Q8780 carries two P115 values at the same rank, the RCDE Stadium (Q473223) and the Estadi de Sarria (Q1325234, which carries P576 1997 and an end date on the statement the club query does not read), so fetch_clubs.py keeps whichever the query service returns first and the ground could change between rebuilds, or mix one ground's name with the other's figures. The RCDE Stadium is the ground on three sources and more: the 2026-27 La Liga table, StadiumDB, both club infoboxes, and Sarria was demolished in 1997. The position is Q473223's own P625. CAPACITY IS CONTESTED AND IS PINNED ONLY TO STOP IT FLAPPING, not settled: 40,500 is the figure the map already held (Wikidata's for the ground, and the ground's English infobox). Not taken: 37,776 (the La Liga table and StadiumDB, exactly), 40,000 (the club's English infobox), 40,445 (its Spanish infobox). Two and two - the AEL shape - so nothing was chosen between them.",
+   "manual": true,
    "competition": "La Liga"
   },
   {

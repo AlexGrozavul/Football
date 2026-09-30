@@ -97,14 +97,14 @@
   },
   "ES": {
    "name": "Spain",
-   "onMap": 48,
+   "onMap": 42,
    "byTier": {
     "1": 20,
-    "2": 28
+    "2": 22
    },
-   "withVenueName": 48,
-   "withCapacity": 45,
-   "handCorrected": 0
+   "withVenueName": 42,
+   "withCapacity": 41,
+   "handCorrected": 9
   }
  }
 }
