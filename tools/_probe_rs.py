@@ -24,13 +24,19 @@ def wikitext(site, title):
     return page["title"], rev["timestamp"], rev["slots"]["main"]["content"]
 
 print("=" * 70)
-for site, art in (("ro", "Liga a III-a 2026-2027"), ("ro", "Liga a IV-a Vâlcea")):
-    try:
-        title, ts, text = wikitext(site, art)
-    except Exception as exc:
-        print(f"{art}: FAILED {exc}"); continue
-    hits = [l.strip()[:200] for l in text.splitlines() if re.search(r"Lotru|Brezoi|Ineu", l)]
-    print(f"{art} (rev {ts}, {len(text)} chars): {len(hits)} line(s) naming Lotru/Brezoi/Ineu")
-    for m in re.finditer(r"Lotru|Brezoi|Ineu", text):
-        print("    ..." + text[max(0, m.start()-400):m.end()+300].replace("\n", " / ") + "...")
+for site, t in (("ro", "Tricotaje Ineu"), ("en", "Tricotaje Ineu"), ("ro", "CS Victoria Ineu"), ("ro", "CS Lotru Brezoi (fotbal)")):
+    q = urllib.parse.urlencode({"action": "query", "titles": t, "redirects": "1", "prop": "pageprops|info",
+                                "ppprop": "wikibase_item", "format": "json", "formatversion": "2"})
+    d = get(f"https://{site}.wikipedia.org/w/api.php?" + q)["query"]
+    print(site, repr(t), "redirects:", d.get("redirects"), "pages:", [(p.get("title"), p.get("missing"), (p.get("pageprops") or {}).get("wikibase_item")) for p in d["pages"]])
+for site, art in (("ro", "Liga a III-a 2026-2027"), ("en", "2026–27 Liga III")):
+    title, ts, text = wikitext(site, art)
+    print(f"--- {site} {art} rev {ts}")
+    for m in re.finditer(r"Ineu|Tricotaje|Lotru|Brezoi", text):
+        print("    ..." + text[max(0, m.start()-1500):m.end()+200].replace("\n", " / ") + "...")
+        print()
+# what the rowiki page for Victoria Ineu says about 2025-26 / 2026-27
+title, ts, text = wikitext("ro", "CS Victoria Ineu")
+for m in re.finditer(r"2025|2026|Tricotaje", text):
+    print("    VI..." + text[max(0, m.start()-200):m.end()+200].replace("\n", " / ") + "...")
 print("=" * 70)
