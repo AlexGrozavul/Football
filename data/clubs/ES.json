@@ -1,0 +1,680 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "ES",
+ "countryName": "Spain",
+ "clubs": [
+  {
+   "id": "Q10286",
+   "name": "Club Atlético Osasuna",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "El Sadar Stadium",
+   "capacity": 23576,
+   "lat": 42.796667,
+   "lon": -1.636944,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q10300",
+   "name": "Rayo Vallecano",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Campo de Fútbol de Vallecas",
+   "capacity": 14708,
+   "lat": 40.391944,
+   "lon": -3.658961,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q10315",
+   "name": "Real Sociedad",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Anoeta Stadium",
+   "capacity": 40000,
+   "lat": 43.301378,
+   "lon": -1.973617,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q10319",
+   "name": "Real Valladolid",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Nuevo José Zorrilla",
+   "capacity": 27618,
+   "lat": 41.644444,
+   "lon": -4.761111,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q10329",
+   "name": "Sevilla FC",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Ramón Sánchez Pizjuán Stadium",
+   "capacity": 43751,
+   "lat": 37.383878,
+   "lon": -5.970467,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q10333",
+   "name": "Valencia CF",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Mestalla Stadium",
+   "capacity": 49430,
+   "lat": 39.474722,
+   "lon": -0.358333,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q10407",
+   "name": "Unión Deportiva Almería",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio de los Juegos Mediterraneos",
+   "capacity": 22000,
+   "lat": 36.84,
+   "lon": -2.435278,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q10499",
+   "name": "Córdoba CF",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Nuevo Arcángel",
+   "capacity": 21822,
+   "lat": 37.872294,
+   "lon": -4.764642,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q10512",
+   "name": "Elche CF",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Estadio Manuel Martínez Valero",
+   "capacity": 31388,
+   "lat": 38.266944,
+   "lon": -0.663333,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q1067750",
+   "name": "Real Sociedad B",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Zubieta Facilities",
+   "capacity": null,
+   "lat": 43.2589,
+   "lon": -2.02382,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q11945",
+   "name": "Girona FC",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Montilivi Stadium",
+   "capacity": 14624,
+   "lat": 41.961389,
+   "lon": 2.828611,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q11971",
+   "name": "Sociedad Deportiva Huesca",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio El Alcoraz",
+   "capacity": 9000,
+   "lat": 42.131944,
+   "lon": -0.424444,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q11979",
+   "name": "UD Las Palmas",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Gran Canaria Stadium",
+   "capacity": 32392,
+   "lat": 28.1,
+   "lon": -15.456667,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q11997",
+   "name": "CD Mirandés",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Municipal de Anduva",
+   "capacity": 6000,
+   "lat": 42.680833,
+   "lon": -2.935556,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q12168",
+   "name": "Sociedad Deportiva Ponferradina",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio El Toralín",
+   "capacity": 8400,
+   "lat": 42.5574,
+   "lon": -6.599972,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q12236",
+   "name": "Racing de Santander",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Campos de Sport de El Sardinero",
+   "capacity": 21700,
+   "lat": 43.476389,
+   "lon": -3.793333,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q12278",
+   "name": "Sporting de Gijón",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "El Molinón-Enrique Castro Quini",
+   "capacity": 29371,
+   "lat": 43.536111,
+   "lon": -5.637222,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q12297",
+   "name": "Villarreal CF",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Estadio de la Cerámica",
+   "capacity": 24891,
+   "lat": 39.944167,
+   "lon": -0.103611,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q1386854",
+   "name": "FC Andorra",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadi Nacional",
+   "capacity": 3306,
+   "lat": 42.5046,
+   "lon": 1.51746,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q15966154",
+   "name": "Fundación Albacete",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Ciudad Deportiva Andrés Iniesta",
+   "capacity": null,
+   "lat": 38.967597,
+   "lon": -1.853778,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q216661",
+   "name": "C.D. Tenerife",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Heliodoro Rodríguez López",
+   "capacity": 21732,
+   "lat": 28.463056,
+   "lon": -16.260556,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q223620",
+   "name": "Deportivo Alavés",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Mendizorrotza Stadium",
+   "capacity": 19840,
+   "lat": 42.837111,
+   "lon": -2.688044,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q271574",
+   "name": "Real Oviedo",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Carlos Tartiere Stadium",
+   "capacity": 30500,
+   "lat": 43.360783,
+   "lon": -5.870222,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q460448",
+   "name": "Cádiz Club de Fútbol",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Nuevo Mirandilla",
+   "capacity": 26000,
+   "lat": 36.502778,
+   "lon": -6.273056,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q576285",
+   "name": "Albacete Balompié",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Carlos Belmonte",
+   "capacity": 17524,
+   "lat": 38.981117,
+   "lon": -1.852142,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q5773365",
+   "name": "AD Ceuta FC",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Alfonso Murube",
+   "capacity": 6500,
+   "lat": 35.8854,
+   "lon": -5.3279,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q582342",
+   "name": "Cultural y Deportiva Leonesa",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Reino de León",
+   "capacity": 13451,
+   "lat": 42.587482,
+   "lon": -5.576699,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q600232",
+   "name": "CD Eldense",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Municipal Nuevo Pepico Amat",
+   "capacity": null,
+   "lat": 38.467356,
+   "lon": -0.796031,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q611653",
+   "name": "FC Cartagena",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Cartagonova",
+   "capacity": 15105,
+   "lat": 37.609746,
+   "lon": -0.995977,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q7156",
+   "name": "FC Barcelona",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Camp Nou",
+   "capacity": 105000,
+   "lat": 41.380833,
+   "lon": 2.122778,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q743557",
+   "name": "CD Castellón",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Nou Estadi Castalia",
+   "capacity": 16000,
+   "lat": 39.996053,
+   "lon": -0.038792,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q770740",
+   "name": "SD Eibar",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Ipurúa Municipal Stadium",
+   "capacity": 8164,
+   "lat": 43.181706,
+   "lon": -2.475803,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q843396",
+   "name": "Racing Club de Ferrol",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Municipal Stadium of A Malata",
+   "capacity": 11669,
+   "lat": 43.491358,
+   "lon": -8.239274,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q847030",
+   "name": "Jerez Industrial CF",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Pedro S. Garrido football stadium",
+   "capacity": 2000,
+   "lat": 36.6728,
+   "lon": -6.13889,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q852079",
+   "name": "Burgos CF",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio El Plantío",
+   "capacity": 16000,
+   "lat": 42.344167,
+   "lon": -3.680556,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q856119",
+   "name": "CD Leganés",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Municipal de Butarque",
+   "capacity": 11454,
+   "lat": 40.3404,
+   "lon": -3.7607,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q8682",
+   "name": "Real Madrid Club de Fútbol",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Bernabéu",
+   "capacity": 83186,
+   "lat": 40.45306,
+   "lon": -3.68835,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8687",
+   "name": "Athletic Club",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "San Mamés Stadium",
+   "capacity": 53289,
+   "lat": 43.264205,
+   "lon": -2.949369,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8701",
+   "name": "Atlético Madrid",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Metropolitano Stadium",
+   "capacity": 70813,
+   "lat": 40.436111,
+   "lon": -3.599444,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8723",
+   "name": "Real Betis Balompié",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Estadio Benito Villamarín",
+   "capacity": 60721,
+   "lat": 37.356403,
+   "lon": -5.981611,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8749",
+   "name": "RC Celta de Vigo",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Abanca Balaídos Stadium",
+   "capacity": 24870,
+   "lat": 42.211861,
+   "lon": -8.740328,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8760",
+   "name": "Deportivo de A Coruña",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Estadio Municipal de Abanca Riazor",
+   "capacity": 32490,
+   "lat": 43.368667,
+   "lon": -8.417372,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8780",
+   "name": "RCD Espanyol de Barcelona",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "RCDE Stadium",
+   "capacity": 40500,
+   "lat": 41.347861,
+   "lon": 2.075667,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8806",
+   "name": "Getafe CF",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Estadio Coliseum",
+   "capacity": 16500,
+   "lat": 40.325556,
+   "lon": -3.714722,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8812",
+   "name": "Granada CF",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadio Nuevo Los Cármeness",
+   "capacity": 19436,
+   "lat": 37.152967,
+   "lon": -3.595736,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q8823",
+   "name": "Levante UD",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "Estadi Ciutat de València",
+   "capacity": 26354,
+   "lat": 39.494722,
+   "lon": -0.364167,
+   "city": null,
+   "competition": "La Liga"
+  },
+  {
+   "id": "Q8835",
+   "name": "RCD Mallorca",
+   "leagues": [
+    "Q35615"
+   ],
+   "tier": 2,
+   "venue": "Estadi Mallorca Son Moix",
+   "capacity": 25736,
+   "lat": 39.59,
+   "lon": 2.63,
+   "city": null,
+   "competition": "Segunda División"
+  },
+  {
+   "id": "Q8857",
+   "name": "Málaga CF",
+   "leagues": [
+    "Q324867"
+   ],
+   "tier": 1,
+   "venue": "La Rosaleda Stadium",
+   "capacity": 30778,
+   "lat": 36.734092,
+   "lon": -4.426422,
+   "city": null,
+   "competition": "La Liga"
+  }
+ ]
+}
