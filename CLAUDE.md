@@ -1377,15 +1377,18 @@ a page anyone can already view in their browser's network tab.
     matcher paired 31: 25 agree, 6 differ, 11 not matched by name
     (Mallorca's "Real CD Mallorca", Gijón's "Real Gijón" and the like).
     Unmatched is still unchecked, never agreement.
-  - **OpenStreetMap, first run with Spain in it**: 42 clubs, 6 agree, 3
-    differ, 31 have a Wikidata figure only, 1 neither, 2 no OpenStreetMap
-    stadium within 500 m (one is Real Sociedad B, 4.7 km from the nearest
-    - Zubieta is a training complex; nobody has looked at which pitch the
-    tags miss). The three that differ: Barcelona (OpenStreetMap 99,354,
-    the post-rebuild figure again) and Cádiz (25,033) are OpenStreetMap
-    as the outlier against the table and StadiumDB; Burgos is the one it
-    settled, above. Spain is Germany's shape here more than Italy's:
-    1,829 stadiums, 68 with a usable capacity.
+  - **OpenStreetMap, two runs on the branch.** The first: Spain
+    `WRITTEN`, 42 clubs, 6 agree, 3 differ - and **Austria `UNCHANGED`**
+    (HTTP 504), so it was not a pass. Burgos was the difference it
+    settled (above). The second, after the rebuild: **all nine countries
+    `WRITTEN`**; Spain 7 agree, 2 differ, 31 Wikidata only, 1 neither, 2
+    with no OpenStreetMap stadium within 500 m (one is Real Sociedad B,
+    4.7 km from the nearest - Zubieta is a training complex; nobody has
+    looked at which pitch the tags miss). The two that differ are
+    OpenStreetMap as the outlier: Barcelona (99,354, the post-rebuild
+    figure again) and Cádiz (25,033), against the table and StadiumDB.
+    Spain has more to compare than Italy or Romania: 1,829 stadiums, 68
+    with a usable capacity.
   - **Fixtures: 15 of 20 La Liga clubs link to football-data.org's PD**,
     which was already fetched. **Five are abbreviations the matcher
     rightly refuses**, and each needs one `link` row in
