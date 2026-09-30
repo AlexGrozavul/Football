@@ -422,10 +422,13 @@
    ],
    "tier": 2,
    "venue": "Estadio El Plantío",
-   "capacity": 16000,
+   "capacity": 12194,
    "lat": 42.344167,
    "lon": -3.680556,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Segunda_Divisi%C3%B3n; https://stadiumdb.com/stadiums/esp",
+   "note": "CAPACITY CORRECTED, 2026-09-30, in the Spain pass, by the UTA Arad rule - and only once the OpenStreetMap cross-check came back. In use: 12,194 - the 2026-27 Segunda Division table, with OpenStreetMap's 12,642 for the Estadio Municipal de El Plantio within 5% (read by crosscheck_capacity.py the same day). Not taken: 11,380 (StadiumDB, 6.7% below the table); 16,000 (Wikidata, which the map held). Before OpenStreetMap answered, no two of Wikidata, the table and StadiumDB agreed and the row was going to stay contested.",
+   "manual": true,
    "competition": "Segunda División"
   },
   {
