@@ -40,8 +40,15 @@ enough that it matters — several of the better decisions in this project
 came from him correcting a proposal.
 
 **6. Men's football only, for now.** No women's league has been added to
-`data/league-tiers.csv`, so the club layer is already compliant — this
-is a documentation rule, not a data fix. It applies beyond leagues: a
+`data/league-tiers.csv`, so the club layer is compliant by construction
+— with one hole, found 2026-09-30: a women's club whose Wikidata item
+carries a MEN'S league tag reaches the map like any other item.
+Fundación Albacete did, at tier 2 in Spain, and has a `skip` row. A
+filter on Wikidata's type was measured and **not built**: the only
+other items typed as a women's team that carry a mapped league are
+Atromitos and Asteras Tripoli, the real men's Greek clubs, whose items
+carry that type too. So the roster check is what catches this shape,
+as it did. It applies beyond leagues: a
 future club addition, a badge, or a piece of research is also men's
 football only until this rule changes, so don't reach for a women's
 team, a women's competition, or a women's-team crest just because a
@@ -1239,6 +1246,162 @@ a page anyone can already view in their browser's network tab.
 ---
 
 ## Known open problems
+
+- **Spain's top two tiers are on the map, 2026-09-30: La Liga 20 of 20
+  and Segunda División 22 of 22, exact - nothing missing, nothing extra,
+  nothing at the wrong tier.** Same pipeline and standard as the eight
+  countries before it, run through three throwaway probes on a GitHub
+  runner (removed in the same branch); the sandbox still answers 403 to
+  CONNECT for Wikidata, Wikipedia and StadiumDB. Tiers 1 and 2 only;
+  the Primera Federación and below were deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q324867` La Liga
+    (`P3983` 1, enwiki *La Liga*) and `Q35615` Segunda División (enwiki
+    *Segunda División*; its English label on Wikidata is "LaLiga 2", and
+    it carries **no** `P3983`). Both 2026–27 articles are one
+    stadiums-and-locations table, **20 of 20 and 22 of 22 resolved**, and
+    the Segunda one has a Team changes table naming the four clubs
+    relegated to the Primera Federación and the four promoted from it.
+    The country box's four edges are Wikidata's own `P1332`-`P1335` on
+    `Q29`; the Canaries make it wide enough to hold Portugal, Andorra,
+    Gibraltar, northern Morocco and southern France up to Toulouse, so
+    `P17` is the signal that catches a club across a border
+    (`COUNTRY_BOX`'s comment). Labels are asked in English first, then
+    Spanish, because the English label is the short form football-data
+    uses ("Villarreal CF") and the Spanish one the full legal name.
+  - **What the first build brought, 48 clubs against 42:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 20 | 28 (20 right, 8 extra, 2 missing) |
+    | after this pass | **20** | **22** |
+  - **Eight extras `skip`ped, seven of them to the Hermannstadt
+    standard** - both articles complete, neither lists the club, and the
+    club's **own English and Spanish articles** name the league it is in
+    now. (The English infoboxes are no help here: they fill `league`
+    from a template, `{{Spanish football updater}}`, so the reason was
+    read from each article's opening lines.) For four of them the
+    Segunda article's Team changes table says it too.
+    - **Relegated in 2026, tag stale**: Cultural Leonesa (a *preferred*
+      Segunda tag from 2025), CD Mirandés (a Segunda tag ending 2026) and
+      SD Huesca (a *preferred* Segunda tag dated 2021-2022) - all three
+      in the Team changes table as relegated to the Primera Federación.
+    - **Relegated earlier, one undated Segunda tag and nothing else**:
+      SD Ponferradina, Racing de Ferrol, FC Cartagena - each now in the
+      Primera Federación by its own article.
+    - **Jerez Industrial CF**, drawn at tier 2 on a Segunda tag dated
+      **1968-1969** - the end-date shape - is in the Primera Andaluza
+      Cádiz, the seventh tier.
+    - **Fundación Albacete (`Q15966154`) is a women's club** - typed only
+      "women's association football club", and its English article
+      says it is Albacete Balompié's women's section - drawn at tier 2 on
+      a Segunda tag on the **men's** league item. **Rule 6**, and the
+      rule's own paragraph now says so. A filter on type was measured
+      across every country and not built: it would also remove Atromitos
+      and Asteras Tripoli, the men's Greek clubs, whose items carry the
+      same type.
+  - **Two promoted clubs whose tags did not follow reach the map through
+    the hand-named fallback**, tier 2 by hand, the FC Wil standard (both
+    complete articles plus the club's own article; reviewable): **CE
+    Sabadell** (`Q12260`, only a Primera Federación tag) and **RC Celta
+    Fortuna** (`Q2311865`, Celta's reserve side, only a Segunda B tag).
+    **CD Tenerife** was surfaced automatically by the Vicenza shape - a
+    stale *preferred* tag naming an unmapped league over a normal-rank
+    Segunda one.
+  - **Rank blind spot, all three shapes, run by `diagnose-rank.yml` on
+    the branch.** Queries A and B: **no Spanish item** - no preferred
+    "no league" and no all-deprecated one. **SD Amorebieta** carries a
+    Segunda tag at deprecated rank, but its normal-rank Primera
+    Federación tag is truthy, so it is invisible and rightly so. Query C:
+    **ten Spanish clubs** (Alcorcón, Tenerife, Fuenlabrada, Lugo,
+    Numancia, Barcelona Atlètic, Hércules, Zaragoza, Logroñés, Xerez),
+    every one a relegated club with its new lower league correctly
+    preferred except Tenerife, which was promoted back; **bill 1,
+    Tenerife, surfaced and `ok`**.
+  - **The league-tag end date (`P582`), measured for Spain**: of 50 live
+    items with a truthy La Liga or Segunda tag, **two** get their tier
+    from a tag that has ended - Huesca and Jerez Industrial, both caught
+    by the roster and `skip`ped. The other five wrong men's extras carry
+    **no end date at all**, so honouring `P582` would not have caught
+    them - the same finding as the 2026-09-29 measurement. One boundary
+    case: Mirandés's Segunda tag ends "2026" at year precision, which the
+    measurement counts as still live.
+  - **Every duplicate shape, looked for rather than waited for.** Shape
+    1 and 2: none - no two items for one club, and the roster check names
+    each of the 42 clubs once. Shape 3: none - no multi-sport parent
+    carries either tag. Shape 4: the seven relegated clubs above, all on
+    the map until this pass. Shape 5: none - no map item has a `P831`,
+    and Espanyol's one item carries both "club" and "men's team" types.
+    Shape 6: none - no Spanish club dies at the coordinates gate (0
+    dropped), so none can be offered as a coordinate proposal. **One
+    shared pin, genuine**: Celta Vigo and Celta Fortuna at Balaídos. No
+    two other Spanish pins are within 2 km.
+  - **Not-a-club, a third kind: a match.** Three items typed "association
+    football club match" ("Real Madrid v Almería, 22 March 2009" and two
+    more) carry `P118` La Liga. They had no ground and died at the
+    coordinates gate, and `propose_coordinates.py` would have offered
+    them one next month. `fetch_clubs.py` now leaves them out and names
+    them. Checked on the rebuild: those three and nothing else, in any
+    country.
+  - **Grounds.** **Real Betis** is drawn at **La Cartuja**, where it
+    plays while the Benito Villamarín is rebuilt (the La Liga table, the
+    club's English infobox, StadiumDB and La Cartuja's tenant list; the
+    row says to empty it when Betis goes home). **FC Andorra** is drawn
+    at the **Estadi de la FAF** in Encamp, opened 2025 (Wikidata still
+    names the old Estadi Nacional), and is **the Monaco shape** - `P17`
+    Andorra, flagged every run, kept because it plays in the Spanish
+    pyramid; its row says so. **Celta Fortuna** is at Balaídos, not the
+    Barreiro its `P115` names. **RCD Espanyol** is the Freiburg shape
+    (the RCDE Stadium and the Estadi de Sarrià, demolished 1997) and is
+    pinned. **Rayo Vallecano** played at Butarque while its Vallecas
+    ground was closed; the La Liga article says the ban was lifted on 14
+    September 2026. The map already had Vallecas, and StadiumDB agrees.
+  - **Capacities, the UTA Arad rule.** Corrected: **Barcelona** 105,000
+    → **62,652** (Wikidata held the post-rebuild figure), **Cádiz**
+    26,000 → **20,724**, **Leganés** 11,454 → **14,422**, **Burgos**
+    16,000 → **12,194** (the table and OpenStreetMap's 12,642 agree;
+    StadiumDB's 11,380 not taken - without OpenStreetMap this one would
+    have stayed contested); filled:
+    **Eldense 5,776**; with the ground changes, **Betis 70,000** and
+    **Andorra 5,108**. **Left alone, contested**: Espanyol (Wikidata
+    and the ground's infobox 40,500 against the table and StadiumDB
+    37,776 - two and two, the AEL shape; pinned only so it cannot flap),
+    Villarreal (24,891 / 23,008 / 21,332), Almería (22,000 on Wikidata, 15,000 in the table, 18,331 on
+    StadiumDB and the club's infoboxes - a ground being rebuilt, and
+    Wikidata's label still names the old Juegos Mediterráneos) and Real
+    Sociedad B (blank; the table's 4,000 against 2,500 twice).
+    **The map stands where StadiumDB is the outlier**: Real Madrid,
+    Getafe, Celta and Celta Fortuna; and Mallorca, where the map and
+    StadiumDB agree (25,736) against the table's 23,142.
+  - **StadiumDB covers Spain well, and that was measured, not carried
+    over from another country.** `/stadiums/esp`: 89 grounds, a ground
+    for 40 of the 42 clubs (not FC Andorra, not Real Sociedad B). The
+    matcher paired 31: 25 agree, 6 differ, 11 not matched by name
+    (Mallorca's "Real CD Mallorca", Gijón's "Real Gijón" and the like).
+    Unmatched is still unchecked, never agreement.
+  - **OpenStreetMap, first run with Spain in it**: 42 clubs, 6 agree, 3
+    differ, 31 have a Wikidata figure only, 1 neither, 2 no OpenStreetMap
+    stadium within 500 m (one is Real Sociedad B, 4.7 km from the nearest
+    - Zubieta is a training complex; nobody has looked at which pitch the
+    tags miss). The three that differ: Barcelona (OpenStreetMap 99,354,
+    the post-rebuild figure again) and Cádiz (25,033) are OpenStreetMap
+    as the outlier against the table and StadiumDB; Burgos is the one it
+    settled, above. Spain is Germany's shape here more than Italy's:
+    1,829 stadiums, 68 with a usable capacity.
+  - **Fixtures: 15 of 20 La Liga clubs link to football-data.org's PD**,
+    which was already fetched. **Five are abbreviations the matcher
+    rightly refuses**, and each needs one `link` row in
+    `fixture-links-manual.csv` - **Alexandru's call**, so none was
+    written: Real Madrid (`Q8682` → football-data 86 "Real Madrid CF"),
+    Atlético Madrid (`Q8701` → 78 "Club Atlético de Madrid"), Osasuna
+    (`Q10286` → 79 "CA Osasuna"), Deportivo de A Coruña (`Q8760` → 560
+    "RC Deportivo La Coruña") and Racing de Santander (`Q12236` → 5335
+    "Real Racing Club de Santander"). The Segunda División has no
+    fixture source; the club sheet says so.
+  - **Found on the way, not Spanish: the roster reader ran a footnote
+    mark into a capacity.** `check_rosters.py` read a capacity cell as
+    every digit in it, so "19,840 [7]" became 198,407. Spanish tables
+    footnote nearly every capacity. It now sets the mark aside and gives
+    no figure for a cell with two ("14,500 14,708", Rayo's two grounds).
+    No other country's `roster-review.csv` row changed.
 
 - **The 2026-09-30 pass: Asteras Tripolis B linked, Lotru Brezoi and
   Victoria Ineu off the map, and the capacity cross-check saved country
@@ -4668,7 +4831,10 @@ a page anyone can already view in their browser's network tab.
     `sui` and `aut`, each as a thin third opinion, never as agreement by
     silence - see their entries under Known open problems. Serbia
     followed on 2026-09-27, slug `ser`, and Greece on 2026-09-29, slug
-    `gre`, on the same terms.) As a second opinion on
+    `gre`, on the same terms. **Spain, slug `esp`, 2026-09-30, was
+    measured for itself rather than assumed, and is the other way
+    round**: 89 grounds, and a StadiumDB ground for 40 of the 42 clubs in
+    its two 2026-27 divisions - see the Spain entry.) As a second opinion on
     a ground StadiumDB happens to hold it is excellent — clean to
     parse, independent of both OpenStreetMap and Wikidata, and
     editorially curated rather than crowd-sourced. As the systematic

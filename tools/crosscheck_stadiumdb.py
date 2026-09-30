@@ -127,17 +127,21 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # StadiumDB match is unchecked, never agreement.
 # Spain's "esp" on 2026-09-30: /stadiums/esp answers 200, read on a
 # runner (spa, spain and es were not needed). NOT measured in 2026-09-19,
-# and NOT assumed from any other country's result. Measured: 88 grounds,
+# and NOT assumed from any other country's result. Measured: 89 grounds,
 # in three tables - the 20 La Liga grounds, 19 Segunda Division ones and
-# 49 others. Against the 2026-27 articles that is 20 of 20 La Liga clubs
+# 50 others. Against the 2026-27 articles that is 20 of 20 La Liga clubs
 # and 20 of 22 Segunda clubs with a StadiumDB ground named for them (Celta
 # Fortuna under Balaidos with the first team); the two with none are FC
 # Andorra and Real Sociedad B (its Zubieta pitch is listed only for the
-# women's team). So Spain is the first country since Germany where the
-# page covers both tracked divisions nearly whole - France and Italy were
-# good, the other five thin. A Spanish club with no StadiumDB MATCH is
+# women's team). So for Spain the page covers both tracked divisions
+# nearly whole - unlike Switzerland, Austria, Serbia and Greece, where it
+# was measured thin. A Spanish club with no StadiumDB MATCH is
 # still unchecked, never agreement: the short names ("Real Gijon",
-# "Real CD Mallorca", "Athletic") will not all match ours.
+# "Real CD Mallorca") will not all match ours. First run, 2026-09-30:
+# 42 clubs, 31 matched (25 agree, 6 differ), 11 not matched.
+#     - Mallorca, Gijon, Tenerife, Cadiz, Almeria, Castellon, Sabadell,
+#       Ceuta and Espanyol are on the page and did not match by name;
+#       Andorra and Real Sociedad B are not on it.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
