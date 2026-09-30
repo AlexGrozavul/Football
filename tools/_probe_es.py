@@ -1,4 +1,4 @@
-"""TEMPORARY probe #2 for the Spain pass. Removed in the same branch."""
+"""TEMPORARY probe #3 for the Spain pass. Removed in the same branch."""
 import csv, glob, json, os, re, sys, time, traceback, urllib.parse, urllib.request, urllib.error
 sys.path.insert(0, "tools")
 import check_rosters as cr
@@ -70,81 +70,94 @@ def section(name, fn):
 
 
 
+
 def wikitext(title, lang="en"):
     args = {"action": "parse", "page": title, "prop": "wikitext", "redirects": "1", "format": "json", "formatversion": "2"}
     d, e = cr.get_json_with_retry(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(args), title)
     return ((d or {}).get("parse") or {}).get("wikitext") or ""
 
 
-def infobox(title, lang="en", keys=r"dissolved|league|season|position|ground|capacity|current|fullname|founded|stadium|name|opened|home|tenants|liga|temporada|posici|estadio|capacidad|desaparici|fundaci|categor|seating|record"):
+def infobox(title, lang="en", keys=r"ground|stadium|capacity|coordinates|coord|tenants|opened|closed|demolish|name|fullname|estadio|capacidad"):
     wt = wikitext(title, lang)
     keep = [l.strip() for l in wt.splitlines() if re.match(r"\s*\|\s*(%s)" % keys, l, re.I)]
-    return " || ".join(keep)[:1100] if keep else ("(no infobox lines)" if wt else "(no article)")
+    return " || ".join(keep)[:1200] if keep else ("(no infobox lines)" if wt else "(no article)")
 
 
-def intro(title, lang="en", n=600):
-    args = {"action": "query", "prop": "extracts", "exintro": "1", "explaintext": "1", "titles": title,
-            "redirects": "1", "format": "json", "formatversion": "2"}
-    d, e = cr.get_json_with_retry(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(args), title)
-    pages = (d or {}).get("query", {}).get("pages", [])
-    return re.sub(r"\s+", " ", (pages[0].get("extract") if pages else "") or "")[:n]
-
-
-SUSPECTS = ["Q582342", "Q11997", "Q11971", "Q10308", "Q10383", "Q108708", "Q11984", "Q12158", "Q11963", "Q847030",
-            "Q12308", "Q843396", "Q12168", "Q1067737", "Q611653", "Q10467", "Q15966154", "Q515516",
-            "Q2311865", "Q12260", "Q1386854", "Q1067750", "Q10300", "Q123750485"]
+def qid_for(title, lang="en"):
+    args = {"action": "wbgetentities", "sites": f"{lang}wiki", "titles": title, "props": "info", "format": "json",
+            "normalize": "1"}
+    d, e = cr.get_json_with_retry("https://www.wikidata.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    for k in ((d or {}).get("entities") or {}):
+        if k.startswith("Q"): return k
+    return None
 
 
 def t1():
-    E = ents(SUSPECTS, props="claims|labels|sitelinks|descriptions")
-    for q in SUSPECTS:
-        x = E.get(q, {})
-        s = x.get("sitelinks") or {}
-        allp118 = vals(x, "P118")
-        lg = ents([v[0] for v in allp118 if isinstance(v[0], str) and v[0].startswith("Q")], props="labels")
-        p("SUSPECT", q, labs(x), "| desc", ((x.get("descriptions") or {}).get("en") or {}).get("value"),
-          "| P31", [v[0] for v in vals(x, "P31")], "| P576", vals(x, "P576"),
-          "| ALL-P118", [(v[0], lab(lg.get(v[0], {})), v[1:]) for v in allp118],
-          "| P115", vals(x, "P115"), "| P831", vals(x, "P831"))
-        for site in ("enwiki", "eswiki"):
-            t = (s.get(site) or {}).get("title")
-            if t:
-                lang = site[:2]
-                p("   ", site, t, "| INFOBOX", infobox(t, lang))
-                p("   ", site, t, "| INTRO", intro(t, lang, 500))
-        time.sleep(0.5)
+    for t in ["Real Betis", "FC Andorra", "RCD Espanyol", "UD Almería", "RC Celta Fortuna", "CE Sabadell FC"]:
+        p("CLUB-INFOBOX", t, "|", infobox(t))
+        time.sleep(0.4)
+    for t in ["Real Betis Balompié", "Futbol Club Andorra", "Real Club Deportivo Espanyol de Barcelona", "Unión Deportiva Almería"]:
+        p("CLUB-INFOBOX-ES", t, "|", infobox(t, "es"))
+        time.sleep(0.4)
+    titles = ["Estadio de La Cartuja", "Estadio Benito Villamarín", "Estadi de la FAF", "Estadi Nacional (Andorra)",
+              "RCDE Stadium", "Estadi de Sarrià", "UD Almería Stadium", "Balaídos Stadium", "Estadi de la Nova Creu Alta"]
+    qs = {}
+    for t in titles:
+        qs[t] = qid_for(t); time.sleep(0.3)
+    E = ents([q for q in qs.values() if q] + ["Q18125598", "Q473223", "Q1325234", "Q126844", "Q1130617", "Q1326578",
+                                               "Q3393440", "Q1313926"])
+    for q, x in E.items():
+        p("GROUND", q, labs(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083")[:5], "| P131",
+          [v[0] for v in vals(x, "P131")][:2], "| P576", vals(x, "P576"), "| P5817", vals(x, "P5817"),
+          "| sl", sitelinks(x))
+    p("GROUND-TITLES", qs)
+    for t in ["Estadio de La Cartuja", "Estadi de la FAF", "RCDE Stadium"]:
+        p("GROUND-INFOBOX", t, "|", infobox(t))
 
 
 def t2():
-    # every item carrying either league, best rank, with end dates - the P582 measurement for Spain
-    lg = {"Q324867": 1, "Q35615": 2}
-    Q = """SELECT ?club ?league ?end ?endPrec ?start ?rank WHERE {
-      VALUES ?league { wd:Q324867 wd:Q35615 }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; a wikibase:BestRank ; wikibase:rank ?rank .
-      OPTIONAL { ?st pqv:P582 ?ev . ?ev wikibase:timeValue ?end ; wikibase:timePrecision ?endPrec }
-      OPTIONAL { ?st pq:P580 ?start }
-      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-      FILTER NOT EXISTS { ?club wdt:P576 ?d }
-    }"""
+    # rule 6: items carrying ANY mapped league whose type is a women's team or club, in every country
+    tiers = {}
+    with open("data/league-tiers.csv", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            if r["tier"].strip().isdigit():
+                tiers[r["leagueQid"].strip()] = (r["tier"].strip(), r["country"].strip())
+    Q = """SELECT DISTINCT ?club ?clubLabel ?league ?t ?tLabel WHERE {
+      VALUES ?league { %s }
+      ?club wdt:P118 ?league ; wdt:P31 ?t .
+      ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en")
+      FILTER(CONTAINS(LCASE(?tl), "women") || CONTAINS(LCASE(?tl), "female") || CONTAINS(LCASE(?tl), "girls"))
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,es,de,fr,it,ro" }
+    }""" % " ".join("wd:" + l for l in tiers)
     res, err = fc.sparql_with_retry(Q)
     rows = (res or {}).get("results", {}).get("bindings", [])
-    p("P582-ES", err, len(rows))
+    p("WOMEN", err, len(rows))
+    onmap = {}
+    for f in glob.glob("data/clubs/[A-Z][A-Z].json"):
+        for c in json.load(open(f, encoding="utf-8")).get("clubs", []):
+            onmap[c["id"]] = os.path.basename(f)[:2]
     for r in rows:
-        p("P582-ROW", q_(fc.cell(r, "club")), lg.get(q_(fc.cell(r, "league"))), (fc.cell(r, "start") or "")[:10],
-          (fc.cell(r, "end") or "")[:10], fc.cell(r, "endPrec"), q_(fc.cell(r, "rank")).split("#")[-1])
+        c = q_(fc.cell(r, "club")); lg = q_(fc.cell(r, "league"))
+        p("WOMEN-ITEM", c, fc.cell(r, "clubLabel"), "| league", lg, tiers.get(lg), "| type", q_(fc.cell(r, "t")),
+          fc.cell(r, "tLabel"), "| on map:", onmap.get(c, "no"))
+    # and the match-item type, to see if it is on any map
+    Q2 = """SELECT DISTINCT ?club ?clubLabel ?t ?tLabel WHERE {
+      VALUES ?league { %s }
+      ?club wdt:P118 ?league ; wdt:P31 ?t .
+      ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en")
+      FILTER(CONTAINS(LCASE(?tl), "match") || CONTAINS(LCASE(?tl), "game") || CONTAINS(LCASE(?tl), "final"))
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+    }""" % " ".join("wd:" + l for l in tiers)
+    res, err = fc.sparql_with_retry(Q2)
+    rows = (res or {}).get("results", {}).get("bindings", [])
+    p("MATCHTYPE", err, len(rows))
+    for r in rows:
+        c = q_(fc.cell(r, "club"))
+        p("MATCH-ITEM", c, fc.cell(r, "clubLabel"), "| type", q_(fc.cell(r, "t")), fc.cell(r, "tLabel"),
+          "| on map:", onmap.get(c, "no"))
 
 
-def t3():
-    # the grounds named for clubs in both 2026-27 tables, for positions and capacities
-    for t in ["Estadio de Vallecas", "Butarque Stadium", "Estadio de La Cartuja", "Estadio Benito Villamarín",
-              "Zubieta Facilities", "Estadi de la FAF", "Nou Estadi Encamp", "Balaídos Stadium", "Estadio Abanca-Balaídos",
-              "Estadi de la Nova Creu Alta", "Estadio Alfonso Murube", "Nuevo Pepico Amat", "Bernabéu (stadium)",
-              "Camp Nou", "Estadi Olímpic Lluís Companys", "Anoeta Stadium", "Metropolitano Stadium"]:
-        p("INFOBOX-GROUND", t, "|", infobox(t, keys=r"capacity|coordinates|coord|tenants|opened|renovated|name|fullname|seating|record"))
-        time.sleep(0.4)
-
-
-for name, fn in [("t1 suspects", t1), ("t2 P582", t2), ("t3 grounds", t3)]:
+for name, fn in [("t1 grounds", t1), ("t2 women and matches", t2)]:
     section(name, fn)
     time.sleep(2)
-p("=== END OF PROBE ES2 ===")
+p("=== END OF PROBE ES3 ===")
