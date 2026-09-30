@@ -2739,6 +2739,25 @@
     }
    ]
   },
+  "Q19568": {
+   "name": "AFC Bournemouth",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1044",
+     "teamName": "AFC Bournemouth",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PL",
+       "file": "data/fixtures/PL.json",
+       "label": "Premier League"
+      }
+     ]
+    }
+   ]
+  },
   "Q1543": {
    "name": "AC Milan",
    "links": [
