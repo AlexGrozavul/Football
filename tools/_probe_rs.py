@@ -24,24 +24,13 @@ def wikitext(site, title):
     return page["title"], rev["timestamp"], rev["slots"]["main"]["content"]
 
 print("=" * 70)
-for site, art in (("en", "2025–26 Liga III"), ("ro", "Liga a III-a 2025-2026"), ("ro", "Liga a III-a 2026-2027"), ("en", "2025–26 Liga II"), ("ro", "Liga a IV-a Vâlcea"), ("ro", "Liga a VI-a")):
+for site, art in (("ro", "Liga a III-a 2026-2027"), ("ro", "Liga a IV-a Vâlcea")):
     try:
         title, ts, text = wikitext(site, art)
     except Exception as exc:
         print(f"{art}: FAILED {exc}"); continue
     hits = [l.strip()[:200] for l in text.splitlines() if re.search(r"Lotru|Brezoi|Ineu", l)]
     print(f"{art} (rev {ts}, {len(text)} chars): {len(hits)} line(s) naming Lotru/Brezoi/Ineu")
-    for h in hits[:10]:
-        print("    " + h)
-print("=" * 70)
-import check_rosters as cr
-html_text, title, err = cr.fetch_article("2026–27 Super League Greece 2")
-print("SL2", title, err)
-tables, shape = cr.roster_tables(html_text)
-print('shape', shape, len(tables))
-for table, headers in tables:
-    for row in cr.table_rows(table, headers):
-        if "asteras" in cr.fold(row.get("team") or row.get("shown") or ""):
-            print("    ROW", {k: row.get(k) for k in ("team", "title", "why", "shown")})
-            print("    folded clean team:", repr(cr.fold(cr.clean_team(row["team"]))))
+    for m in re.finditer(r"Lotru|Brezoi|Ineu", text):
+        print("    ..." + text[max(0, m.start()-400):m.end()+300].replace("\n", " / ") + "...")
 print("=" * 70)
