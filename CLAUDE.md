@@ -1417,6 +1417,20 @@ a page anyone can already view in their browser's network tab.
       nothing for at least nine of the thirty clubs.
     - **Fixtures: none.** football-data.org's free tier carries no Greek
       competition; the club sheet says so.
+    - **Merged on Alexandru's instruction, 2026-09-30, although the
+      OpenStreetMap capacity check never came back complete.** Every
+      other check on the branch was green. `Cross-check capacities` ran
+      six times over two days and each run lost a different country to
+      Overpass HTTP 504s (CH; AT, FR and RS; AT; DE; FR; GR and RS), so
+      `capacity-review.csv` was left unchanged each time - correctly, and
+      not a pass by rule 7, so the merge was his call and he made it.
+      Greece was compared in two of the runs, identically both times: 27
+      clubs, 3 agree, 0 differ, 20 Wikidata only, 1 neither, 4 no OSM
+      ground nearby. **The structural point is the one to act on**: with
+      eight countries in one all-or-nothing run, a complete run gets less
+      likely with every country added. `coordinate-review.csv` has been
+      decided country by country since 2026-09-26; `crosscheck_capacity.py`
+      doing the same is the next step, and it is not built.
 
 - **The 2026-09-27 pass: the roster check's double count fixed
   properly, Serbia's top two tiers on the map, and the Austrian and
