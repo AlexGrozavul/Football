@@ -618,8 +618,19 @@ def load_tiers():
 # Checked against every club in the German, Romanian, French and
 # Italian files before it went in: it matches those eight and nothing
 # else.
+#
+# Spain brought a third kind on 2026-09-30: a MATCH. "Real Madrid v
+# Almeria, 22 March 2009" and two more are typed "association football
+# club match" (Q109623729) and carry P118 La Liga. They have no ground and
+# no position, so they died at the coordinates gate - and would then have
+# been offered a ground by propose_coordinates.py next month, the way the
+# Rennes season was drawn on Rennes' pin. The type label is asked in
+# English first for Spain; "club match" and "football match" are the
+# English shapes, "partido de" the Spanish one. Checked on the rebuild of
+# 2026-09-30: those three items and nothing else in any country.
 NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ",
-                    "season", "saison", "sezon", "stagione")
+                    "season", "saison", "sezon", "stagione",
+                    "club match", "football match", "partido de")
 
 NOT_A_CLUB_NAME = re.compile(
     r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b"
@@ -636,8 +647,8 @@ def not_a_club(name, kinds):
         low = kind.lower()
         for word in NOT_A_CLUB_TYPES:
             if word in low:
-                return (f"Wikidata says it is a {kind!r}, which is a list or a "
-                        f"season, not a club")
+                return (f"Wikidata says it is a {kind!r}, which is a list, a "
+                        f"season or a match, not a club")
     if name and NOT_A_CLUB_NAME.search(name):
         return ("its name is the title of a squad list or a season, not the name of a club "
                 "(Wikidata gives it no type that says so)")
