@@ -1,5 +1,6 @@
 leagueQid,tier,label,country,clubsSeen
-Q1141778,,Serie D,IT,259
+Q1141778,,Serie D,IT,260
+Q1436035,,Gamma Ethniki,GR,113
 Q973312,,championnat de France de football de cinquième division,FR,111
 Q1061291,,championnat de France de football de quatrième division,FR,77
 Q2949998,,Serie A,IT,69
@@ -8,7 +9,7 @@ Q607965,,Serie C,IT,62
 Q672305,,1. Liga,CH,43
 Q101885125,,European League of Football,AT;CH;DE;FR,40
 Q645148,,Eccellenza,IT,33
-Q657405,,Promozione,IT,32
+Q657405,,Promozione,IT,31
 Q864298,,championnat de France de football de troisième division,FR,31
 Q1330821,,European Women's Hockey League,AT;IT,30
 Q316686,,Fußball-Oberliga Nordost,DE,28
@@ -30,6 +31,7 @@ Q3957606,,Serie B,IT,21
 Q316113,,Oberliga Westfalen,DE,20
 Q821097,,Berlin-Liga,DE,20
 Q1610234,,Serie A (calcio a 5),IT,19
+Q29274,,Greek Men's Basketball League,GR,19
 Q317927,,Fußball-Oberliga Hamburg,DE,19
 Q561845,,Rugby-Bundesliga,DE,19
 Q5798,,championnat de France de rugby à XV,FR,19
@@ -83,6 +85,7 @@ Q322171,,ProA,DE,10
 Q324154,,Fußball-Oberliga Schleswig-Holstein,DE,10
 Q324698,,Mittelrheinliga,DE,10
 Q475887,,Bremen-Liga,DE,10
+Q12874858,,Greek C Men's Basketball League,GR,9
 Q1467826,,Rugby-Union-Europameisterschaft,DE,9
 Q20028073,,Bayernliga Nord,DE,9
 Q25762,,Promotion League,CH,9
@@ -103,6 +106,8 @@ Q5284652,,Liga Națională,RO,8
 Q687207,,ÖFB Frauen Bundesliga,AT,8
 Q993765,,Fußball-Verbandsliga Baden,DE,8
 Q19601853,,EUHL,AT,7
+Q280002,,Greek A2 Men's Basketball League,GR,7
+Q2951606,,Greek A Women's Football League,GR,7
 Q3712183,,Liga I,RO,7
 Q3718114,,Eccellenza Lombardia,IT,7
 Q880029,,Deutsche Frauen Eishockey Liga,DE,7
@@ -120,9 +125,12 @@ Q3718064,,Eccellenza Lazio,IT,6
 Q5511147,,Landesliga Nordost,DE,6
 Q686699,,DHB-Pokal,DE,6
 Q933242,,ligue de football de la Martinique,FR,6
+Q1031665,,Greek A1 Men's Water Polo League,GR,5
 Q130532384,,Austrian Women's Hockey League,AT,5
 Q1477019,,Fußball-Regionalliga Nord,DE,5
 Q1477021,,Fußball-Regionalliga Nordost,DE,5
+Q16331968,,Greek C Women's Football League,GR,5
+Q16737393,,Greek B Women's Football League,GR,5
 Q17652315,,Serie A2,IT,5
 Q2436235,,Tiroler Landesliga,AT,5
 Q257400,,ABA League,RS,5
@@ -137,6 +145,7 @@ Q7939889,,Vojvodina League East,RS,5
 Q12732182,,Liga A Prahova,RO,4
 Q12732211,,Liga a IV-a Buzău,RO,4
 Q1477024,,Fußball-Regionalliga Süd,DE,4
+Q15145680,,Central Macedonia Basketball Clubs Association,GR,4
 Q16642,,Sei Nazioni,FR;IT,4
 Q18548570,,Liga a IV-a Timiș,RO,4
 Q2120557,,Pétanque-Bundesliga,DE,4
@@ -155,6 +164,7 @@ Q12732209,,Liga a IV-a București,RO,3
 Q12732224,,Liga a IV-a Ialomița,RO,3
 Q12732227,,Liga a IV-a Mureș,RO,3
 Q12732231,,Liga a IV-a Vâlcea,RO,3
+Q12874261,,Greek B Men's Basketball League,GR,3
 Q1477025,,Fußball-Regionalliga Südwest,DE,3
 Q2215992,,Salzburger Liga,AT,3
 Q2252279,,Terza Categoria,IT,3
@@ -193,10 +203,13 @@ Q12732225,,Liga a IV-a Ilfov,RO,2
 Q12732229,,Liga a IV-a Olt,RO,2
 Q12732230,,Liga a IV-a Satu Mare,RO,2
 Q127804527,,Floorball-Bundesliga Österreich 2024/25,AT,2
+Q12872493,,Southern Attica Association of Basketball Clubs,GR,2
+Q1422528,,Hellenic Futsal Super League,GR,2
 Q1476961,,Fußball-Regionalliga,DE,2
 Q1574545,,Handball-Oberliga Baden-Württemberg der Frauen,DE,2
 Q1574547,,Handball-Oberliga Baden-Württemberg der Männer,DE,2
 Q1756562,,Divizia A1 de volei feminin,RO,2
+Q1779116,,Greek A1 Women's Water Polo League,GR,2
 Q18538278,,Liga a IV-a Brașov,RO,2
 Q18541340,,Liga a IV-a Bacău,RO,2
 Q18541679,,Liga a IV-a Maramureș,RO,2
@@ -250,12 +263,20 @@ Q117536457,,2. Bundesliga Pro,DE,1
 Q1231259,,championnat de France de hockey sur glace D4,FR,1
 Q123511675,,Zweite Judo Bundesliga,AT,1
 Q123984566,,Serie C (pallacanestro maschile),IT,1
+Q125740050,,Greek Pre League Men's Volleyball,GR,1
 Q126924470,,Handball-Regionalliga Baden-Württemberg,DE,1
 Q12732217,,Liga a IV-a Covasna,RO,1
 Q12732219,,Liga a IV-a Giurgiu,RO,1
 Q12732228,,Liga a IV-a Mehedinți,RO,1
 Q12756709,,Kikinda - Novi Becej Municipal League,RS,1
 Q1280206,,Landesliga Steiermark,AT,1
+Q12872457,,Eastern Macedonia and Thrace Association of Basketball Clubs,GR,1
+Q12872463,,Aetolia-Acarnania Football Clubs Association,GR,1
+Q12872484,,Samos Football Clubs Association,GR,1
+Q12872491,,Ένωση Σωματείων Καλαθοσφαίρισης Βορειοδυτικής Ελλάδας,GR,1
+Q12872805,,Women’s Basketball League 2,GR,1
+Q12872808,,Greek A2 Men's Water Polo League,GR,1
+Q12872818,,Athens F.C.A. A league,GR,1
 Q129029119,,Handball-Regionalliga Bayern,DE,1
 Q1313769,,Eishockey-Bezirksliga Bayern,DE,1
 Q1314880,,Eishockey-Landesliga Bayern,DE,1
@@ -263,14 +284,17 @@ Q1334030,,Nachwuchs-Basketball-Bundesliga,DE,1
 Q135826604,,National League (Eishockey) 2025/26,CH,1
 Q138495521,,,CH,1
 Q1402515,,Feldhandball-Bundesliga,DE,1
-Q1435997,,Football-Bundesliga (Damen),DE,1
+Q1435997,,German Football League Women,DE,1
 Q1443938,,Italian Hockey League - Division I,IT,1
 Q144644,,Pro12 2011-12,IT,1
 Q1476469,,Fußball-Landesliga Bayern,DE,1
 Q1477038,,Fußball-Rheinlandliga,DE,1
 Q15141004,,Nationalliga A,CH,1
+Q1546408,,Greek A1 League Men's Volleyball,GR,1
 Q15819154,,Handball-Oberliga Hessen,DE,1
 Q1617018,,championnat de France de rugby à XIII,FR,1
+Q16327757,,Women's National League,GR,1
+Q16327957,,Attica Association of Basketball Clubs,GR,1
 Q16537560,,championnat de France féminin de rugby à XIII,FR,1
 Q16571719,,Swiss Women’s Hockey League C,CH,1
 Q169519,,Deutsche Eishockey Liga,DE,1
@@ -288,16 +312,20 @@ Q18549770,,Liga a IV-a Teleorman,RO,1
 Q20435533,,Zone League East,RS,1
 Q204918,,Österreichische Basketball Bundesliga,AT,1
 Q20745851,,II. Liga Nord,AT,1
+Q20830741,,Thessaloniki Basketball Clubs Association,GR,1
 Q209738,,2. Deutsche Volleyball-Bundesliga,DE,1
 Q209740,,2. Deutsche Volleyball-Bundesliga,DE,1
 Q2228092,,First League of Serbia,RS,1
 Q2272187,,Serbian Hockey League,RS,1
 Q23021344,,championnat de France féminin de rugby à XV de 1re division fédérale,FR,1
+Q2409829,,Greek A1 League Women's Volleyball,GR,1
 Q2427920,,Lega Calcio Serie A,IT,1
 Q247481,,Fußball-Landesliga Niedersachsen,DE,1
 Q252836,,Coppa Italia Serie C,IT,1
 Q25408693,,Serie A1,IT,1
 Q2572190,,Campionato italiano di pallavolo maschile,IT,1
+Q28054051,,Διοργανώσεις ΕΠΣ Πειραιά 2016–17,GR,1
+Q28058882,,Διοργανώσεις ΕΠΣ Ξάνθης 2016–17,GR,1
 Q288041,,Fußball-Landesliga,AT,1
 Q2941183,,championnat de France de football américain D1,FR,1
 Q2949872,,Serie A,IT,1
@@ -330,6 +358,7 @@ Q3956646,,Superlega (pallavolo),IT,1
 Q3956717,,Serie A2,IT,1
 Q3957480,,Serie B,IT,1
 Q3984855,,Terza Divisione 1924-1925,IT,1
+Q41793722,,Greek Pre League Women's Volleyball,GR,1
 Q43146900,,Wiener Frauen Landesliga,AT,1
 Q4510971,,Women's А Basketball League of Serbia,RS,1
 Q480019,,Ringer-Bundesliga,DE,1
@@ -346,13 +375,16 @@ Q6436644,,Kreisliga Schwaben-Mitte,DE,1
 Q6484470,,Landesliga Weser-Ems,DE,1
 Q653544,,Trophée des champions,FR,1
 Q6545746,,Liga I (futsal),RO,1
+Q68102152,,Greek A2 Women's Water Polo League,GR,1
 Q68935792,,Futsal-Bundesliga,DE,1
 Q7227418,,Pomoravlje-Timok Zone League,RS,1
 Q739643,,Fédération internationale de football américain,FR,1
+Q7783486,,Thessaly Football Clubs Association,GR,1
 Q7920950,,Verbandsliga Hessen-Süd,DE,1
 Q7939890,,Vojvodina League West,RS,1
 Q832896,,Fußball-NRW-Liga,DE,1
 Q8438,,Olympische Sommerspiele 1972,DE,1
+Q8558,,2004 Summer Olympics,GR,1
 Q9075661,,New Caledonia Second Level,FR,1
 Q928872,,championnat de France masculin de volley-ball,FR,1
 Q96240387,,championnat de France de rugby à XV de Nationale,FR,1

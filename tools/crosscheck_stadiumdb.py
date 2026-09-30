@@ -115,6 +115,16 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # country whose top two divisions field 30 teams (14 and 16 in 2026-27),
 # the same bare coverage as Austria and Switzerland - so the same rule:
 # a Serbian club with no StadiumDB match is unchecked, never agreement.
+# Greece's "gre" on 2026-09-29: /stadiums/gre answers 200 with 29
+# grounds, read on a runner. Measured in 2026-09-19 at 29 grounds for a
+# country whose top two divisions field 30 teams (14 and 16 in 2026-27) -
+# bare coverage, and thinner than the count says: only 17 of the 29 are
+# grounds of clubs in either 2026-27 division (the rest are Patras,
+# Kavala, Veria, Xanthi, Corfu and the like), and nothing at all is listed
+# for Kalamata, Marko, Nestos, Hellas Syros, Niki Volos, Karditsa,
+# Kallithea, Pyrgos or Zakynthos.
+# Same rule as Austria, Switzerland and Serbia: a Greek club with no
+# StadiumDB match is unchecked, never agreement.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
@@ -123,6 +133,7 @@ COUNTRY_PAGES = {
     "CH": ("sui", "Switzerland"),
     "AT": ("aut", "Austria"),
     "RS": ("ser", "Serbia"),
+    "GR": ("gre", "Greece"),
 }
 
 # Below this the two sources are treated as agreeing. Same threshold

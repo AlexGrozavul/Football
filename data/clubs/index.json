@@ -83,6 +83,17 @@
    "withVenueName": 28,
    "withCapacity": 23,
    "handCorrected": 15
+  },
+  "GR": {
+   "name": "Greece",
+   "onMap": 27,
+   "byTier": {
+    "1": 14,
+    "2": 13
+   },
+   "withVenueName": 27,
+   "withCapacity": 26,
+   "handCorrected": 5
   }
  }
 }

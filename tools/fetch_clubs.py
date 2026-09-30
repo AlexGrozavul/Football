@@ -93,6 +93,7 @@ COUNTRIES = [
     ("CH", "Q39", "Switzerland"),
     ("AT", "Q40", "Austria"),
     ("RS", "Q403", "Serbia"),
+    ("GR", "Q41", "Greece"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -1118,6 +1119,20 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
 #       Zlatibor voda"). The Serbian label proper is Cyrillic and is not
 #       asked for - it would put a script on the map that nothing else
 #       on it uses, which is a choice for Alexandru, not for a default.
+#   GR  north 41.7489, south 34.6970 (Gavdos), east 29.7291 (Strongyli,
+#       off Kastellorizo) are Wikidata's own P1332, P1333 and P1334 on
+#       Q41, read on a runner 2026-09-29. Its P1335, 20.0084, is a point on
+#       the Epirus mainland, and Corfu and the Diapontian islands lie west
+#       of it, so the west edge is set at 19.30 instead - a figure from
+#       memory, not read from a source, with a wider margin for that
+#       reason. Strongyli puts the east edge ten degrees past the Greek
+#       mainland, so the box holds the whole Aegean coast of Turkey,
+#       southern Albania, southern North Macedonia, southern Bulgaria and
+#       Cyprus's northern tip: P17 is the signal that catches a club
+#       across a border, as everywhere else. LABELS ARE ASKED IN ENGLISH
+#       FIRST, then Greek: every club item in both 2026-27 divisions had an
+#       English label when read, and a Greek-script name would appear only
+#       where Wikidata has no English one.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
@@ -1126,6 +1141,7 @@ COUNTRY_BOX = {
     "CH": {"lat": (45.75, 47.85), "lon": (5.90, 10.55)},
     "AT": {"lat": (46.30, 49.10), "lon": (9.45, 17.25)},
     "RS": {"lat": (42.10, 46.27), "lon": (18.73, 23.09)},
+    "GR": {"lat": (34.60, 41.85), "lon": (19.30, 29.82)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -1145,6 +1161,7 @@ COUNTRY_NAMES = {
     "Q228": "Andorra", "Q238": "San Marino",
     "Q1246": "Kosovo", "Q225": "Bosnia and Herzegovina", "Q224": "Croatia",
     "Q236": "Montenegro", "Q221": "North Macedonia",
+    "Q222": "Albania", "Q229": "Cyprus",
 }
 
 
@@ -1525,7 +1542,7 @@ def main():
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de",
-                "RS": "en,sr-el"}.get(code, "en")
+                "RS": "en,sr-el", "GR": "en,el"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,

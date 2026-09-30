@@ -67,6 +67,7 @@ COUNTRY_TZ = {
     "AT": "Europe/Vienna",
     "CH": "Europe/Zurich",
     "RS": "Europe/Belgrade",
+    "GR": "Europe/Athens",
     "NL": "Europe/Amsterdam",
     "BE": "Europe/Brussels",
     "ES": "Europe/Madrid",

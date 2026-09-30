@@ -1229,6 +1229,209 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **The 2026-09-29 pass: Greece's top two tiers on the map, the
+  league-tag end date measured in every country, the shape-5 join
+  checked, and the Ub ground kept unplaced.** Four instructions from
+  Alexandru in one session, run through five throwaway probes on a
+  GitHub runner (removed in the same branch), because the sandbox still
+  answers 403 to CONNECT for Wikidata, Wikipedia, StadiumDB and
+  OpenStreetMap.
+  - **The Aue / Babelsberg / Augsburg join is structural, and the
+    premise that Augsburg "broke again" was not quite right.** The join
+    in `check_rosters.py` reads `P831` (parent club) on every map club a
+    roster does not name, in every country, and joins it to the roster's
+    club by Q-id; nothing in it names a club. Read back through the
+    history of `roster-review.csv`: **Augsburg never broke.** It read as
+    two findings (`missing-from-wikidata` under `Q15755`,
+    `extra-not-in-roster` under `Q97905916`) on every single run from
+    2026-09-20 until the join landed on 2026-09-27. What was "resolved"
+    on 2026-09-20 was the **map** - Augsburg drawn once, under the item
+    that works, and protected from cleanup - and that never changed. The
+    roster check's double count was **documented as permanent** then,
+    with `_sameNameOnMap` as the only mitigation, and that annotation
+    could not do the job: it compares names exactly and the `extra`
+    branch never looked at all. So the lesson is about wording: an
+    entry that says a club is settled should say *which* finding is
+    settled. **What the join still does not cover, so a fourth case is
+    loud rather than silent:** a team item with no `P831` (Babelsberg's
+    also has `P361`; a pair linked only that way would not join), and a
+    team item on the map at a different tier from the one its club
+    item's roster names - the join only looks within one country and
+    tier. Either reads as a missing club and an extra one, two findings
+    on every run, which is how the first three were found. Greece's team
+    items (AEK, Aris, Olympiacos, PAOK and others are all `men's
+    association football team` items with `P831` to a multi-sport
+    parent) are the items the rosters link, so nothing needed joining.
+  - **The league-tag end date (`P582`) was measured in all seven
+    countries, and it is NOT the main driver of Serbia's cleanup - the
+    earlier entry said so and was wrong.** Asked of Wikidata directly:
+    every club whose **truthy** mapped `P118` statements (what the club
+    query reads) decide its tier through a tag whose end date has passed,
+    dissolved clubs left out because the `P576` gate already drops them.
+
+    | | clubs with a truthy mapped tag | tier decided by an ended tag |
+    |---|---|---|
+    | DE | 167 | 3 |
+    | RO | 171 | 4 |
+    | FR | 43 | 2 |
+    | IT | 64 | 3 |
+    | CH | 26 | 3 |
+    | AT | 35 | 6 |
+    | RS | 46 | 6 |
+    | GR | 15 (measured before Super League 2 was mapped) | 0 of those; 2 more found at tier 2 later, Niki Volos and F.S. Kozani |
+
+    **Serbia**: 5 of its 14 skips (BSK Borča, Budućnost Banatski Dvor,
+    Proleter Novi Sad, Proleter Zrenjanin, Sloboda Užice) and 1 of its 6
+    tier corrections (Smederevo) rest on an ended tag. The other nine
+    skipped clubs carry **no end date at all** - honouring `P582` would
+    not have touched them. The Serbian cleanup was heavy because
+    Wikidata's Serbian tags are stale, not because they are dated.
+    **In the other six countries the shape is small and almost all of it
+    is already handled.** Of the 21: 11 already carry a `skip`, a
+    whole-club rejection or a hand tier (VSE St. Pölten, the five old
+    Vienna clubs, Anglo-American Club Zürich, FC Wil, FC Torinese, La
+    Dominante, Hermannstadt, VfR Garching, Babelsberg).
+    - **Two were trivial and the same shape as one already resolved,
+      and are done**: SC Fives (`Q1514915`, Ligue 1 1932-39, merged into
+      Lille in 1944) and the wartime ÉF Reims-Champagne (`Q3590859`,
+      Ligue 1 1943-44, dissolved 1944) - whole-club `rejected` rows in
+      `coordinate-reviews.csv`, the Anglo-American Club Zürich way.
+    - **Two are left, on purpose**: Società Ginnastica di Torino
+      (`Q116949682`, Serie A 1898-1902; its Italian article says only
+      that it "was" a club, no end stated) and ACS Voința Limpeziș
+      (`Q113573418`, Liga III tag ended 2023; no article at all). Both
+      die at the coordinates gate and neither is a confident proposal
+      today. A rejection would rest on the tag alone.
+    - **Two are on the map at tier 3 and wrong, and are Alexandru's
+      call**: CS Lotru Brezoi (`Q141319965`) and Victoria Ineu
+      (`Q5014471`), both Liga III tags that ended (2006 and 2023), both
+      `extra-not-in-roster`, and their infoboxes say Liga IV Vâlcea and
+      Liga VI Arad. Not skipped, because the Liga III article is not a
+      complete division list, so the Hermannstadt standard cannot be
+      met - the same reason Liga III has been left alone throughout.
+    - **Two would be made WRONG by honouring `P582`**: FC Aarau
+      (Challenge League tag dated 2010-2013) and BSG Chemie Leipzig
+      (Regionalliga tags ending 2018) are both `ok` in their 2026-27
+      division - the end date is the stale part, not the tag. VfR
+      Garching (tier 7 by hand, no roster) would drop off the map
+      entirely, and FC Wil and Smederevo would survive only through the
+      hand-named fallback.
+    **So the fix is not worth doing now, and the scale is the answer.**
+    Switching the club query to honour `P582` would remove about as many
+    right clubs as wrong ones outside Serbia, needs the roster check to
+    catch the ones it wrongly drops, and interacts with LR Vicenza's
+    shape. Per country the remaining bill is two Romanian Liga III clubs
+    (Alexandru's) and two off-map items that harm nothing today. If it is
+    ever built, it is a report first - name each club whose tier rests on
+    an ended tag - not a filter.
+  - **The Ub ground stays unplaced, and the monthly run can no longer
+    offer it.** FK Zemun is off the map by its hand row's `<clear>` and
+    FK Jedinstvo Ub reads `unplaced-no-coordinates`, both confirmed in
+    this pass's build and roster check. But nothing stopped
+    `propose_coordinates.py` from matching "Ub" in a club's name to one
+    of the three unnamed pitches and calling it confident - the
+    Gilortul pitch was exactly that shape. Both clubs now have an `open`
+    row in `coordinate-reviews.csv`, so any proposal for them reads
+    "open - do not paste". The same was done for **Nestos Chrysoupoli**
+    (three unnamed pitches, no named ground) and **Hellas Syros** (one
+    unnamed stadium, six unnamed pitches).
+  - **Greece's top two tiers are on the map: Super League 14 of 14,
+    exact; Super League 2 13 drawn for 16, nothing at the wrong tier,
+    and the three not drawn are off for a named reason.** Same pipeline
+    and standard as the six countries before it; tiers 1 and 2 only.
+    - **The league Q-ids were read, not remembered**: `Q235114` Super
+      League (enwiki *Super League Greece*) and `Q63980269` Super League
+      2 (enwiki *Super League Greece 2*), neither carrying `P3983`. Both
+      2026-27 articles are one stadiums-and-locations table, 14 of 14 and
+      16 of 16 resolved. StadiumDB's slug is `gre` (29 grounds, only 17
+      of them in either division). The box's north, south and east edges
+      are Wikidata's `P1332`-`P1334` on `Q41`; its west edge is set by
+      hand because Wikidata's westernmost point is on the mainland and
+      Corfu lies west of it (written in `COUNTRY_BOX`'s comment).
+    - **Greek tags are the best-kept of the seven countries**: most
+      clubs carry a dated history with the current league preferred, so
+      the truthy tag is usually right. Every item carrying either tag at
+      any rank was listed and read. Two exceptions, both the end-date
+      shape: **Niki Volos** (`Q3180055`), whose only mapped tag is the
+      Super League 1961-1966 and which has no Super League 2 tag, is at
+      **tier 2 by a hand row** (the FC Wil shape: both articles complete,
+      the club's infobox says Super League 2); and **F.S. Kozani**
+      (`Q3292636`), drawn at tier 2 on a Super League 2 tag that ended in
+      2024, is **`skip`ped** - both articles complete, neither lists it,
+      and its infobox says it was relegated from the Gamma Ethniki to the
+      fourth tier.
+    - **One more rejected before it was proposed**: Kampaniakos
+      (`Q16842502`), Super League 2 tag 2023-2026, no position, infobox:
+      relegated in 2025-26, now in the Macedonia FCA First Division.
+    - **Not-a-club**: the season item *2016-17 Panionios G.S.S. season*
+      carries a Super League tag and would have sat on Panionios's pin;
+      the existing net caught it by type.
+    - **Duplicates: none.** Every tagged item is one club; the three
+      reserve sides (Olympiacos B, PAOK B, Asteras Tripolis B) are their
+      own items. Two genuine shared pins: PAOK B with Apollon Kalamaria
+      at the Kalamaria Stadium, and Asteras Tripolis B with Asteras.
+    - **The roster reader needed a new reserve marker, `b`.** The 2026-27
+      Super League 2 table links "Asteras Tripolis B" to the **parent**
+      club's article - the Rapid II shape - and without the marker the
+      row read as Asteras Tripolis at tier 2. `check_rosters.py` now
+      leaves it out and names it. Checked before it went in: no club on
+      the map or in any roster had "b" as a word of its name, and no
+      other country's verdict moved.
+    - **Asteras Tripolis B (`Q135213959`) is on the map but reads
+      `extra-not-in-roster`, and one line would fix it - Alexandru's
+      call.** Its English label was just "Asteras Tripolis"; its Greek
+      label is "Αστέρας Τρίπολης Β΄", its description says reserve
+      section, its `P831` is the first team. A hand row gives it that
+      name, so the shared pin does not read as one club twice. The line
+      that would join the table row to it - `2026–27 Super League Greece
+      2,Asteras Tripolis B,Q135213959,...` in
+      `data/roster-links-manual.csv` - is an identity claim and was not
+      written.
+    - **Rank blind spot, all three shapes.** No deprecated or preferred
+      "no league" Greek item. Query C finds six (Apollon Smyrnis, PAS
+      Giannina, PAS Lamia, Makedonikos, Panargiakos, Tilikratis
+      Lefkadas), every one a relegated club with its new lower league
+      correctly preferred; **bill 0**.
+    - **Grounds**: **Panathinaikos** carries two grounds at the same
+      rank (the Freiburg shape; the query returned only one row this
+      time, so the run report did not name it) and is **pinned to the
+      Olympic Stadium, 69,618** - the table, the club's infobox and
+      StadiumDB agree; the Leoforos is Kifisia's from 2026 and Kifisia is
+      drawn there. **Not placed**: Nestos Chrysoupoli and Hellas Syros
+      (above), and **A.P.S. Zakynthos**, `held` on the one OpenStreetMap
+      pitch named "Zakynthos Municipal Stadium" - the table and Wikidata
+      name that ground, but the club's own infobox names a different one.
+    - **Capacities, the UTA Arad rule**: **AEK** 34,000/31,100 (Wikidata
+      carries both) → **32,500** (table and StadiumDB); **Asteras
+      Tripolis** (and its B side, same ground) 7,616 → **7,423** (table,
+      StadiumDB and both infoboxes). **Left alone, contested**: AEL
+      (Wikidata and the stadium infobox 17,118 against the table and
+      StadiumDB 16,118 - two and two), Atromitos (map 10,200 with
+      StadiumDB 10,000, against the table's 9,050), Karditsa (13,000 on
+      Wikidata against 3,500 three times, all Wikipedia) and Kallithea
+      (4,200 against 6,300, both Wikipedia's figure being one source).
+      Marko's is blank: 3,000 appears only on Wikipedia. StadiumDB's
+      review adds Panthrakikos (its 3,000 is the outlier against 6,198
+      twice) and Apollon Kalamaria (7,000 against 6,500, the map agreeing
+      with the table). **Silence is not agreement**: StadiumDB has
+      nothing for at least nine of the thirty clubs.
+    - **Fixtures: none.** football-data.org's free tier carries no Greek
+      competition; the club sheet says so.
+    - **Merged on Alexandru's instruction, 2026-09-30, although the
+      OpenStreetMap capacity check never came back complete.** Every
+      other check on the branch was green. `Cross-check capacities` ran
+      six times over two days and each run lost a different country to
+      Overpass HTTP 504s (CH; AT, FR and RS; AT; DE; FR; GR and RS), so
+      `capacity-review.csv` was left unchanged each time - correctly, and
+      not a pass by rule 7, so the merge was his call and he made it.
+      Greece was compared in two of the runs, identically both times: 27
+      clubs, 3 agree, 0 differ, 20 Wikidata only, 1 neither, 4 no OSM
+      ground nearby. **The structural point is the one to act on**: with
+      eight countries in one all-or-nothing run, a complete run gets less
+      likely with every country added. `coordinate-review.csv` has been
+      decided country by country since 2026-09-26; `crosscheck_capacity.py`
+      doing the same is the next step, and it is not built.
+
 - **The 2026-09-27 pass: the roster check's double count fixed
   properly, Serbia's top two tiers on the map, and the Austrian and
   German questions of 2026-09-26 settled.** Six instructions from
@@ -1351,7 +1554,10 @@ a page anyone can already view in their browser's network tab.
         Hajduk Kula, FK Banat Zrenjanin, FK Sevojno.
       **Whether the club query should honour `P582` is Alexandru's call**
       and is written here rather than built. It would have saved most of
-      the fourteen rows. It would also change what every country's
+      the fourteen rows. *(Measured 2026-09-29 and that was wrong: five
+      of the fourteen skips, and one of the six tier corrections, rest on
+      an ended tag; the other nine skipped clubs carry no end date at
+      all. See the 2026-09-29 entry.)* It would also change what every country's
       builder sees, and LR Vicenza's shape rests on a preferred tag with
       an end date, so it needs measuring across all seven countries
       before anyone switches it on.
@@ -4379,7 +4585,8 @@ a page anyone can already view in their browser's network tab.
     were added to `crosscheck_stadiumdb.py` anyway on 2026-09-26, slugs
     `sui` and `aut`, each as a thin third opinion, never as agreement by
     silence - see their entries under Known open problems. Serbia
-    followed on 2026-09-27, slug `ser`, on the same terms.) As a second opinion on
+    followed on 2026-09-27, slug `ser`, and Greece on 2026-09-29, slug
+    `gre`, on the same terms.) As a second opinion on
     a ground StadiumDB happens to hold it is excellent — clean to
     parse, independent of both OpenStreetMap and Wikidata, and
     editorially curated rather than crowd-sourced. As the systematic
