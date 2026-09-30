@@ -7532,131 +7532,6 @@
    "winner": null
   },
   {
-   "id": 555042,
-   "utcDate": "2026-10-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 31,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1777,
-    "name": "EC Bahia",
-    "shortName": "Bahia",
-    "tla": "BAH",
-    "crest": "https://crests.football-data.org/1777.png"
-   },
-   "away": {
-    "id": 1783,
-    "name": "CR Flamengo",
-    "shortName": "Flamengo",
-    "tla": "FLA",
-    "crest": "https://crests.football-data.org/1783.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555044,
-   "utcDate": "2026-10-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 31,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1779,
-    "name": "SC Corinthians Paulista",
-    "shortName": "Corinthians",
-    "tla": "COR",
-    "crest": "https://crests.football-data.org/1779.png"
-   },
-   "away": {
-    "id": 1782,
-    "name": "EC Vitória",
-    "shortName": "Vitória",
-    "tla": "VIT",
-    "crest": "https://crests.football-data.org/1782.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555045,
-   "utcDate": "2026-10-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 31,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1765,
-    "name": "Fluminense FC",
-    "shortName": "Fluminense",
-    "tla": "FLU",
-    "crest": "https://crests.football-data.org/1765.png"
-   },
-   "away": {
-    "id": 6685,
-    "name": "Santos FC",
-    "shortName": "Santos",
-    "tla": "SAN",
-    "crest": "https://crests.football-data.org/6685.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555046,
-   "utcDate": "2026-10-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 31,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1767,
-    "name": "Grêmio FBPA",
-    "shortName": "Grêmio",
-    "tla": "FBP",
-    "crest": "https://crests.football-data.org/1767.png"
-   },
-   "away": {
-    "id": 1771,
-    "name": "Cruzeiro EC",
-    "shortName": "Cruzeiro",
-    "tla": "CRU",
-    "crest": "https://crests.football-data.org/1771.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555048,
-   "utcDate": "2026-10-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 31,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 4287,
-    "name": "Clube do Remo",
-    "shortName": "Clube do Remo",
-    "tla": "CRE",
-    "crest": "https://crests.football-data.org/4287.png"
-   },
-   "away": {
-    "id": 4286,
-    "name": "RB Bragantino",
-    "shortName": "Bragantino",
-    "tla": "RBB",
-    "crest": "https://crests.football-data.org/4286.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 555043,
    "utcDate": "2026-10-17T21:00:00Z",
    "status": "TIMED",
@@ -7757,6 +7632,131 @@
    "winner": null
   },
   {
+   "id": 555045,
+   "utcDate": "2026-10-18T19:00:00Z",
+   "status": "TIMED",
+   "matchday": 31,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1765,
+    "name": "Fluminense FC",
+    "shortName": "Fluminense",
+    "tla": "FLU",
+    "crest": "https://crests.football-data.org/1765.png"
+   },
+   "away": {
+    "id": 6685,
+    "name": "Santos FC",
+    "shortName": "Santos",
+    "tla": "SAN",
+    "crest": "https://crests.football-data.org/6685.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555046,
+   "utcDate": "2026-10-18T19:00:00Z",
+   "status": "TIMED",
+   "matchday": 31,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1767,
+    "name": "Grêmio FBPA",
+    "shortName": "Grêmio",
+    "tla": "FBP",
+    "crest": "https://crests.football-data.org/1767.png"
+   },
+   "away": {
+    "id": 1771,
+    "name": "Cruzeiro EC",
+    "shortName": "Cruzeiro",
+    "tla": "CRU",
+    "crest": "https://crests.football-data.org/1771.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555042,
+   "utcDate": "2026-10-18T21:30:00Z",
+   "status": "TIMED",
+   "matchday": 31,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1777,
+    "name": "EC Bahia",
+    "shortName": "Bahia",
+    "tla": "BAH",
+    "crest": "https://crests.football-data.org/1777.png"
+   },
+   "away": {
+    "id": 1783,
+    "name": "CR Flamengo",
+    "shortName": "Flamengo",
+    "tla": "FLA",
+    "crest": "https://crests.football-data.org/1783.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555048,
+   "utcDate": "2026-10-18T22:30:00Z",
+   "status": "TIMED",
+   "matchday": 31,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 4287,
+    "name": "Clube do Remo",
+    "shortName": "Clube do Remo",
+    "tla": "CRE",
+    "crest": "https://crests.football-data.org/4287.png"
+   },
+   "away": {
+    "id": 4286,
+    "name": "RB Bragantino",
+    "shortName": "Bragantino",
+    "tla": "RBB",
+    "crest": "https://crests.football-data.org/4286.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555044,
+   "utcDate": "2026-10-19T23:00:00Z",
+   "status": "TIMED",
+   "matchday": 31,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1779,
+    "name": "SC Corinthians Paulista",
+    "shortName": "Corinthians",
+    "tla": "COR",
+    "crest": "https://crests.football-data.org/1779.png"
+   },
+   "away": {
+    "id": 1782,
+    "name": "EC Vitória",
+    "shortName": "Vitória",
+    "tla": "VIT",
+    "crest": "https://crests.football-data.org/1782.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 555052,
    "utcDate": "2026-10-23T23:00:00Z",
    "status": "TIMED",
@@ -7782,84 +7782,9 @@
    "winner": null
   },
   {
-   "id": 555050,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 32,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1772,
-    "name": "Chapecoense AF",
-    "shortName": "Chapecoense",
-    "tla": "CHA",
-    "crest": "https://crests.football-data.org/1772_large.png"
-   },
-   "away": {
-    "id": 1765,
-    "name": "Fluminense FC",
-    "shortName": "Fluminense",
-    "tla": "FLU",
-    "crest": "https://crests.football-data.org/1765.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555051,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 32,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 4241,
-    "name": "Coritiba FBC",
-    "shortName": "Coritiba",
-    "tla": "COR",
-    "crest": "https://crests.football-data.org/4241.png"
-   },
-   "away": {
-    "id": 1767,
-    "name": "Grêmio FBPA",
-    "shortName": "Grêmio",
-    "tla": "FBP",
-    "crest": "https://crests.football-data.org/1767.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555053,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 32,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1783,
-    "name": "CR Flamengo",
-    "shortName": "Flamengo",
-    "tla": "FLA",
-    "crest": "https://crests.football-data.org/1783.png"
-   },
-   "away": {
-    "id": 1766,
-    "name": "CA Mineiro",
-    "shortName": "Mineiro",
-    "tla": "CAM",
-    "crest": "https://crests.football-data.org/1766.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 555054,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-24T19:30:00Z",
+   "status": "TIMED",
    "matchday": 32,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7883,8 +7808,8 @@
   },
   {
    "id": 555055,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-24T19:30:00Z",
+   "status": "TIMED",
    "matchday": 32,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7907,84 +7832,9 @@
    "winner": null
   },
   {
-   "id": 555056,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 32,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1769,
-    "name": "SE Palmeiras",
-    "shortName": "Palmeiras",
-    "tla": "PAL",
-    "crest": "https://crests.football-data.org/1769.png"
-   },
-   "away": {
-    "id": 4286,
-    "name": "RB Bragantino",
-    "shortName": "Bragantino",
-    "tla": "RBB",
-    "crest": "https://crests.football-data.org/4286.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555057,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 32,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 6685,
-    "name": "Santos FC",
-    "shortName": "Santos",
-    "tla": "SAN",
-    "crest": "https://crests.football-data.org/6685.png"
-   },
-   "away": {
-    "id": 1777,
-    "name": "EC Bahia",
-    "shortName": "Bahia",
-    "tla": "BAH",
-    "crest": "https://crests.football-data.org/1777.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555058,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 32,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1780,
-    "name": "CR Vasco da Gama",
-    "shortName": "Vasco da Gama",
-    "tla": "VAS",
-    "crest": "https://crests.football-data.org/1780.png"
-   },
-   "away": {
-    "id": 1779,
-    "name": "SC Corinthians Paulista",
-    "shortName": "Corinthians",
-    "tla": "COR",
-    "crest": "https://crests.football-data.org/1779.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 555059,
-   "utcDate": "2026-10-24T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-24T19:30:00Z",
+   "status": "TIMED",
    "matchday": 32,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8007,50 +7857,150 @@
    "winner": null
   },
   {
-   "id": 555060,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 33,
+   "id": 555056,
+   "utcDate": "2026-10-24T21:30:00Z",
+   "status": "TIMED",
+   "matchday": 32,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 1766,
-    "name": "CA Mineiro",
-    "shortName": "Mineiro",
-    "tla": "CAM",
-    "crest": "https://crests.football-data.org/1766.png"
+    "id": 1769,
+    "name": "SE Palmeiras",
+    "shortName": "Palmeiras",
+    "tla": "PAL",
+    "crest": "https://crests.football-data.org/1769.png"
    },
    "away": {
-    "id": 1771,
-    "name": "Cruzeiro EC",
-    "shortName": "Cruzeiro",
-    "tla": "CRU",
-    "crest": "https://crests.football-data.org/1771.png"
+    "id": 4286,
+    "name": "RB Bragantino",
+    "shortName": "Bragantino",
+    "tla": "RBB",
+    "crest": "https://crests.football-data.org/4286.png"
    },
    "homeGoals": null,
    "awayGoals": null,
    "winner": null
   },
   {
-   "id": 555061,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 33,
+   "id": 555058,
+   "utcDate": "2026-10-24T21:30:00Z",
+   "status": "TIMED",
+   "matchday": 32,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
+    "id": 1780,
+    "name": "CR Vasco da Gama",
+    "shortName": "Vasco da Gama",
+    "tla": "VAS",
+    "crest": "https://crests.football-data.org/1780.png"
+   },
+   "away": {
+    "id": 1779,
+    "name": "SC Corinthians Paulista",
+    "shortName": "Corinthians",
+    "tla": "COR",
+    "crest": "https://crests.football-data.org/1779.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555050,
+   "utcDate": "2026-10-24T22:30:00Z",
+   "status": "TIMED",
+   "matchday": 32,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1772,
+    "name": "Chapecoense AF",
+    "shortName": "Chapecoense",
+    "tla": "CHA",
+    "crest": "https://crests.football-data.org/1772_large.png"
+   },
+   "away": {
+    "id": 1765,
+    "name": "Fluminense FC",
+    "shortName": "Fluminense",
+    "tla": "FLU",
+    "crest": "https://crests.football-data.org/1765.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555057,
+   "utcDate": "2026-10-25T01:00:00Z",
+   "status": "TIMED",
+   "matchday": 32,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 6685,
+    "name": "Santos FC",
+    "shortName": "Santos",
+    "tla": "SAN",
+    "crest": "https://crests.football-data.org/6685.png"
+   },
+   "away": {
     "id": 1777,
     "name": "EC Bahia",
     "shortName": "Bahia",
     "tla": "BAH",
     "crest": "https://crests.football-data.org/1777.png"
    },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555051,
+   "utcDate": "2026-10-25T22:30:00Z",
+   "status": "TIMED",
+   "matchday": 32,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 4241,
+    "name": "Coritiba FBC",
+    "shortName": "Coritiba",
+    "tla": "COR",
+    "crest": "https://crests.football-data.org/4241.png"
+   },
    "away": {
-    "id": 1776,
-    "name": "São Paulo FC",
-    "shortName": "São Paulo",
-    "tla": "PAU",
-    "crest": "https://crests.football-data.org/1776.png"
+    "id": 1767,
+    "name": "Grêmio FBPA",
+    "shortName": "Grêmio",
+    "tla": "FBP",
+    "crest": "https://crests.football-data.org/1767.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555053,
+   "utcDate": "2026-10-26T23:00:00Z",
+   "status": "TIMED",
+   "matchday": 32,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1783,
+    "name": "CR Flamengo",
+    "shortName": "Flamengo",
+    "tla": "FLA",
+    "crest": "https://crests.football-data.org/1783.png"
+   },
+   "away": {
+    "id": 1766,
+    "name": "CA Mineiro",
+    "shortName": "Mineiro",
+    "tla": "CAM",
+    "crest": "https://crests.football-data.org/1766.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -8058,8 +8008,8 @@
   },
   {
    "id": 555062,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-28T22:30:00Z",
+   "status": "TIMED",
    "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8082,59 +8032,9 @@
    "winner": null
   },
   {
-   "id": 555063,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 33,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1779,
-    "name": "SC Corinthians Paulista",
-    "shortName": "Corinthians",
-    "tla": "COR",
-    "crest": "https://crests.football-data.org/1779.png"
-   },
-   "away": {
-    "id": 4364,
-    "name": "Mirassol FC",
-    "shortName": "Mirassol",
-    "tla": "MIR",
-    "crest": "https://crests.football-data.org/4364.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555064,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 33,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 4241,
-    "name": "Coritiba FBC",
-    "shortName": "Coritiba",
-    "tla": "COR",
-    "crest": "https://crests.football-data.org/4241.png"
-   },
-   "away": {
-    "id": 1782,
-    "name": "EC Vitória",
-    "shortName": "Vitória",
-    "tla": "VIT",
-    "crest": "https://crests.football-data.org/1782.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 555065,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-28T22:30:00Z",
+   "status": "TIMED",
    "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8157,59 +8057,9 @@
    "winner": null
   },
   {
-   "id": 555066,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 33,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1767,
-    "name": "Grêmio FBPA",
-    "shortName": "Grêmio",
-    "tla": "FBP",
-    "crest": "https://crests.football-data.org/1767.png"
-   },
-   "away": {
-    "id": 1768,
-    "name": "CA Paranaense",
-    "shortName": "Paranaense",
-    "tla": "CAP",
-    "crest": "https://crests.football-data.org/1768.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555067,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 33,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 4287,
-    "name": "Clube do Remo",
-    "shortName": "Clube do Remo",
-    "tla": "CRE",
-    "crest": "https://crests.football-data.org/4287.png"
-   },
-   "away": {
-    "id": 1770,
-    "name": "Botafogo FR",
-    "shortName": "Botafogo",
-    "tla": "BOT",
-    "crest": "https://crests.football-data.org/1770.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 555068,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-28T22:30:00Z",
+   "status": "TIMED",
    "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8232,9 +8082,109 @@
    "winner": null
   },
   {
+   "id": 555061,
+   "utcDate": "2026-10-29T00:30:00Z",
+   "status": "TIMED",
+   "matchday": 33,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1777,
+    "name": "EC Bahia",
+    "shortName": "Bahia",
+    "tla": "BAH",
+    "crest": "https://crests.football-data.org/1777.png"
+   },
+   "away": {
+    "id": 1776,
+    "name": "São Paulo FC",
+    "shortName": "São Paulo",
+    "tla": "PAU",
+    "crest": "https://crests.football-data.org/1776.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555067,
+   "utcDate": "2026-10-29T00:30:00Z",
+   "status": "TIMED",
+   "matchday": 33,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 4287,
+    "name": "Clube do Remo",
+    "shortName": "Clube do Remo",
+    "tla": "CRE",
+    "crest": "https://crests.football-data.org/4287.png"
+   },
+   "away": {
+    "id": 1770,
+    "name": "Botafogo FR",
+    "shortName": "Botafogo",
+    "tla": "BOT",
+    "crest": "https://crests.football-data.org/1770.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555060,
+   "utcDate": "2026-10-29T22:30:00Z",
+   "status": "TIMED",
+   "matchday": 33,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1766,
+    "name": "CA Mineiro",
+    "shortName": "Mineiro",
+    "tla": "CAM",
+    "crest": "https://crests.football-data.org/1766.png"
+   },
+   "away": {
+    "id": 1771,
+    "name": "Cruzeiro EC",
+    "shortName": "Cruzeiro",
+    "tla": "CRU",
+    "crest": "https://crests.football-data.org/1771.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555064,
+   "utcDate": "2026-10-29T22:30:00Z",
+   "status": "TIMED",
+   "matchday": 33,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 4241,
+    "name": "Coritiba FBC",
+    "shortName": "Coritiba",
+    "tla": "COR",
+    "crest": "https://crests.football-data.org/4241.png"
+   },
+   "away": {
+    "id": 1782,
+    "name": "EC Vitória",
+    "shortName": "Vitória",
+    "tla": "VIT",
+    "crest": "https://crests.football-data.org/1782.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 555069,
-   "utcDate": "2026-10-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-10-29T23:00:00Z",
+   "status": "TIMED",
    "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8257,50 +8207,50 @@
    "winner": null
   },
   {
-   "id": 555070,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 34,
+   "id": 555066,
+   "utcDate": "2026-10-30T00:30:00Z",
+   "status": "TIMED",
+   "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
+    "id": 1767,
+    "name": "Grêmio FBPA",
+    "shortName": "Grêmio",
+    "tla": "FBP",
+    "crest": "https://crests.football-data.org/1767.png"
+   },
+   "away": {
     "id": 1768,
     "name": "CA Paranaense",
     "shortName": "Paranaense",
     "tla": "CAP",
     "crest": "https://crests.football-data.org/1768.png"
    },
-   "away": {
-    "id": 1780,
-    "name": "CR Vasco da Gama",
-    "shortName": "Vasco da Gama",
-    "tla": "VAS",
-    "crest": "https://crests.football-data.org/1780.png"
-   },
    "homeGoals": null,
    "awayGoals": null,
    "winner": null
   },
   {
-   "id": 555071,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 34,
+   "id": 555063,
+   "utcDate": "2026-10-30T23:00:00Z",
+   "status": "TIMED",
+   "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 1770,
-    "name": "Botafogo FR",
-    "shortName": "Botafogo",
-    "tla": "BOT",
-    "crest": "https://crests.football-data.org/1770.png"
+    "id": 1779,
+    "name": "SC Corinthians Paulista",
+    "shortName": "Corinthians",
+    "tla": "COR",
+    "crest": "https://crests.football-data.org/1779.png"
    },
    "away": {
-    "id": 1766,
-    "name": "CA Mineiro",
-    "shortName": "Mineiro",
-    "tla": "CAM",
-    "crest": "https://crests.football-data.org/1766.png"
+    "id": 4364,
+    "name": "Mirassol FC",
+    "shortName": "Mirassol",
+    "tla": "MIR",
+    "crest": "https://crests.football-data.org/4364.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -8308,8 +8258,8 @@
   },
   {
    "id": 555072,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-02T23:00:00Z",
+   "status": "TIMED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8333,8 +8283,8 @@
   },
   {
    "id": 555073,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-03T22:30:00Z",
+   "status": "TIMED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8357,59 +8307,9 @@
    "winner": null
   },
   {
-   "id": 555074,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 34,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1771,
-    "name": "Cruzeiro EC",
-    "shortName": "Cruzeiro",
-    "tla": "CRU",
-    "crest": "https://crests.football-data.org/1771.png"
-   },
-   "away": {
-    "id": 1777,
-    "name": "EC Bahia",
-    "shortName": "Bahia",
-    "tla": "BAH",
-    "crest": "https://crests.football-data.org/1777.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555075,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 34,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1783,
-    "name": "CR Flamengo",
-    "shortName": "Flamengo",
-    "tla": "FLA",
-    "crest": "https://crests.football-data.org/1783.png"
-   },
-   "away": {
-    "id": 1767,
-    "name": "Grêmio FBPA",
-    "shortName": "Grêmio",
-    "tla": "FBP",
-    "crest": "https://crests.football-data.org/1767.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 555076,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-04T00:30:00Z",
+   "status": "TIMED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8432,25 +8332,75 @@
    "winner": null
   },
   {
-   "id": 555077,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 555070,
+   "utcDate": "2026-11-04T22:30:00Z",
+   "status": "TIMED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 1769,
-    "name": "SE Palmeiras",
-    "shortName": "Palmeiras",
-    "tla": "PAL",
-    "crest": "https://crests.football-data.org/1769.png"
+    "id": 1768,
+    "name": "CA Paranaense",
+    "shortName": "Paranaense",
+    "tla": "CAP",
+    "crest": "https://crests.football-data.org/1768.png"
    },
    "away": {
-    "id": 4287,
-    "name": "Clube do Remo",
-    "shortName": "Clube do Remo",
-    "tla": "CRE",
-    "crest": "https://crests.football-data.org/4287.png"
+    "id": 1780,
+    "name": "CR Vasco da Gama",
+    "shortName": "Vasco da Gama",
+    "tla": "VAS",
+    "crest": "https://crests.football-data.org/1780.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555075,
+   "utcDate": "2026-11-04T22:30:00Z",
+   "status": "TIMED",
+   "matchday": 34,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1783,
+    "name": "CR Flamengo",
+    "shortName": "Flamengo",
+    "tla": "FLA",
+    "crest": "https://crests.football-data.org/1783.png"
+   },
+   "away": {
+    "id": 1767,
+    "name": "Grêmio FBPA",
+    "shortName": "Grêmio",
+    "tla": "FBP",
+    "crest": "https://crests.football-data.org/1767.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555071,
+   "utcDate": "2026-11-05T00:30:00Z",
+   "status": "TIMED",
+   "matchday": 34,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1770,
+    "name": "Botafogo FR",
+    "shortName": "Botafogo",
+    "tla": "BOT",
+    "crest": "https://crests.football-data.org/1770.png"
+   },
+   "away": {
+    "id": 1766,
+    "name": "CA Mineiro",
+    "shortName": "Mineiro",
+    "tla": "CAM",
+    "crest": "https://crests.football-data.org/1766.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -8458,8 +8408,8 @@
   },
   {
    "id": 555078,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-05T00:30:00Z",
+   "status": "TIMED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8482,9 +8432,59 @@
    "winner": null
   },
   {
+   "id": 555077,
+   "utcDate": "2026-11-05T22:30:00Z",
+   "status": "TIMED",
+   "matchday": 34,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1769,
+    "name": "SE Palmeiras",
+    "shortName": "Palmeiras",
+    "tla": "PAL",
+    "crest": "https://crests.football-data.org/1769.png"
+   },
+   "away": {
+    "id": 4287,
+    "name": "Clube do Remo",
+    "shortName": "Clube do Remo",
+    "tla": "CRE",
+    "crest": "https://crests.football-data.org/4287.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555074,
+   "utcDate": "2026-11-06T00:30:00Z",
+   "status": "TIMED",
+   "matchday": 34,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1771,
+    "name": "Cruzeiro EC",
+    "shortName": "Cruzeiro",
+    "tla": "CRU",
+    "crest": "https://crests.football-data.org/1771.png"
+   },
+   "away": {
+    "id": 1777,
+    "name": "EC Bahia",
+    "shortName": "Bahia",
+    "tla": "BAH",
+    "crest": "https://crests.football-data.org/1777.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 555079,
-   "utcDate": "2026-11-04T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-06T23:00:00Z",
+   "status": "TIMED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
