@@ -1,0 +1,546 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "NL",
+ "countryName": "Netherlands",
+ "clubs": [
+  {
+   "id": "Q1045811",
+   "name": "FC Dordrecht",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "M-Scores Stadion",
+   "capacity": 4077,
+   "lat": 51.8025,
+   "lon": 4.69,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q1061627",
+   "name": "FC Emmen",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "De Oude Meerdijk",
+   "capacity": 8600,
+   "lat": 52.774722,
+   "lon": 6.945556,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q1071713",
+   "name": "SC Telstar",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "BUKO Stadion",
+   "capacity": 5200,
+   "lat": 52.455,
+   "lon": 4.635,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q1149034",
+   "name": "TOP Oss",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Heesen Yachts Stadion",
+   "capacity": 4560,
+   "lat": 51.755,
+   "lon": 5.528056,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q11938",
+   "name": "PSV Eindhoven",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Philips Stadion",
+   "capacity": 36500,
+   "lat": 51.4417,
+   "lon": 5.4674,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q11961",
+   "name": "Heracles Almelo",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Asito Stadion",
+   "capacity": 12080,
+   "lat": 52.338611,
+   "lon": 6.649722,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q134241",
+   "name": "Feyenoord Rotterdam",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "De Kuip",
+   "capacity": 51577,
+   "lat": 51.893894,
+   "lon": 4.523253,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q13534332",
+   "name": "Jong PSV",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "De Herdgang",
+   "capacity": 2500,
+   "lat": 51.4608,
+   "lon": 5.4389,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q1770361",
+   "name": "Jong Ajax",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Sportpark De Toekomst",
+   "capacity": 5000,
+   "lat": 52.313522,
+   "lon": 4.928914,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q191264",
+   "name": "AZ Alkmaar",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "AFAS Stadion",
+   "capacity": 17023,
+   "lat": 52.6125,
+   "lon": 4.741667,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q19603",
+   "name": "FC Twente",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "De Grolsch Veste",
+   "capacity": 30000,
+   "lat": 52.236667,
+   "lon": 6.8375,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q200321",
+   "name": "SC Heerenveen",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Abe Lenstra Stadion",
+   "capacity": 26100,
+   "lat": 52.958611,
+   "lon": 5.936111,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q209895",
+   "name": "Sparta Rotterdam",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Sparta Stadion Het Kasteel",
+   "capacity": 11026,
+   "lat": 51.919444,
+   "lon": 4.433333,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q219233",
+   "name": "SBV Vitesse",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "GelreDome",
+   "capacity": 21248,
+   "lat": 51.9625,
+   "lon": 5.893056,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://stadiumdb.com/stadiums/ned",
+   "note": "GROUND PINNED, 2026-10-01, in the Netherlands pass - the SC Freiburg shape. Q219233 carries two P115 values at the same (normal) rank: the GelreDome (from 1998, no end) and Klarenbeek (dated 1896-1915, an end date the club query does not read, and no coordinates on its item), so the ground the map drew could alternate between rebuilds, and Klarenbeek would drop the club off the map. The club plays at the GelreDome: the 2026-27 Eerste Divisie stadiums table (21,248) and StadiumDB (GelreDome, Arnhem, 21,248) agree exactly. Position is the GelreDome item's own P625 (Q1067235, 51.9625 / 5.893056). Not taken: the ground item's own capacity statements, 21,000 and 41,000",
+   "manual": true,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q221927",
+   "name": "De Graafschap",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "De Vijverberg",
+   "capacity": 12600,
+   "lat": 51.955833,
+   "lon": 6.309722,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q24068131",
+   "name": "Jong FC Utrecht",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Sportcomplex Zoudenbalch",
+   "capacity": 450,
+   "lat": 52.075833,
+   "lon": 5.146111,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q24680",
+   "name": "FC Utrecht",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Stadion Galgenwaard",
+   "capacity": 23750,
+   "lat": 52.078333,
+   "lon": 5.145833,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q24689",
+   "name": "VVV-Venlo",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "De Koel",
+   "capacity": 7500,
+   "lat": 51.351944,
+   "lon": 6.179722,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q24699",
+   "name": "RKC Waalwijk",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Mandemakers Stadion",
+   "capacity": 7500,
+   "lat": 51.686944,
+   "lon": 5.088611,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q24711",
+   "name": "FC Groningen",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Euroborg",
+   "capacity": 22550,
+   "lat": 53.206111,
+   "lon": 6.591389,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q24719",
+   "name": "Roda JC Kerkrade",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Parkstad Limburg Stadion",
+   "capacity": 19979,
+   "lat": 50.856944,
+   "lon": 6.005833,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q24904",
+   "name": "ADO Den Haag",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "WerkTalent Stadion",
+   "capacity": 15000,
+   "lat": 52.062778,
+   "lon": 4.383056,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q269151",
+   "name": "PEC Zwolle",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "MAC³PARK stadion",
+   "capacity": 12500,
+   "lat": 52.517292,
+   "lon": 6.121911,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q318348",
+   "name": "N.E.C.",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Stadion de Goffert",
+   "capacity": 12500,
+   "lat": 51.8225,
+   "lon": 5.836667,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q332642",
+   "name": "NAC Breda",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Rat Verlegh Stadion",
+   "capacity": 19000,
+   "lat": 51.595556,
+   "lon": 4.750278,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q332664",
+   "name": "Willem II",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Koning Willem II Stadion",
+   "capacity": 14637,
+   "lat": 51.542778,
+   "lon": 5.066944,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q370712",
+   "name": "Excelsior Rotterdam",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Stadion Woudestein",
+   "capacity": 3531,
+   "lat": 51.916944,
+   "lon": 4.520556,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q50573061",
+   "name": "Jong AZ",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "AFAS Training Complex",
+   "capacity": null,
+   "lat": 52.47352,
+   "lon": 4.847011,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q636315",
+   "name": "Helmond Sport",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "MySteel Stadion",
+   "capacity": 3600,
+   "lat": 51.487363,
+   "lon": 5.679116,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q653119",
+   "name": "Almere City FC",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Yanmar Hanasaka Stadion",
+   "capacity": 4501,
+   "lat": 52.394444,
+   "lon": 5.240556,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q738060",
+   "name": "FC Volendam",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 2,
+   "venue": "Kras Stadion",
+   "capacity": 6200,
+   "lat": 52.494444,
+   "lon": 5.066389,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://en.wikipedia.org/wiki/FC_Volendam",
+   "note": "TIER CORRECTED, 2026-10-01, in the Netherlands pass - the FC Wil shape, reviewable. Wikidata's truthy P118 on Q738060 is a PREFERRED-rank Eredivisie statement dated 2025-2026 (it carries an end date, which the club query does not read), so the club arrived at tier 1. Both 2026-27 division articles are complete (Eredivisie 18 of 18 and Eerste Divisie 20 of 20 resolved to a Q-id, read on a runner 2026-10-01): the Eerste Divisie one lists it and the Eredivisie one does not and names it in its Team changes table, 'Volendam (relegated after one-year in the top flight)'; the club's English article says it plays in the Eerste Divisie 'following relegation from the Eredivisie in the 2025-26 season'. Not a stale normal-rank tag outvoted - the item's own best statement is the stale one. Emptying the tier cell puts it back at tier 1",
+   "manual": true,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q749589",
+   "name": "Go Ahead Eagles",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "De Adelaarshorst",
+   "capacity": 6700,
+   "lat": 52.260278,
+   "lon": 6.1725,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q81888",
+   "name": "AFC Ajax",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Johan Cruyff Arena",
+   "capacity": 54990,
+   "lat": 52.314167,
+   "lon": 4.941944,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q854167",
+   "name": "Fortuna Sittard",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Fortuna Sittard Stadion",
+   "capacity": 12500,
+   "lat": 50.991944,
+   "lon": 5.843611,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q875120",
+   "name": "SC Cambuur",
+   "leagues": [
+    "Q167541"
+   ],
+   "tier": 1,
+   "venue": "Cambuur Stadion",
+   "capacity": 10500,
+   "lat": 53.205278,
+   "lon": 5.814722,
+   "city": null,
+   "competition": "Eredivisie"
+  },
+  {
+   "id": "Q875169",
+   "name": "FC Den Bosch",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "De Vliert",
+   "capacity": 9000,
+   "lat": 51.701667,
+   "lon": 5.329722,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q876568",
+   "name": "MVV Maastricht",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "De Geusselt",
+   "capacity": 10000,
+   "lat": 50.8575,
+   "lon": 5.717778,
+   "city": null,
+   "competition": "Eerste Divisie"
+  },
+  {
+   "id": "Q876699",
+   "name": "FC Eindhoven",
+   "leagues": [
+    "Q610823"
+   ],
+   "tier": 2,
+   "venue": "Jan Louwers Stadion",
+   "capacity": 4500,
+   "lat": 51.411667,
+   "lon": 5.479444,
+   "city": null,
+   "competition": "Eerste Divisie"
+  }
+ ]
+}

@@ -12,13 +12,18 @@ Q751826,,Segunda División B,ES,64
 Q607965,,Serie C,IT,62
 Q101885125,,European League of Football,AT;CH;DE;ES;FR,50
 Q16958867,,Northern Amateur Football League,GB,49
+Q4776029,,Derde Klasse,NL,48
 Q1634353,,Spartan South Midlands Football League,GB,47
+Q1877646,,Vierde divisie,NL,47
+Q1788088,,Derde Divisie,NL,44
 Q672305,,1. Liga,CH,43
 Q2035193,,Southern Combination Football League,GB,42
 Q2852931,,Hellenic Football League,GB,41
+Q2748885,,Vierde Klasse,NL,40
 Q2750075,,Northern Football League,GB,40
 Q18502,,Northern Premier League,GB,39
 Q1930578,,Northern Counties East Football League,GB,34
+Q2675688,,Eerste Klasse,NL,34
 Q3168890,,Wessex Football League,GB,34
 Q1411650,,Combined Counties Football League,GB,33
 Q62222,,North West Counties Football League,GB,33
@@ -73,6 +78,7 @@ Q322918,,Fußball-Oberliga Niederrhein,DE,21
 Q3957606,,Serie B,IT,21
 Q1126104,,Liga ACB,ES,20
 Q1132191,,All-Ireland League,GB,20
+Q2398542,,Vijfde Klasse,NL,20
 Q316113,,Oberliga Westfalen,DE,20
 Q821097,,Berlin-Liga,DE,20
 Q1610234,,Serie A (calcio a 5),IT,19
@@ -90,6 +96,7 @@ Q1088927,,Coppa Italia,IT,18
 Q113159,,2. Frauen-Bundesliga,DE,18
 Q1506274,,Serbian League Vojvodina,RS,18
 Q2261276,,Scottish Football League,GB,18
+Q2777436,,Tweede Divisie,NL,18
 Q317868,,Fußball-Oberliga Niedersachsen,DE,18
 Q58915,,National League South,GB,18
 Q950844,,Women's Super League,GB,18
@@ -106,6 +113,7 @@ Q7247950,,Professional Development League,GB,17
 Q131412861,,Liga Matemática,ES,16
 Q1390898,,Primera División de Futsal,ES,16
 Q15062840,,championnat de France masculin de basket-ball,FR,16
+Q1785497,,Vrouwen Eredivisie,NL,16
 Q20025024,,Bayernliga Süd,DE,16
 Q209970,,2. Handball-Bundesliga,DE,16
 Q218555,,Cymru Premier,GB,16
@@ -211,6 +219,7 @@ Q1813957,,Anglian Combination,GB,7
 Q19601853,,EUHL,AT,7
 Q2135626,,Wearside Football League,GB,7
 Q2261131,,Scottish Premiership,GB,7
+Q2620916,,Bonaire League,NL,7
 Q280002,,Greek A2 Men's Basketball League,GR,7
 Q2951606,,Greek A Women's Football League,GR,7
 Q3712183,,Liga I,RO,7
@@ -279,9 +288,12 @@ Q672075,,Superliga de Voleibol Masculina,ES,5
 Q6909309,,Morava Zone League,RS,5
 Q6970342,,RoBowl,RO,5
 Q7939889,,Vojvodina League East,RS,5
+Q812802,,BeNe League,NL,5
 Q1055003,,Cheshire Association Football League,GB,4
+Q126394035,,IJshockey Nederland Vrouwen Competitie,NL,4
 Q12732182,,Liga A Prahova,RO,4
 Q12732211,,Liga a IV-a Buzău,RO,4
+Q1400146,,Dutch Basketball League,NL,4
 Q1477024,,Fußball-Regionalliga Süd,DE,4
 Q15145680,,Central Macedonia Basketball Clubs Association,GR,4
 Q167364,,Premier Academy League,GB,4
@@ -290,6 +302,7 @@ Q16846238,,North Caledonian Football League,GB,4
 Q177138,,Scottish Football League First Division,GB,4
 Q18548570,,Liga a IV-a Timiș,RO,4
 Q2046230,,West Lancashire Football League,GB,4
+Q20798387,,Central European Hockey League,DE;NL,4
 Q2120557,,Pétanque-Bundesliga,DE,4
 Q213347,,English Football League,GB,4
 Q223351,,3. Liga,DE,4
@@ -333,6 +346,7 @@ Q23021345,,championnat de France féminin de rugby à XV de 2e division,FR,3
 Q2359623,,Women's Six Nations Championship,FR;GB;IT,3
 Q23793903,,Swiss Women’s Hockey League B,CH,3
 Q24185224,,England Korfball League,GB,3
+Q2429321,,Tweede Klasse,NL,3
 Q2561875,,Superliga Femenina de Voleibol,ES,3
 Q2604199,,ligue guadeloupéenne de football,FR,3
 Q2951366,,championnat de France féminin de rugby à XV,FR,3
@@ -356,8 +370,11 @@ Q686954,,Lidl Unihockey Prime League,CH,3
 Q821174,,Handball League of Serbia,RS,3
 Q906559,,Divisiones Regionales de Fútbol,ES,3
 Q104439820,,Tercera División RFEF 2021-22,ES,2
+Q104880240,,BNXT League,NL,2
 Q1049208,,Liga MOL,RO,2
+Q106431978,,Vrouwen Beloftencompetitie,NL,2
 Q112625442,,championnat de France de rugby à XV de Nationale 2,FR,2
+Q114839745,,Onder 21 competitie,NL,2
 Q12200809,,Primera Regional de Extremadura,ES,2
 Q123114739,,Perthshire League,GB,2
 Q1231272,,ligue régionale de football,FR,2
@@ -377,6 +394,7 @@ Q12732229,,Liga a IV-a Olt,RO,2
 Q12732230,,Liga a IV-a Satu Mare,RO,2
 Q127804527,,Floorball-Bundesliga Österreich 2024/25,AT,2
 Q12872493,,Southern Attica Association of Basketball Clubs,GR,2
+Q1340918,,Hoofdklasse,NL,2
 Q1422528,,Hellenic Futsal Super League,GR,2
 Q1436448,,Football League Third Division,GB,2
 Q1476961,,Fußball-Regionalliga,DE,2
@@ -391,7 +409,7 @@ Q18541340,,Liga a IV-a Bacău,RO,2
 Q18541679,,Liga a IV-a Maramureș,RO,2
 Q18548729,,Liga a IV-a Tulcea,RO,2
 Q2043131,,OÖ Liga,AT,2
-Q20798387,,BeNe League,DE,2
+Q2079392,,Beloften Eredivisie,NL,2
 Q209827,,2. Floorball-Bundesliga,DE,2
 Q209968,,2. Handball-Bundesliga,DE,2
 Q2182380,,Gloucestershire County Football League,GB,2
@@ -424,6 +442,7 @@ Q5399851,,Essex and Suffolk Border Football League,GB,2
 Q5511148,,Landesliga Nordwest,DE,2
 Q558216,,German Football League,DE,2
 Q5651166,,Primera Regional de las Islas Baleares,ES,2
+Q56527554,,2018–19 Eredivisie (women),NL,2
 Q5811678,,Divisiones regionales de Aragón,ES,2
 Q5811781,,División de Honor de Vizcaya,ES,2
 Q5837898,,Divisiones Regionales de Fútbol in Extremadura,ES,2
@@ -476,6 +495,7 @@ Q118223254,,Primera Federación 2023-24,ES,1
 Q11932339,,,ES,1
 Q119953200,,Lliga Elit,ES,1
 Q120431,,National Ice Hockey League,GB,1
+Q122070585,,SGA-competitie,NL,1
 Q1231259,,championnat de France de hockey sur glace D4,FR,1
 Q1231278,,División de Honor de Hockey Hierba,ES,1
 Q123511675,,Zweite Judo Bundesliga,AT,1
@@ -515,9 +535,11 @@ Q144644,,Pro12 2011-12,IT,1
 Q14626725,,Scottish League Two,GB,1
 Q1476469,,Fußball-Landesliga Bayern,DE,1
 Q1477038,,Fußball-Rheinlandliga,DE,1
+Q14906080,,Promotiedivisie,NL,1
 Q15141004,,Nationalliga A,CH,1
 Q1546408,,Greek A1 League Men's Volleyball,GR,1
 Q15819154,,Handball-Oberliga Hessen,DE,1
+Q15874959,,Eredivisie Futsal,NL,1
 Q1617018,,championnat de France de rugby à XIII,FR,1
 Q16327757,,Women's National League,GR,1
 Q16327957,,Attica Association of Basketball Clubs,GR,1
@@ -559,6 +581,7 @@ Q209738,,2. Deutsche Volleyball-Bundesliga,DE,1
 Q209740,,2. Deutsche Volleyball-Bundesliga,DE,1
 Q2118261,,East Cornwall League,GB,1
 Q2158500,,Divisiones Regionales de Fútbol in Castilla-La Mancha,ES,1
+Q2186869,,KNSB-competitie,NL,1
 Q22097764,,Midland Football League,GB,1
 Q2228092,,First League of Serbia,RS,1
 Q2272187,,Serbian Hockey League,RS,1
@@ -566,14 +589,17 @@ Q23013447,,Gloucestershire County Womens Football League,GB,1
 Q23021344,,championnat de France féminin de rugby à XV de 1re division fédérale,FR,1
 Q2303321,,Super Ibérica de Rugby,ES,1
 Q2315647,,Kent County League,GB,1
+Q23978504,,2016–17 Eerste Divisie,NL,1
 Q2409829,,Greek A1 League Women's Volleyball,GR,1
 Q2427920,,Lega Calcio Serie A,IT,1
 Q247481,,Fußball-Landesliga Niedersachsen,DE,1
 Q252836,,Coppa Italia Serie C,IT,1
+Q2535201,,Beloften Eerste Divisie,NL,1
 Q25408693,,Serie A1,IT,1
 Q2572190,,Campionato italiano di pallavolo maschile,IT,1
 Q2576614,,Isthmian League Division One North,GB,1
 Q2718382,,Dorset Football League,GB,1
+Q277587,,Men's Hoofdklasse Hockey,NL,1
 Q28054051,,Διοργανώσεις ΕΠΣ Πειραιά 2016–17,GR,1
 Q28058882,,Διοργανώσεις ΕΠΣ Ξάνθης 2016–17,GR,1
 Q28448591,,SGB Premiership,GB,1
@@ -595,6 +621,7 @@ Q2999849,,Coupe de Bretagne de football gaélique,FR,1
 Q300016,,Deutsche Volleyball-Bundesliga,DE,1
 Q30084427,,championnat de France de rugby à XV 2017-2018,FR,1
 Q302398,,Catalan Football Championship of Second Category,ES,1
+Q3051605,,Overgangsklasse,NL,1
 Q3065059,,Northern Football Alliance,GB,1
 Q30668116,,Liga I Feminin,RO,1
 Q3240336,,ligue de Bourgogne de football,FR,1
