@@ -99,94 +99,32 @@ def sparql(q, tag):
 
 
 def a_pages():
-    for t, lang in [("Achilles '29", "en"), ("Achilles '29", "nl"), ("VV DOS", "en"), ("Jong FC Twente", "en"),
-                    ("FC Volendam", "en"), ("Jong Ajax", "en"), ("Jong AZ", "en"), ("Jong PSV", "en"),
-                    ("Jong FC Utrecht", "en"), ("Jong FC Twente", "nl")]:
+    for t, lang in [("VV DOS", "nl"), ("VV DOS", "de"), ("VCV Zeeland", "nl"), ("DOS Utrecht", "fr")]:
         p("PAGE", lang, t, "| INFOBOX", infobox(t, lang))
-        p("   INTRO", intro(t, lang))
+        p("   INTRO", intro(t, lang, 900))
         time.sleep(1)
 
 
-def b_unknown():
-    E = ents(["Q134609074", "Q14229572", "Q2426022", "Q784572"], props="claims|labels|descriptions|aliases|sitelinks")
-    for q, x in E.items():
-        p("ITEM", q, "labels", {k: v["value"] for k, v in x.get("labels", {}).items()},
-          "| desc", {k: v["value"] for k, v in x.get("descriptions", {}).items()},
-          "| aliases", {k: [a["value"] for a in v] for k, v in x.get("aliases", {}).items()},
-          "| sitelinks", {k: v["title"] for k, v in (x.get("sitelinks") or {}).items()},
-          "| props", sorted(x.get("claims", {}).keys()))
-        for pr in ("P31", "P17", "P118", "P571", "P576", "P159", "P115", "P625", "P1366", "P1365", "P138", "P1448", "P1559"):
-            if pr in x.get("claims", {}): p("    ", q, pr, vals(x, pr))
-
-
-def c_women():
-    ids = " ".join("wd:" + q for q in ROSTER)
-    rows = sparql("""SELECT DISTINCT ?team ?teamLabel ?club ?clubLabel ?t ?tLabel ?rel WHERE {
-      VALUES ?club { %s }
-      { ?team wdt:P831 ?club . BIND("P831" AS ?rel) } UNION { ?team wdt:P361 ?club . BIND("P361" AS ?rel) }
-      ?team wdt:P31 ?t . ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en")
-      FILTER(CONTAINS(LCASE(?tl), "women") || CONTAINS(LCASE(?tl), "female"))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-    }""" % ids, "WOMEN-POINTING-AT-ROSTER-CLUBS")
-    for r in rows:
-        p("  W", q_(fc.cell(r, "team")), fc.cell(r, "teamLabel"), "->", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"),
-          fc.cell(r, "rel"), "| type", fc.cell(r, "tLabel"))
-    wq = sorted({q_(fc.cell(r, "team")) for r in rows})
-    E = ents(wq)
-    for q in wq:
-        x = E.get(q, {})
-        p("  W-P118", q, lab(x), [v for v in vals(x, "P118")], "| P2094", vals(x, "P2094"))
-    # P2094 on every tagged item: competition class
-    rows = sparql("""SELECT DISTINCT ?club ?clubLabel ?c ?cLabel WHERE {
-      VALUES ?league { wd:Q167541 wd:Q610823 }
-      ?club wdt:P118|p:P118/ps:P118 ?league . ?club wdt:P2094 ?c .
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""", "P2094-ON-TAGGED")
-    for r in rows: p("  C", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), fc.cell(r, "cLabel"))
-    # any women's-typed item at all that carries either league at any rank, by P118 statement
-    rows = sparql("""SELECT DISTINCT ?club ?clubLabel ?t ?tLabel WHERE {
-      VALUES ?league { wd:Q167541 wd:Q610823 }
-      ?club p:P118/ps:P118 ?league ; wdt:P31 ?t .
-      ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en" && (CONTAINS(LCASE(?tl), "wom") || CONTAINS(LCASE(?tl), "fem")))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""", "WOMEN-TYPED-AGAIN")
-    for r in rows: p("  X", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), fc.cell(r, "tLabel"))
-
-
-def d_shapes():
-    ids = " ".join("wd:" + q for q in ROSTER)
-    # shape 5: men's team items pointing at roster clubs
-    rows = sparql("""SELECT DISTINCT ?team ?teamLabel ?club ?clubLabel ?rel ?tLabel WHERE {
-      VALUES ?club { %s }
-      { ?team wdt:P831 ?club . BIND("P831" AS ?rel) } UNION { ?team wdt:P361 ?club . BIND("P361" AS ?rel) }
-      ?team wdt:P31 ?t .
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""" % ids, "ITEMS-POINTING-AT-ROSTER-CLUBS")
-    for r in rows:
-        p("  P", q_(fc.cell(r, "team")), fc.cell(r, "teamLabel"), "->", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"),
-          fc.cell(r, "rel"), "| type", fc.cell(r, "tLabel"))
-    # shapes 1/2/3: other items with the SAME English label as a roster club
+def c_pointing():
+    # per club, small queries: every item pointing at a roster club by P831 or P361, with its types
     E = ents(ROSTER, props="labels")
-    labs_ = sorted({lab(E[q]) for q in ROSTER if q in E and lab(E[q])})
-    vals_ = " ".join('"%s"@en' % l.replace('"', '') for l in labs_)
-    rows = sparql("""SELECT DISTINCT ?x ?xLabel ?t ?tLabel WHERE {
-      VALUES ?lab { %s } ?x rdfs:label ?lab . ?x wdt:P31 ?t .
-      VALUES ?t { wd:Q476028 wd:Q103229495 wd:Q14752149 wd:Q2412834 wd:Q847017 wd:Q15944511 wd:Q4438121 wd:Q31855 wd:Q783794 wd:Q891723 }
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""" % vals_, "SAME-LABEL-ITEMS")
-    seen = {}
-    for r in rows: seen.setdefault((q_(fc.cell(r, "x")), fc.cell(r, "xLabel")), []).append(fc.cell(r, "tLabel"))
-    for (q, l), ts in sorted(seen.items(), key=lambda kv: kv[0][1]):
-        p("  SL", q, l, ts, "ON-ROSTER" if q in ROSTER else "NOT-ON-ROSTER")
+    for q in ROSTER:
+        for prop in ("P831", "P361"):
+            Q = """SELECT DISTINCT ?team ?teamLabel ?t ?tLabel WHERE {
+              ?team wdt:%s wd:%s . OPTIONAL { ?team wdt:P31 ?t }
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl" } }""" % (prop, q)
+            res, err = fc.sparql_with_retry(Q)
+            rows = (res or {}).get("results", {}).get("bindings", [])
+            if err: p("POINT-ERR", q, prop, err)
+            seen = {}
+            for r in rows:
+                seen.setdefault((q_(fc.cell(r, "team")), fc.cell(r, "teamLabel")), []).append(fc.cell(r, "tLabel"))
+            for (t, l), ts in seen.items():
+                p("POINT", q, lab(E.get(q, {})), prop, "<-", t, l, ts)
+            time.sleep(1)
 
 
-def e_grounds():
-    ids = ["Q2200744", "Q108060876", "Q1958120", "Q3264211", "Q1067235", "Q14852091", "Q132997935", "Q1140346"]
-    E = ents(ids)
-    for q in ids:
-        x = E.get(q, {})
-        p("GROUND", q, lab(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"), "| P131", vals(x, "P131")[:2],
-          "| P31", [v[0] for v in vals(x, "P31")][:3], "| P576", vals(x, "P576"))
-
-
-for name, fn in [("a pages", a_pages), ("b unknown items", b_unknown), ("c women", c_women), ("d shapes", d_shapes),
-                 ("e grounds", e_grounds)]:
+for name, fn in [("a pages", a_pages), ("c pointing", c_pointing)]:
     section(name, fn)
     time.sleep(2)
-p("=== END OF PROBE NL2 ===")
+p("=== END OF PROBE NL3 ===")
