@@ -1384,7 +1384,12 @@ a page anyone can already view in their browser's network tab.
     France**: 1,040 stadiums in the UK, 98 with a usable capacity. First
     run, every country `WRITTEN`: GB 44 clubs, 22 agree, 2 differ, 19
     Wikidata only, 1 with no OSM ground nearby (Brentford, at Griffin
-    Park).
+    Park). On the final layer: 22 agree, 2 differ (Liverpool and West
+    Ham, OSM the outlier), 20 Wikidata only, **0 with no ground nearby**
+    - Brentford's new pin has one. Overpass dropped a different country
+    on two of the four branch runs (Germany and France on one, Spain on
+    the next), each left `UNCHANGED` as it should be; the run the merge
+    rests on is named in the pull request.
   - **Fixtures: 44 of 44**, from football-data.org's PL and ELC, both
     already fetched - the first country whose second tier has a fixture
     source as well. Five Premier League clubs link to the Champions
