@@ -650,6 +650,8 @@ async function fixturesHtml(club){
       ? "football-data.org's free tier carries no Greek competition and OpenLigaDB is German only."
       : club.country === 'ES' && club.tier >= 2
       ? "football-data.org's free tier carries La Liga only, not the Segunda División, and OpenLigaDB is German only."
+      : club.country === 'NL' && club.tier >= 2
+      ? "football-data.org's free tier carries the Eredivisie only, not the Eerste Divisie, and OpenLigaDB is German only."
       : club.tier >= 5
       ? "No fixture source this project fetches goes below the Regionalliga."
       : club.tier === 4
