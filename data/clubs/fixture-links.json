@@ -3999,6 +3999,258 @@
      ]
     }
    ]
+  },
+  "Q24904": {
+   "name": "ADO Den Haag",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "680",
+     "teamName": "ADO Den Haag",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q81888": {
+   "name": "AFC Ajax",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "678",
+     "teamName": "AFC Ajax",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q24711": {
+   "name": "FC Groningen",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "677",
+     "teamName": "FC Groningen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q19603": {
+   "name": "FC Twente",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "666",
+     "teamName": "FC Twente '65",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q24680": {
+   "name": "FC Utrecht",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "676",
+     "teamName": "FC Utrecht",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q134241": {
+   "name": "Feyenoord Rotterdam",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "675",
+     "teamName": "Feyenoord Rotterdam",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q854167": {
+   "name": "Fortuna Sittard",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1920",
+     "teamName": "Fortuna Sittard",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q749589": {
+   "name": "Go Ahead Eagles",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "718",
+     "teamName": "Go Ahead Eagles",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q318348": {
+   "name": "N.E.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1915",
+     "teamName": "NEC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q269151": {
+   "name": "PEC Zwolle",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "684",
+     "teamName": "PEC Zwolle",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q200321": {
+   "name": "SC Heerenveen",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "673",
+     "teamName": "SC Heerenveen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1071713": {
+   "name": "SC Telstar",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1912",
+     "teamName": "Telstar 1963",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q209895": {
+   "name": "Sparta Rotterdam",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "6806",
+     "teamName": "Sparta Rotterdam",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
   }
  },
  "notLinked": {}
