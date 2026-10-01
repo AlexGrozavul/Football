@@ -130,14 +130,14 @@
   },
   "BE": {
    "name": "Belgium",
-   "onMap": 23,
+   "onMap": 31,
    "byTier": {
-    "1": 17,
-    "2": 6
+    "1": 18,
+    "2": 13
    },
-   "withVenueName": 23,
-   "withCapacity": 23,
-   "handCorrected": 0
+   "withVenueName": 31,
+   "withCapacity": 25,
+   "handCorrected": 22
   }
  }
 }
