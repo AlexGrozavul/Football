@@ -1439,7 +1439,30 @@ a page anyone can already view in their browser's network tab.
     that look for items pointing at the roster clubs answered HTTP 504 with
     zero rows, which is a failed query and not an empty answer; they were
     rerun one club at a time.
-  - **Merge.** *(filled in at the merge: which runs the merge rests on.)*
+  - **Merge, under rule 7, 2026-10-01 - and what it rests on.** Every
+    workflow dispatched on the branch is green on the final code, nothing
+    was rejected, `check_tickets.py` exits 0 ("No problems. Every row was
+    read."), and the roster check reads **38 `ok`**. The club build is
+    green, the rank diagnostic is green (no Dutch club hidden), the StadiumDB
+    check is green with Jong AZ's false match gone, and `link_fixtures.py`
+    re-run on the final files changes nothing. The real page was opened
+    headless (Leaflet from npm, tiles stubbed): 38 Dutch clubs load with no
+    script error, Cambuur's sheet reads Kooi Stadion and 15,000, Ajax's and
+    Telstar's list their Eredivisie fixtures, and Volendam's and Jong AZ's
+    say why an Eerste Divisie club has none. **The OpenStreetMap capacity
+    check did NOT come back complete on its first three runs**, which is
+    the usual Overpass flakiness and not a pass: all eleven countries
+    `WRITTEN` at 11:10 UTC (before the corrections), then Romania
+    `UNCHANGED` (HTTP 504) at 11:46 and Greece `UNCHANGED` at 12:03 - a
+    different country each time, each left byte for byte as it was. **The
+    merge rests on the fourth, 12:21 UTC, on the final code: all eleven
+    `WRITTEN`.** Netherlands in that run: 38 clubs, 5 agree, 0 differ, 30
+    Wikidata only, 1 neither, 3 with no OpenStreetMap ground nearby (Jong
+    Ajax, Jong AZ and Jong PSV, drawn at training complexes - Cambuur has
+    one now). Nothing that is Alexandru's call was decided: the five
+    `fixture-links-manual.csv` rows above are written up, not written, and
+    the three skips and one tier correction are each reviewable and say how
+    to undo them.
 
 - **England's top two tiers are on the map, 2026-09-30: Premier League
   20 of 20 and Championship 24 of 24, exact - nothing missing, nothing
