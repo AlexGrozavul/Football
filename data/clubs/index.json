@@ -127,6 +127,17 @@
    "withVenueName": 38,
    "withCapacity": 37,
    "handCorrected": 11
+  },
+  "BE": {
+   "name": "Belgium",
+   "onMap": 23,
+   "byTier": {
+    "1": 17,
+    "2": 6
+   },
+   "withVenueName": 23,
+   "withCapacity": 23,
+   "handCorrected": 0
   }
  }
 }

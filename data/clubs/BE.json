@@ -1,0 +1,330 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "BE",
+ "countryName": "Belgium",
+ "clubs": [
+  {
+   "id": "Q1053917",
+   "name": "K.S.V. Roeselare",
+   "leagues": [
+    "Q23925620"
+   ],
+   "tier": 2,
+   "venue": "Schiervelde Stadion",
+   "capacity": 9700,
+   "lat": 50.951944,
+   "lon": 3.105278,
+   "city": null,
+   "competition": "Challenger Pro League"
+  },
+  {
+   "id": "Q1065328",
+   "name": "F.C. Verbroedering Dender Eendracht Hekelgem",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Florent Beeckmanstadion",
+   "capacity": 12000,
+   "lat": 50.883889,
+   "lon": 4.070833,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q113000",
+   "name": "KV Mechelen",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "AFAS Stadion KV Mechelen",
+   "capacity": 13213,
+   "lat": 51.037222,
+   "lon": 4.486389,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q113884742",
+   "name": "Jong Genk",
+   "leagues": [
+    "Q23925620"
+   ],
+   "tier": 2,
+   "venue": "Cegeka Arena",
+   "capacity": 25000,
+   "lat": 51.005,
+   "lon": 5.533333,
+   "city": null,
+   "competition": "Challenger Pro League"
+  },
+  {
+   "id": "Q115476719",
+   "name": "SL16 FC",
+   "leagues": [
+    "Q23925620"
+   ],
+   "tier": 2,
+   "venue": "Stade Maurice Dufrasne",
+   "capacity": 30023,
+   "lat": 50.609908,
+   "lon": 5.543344,
+   "city": null,
+   "competition": "Challenger Pro League"
+  },
+  {
+   "id": "Q138248",
+   "name": "Sint-Truidense V.V.",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Stayen",
+   "capacity": 11250,
+   "lat": 50.813611,
+   "lon": 5.165278,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q1423718",
+   "name": "K.A.S. Eupen",
+   "leagues": [
+    "Q23925620"
+   ],
+   "tier": 2,
+   "venue": "Kehrweg Stadion",
+   "capacity": 8000,
+   "lat": 50.626389,
+   "lon": 6.045833,
+   "city": null,
+   "competition": "Challenger Pro League"
+  },
+  {
+   "id": "Q18232",
+   "name": "KAA Gent",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Jules Ottenstadion",
+   "capacity": 12919,
+   "lat": 51.031389,
+   "lon": 3.766111,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q187528",
+   "name": "R.S.C. Anderlecht",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Lotto Park",
+   "capacity": 21500,
+   "lat": 50.834167,
+   "lon": 4.298333,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q190561",
+   "name": "Standard Liège",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Stade Maurice Dufrasne",
+   "capacity": 30023,
+   "lat": 50.609908,
+   "lon": 5.543344,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q190916",
+   "name": "Club Brugge K.V.",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Jan Breydel Stadium",
+   "capacity": 29062,
+   "lat": 51.193269,
+   "lon": 3.181311,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q19585",
+   "name": "Royal Charleroi S.C.",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Stade du Pays de Charleroi",
+   "capacity": 14891,
+   "lat": 50.414609,
+   "lon": 4.453787,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q196160",
+   "name": "Royale Union Saint-Gilloise",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Joseph Marien Stadium",
+   "capacity": 5100,
+   "lat": 50.8178,
+   "lon": 4.32917,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q216032",
+   "name": "K.R.C. Genk",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Cegeka Arena",
+   "capacity": 25000,
+   "lat": 51.005,
+   "lon": 5.533333,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q2268833",
+   "name": "K Beerschot VA",
+   "leagues": [
+    "Q23925620"
+   ],
+   "tier": 2,
+   "venue": "Olympisch Stadion Antwerp",
+   "capacity": 12771,
+   "lat": 51.185,
+   "lon": 4.382222,
+   "city": null,
+   "competition": "Challenger Pro League"
+  },
+  {
+   "id": "Q291937",
+   "name": "Royale Union Tubize-Braine",
+   "leagues": [
+    "Q23925620"
+   ],
+   "tier": 2,
+   "venue": "Stade Leburton",
+   "capacity": 8100,
+   "lat": 50.683795,
+   "lon": 4.200436,
+   "city": null,
+   "competition": "Challenger Pro League"
+  },
+  {
+   "id": "Q364698",
+   "name": "Cercle Brugge K.S.V.",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Jan Breydel Stadium",
+   "capacity": 29062,
+   "lat": 51.193269,
+   "lon": 3.181311,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q376635",
+   "name": "S.V. Zulte Waregem",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Regenboogstadion",
+   "capacity": 10200,
+   "lat": 50.883056,
+   "lon": 3.428889,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q509170",
+   "name": "Sportkring Beveren",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Freethiel Stadion",
+   "capacity": 13290,
+   "lat": 51.214139,
+   "lon": 4.243931,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q618620",
+   "name": "K.V. Kortrijk",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Guldensporen Stadion",
+   "capacity": 9399,
+   "lat": 50.830278,
+   "lon": 3.248889,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q732002",
+   "name": "Royal Antwerp F.C.",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Stadion Broodstraat",
+   "capacity": 5350,
+   "lat": 51.2327,
+   "lon": 4.471575,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q849544",
+   "name": "K.V.C. Westerlo",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Het Kuipje",
+   "capacity": 7982,
+   "lat": 51.094722,
+   "lon": 4.928333,
+   "city": null,
+   "competition": "Belgian Pro League"
+  },
+  {
+   "id": "Q916199",
+   "name": "Oud-Heverlee Leuven",
+   "leagues": [
+    "Q216022"
+   ],
+   "tier": 1,
+   "venue": "Den Dreef",
+   "capacity": 9493,
+   "lat": 50.868333,
+   "lon": 4.694167,
+   "city": null,
+   "competition": "Belgian Pro League"
+  }
+ ]
+}
