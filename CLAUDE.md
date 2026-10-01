@@ -52,7 +52,10 @@ as it did. **England was checked for it deliberately, 2026-09-30, from
 three angles, before any build**: no item carrying either English tag at
 any rank is typed, labelled, described or classed (`P2094`) as women's,
 and no women's team item points at a big English club with `P831` or
-`P361`. Zero. It applies beyond leagues: a
+`P361`. Zero. **The Netherlands was checked the same way, 2026-10-01, from
+four angles: zero again** - though there, three women's items do point at
+big Dutch clubs through `P361` (none carries either men's league tag, so
+none reaches the map). It applies beyond leagues: a
 future club addition, a badge, or a piece of research is also men's
 football only until this rule changes, so don't reach for a women's
 team, a women's competition, or a women's-team crest just because a
@@ -1015,8 +1018,9 @@ the lessons of the StadiumDB and roster work applied:
   "1. FC" are untouched. Measured before it went in: no club outside
   England gained, lost or changed a fixture link, and no StadiumDB review
   row outside England changed.
-- **The reserve marker must agree on both sides.** `II`, `U23` and the
-  rest. This refused **SSV Jeddeloh II**, and that is worth knowing:
+- **The reserve marker must agree on both sides.** `II`, `U23`, the Dutch
+  prefix `Jong` (added 2026-10-01, when the matcher paired "Jong AZ" with
+  AZ's own stadium) and the rest. This refused **SSV Jeddeloh II**, and that is worth knowing:
   Jeddeloh II is a *village*, not a reserve side, and the club is very
   likely the map's `Q2207914` SSV Jeddeloh. The guard is right to
   refuse — a hand row is the remedy, not a looser rule.
@@ -1258,6 +1262,207 @@ a page anyone can already view in their browser's network tab.
 ---
 
 ## Known open problems
+
+- **The Netherlands' top two tiers are on the map, 2026-10-01: Eredivisie
+  18 of 18 and Eerste Divisie 20 of 20, exact - nothing missing, nothing
+  extra, nothing at the wrong tier.** Same pipeline and standard as the
+  ten countries before it, run through five throwaway probes on a GitHub
+  runner (removed in the same branch); the sandbox still answers 403 to
+  CONNECT for Wikidata, Wikipedia and StadiumDB. Tiers 1 and 2 only; the
+  Tweede Divisie and below were deliberately not touched. The roster check
+  reads **all 38 `ok`**.
+  - **The file is `NL.json`.** The league Q-ids were read, not
+    remembered: `Q167541` Eredivisie (enwiki *Eredivisie*) and `Q610823`
+    Eerste Divisie (enwiki *Eerste Divisie*), neither carrying `P3983`.
+    `P17` is Netherlands (`Q55`) on both leagues and on every club item
+    read; the Kingdom of the Netherlands (`Q29999`) appears on one 2008-09
+    season item and nothing else. The 2026-27 articles are one
+    stadiums-and-locations table each: **18 of 18** resolved (17 directly,
+    one through a redirect) and **20 of 20**. Four of the twenty are
+    reserve sides with articles of their own - Jong Ajax, Jong AZ, Jong PSV
+    and Jong FC Utrecht - which the table says are not eligible for
+    promotion; they are men's football and are on the map like Rapid II.
+    Labels are asked in English first, then Dutch.
+  - **The country check is weak for NL, and that is written down rather
+    than fixed.** The box is Wikidata's own extreme points (north 53.55,
+    south 50.7504, west 3.3561, east 7.2274, with a margin) and holds the
+    north of Belgian Limburg and Antwerp, a strip of Wallonia and the west
+    of North Rhine-Westphalia, so a Belgian or German club carrying a Dutch
+    tag would pass it and be caught only by `P17`. `Q55` also carries
+    Bonaire's points at PREFERRED rank for south and west, which is why the
+    box uses the normal-rank European ones; a Caribbean club is nowhere
+    near any box. The check flagged no Dutch club.
+  - **What the tags looked like, 91 statements on 54 items, all
+    listed and read.** Dutch league tags are well kept - most clubs carry
+    a dated history with the current league preferred - but the club query
+    does not read an end date, and four items are drawn from a tag that has
+    ended. Volendam's is the subtle one.
+    | | what Wikidata says | what the 2026-27 articles say | done |
+    |---|---|---|---|
+    | FC Volendam `Q738060` | PREFERRED Eredivisie 2025-2026 (ended) over a normal Eerste Divisie 2026- | Eerste Divisie, and the Eredivisie article's own Team changes table says 'relegated' | tier **2** by a hand row; arrived at tier 1 |
+    | Achilles '29 `Q2426022` | Eerste Divisie 2013-2017 | neither; English article: the seventh-tier Tweede Klasse, Dutch infobox: 1e klasse (2026/27) | `skip` |
+    | VV DOS `Q784572` | Eredivisie 1956-1970, drawn at tier 1 on **FC Utrecht's pin** | neither; German and French articles: merged into FC Utrecht in 1970 | `skip` |
+    | Jong FC Twente `Q14229572` | Eerste Divisie, no dates | not listed; Dutch article: Reservecompetitie since 2018/19 | `skip` |
+    | VCV Zeeland `Q134609074` | Eerste Divisie 1990-1992, no ground, **no English label** | not listed; 'was een betaaldvoetbalclub' | whole-club `rejected`, never proposed a ground |
+
+    All three skips meet the Hermannstadt standard: both articles complete
+    (18 of 18 and 20 of 20), neither lists the club, and an independent
+    statement of the reason. **VV DOS carries a trap worth keeping:** its
+    ENGLISH article, titled *VV DOS*, describes DHSC, the 2007 merger that
+    dissolved in 2024 - a different club under this item's name - so the
+    reason was read from German, French and Dutch Wikipedia instead.
+    VCV Zeeland dies at the coordinates gate and would have been offered a
+    ground in Vlissingen by `propose_coordinates.py` next month; that is
+    shape 6. **Predicted before the build from the probe's read of the
+    tagged items, and not measured by a build without the hand rows**: they
+    would have brought 40 clubs, 19 at tier 1 and 21 at tier 2.
+  - **Rank blind spot, all three shapes, run by `diagnose-rank.yml` on the
+    branch: no Dutch club is hidden.** Queries A and B: the worldwide
+    census holds two Dutch items, ESV `Q13575023` and VV Concordia
+    `Q652605`, both preferred `<novalue>` and both dissolved (2011, 1891),
+    and neither carries either mapped league, so nothing is owed. Query C:
+    no Dutch club; the bill has no NL line.
+  - **The league-tag end date (`P582`), measured for the Netherlands.** Of
+    47 truthy Eredivisie or Eerste Divisie statements on items with no dissolution
+    date, **four**
+    get their tier from a tag that has ended - Volendam, Achilles '29,
+    VV DOS and VCV Zeeland - all four dealt with above. The fifth wrong
+    item, Jong FC Twente, carries **no end date at all**, so honouring
+    `P582` would not have caught it: the same finding as 2026-09-29, again.
+  - **Not-a-club: five club SEASONS, caught by type, and a gap in the name
+    fallback closed because of it.** *2007-08 AZ Alkmaar season*, the same
+    for Heracles Almelo and Vitesse, and two MVV Maastricht seasons are
+    typed 'association football team season', which the type word 'season'
+    catches. The NAME fallback - for an item whose type says nothing - did
+    not know them: it only matched names that START with 'season'. A name
+    that opens with a year range and ends in 'season' is now caught too.
+    Checked before it went in: it matches those five and no club name on
+    any of the 523 map entries, and the rebuild changed no other country's
+    file. **England's two kinds (a history article, a fictional club) were
+    looked for here and not found**: no item carrying either Dutch tag at
+    any rank is typed 'aspect of history' or 'fictional', so nothing new
+    was needed for them.
+  - **Women's club with a men's tag (rule 6), checked deliberately, from
+    four angles: none.** No item carrying either tag at any rank is typed,
+    labelled (English or Dutch - 'women', 'vrouwen', 'dames', 'ladies',
+    'WFC'), or classed (`P2094`) as women's. **The fourth angle came out
+    differently from England's, and the difference is worth knowing:** three
+    women's items DO point at big Dutch clubs with `P361` - SBV Excelsior
+    Vrouwen `Q29509701`, Go Ahead Eagles (vrouwenvoetbal) `Q138016367` and FC
+    Groningen (vrouwen) `Q132315919` - where England had none. None carries
+    either men's league tag, so nothing reaches the map; the Vrouwen
+    Eredivisie (`Q1785497`) exists on Wikidata and is not mapped. Two of the
+    first-pass queries answered HTTP 504 and were redone per club.
+  - **Every duplicate shape, looked for rather than waited for.** Shapes 1
+    and 2: none - every English label of the 38 roster clubs belongs to one
+    item only, no two pins share a ground (the closest pair is Jong FC
+    Utrecht and FC Utrecht, 280 m apart on two different grounds), and the
+    roster check names each club once. Shape 3: none - no multi-sport
+    parent; AFC Ajax's one item is typed club and 'public company' together.
+    Shape 4: the clubs above. Shape 5: none - no item typed 'men's
+    association football team' points at a roster club; the reserve sides
+    (ADO Den Haag II, De Graafschap II, Vitesse II, the U21s) carry no
+    league tag and are not on the map. Shape 6: VCV Zeeland, rejected.
+  - **Two grounds on one item (the Freiburg shape): one, pinned.** Vitesse
+    carries the GelreDome (from 1998) and Klarenbeek (dated 1896-1915, no
+    coordinates on its item) at the same rank, so the ground could have
+    alternated and Klarenbeek would have dropped the club off the map. The
+    GelreDome is pinned: the Eerste Divisie table and StadiumDB both say
+    21,248, and the position is the ground item's own.
+  - **Grounds - and one wrong one, found by the OpenStreetMap check.**
+    **SC Cambuur was drawn at a ground that no longer exists.** Wikidata's
+    only `P115` is the old Cambuur Stadion, which the club left in August
+    2024 and which was demolished in late 2025 (its English article, and the
+    club's own). OpenStreetMap's nearest stadium to the pin was the Kooi
+    Stadion, 3,134 m away; the club's article, Dutch Wikipedia, the
+    2026-27 table and StadiumDB all say the Kooi Stadion, 15,000. It is now
+    at the ground item's own position (`Q122459692`, which OpenStreetMap
+    puts within 10 m). The Brentford shape again. **The four Jong sides are
+    drawn at training complexes**, not stadiums: Jong Ajax at De Toekomst,
+    Jong PSV at De Herdgang, Jong FC Utrecht at Zoudenbalch (280 m from
+    FC Utrecht's Galgenwaard, a different ground), and **Jong AZ's pin rests
+    on one source** - Wikidata's 'AFAS Training Complex', where the club's
+    English infobox says 'Sportcomplex Kalverhoek'; OpenStreetMap has no
+    stadium within 12 km and nobody has checked they are the same place. Its
+    row says so. Wikidata's `P115` on the Cambuur item still names the old
+    ground; the hand row's note says how to go back.
+  - **Capacities, the UTA Arad rule - every source read, including the
+    ones that agree with the map.** OpenStreetMap carries a figure for only
+    five Dutch grounds, so the OpenStreetMap run (all eleven countries
+    `WRITTEN`) settled one row, and **a single-country probe printed
+    OpenStreetMap's figure for every club before any correction was
+    written**, because the review file lists disagreements only and the
+    England pass (Villa, Fulham, Stoke) showed what an unread agreement
+    costs. OpenStreetMap had no figure for four of the five corrected
+    clubs; Den Bosch's is the one that agrees with StadiumDB. **Corrected**, each where the league table and StadiumDB agree
+    within 5% and the map sat outside: **AZ Alkmaar** 17,023 -> **19,478**
+    (table, StadiumDB and the ground's article, identical), **Excelsior**
+    3,531 -> **4,500**, **Go Ahead Eagles** 6,700 -> **10,000** (StadiumDB's
+    10,400 not taken), **VVV-Venlo** 7,500 -> **8,000** (table and StadiumDB,
+    identical) and **FC Den Bosch** 9,000 -> **8,713** (the table; Open-
+    StreetMap and StadiumDB both say 8,500 and the table is within 2.5% of
+    both); and **Cambuur** with its ground, above. **Left contested, each
+    with a row listing every figure**: **PEC Zwolle** (12,500 on Wikidata,
+    14,000 in the table, 13,250 on StadiumDB - no two within 5%),
+    **FC Volendam** (6,200 on Wikidata, 7,384 in the table, 6,984 on StadiumDB
+    and in both English articles - the table and StadiumDB are 5.7% apart, and
+    Wikipedia's own two figures disagree with each other) and **Jong Ajax**
+    (5,000 for the whole complex against 2,250 in the table). **The map
+    stands where it agrees with a second source and the third is the
+    outlier**: Feyenoord (51,577 with StadiumDB's 51,117, the table's 47,500
+    the outlier), Telstar (5,200 with OpenStreetMap's 5,200 and the table's 5,338;
+    StadiumDB's 3,625 is the outlier, and the ground's own article says 6,000), FC Eindhoven,
+    Helmond Sport (StadiumDB's 4,200 is the old Lavans Stadion) and Ajax
+    (54,990, OpenStreetMap's 52,342 within 5%). Jong AZ's capacity is blank
+    on purpose: 1,000 appears in one source.
+  - **StadiumDB: a ground for 18 of 18 Eredivisie clubs and 16 of 20 Eerste
+    Divisie clubs**, the four without being the Jong sides. **It caught a
+    reserve side on its first run: "Jong AZ" was matched to AZ's own
+    stadium** - the Borussia Dortmund II failure on a prefix instead of a
+    suffix - because the matcher's reserve markers had no `jong`. It does
+    now (`TEAM_MARKERS`); no club name in any other country and no fixture
+    team name in any file contains the word, so nothing else moved, and
+    the Jong AZ row left the review file on the next run. Short names again:
+    "Exelsior" (sic), "Utrecht", "Roda" and "NEC" matched or were read by
+    hand where the matcher refused.
+  - **Fixtures: 13 of 18 Eredivisie clubs link to football-data.org's
+    DED**, which was already fetched. **Five are abbreviations the matcher
+    rightly refuses, and each needs one `link` row in
+    `fixture-links-manual.csv` - Alexandru's call, so none was written
+    (rule 7):** AZ Alkmaar (`Q191264` -> football-data 682 "AZ"), PSV
+    Eindhoven (`Q11938` -> 674 "PSV"), Excelsior Rotterdam (`Q370712` -> 670
+    "SBV Excelsior"), SC Cambuur (`Q875120` -> 1909 "SC Cambuur-Leeuwarden")
+    and Willem II (`Q332664` -> 672 "Willem II Tilburg"). Until then those
+    clubs' sheets say fixtures are unavailable. The Eerste Divisie has no
+    fixture source; the club sheet says so.
+  - **Found on the way, not Dutch**: two of the first-pass SPARQL queries
+    that look for items pointing at the roster clubs answered HTTP 504 with
+    zero rows, which is a failed query and not an empty answer; they were
+    rerun one club at a time.
+  - **Merge, under rule 7, 2026-10-01 - and what it rests on.** Every
+    workflow dispatched on the branch is green on the final code, nothing
+    was rejected, `check_tickets.py` exits 0 ("No problems. Every row was
+    read."), and the roster check reads **38 `ok`**. The club build is
+    green, the rank diagnostic is green (no Dutch club hidden), the StadiumDB
+    check is green with Jong AZ's false match gone, and `link_fixtures.py`
+    re-run on the final files changes nothing. The real page was opened
+    headless (Leaflet from npm, tiles stubbed): 38 Dutch clubs load with no
+    script error, Cambuur's sheet reads Kooi Stadion and 15,000, Ajax's and
+    Telstar's list their Eredivisie fixtures, and Volendam's and Jong AZ's
+    say why an Eerste Divisie club has none. **The OpenStreetMap capacity
+    check did NOT come back complete on its first three runs**, which is
+    the usual Overpass flakiness and not a pass: all eleven countries
+    `WRITTEN` at 11:10 UTC (before the corrections), then Romania
+    `UNCHANGED` (HTTP 504) at 11:46 and Greece `UNCHANGED` at 12:03 - a
+    different country each time, each left byte for byte as it was. **The
+    merge rests on the fourth, 12:21 UTC, on the final code: all eleven
+    `WRITTEN`.** Netherlands in that run: 38 clubs, 5 agree, 0 differ, 30
+    Wikidata only, 1 neither, 3 with no OpenStreetMap ground nearby (Jong
+    Ajax, Jong AZ and Jong PSV, drawn at training complexes - Cambuur has
+    one now). Nothing that is Alexandru's call was decided: the five
+    `fixture-links-manual.csv` rows above are written up, not written, and
+    the three skips and one tier correction are each reviewable and say how
+    to undo them.
 
 - **England's top two tiers are on the map, 2026-09-30: Premier League
   20 of 20 and Championship 24 of 24, exact - nothing missing, nothing
@@ -5019,7 +5224,10 @@ a page anyone can already view in their browser's network tab.
     its two 2026-27 divisions - see the Spain entry. **England, slug
     `eng`, 2026-09-30, measured too, and as full**: 125 grounds, 41 of
     the 44 clubs in its two divisions, and the other three - the Welsh
-    clubs - on `wal`, which the tool now reads for GB as well.) As a second opinion on
+    clubs - on `wal`, which the tool now reads for GB as well. **The
+    Netherlands, slug `ned`, 2026-10-01, measured too, and as full**: 45
+    grounds in two tables, a ground for 18 of 18 Eredivisie clubs and 16 of
+    20 Eerste Divisie clubs, the four without being the Jong sides.) As a second opinion on
     a ground StadiumDB happens to hold it is excellent — clean to
     parse, independent of both OpenStreetMap and Wikidata, and
     editorially curated rather than crowd-sourced. As the systematic

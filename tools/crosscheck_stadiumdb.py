@@ -154,6 +154,15 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # that page as well (EXTRA_PAGES, below): 44 of 44 with a ground named.
 # So for England the coverage is as full as Spain's. Short names again: "Albion",
 # "WBA", "Dons", "Rovers" will not all match ours.
+# The Netherlands' "ned" on 2026-10-01: /stadiums/ned answers 200, read on
+# a runner (nld, net, hol, ntl, nl and netherlands were tried too). 45 rows
+# in two tables: the 18 Eredivisie grounds, then 27 others - the Eerste
+# Divisie ones and amateur grounds. Measured, not assumed: against the
+# 2026-27 articles that is a ground named for 18 of 18 Eredivisie clubs and
+# for 16 of 20 Eerste Divisie clubs; the four without are the Jong sides,
+# none of which is on the page. Short names
+# again: "Exelsior" (sic), "Utrecht", "NEC", "AZ", "Roda" will not all match
+# ours.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
@@ -165,6 +174,7 @@ COUNTRY_PAGES = {
     "GR": ("gre", "Greece"),
     "ES": ("esp", "Spain"),
     "GB": ("eng", "England"),
+    "NL": ("ned", "Netherlands"),
 }
 
 # A country file is a league PYRAMID, not a territory (CLAUDE.md, the
@@ -360,7 +370,11 @@ GROUND_FORMS = {
 # writes "Borussia" and "Borussia II" as two separate grounds, and
 # without this every reserve side in the file matched its first team's
 # stadium and inherited a capacity ten times too big.
-TEAM_MARKERS = {"ii", "2", "b", "iii", "3", "u21", "u23", "u19", "amateure"}
+# "jong" is the Dutch one, added 2026-10-01 in the Netherlands pass: the
+# Eerste Divisie has four reserve sides (Jong Ajax, Jong AZ, Jong PSV, Jong
+# FC Utrecht) and the matcher paired "Jong AZ" with AZ's own stadium - the
+# Borussia Dortmund II failure exactly, on a prefix instead of a suffix.
+TEAM_MARKERS = {"ii", "2", "b", "iii", "3", "u21", "u23", "u19", "amateure", "jong"}
 
 
 def team_marker(name):
