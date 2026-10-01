@@ -3372,6 +3372,25 @@
     }
    ]
   },
+  "Q18723": {
+   "name": "Queens Park Rangers F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "69",
+     "teamName": "Queens Park Rangers FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "ELC",
+       "file": "data/fixtures/ELC.json",
+       "label": "Championship"
+      }
+     ]
+    }
+   ]
+  },
   "Q19607": {
    "name": "Sheffield United F.C.",
    "links": [
