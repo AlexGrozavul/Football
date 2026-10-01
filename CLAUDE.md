@@ -1396,16 +1396,31 @@ a page anyone can already view in their browser's network tab.
     source as well. Five Premier League clubs link to the Champions
     League too. It took the dotted-initialism fix (Conventions) and QPR's
     name; no `fixture-links-manual.csv` row was needed.
-  - **Found on the way, not English, and NOT fixed: a placeholder
-    kick-off is shown as a time.** football-data.org marks a match whose
+  - **Found on the way, not English, and FIXED 2026-10-01: a placeholder
+    kick-off was shown as a time.** football-data.org marks a match whose
     kick-off is not set yet as `SCHEDULED` at **00:00 UTC**, and the club
-    sheet prints that as "01:00" German time, like a real time. Counted
-    on 2026-09-30: 198 Bundesliga, 280 La Liga, 190 Serie A and 264
-    Championship matches carry it (none in the Premier League, whose
-    fixtures are all `TIMED`). Rule 2 says a missing time is blank, so
-    the sheet should say "time not set" for `SCHEDULED`. It is a small
-    change in `index.html` and was left for its own branch, because this
-    one was not asked to touch the page's fixture display.
+    sheet printed that as "01:00" German time (02:00 in summer), like a
+    real time. The sheet now says "time not set" on a second line under
+    the date. **The test is status AND midnight together, never midnight
+    alone**, and that was checked across every football-data file rather
+    than assumed: every `SCHEDULED` match in every file is at midnight UTC
+    and every `TIMED` one in the club-sheet files has a real time - but
+    Brazil's BSA has 3 `TIMED`, 13 `FINISHED` and 1 `POSTPONED` match at
+    00:00 UTC, and the World Cup file 6 `FINISHED`, which are genuine
+    (21:00 Brasília is 00:00 UTC) and keep their time. Counted on
+    2026-10-01 and all now labelled: Bundesliga 198, La Liga 280, Serie A
+    190, Championship 264 and **Ligue 1 192** (not on the original list,
+    same code path); also 100 Eredivisie and 198 Primeira Liga, which no
+    club sheet reads. None in the Premier League. OpenLigaDB never has the
+    problem: it writes no time as `null`, which already reads "date not
+    set". **Left as they were, on purpose**: a `POSTPONED` match at
+    midnight (BSA and Primeira Liga, neither read by a club sheet) - its
+    original time is unknowable, and a Brazilian one could be genuine, so
+    it keeps the "postponed" tag and its time. **A second bug in the same
+    function was fixed with it**: a `SCHEDULED` match later today sorted as
+    already played, because its placeholder midnight had passed, and got a
+    false "no result recorded" tag. A placeholder match now counts as
+    ahead until its date is over.
 
 - **Spain's top two tiers are on the map, 2026-09-30: La Liga 20 of 20
   and Segunda División 22 of 22, exact - nothing missing, nothing extra,
