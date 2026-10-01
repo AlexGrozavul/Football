@@ -1,4 +1,4 @@
-"""TEMPORARY probe #1 for the Netherlands pass. Removed in the same branch."""
+"""TEMPORARY probe #2 for the Netherlands pass. Removed in the same branch."""
 import csv, glob, json, os, re, sys, time, traceback, urllib.parse, urllib.request, urllib.error
 sys.path.insert(0, "tools")
 import check_rosters as cr
@@ -9,8 +9,9 @@ def p(*a): print(" ".join(str(x) for x in a), flush=True)
 def q_(uri): return (uri or "").rsplit("/", 1)[-1]
 
 LANGS = "en|nl"
-
-
+ROSTER = """Q24904 Q81888 Q191264 Q875120 Q370712 Q134241 Q854167 Q749589 Q24711 Q200321 Q318348 Q269151 Q11938 Q209895 Q1071713 Q19603 Q24680 Q332664
+Q653119 Q221927 Q875169 Q1045811 Q876699 Q1061627 Q636315 Q11961 Q1770361 Q50573061 Q13534332 Q24068131 Q876568 Q332642 Q24699 Q24719 Q1149034 Q219233 Q738060 Q24689""".split()
+LEAGUES = ["Q167541", "Q610823"]
 def ents(ids, props="claims|labels|sitelinks"):
     out = {}
     ids = list(dict.fromkeys(i for i in ids if i))
@@ -24,8 +25,16 @@ def ents(ids, props="claims|labels|sitelinks"):
     return out
 
 
-def lab(ent):
-    return (ent.get("labels", {}).get("en") or {}).get("value")
+def lab(ent, order=("en", "nl")):
+    for l in order:
+        v = (ent.get("labels", {}).get(l) or {}).get("value")
+        if v: return v
+    return None
+
+
+def labs(ent):
+    return {l: (ent.get("labels", {}).get(l) or {}).get("value") for l in ("en", "el")
+            if (ent.get("labels", {}).get(l) or {}).get("value")}
 
 
 def vals(ent, prop):
@@ -33,7 +42,7 @@ def vals(ent, prop):
     for c in ent.get("claims", {}).get(prop, []):
         v = c["mainsnak"].get("datavalue", {}).get("value")
         if v is None: v = c["mainsnak"].get("snaktype")
-        elif isinstance(v, dict) and "latitude" in v: v = (round(v["latitude"], 5), round(v["longitude"], 5))
+        elif isinstance(v, dict) and "latitude" in v: v = (round(v["latitude"], 6), round(v["longitude"], 6))
         elif isinstance(v, dict) and "amount" in v: v = v["amount"]
         elif isinstance(v, dict) and "id" in v: v = v["id"]
         elif isinstance(v, dict) and "time" in v: v = v["time"][:11]
@@ -47,7 +56,9 @@ def vals(ent, prop):
 
 def sitelinks(ent):
     s = ent.get("sitelinks") or {}
-    return len(s), (s.get("enwiki") or {}).get("title")
+    return len(s), (s.get("enwiki") or {}).get("title"), (s.get("elwiki") or {}).get("title")
+
+
 
 
 def section(name, fn):
@@ -58,193 +69,124 @@ def section(name, fn):
         p("SECTION-FAILED", name, traceback.format_exc()[-800:])
 
 
-def qid_for(title, lang="en"):
-    args = {"action": "wbgetentities", "sites": f"{lang}wiki", "titles": title, "props": "info", "format": "json",
-            "normalize": "1"}
-    d, e = cr.get_json_with_retry("https://www.wikidata.org/w/api.php?" + urllib.parse.urlencode(args), title)
-    for k in ((d or {}).get("entities") or {}):
-        if k.startswith("Q"): return k
-    return None
+def wikitext(title, lang="en", section="0"):
+    args = {"action": "parse", "page": title, "prop": "wikitext", "format": "json",
+            "formatversion": "2", "redirects": "1"}
+    if section is not None: args["section"] = section
+    d, e = cr.get_json_with_retry(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    return (d or {}).get("parse", {}).get("wikitext", "")
 
 
-EN_LEAGUES = {}
+def infobox(title, lang="en", keys=r"dissolved|league|season|position|ground|capacity|coordinates|current|fullname|founded|stadium|name|opened|location|home|tenants|ligue|competitie|opgeheven|stadion|opgericht|fusie|merger|defunct|ceased|defunct|last"):
+    wt = wikitext(title, lang)
+    keep = [l.strip() for l in wt.splitlines() if re.match(r"\s*\|\s*(%s)" % keys, l, re.I)]
+    return " || ".join(keep)[:1100] if keep else ("(no infobox lines)" if wt else "(no article)")
 
 
-def s0():
-    E = ents(["Q55", "Q29999", "Q25228", "Q25279"])
-    for q in ("Q55", "Q29999", "Q25228", "Q25279"):
+def intro(title, lang="en", n=800):
+    args = {"action": "query", "prop": "extracts", "exintro": "1", "explaintext": "1", "titles": title,
+            "redirects": "1", "format": "json", "formatversion": "2"}
+    d, e = cr.get_json_with_retry(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    pages = (d or {}).get("query", {}).get("pages", [])
+    return re.sub(r"\s+", " ", (pages[0].get("extract") if pages else "") or "")[:n]
+
+
+def sparql(q, tag):
+    res, err = fc.sparql_with_retry(q)
+    rows = (res or {}).get("results", {}).get("bindings", [])
+    p(tag, "err=", err, "rows=", len(rows))
+    return rows
+
+
+def a_pages():
+    for t, lang in [("Achilles '29", "en"), ("Achilles '29", "nl"), ("VV DOS", "en"), ("Jong FC Twente", "en"),
+                    ("FC Volendam", "en"), ("Jong Ajax", "en"), ("Jong AZ", "en"), ("Jong PSV", "en"),
+                    ("Jong FC Utrecht", "en"), ("Jong FC Twente", "nl")]:
+        p("PAGE", lang, t, "| INFOBOX", infobox(t, lang))
+        p("   INTRO", intro(t, lang))
+        time.sleep(1)
+
+
+def b_unknown():
+    E = ents(["Q134609074", "Q14229572", "Q2426022", "Q784572"], props="claims|labels|descriptions|aliases|sitelinks")
+    for q, x in E.items():
+        p("ITEM", q, "labels", {k: v["value"] for k, v in x.get("labels", {}).items()},
+          "| desc", {k: v["value"] for k, v in x.get("descriptions", {}).items()},
+          "| aliases", {k: [a["value"] for a in v] for k, v in x.get("aliases", {}).items()},
+          "| sitelinks", {k: v["title"] for k, v in (x.get("sitelinks") or {}).items()},
+          "| props", sorted(x.get("claims", {}).keys()))
+        for pr in ("P31", "P17", "P118", "P571", "P576", "P159", "P115", "P625", "P1366", "P1365", "P138", "P1448", "P1559"):
+            if pr in x.get("claims", {}): p("    ", q, pr, vals(x, pr))
+
+
+def c_women():
+    ids = " ".join("wd:" + q for q in ROSTER)
+    rows = sparql("""SELECT DISTINCT ?team ?teamLabel ?club ?clubLabel ?t ?tLabel ?rel WHERE {
+      VALUES ?club { %s }
+      { ?team wdt:P831 ?club . BIND("P831" AS ?rel) } UNION { ?team wdt:P361 ?club . BIND("P361" AS ?rel) }
+      ?team wdt:P31 ?t . ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en")
+      FILTER(CONTAINS(LCASE(?tl), "women") || CONTAINS(LCASE(?tl), "female"))
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+    }""" % ids, "WOMEN-POINTING-AT-ROSTER-CLUBS")
+    for r in rows:
+        p("  W", q_(fc.cell(r, "team")), fc.cell(r, "teamLabel"), "->", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"),
+          fc.cell(r, "rel"), "| type", fc.cell(r, "tLabel"))
+    wq = sorted({q_(fc.cell(r, "team")) for r in rows})
+    E = ents(wq)
+    for q in wq:
         x = E.get(q, {})
-        p("EXTREME", q, lab(x), [(pr, vals(x, pr)) for pr in ("P1332", "P1333", "P1334", "P1335")])
+        p("  W-P118", q, lab(x), [v for v in vals(x, "P118")], "| P2094", vals(x, "P2094"))
+    # P2094 on every tagged item: competition class
+    rows = sparql("""SELECT DISTINCT ?club ?clubLabel ?c ?cLabel WHERE {
+      VALUES ?league { wd:Q167541 wd:Q610823 }
+      ?club wdt:P118|p:P118/ps:P118 ?league . ?club wdt:P2094 ?c .
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""", "P2094-ON-TAGGED")
+    for r in rows: p("  C", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), fc.cell(r, "cLabel"))
+    # any women's-typed item at all that carries either league at any rank, by P118 statement
+    rows = sparql("""SELECT DISTINCT ?club ?clubLabel ?t ?tLabel WHERE {
+      VALUES ?league { wd:Q167541 wd:Q610823 }
+      ?club p:P118/ps:P118 ?league ; wdt:P31 ?t .
+      ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en" && (CONTAINS(LCASE(?tl), "wom") || CONTAINS(LCASE(?tl), "fem")))
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""", "WOMEN-TYPED-AGAIN")
+    for r in rows: p("  X", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), fc.cell(r, "tLabel"))
 
 
-def s1():
-    for t, tier in [("Eredivisie", 1), ("Eerste Divisie", 2)]:
-        q = qid_for(t)
-        p("ENWIKI", t, "->", q)
-        if q: EN_LEAGUES[q] = tier
-    Q = """SELECT DISTINCT ?l ?lLabel ?c WHERE {
-      VALUES ?c { wd:Q55 wd:Q29999 }
-      ?l wdt:P17 ?c ; wdt:P641 wd:Q2736 ; rdfs:label ?lab .
-      FILTER(LANG(?lab) = "en")
-      FILTER(CONTAINS(LCASE(?lab), "eredivisie") || CONTAINS(LCASE(?lab), "eerste divisie") || CONTAINS(LCASE(?lab), "tweede divisie") || CONTAINS(LCASE(?lab), "keuken kampioen"))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-    }"""
-    res, err = fc.sparql_with_retry(Q)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("NL-LEAGUE-SEARCH", err, len(rows))
-    for r in rows[:60]:
-        p("  ", q_(fc.cell(r, "l")), "|", fc.cell(r, "lLabel"), "| P17", q_(fc.cell(r, "c")))
-    e = ents(list(EN_LEAGUES))
-    for q, x in e.items():
-        p("LEAGUE", q, lab(x), "| P31", vals(x, "P31")[:4], "| P17", vals(x, "P17"), "| P3983", vals(x, "P3983"),
-          "| P3450", vals(x, "P3450")[-3:], "| P1132", vals(x, "P1132"), "| sitelinks", sitelinks(x))
-
-
-EN_ROSTER = {}
-
-
-def s2():
-    for art, tier in [("2026–27 Eredivisie", 1), ("2026–27 Eerste Divisie", 2)]:
-        page, real, err = cr.fetch_article(art)
-        if err:
-            p("ARTICLE", art, "ERROR", err); continue
-        tables, shape = cr.roster_tables(page)
-        p("ARTICLE", art, "->", real, "|", shape, "| tables", len(tables))
-        names, caps = [], {}
-        for t, h in tables:
-            p("  HEAD", h[:8])
-            left = []
-            for title, cap in cr.rows_of(t, h, left):
-                if title not in names: names.append(title); caps[title] = cap
-            for x in left: p("  LEFT-OUT", x)
-        got, fails = cr.qids_for_titles(names)
-        p("RESOLVED", art, len(got), "of", len(names), "| failures", fails)
-        for n in names:
-            p("   ", got.get(n, "-"), "|", n, "|", caps.get(n))
-            if got.get(n): EN_ROSTER.setdefault(got[n], []).append((tier, n, caps.get(n)))
-        plain = cr.text_of(page)
-        for kw in ("relegat", "promot", "withdr", "expel", "dissol", "bankrupt", "licen", "Jong ", "reserve", "temporar"):
-            hits = [plain[max(0, m.start() - 150):m.start() + 150] for m in re.finditer(kw, plain, re.I)][:5]
-            for h in hits: p("  CHANGE", tier, kw, "...", h)
-        time.sleep(2)
-
-
-def s3():
-    for slug in ["ned", "nld", "net", "hol", "ntl", "nl", "netherlands"]:
-        try:
-            req = urllib.request.Request(f"https://stadiumdb.com/stadiums/{slug}", headers={"User-Agent": cr.USER_AGENT})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                body = r.read().decode("utf-8", "replace"); st = r.status
-        except urllib.error.HTTPError as ex:
-            st, body = ex.code, ""
-        except Exception as ex:
-            st, body = str(ex), ""
-        p("STADIUMDB", slug, st, len(body), body.count("<tr"))
-        if st == 200 and body.count("<tr") > 3:
-            rows = re.findall(r"<tr[^>]*>(.*?)</tr>", body, re.S)
-            for tr in rows[:400]:
-                c = [cr.text_of(x) for x in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)]
-                p("   SDB", " | ".join(c))
-            break
-        time.sleep(4)
-
-
-def s4():
-    if not EN_LEAGUES:
-        p("NO EN LEAGUES"); return
-    Q = """SELECT ?club ?league ?rank WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; wikibase:rank ?rank .
-      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-    }""" % " ".join("wd:" + l for l in EN_LEAGUES)
-    res, err = fc.sparql_with_retry(Q)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("TAGGED", err, len(rows))
-    tags = {}
+def d_shapes():
+    ids = " ".join("wd:" + q for q in ROSTER)
+    # shape 5: men's team items pointing at roster clubs
+    rows = sparql("""SELECT DISTINCT ?team ?teamLabel ?club ?clubLabel ?rel ?tLabel WHERE {
+      VALUES ?club { %s }
+      { ?team wdt:P831 ?club . BIND("P831" AS ?rel) } UNION { ?team wdt:P361 ?club . BIND("P361" AS ?rel) }
+      ?team wdt:P31 ?t .
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""" % ids, "ITEMS-POINTING-AT-ROSTER-CLUBS")
     for r in rows:
-        tags.setdefault(q_(fc.cell(r, "club")), set()).add(
-            (EN_LEAGUES.get(q_(fc.cell(r, "league"))), q_(fc.cell(r, "rank")).split("#")[-1][:4]))
-    allq = set(tags) | set(EN_ROSTER)
-    E = ents(sorted(allq))
-    types = {}
-    for q in sorted(allq, key=lambda q: lab(E.get(q, {})) or q):
+        p("  P", q_(fc.cell(r, "team")), fc.cell(r, "teamLabel"), "->", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"),
+          fc.cell(r, "rel"), "| type", fc.cell(r, "tLabel"))
+    # shapes 1/2/3: other items with the SAME English label as a roster club
+    E = ents(ROSTER, props="labels")
+    labs_ = sorted({lab(E[q]) for q in ROSTER if q in E and lab(E[q])})
+    vals_ = " ".join('"%s"@en' % l.replace('"', '') for l in labs_)
+    rows = sparql("""SELECT DISTINCT ?x ?xLabel ?t ?tLabel WHERE {
+      VALUES ?lab { %s } ?x rdfs:label ?lab . ?x wdt:P31 ?t .
+      VALUES ?t { wd:Q476028 wd:Q103229495 wd:Q14752149 wd:Q2412834 wd:Q847017 wd:Q15944511 wd:Q4438121 wd:Q31855 wd:Q783794 wd:Q891723 }
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""" % vals_, "SAME-LABEL-ITEMS")
+    seen = {}
+    for r in rows: seen.setdefault((q_(fc.cell(r, "x")), fc.cell(r, "xLabel")), []).append(fc.cell(r, "tLabel"))
+    for (q, l), ts in sorted(seen.items(), key=lambda kv: kv[0][1]):
+        p("  SL", q, l, ts, "ON-ROSTER" if q in ROSTER else "NOT-ON-ROSTER")
+
+
+def e_grounds():
+    ids = ["Q2200744", "Q108060876", "Q1958120", "Q3264211", "Q1067235", "Q14852091", "Q132997935", "Q1140346"]
+    E = ents(ids)
+    for q in ids:
         x = E.get(q, {})
-        ty = [v[0] for v in vals(x, "P31")]
-        if "Q5" in ty: continue
-        for t in ty: types[t] = types.get(t, 0) + 1
-        enl = [v for v in vals(x, "P118") if v[0] in EN_LEAGUES]
-        p("ITEM", q, "|", lab(x), "| tags", sorted(tags.get(q, []), key=str), "| roster", EN_ROSTER.get(q),
-          "| EN-P118", enl, "| nP118", len(vals(x, "P118")), "| P576", vals(x, "P576") or "-",
-          "| P17", [v[0] for v in vals(x, "P17")],
-          "| P115", [(v[0], v[1]) + ((v[2],) if len(v) > 2 else ()) for v in vals(x, "P115")],
-          "| P625", [v[0] for v in vals(x, "P625")], "| P31", ty[:4],
-          "| P831", [v[0] for v in vals(x, "P831")], "| P361", [v[0] for v in vals(x, "P361")][:3], "| sl", sitelinks(x))
-    T = ents(list(types), props="labels")
-    for t, n in sorted(types.items(), key=lambda kv: -kv[1]):
-        p("TYPE", t, lab(T.get(t, {})), n)
+        p("GROUND", q, lab(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"), "| P131", vals(x, "P131")[:2],
+          "| P31", [v[0] for v in vals(x, "P31")][:3], "| P576", vals(x, "P576"))
 
 
-def s5():
-    # rule 6, deliberately: every item typed as a women's team or club carrying EITHER league at ANY rank,
-    # and any roster item typed that way
-    if not EN_LEAGUES: return
-    Q = """SELECT DISTINCT ?club ?clubLabel ?league ?rank ?t ?tLabel WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; wikibase:rank ?rank .
-      ?club wdt:P31 ?t . ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en")
-      FILTER(CONTAINS(LCASE(?tl), "women") || CONTAINS(LCASE(?tl), "female") || CONTAINS(LCASE(?tl), "girls")
-             || CONTAINS(LCASE(?tl), "ladies"))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-    }""" % " ".join("wd:" + l for l in EN_LEAGUES)
-    res, err = fc.sparql_with_retry(Q)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("WOMEN-TYPED", err, len(rows))
-    for r in rows:
-        p("WOMEN-ITEM", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), "| league", q_(fc.cell(r, "league")),
-          q_(fc.cell(r, "rank")).split("#")[-1], "| type", q_(fc.cell(r, "t")), fc.cell(r, "tLabel"))
-    # and by NAME: an item whose label says women / ladies / WFC, whatever its type
-    Q2 = """SELECT DISTINCT ?club ?clubLabel ?league ?rank WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; wikibase:rank ?rank ; rdfs:label ?l .
-      FILTER(LANG(?l) IN ("en", "nl"))
-      FILTER(CONTAINS(LCASE(?l), "women") || CONTAINS(LCASE(?l), "ladies") || CONTAINS(LCASE(?l), "w.f.c")
-             || CONTAINS(LCASE(?l), "vrouwen") || CONTAINS(LCASE(?l), "dames")
-             || CONTAINS(LCASE(?l), " wfc") || CONTAINS(LCASE(?l), "girls"))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-    }""" % " ".join("wd:" + l for l in EN_LEAGUES)
-    res, err = fc.sparql_with_retry(Q2)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("WOMEN-NAMED", err, len(rows))
-    for r in rows:
-        p("WOMEN-NAMED-ITEM", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), "| league", q_(fc.cell(r, "league")),
-          q_(fc.cell(r, "rank")).split("#")[-1])
-
-
-def s6():
-    # the P582 measurement: truthy tags with end dates
-    if not EN_LEAGUES: return
-    Q = """SELECT ?club ?clubLabel ?league ?end ?endPrec ?start ?rank WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; a wikibase:BestRank ; wikibase:rank ?rank .
-      OPTIONAL { ?st pqv:P582 ?ev . ?ev wikibase:timeValue ?end ; wikibase:timePrecision ?endPrec }
-      OPTIONAL { ?st pq:P580 ?start }
-      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-      FILTER NOT EXISTS { ?club wdt:P576 ?d }
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-    }""" % " ".join("wd:" + l for l in EN_LEAGUES)
-    res, err = fc.sparql_with_retry(Q)
-    rows = (res or {}).get("results", {}).get("bindings", [])
-    p("P582-EN", err, len(rows))
-    for r in rows:
-        if fc.cell(r, "end") or fc.cell(r, "start"):
-            p("P582-ROW", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), EN_LEAGUES.get(q_(fc.cell(r, "league"))),
-              (fc.cell(r, "start") or "")[:10], (fc.cell(r, "end") or "")[:10], fc.cell(r, "endPrec"),
-              q_(fc.cell(r, "rank")).split("#")[-1])
-
-
-for name, fn in [("0 extremes", s0), ("1 leagues", s1), ("2 articles", s2), ("4 items", s4),
-                 ("5 women", s5), ("6 P582", s6), ("3 StadiumDB", s3)]:
+for name, fn in [("a pages", a_pages), ("b unknown items", b_unknown), ("c women", c_women), ("d shapes", d_shapes),
+                 ("e grounds", e_grounds)]:
     section(name, fn)
     time.sleep(2)
-p("EN-TOP again", EN_LEAGUES)
-p("=== END OF PROBE EN1 ===")
+p("=== END OF PROBE NL2 ===")
