@@ -1,6 +1,7 @@
 _verdict,source,teamId,teamName,teamCountry,competitions,clubQid,clubName,candidates,note
 ambiguous-club,,,,,,Q157463,1. FC Saarbrücken,openligadb 417 1. FC Saarbrücken; openligadb 3078 1. FC Saarbrücken,more than one openligadb team matches this club; none linked
 ambiguous-club,,,,,,Q535785,Würzburger Kickers,openligadb 398 Würzburger Kickers; openligadb 5276 Würzburger Kickers,more than one openligadb team matches this club; none linked
+country-unknown,football-data,851,Club Brugge KV,,CL,,,Q190916 Club Brugge K.V. (BE),"the team plays only in competitions that give it no country (or in two countries' leagues), so a name match is not trusted"
 venue-disagrees,openligadb,1979,FSV Zwickau,DE,rlno,Q316896,FSV Zwickau,ours: Stadion Zwickau; theirs: GGZ Arena,"linked on the name; the ground names differ, which is often a sponsor's name against the old one - worth one look"
 venue-disagrees,openligadb,1763,Hertha BSC II,DE,rlno,Q920263,Hertha BSC II,ours: Stadion auf dem Wurfplatz; theirs: Amateur-Stadion Olympia-Gelände,"linked on the name; the ground names differ, which is often a sponsor's name against the old one - worth one look"
 unmatched-team,football-data,682,AZ,NL,DED,,,,no club on the map has this name

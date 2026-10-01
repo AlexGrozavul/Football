@@ -3,6 +3,9 @@ Q698702,Admira Wacker,AT,,,,,,,,,12000,7010,,Datenpol Arena,Vienna,Admira Wacker
 Q699686,SC Schwarz-Weiß Bregenz,AT,,,,,,,,,12000,11112,,ImmoAgentur Stadion,Bregenz,Schwarz-Weiß,https://stadiumdb.com/stadiums/aut/casino_stadion_bregenz,name-contained+city,,sources differ by 7%
 Q686826,First Vienna FC 1894,AT,,,,,,,,,5500,6000,,Hohe Warte,Vienna,First Vienna,https://stadiumdb.com/stadiums/aut/hohe_warte,name-contained+city,,sources differ by 8%
 Q670438,SCR Altach,AT,,,,,,,,,8500,8200,,Stadion Schnabelholz,Altach,SCR,https://stadiumdb.com/stadiums/aut/stadion_schnabelholz,name-contained+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"
+Q187528,R.S.C. Anderlecht,BE,,,,,,,,,21500,28063,,Lotto Park,Brussels,Anderlecht,https://stadiumdb.com/stadiums/bel/constant_vanden_stock_stadion,name-contained+ground,,sources differ by 23%
+Q2313985,K. Lierse SK,BE,,,,,,,,,14538,15500,,Herman Vanderpoortenstadion,Lier,Lierse,https://stadiumdb.com/stadiums/bel/herman_vanderpoorten_stadion,name-contained+ground,,sources differ by 6%
+Q190561,Standard Liège,BE,,,,,,,,,30023,27670,,Stade de Sclessin,Liège,Standard,https://stadiumdb.com/stadiums/bel/stade_de_sclessin,name-contained+city,,sources differ by 8%
 Q321061,FC Sion,CH,,,,,,,,,14283,20187,,Tourbillon,Sion,FC Sion,https://stadiumdb.com/stadiums/sui/stade_tourbillon,name-exact+city,,sources differ by 29%
 Q189671,FC Basel,CH,,,,,,,,,38512,36000,,St. Jakob-Park,Basel,FC Basel,https://stadiumdb.com/stadiums/sui/st_jakob_park,name-exact+city,,sources differ by 7%
 Q464775,FC Thun,CH,,,,,,,,,10000,9500,,Stockhorn Arena,Thun,FC Thun,https://stadiumdb.com/stadiums/sui/arena_thun,name-exact+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"

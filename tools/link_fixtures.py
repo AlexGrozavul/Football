@@ -130,7 +130,7 @@ CLUB_FILES = ["data/clubs/DE.json", "data/clubs/RO.json", "data/clubs/FR.json",
               "data/clubs/IT.json", "data/clubs/CH.json", "data/clubs/AT.json",
               "data/clubs/RS.json", "data/clubs/GR.json",
               "data/clubs/ES.json", "data/clubs/GB.json",
-              "data/clubs/NL.json"]
+              "data/clubs/NL.json", "data/clubs/BE.json"]
 FD_INDEX = "data/fixtures/index.json"
 OLDB_INDEX = "data/fixtures/openligadb-index.json"
 MANUAL_FILE = "data/fixture-links-manual.csv"

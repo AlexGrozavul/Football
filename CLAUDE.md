@@ -55,7 +55,13 @@ and no women's team item points at a big English club with `P831` or
 `P361`. Zero. **The Netherlands was checked the same way, 2026-10-01, from
 four angles: zero again** - though there, three women's items do point at
 big Dutch clubs through `P361` (none carries either men's league tag, so
-none reaches the map). It applies beyond leagues: a
+none reaches the map). **Belgium was checked the same way, 2026-10-01,
+from four angles: zero** - no item carrying either Belgian tag at any rank
+is typed, labelled, described or classed as women's, and no women's item
+points at a Belgian roster club by `P831`, `P361`, `P749` or `P127`. One
+trap, recorded: KV Mechelen's women's team `Q19974079` carries the DUTCH
+label "KV Mechelen", identical to the men's club's; it has no mapped tag
+and never reaches the map. It applies beyond leagues: a
 future club addition, a badge, or a piece of research is also men's
 football only until this rule changes, so don't reach for a women's
 team, a women's competition, or a women's-team crest just because a
@@ -205,7 +211,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   ambiguity it could settle is Alexandru's to settle. Since
   2026-09-25 it also holds Le Mans (`Q210864` → football-data 535),
   and Inter (`Q631` → 108), Atalanta (`Q1886` → 102) and Sassuolo
-  (`Q8603` → 471), all added on his instruction.
+  (`Q8603` → 471), all added on his instruction; since 2026-09-30 Real
+  Madrid, Atlético, Osasuna, Deportivo and Racing, and since 2026-10-01
+  the five Dutch abbreviations - AZ (`Q191264` → 682), PSV (`Q11938` →
+  674), Excelsior (`Q370712` → 670), Cambuur (`Q875120` → 1909) and
+  Willem II (`Q332664` → 672) - also on his instruction.
 - `data/league-rosters.csv` — one line per league, telling the roster
   check which Wikipedia season article holds that league's membership:
   `leagueQid`, `country`, `tier`, `season`, `article`, `note`. The
@@ -1263,6 +1273,252 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **Belgium's top two tiers are on the map, 2026-10-01: Pro League 18 of
+  18, exact; Challenger Pro League 13 drawn for 15, nothing at the wrong
+  tier, and the four U23 sides wait on four roster links that are
+  Alexandru's call.** Same pipeline and standard as the eleven countries
+  before it, run through six throwaway probes on a GitHub runner (removed
+  in the same branch); the sandbox still answers 403 to CONNECT for
+  Wikidata, Wikipedia, StadiumDB and Overpass. Tiers 1 and 2 only; the
+  Belgian Division 1 (third tier) and below were deliberately not touched.
+  The roster check reads **29 `ok` and 2 `extra-not-in-roster`**.
+  - **The file is `BE.json`. The league Q-ids were read, not
+    remembered**: `Q216022` Pro League (enwiki *Belgian Pro League*;
+    *Belgian First Division A* redirects to it) and `Q23925620` Challenger
+    Pro League (enwiki *Challenger Pro League*; *Belgian First Division B*
+    redirects to it). Neither carries `P3983`; both carry `P17` Belgium
+    (`Q31`), as does every club item read. **A trap worth naming:**
+    `Q233199` is labelled "Belgian First Division B" in English but is the
+    old Second Division (1909-2016, `P576` 2016, succeeded by
+    `Q23925620`). Six Belgian items carry it - Virton's and Lierse's as
+    their only tag, Lierse's at PREFERRED rank - and it is **not mapped and
+    must not be**: it is a league history. Labels are asked in English,
+    then Dutch, then French.
+  - **The country check is weak for BE, and that is written down rather
+    than fixed.** The box (`Q31`'s own `P1332`-`P1335`) holds Lille and
+    the French Nord, the north of Luxembourg, Zeelandic Flanders,
+    Maastricht and Aachen, so a neighbouring club carrying a Belgian tag
+    would be caught only by `P17`. It flagged no Belgian club.
+  - **The season articles.** The Pro League's is one stadiums table with a
+    matricule column, 18 of 18 resolved. **The Challenger Pro League's
+    stadiums table is not recognised by the parser** (the Swiss Super
+    League shape), so the reader takes the league table: 15 rows, 11 read
+    and resolved, and **four U23 sides left out and named** - "Club NXT
+    U23" and "RSCA Futures U23" link articles WITHOUT the U23 marker (the
+    reserve side's own article, so the guard refuses on the marker), and
+    "Jong Genk U23" and "Jong KAA Gent U23" link their PARENT clubs (the
+    Rapid II shape). The guard is right to refuse all four; the remedy is
+    a hand link.
+  - **The four roster links, written up and NOT written (rule 7 - a
+    link is an identity claim and Alexandru's to make).** Each is one line
+    in `data/roster-links-manual.csv`, ready to paste:
+    `2026–27 Challenger Pro League,Club NXT U23,Q101625593,...`,
+    `2026–27 Challenger Pro League,Jong Genk U23,Q113884742,...`,
+    `2026–27 Challenger Pro League,Jong KAA Gent U23,Q117384089,...` and
+    `2026–27 Challenger Pro League,RSCA Futures U23,Q114056326,...`. What
+    each changes: **Club NXT and Jong Genk are on the map today** (both
+    carry a Challenger Pro League tag) and read `extra-not-in-roster`
+    until their line is in; **Jong KAA Gent and RSCA Futures are not on
+    the map at all** - neither carries a mapped tag, so only the
+    hand-named fallback can bring them in, and its third condition needs
+    the roster to name them, which needs the link. With the link each also
+    needs a `clubs-manual.csv` row with country BE and tier 2, and a ground:
+    Jong KAA Gent plays at the Planet Group Arena from 2025-26 (Dutch
+    article; the first team's pin), RSCA Futures in Deinze (the
+    Challenger Pro League article's note) - which Deinze ground nobody has
+    read.
+  - **What the first build brought, 23 clubs against 33 teams, and what
+    each difference was:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 17 | 6 |
+    | after this pass | **18** | **13** |
+
+    - **Dender** (`Q1065328`) arrived at tier 1 on a PREFERRED Pro League
+      tag from 2024 and is at **tier 2 by a hand row** (the FC Wil shape:
+      both articles complete, the Challenger article's Team changes table
+      and the club's own article say relegated via the play-off).
+    - **Lommel SK** (`Q1668203`) arrived at tier 2 on its only tag and had
+      no position; it is at **tier 1 by a hand row** (promoted via that
+      play-off) and placed at the Soevereinstadion.
+    - **Three `skip`ped to the Hermannstadt standard**, each drawn at tier
+      2 on a Challenger Pro League tag with no dates: **KSV Roeselare**
+      (dissolved 2020, English infobox; "opgeheven 2021", Dutch),
+      **Royale Union Tubize-Braine** (Nationale 1, third tier, French
+      article) and **SL16 FC**, Standard's U23 side (Eerste nationale per
+      its Dutch infobox; not in the 2025-26 Challenger Pro League either;
+      it also sat on Standard's own pin with two grounds, the Freiburg
+      shape). Shape 4.
+    - **Seven promoted clubs whose tags did not follow reach the map
+      through the hand-named fallback**, tier 2 by hand, each under its
+      own Q-id: **Francs Borains** (no `P118`), **Royal Excelsior Virton**
+      and **K. Lierse SK** (only the old Second Division item), **KSC
+      Lokeren** (the 2025 club, no `P118`; not the bankrupt Lokeren
+      `Q221940`, which `P576` drops), **Sporting Hasselt** (third tier
+      tag), **RFC Liège** (fourth tier tag) and **Patro Eisden
+      Maasmechelen** (third tier tag).
+    - **Three placed that the query returned with no coordinates**:
+      **RAAL La Louvière** at the Easi Arena (opened 2025; not the Stade
+      du Tivoli next door), **RFC Seraing** at the Stade du Pairay and
+      **Club NXT** at the Schiervelde in Roeselare - **that pin rests on
+      Wikipedia alone** (the club's English and Dutch articles); its row
+      says so.
+    - **RWDM Brussels** carries a preferred Challenger Pro League tag, no
+      ground and no `P576`; the Challenger article says it was relegated
+      to the Belgian Division 1 after being refused a licence. Off the map
+      at the coordinates gate, and now a whole-club `rejected` row in
+      `coordinate-reviews.csv` so the monthly run cannot offer it a ground
+      (shape 6's relegated relative, the Gilortul shape).
+  - **Rank blind spot, all three shapes, run by `diagnose-rank.yml` on
+    the branch: nothing owed.** Queries A and B: **KV Oostende** (every
+    statement deprecated, no `P576` on Wikidata, bankrupt in 2024 by its
+    infobox, no position) and **Royal Excel Mouscron** (deprecated,
+    `P576` 2022) - both rightly invisible, neither in either article.
+    Query C: no Belgian club; the bill has no BE line. The build's own
+    fallbacks found nothing hidden.
+  - **The league-tag end date (`P582`), measured for Belgium: zero.** Of
+    30 truthy Pro League or Challenger Pro League statements on items with
+    no dissolution date (two of them the Anderlecht season items), **none**
+    carries an end date. Every wrong item
+    above (Roeselare, Tubize, SL16, Dender, Lommel, RWDM) has a tag with no
+    end date at all, so honouring `P582` would have caught none of them -
+    the 2026-09-29 finding a third time.
+  - **Not-a-club: the England gaps and the Dutch season-naming gap,
+    looked for deliberately.** Two club SEASONS carry a Pro League tag -
+    *1991-92* and *1996-97 R.S.C. Anderlecht season*, typed "association
+    football team season" - and the net catches both by type; their names
+    are caught too, the English one by the 2026-10-01 Dutch fix (year
+    range ... "season") and the Dutch one, "RSC Anderlecht in het seizoen
+    1991/92", by the trailing year range. **No item carrying either tag at
+    any rank is typed "aspect of history", "fictional" or as a match**, so
+    England's two kinds and Spain's do not occur here. Because Belgium is
+    the first country whose labels can fall back to Dutch AND French,
+    **the Dutch word "seizoen" is now a type word and a title opening**
+    beside "saison"; checked before it went in, it matches no club name on
+    any of the 523 map entries, and the rebuild changed no other country's
+    file.
+  - **Women's club with a men's tag (rule 6): none, from four angles** -
+    see the rule.
+  - **Every duplicate shape, looked for rather than waited for.** Shapes 1
+    and 2: none - every label of the 33 roster clubs, in all four
+    languages, belongs to one club item only, and the roster check names
+    each club once. Shape 3: **KAA Gent has a multi-sport parent item**,
+    `Q2741852`, typed "sports club", carrying no league tag - never on the
+    map. Shape 4: Roeselare, Tubize, SL16 and RWDM, above; the dissolved
+    namesakes (Beerschot AC, the old Lommel, Lokeren, Seraing, RWD
+    Molenbeek, Excelsior Mouscron and seven more) carry `P576` and the gate
+    drops them. Shape 5: none - one club at a time, nothing typed "men's
+    association football team" points at a roster club; what does point at
+    them is an academy, a futsal club, an U19 side, two stadiums, a
+    streaming service and a German squad list. Shape 6: RWDM.
+    **One shared pin, genuine**: Club Brugge and Cercle Brugge at the Jan
+    Breydel.
+  - **Grounds - two wrong, and one copied.** **KAA Gent was drawn at the
+    Jules Ottenstadion**, its only `P115`, which carries `P576` 2014; it
+    is now at the **Planet Group Arena** (20,000). **Royal Antwerp was
+    drawn at the Stadion Broodstraat**, `P576` 1923; now at the
+    **Bosuilstadion** (21,000) - 54 m away, so the pin hardly moved, the
+    name and the capacity did. **Jong Genk sat on Genk's Cegeka Arena**,
+    a copied first-team ground; the Challenger article, its Dutch infobox
+    and the ground's Dutch article all say **De Leunen in Geel**, and its
+    capacity is cleared (10,524 twice, which Dutch Wikipedia says is the
+    pre-2016 figure; 8,000 since). Dender's ground is the same place under
+    its 2022 name, the Dender Football Complex. **Sporting Hasselt's pin
+    is OpenStreetMap's alone**: its ground's Wikidata item has no position.
+  - **Capacities, the UTA Arad rule - every source read, including the
+    ones that agree with the map.** Corrected, each where the Pro League
+    table and StadiumDB agree within 5% and the map sat outside:
+    **Charleroi** 14,891 -> **14,000**, **Mechelen** 13,213 -> **16,700**,
+    **OH Leuven** 9,493 -> **10,000**, **Union SG** 5,100 -> **9,400** and
+    **Zulte Waregem** 10,200 -> **12,500**; with the ground changes,
+    **Gent 20,000**, **Antwerp 21,000**; filled: **La Louvière 8,050**,
+    **Francs Borains 6,000**, **Hasselt 8,800**, **Lokeren 12,136**.
+    **Two against two, nothing changed, each with a note-only row** (the
+    AEL shape): **Genk** (25,000 and the table's 24,956 against 23,718 on
+    StadiumDB and the infobox) and **Beveren** (13,290 on Wikidata and
+    StadiumDB against 8,190 in the table and the infobox - possibly one
+    source, Wikipedia, twice). **Contested and left blank**: Lommel
+    (8,000 / 12,911), Seraing (8,207 / 14,328), RFC Liège (4,147 / 3,500
+    / 3,000), Jong Genk (above), Club NXT and Patro Eisden (one source
+    each). **Contested, the map's figure kept**: Dender (12,000 / 6,429 /
+    8,548) and Lierse (14,538 with the ground's infobox / 13,539 /
+    15,500). **The map stands** where it agrees with the table and
+    StadiumDB is the outlier: Anderlecht (StadiumDB's 28,063) and Standard
+    (StadiumDB's 27,670, which is the ground's limited capacity).
+    **Antwerp is worth a look**: Dutch Wikipedia says the Bosuil holds
+    24,500 since a stand reopened on 5 December 2025, newer than the
+    season table - one source, so not taken.
+  - **StadiumDB: 37 grounds; 9 agree, 3 differ, 19 not matched** on short
+    names ("Zulte", "St-Truiden VV", "Waasland-Beveren"). The three that
+    differ are Anderlecht, Standard and Lierse, all weighed above.
+  - **OpenStreetMap confirms almost nothing in Belgium**: 208 stadiums,
+    **4 with a capacity** - Romania's and Italy's shape. It confirmed
+    positions (Gent, Antwerp, La Louvière, Lommel, RFC Liège, Virton,
+    Eupen within tens of metres) and supplied Hasselt's. **The first run
+    on the branch left Belgium `UNCHANGED`** (HTTP 504, with France, the
+    Netherlands and Serbia), so it was not a pass; the second, on the final
+    layer (14:35 UTC), wrote Belgium: **31 clubs, 1 agree (Hasselt, 8,800),
+    0 differ, 20 Wikidata only, 6 neither, 6 with no OpenStreetMap stadium
+    within 500 m** - Club NXT's Schiervelde pin and Jong Genk's De Leunen pin
+    among them, so both rest on their Wikidata ground items and Wikipedia,
+    nothing else. Italy was `UNCHANGED` on that run. **Worth one look:**
+    the OpenStreetMap stadium 22 m from Seraing's Pairay pin is named
+    "Stade Hubert Freson" - most likely the same ground under another name,
+    not checked.
+  - **Fixtures: none.** football-data.org's free tier carries no Belgian
+    league and OpenLigaDB is German only; the club sheet says so, and was
+    opened in the real page for ten Belgian clubs. **Club Brugge plays
+    in the Champions League** and football-data's team 851 "Club Brugge KV"
+    is in the review file as `country-unknown` - a team seen only in the
+    Champions League is never linked by name. **One `link` row
+    (`Q190916,football-data,851,link`) would give Club Brugge its
+    Champions League fixtures - Alexandru's call, not written.**
+  - **Merge, under rule 7, 2026-10-01 - and what it rests on.** Every
+    workflow dispatched on the branch is green (15 runs), no hand row was
+    rejected (the builder's reader first refused twelve Belgian rows for a
+    missing name - fixed before any build used them), `check_tickets.py`
+    exits 0, the roster check reads Belgium 29 `ok` and the two
+    `extra-not-in-roster` written up above and changed no other country's
+    verdict, the rank diagnostic owes nothing, and `link_fixtures.py`
+    re-run on the final files changes nothing. The real page was opened
+    headless (Leaflet from npm, tiles stubbed): all twelve country files
+    load, 31 Belgian clubs, no script error. **The OpenStreetMap capacity
+    check took four runs**: Belgium, France, the Netherlands and Serbia
+    `UNCHANGED` on the first (HTTP 504), Italy on the second, Germany,
+    France, Italy and the Netherlands on the third - each left byte for
+    byte. **The merge rests on the fourth, 15:15 UTC, on the final code:
+    all twelve countries `WRITTEN`.** Nothing that is Alexandru's call
+    was decided: the four roster links and the Club Brugge fixture link
+    are written up, not written, and every tier, skip and ground change
+    is a reviewable hand row that says how to undo it.
+  - **Found on the way**: the Overpass name search for the grounds to be
+    placed answered HTTP 504 three times and gave nothing; the per-club
+    positions rest on Wikidata's ground items, which the earlier
+    whole-country OpenStreetMap read confirmed where it could. And a
+    women's-team label identical to a men's club's (rule 6, above), which
+    is the case for never joining on a name.
+
+- **`index.html` has no automated check of its own - a known gap,
+  recorded 2026-10-01 on Alexandru's instruction, to be addressed later
+  and deliberately not now.** Every data file has a reader that turns a
+  run red: `check_tickets.py`, `check_rosters.py`, the club builder's
+  read-back. The page has nothing. No workflow opens it, loads the
+  country files through it, or opens a club sheet; a script error, a
+  country file missing from `COUNTRY_FILES`, or a sheet that says
+  "unavailable" for the wrong reason would reach `main` with every tick
+  green. **The last two UI fixes merged on manual headless testing
+  only**: "time not set" for placeholder kick-offs (#45, `b8367c8`) and
+  the Eerste Divisie fixtures message (`253020f`). Each was checked by a
+  session opening the real page in headless Chromium (Leaflet from npm,
+  tiles stubbed) and reading the sheet text by eye - real, but not
+  repeatable, not run on a later change, and not part of rule 7's
+  "clean". The same is true of every country pass's "the real page was
+  opened" line, this one's included. What a check would need is written
+  here so the next session does not rediscover it: a local server for
+  the repo, Leaflet from a pinned local copy (unpkg is unreachable from
+  the sandbox), stubbed tiles, then load every country file and fail on
+  any page error, and open a sheet per country. Not built.
+
 - **The Netherlands' top two tiers are on the map, 2026-10-01: Eredivisie
   18 of 18 and Eerste Divisie 20 of 20, exact - nothing missing, nothing
   extra, nothing at the wrong tier.** Same pipeline and standard as the
@@ -1434,7 +1690,11 @@ a page anyone can already view in their browser's network tab.
     "SBV Excelsior"), SC Cambuur (`Q875120` -> 1909 "SC Cambuur-Leeuwarden")
     and Willem II (`Q332664` -> 672 "Willem II Tilburg"). Until then those
     clubs' sheets say fixtures are unavailable. The Eerste Divisie has no
-    fixture source; the club sheet says so.
+    fixture source; the club sheet says so. **All five rows were added on
+    2026-10-01 on Alexandru's instruction**, the Le Mans way: each read
+    back as `linked`, the Eredivisie is 18 of 18 linked, and each club's
+    sheet was opened in the real page (headless) and lists its Eredivisie
+    fixtures - PSV's its Champions League ones too.
   - **Found on the way, not Dutch**: two of the first-pass SPARQL queries
     that look for items pointing at the roster clubs answered HTTP 504 with
     zero rows, which is a failed query and not an empty answer; they were
@@ -5227,7 +5487,10 @@ a page anyone can already view in their browser's network tab.
     clubs - on `wal`, which the tool now reads for GB as well. **The
     Netherlands, slug `ned`, 2026-10-01, measured too, and as full**: 45
     grounds in two tables, a ground for 18 of 18 Eredivisie clubs and 16 of
-    20 Eerste Divisie clubs, the four without being the Jong sides.) As a second opinion on
+    20 Eerste Divisie clubs, the four without being the Jong sides. **Belgium,
+    slug `bel`, 2026-10-01**: 37 grounds; the matcher pairs 12 of the 31
+    clubs and 19 go unmatched on short names, all read by hand in the
+    Belgium pass.) As a second opinion on
     a ground StadiumDB happens to hold it is excellent — clean to
     parse, independent of both OpenStreetMap and Wikidata, and
     editorially curated rather than crowd-sourced. As the systematic
