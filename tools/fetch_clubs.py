@@ -648,6 +648,13 @@ def load_tiers():
 # "fictional association football team" and carries P118 Premier League;
 # it has no ground, so it died at the coordinates gate, and a fictional
 # club is exactly the thing propose_coordinates.py must never be offered.
+# The Netherlands (2026-10-01) brought five club SEASONS ("2007-08 AZ Alkmaar
+# season", Wikidata type 'association football team season') that the type
+# word 'season' caught - and that the NAME fallback, which exists for an item
+# whose type says nothing, would have missed: it only knew names that START
+# with 'season'. A name that opens with a year range and ends in 'season' is
+# now caught too. Checked before it went in: it matches those five and no
+# club name on any of the 523 map entries.
 NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ",
                     "season", "saison", "sezon", "stagione",
                     "club match", "football match", "partido de",
@@ -657,6 +664,7 @@ NOT_A_CLUB_NAME = re.compile(
     r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b"
     r"|^\s*(saison|season|sezonul|sezon|spielzeit|stagione)\s+\d{4}"
     r"|^\s*history of\b"
+    r"|^\s*(19|20)\d{2}\s*[-–/]\s*((19|20)\d{2}|\d{2})\s+.*\bseason\s*$"
     r"|\s(19|20)\d{2}\s*[-–/]\s*((19|20)\d{2}|\d{2})\s*$", re.IGNORECASE)
 
 
