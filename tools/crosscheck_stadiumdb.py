@@ -370,7 +370,11 @@ GROUND_FORMS = {
 # writes "Borussia" and "Borussia II" as two separate grounds, and
 # without this every reserve side in the file matched its first team's
 # stadium and inherited a capacity ten times too big.
-TEAM_MARKERS = {"ii", "2", "b", "iii", "3", "u21", "u23", "u19", "amateure"}
+# "jong" is the Dutch one, added 2026-10-01 in the Netherlands pass: the
+# Eerste Divisie has four reserve sides (Jong Ajax, Jong AZ, Jong PSV, Jong
+# FC Utrecht) and the matcher paired "Jong AZ" with AZ's own stadium - the
+# Borussia Dortmund II failure exactly, on a prefix instead of a suffix.
+TEAM_MARKERS = {"ii", "2", "b", "iii", "3", "u21", "u23", "u19", "amateure", "jong"}
 
 
 def team_marker(name):
