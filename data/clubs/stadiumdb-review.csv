@@ -43,7 +43,6 @@ Q430993,Mantova 1911,IT,,,,,,,,,7367,12000,,Stadio Danilo Martelli,Mantua,Mantov
 Q2052,ACF Fiorentina,IT,,,,,,,,,43325,22000,,Stadio Artemio Franchi,Florence,Fiorentina,https://stadiumdb.com/stadiums/ita/stadio_artemio_franchi_firenze,name-contained+ground,,sources differ by 49%
 Q1543,AC Milan,IT,,,,,,,,,75817,75817,,Stadio San Siro,Milan,"AC Milan, Inter FC",https://stadiumdb.com/stadiums/ita/stadio_san_siro,name-exact+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"
 Q845043,Frosinone Calcio,IT,,,,,,,,,16227,16227,,PSC Arena,Frosinone,Frosinone Calcio,https://stadiumdb.com/stadiums/ita/stadio_benito_stirpe,name-exact+city,,"the two ground names do not match but the two figures do - most likely one ground under a sponsor's name and its old one, worth confirming"
-Q50573061,Jong AZ,NL,,,,,,,,,,19478,,AFAS Stadion,Alkmaar,AZ,https://stadiumdb.com/stadiums/ned/az_stadion,name-contained+ground,,only StadiumDB has a figure
 Q738060,FC Volendam,NL,,,,,,,,,6200,6984,,Kras Stadion,Volendam,FC Volendam,https://stadiumdb.com/stadiums/ned/kras_stadion,name-exact+city,,sources differ by 11%
 Q191264,AZ Alkmaar,NL,,,,,,,,,17023,19478,,AFAS Stadion,Alkmaar,AZ,https://stadiumdb.com/stadiums/ned/az_stadion,name-contained+city,,sources differ by 13%
 Q1071713,SC Telstar,NL,,,,,,,,,5200,3625,,BUKO Stadion,Velsen-Zuid,Telstar,https://stadiumdb.com/stadiums/ned/sportpark_schoonenberg,name-contained+ground,,sources differ by 30%
