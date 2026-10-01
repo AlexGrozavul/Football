@@ -1,4 +1,4 @@
-"""TEMPORARY probe #2 for the Belgium pass. Removed in the same branch."""
+"""TEMPORARY probe #3 for the Belgium pass. Removed in the same branch."""
 import csv, glob, json, os, re, sys, time, traceback, urllib.parse, urllib.request, urllib.error
 sys.path.insert(0, "tools")
 import check_rosters as cr
@@ -91,10 +91,28 @@ def qid_for(title, lang="en"):
 
 
 
+def qid_for(title, lang="en"):
+    args = {"action": "wbgetentities", "sites": f"{lang}wiki", "titles": title, "props": "info", "format": "json",
+            "normalize": "1"}
+    d, e = cr.get_json_with_retry("https://www.wikidata.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    for k in ((d or {}).get("entities") or {}):
+        if k.startswith("Q"): return k
+    return None
+
+
+def qid_for(title, lang="en"):
+    args = {"action": "wbgetentities", "sites": f"{lang}wiki", "titles": title, "props": "info", "format": "json",
+            "normalize": "1"}
+    d, e = cr.get_json_with_retry("https://www.wikidata.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    for k in ((d or {}).get("entities") or {}):
+        if k.startswith("Q"): return k
+    return None
+
+
+
+
 import html as _html
-ROSTER = """Q187528 Q732002 Q509170 Q364698 Q19585 Q190916 Q216032 Q18232 Q618620 Q536651 Q1668203 Q113000 Q916199 Q138248 Q190561 Q196160 Q849544 Q376635
-Q2268833 Q1065328 Q1423718 Q18001655 Q650917 Q95183770 Q2456491 Q1347229 Q2313985 Q2308515 Q925973 Q101625593 Q113884742 Q117384089""".split()
-EXTRA = "Q1053917 Q291937 Q115476719 Q20979061 Q370206 Q2195773 Q221940".split()
+import crosscheck_capacity as cc
 
 
 def wikitext(title, lang="en", section="0"):
@@ -105,10 +123,10 @@ def wikitext(title, lang="en", section="0"):
     return (d or {}).get("parse", {}).get("wikitext", "")
 
 
-def infobox(title, lang="en", keys=r"dissolved|league|season|position|ground|capacity|coordinates|current|fullname|founded|stadium|opened|location|home|tenants|competitie|opgeheven|stadion|opgericht|fusie|merger|defunct|ceased|last|clubname|naam|bijnaam|capaciteit|championnat|stade|fondation|disparition|division|divisie|reeks"):
+def infobox(title, lang="en", keys=r"capacity|capaciteit|capacité|opened|opening|name|naam|nom|tenants|bespeler|club|clubs|coordinates|coord|location|locatie|ville|adresse|address|former|vroeger|surface|owner|eigenaar|ground|stadion|stade|league|competitie|championnat|opgeheven|dissolved"):
     wt = wikitext(title, lang)
-    keep = [l.strip() for l in wt.splitlines() if re.match(r"\s*\|\s*(%s)" % keys, l, re.I)]
-    return " || ".join(keep)[:1300] if keep else ("(no infobox lines)" if wt else "(no article)")
+    keep = [re.sub(r"<ref.*?(</ref>|/>)", "", l.strip()) for l in wt.splitlines() if re.match(r"\s*\|\s*(%s)" % keys, l, re.I)]
+    return " || ".join(keep)[:1100] if keep else ("(no infobox lines)" if wt else "(no article)")
 
 
 def intro(title, lang="en", n=900):
@@ -119,77 +137,105 @@ def intro(title, lang="en", n=900):
     return re.sub(r"\s+", " ", (pages[0].get("extract") if pages else "") or "")[:n]
 
 
-def a_items():
-    ids = ["Q233199", "Q24036298", "Q420970", "Q2441983", "Q98406549", "Q117384089", "Q101625593", "Q113884742",
-           "Q115476719", "Q1668203", "Q2313985", "Q95183770", "Q18001655"]
-    ids.append(qid_for("RSCA Futures") or "")
-    p("RSCA Futures ->", ids[-1])
-    E = ents(ids, props="claims|labels|descriptions|sitelinks")
+def search(text, lang="en"):
+    args = {"action": "wbsearchentities", "search": text, "language": lang, "type": "item", "limit": "7", "format": "json"}
+    d, e = cr.get_json_with_retry("https://www.wikidata.org/w/api.php?" + urllib.parse.urlencode(args), text)
+    return [(x["id"], x.get("label"), x.get("description")) for x in (d or {}).get("search", [])]
+
+
+GROUNDS_EN = ["Planet Group Arena", "Bosuilstadion", "Easi Arena", "Soevereinstadion", "Stade du Pairay", "Daknamstadion",
+              "Herman Vanderpoortenstadion", "Stade Yvan Georges", "Kehrwegstadion", "Gemeentelijk Sportparkstadion",
+              "Schiervelde Stadion", "Elindus Arena", "Freethiel Stadion", "Stayen", "Den Dreef", "Achter de Kazerne",
+              "Dender Football Complex", "Joseph Marien Stadium", "Constant Vanden Stock Stadium", "Stade du Pays de Charleroi",
+              "Cegeka Arena", "Stade Maurice Dufrasne", "Het Kuipje", "Jan Breydel Stadium", "Guldensporen Stadion",
+              "Olympisch Stadion (Antwerp)", "Stade Leburton"]
+
+
+def a_grounds():
+    got, fails = cr.qids_for_titles(GROUNDS_EN)
+    p("GROUND-TITLES", len(got), "of", len(GROUNDS_EN), "fails", fails)
+    E = ents(list(got.values()))
+    for t in GROUNDS_EN:
+        q = got.get(t)
+        x = E.get(q, {}) if q else {}
+        p("GROUND", t, "->", q, "|", lab(x), "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"),
+          "| P466", [v[0] for v in vals(x, "P466")][:6], "| P576", vals(x, "P576"), "| P131", [v[0] for v in vals(x, "P131")][:2])
+        p("   INFOBOX", infobox(t))
+        time.sleep(0.5)
+
+
+def b_search():
+    for t in ["Stade Robert Urbain", "Stade de Rocourt", "Stade Vélodrome de Rocourt", "Sportstadion Hasselt",
+              "Stedelijk Sportstadion Hasselt", "De Leunen", "Leunenstadion", "Stade du Pairay", "Soevereinstadion",
+              "Easi Arena", "Stade du Tivoli", "Burgemeester Van de Wiele", "Jos Van Hoeylandt", "Bosuil", "Planet Group Arena",
+              "Gemeentelijk Sportparkstadion", "Patro Eisden"]:
+        for lang in ("en", "nl", "fr"):
+            r = search(t, lang)
+            if r: p("SEARCH", lang, repr(t), r)
+            time.sleep(0.3)
+    hits = set()
+    for line in []: pass
+
+
+def c_items():
+    ids = ["Q1146219", "Q2271005", "Q2117498", "Q3497440", "Q3497457"]
+    # filled by search output next time; print whatever is here
+    E = ents(ids)
     for q in ids:
         x = E.get(q, {})
-        if not x: continue
-        p("ITEM", q, labs(x), "| desc", {k: v["value"] for k, v in x.get("descriptions", {}).items() if k in ("en", "nl", "fr")},
-          "| sl", sitelinks(x), "| props", sorted(x.get("claims", {}).keys())[:40])
-        for pr in ("P31", "P17", "P118", "P571", "P576", "P115", "P625", "P831", "P361", "P1365", "P1366", "P2094", "P3983", "P155", "P156"):
-            if pr in x.get("claims", {}): p("    ", q, pr, vals(x, pr)[:8])
+        p("ITEM", q, labs(x), "| P31", [v[0] for v in vals(x, "P31")][:3], "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"),
+          "| P466", [v[0] for v in vals(x, "P466")][:6], "| P131", [v[0] for v in vals(x, "P131")][:2])
 
 
-def b_pages():
-    for t, lang in [("K.S.V. Roeselare", "en"), ("KSV Roeselare", "nl"), ("Royale Union Tubize-Braine", "en"), ("AFC Tubize", "nl"),
-                    ("SL16 FC", "en"), ("RWDM Brussels", "en"), ("FCV Dender EH", "en"), ("Lommel SK", "en"),
-                    ("Club NXT", "en"), ("RSCA Futures", "en"), ("Jong Genk", "nl"), ("Jong KAA Gent", "nl"),
-                    ("RAAL La Louvière", "en"), ("RFC Seraing (1922)", "en"), ("Francs Borains", "en"),
-                    ("KSC Lokeren (2025)", "en"), ("Sporting Hasselt", "en"), ("RFC Liège", "en"), ("Lierse SK (2018)", "en"),
-                    ("Patro Eisden Maasmechelen", "en"), ("Royal Excelsior Virton", "en"), ("K Beerschot VA", "en"),
-                    ("KAS Eupen", "en"), ("Royale Union Saint-Gilloise", "en"), ("KVC Westerlo", "en"),
-                    ("KV Oostende", "en"), ("Sportkring Beveren", "en")]:
+def d_pages():
+    for t, lang in [("SL16 FC", "fr"), ("SL16 FC", "nl"), ("Standard Luik", "nl"), ("Club NXT", "nl"), ("RSCA Futures", "nl"),
+                    ("Jong Genk", "nl"), ("Lommel SK", "nl"), ("RAAL La Louvière", "fr"), ("RFC Liège", "fr"),
+                    ("Royal Francs Borains", "fr"), ("Francs Borains", "nl"), ("Sporting Hasselt", "nl"), ("KSK Hasselt", "nl"),
+                    ("Stade de Rocourt", "fr"), ("Stade Robert Urbain", "fr"), ("Stade du Pairay", "fr"), ("Leunenstadion", "nl"),
+                    ("Soevereinstadion", "nl"), ("Stade du Tivoli", "fr"), ("Easi Arena", "fr"), ("Sportpark Hasselt", "nl"),
+                    ("Royale Union Tubize-Braine", "fr"), ("KV Mechelen", "en"), ("Bosuilstadion", "nl"), ("Planet Group Arena", "nl"),
+                    ("Stade Joseph Marien", "fr"), ("FCV Dender EH", "nl"), ("Dender Football Complex", "en")]:
         p("PAGE", lang, t, "| INFOBOX", infobox(t, lang))
-        p("   INTRO", intro(t, lang))
-        time.sleep(1)
+        p("   INTRO", intro(t, lang, 700))
+        time.sleep(0.7)
 
 
-def c_tables():
-    for art in ["2026–27 Challenger Pro League", "2026–27 Belgian Pro League"]:
+def e_prev_season():
+    for art in ["2025–26 Challenger Pro League", "2025–26 Belgian Pro League"]:
         page, real, err = cr.fetch_article(art)
-        p("TABLES", art, err)
+        p("PREV", art, real, err)
         if not page: continue
-        for i, tb in enumerate(re.findall(r'<table class="wikitable[^"]*".*?</table>', page, re.S)):
-            rows = re.findall(r"<tr[^>]*>(.*?)</tr>", tb, re.S)
-            head = [cr.text_of(x) for x in re.findall(r"<th[^>]*>(.*?)</th>", rows[0], re.S)] if rows else []
-            p(" TABLE", i, "head", head[:10], "rows", len(rows))
-            if i > 3: continue
-            for tr in rows[1:30]:
-                cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)
-                txt = [cr.text_of(c) for c in cells]
-                links = [_html.unescape(urllib.parse.unquote(m)).replace("_", " ") for m in re.findall(r'href="/wiki/([^"#?]+)"', tr)]
-                p("   ROW", " | ".join(txt)[:220], "|| links", links[:6])
+        plain = cr.text_of(page)
+        i = plain.find("Team changes")
+        p("  TEAMCHANGES", plain[i:i + 1500] if i >= 0 else "(none)")
+        for kw in ("SL16", "Standard", "U23", "withdr"):
+            for m in list(re.finditer(kw, plain))[:4]:
+                p("  KW", kw, "...", plain[max(0, m.start() - 200):m.start() + 200])
         time.sleep(2)
 
 
-def d_grounds():
-    E = ents(ROSTER + EXTRA)
-    gs = {}
-    for q in ROSTER + EXTRA:
-        x = E.get(q, {})
-        for v in vals(x, "P115"):
-            gs.setdefault(v[0], []).append(q)
-    G = ents(list(gs))
-    for g, qs in gs.items():
-        x = G.get(g, {})
-        p("GROUND", g, lab(x), "| for", qs, "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"),
-          "| P131", vals(x, "P131")[:2], "| P576", vals(x, "P576"), "| P466", [v[0] for v in vals(x, "P466")][:6], "| sl", sitelinks(x))
+def f_osm():
+    clubs = json.load(open("data/clubs/BE.json"))["clubs"]
+    payload, err = cc.overpass_with_retry("BE")
+    p("OVERPASS", err, len((payload or {}).get("elements", [])))
+    st = cc.stadium_points(payload or {})
+    p("OSM stadiums", len(st), "with capacity", sum(1 for s in st if s.get("capacity")))
+    for c in sorted(clubs, key=lambda c: c["name"]):
+        best, bd = None, None
+        for s in st:
+            d = cc.metres(c["lat"], c["lon"], s["lat"], s["lon"])
+            if bd is None or d < bd: best, bd = s, d
+        p("OSM", c["name"], "| ours", c["venue"], c["capacity"], "| nearest", (best or {}).get("name"), "| osm cap",
+          (best or {}).get("capacity"), "| metres", round(bd) if bd is not None else None)
+    rx = re.compile(r"urbain|rocourt|pairay|sportstadion|soeverein|easi|tivoli|leunen|sportpark|bosuil|planet|ghelamco|"
+                    r"daknam|vanderpoorten|kehrweg|yvan|schiervelde|deinze|wiele|machtens|marien|mambourg|olympisch", re.I)
+    for s in st:
+        if rx.search(s.get("name") or ""):
+            p("OSM-NAMED", s.get("name"), s["lat"], s["lon"], "cap", s.get("capacity"), s.get("tag"))
 
 
-def e_extras():
-    E = ents(EXTRA)
-    for q in EXTRA:
-        x = E.get(q, {})
-        p("EXTRA", q, labs(x), "| P118", vals(x, "P118"), "| P576", vals(x, "P576"), "| P115", vals(x, "P115"),
-          "| P1366", vals(x, "P1366"), "| P156", vals(x, "P156"), "| sl", sitelinks(x))
-
-
-for name, fn in [("a items", a_items), ("c tables", c_tables), ("d grounds", d_grounds), ("e extras", e_extras),
-                 ("b pages", b_pages)]:
+for name, fn in [("a grounds", a_grounds), ("b search", b_search), ("e prev season", e_prev_season),
+                 ("d pages", d_pages), ("f osm", f_osm)]:
     section(name, fn)
     time.sleep(2)
-p("=== END OF PROBE BE2 ===")
+p("=== END OF PROBE BE3 ===")
