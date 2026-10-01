@@ -4038,6 +4038,44 @@
     }
    ]
   },
+  "Q191264": {
+   "name": "AZ Alkmaar",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "682",
+     "teamName": "AZ",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q370712": {
+   "name": "Excelsior Rotterdam",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "670",
+     "teamName": "SBV Excelsior",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
   "Q24711": {
    "name": "FC Groningen",
    "links": [
@@ -4195,6 +4233,49 @@
     }
    ]
   },
+  "Q11938": {
+   "name": "PSV Eindhoven",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "674",
+     "teamName": "PSV",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q875120": {
+   "name": "SC Cambuur",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1909",
+     "teamName": "SC Cambuur-Leeuwarden",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
   "Q200321": {
    "name": "SC Heerenveen",
    "links": [
@@ -4241,6 +4322,25 @@
      "teamId": "6806",
      "teamName": "Sparta Rotterdam",
      "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "DED",
+       "file": "data/fixtures/DED.json",
+       "label": "Eredivisie"
+      }
+     ]
+    }
+   ]
+  },
+  "Q332664": {
+   "name": "Willem II",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "672",
+     "teamName": "Willem II Tilburg",
+     "basis": "manual",
      "venue": null,
      "competitions": [
       {
