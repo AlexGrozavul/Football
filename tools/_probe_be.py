@@ -1,4 +1,4 @@
-"""TEMPORARY probe #4 for the Belgium pass. Removed in the same branch."""
+"""TEMPORARY probe #5 for the Belgium pass. Removed in the same branch."""
 import csv, glob, json, os, re, sys, time, traceback, urllib.parse, urllib.request, urllib.error
 sys.path.insert(0, "tools")
 import check_rosters as cr
@@ -151,43 +151,42 @@ def qid_for(title, lang="en"):
 
 
 
-def a_items():
-    ids = ["Q16062685", "Q20751559", "Q1874231", "Q97686604", "Q3250417", "Q109045011", "Q2308515", "Q265477",
-           "Q15694367", "Q677582", "Q135110334", "Q3153676", "Q1708705", "Q285074", "Q3496100"]
-    E = ents(ids, props="claims|labels|descriptions|sitelinks")
-    for q in ids:
-        x = E.get(q, {})
-        p("ITEM", q, labs(x), "| desc", {k: v["value"] for k, v in x.get("descriptions", {}).items() if k in ("en", "nl", "fr")},
-          "| P31", [v[0] for v in vals(x, "P31")][:3], "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"),
-          "| P466", [v[0] for v in vals(x, "P466")][:6], "| P131", [v[0] for v in vals(x, "P131")][:2], "| P576", vals(x, "P576"),
-          "| P6375", vals(x, "P6375")[:1], "| sl", sitelinks(x))
+
+ROSTER = """Q187528 Q732002 Q509170 Q364698 Q19585 Q190916 Q216032 Q18232 Q618620 Q536651 Q1668203 Q113000 Q916199 Q138248 Q190561 Q196160 Q849544 Q376635
+Q2268833 Q1065328 Q1423718 Q18001655 Q650917 Q95183770 Q2456491 Q1347229 Q2313985 Q2308515 Q925973 Q101625593 Q113884742 Q117384089 Q114056326""".split()
 
 
-def b_osm():
-    q = """[out:json][timeout:120];
-area["ISO3166-1"="BE"][admin_level=2]->.a;
-nwr["name"~"Urbain|Leunen|Pairay|Schiervelde|Patro|Sportpark|Daknam|Rocourt|Vedette|Boverie|Freethiel|Kuipje|Stayen|Breydel|Dufrasne|Kehrweg",i](area.a);
-out tags center;"""
-    body = urllib.parse.urlencode({"data": q}).encode()
-    for attempt in range(3):
-        try:
-            req = urllib.request.Request("https://overpass-api.de/api/interpreter", data=body,
-                                         headers={"User-Agent": cr.USER_AGENT})
-            with urllib.request.urlopen(req, timeout=180) as r:
-                d = json.loads(r.read().decode())
-            break
-        except Exception as ex:
-            p("OVERPASS-ERR", ex); time.sleep(45); d = None
-    for el in (d or {}).get("elements", []):
-        t = el.get("tags", {})
-        c = el.get("center") or {"lat": el.get("lat"), "lon": el.get("lon")}
-        if not any(k in t for k in ("leisure", "building", "sport", "landuse")): continue
-        p("OSM", el["type"] + "/" + str(el["id"]), t.get("name"), "|", c.get("lat"), c.get("lon"), "| leisure", t.get("leisure"),
-          "| building", t.get("building"), "| sport", t.get("sport"), "| cap", t.get("capacity"), "| addr", t.get("addr:city"),
-          t.get("addr:street"))
+def a_same_label():
+    E = ents(ROSTER, props="labels")
+    labels = set()
+    for q in ROSTER:
+        for l, v in E.get(q, {}).get("labels", {}).items():
+            labels.add((v["value"].replace('"', ''), l))
+    vals_ = " ".join('"%s"@%s' % lv for lv in sorted(labels))
+    rows = sparql("""SELECT DISTINCT ?x ?xLabel ?t ?tLabel WHERE {
+      VALUES ?lab { %s } ?x rdfs:label ?lab . ?x wdt:P31 ?t .
+      VALUES ?t { wd:Q476028 wd:Q103229495 wd:Q14752149 wd:Q2412834 wd:Q847017 wd:Q15944511 wd:Q4438121 wd:Q31855 wd:Q783794 wd:Q891723 wd:Q20639856 }
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl,fr" } }""" % vals_, "SAME-LABEL-ITEMS")
+    seen = {}
+    for r in rows: seen.setdefault((q_(fc.cell(r, "x")), fc.cell(r, "xLabel")), []).append(fc.cell(r, "tLabel"))
+    for (q, l), ts in sorted(seen.items(), key=lambda kv: kv[0][1] or ""):
+        p("  SL", q, l, ts, "ON-ROSTER" if q in ROSTER else "NOT-ON-ROSTER")
 
 
-for name, fn in [("a items", a_items), ("b osm", b_osm)]:
+def b_women_pointing():
+    ids = " ".join("wd:" + q for q in ROSTER)
+    rows = sparql("""SELECT DISTINCT ?team ?teamLabel ?club ?rel ?tLabel WHERE {
+      VALUES ?club { %s }
+      { ?team wdt:P831 ?club . BIND("P831" AS ?rel) } UNION { ?team wdt:P361 ?club . BIND("P361" AS ?rel) }
+      UNION { ?team wdt:P749 ?club . BIND("P749" AS ?rel) } UNION { ?team wdt:P127 ?club . BIND("P127" AS ?rel) }
+      ?team wdt:P31 ?t . ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en")
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl,fr" } }""" % ids, "ALL-POINTING-AT-ROSTER")
+    for r in rows:
+        p("  P", q_(fc.cell(r, "team")), fc.cell(r, "teamLabel"), "->", q_(fc.cell(r, "club")), fc.cell(r, "rel"),
+          "| type", fc.cell(r, "tLabel"))
+
+
+for name, fn in [("a same label", a_same_label), ("b pointing", b_women_pointing)]:
     section(name, fn)
     time.sleep(2)
-p("=== END OF PROBE BE4 ===")
+p("=== END OF PROBE BE5 ===")
