@@ -1473,6 +1473,24 @@ a page anyone can already view in their browser's network tab.
     Champions League is never linked by name. **One `link` row
     (`Q190916,football-data,851,link`) would give Club Brugge its
     Champions League fixtures - Alexandru's call, not written.**
+  - **Merge, under rule 7, 2026-10-01 - and what it rests on.** Every
+    workflow dispatched on the branch is green (15 runs), no hand row was
+    rejected (the builder's reader first refused twelve Belgian rows for a
+    missing name - fixed before any build used them), `check_tickets.py`
+    exits 0, the roster check reads Belgium 29 `ok` and the two
+    `extra-not-in-roster` written up above and changed no other country's
+    verdict, the rank diagnostic owes nothing, and `link_fixtures.py`
+    re-run on the final files changes nothing. The real page was opened
+    headless (Leaflet from npm, tiles stubbed): all twelve country files
+    load, 31 Belgian clubs, no script error. **The OpenStreetMap capacity
+    check took four runs**: Belgium, France, the Netherlands and Serbia
+    `UNCHANGED` on the first (HTTP 504), Italy on the second, Germany,
+    France, Italy and the Netherlands on the third - each left byte for
+    byte. **The merge rests on the fourth, 15:15 UTC, on the final code:
+    all twelve countries `WRITTEN`.** Nothing that is Alexandru's call
+    was decided: the four roster links and the Club Brugge fixture link
+    are written up, not written, and every tier, skip and ground change
+    is a reviewable hand row that says how to undo it.
   - **Found on the way**: the Overpass name search for the grounds to be
     placed answered HTTP 504 three times and gave nothing; the per-club
     positions rest on Wikidata's ground items, which the earlier
