@@ -1347,18 +1347,30 @@ a page anyone can already view in their browser's network tab.
     stadium's infoboxes; not taken: 20,000 on the ground's item).
     **Queens Park Rangers** came back from Wikidata **with no name** - no
     English label - and has a name-only row from its Wikipedia title.
-  - **Capacities, the UTA Arad rule.** Corrected, each where the
-    league table and StadiumDB agree within 5% and the map sat outside:
-    **Aston Villa** 42,640 → **36,887**, **Fulham** 25,700 → **28,107**,
-    **Manchester City** 52,900 → **61,038**, **Stoke City** 27,740 →
-    **30,089**, **Wrexham** 13,341 → **10,771**. **Left alone,
-    contested**: **Lincoln City** (10,120 on Wikidata, 11,400 in the
-    table, 10,669 on StadiumDB - no two within 5%). **The map stands**
-    where it agrees with the table within 5%: Bournemouth (12,000 /
-    12,357; StadiumDB's 11,307 is the outlier) and Chelsea (41,875 /
-    40,044). **OpenStreetMap is the outlier** at Liverpool (54,074
-    against 61,276 three times) and West Ham (66,000 against 62,500
-    three times).
+  - **Capacities, the UTA Arad rule - and a correction undone the same
+    day, which is the part worth keeping.** Corrected, each where the
+    league table and StadiumDB agree within 5%, the map sat outside, and
+    OpenStreetMap does not disagree: **Manchester City** 52,900 →
+    **61,038** and **Wrexham** 13,341 → **10,771**. **Aston Villa,
+    Fulham and Stoke were corrected too, and undone**: the OpenStreetMap
+    re-run on the corrected map showed that OSM carries Wikidata's
+    figure for all three (Villa 42,640 / OSM 42,788 against the table's
+    36,887 and StadiumDB's 37,000; Fulham 25,700 / 25,700 against 28,107
+    / 27,782; Stoke 27,740 / 27,740 against 30,089 / 30,089). On the
+    first run OSM *agreed* with the map, so the rows never surfaced - and
+    agreement was not read. **Two against two is the AEL shape: nothing
+    changed**, and each club has a note-only row with all four figures.
+    That OSM equals Wikidata to the seat on two of them suggests a copy,
+    which would make it one source, not two - a judgement, and
+    Alexandru's. **The lesson: before applying the rule, read every
+    source's figure, including the ones that agree with the map.**
+    **Left alone, contested**: **Lincoln City** (10,120 on Wikidata,
+    11,400 in the table, 10,669 on StadiumDB - no two within 5%). **The
+    map stands** where it agrees with the table within 5%: Bournemouth
+    (12,000 / 12,357; StadiumDB's 11,307 is the outlier) and Chelsea
+    (41,875 / 40,044). **OpenStreetMap is the outlier** at Liverpool
+    (54,074 against 61,276 three times) and West Ham (66,000 against
+    62,500 three times).
   - **StadiumDB: 44 clubs, 36 matched (28 agree, 3 differ, 5 name
     clashes), 8 not matched** after the dotted-initialism fix (Brentford,
     Derby, Preston, QPR, Stoke, West Brom, West Ham, Wolves - short
