@@ -105,6 +105,17 @@
    "withVenueName": 42,
    "withCapacity": 41,
    "handCorrected": 10
+  },
+  "GB": {
+   "name": "England",
+   "onMap": 44,
+   "byTier": {
+    "1": 20,
+    "2": 24
+   },
+   "withVenueName": 44,
+   "withCapacity": 44,
+   "handCorrected": 9
   }
  }
 }

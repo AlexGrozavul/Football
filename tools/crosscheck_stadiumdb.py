@@ -142,6 +142,18 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 #     - Mallorca, Gijon, Tenerife, Cadiz, Almeria, Castellon, Sabadell,
 #       Ceuta and Espanyol are on the page and did not match by name;
 #       Andorra and Real Sociedad B are not on it.
+# England's "eng" on 2026-09-30: /stadiums/eng answers 200, read on a
+# runner. Measured, not assumed: 125 grounds in five tables - Wembley, the
+# 20 Premier League grounds, the 24 Championship ones minus the three in
+# Wales, 23 League One and 60 others (rugby grounds among them). Against
+# the 2026-27 articles that is 20 of 20 Premier League clubs and 21 of 24
+# Championship clubs with a ground named for them. The three with none
+# are the Welsh clubs - Cardiff City, Swansea City and Wrexham - because
+# StadiumDB files a ground under the country it stands in, not the
+# pyramid its club plays in. /stadiums/wal holds all three, so GB reads
+# that page as well (EXTRA_PAGES, below): 44 of 44 with a ground named.
+# So for England the coverage is as full as Spain's. Short names again: "Albion",
+# "WBA", "Dons", "Rovers" will not all match ours.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
@@ -152,6 +164,19 @@ COUNTRY_PAGES = {
     "RS": ("ser", "Serbia"),
     "GR": ("gre", "Greece"),
     "ES": ("esp", "Spain"),
+    "GB": ("eng", "England"),
+}
+
+# A country file is a league PYRAMID, not a territory (CLAUDE.md, the
+# Monaco entry), and StadiumDB files a ground under the country it
+# stands in. So a pyramid that crosses a border needs a second page, read
+# and added to the first. GB is the case it was written for, 2026-09-30:
+# Cardiff City, Swansea City and Wrexham play in the 2026-27 Championship
+# and their grounds are on /stadiums/wal (read on a runner: 7 grounds, the
+# three of them among them), not on /stadiums/eng. A second page that does
+# not come back makes the country incomplete, exactly as the first would.
+EXTRA_PAGES = {
+    "GB": [("wal", "Wales")],
 }
 
 # Below this the two sources are treated as agreeing. Same threshold
@@ -274,10 +299,22 @@ def read_offline(path):
 
 # ------------------------------------------------------------- name keys
 
+# A dotted initialism is one word, not several: "F.C." is "FC", "A.F.C."
+# is "AFC", "P.A.O.K." is "PAOK". Until 2026-09-30 the dots were turned
+# into spaces like any other punctuation, so "Arsenal F.C." folded to
+# "arsenal f c" and could never equal football-data.org's "Arsenal FC" -
+# found in the England pass, where every club item but one is labelled
+# that way and 43 of 44 clubs linked to no fixtures. Only runs of single
+# letters each followed by a dot are joined; "St. Pauli" and "1. FC" are
+# untouched.
+INITIALISM = re.compile(r"(?<![^\W\d_])((?:[^\W\d_]\.){2,})")
+
+
 def fold(text):
     """Lower case, diacritics out, punctuation to spaces, spaces collapsed."""
     if not text:
         return ""
+    text = INITIALISM.sub(lambda m: m.group(1).replace(".", "") + " ", text)
     text = text.replace("ß", "ss")
     text = unicodedata.normalize("NFKD", text)
     text = "".join(c for c in text if not unicodedata.combining(c))
@@ -545,6 +582,22 @@ def main():
                 incomplete.append(f"{code}: {error}")
                 continue
             grounds = parse_country_table(body)
+            extra_failed = None
+            for extra_slug, extra_label in EXTRA_PAGES.get(code, []) if grounds else []:
+                time.sleep(REQUEST_GAP_SECONDS)
+                extra_url = f"{BASE}/stadiums/{extra_slug}"
+                print(f"  {code}  and for {extra_label}, whose clubs play in this pyramid -- {extra_url}")
+                extra_body, extra_error = fetch_with_retry(extra_url)
+                extra = parse_country_table(extra_body) if not extra_error else []
+                if not extra:
+                    extra_failed = (f"{extra_label} page: "
+                                    f"{extra_error or 'no table rows parsed out of it'}")
+                    break
+                grounds = grounds + extra
+            if extra_failed:
+                failures.append(f"{code}: {extra_failed} - no cross-check done for this country")
+                incomplete.append(f"{code}: {extra_failed}")
+                continue
             if not grounds:
                 # A page that parses to nothing is a changed layout, not
                 # an empty country. Reporting the country as unchecked is
