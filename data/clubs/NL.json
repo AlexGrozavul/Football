@@ -128,6 +128,9 @@
    "lat": 52.313522,
    "lon": 4.928914,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://en.wikipedia.org/wiki/Jong_Ajax",
+   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. CONTESTED CAPACITY, left contested 2026-10-01. In use: 5000 - Wikidata's figure on Sportpark De Toekomst (Q2200744), which is the whole training complex. Not taken: 2250 (the 2026-27 Eerste Divisie stadiums table and the club's English infobox, which is one source on Wikipedia and cites the club's own pages). StadiumDB has no ground for it, and OpenStreetMap's nearest stadium to the pin is the Johan Cruijff ArenA, 875 m away, with a 52,342 figure that is the ArenA's. The two figures are probably two different things - the complex against the pitch the team plays on - and nobody has checked which pitch that is",
+   "manual": true,
    "competition": "Eerste Divisie"
   },
   {
@@ -138,10 +141,13 @@
    ],
    "tier": 1,
    "venue": "AFAS Stadion",
-   "capacity": 17023,
+   "capacity": 19478,
    "lat": 52.6125,
    "lon": 4.741667,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://en.wikipedia.org/wiki/AFAS_Stadion; https://stadiumdb.com/stadiums/ned/az_stadion",
+   "note": "CONTESTED CAPACITY, SETTLED BY THE UTA ARAD RULE, 2026-10-01. In use: 19478 - the 2026-27 Eredivisie stadiums table and StadiumDB (AFAS Stadion, Alkmaar) agree exactly, and the ground's English article says the same; OpenStreetMap has no figure for the ground. Not taken: 17023 (Wikidata, which the map held until now, 12.6% below). Every figure is written down on purpose",
+   "manual": true,
    "competition": "Eredivisie"
   },
   {
@@ -253,10 +259,13 @@
    ],
    "tier": 2,
    "venue": "De Koel",
-   "capacity": 7500,
+   "capacity": 8000,
    "lat": 51.351944,
    "lon": 6.179722,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://stadiumdb.com/stadiums/ned/de_koel",
+   "note": "CONTESTED CAPACITY, SETTLED BY THE UTA ARAD RULE, 2026-10-01. In use: 8000 - the 2026-27 Eerste Divisie stadiums table and StadiumDB (Covebo Stadion, Venlo) agree exactly; OpenStreetMap has no figure for the ground. The StadiumDB check flagged a ground-name clash only because it knows the ground as the Covebo Stadion and we call it De Koel - OpenStreetMap's own name for the object 15 m from our pin is 'Covebo Stadion De Koel', so it is one ground. Not taken: 7500 (Wikidata, which the map held until now, 6.3% below)",
+   "manual": true,
    "competition": "Eerste Divisie"
   },
   {
@@ -327,6 +336,9 @@
    "lat": 52.517292,
    "lon": 6.121911,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://stadiumdb.com/stadiums/ned/fc_zwolle_stadion",
+   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. CONTESTED CAPACITY, left contested 2026-10-01. In use: 12500 (Wikidata). Not taken: 14000 (the 2026-27 Eredivisie stadiums table) and 13250 (StadiumDB, MAC3PARK stadion, Zwolle). No two of the three are within 5% of each other (14,000 against 13,250 is 5.7%, 12,500 against 13,250 is 6%), so there is no pair to outvote the map. OpenStreetMap has no figure for the ground. Every figure is written down on purpose",
+   "manual": true,
    "competition": "Eredivisie"
   },
   {
@@ -379,10 +391,13 @@
    ],
    "tier": 1,
    "venue": "Stadion Woudestein",
-   "capacity": 3531,
+   "capacity": 4500,
    "lat": 51.916944,
    "lon": 4.520556,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://en.wikipedia.org/wiki/Stadion_Woudestein; https://stadiumdb.com/stadiums/ned",
+   "note": "CONTESTED CAPACITY, SETTLED BY THE UTA ARAD RULE, 2026-10-01. In use: 4500 - the 2026-27 Eredivisie stadiums table and StadiumDB (Stadion Woudestein, listed as 'Exelsior', 4,400) agree within 2.3%, and the ground's English article says 4,500; OpenStreetMap has no figure for the ground. Not taken: 3531 (Wikidata, which the map held until now, 21% below); 4400 (StadiumDB)",
+   "manual": true,
    "competition": "Eredivisie"
   },
   {
@@ -397,6 +412,9 @@
    "lat": 52.47352,
    "lon": 4.847011,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://en.wikipedia.org/wiki/Jong_AZ",
+   "note": "NOT AN ERROR, AND DELIBERATELY NOT CHANGED - this row alters no value, it records why nothing was altered. THE POSITION RESTS ON ONE SOURCE. The pin is Wikidata's ground item Q108060876 'AFAS Training Complex' (52.47352 / 4.847011); the club's English infobox names the ground as 'Sportcomplex Kalverhoek', and nobody has checked that they are the same complex. OpenStreetMap has no stadium within 500 m of it - its nearest is 12.3 km away - and StadiumDB has nothing for it. The capacity is blank on purpose: 1,000 appears only in the English table and infobox, and one source is not two",
+   "manual": true,
    "competition": "Eerste Divisie"
   },
   {
@@ -440,7 +458,7 @@
    "lon": 5.066389,
    "city": null,
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://en.wikipedia.org/wiki/FC_Volendam",
-   "note": "TIER CORRECTED, 2026-10-01, in the Netherlands pass - the FC Wil shape, reviewable. Wikidata's truthy P118 on Q738060 is a PREFERRED-rank Eredivisie statement dated 2025-2026 (it carries an end date, which the club query does not read), so the club arrived at tier 1. Both 2026-27 division articles are complete (Eredivisie 18 of 18 and Eerste Divisie 20 of 20 resolved to a Q-id, read on a runner 2026-10-01): the Eerste Divisie one lists it and the Eredivisie one does not and names it in its Team changes table, 'Volendam (relegated after one-year in the top flight)'; the club's English article says it plays in the Eerste Divisie 'following relegation from the Eredivisie in the 2025-26 season'. Not a stale normal-rank tag outvoted - the item's own best statement is the stale one. Emptying the tier cell puts it back at tier 1",
+   "note": "TIER CORRECTED, 2026-10-01, in the Netherlands pass - the FC Wil shape, reviewable. Wikidata's truthy P118 on Q738060 is a PREFERRED-rank Eredivisie statement dated 2025-2026 (it carries an end date, which the club query does not read), so the club arrived at tier 1. Both 2026-27 division articles are complete (Eredivisie 18 of 18 and Eerste Divisie 20 of 20 resolved to a Q-id, read on a runner 2026-10-01): the Eerste Divisie one lists it and the Eredivisie one does not and names it in its Team changes table, 'Volendam (relegated after one-year in the top flight)'; the club's English article says it plays in the Eerste Divisie 'following relegation from the Eredivisie in the 2025-26 season'. Not a stale normal-rank tag outvoted - the item's own best statement is the stale one. Emptying the tier cell puts it back at tier 1. CAPACITY LEFT CONTESTED, 2026-10-01: in use 6200 (Wikidata). Not taken: 7384 (the 2026-27 Eerste Divisie stadiums table) and 6984 (StadiumDB, Kras Stadion, and both the ground's and the club's English articles). The table and StadiumDB are 5.7% apart, so no two independent sources agree within 5% and nothing outvotes the map; every figure is written down on purpose",
    "manual": true,
    "competition": "Eerste Divisie"
   },
@@ -452,10 +470,13 @@
    ],
    "tier": 1,
    "venue": "De Adelaarshorst",
-   "capacity": 6700,
+   "capacity": 10000,
    "lat": 52.260278,
    "lon": 6.1725,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://en.wikipedia.org/wiki/De_Adelaarshorst; https://stadiumdb.com/stadiums/ned/de_adelaarshorst",
+   "note": "CONTESTED CAPACITY, SETTLED BY THE UTA ARAD RULE, 2026-10-01. In use: 10000 - the 2026-27 Eredivisie stadiums table; StadiumDB (De Adelaarshorst, Deventer) says 10,400 and the ground's English article 10,400 as well, 4% apart, so the two agree within the band; OpenStreetMap has no figure for the ground. Not taken: 6700 (Wikidata, which the map held until now, 33% below the table); 10400 (StadiumDB and the ground's article)",
+   "manual": true,
    "competition": "Eredivisie"
   },
   {
@@ -493,11 +514,14 @@
     "Q167541"
    ],
    "tier": 1,
-   "venue": "Cambuur Stadion",
-   "capacity": 10500,
-   "lat": 53.205278,
-   "lon": 5.814722,
+   "venue": "Kooi Stadion",
+   "capacity": 15000,
+   "lat": 53.200556,
+   "lon": 5.768333,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://en.wikipedia.org/wiki/SC_Cambuur; https://en.wikipedia.org/wiki/Kooi_Stadion; https://nl.wikipedia.org/wiki/Kooi_Stadion; https://stadiumdb.com/stadiums/ned",
+   "note": "WRONG GROUND, CORRECTED, 2026-10-01, in the Netherlands pass - the Brentford shape. Wikidata's only P115 on Q875120 is Q1028392, the old Cambuur Stadion (53.205278 / 5.814722, 10,500), which the club left in 2024 and which was demolished in late 2025 (its English article: 'Since 2024, the club started to play their home matches in the Kooi Stadion. The stadion was demolished in late 2025'), so the map drew Cambuur at a ground that no longer exists. The club's English article: 'Since August 2024, they have played their home games at the 15,000-seat Kooi Stadion, a purpose-built stadium that replaced Cambuur Stadion'; Dutch Wikipedia: opened 18 August 2024, 15.000 places, 14.504 seated. The 2026-27 Eredivisie stadiums table and StadiumDB (Kooi Stadion, Leeuwarden) both say 15,000, and the ground's own Wikidata item Q122459692 says 15,000 with Cambuur as occupant. Position is that item's own P625; OpenStreetMap's Kooi Stadion is 10 m from it and was 3,134 m from the old pin, which is how OpenStreetMap's capacity check found no stadium near the old pin. Not taken: 10,500, the old ground's capacity. Wikidata's P115 on the club still names the old ground; empty these cells to go back",
+   "manual": true,
    "competition": "Eredivisie"
   },
   {
@@ -508,10 +532,13 @@
    ],
    "tier": 2,
    "venue": "De Vliert",
-   "capacity": 9000,
+   "capacity": 8713,
    "lat": 51.701667,
    "lon": 5.329722,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://stadiumdb.com/stadiums/ned/de_vliert; https://www.openstreetmap.org",
+   "note": "CONTESTED CAPACITY, SETTLED BY THE UTA ARAD RULE, 2026-10-01. In use: 8713 - the 2026-27 Eerste Divisie stadiums table. OpenStreetMap (Stadion De Vliert, capacity tag 8,500, 7 m from our pin) and StadiumDB (De Vliert, 's-Hertogenbosch, 8,500) agree exactly and the table is within 2.5% of both, so three independent sources sit inside the band and the map's figure is the outlier. Not taken: 9000 (Wikidata, which the map held until now, 5.9% above 8,500); 8500 (OpenStreetMap and StadiumDB)",
+   "manual": true,
    "competition": "Eerste Divisie"
   },
   {
