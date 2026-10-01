@@ -1603,7 +1603,7 @@ def main():
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de",
-                "RS": "en,sr-el", "GR": "en,el", "ES": "en,es"}.get(code, "en")
+                "RS": "en,sr-el", "GR": "en,el", "ES": "en,es", "NL": "en,nl"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,
