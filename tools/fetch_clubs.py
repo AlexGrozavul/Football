@@ -102,6 +102,10 @@ COUNTRIES = [
     # leagues and every English club item read on 2026-09-30 carry P17
     # Q145, so Q21 would find no league and flag every club.
     ("GB", "Q145", "England"),
+    # The Netherlands, P17 Q55 on both leagues and on every club item read
+    # on 2026-10-01 (Q29999, the Kingdom, is on one 2008-09 season item and
+    # nothing else).
+    ("NL", "Q55", "Netherlands"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -1192,6 +1196,19 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
 #       they play in the English pyramid - and are NOT flagged, because
 #       their items say United Kingdom (Wrexham also says Wales); each has
 #       a note-only row in clubs-manual.csv saying so instead.
+#   NL  the European Netherlands. North 53.55 (the Wadden islands - Wikidata's
+#       Q55 says 53.4663, which is the mainland coast, and the Kingdom item
+#       Q29999 says 53.55), south 50.7504 (the Vaalserberg), west 3.3561 and
+#       east 7.2274 - P1332-P1335 on Q55 and Q29999, read on a runner
+#       2026-10-01. Q55 also carries Bonaire's points (12.0, -68.2) at
+#       PREFERRED rank for south and west, so the figures above are the
+#       normal-rank ones, and the Caribbean needs no handling: a club in
+#       Bonaire or Curacao is thousands of kilometres outside any box.
+#       The box holds the north of Belgian Limburg and Antwerp, a strip of
+#       Wallonia and the west of North Rhine-Westphalia up to Kleve and
+#       Aachen, so for NL BOTH SIGNALS ARE WEAK in the border towns: a
+#       Belgian or German club carrying a Dutch league tag would pass the
+#       box and be caught only by P17.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
@@ -1203,6 +1220,7 @@ COUNTRY_BOX = {
     "GR": {"lat": (34.60, 41.85), "lon": (19.30, 29.82)},
     "ES": {"lat": (27.55, 43.90), "lon": (-18.25, 4.45)},
     "GB": {"lat": (49.75, 55.90), "lon": (-6.55, 1.85)},
+    "NL": {"lat": (50.70, 53.65), "lon": (3.30, 7.30)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")

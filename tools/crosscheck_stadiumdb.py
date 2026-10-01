@@ -154,6 +154,15 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # that page as well (EXTRA_PAGES, below): 44 of 44 with a ground named.
 # So for England the coverage is as full as Spain's. Short names again: "Albion",
 # "WBA", "Dons", "Rovers" will not all match ours.
+# The Netherlands' "ned" on 2026-10-01: /stadiums/ned answers 200, read on
+# a runner (nld, net, hol, ntl, nl and netherlands were tried too). 45 rows
+# in two tables: the 18 Eredivisie grounds, then 27 others - the Eerste
+# Divisie ones and amateur grounds. Measured, not assumed: against the
+# 2026-27 articles that is a ground named for 18 of 18 Eredivisie clubs and
+# for 16 of 20 Eerste Divisie clubs; the four without are the Jong sides,
+# none of which is on the page. Short names
+# again: "Exelsior" (sic), "Utrecht", "NEC", "AZ", "Roda" will not all match
+# ours.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
@@ -165,6 +174,7 @@ COUNTRY_PAGES = {
     "GR": ("gre", "Greece"),
     "ES": ("esp", "Spain"),
     "GB": ("eng", "England"),
+    "NL": ("ned", "Netherlands"),
 }
 
 # A country file is a league PYRAMID, not a territory (CLAUDE.md, the
