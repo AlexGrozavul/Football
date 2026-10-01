@@ -1454,7 +1454,17 @@ a page anyone can already view in their browser's network tab.
   - **OpenStreetMap confirms almost nothing in Belgium**: 208 stadiums,
     **4 with a capacity** - Romania's and Italy's shape. It confirmed
     positions (Gent, Antwerp, La Louvière, Lommel, RFC Liège, Virton,
-    Eupen within tens of metres) and supplied Hasselt's. OSM_RESULT
+    Eupen within tens of metres) and supplied Hasselt's. **The first run
+    on the branch left Belgium `UNCHANGED`** (HTTP 504, with France, the
+    Netherlands and Serbia), so it was not a pass; the second, on the final
+    layer (14:35 UTC), wrote Belgium: **31 clubs, 1 agree (Hasselt, 8,800),
+    0 differ, 20 Wikidata only, 6 neither, 6 with no OpenStreetMap stadium
+    within 500 m** - Club NXT's Schiervelde pin and Jong Genk's De Leunen pin
+    among them, so both rest on their Wikidata ground items and Wikipedia,
+    nothing else. Italy was `UNCHANGED` on that run. **Worth one look:**
+    the OpenStreetMap stadium 22 m from Seraing's Pairay pin is named
+    "Stade Hubert Freson" - most likely the same ground under another name,
+    not checked.
   - **Fixtures: none.** football-data.org's free tier carries no Belgian
     league and OpenLigaDB is German only; the club sheet says so, and was
     opened in the real page for ten Belgian clubs. **Club Brugge plays
