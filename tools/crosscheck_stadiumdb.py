@@ -145,7 +145,7 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # England's "eng" on 2026-09-30: /stadiums/eng answers 200, read on a
 # runner. Measured, not assumed: 125 grounds in five tables - Wembley, the
 # 20 Premier League grounds, the 24 Championship ones minus the three in
-# Wales, 23 League One and 57 others (rugby grounds among them). Against
+# Wales, 23 League One and 60 others (rugby grounds among them). Against
 # the 2026-27 articles that is 20 of 20 Premier League clubs and 21 of 24
 # Championship clubs with a ground named for them. The three with none
 # are the Welsh clubs - Cardiff City, Swansea City and Wrexham - because
@@ -172,7 +172,7 @@ COUNTRY_PAGES = {
 # stands in. So a pyramid that crosses a border needs a second page, read
 # and added to the first. GB is the case it was written for, 2026-09-30:
 # Cardiff City, Swansea City and Wrexham play in the 2026-27 Championship
-# and their grounds are on /stadiums/wal (read on a runner: 8 grounds, the
+# and their grounds are on /stadiums/wal (read on a runner: 7 grounds, the
 # three of them among them), not on /stadiums/eng. A second page that does
 # not come back makes the country incomplete, exactly as the first would.
 EXTRA_PAGES = {

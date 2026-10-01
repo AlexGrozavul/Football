@@ -48,7 +48,11 @@ filter on Wikidata's type was measured and **not built**: the only
 other items typed as a women's team that carry a mapped league are
 Atromitos and Asteras Tripoli, the real men's Greek clubs, whose items
 carry that type too. So the roster check is what catches this shape,
-as it did. It applies beyond leagues: a
+as it did. **England was checked for it deliberately, 2026-09-30, from
+three angles, before any build**: no item carrying either English tag at
+any rank is typed, labelled, described or classed (`P2094`) as women's,
+and no women's team item points at a big English club with `P831` or
+`P361`. Zero. It applies beyond leagues: a
 future club addition, a badge, or a piece of research is also men's
 football only until this rule changes, so don't reach for a women's
 team, a women's competition, or a women's-team crest just because a
@@ -1003,6 +1007,14 @@ the lessons of the StadiumDB and roster work applied:
   imported rather than copied) and founding years are set aside, the
   remaining words must be the same words. Containment would put
   "1. FC Köln" inside "Fortuna Köln".
+- **A dotted initialism is one word**, since 2026-09-30: "F.C." is
+  "FC", "A.F.C." is "AFC". The shared fold in `crosscheck_stadiumdb.py`
+  used to turn the dots into spaces, so "Arsenal F.C." could never equal
+  "Arsenal FC" and 43 of 44 English clubs linked to nothing. Only runs of
+  single letters each followed by a dot are joined; "St. Pauli" and
+  "1. FC" are untouched. Measured before it went in: no club outside
+  England gained, lost or changed a fixture link, and no StadiumDB review
+  row outside England changed.
 - **The reserve marker must agree on both sides.** `II`, `U23` and the
   rest. This refused **SSV Jeddeloh II**, and that is worth knowing:
   Jeddeloh II is a *village*, not a reserve side, and the club is very
@@ -1247,6 +1259,136 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **England's top two tiers are on the map, 2026-09-30: Premier League
+  20 of 20 and Championship 24 of 24, exact - nothing missing, nothing
+  extra, nothing at the wrong tier, on the first build.** Same pipeline
+  and standard as the nine countries before it, run through three
+  throwaway probes on a GitHub runner (removed in the same branch); the
+  sandbox still answers 403 to CONNECT for Wikidata, Wikipedia and
+  StadiumDB. Tiers 1 and 2 only; League One and below were deliberately
+  not touched.
+  - **The file is `GB.json`, and that was a choice.** Every other tool
+    already said GB for England - `link_fixtures.py` for PL and ELC,
+    `build_calendars.py` for the time zone - and the OpenStreetMap tools
+    ask Overpass for an ISO 3166-1 area, which England does not have. It
+    is England's league PYRAMID, the Monaco convention: three Welsh clubs
+    are in it. **If Scotland is ever added it needs a code of its own**;
+    GB is taken.
+  - **The league Q-ids were read, not remembered**: `Q9448` Premier
+    League (enwiki *Premier League*) and `Q19510` EFL Championship
+    (enwiki *EFL Championship*). Neither carries `P3983`. **Both carry
+    `P17` United Kingdom (`Q145`), not England (`Q21`)**, and so does
+    every English club item read, so the builder's country is `Q145`:
+    `Q21` would have discovered no league and flagged every club. The
+    rank diagnostic counts both as GB. The 2026-27 articles are one
+    stadiums-and-locations table each, **20 of 20 and 24 of 24
+    resolved**, and the Championship's Team changes table names the
+    three relegated to League One (Oxford United, Leicester City,
+    Sheffield Wednesday) and the three promoted from it (Lincoln City,
+    Cardiff City, Bolton Wanderers).
+  - **The country check is weak for GB, and that is written down rather
+    than fixed.** The box (Wikidata's `P1332`-`P1335` on `Q21`: Marshall
+    Meadows, the Isles of Scilly, Lowestoft Ness) holds all of Wales,
+    the Isle of Man, southern Scotland and the east of Northern Ireland,
+    and `P17` says United Kingdom for all four. A Scottish or Northern
+    Irish club carrying an English tag would pass unflagged. For tiers 1
+    and 2 the roster check covers it.
+  - **The three Welsh clubs are the Monaco shape** - Cardiff City,
+    Swansea City and Wrexham, all in the complete Championship article -
+    and, unlike Monaco and Vaduz, **the country check does not flag
+    them**, because their items say United Kingdom (Wrexham's also says
+    Wales). Each has a note-only row saying what the flag would have.
+  - **English tags are well kept.** Every item carrying either tag at
+    any rank was listed: 108 statements, about 60 items. Most clubs carry
+    a dated history with the current league preferred.
+    - **Rank blind spot, all three shapes, run by `diagnose-rank.yml`
+      on the branch.** Queries A and B: **no English item.**
+      Middlesbrough and Stoke carry the Premier League at deprecated
+      rank, but their normal-rank Championship tags are truthy, so
+      nothing is hidden. Query C: **eight** (Barnsley, Burton Albion,
+      Huddersfield Town, Leicester City, Luton Town, Oxford United,
+      Sheffield Wednesday, Wigan Athletic), every one relegated with its
+      new lower league correctly preferred; **bill 0**.
+    - **The league-tag end date (`P582`), measured for England: zero.**
+      No club's tier comes from a tag that has ended. Every mapped tag
+      with an end date sits under a preferred statement (the query C
+      eight), and the build reads past none of them.
+    - **Not-a-club, two new kinds, and the net now names both**:
+      *History of Rotherham United F.C.* (`Q16840698`, typed "aspect of
+      history") carries a Championship tag **and a ground**, so it would
+      have been drawn at tier 2 on the New York Stadium; *Melchester
+      Rovers* (`Q6811996`, Roy of the Rovers' club, typed "fictional
+      association football team") carries a Premier League tag and no
+      ground. Four club seasons (Manchester City 2022-23, three Leeds)
+      were caught by the season net, as before. Checked on the rebuild:
+      the two new words catch those two items and nothing else in any
+      country.
+    - **Every duplicate shape, looked for rather than waited for.**
+      Shapes 1 and 2: none - the roster check names each of the 44 once,
+      no two pins share a ground and none is within 2 km of another
+      (nearest: Fulham and Chelsea, 2.2 km). Shape 3: none - no
+      multi-sport parent carries either tag. Shape 4: none on the map;
+      New Brighton Tower carries a Championship tag and `P576` 1901, and
+      the gate drops it. Shape 5: none - Chelsea, Manchester United and
+      Wolves are typed "men's association football team" **on the one
+      item the roster links**, with no `P831`; there is no second item.
+      Shape 6: none - no English club dies at the coordinates gate.
+    - **Two grounds on one item (the Freiburg shape): none on the
+      map.** Arsenal (Emirates, Highbury), Tottenham (the new stadium,
+      White Hart Lane) and Oxford United carry two, at different ranks,
+      so the query yields one.
+    - **Women's club with a men's tag (rule 6), checked deliberately**:
+      none, from three angles - see the rule.
+  - **Grounds.** **Brentford was drawn at Griffin Park**, its only
+    `P115`, closed in August 2020 and demolished in 2021 (the ground's
+    infobox), and OpenStreetMap's check found no stadium within 500 m of
+    that pin. It is now at the **Gtech Community Stadium**, `Q4961609`'s
+    own position, 17,250 (the table, StadiumDB, the club's and the
+    stadium's infoboxes; not taken: 20,000 on the ground's item).
+    **Queens Park Rangers** came back from Wikidata **with no name** - no
+    English label - and has a name-only row from its Wikipedia title.
+  - **Capacities, the UTA Arad rule.** Corrected, each where the
+    league table and StadiumDB agree within 5% and the map sat outside:
+    **Aston Villa** 42,640 → **36,887**, **Fulham** 25,700 → **28,107**,
+    **Manchester City** 52,900 → **61,038**, **Stoke City** 27,740 →
+    **30,089**, **Wrexham** 13,341 → **10,771**. **Left alone,
+    contested**: **Lincoln City** (10,120 on Wikidata, 11,400 in the
+    table, 10,669 on StadiumDB - no two within 5%). **The map stands**
+    where it agrees with the table within 5%: Bournemouth (12,000 /
+    12,357; StadiumDB's 11,307 is the outlier) and Chelsea (41,875 /
+    40,044). **OpenStreetMap is the outlier** at Liverpool (54,074
+    against 61,276 three times) and West Ham (66,000 against 62,500
+    three times).
+  - **StadiumDB: 44 clubs, 36 matched (28 agree, 3 differ, 5 name
+    clashes), 8 not matched** after the dotted-initialism fix (Brentford,
+    Derby, Preston, QPR, Stoke, West Brom, West Ham, Wolves - short
+    names like "Derby" and "WBA" that the town-only guard rightly
+    refuses). Unmatched is unchecked, never agreement; all eight have
+    the league table's figure beside the map's. The name clashes are
+    sponsors: Dean Court is the Vitality Stadium, Sincil Bank the
+    ProAmpac Stadium, the Liberty the Swansea.com Stadium, the Racecourse
+    Ground the STōK Cae Ras.
+  - **OpenStreetMap is better in England than anywhere but Germany and
+    France**: 1,040 stadiums in the UK, 98 with a usable capacity. First
+    run, every country `WRITTEN`: GB 44 clubs, 22 agree, 2 differ, 19
+    Wikidata only, 1 with no OSM ground nearby (Brentford, at Griffin
+    Park).
+  - **Fixtures: 44 of 44**, from football-data.org's PL and ELC, both
+    already fetched - the first country whose second tier has a fixture
+    source as well. Five Premier League clubs link to the Champions
+    League too. It took the dotted-initialism fix (Conventions) and QPR's
+    name; no `fixture-links-manual.csv` row was needed.
+  - **Found on the way, not English, and NOT fixed: a placeholder
+    kick-off is shown as a time.** football-data.org marks a match whose
+    kick-off is not set yet as `SCHEDULED` at **00:00 UTC**, and the club
+    sheet prints that as "01:00" German time, like a real time. Counted
+    on 2026-09-30: 198 Bundesliga, 280 La Liga, 190 Serie A and 264
+    Championship matches carry it (none in the Premier League, whose
+    fixtures are all `TIMED`). Rule 2 says a missing time is blank, so
+    the sheet should say "time not set" for `SCHEDULED`. It is a small
+    change in `index.html` and was left for its own branch, because this
+    one was not asked to touch the page's fixture display.
+
 - **Spain's top two tiers are on the map, 2026-09-30: La Liga 20 of 20
   and Segunda División 22 of 22, exact - nothing missing, nothing extra,
   nothing at the wrong tier.** Same pipeline and standard as the eight
@@ -1398,7 +1540,11 @@ a page anyone can already view in their browser's network tab.
     (`Q10286` → 79 "CA Osasuna"), Deportivo de A Coruña (`Q8760` → 560
     "RC Deportivo La Coruña") and Racing de Santander (`Q12236` → 5335
     "Real Racing Club de Santander"). The Segunda División has no
-    fixture source; the club sheet says so.
+    fixture source; the club sheet says so. **All five rows were added
+    on 2026-09-30 on Alexandru's instruction**, the Le Mans way, and La
+    Liga is 20 of 20 linked; each club's sheet was opened in the real
+    page and lists its fixtures (Real Madrid and Atlético their
+    Champions League ones too).
   - **Found on the way, not Spanish: the roster reader ran a footnote
     mark into a capacity.** `check_rosters.py` read a capacity cell as
     every digit in it, so "19,840 [7]" became 198,407. Spanish tables
@@ -4837,7 +4983,10 @@ a page anyone can already view in their browser's network tab.
     `gre`, on the same terms. **Spain, slug `esp`, 2026-09-30, was
     measured for itself rather than assumed, and is the other way
     round**: 89 grounds, and a StadiumDB ground for 40 of the 42 clubs in
-    its two 2026-27 divisions - see the Spain entry.) As a second opinion on
+    its two 2026-27 divisions - see the Spain entry. **England, slug
+    `eng`, 2026-09-30, measured too, and as full**: 125 grounds, 41 of
+    the 44 clubs in its two divisions, and the other three - the Welsh
+    clubs - on `wal`, which the tool now reads for GB as well.) As a second opinion on
     a ground StadiumDB happens to hold it is excellent — clean to
     parse, independent of both OpenStreetMap and Wikidata, and
     editorially curated rather than crowd-sourced. As the systematic
