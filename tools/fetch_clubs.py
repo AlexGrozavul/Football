@@ -106,6 +106,9 @@ COUNTRIES = [
     # on 2026-10-01 (Q29999, the Kingdom, is on one 2008-09 season item and
     # nothing else).
     ("NL", "Q55", "Netherlands"),
+    # Belgium, P17 Q31 on both leagues and on every club item read on
+    # 2026-10-01.
+    ("BE", "Q31", "Belgium"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -655,14 +658,21 @@ def load_tiers():
 # with 'season'. A name that opens with a year range and ends in 'season' is
 # now caught too. Checked before it went in: it matches those five and no
 # club name on any of the 523 map entries.
+# Belgium (2026-10-01) is the first country whose labels can fall back to
+# Dutch AND French before a type is read, so the Dutch word "seizoen" is
+# now a type word and a title opening, beside "saison". The two Belgian
+# season items found ("RSC Anderlecht in het seizoen 1991/92") were caught
+# by type and by the trailing year range already; "seizoen" closes the
+# case of a season item whose type label exists only in Dutch. It matches
+# no club name on any map entry.
 NOT_A_CLUB_TYPES = ("kader", "list of ", "liste", "listă", "lista ",
-                    "season", "saison", "sezon", "stagione",
+                    "season", "saison", "sezon", "stagione", "seizoen",
                     "club match", "football match", "partido de",
                     "aspect of history", "fictional")
 
 NOT_A_CLUB_NAME = re.compile(
     r"^\s*(mannschaftskader|kader|liste\b|listă|lista|list of)\b"
-    r"|^\s*(saison|season|sezonul|sezon|spielzeit|stagione)\s+\d{4}"
+    r"|^\s*(saison|season|sezonul|sezon|spielzeit|stagione|seizoen)\s+\d{4}"
     r"|^\s*history of\b"
     r"|^\s*(19|20)\d{2}\s*[-–/]\s*((19|20)\d{2}|\d{2})\s+.*\bseason\s*$"
     r"|\s(19|20)\d{2}\s*[-–/]\s*((19|20)\d{2}|\d{2})\s*$", re.IGNORECASE)
@@ -1217,6 +1227,14 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
 #       Aachen, so for NL BOTH SIGNALS ARE WEAK in the border towns: a
 #       Belgian or German club carrying a Dutch league tag would pass the
 #       box and be caught only by P17.
+#   BE  north 51.50508 (Zondereigen, P1332), south 49.49699 (Torgny,
+#       P1333), east 6.407433 (P1334), west 2.54527 (De Panne, P1335) -
+#       Q31's own normal-rank extreme points, read on a runner 2026-10-01,
+#       with a small margin. The box holds the north of Luxembourg, Lille
+#       and the French Nord, Zeelandic Flanders, Maastricht and South
+#       Limburg, and Aachen, so for BE as for NL both signals are weak at
+#       the border: a French, Dutch, Luxembourgish or German club carrying
+#       a Belgian league tag would pass the box and be caught only by P17.
 COUNTRY_BOX = {
     "DE": {"lat": (47.15, 55.15), "lon": (5.75, 15.15)},
     "RO": {"lat": (43.50, 48.35), "lon": (20.15, 29.80)},
@@ -1229,6 +1247,7 @@ COUNTRY_BOX = {
     "ES": {"lat": (27.55, 43.90), "lon": (-18.25, 4.45)},
     "GB": {"lat": (49.75, 55.90), "lon": (-6.55, 1.85)},
     "NL": {"lat": (50.70, 53.65), "lon": (3.30, 7.30)},
+    "BE": {"lat": (49.45, 51.55), "lon": (2.50, 6.45)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
@@ -1629,7 +1648,7 @@ def main():
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de",
-                "RS": "en,sr-el", "GR": "en,el", "ES": "en,es", "NL": "en,nl"}.get(code, "en")
+                "RS": "en,sr-el", "GR": "en,el", "ES": "en,es", "NL": "en,nl", "BE": "en,nl,fr"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,

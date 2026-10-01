@@ -163,6 +163,11 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # none of which is on the page. Short names
 # again: "Exelsior" (sic), "Utrecht", "NEC", "AZ", "Roda" will not all match
 # ours.
+# Belgium's "bel" on 2026-10-01: /stadiums/bel answers 200, read on a
+# runner (the first slug tried). 37 grounds in three tables: the national
+# stadium, 14 Pro League grounds, then 22 others. Short names again:
+# "Zulte", "Royal FC", "St-Truiden VV", "Waasland-Beveren" (Beveren's old
+# name) will not all match ours.
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
@@ -175,6 +180,7 @@ COUNTRY_PAGES = {
     "ES": ("esp", "Spain"),
     "GB": ("eng", "England"),
     "NL": ("ned", "Netherlands"),
+    "BE": ("bel", "Belgium"),
 }
 
 # A country file is a league PYRAMID, not a territory (CLAUDE.md, the

@@ -80,7 +80,9 @@ COUNTRIES = {"Q183": "DE", "Q218": "RO", "Q142": "FR", "Q38": "IT", "Q39": "CH",
              # club that does say England is counted as GB rather than as nobody's.
              "Q145": "GB", "Q21": "GB",
              # The Netherlands: both leagues and every club item read on 2026-10-01 carry P17 Q55.
-             "Q55": "NL"}
+             "Q55": "NL",
+             # Belgium: both leagues and every club item read on 2026-10-01 carry P17 Q31.
+             "Q31": "BE"}
 
 P_LEAGUE = "P118"
 P_VENUE = "P115"

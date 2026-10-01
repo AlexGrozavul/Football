@@ -1263,6 +1263,27 @@ a page anyone can already view in their browser's network tab.
 
 ## Known open problems
 
+- **`index.html` has no automated check of its own - a known gap,
+  recorded 2026-10-01 on Alexandru's instruction, to be addressed later
+  and deliberately not now.** Every data file has a reader that turns a
+  run red: `check_tickets.py`, `check_rosters.py`, the club builder's
+  read-back. The page has nothing. No workflow opens it, loads the
+  country files through it, or opens a club sheet; a script error, a
+  country file missing from `COUNTRY_FILES`, or a sheet that says
+  "unavailable" for the wrong reason would reach `main` with every tick
+  green. **The last two UI fixes merged on manual headless testing
+  only**: "time not set" for placeholder kick-offs (#45, `b8367c8`) and
+  the Eerste Divisie fixtures message (`253020f`). Each was checked by a
+  session opening the real page in headless Chromium (Leaflet from npm,
+  tiles stubbed) and reading the sheet text by eye - real, but not
+  repeatable, not run on a later change, and not part of rule 7's
+  "clean". The same is true of every country pass's "the real page was
+  opened" line, this one's included. What a check would need is written
+  here so the next session does not rediscover it: a local server for
+  the repo, Leaflet from a pinned local copy (unpkg is unreachable from
+  the sandbox), stubbed tiles, then load every country file and fail on
+  any page error, and open a sheet per country. Not built.
+
 - **The Netherlands' top two tiers are on the map, 2026-10-01: Eredivisie
   18 of 18 and Eerste Divisie 20 of 20, exact - nothing missing, nothing
   extra, nothing at the wrong tier.** Same pipeline and standard as the

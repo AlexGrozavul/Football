@@ -1,4 +1,4 @@
-"""TEMPORARY probe #1 for the Belgium pass. Removed in the same branch."""
+"""TEMPORARY probe #2 for the Belgium pass. Removed in the same branch."""
 import csv, glob, json, os, re, sys, time, traceback, urllib.parse, urllib.request, urllib.error
 sys.path.insert(0, "tools")
 import check_rosters as cr
@@ -81,205 +81,115 @@ def qid_for(title, lang="en"):
     return None
 
 
-EN_LEAGUES = {}
-EN_ROSTER = {}
+def qid_for(title, lang="en"):
+    args = {"action": "wbgetentities", "sites": f"{lang}wiki", "titles": title, "props": "info", "format": "json",
+            "normalize": "1"}
+    d, e = cr.get_json_with_retry("https://www.wikidata.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    for k in ((d or {}).get("entities") or {}):
+        if k.startswith("Q"): return k
+    return None
 
 
-def s0():
-    E = ents(["Q31"])
-    x = E.get("Q31", {})
-    p("EXTREME Q31", lab(x), [(pr, vals(x, pr)) for pr in ("P1332", "P1333", "P1334", "P1335")])
+
+import html as _html
+ROSTER = """Q187528 Q732002 Q509170 Q364698 Q19585 Q190916 Q216032 Q18232 Q618620 Q536651 Q1668203 Q113000 Q916199 Q138248 Q190561 Q196160 Q849544 Q376635
+Q2268833 Q1065328 Q1423718 Q18001655 Q650917 Q95183770 Q2456491 Q1347229 Q2313985 Q2308515 Q925973 Q101625593 Q113884742 Q117384089""".split()
+EXTRA = "Q1053917 Q291937 Q115476719 Q20979061 Q370206 Q2195773 Q221940".split()
 
 
-def s1():
-    for t, tier in [("Belgian Pro League", 1), ("Challenger Pro League", 2), ("Belgian First Division A", 1),
-                    ("Belgian First Division B", 2)]:
-        q = qid_for(t)
-        p("ENWIKI", t, "->", q)
-        if q and q not in EN_LEAGUES: EN_LEAGUES[q] = tier
-    rows = sparql("""SELECT DISTINCT ?l ?lLabel WHERE {
-      ?l wdt:P17 wd:Q31 ; wdt:P641 wd:Q2736 .
-      ?l wdt:P31/wdt:P279* wd:Q15991303 .
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl,fr" }
-    }""", "BE-LEAGUES")
-    for r in rows[:120]:
-        p("  ", q_(fc.cell(r, "l")), "|", fc.cell(r, "lLabel"))
-    e = ents(list(EN_LEAGUES))
-    for q, x in e.items():
-        p("LEAGUE", q, labs(x), "| P31", vals(x, "P31")[:4], "| P17", vals(x, "P17"), "| P3983", vals(x, "P3983"),
-          "| P3450", vals(x, "P3450")[-3:], "| P1132", vals(x, "P1132"), "| sitelinks", sitelinks(x),
-          "| P2094", vals(x, "P2094"))
+def wikitext(title, lang="en", section="0"):
+    args = {"action": "parse", "page": title, "prop": "wikitext", "format": "json",
+            "formatversion": "2", "redirects": "1"}
+    if section is not None: args["section"] = section
+    d, e = cr.get_json_with_retry(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    return (d or {}).get("parse", {}).get("wikitext", "")
 
 
-def s2():
-    tries = [(1, ["2026–27 Belgian Pro League", "2026–27 Belgian First Division A"]),
-             (2, ["2026–27 Challenger Pro League", "2026–27 Belgian Challenger Pro League", "2026–27 Belgian First Division B"])]
-    for tier, arts in tries:
-        for art in arts:
-            page, real, err = cr.fetch_article(art)
-            if err:
-                p("ARTICLE", art, "ERROR", err); time.sleep(1); continue
-            tables, shape = cr.roster_tables(page)
-            p("ARTICLE", art, "->", real, "|", shape, "| tables", len(tables))
-            names, caps = [], {}
-            for t, h in tables:
-                p("  HEAD", h[:8])
-                left = []
-                for title, cap in cr.rows_of(t, h, left):
-                    if title not in names: names.append(title); caps[title] = cap
-                for x in left: p("  LEFT-OUT", x)
-            got, fails = cr.qids_for_titles(names)
-            p("RESOLVED", art, len(got), "of", len(names), "| failures", fails)
-            for n in names:
-                p("   ", got.get(n, "-"), "|", n, "|", caps.get(n))
-                if got.get(n): EN_ROSTER.setdefault(got[n], []).append((tier, n, caps.get(n)))
-            plain = cr.text_of(page)
-            for kw in ("relegat", "promot", "withdr", "expel", "dissol", "bankrupt", "licen", "U23", "Futures",
-                       "reserve", "temporar", "merg", "renamed"):
-                hits = [plain[max(0, m.start() - 160):m.start() + 160] for m in re.finditer(kw, plain, re.I)][:6]
-                for h in hits: p("  CHANGE", tier, kw, "...", h)
-            time.sleep(2)
-            break
+def infobox(title, lang="en", keys=r"dissolved|league|season|position|ground|capacity|coordinates|current|fullname|founded|stadium|opened|location|home|tenants|competitie|opgeheven|stadion|opgericht|fusie|merger|defunct|ceased|last|clubname|naam|bijnaam|capaciteit|championnat|stade|fondation|disparition|division|divisie|reeks"):
+    wt = wikitext(title, lang)
+    keep = [l.strip() for l in wt.splitlines() if re.match(r"\s*\|\s*(%s)" % keys, l, re.I)]
+    return " || ".join(keep)[:1300] if keep else ("(no infobox lines)" if wt else "(no article)")
 
 
-def s3():
-    for slug in ["bel", "bgm", "blg", "be", "belgium"]:
-        try:
-            req = urllib.request.Request(f"https://stadiumdb.com/stadiums/{slug}", headers={"User-Agent": cr.USER_AGENT})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                body = r.read().decode("utf-8", "replace"); st = r.status
-        except urllib.error.HTTPError as ex:
-            st, body = ex.code, ""
-        except Exception as ex:
-            st, body = str(ex), ""
-        p("STADIUMDB", slug, st, len(body), body.count("<tr"), body.count("<table"))
-        if st == 200 and body.count("<tr") > 3:
-            rows = re.findall(r"<tr[^>]*>(.*?)</tr>", body, re.S)
-            for tr in rows[:400]:
-                c = [cr.text_of(x) for x in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)]
-                p("   SDB", " | ".join(c))
-            break
-        time.sleep(4)
+def intro(title, lang="en", n=900):
+    args = {"action": "query", "prop": "extracts", "exintro": "1", "explaintext": "1", "titles": title,
+            "redirects": "1", "format": "json", "formatversion": "2"}
+    d, e = cr.get_json_with_retry(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(args), title)
+    pages = (d or {}).get("query", {}).get("pages", [])
+    return re.sub(r"\s+", " ", (pages[0].get("extract") if pages else "") or "")[:n]
 
 
-TAGGED = {}
-
-
-def s4():
-    if not EN_LEAGUES:
-        p("NO EN LEAGUES"); return
-    rows = sparql("""SELECT ?club ?league ?rank WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; wikibase:rank ?rank .
-      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-    }""" % " ".join("wd:" + l for l in EN_LEAGUES), "TAGGED")
-    for r in rows:
-        TAGGED.setdefault(q_(fc.cell(r, "club")), set()).add(
-            (EN_LEAGUES.get(q_(fc.cell(r, "league"))), q_(fc.cell(r, "league")), q_(fc.cell(r, "rank")).split("#")[-1][:4]))
-    allq = set(TAGGED) | set(EN_ROSTER)
-    E = ents(sorted(allq))
-    types = {}
-    for q in sorted(allq, key=lambda q: lab(E.get(q, {})) or q):
+def a_items():
+    ids = ["Q233199", "Q24036298", "Q420970", "Q2441983", "Q98406549", "Q117384089", "Q101625593", "Q113884742",
+           "Q115476719", "Q1668203", "Q2313985", "Q95183770", "Q18001655"]
+    ids.append(qid_for("RSCA Futures") or "")
+    p("RSCA Futures ->", ids[-1])
+    E = ents(ids, props="claims|labels|descriptions|sitelinks")
+    for q in ids:
         x = E.get(q, {})
-        ty = [v[0] for v in vals(x, "P31")]
-        if "Q5" in ty: continue
-        for t in ty: types[t] = types.get(t, 0) + 1
-        enl = [v for v in vals(x, "P118") if v[0] in EN_LEAGUES]
-        p("ITEM", q, "|", labs(x), "| tags", sorted(TAGGED.get(q, []), key=str), "| roster", EN_ROSTER.get(q),
-          "| EN-P118", enl, "| nP118", len(vals(x, "P118")), "| P118-all", [v[0] for v in vals(x, "P118")][:8],
-          "| P576", vals(x, "P576") or "-",
-          "| P17", [v[0] for v in vals(x, "P17")],
-          "| P115", [(v[0], v[1]) + ((v[2],) if len(v) > 2 else ()) for v in vals(x, "P115")],
-          "| P625", [v[0] for v in vals(x, "P625")], "| P31", ty[:5],
-          "| P831", [v[0] for v in vals(x, "P831")], "| P361", [v[0] for v in vals(x, "P361")][:3],
-          "| P2094", [v[0] for v in vals(x, "P2094")], "| sl", sitelinks(x))
-        # not-a-club net, every label language the builder could see
-        for lg, nm in labs(x).items():
-            r = fc.not_a_club(nm, [])
-            if r or re.search(r"seizoen|saison|season|histor|geschiedenis|wedstrijd|match|fictie|fictional|lijst|liste|list", nm, re.I):
-                p("   NAMECHECK", q, lg, repr(nm), "-> CAUGHT" if r else "-> NOT CAUGHT")
-    T = ents(list(types), props="labels")
-    for t, n in sorted(types.items(), key=lambda kv: -kv[1]):
-        tl = lab(T.get(t, {}))
-        p("TYPE", t, tl, n, "| not_a_club:", bool(fc.not_a_club(None, [tl or ""])))
+        if not x: continue
+        p("ITEM", q, labs(x), "| desc", {k: v["value"] for k, v in x.get("descriptions", {}).items() if k in ("en", "nl", "fr")},
+          "| sl", sitelinks(x), "| props", sorted(x.get("claims", {}).keys())[:40])
+        for pr in ("P31", "P17", "P118", "P571", "P576", "P115", "P625", "P831", "P361", "P1365", "P1366", "P2094", "P3983", "P155", "P156"):
+            if pr in x.get("claims", {}): p("    ", q, pr, vals(x, pr)[:8])
 
 
-def s5():
-    if not EN_LEAGUES: return
-    L = " ".join("wd:" + l for l in EN_LEAGUES)
-    rows = sparql("""SELECT DISTINCT ?club ?clubLabel ?league ?rank ?t ?tLabel WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; wikibase:rank ?rank .
-      ?club wdt:P31 ?t . ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en")
-      FILTER(CONTAINS(LCASE(?tl), "women") || CONTAINS(LCASE(?tl), "female") || CONTAINS(LCASE(?tl), "girls")
-             || CONTAINS(LCASE(?tl), "ladies"))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-    }""" % L, "WOMEN-TYPED")
-    for r in rows:
-        p("WOMEN-ITEM", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), "| league", q_(fc.cell(r, "league")),
-          q_(fc.cell(r, "rank")).split("#")[-1], "| type", fc.cell(r, "tLabel"))
-    rows = sparql("""SELECT DISTINCT ?club ?clubLabel ?league ?rank ?l WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; wikibase:rank ?rank .
-      ?club rdfs:label|skos:altLabel|schema:description ?l .
-      FILTER(LANG(?l) IN ("en", "nl", "fr", "de"))
-      FILTER(CONTAINS(LCASE(?l), "women") || CONTAINS(LCASE(?l), "ladies") || CONTAINS(LCASE(?l), "vrouwen")
-             || CONTAINS(LCASE(?l), "dames") || CONTAINS(LCASE(?l), "féminin") || CONTAINS(LCASE(?l), "feminin")
-             || CONTAINS(LCASE(?l), "femmes") || CONTAINS(LCASE(?l), "frauen") || CONTAINS(LCASE(?l), "girls")
-             || CONTAINS(LCASE(?l), " wfc") || CONTAINS(LCASE(?l), "w.f.c"))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-    }""" % L, "WOMEN-NAMED-OR-DESCRIBED")
-    for r in rows:
-        p("WOMEN-NAMED-ITEM", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), "| league", q_(fc.cell(r, "league")),
-          q_(fc.cell(r, "rank")).split("#")[-1], "|", fc.cell(r, "l"))
-    rows = sparql("""SELECT DISTINCT ?club ?clubLabel ?c ?cLabel WHERE {
-      VALUES ?league { %s }
-      ?club p:P118/ps:P118 ?league . ?club wdt:P2094 ?c .
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" } }""" % L, "P2094-ON-TAGGED")
-    for r in rows: p("  C", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), fc.cell(r, "cLabel"))
+def b_pages():
+    for t, lang in [("K.S.V. Roeselare", "en"), ("KSV Roeselare", "nl"), ("Royale Union Tubize-Braine", "en"), ("AFC Tubize", "nl"),
+                    ("SL16 FC", "en"), ("RWDM Brussels", "en"), ("FCV Dender EH", "en"), ("Lommel SK", "en"),
+                    ("Club NXT", "en"), ("RSCA Futures", "en"), ("Jong Genk", "nl"), ("Jong KAA Gent", "nl"),
+                    ("RAAL La Louvière", "en"), ("RFC Seraing (1922)", "en"), ("Francs Borains", "en"),
+                    ("KSC Lokeren (2025)", "en"), ("Sporting Hasselt", "en"), ("RFC Liège", "en"), ("Lierse SK (2018)", "en"),
+                    ("Patro Eisden Maasmechelen", "en"), ("Royal Excelsior Virton", "en"), ("K Beerschot VA", "en"),
+                    ("KAS Eupen", "en"), ("Royale Union Saint-Gilloise", "en"), ("KVC Westerlo", "en"),
+                    ("KV Oostende", "en"), ("Sportkring Beveren", "en")]:
+        p("PAGE", lang, t, "| INFOBOX", infobox(t, lang))
+        p("   INTRO", intro(t, lang))
+        time.sleep(1)
 
 
-def s5b():
-    # fourth angle: women's items pointing at roster clubs by P831/P361
-    if not EN_ROSTER: p("NO ROSTER"); return
-    ids = " ".join("wd:" + q for q in EN_ROSTER)
-    rows = sparql("""SELECT DISTINCT ?team ?teamLabel ?club ?clubLabel ?rel ?tLabel WHERE {
-      VALUES ?club { %s }
-      { ?team wdt:P831 ?club . BIND("P831" AS ?rel) } UNION { ?team wdt:P361 ?club . BIND("P361" AS ?rel) }
-      OPTIONAL { ?team wdt:P31 ?t . }
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl,fr" } }""" % ids, "ITEMS-POINTING-AT-ROSTER-CLUBS")
-    for r in rows:
-        p("  P", q_(fc.cell(r, "team")), fc.cell(r, "teamLabel"), "->", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"),
-          fc.cell(r, "rel"), "| type", fc.cell(r, "tLabel"))
-    teams = sorted({q_(fc.cell(r, "team")) for r in rows})
-    E = ents(teams)
-    for q in teams:
+def c_tables():
+    for art in ["2026–27 Challenger Pro League", "2026–27 Belgian Pro League"]:
+        page, real, err = cr.fetch_article(art)
+        p("TABLES", art, err)
+        if not page: continue
+        for i, tb in enumerate(re.findall(r'<table class="wikitable[^"]*".*?</table>', page, re.S)):
+            rows = re.findall(r"<tr[^>]*>(.*?)</tr>", tb, re.S)
+            head = [cr.text_of(x) for x in re.findall(r"<th[^>]*>(.*?)</th>", rows[0], re.S)] if rows else []
+            p(" TABLE", i, "head", head[:10], "rows", len(rows))
+            if i > 3: continue
+            for tr in rows[1:30]:
+                cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)
+                txt = [cr.text_of(c) for c in cells]
+                links = [_html.unescape(urllib.parse.unquote(m)).replace("_", " ") for m in re.findall(r'href="/wiki/([^"#?]+)"', tr)]
+                p("   ROW", " | ".join(txt)[:220], "|| links", links[:6])
+        time.sleep(2)
+
+
+def d_grounds():
+    E = ents(ROSTER + EXTRA)
+    gs = {}
+    for q in ROSTER + EXTRA:
         x = E.get(q, {})
-        p("  POINTER-P118", q, lab(x), vals(x, "P118"), "| P2094", vals(x, "P2094"), "| P625", vals(x, "P625"))
+        for v in vals(x, "P115"):
+            gs.setdefault(v[0], []).append(q)
+    G = ents(list(gs))
+    for g, qs in gs.items():
+        x = G.get(g, {})
+        p("GROUND", g, lab(x), "| for", qs, "| P625", vals(x, "P625"), "| P1083", vals(x, "P1083"),
+          "| P131", vals(x, "P131")[:2], "| P576", vals(x, "P576"), "| P466", [v[0] for v in vals(x, "P466")][:6], "| sl", sitelinks(x))
 
 
-def s6():
-    if not EN_LEAGUES: return
-    rows = sparql("""SELECT ?club ?clubLabel ?league ?end ?endPrec ?start ?rank WHERE {
-      VALUES ?league { %s }
-      ?club p:P118 ?st . ?st ps:P118 ?league ; a wikibase:BestRank ; wikibase:rank ?rank .
-      OPTIONAL { ?st pqv:P582 ?ev . ?ev wikibase:timeValue ?end ; wikibase:timePrecision ?endPrec }
-      OPTIONAL { ?st pq:P580 ?start }
-      FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }
-      FILTER NOT EXISTS { ?club wdt:P576 ?d }
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl,fr" }
-    }""" % " ".join("wd:" + l for l in EN_LEAGUES), "P582-BE")
-    n = 0
-    for r in rows:
-        n += 1
-        p("P582-ROW", q_(fc.cell(r, "club")), fc.cell(r, "clubLabel"), EN_LEAGUES.get(q_(fc.cell(r, "league"))),
-          (fc.cell(r, "start") or "")[:10], (fc.cell(r, "end") or "")[:10], fc.cell(r, "endPrec"),
-          q_(fc.cell(r, "rank")).split("#")[-1])
+def e_extras():
+    E = ents(EXTRA)
+    for q in EXTRA:
+        x = E.get(q, {})
+        p("EXTRA", q, labs(x), "| P118", vals(x, "P118"), "| P576", vals(x, "P576"), "| P115", vals(x, "P115"),
+          "| P1366", vals(x, "P1366"), "| P156", vals(x, "P156"), "| sl", sitelinks(x))
 
 
-for name, fn in [("0 extremes", s0), ("1 leagues", s1), ("2 articles", s2), ("4 items", s4),
-                 ("5 women", s5), ("5b pointing", s5b), ("6 P582", s6), ("3 StadiumDB", s3)]:
+for name, fn in [("a items", a_items), ("c tables", c_tables), ("d grounds", d_grounds), ("e extras", e_extras),
+                 ("b pages", b_pages)]:
     section(name, fn)
     time.sleep(2)
-p("EN-TOP again", EN_LEAGUES)
-p("=== END OF PROBE BE1 ===")
+p("=== END OF PROBE BE2 ===")
