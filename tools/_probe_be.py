@@ -1,4 +1,4 @@
-"""TEMPORARY probe #5 for the Belgium pass. Removed in the same branch."""
+"""TEMPORARY probe #6 for the Belgium pass. Removed in the same branch."""
 import csv, glob, json, os, re, sys, time, traceback, urllib.parse, urllib.request, urllib.error
 sys.path.insert(0, "tools")
 import check_rosters as cr
@@ -156,37 +156,26 @@ ROSTER = """Q187528 Q732002 Q509170 Q364698 Q19585 Q190916 Q216032 Q18232 Q61862
 Q2268833 Q1065328 Q1423718 Q18001655 Q650917 Q95183770 Q2456491 Q1347229 Q2313985 Q2308515 Q925973 Q101625593 Q113884742 Q117384089 Q114056326""".split()
 
 
-def a_same_label():
-    E = ents(ROSTER, props="labels")
-    labels = set()
-    for q in ROSTER:
-        for l, v in E.get(q, {}).get("labels", {}).items():
-            labels.add((v["value"].replace('"', ''), l))
-    vals_ = " ".join('"%s"@%s' % lv for lv in sorted(labels))
-    rows = sparql("""SELECT DISTINCT ?x ?xLabel ?t ?tLabel WHERE {
-      VALUES ?lab { %s } ?x rdfs:label ?lab . ?x wdt:P31 ?t .
-      VALUES ?t { wd:Q476028 wd:Q103229495 wd:Q14752149 wd:Q2412834 wd:Q847017 wd:Q15944511 wd:Q4438121 wd:Q31855 wd:Q783794 wd:Q891723 wd:Q20639856 }
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl,fr" } }""" % vals_, "SAME-LABEL-ITEMS")
-    seen = {}
-    for r in rows: seen.setdefault((q_(fc.cell(r, "x")), fc.cell(r, "xLabel")), []).append(fc.cell(r, "tLabel"))
-    for (q, l), ts in sorted(seen.items(), key=lambda kv: kv[0][1] or ""):
-        p("  SL", q, l, ts, "ON-ROSTER" if q in ROSTER else "NOT-ON-ROSTER")
+
+def b_pointing_per_club():
+    total = 0
+    for club in ROSTER:
+        rows = sparql("""SELECT DISTINCT ?team ?teamLabel ?rel ?tLabel WHERE {
+          { ?team wdt:P831 wd:%s . BIND("P831" AS ?rel) } UNION { ?team wdt:P361 wd:%s . BIND("P361" AS ?rel) }
+          UNION { ?team wdt:P749 wd:%s . BIND("P749" AS ?rel) } UNION { ?team wdt:P127 wd:%s . BIND("P127" AS ?rel) }
+          OPTIONAL { ?team wdt:P31 ?t . }
+          SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl,fr" } }""" % (club, club, club, club), "POINT " + club)
+        total += len(rows)
+        for r in rows:
+            p("  P", q_(fc.cell(r, "team")), fc.cell(r, "teamLabel"), "->", club, fc.cell(r, "rel"), "| type", fc.cell(r, "tLabel"))
+        time.sleep(1)
+    p("POINTING TOTAL", total)
+    E = ents(["Q19974079", "Q109046924"])
+    for q, x in E.items():
+        p("WOMEN-ITEM", q, labs(x), "| P118", vals(x, "P118"), "| P31", [v[0] for v in vals(x, "P31")], "| P361", vals(x, "P361"),
+          "| P831", vals(x, "P831"), "| P2094", vals(x, "P2094"))
 
 
-def b_women_pointing():
-    ids = " ".join("wd:" + q for q in ROSTER)
-    rows = sparql("""SELECT DISTINCT ?team ?teamLabel ?club ?rel ?tLabel WHERE {
-      VALUES ?club { %s }
-      { ?team wdt:P831 ?club . BIND("P831" AS ?rel) } UNION { ?team wdt:P361 ?club . BIND("P361" AS ?rel) }
-      UNION { ?team wdt:P749 ?club . BIND("P749" AS ?rel) } UNION { ?team wdt:P127 ?club . BIND("P127" AS ?rel) }
-      ?team wdt:P31 ?t . ?t rdfs:label ?tl . FILTER(LANG(?tl) = "en")
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl,fr" } }""" % ids, "ALL-POINTING-AT-ROSTER")
-    for r in rows:
-        p("  P", q_(fc.cell(r, "team")), fc.cell(r, "teamLabel"), "->", q_(fc.cell(r, "club")), fc.cell(r, "rel"),
-          "| type", fc.cell(r, "tLabel"))
-
-
-for name, fn in [("a same label", a_same_label), ("b pointing", b_women_pointing)]:
+for name, fn in [("b pointing per club", b_pointing_per_club)]:
     section(name, fn)
-    time.sleep(2)
-p("=== END OF PROBE BE5 ===")
+p("=== END OF PROBE BE6 ===")
