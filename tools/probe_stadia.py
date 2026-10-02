@@ -26,48 +26,32 @@ def text(body):
     body = html.unescape(re.sub(r"<[^>]+>", " ", body))
     return [re.sub(r"\s+", " ", l).strip() for l in body.split("\n") if l.strip()]
 
-PAGES = [
-  "https://stadiamaps.com/pricing/",
-  "https://docs.stadiamaps.com/pricing/",
-  "https://docs.stadiamaps.com/credits/",
-  "https://docs.stadiamaps.com/routing/standard-routing/",
-  "https://docs.stadiamaps.com/geocoding-search-autocomplete/autocomplete/",
-  "https://docs.stadiamaps.com/geocoding-search-autocomplete/search/",
-  "https://docs.stadiamaps.com/authentication/",
-  "https://stadiamaps.com/terms-of-service/",
-]
-for url in PAGES:
+
+st, hd, body = get("https://stadiamaps.com/pricing/")
+lines = text(body)
+i = next((k for k,l in enumerate(lines) if "Credit Schedule" in l), 0)
+print("===== pricing page, credit schedule section, every line")
+for l in lines[i:i+120]: print("  |", l)
+# also raw html around the table, in case the cost is in an attribute
+m = re.search(r"(?is)Standard Routing.{0,1500}", body)
+print("===== raw html after 'Standard Routing' (first hit)"); print(m.group(0)[:1500] if m else None)
+
+for url in ["https://docs.stadiamaps.com/geocoding-search-autocomplete/place-lookup/",
+            "https://docs.stadiamaps.com/geocoding-search-autocomplete/place-details/",
+            "https://docs.stadiamaps.com/geocoding-search-autocomplete/v2-api-migration-guide/"]:
     st, hd, body = get(url)
-    lines = text(body) if st == 200 else []
-    hits = [l for l in lines if KW.search(l) and len(l) < 400]
-    print(f"\n===== {url}  HTTP {st}  {len(body)} bytes, {len(hits)} matching lines")
-    seen = set()
-    for l in hits:
-        if l in seen: continue
-        seen.add(l); print("  |", l)
-        if len(seen) >= 90: print("  | ...cut"); break
+    hits = [l for l in text(body) if re.search(r"credit|place|geometry|coordinates|endpoint|api\.stadiamaps", l, re.I) and len(l) < 300] if st == 200 else []
+    print(f"\n===== {url} HTTP {st}")
+    for l in hits[30:90]: print("  |", l)
 
-print("\n===== API: one route request (costs credits)")
-body = json.dumps({"locations": [{"lat": 48.8003, "lon": 9.0167}, {"lat": 48.1351, "lon": 11.5820}],
-                   "costing": "auto", "units": "kilometers",
-                   "directions_type": "none"}).encode()
-st, hd, out = get(f"https://api.stadiamaps.com/route/v1?api_key={KEY}", data=body,
-                  headers={"Content-Type": "application/json", "Origin": "https://alexgrozavul.github.io"})
-print("HTTP", st, "ACAO:", hd.get("Access-Control-Allow-Origin") or hd.get("access-control-allow-origin"))
-print({k: v for k, v in hd.items() if k.lower().startswith(("x-", "ratelimit", "access-control"))})
-try:
-    j = json.loads(out); tr = j.get("trip", {})
-    print("keys:", list(j), "trip keys:", list(tr))
-    print("summary:", tr.get("summary"), "units:", tr.get("units"))
-    print("legs:", len(tr.get("legs", [])), "shape chars:", len(tr["legs"][0]["shape"]) if tr.get("legs") else None)
-    print("leg keys:", list(tr["legs"][0]) if tr.get("legs") else None)
-except Exception as e:
-    print("not JSON:", e, out[:600])
+print("\n===== one v1 autocomplete request (costs credits)")
+st, hd, out = get(f"https://api.stadiamaps.com/geocoding/v1/autocomplete?text=Karlsruhe&size=2&api_key={KEY}")
+print("HTTP", st); print(out[:1200])
 
-for path in ["geocoding/v2/autocomplete", "geocoding/v1/autocomplete"]:
-    print(f"\n===== API: one {path} request (costs credits)")
-    st, hd, out = get(f"https://api.stadiamaps.com/{path}?text=Karlsruhe&size=3&api_key={KEY}",
-                      headers={"Origin": "https://alexgrozavul.github.io"})
-    print("HTTP", st, "ACAO:", hd.get("Access-Control-Allow-Origin") or hd.get("access-control-allow-origin"))
-    print(out[:1500])
-    if st == 200: break
+print("\n===== one raster tile, NO Origin/Referer header (1 credit)")
+st, hd, out = get(f"https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/8/134/88.png?api_key={KEY}")
+print("HTTP", st, hd.get("Content-Type"), len(out))
+print("\n===== one raster tile, Origin https://example.com (1 credit)")
+st, hd, out = get(f"https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/8/134/88.png?api_key={KEY}",
+                  headers={"Origin": "https://example.com", "Referer": "https://example.com/"})
+print("HTTP", st, hd.get("Content-Type"), len(out))
