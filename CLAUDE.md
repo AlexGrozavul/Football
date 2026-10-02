@@ -308,7 +308,7 @@ a subscribed calendar reads as a schedule regardless of its description.
 ### Code
 
 - `index.html` — the whole app. Single file, no framework, Leaflet from
-  CDN, three tabs: map, bucket list, ticket info. Tapping a club opens
+  a copy in `vendor/` (from the unpkg CDN until 2026-10-02), three tabs: map, bucket list, ticket info. Tapping a club opens
   the **club detail sheet** (built 2026-09-25), a pull-up panel that
   replaced the map popup: ground, capacity, competition by name,
   distance, fixtures and ticket info, each saying "unavailable" with a
@@ -318,6 +318,17 @@ a subscribed calendar reads as a schedule regardless of its description.
   every club within an adjustable distance of it (default 25 km) listed
   in route order, each tappable to its sheet, with an optional "home
   match on" date filter. See the Conventions entry on routes.
+- `manifest.webmanifest`, `sw.js`, `icons/`, `vendor/leaflet-1.9.4/` —
+  the **installable app** (built 2026-10-02): the manifest Chrome reads
+  to offer "Install app", the service worker that lets the installed app
+  open offline, an original icon (a map pin with a ball; drawn by
+  `icons/draw-icon.js`, no crest or third-party mark), and Leaflet
+  1.9.4 copied byte for byte from npm with its BSD-2 licence. See the
+  Conventions entry "The installable app".
+- `tools/test_pwa.js` — headless Chromium test of the installable app
+  at phone width: Chrome's own installability errors, a second load
+  offline, fresh data after a data change, a new deploy replacing the
+  shell. Run by hand (instructions at its top); **no workflow runs it.**
 - `tools/link_fixtures.py` — joins fixture-source teams to map clubs
   and writes `fixture-links.json` and `fixture-link-review.csv`. Reads
   committed files only, no network. Run by `link-fixtures.yml` after
@@ -1217,6 +1228,134 @@ line, straight**, not a drive, and the list says so.
   to any origin. Like every UI change before it, this has no automated
   check (see Known open problems).
 
+**The installable app: what is cached, what deliberately is not, and
+how an update reaches the phone.** Built 2026-10-02 on Alexandru's
+instruction. The site is served from `/Football/`, not from `/`, so
+every path in `manifest.webmanifest` and `sw.js` is **relative**
+(`./`, `data/`, `icons/...`) and resolves inside `/Football/`. A
+root-relative `/` path would point at `alexgrozavul.github.io/`, which
+is not this site. `start_url` and `scope` are `./`, which the test
+checked resolves to `/Football/`.
+
+| what | rule | why |
+|---|---|---|
+| the page, manifest, icons, the Leaflet copy (the **shell**) | **network first**, saved copy only when the network fails; cache `football-shell-<SHELL_VERSION>` | online, the phone always gets what GitHub serves now, so a deploy cannot be stuck behind an old copy |
+| everything under `data/` | **network first**, saved copy **only when the network fails**; cache `football-data-v1` | stale data must never look current: online, the saved copy is never used, only replaced |
+| map tiles, routing, place search (Stadia, another origin) | **not touched, not saved** | Stadia's terms, below |
+| anything else in the site (`calendars/*.ics`, `docs/`) | not touched, not saved | not part of the app |
+
+**The shell is network first, not cache first, and that was a choice.**
+The brief asked for a cached shell with a versioned cache name so a new
+deploy replaces the old one. A cache-first shell only changes when
+somebody remembers to change the version, and forgetting once leaves the
+phone on the old page indefinitely - the failure the brief was guarding
+against. Network first, with the saved copy as the offline fallback,
+gets the versioned cache and cannot be stuck. The cost is one
+revalidation request per shell file per open, answered 304.
+
+- **Offline, data is labelled.** A file answered from the saved copy
+  carries `x-served-from: cache` and the time it was saved, and the page
+  puts up a banner: *"Offline. Showing data saved on Fri, 2 Oct 2026,
+  16:34. It may be out of date."* - the **oldest** saved time among the
+  files it used. A file never saved on that phone is **named** in the
+  banner ("Never saved on this device, so missing: clubs/GR.json"), not
+  silently left off the map - rule 2. A 404 or a 500 from GitHub is
+  **not** a network failure and is passed through as it always was.
+- **What gets saved, and when.** Every data file the page loads while
+  online. On the very first visit the page loads before the worker is in
+  charge, so it then hands the worker the list and the worker fetches
+  those files once (all twelve country files and `football-rules.json`,
+  about 350 KB). A fixture file is saved only once a club sheet has
+  opened it online, so a sheet opened offline for the first time says
+  its fixtures are unavailable, and why.
+- **Offline, the map says so.** Tiles are never saved, so offline the
+  map shows a card - "The map needs a connection" - over the club
+  markers, which still work. The same card appears online if tiles keep
+  failing (four in a row), worded as "no connection, or Stadia Maps
+  refused them", since a refused key looks the same from the page. The
+  route panel's errors say "this phone is offline" when it is.
+- **Leaflet is a copy in the repo, `vendor/leaflet-1.9.4/`, not the
+  CDN.** Measured, not assumed: with the page loading Leaflet from unpkg
+  and unpkg unreachable, the page throws `L is not defined` and **nothing
+  renders - not the map, not the bucket list, not ticket info**, because
+  start-up stops at the map. Caching the CDN file in the worker would
+  also have worked, but only after a first online visit, and it keeps a
+  third-party server between Alexandru and his own app. The copy is
+  npm's `leaflet@1.9.4` (sha256 of `leaflet.js` `db49d009…5641a`); unpkg
+  serves npm's files verbatim. It is also the pinned local copy the
+  future page check needed (Known open problems).
+- **How an update reaches the phone, and how long it takes.** A merge
+  to `main` is live on GitHub Pages about a minute later. GitHub serves
+  every file with `Cache-Control: max-age=600`, but the worker asks for
+  the shell and the data with `no-cache` (revalidate), so the ten
+  minutes do not apply: **the next time the app is opened online, it
+  shows the new page and the new data.** An app left open in the
+  background is not reloaded by itself; closing it (swipe it away from
+  recent apps) and reopening is a reload, and the banner has a Reload
+  button. A change to `sw.js` itself is found by Chrome when the app is
+  opened (registered with `updateViaCache: 'none'`, so the check skips
+  the HTTP cache), installs in the background, takes over at once
+  (`skipWaiting` + `clients.claim`, harmless because both rules are
+  network first), and deletes every cache it does not name.
+- **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
+  (`v1` → `v2`). That is what drops the old shell cache. It is **not**
+  needed for an ordinary change to `index.html` or the data - the test
+  checked both: a new `index.html` with `sw.js` untouched reached the page
+  on the next online load and became the offline copy, and a `v2` worker
+  created `football-shell-v2`, deleted `football-shell-v1` and kept the
+  data cache. Adding a shell file (a new icon, a second script) means
+  adding it to `SHELL_FILES` and changing the version.
+- **Stadia's terms on caching, read 2026-10-02** from
+  `stadiamaps.com/terms-of-service/` ("Effective March 18, 2026",
+  fetched on a GitHub runner: the sandbox cannot reach Stadia, and
+  `docs.stadiamaps.com` answered the runner 403, which is a stop, so no
+  documentation page on offline use was read). Its list of prohibited
+  conduct forbids "proxying or caching access to our Services in any
+  way", **except** (a) "caching small amounts of data for offline use in
+  a mobile application, not to exceed 100MB cached at a time per
+  device", (b) the paid cacheable static maps endpoint, and (c)
+  "standard client-side caching (server-side caching is prohibited) for
+  performance reasons provided that the cache is local to the client
+  device and the data is not retained for longer than the HTTP caching
+  headers, or 7 days in the case that a header is not returned". It also
+  forbids "permanently storing results ... from the Stadia Maps Geocoding
+  APIs without an active Standard, Professional, or Enterprise
+  subscription", and the pricing page marks geocoding on the Free plan
+  "Temp storage". **What that means here:** the browser's ordinary HTTP
+  cache of tiles is (c) and is untouched. Saving tiles for offline use
+  might fit (a) - an installed web app may or may not count as "a mobile
+  application", which the terms do not define - but it would have to be
+  capped at 100 MB, every saved tile is a credit spent in advance, and it
+  is a reading of a contract, so **it is Alexandru's call and was not
+  built**. Saving geocoding results is ruled out on the Free plan. **Do
+  not add tiles, routes or searches to `sw.js` without reading the terms
+  again.**
+- **Force-refreshing the installed app if it misbehaves**, in order,
+  stopping at the first that works:
+  1. Make sure the phone is online, then **close the app completely**
+     (swipe it away from recent apps) and open it again. That fetches
+     the page and the data fresh. If the yellow "Offline" banner shows
+     while the phone is online, GitHub did not answer; try again later.
+  2. **Clear what it saved**: Chrome → ⋮ → Settings → Site settings →
+     All sites → `alexgrozavul.github.io` → *Clear & reset*. That deletes
+     the saved copies and the service worker; the next open is a first
+     visit. The home-screen icon may need adding again (step 3).
+  3. **Reinstall**: long-press the icon → App info → Uninstall, then open
+     `https://alexgrozavul.github.io/Football/` in Chrome → ⋮ → *Install
+     app* (or *Add to Home screen* → Install).
+  On a computer, Chrome DevTools → Application → Storage → *Clear site
+  data* does step 2.
+- **Tested 2026-10-02 in headless Chromium at 390x844**,
+  `tools/test_pwa.js`, 22 checks, all passing: the site served at
+  `localhost:8765/Football/` with GitHub Pages' own cache header, tiles
+  stubbed. Chrome's own installability check (`Page.getInstallabilityErrors`,
+  what DevTools' manifest panel shows) returned **no errors** in a normal
+  profile (it says `in-incognito` in a private one, which is Chrome
+  refusing to install from incognito, not a fault). Lighthouse was not
+  used: its PWA category was removed in Lighthouse 12. **Not tested on a
+  real phone or against GitHub Pages itself** - the sandbox reaches
+  neither.
+
 **Clubs on the same coordinate share one marker.** `drawClubs()` used to
 make one circle per club with no idea that another club was already
 standing on that pixel, and the circle drawn second covered the first
@@ -1380,6 +1519,11 @@ dashboard, not in this repo**: Stadia's own documentation recommends
 domain-based authentication for web apps (it checks the browser's Origin
 and Referer), and with it the page could drop the key altogether.
 Nothing was changed here.
+
+**The installable app saves nothing from Stadia** - no tile, no route,
+no search result - and what Stadia's terms say about caching and offline
+use is in Conventions, "The installable app". Read it before changing
+that.
 
 ---
 
@@ -1651,6 +1795,12 @@ Nothing was changed here.
   the repo, Leaflet from a pinned local copy (unpkg is unreachable from
   the sandbox), stubbed tiles, then load every country file and fail on
   any page error, and open a sheet per country. Not built.
+  **Two pieces of it exist since 2026-10-02**: Leaflet is now a pinned
+  copy in `vendor/`, and `tools/test_pwa.js` is a repeatable headless
+  test of the installable app (local server, stubbed tiles, fails on any
+  page error, loads every country file). It does not open club sheets,
+  and **no workflow runs it**, so it is still not part of rule 7's
+  "clean" on its own - a session runs it by hand.
 
 - **The Netherlands' top two tiers are on the map, 2026-10-01: Eredivisie
   18 of 18 and Eerste Divisie 20 of 20, exact - nothing missing, nothing

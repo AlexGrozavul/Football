@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0d1117">
 <title>Football planner</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<!-- Leaflet is a copy in vendor/, not a CDN link, so the installed app
+     opens offline. See CLAUDE.md, The installable app. -->
+<link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <style>
   :root{
     --bg:#0d1117; --panel:#161b22; --line:#26303b; --ink:#e6edf3;
@@ -182,14 +187,31 @@
     border:1px solid var(--t3);border-radius:9px;padding:9px 11px;font-size:13.5px}
 
   .note{color:var(--faint);font-size:12.5px;margin:14px 0 0;line-height:1.5}
+
+  /* Offline: the data banner, and the map's "needs a connection" card. */
+  .offline{background:#3a2a06;color:#f2d38a;border-bottom:1px solid #6b4f12;
+    padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top));
+    font-size:13.5px;line-height:1.4;display:flex;gap:10px;align-items:center}
+  .offline[hidden]{display:none}
+  .offline span{flex:1}
+  .offline button{background:#1b2230;border:1px solid #6b4f12;border-radius:7px;
+    color:var(--ink);font:inherit;font-size:12.5px;padding:5px 10px}
+  .mapoff{position:absolute;z-index:450;left:50%;top:56px;transform:translateX(-50%);
+    width:min(330px,calc(100% - 32px));background:rgba(22,27,34,.97);border:1px solid var(--warn);
+    border-radius:10px;padding:11px 13px;font-size:13.5px;line-height:1.45;pointer-events:none}
+  .mapoff b{display:block;color:var(--warn);font-size:15px;margin-bottom:3px}
   .err{color:var(--bad);font-size:13px;margin:8px 0}
 </style>
 </head>
 <body>
 <div id="app">
+  <div class="offline" id="offlineBanner" hidden role="status"><span id="offlineText"></span>
+    <button id="offlineReload">Reload</button></div>
   <div id="panes">
     <div class="pane on" id="pane-map">
       <div id="map"></div>
+      <div class="mapoff" id="mapOffline" hidden role="status"><b>The map needs a connection</b>
+        <span id="mapOfflineWhy"></span></div>
       <div class="bar">
         <div class="chip" id="zoomChip">…</div>
         <div class="chip" id="homeChip">home not set</div>
@@ -238,7 +260,7 @@
   </nav>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script>
 /* ------------------------------------------------------------------
    Football planner.
@@ -321,9 +343,67 @@ function sourceTag(src){
 }
 
 async function getJSON(path){
+  const direct = !navigator.serviceWorker?.controller;   // before the request: who will answer it
   const res = await fetch(path, {cache:'no-cache'});
-  if(!res.ok) throw new Error(path + ' → ' + res.status);
+  noteSource(path, res, direct);
+  if(!res.ok) throw new Error(path + ' → ' + res.status + (res.statusText ? ' ' + res.statusText : ''));
   return res.json();
+}
+
+/* ----------------------------------------------- offline (installed app)
+
+   sw.js answers a data file from its saved copy ONLY when the network
+   fails, and marks that answer with x-served-from: cache and the time
+   the copy was saved. Every such answer puts the banner up with the
+   OLDEST saved time among them, so old data never looks current. */
+
+const FROM_CACHE = new Map();       // path -> saved-at (ISO), or '' if unknown
+const NOT_SAVED = new Set();        // offline, and never saved on this device
+const UNSAVED = new Set();          // loaded before the worker was in charge
+
+function noteSource(path, res, direct){
+  const from = res.headers.get('x-served-from');
+  if(from === 'cache'){
+    FROM_CACHE.set(path, res.headers.get('x-saved-at') || '');
+    showOfflineBanner();
+  }else if(from === 'none'){
+    NOT_SAVED.add(path);
+    showOfflineBanner();
+  }else if(res.ok && direct && 'serviceWorker' in navigator){
+    UNSAVED.add(new URL(path, location.href).href);
+    saveForOffline();
+  }
+}
+
+function showOfflineBanner(){
+  const times = [...FROM_CACHE.values()];
+  const known = times.filter(Boolean).sort();
+  const when = known.length
+    ? new Date(known[0]).toLocaleString('en-GB', {weekday:'short', day:'numeric', month:'short',
+        year:'numeric', hour:'2-digit', minute:'2-digit'})
+    : 'an unknown date';
+  /* A file the device never saved is named, not silently left out. */
+  const missing = [...NOT_SAVED].map(p => p.replace(/^data\//, ''));
+  document.getElementById('offlineText').textContent =
+    (times.length
+      ? `Offline. Showing data saved on ${when}` +
+        (known.length && known.length < times.length ? ' or earlier' : '') + '. It may be out of date.'
+      : 'Offline.') +
+    (missing.length ? ` Never saved on this device, so missing: ${missing.join(', ')}.` : '');
+  document.getElementById('offlineBanner').hidden = false;
+  if(MAP) setTimeout(() => MAP.invalidateSize(), 0);
+}
+
+let SAVE_TIMER = null;
+function saveForOffline(){
+  clearTimeout(SAVE_TIMER);
+  SAVE_TIMER = setTimeout(async () => {
+    try{
+      const reg = await navigator.serviceWorker.ready;
+      const urls = [...UNSAVED]; UNSAVED.clear();
+      if(urls.length && reg.active) reg.active.postMessage({type:'save-data', urls});
+    }catch(err){ console.warn('could not save data for offline use:', err.message); }
+  }, 500);
 }
 
 /* --------------------------------------------------------------- map */
@@ -469,10 +549,26 @@ async function initMap(){
          .setView([48.80, 9.02], 8);
   L.control.zoom({position:'bottomright'}).addTo(MAP);
 
-   L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=' + STADIA_KEY, {
+  /* Tiles are never cached by sw.js (CLAUDE.md, The installable app).
+     Offline, or when tiles keep failing, a card says the map needs a
+     connection rather than leaving a blank square. */
+  const tiles = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=' + STADIA_KEY, {
     maxZoom: 20,
     attribution: '&copy; <a href="https://stadiamaps.com/attribution/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
   }).addTo(MAP);
+  let tileFails = 0;
+  const mapNet = () => {
+    const offline = navigator.onLine === false;
+    document.getElementById('mapOfflineWhy').textContent = offline
+      ? 'This phone is offline, and map tiles are never saved. Club markers, the bucket list and ticket info still work from saved data.'
+      : 'Map tiles are not loading: no connection, or Stadia Maps refused them. Club markers still work.';
+    document.getElementById('mapOffline').hidden = !(offline || tileFails >= 4);
+  };
+  tiles.on('tileload', () => { if(tileFails){ tileFails = 0; mapNet(); } });
+  tiles.on('tileerror', () => { tileFails++; mapNet(); });
+  addEventListener('offline', mapNet);
+  addEventListener('online', () => { tileFails = 0; mapNet(); tiles.redraw(); });
+  mapNet();
 
   /* Canvas rendering: DOM markers start to stutter on a phone at a
      couple of thousand, canvas does not. */
@@ -530,8 +626,10 @@ function loadOnce(key, fn){
 }
 
 async function getText(path){
+  const direct = !navigator.serviceWorker?.controller;   // before the request: who will answer it
   const res = await fetch(path, {cache:'no-cache'});
-  if(!res.ok) throw new Error(path + ' → ' + res.status);
+  noteSource(path, res, direct);
+  if(!res.ok) throw new Error(path + ' → ' + res.status + (res.statusText ? ' ' + res.statusText : ''));
   return res.text();
 }
 
@@ -1128,7 +1226,8 @@ async function findPlace(which){
     res = await fetch('https://api.stadiamaps.com/geocoding/v1/search?' + q);
     data = await res.json().catch(() => null);
   }catch(err){
-    hits.innerHTML = `<p class="err">Place search failed: ${esc(err.message)}.</p>`; return;
+    hits.innerHTML = `<p class="err">Place search failed: ${esc(err.message)}` +
+      (navigator.onLine === false ? ' - this phone is offline, and place search needs a connection' : '') + '.</p>'; return;
   }
   if(!res.ok){
     hits.innerHTML = `<p class="err">Place search failed: HTTP ${res.status}` +
@@ -1159,7 +1258,8 @@ async function getRoute(){
       method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
     data = await res.json().catch(() => null);
   }catch(err){
-    out.innerHTML = `<p class="err">The route request failed: ${esc(err.message)}. Nothing is drawn.</p>`;
+    out.innerHTML = `<p class="err">The route request failed: ${esc(err.message)}` +
+      (navigator.onLine === false ? ' - this phone is offline, and routing needs a connection' : '') + '. Nothing is drawn.</p>';
     go.disabled = false; return;
   }
   go.disabled = false;
@@ -1423,6 +1523,16 @@ document.querySelectorAll('nav button').forEach(btn => {
     if(btn.dataset.pane === 'map' && MAP) setTimeout(() => MAP.invalidateSize(), 60);
   });
 });
+
+document.getElementById('offlineReload').addEventListener('click', () => location.reload());
+
+/* The installed app's service worker. 'sw.js' is relative, so on GitHub
+   Pages it is /Football/sw.js and its scope is /Football/. A failure
+   here leaves the site working exactly as before, online only. */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js', {updateViaCache:'none'})
+    .catch(err => console.warn('service worker not registered:', err.message));
+}
 
 (async function start(){
   let rules = null;
