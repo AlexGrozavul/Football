@@ -1663,7 +1663,11 @@ that.
     roster check on the branch moved exactly those two verdicts, from
     `missing-from-wikidata` to `ok` - **33 `ok`**. No other country's
     club file or verdict changed; `link_fixtures.py` re-run changes
-    nothing (neither club has a fixture source).
+    nothing (neither club has a fixture source). The OpenStreetMap
+    capacity check left Belgium `UNCHANGED` on its first branch run (HTTP
+    504), which is not a pass; the second (19:48 UTC) wrote **all twelve
+    countries**, Belgium 33 clubs, adding one row: RSCA Futures, "neither
+    source has a capacity" - true, its cell is blank on purpose.
   - **The four roster links are written, 2026-10-02, on Alexandru's
     instruction**, lines 6-9 of `data/roster-links-manual.csv`. The roster
     check on the branch read **Club NXT and Jong Genk `ok`**, and **Jong
