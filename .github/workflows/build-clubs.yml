@@ -30,7 +30,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  probe:
+    # THROWAWAY: Stadia domain-auth test and Belgian U23 grounds. Removed in the same branch.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 tools/probe_stadia_auth.py
+
   clubs:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
