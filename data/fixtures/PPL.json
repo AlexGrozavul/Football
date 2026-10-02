@@ -332,31 +332,6 @@
    "winner": "AWAY_TEAM"
   },
   {
-   "id": 567271,
-   "utcDate": "2026-08-16T00:00:00Z",
-   "status": "POSTPONED",
-   "matchday": 2,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5613,
-    "name": "Sporting Clube de Braga",
-    "shortName": "Braga",
-    "tla": "SCB",
-    "crest": "https://crests.football-data.org/5613.png"
-   },
-   "away": {
-    "id": 5533,
-    "name": "Gil Vicente FC",
-    "shortName": "Gil Vicente",
-    "tla": "GIL",
-    "crest": "https://crests.football-data.org/5533.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 567270,
    "utcDate": "2026-08-16T14:30:00Z",
    "status": "FINISHED",
@@ -1801,6 +1776,31 @@
     "shortName": "Alverca",
     "tla": "ALV",
     "crest": "https://crests.football-data.org/7822.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567271,
+   "utcDate": "2026-10-19T19:15:00Z",
+   "status": "TIMED",
+   "matchday": 2,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5613,
+    "name": "Sporting Clube de Braga",
+    "shortName": "Braga",
+    "tla": "SCB",
+    "crest": "https://crests.football-data.org/5613.png"
+   },
+   "away": {
+    "id": 5533,
+    "name": "Gil Vicente FC",
+    "shortName": "Gil Vicente",
+    "tla": "GIL",
+    "crest": "https://crests.football-data.org/5533.png"
    },
    "homeGoals": null,
    "awayGoals": null,

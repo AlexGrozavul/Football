@@ -1,6 +1,6 @@
 # Entries that produced no calendar event
 
-Generated 2026-10-01 by tools/build_calendars.py.
+Generated 2026-10-02 by tools/build_calendars.py.
 Nothing below is an error in the code. Each line is either a
 deliberate exclusion or a field you still need to fill in.
 
@@ -24,6 +24,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **liga2-playoff** - Liga 2 promotion play-off, decisive round
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
+- **milan-derby-sale-nov** - Milan home derby sale phases open
+  - occurrence 2026-10-01 is in the past - history stays in the JSON only
 - **old-firm** - Old Firm - Celtic v Rangers
   - no date of any kind
 - **ostderby** - Ostderby - Dynamo Dresden v Hansa Rostock
