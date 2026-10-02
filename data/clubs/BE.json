@@ -73,6 +73,36 @@
    "competition": "Challenger Pro League"
   },
   {
+   "id": "Q114056326",
+   "name": "RSCA Futures",
+   "leagues": [],
+   "tier": 2,
+   "venue": "Dakota Arena",
+   "capacity": null,
+   "lat": 50.983844,
+   "lon": 3.520403,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Challenger_Pro_League; https://nl.wikipedia.org/wiki/Dakota_Arena; https://www.europlan-online.de/burgermeester-van-de-wiele-stadion/stadion-3706.html; https://www.rsca.be/nl/news/het-stadion-van-deinze-blijft-de-thuisbasis-van-rsca-futures; https://www.wikidata.org/wiki/Q2653249",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-10-02, on Alexandru's instruction to add the club only if two independent sources confirm its ground. Q114056326 is RSC Anderlecht's U23 side; it carries no mapped league tag (no P118 at all), so no query returned it, and line 9 of roster-links-manual.csv joins the 2026-27 Challenger Pro League row 'RSCA Futures U23' to it, so the roster names it. Wikidata has the item, typed association football club (Q476028) and Q2412834, P17 Belgium, no P576. TIER 2 by hand: the complete 2026-27 Challenger Pro League article lists it, with the note 'RSCA Futures plays its home games in Deinze'. GROUND, the Dakota Arena in Deinze (formerly the Burgemeester Van de Wielestadion, Stadionlaan 5), two sources: (1) Wikipedia - the Dutch article on the ground (bespelers: RSC Anderlecht futures, 2025-; 'Sinds januari 2025 werken de beloften van RSC Anderlecht (RSCA Futures) hun wedstrijden in de Challenger Pro League af in de Dakota Arena') and the English season article's note; (2) europlan-online's page for the ground (read 2026-10-02 on a runner) lists RSCA FUTURES among the clubs that play there, league Challenger Pro League, level 2. Not proved independent: europlan is user-submitted and could have copied Wikipedia; it is the project's usual second source. NOT READ: the club's own article 'Het stadion van Deinze blijft de thuisbasis van RSCA Futures' - rsca.be answered the runner HTTP 202 with an empty body from CloudFront (a bot-management challenge, which is a stop), and the Internet Archive holds captures of 2026-05-15 (English) and 2026-05-20 (Dutch) but answered HTTP 429 when read; only its title is known, so it is in source for Alexandru to open in a browser and is not counted as a source here. POSITION is the ground's own item Q2653249; europlan's 50.98390/3.52028 is 10 m away. CAPACITY BLANK, contested: 7,515 on Wikidata, on europlan and in the Dutch article's first sentence, which then says safety and licence problems cut it to 3,482; and a 2025 Nieuwsblad headline cited there speaks of a contested stand being demolished. Nobody has a current figure two sources agree on. Empty the tier cell, or delete this row, to take the club off the map again",
+   "manual": true,
+   "competition": "Challenger Pro League"
+  },
+  {
+   "id": "Q117384089",
+   "name": "Jong KAA Gent",
+   "leagues": [],
+   "tier": 2,
+   "venue": "Planet Group Arena",
+   "capacity": 20000,
+   "lat": 51.016111,
+   "lon": 3.734167,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Challenger_Pro_League; https://nl.wikipedia.org/wiki/Jong_KAA_Gent; https://www.europlan-online.de/ghelamco-arena/stadion-10086.html; https://www.wikidata.org/wiki/Q1708705",
+   "note": "ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-10-02, on Alexandru's instruction to add the club only if two independent sources confirm its ground. Q117384089 is KAA Gent's U23 side; it carries no mapped league tag (no P118 at all), so no query returned it, and line 8 of roster-links-manual.csv joins the 2026-27 Challenger Pro League row 'Jong KAA Gent U23' (which links the parent KAA Gent) to it, so the roster names it. Wikidata has the item, typed association football club (Q476028) and Q2412834, no P576. TIER 2 by hand: the complete 2026-27 Challenger Pro League article lists it. GROUND, two sources: (1) Dutch Wikipedia's Jong KAA Gent article - home games at the Chillax Arena in Oostakker for its first three seasons, 'vanaf het seizoen 2025/26' at the Planet Group Arena, where the first team plays; (2) europlan-online's Planet Group Arena page (read 2026-10-02 on a runner) lists Jong KAA Gent among the clubs that play there, league Challenger Pro League, level 2 - and its old ground's page (the Backline Arena, formerly Chillax Arena) lists KAA Gent Ladies but not Jong KAA Gent, which agrees. Not proved independent: europlan is user-submitted and could have copied Wikipedia; it is the project's usual second source. The club's own Jong KAA Gent pages on kaagent.be answered HTTP 200 but name no ground in their text. POSITION AND CAPACITY are KAA Gent's own hand row's (Q18232), copied exactly so the two share ONE marker, the reserve-side-at-the-first-team's-ground shape; the position is the ground's item Q1708705 (europlan's 51.01611/3.73385 is 22 m away). Capacity 20,000 as on KAA Gent's row; not taken here: 20,185 (europlan), 20,175 (the English club infobox). Empty the tier cell, or delete this row, to take the club off the map again",
+   "manual": true,
+   "competition": "Challenger Pro League"
+  },
+  {
    "id": "Q1347229",
    "name": "RFC Liège",
    "leagues": [

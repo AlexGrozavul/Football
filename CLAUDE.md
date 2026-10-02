@@ -1274,6 +1274,12 @@ revalidation request per shell file per open, answered 304.
   failing (four in a row), worded as "no connection, or Stadia Maps
   refused them", since a refused key looks the same from the page. The
   route panel's errors say "this phone is offline" when it is.
+  **Found 2026-10-02, not fixed: a refusal does not raise the card.**
+  Stadia answers a refused tile with HTTP 401 **and a PNG** (an error
+  image, 14,885 bytes), which the browser decodes and Leaflet counts as
+  loaded - in the real-browser test served as from a made-up domain,
+  12 of 12 tiles were "loaded" and the card stayed down. So "Stadia Maps
+  refused them" is never what raises it; only a network failure does.
 - **Leaflet is a copy in the repo, `vendor/leaflet-1.9.4/`, not the
   CDN.** Measured, not assumed: with the page loading Leaflet from unpkg
   and unpkg unreachable, the page throws `L is not defined` and **nothing
@@ -1520,6 +1526,66 @@ domain-based authentication for web apps (it checks the browser's Origin
 and Referer), and with it the page could drop the key altogether.
 Nothing was changed here.
 
+**Domain-based authentication is now on, 2026-10-02, and the page
+STILL ships the key - on purpose, until Alexandru says otherwise.**
+Alexandru registered `alexgrozavul.github.io` in the Stadia dashboard
+before the session that measured this. Stadia's own page,
+`docs.stadiamaps.com/authentication/` (read on a runner; it answered 200
+this time), says domain auth "works by validating the Origin and Referer
+headers that browsers automatically send with every request", calls it
+"the most secure option" for production websites, needs no key for
+`localhost`/`127.0.0.1`, and warns about a `Referrer-Policy:
+no-referrer` (this page sets none) and about forgetting a subdomain. An
+API key is still needed outside a browser. **Measured from a runner, no
+key on any request** (tile / route / place search):
+
+| Origin and Referer sent | tile | route | search |
+|---|---|---|---|
+| `https://alexgrozavul.github.io` (both headers, or Referer only) | 200 | 200 | 200 |
+| `https://football-planner-test-q7x2k.example.net` | **200** | **200** | **200** |
+| `https://example.com` (Referer only for the tile) | 200 | - | 200 |
+| `https://fbplanner-q7x2k-test.net` | 401 | 401 | 401 |
+| `https://alexgrozavul.gitlab.io` | 401 | 401 | 401 |
+| `https://example.org` | 401 | 401 | 401 |
+| `https://someoneelse.github.io`, `https://alexgrozavul.github.io.evil-test.net` (tile only) | 401 | - | - |
+| `https://football.alexgrozavul.github.io` (a subdomain) | 200 | 200 | 200 |
+| `http://localhost:8000` (tile only) | 200 | - | - |
+| neither header | 401 | 401 | 401 |
+| `https://alexgrozavul.github.io` **with a made-up `api_key`** | 200 | 200 | 200 |
+| neither header, made-up `api_key` | 401 | 401 | 401 |
+
+The CORS preflight for the route POST answers 204 for any origin.
+**Why the key was not removed.** The instruction was: remove it only if
+the three real-domain requests succeed AND a made-up domain is refused.
+The first made-up domain chosen happened to sit under `example.net`, a
+name reserved for documentation, and Stadia **accepted** it, as it
+accepts `example.com` - but refuses `example.org` and every ordinary
+made-up domain tried. So the condition as written failed, and the
+measurement says that was the choice of test name, not a hole in the
+restriction. That is a judgement about Alexandru's stated condition,
+so it is his: nothing in `index.html` changed.
+**What removing it would take, already tested.** A keyless copy of the
+page (the three `api_key` uses taken out, nothing else) was opened in
+headless Chromium on a runner AS IF served from
+`https://alexgrozavul.github.io/Football/` (the page and data answered
+from the checkout, every Stadia request real): 12 of 12 tiles loaded,
+"Leonberg" and "Augsburg" were found, a 173 km route was drawn, no
+request carried a key, no script error. Served as from
+`https://fbplanner-q7x2k-test.net` the same copy got 401 on every tile
+and both searches, and said "Place search failed: HTTP 401".
+**Correction to the paragraph above**: its `example.com` request proved
+nothing, since `example.com` is let through with no key at all; its
+no-header request with the key answering 200 is what showed the key is
+usable anywhere, and that is still true of the key.
+**Deleting the old key in the dashboard** looks safe even while the page
+still carries it: a request from the real domain with a made-up key is
+answered 200 on all three, so Stadia falls back to the domain when a key
+is unknown. Not measured: whether a key that existed and was revoked is
+treated like a made-up one (it could not be tested without revoking it).
+The cautious order is page first, key second; nothing else in the repo
+uses the key (searched), and git history keeps it, which is the reason
+deleting it matters.
+
 **The installable app saves nothing from Stadia** - no tile, no route,
 no search result - and what Stadia's terms say about caching and offline
 use is in Conventions, "The installable app". Read it before changing
@@ -1532,7 +1598,10 @@ that.
 - **Belgium's top two tiers are on the map, 2026-10-01: Pro League 18 of
   18, exact; Challenger Pro League 13 drawn for 15, nothing at the wrong
   tier, and the four U23 sides wait on four roster links that are
-  Alexandru's call.** Same pipeline and standard as the eleven countries
+  Alexandru's call.** *Since 2026-10-02 the Challenger Pro League is
+  **15 of 15**: the four links are in, Jong KAA Gent and RSCA Futures are
+  on the map, and the roster check reads Belgium **33 `ok`** and nothing
+  else (sub-entry "Jong KAA Gent and RSCA Futures" below).* Same pipeline and standard as the eleven countries
   before it, run through six throwaway probes on a GitHub runner (removed
   in the same branch); the sandbox still answers 403 to CONNECT for
   Wikidata, Wikipedia, StadiumDB and Overpass. Tiers 1 and 2 only; the
@@ -1565,6 +1634,40 @@ that.
     "Jong Genk U23" and "Jong KAA Gent U23" link their PARENT clubs (the
     Rapid II shape). The guard is right to refuse all four; the remedy is
     a hand link.
+  - **Jong KAA Gent and RSCA Futures are on the map, 2026-10-02, on
+    Alexandru's instruction to add each only if two independent sources
+    confirm its ground** - lines 255-256 of `clubs-manual.csv`, the
+    hand-named fallback, tier 2 by hand, each under its own Q-id. Read on
+    a runner through three throwaway probes, removed in the same branch.
+    **Jong KAA Gent** (`Q117384089`) at the **Planet Group Arena**: Dutch
+    Wikipedia (from 2025-26, after three seasons at the Chillax Arena in
+    Oostakker) and europlan-online's ground page, which lists Jong KAA
+    Gent there at level 2 - and lists KAA Gent Ladies, not Jong, at the
+    old Oostakker ground. It shares KAA Gent's pin and figure exactly
+    (20,000), the reserve-side shape. **RSCA Futures** (`Q114056326`) at
+    the **Dakota Arena** in Deinze (formerly the Burgemeester Van de
+    Wielestadion): Dutch Wikipedia's article on the ground (since January
+    2025), the English season article's note, and europlan's ground page
+    listing RSCA FUTURES at level 2; position the ground's item
+    `Q2653249`, europlan's 10 m away. **Capacity blank**: 7,515 three
+    times against Dutch Wikipedia's reduced 3,482. **Two limits, said
+    out loud**: europlan is user-submitted and nobody has shown it did
+    not copy Wikipedia - it is this project's usual second source, not a
+    proven independent one; and the club's own article, *Het stadion van
+    Deinze blijft de thuisbasis van RSCA Futures*, is **unread** - rsca.be
+    answered HTTP 202 with an empty body from CloudFront (a bot challenge,
+    a stop) and the Internet Archive, which has 2026-05 captures, answered
+    429. kaagent.be's Jong pages name no ground in their text. The build
+    on the branch named both "surfaced by the hand-named fallback ... ON
+    THE MAP"; Belgium is **18 at tier 1 and 15 at tier 2**, and the
+    roster check on the branch moved exactly those two verdicts, from
+    `missing-from-wikidata` to `ok` - **33 `ok`**. No other country's
+    club file or verdict changed; `link_fixtures.py` re-run changes
+    nothing (neither club has a fixture source). The OpenStreetMap
+    capacity check left Belgium `UNCHANGED` on its first branch run (HTTP
+    504), which is not a pass; the second (19:48 UTC) wrote **all twelve
+    countries**, Belgium 33 clubs, adding one row: RSCA Futures, "neither
+    source has a capacity" - true, its cell is blank on purpose.
   - **The four roster links are written, 2026-10-02, on Alexandru's
     instruction**, lines 6-9 of `data/roster-links-manual.csv`. The roster
     check on the branch read **Club NXT and Jong Genk `ok`**, and **Jong
