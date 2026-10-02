@@ -30,25 +30,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  probe:
-    # THROWAWAY: Stadia domain-auth test and Belgian U23 grounds. Removed in the same branch.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - run: python3 tools/probe_stadia_auth.py
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Real browser, keyless copy of the page, real Stadia
-        run: |
-          mkdir -p /tmp/keyless && cp -r . /tmp/keyless && cp tools/probe_index_keyless.html /tmp/keyless/index.html
-          cd /tmp/keyless && npm init -y >/dev/null && npm install --no-save playwright >/dev/null && npx playwright install --with-deps chromium >/dev/null
-          grep -c "api_key" index.html || true
-          node tools/probe_page_stadia.js https://alexgrozavul.github.io
-          node tools/probe_page_stadia.js https://fbplanner-q7x2k-test.net
-
   clubs:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
