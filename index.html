@@ -653,7 +653,7 @@ async function fixturesHtml(club){
       : club.country === 'NL' && club.tier >= 2
       ? "football-data.org's free tier carries the Eredivisie only, not the Eerste Divisie, and OpenLigaDB is German only."
       : club.country === 'BE'
-      ? "football-data.org's free tier carries no Belgian league - a team seen only in the Champions League is never linked, because nothing there says which country it is from - and OpenLigaDB is German only."
+      ? "football-data.org's free tier carries no Belgian league - a team seen only in the Champions League is never linked by name, because nothing there says which country it is from - and OpenLigaDB is German only."
       : club.tier >= 5
       ? "No fixture source this project fetches goes below the Regionalliga."
       : club.tier === 4

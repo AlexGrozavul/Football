@@ -2,6 +2,25 @@
  "source": "tools/link_fixtures.py, from data/fixtures/ and data/clubs/",
  "note": "Which fixture-source team each map club is. Generated - do not edit; hand corrections go in data/fixture-links-manual.csv. A club that is not listed has no confident link, and its sheet says fixtures are unavailable.",
  "clubs": {
+  "Q190916": {
+   "name": "Club Brugge K.V.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "851",
+     "teamName": "Club Brugge KV",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      }
+     ]
+    }
+   ]
+  },
   "Q162251": {
    "name": "1. FC Heidenheim 1846",
    "links": [
