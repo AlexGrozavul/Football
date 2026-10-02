@@ -215,7 +215,9 @@ a subscribed calendar reads as a schedule regardless of its description.
   Madrid, Atlético, Osasuna, Deportivo and Racing, and since 2026-10-01
   the five Dutch abbreviations - AZ (`Q191264` → 682), PSV (`Q11938` →
   674), Excelsior (`Q370712` → 670), Cambuur (`Q875120` → 1909) and
-  Willem II (`Q332664` → 672) - also on his instruction.
+  Willem II (`Q332664` → 672) - also on his instruction; since
+  2026-10-02 Club Brugge (`Q190916` → 851, Champions League), on his
+  instruction too.
 - `data/league-rosters.csv` — one line per league, telling the roster
   check which Wikipedia season article holds that league's membership:
   `leagueQid`, `country`, `tier`, `season`, `article`, `note`. The
@@ -248,7 +250,9 @@ a subscribed calendar reads as a schedule regardless of its description.
   linked, so an override is never silent. A malformed row is rejected by
   line, and a link that matched no row once its article was read is a
   problem that turns the run red - a table edited under a link is the
-  change a person should look at. Holds four rows today: three 2. Liga
+  change a person should look at. Holds eight rows today: since
+  2026-10-02 the four Challenger Pro League U23 rows (Club NXT, Jong Genk,
+  Jong KAA Gent, RSCA Futures), on Alexandru's instruction; and three 2. Liga
   rows - Rapid II and Sturm II (added on Alexandru's instruction) and
   Austria Wien II - and, since 2026-09-30, the Super League Greece 2 row
   "Asteras Tripolis B" (also on his instruction). **A link is a hand-written identity claim** - the same kind of
@@ -308,7 +312,12 @@ a subscribed calendar reads as a schedule regardless of its description.
   the **club detail sheet** (built 2026-09-25), a pull-up panel that
   replaced the map popup: ground, capacity, competition by name,
   distance, fixtures and ticket info, each saying "unavailable" with a
-  reason rather than being hidden.
+  reason rather than being hidden. Since 2026-10-02 the map tab also has
+  a **route panel** (the Route chip): a start and an end - typed, tapped
+  on the map, or home - one Stadia Maps road route drawn on the map, and
+  every club within an adjustable distance of it (default 25 km) listed
+  in route order, each tappable to its sheet, with an optional "home
+  match on" date filter. See the Conventions entry on routes.
 - `tools/link_fixtures.py` — joins fixture-source teams to map clubs
   and writes `fixture-links.json` and `fixture-link-review.csv`. Reads
   committed files only, no network. Run by `link-fixtures.yml` after
@@ -1138,7 +1147,75 @@ which ground each source means. Neither claims more than it knows.
 **Distance** is straight-line times `settings.estimateMultiplier` (1.25).
 No routing API. It is a road-distance estimate and is deliberately not
 converted into a travel time, because that would need an invented average
-speed.
+speed. **That is still true of every distance on the club sheet, the
+shared-ground popup and the bucket list.** The route panel (next entry)
+is the one place a routed distance and a travel time appear, and both
+are Stadia Maps' own figures for the route it returned, labelled as such.
+
+**Routes: one request for the road, everything else worked out in the
+browser.** Built 2026-10-02. The route panel asks Stadia Maps' Standard
+Routing API **once** per route (`POST api.stadiamaps.com/route/v1`,
+`costing: auto`, no turn-by-turn text) and draws the line it returns.
+Which clubs are near it is computed in `index.html` from that line - the
+straight-line distance from each club's ground to the nearest point of
+the line, and how far along the route that point is - so the distance
+slider and the date filter cost no request at all, and no request is
+made per club. The listed distance is **from the ground to the road
+line, straight**, not a drive, and the list says so.
+- **A typed place costs one request**, Stadia's forward geocoding
+  (`/geocoding/v1/search`), on pressing Find, never per keystroke.
+  Autocomplete v2 is cheaper per call (1 credit) but returns **no
+  coordinates** - measured on 2026-10-02, `geometry: null` on every
+  result - and its Place Lookup costs 20 per place, so it would cost
+  more, not less. Tapping the map or using home costs nothing.
+- **The date filter never hides a club on a guess.** A club is left out
+  only when one of its linked **league** fixture files (`LEAGUE_CODES` in
+  `index.html`: BL1, PL, ELC, PD, SA, FL1, DED, PPL, BSA, bl2, bl3, rln,
+  rlno) spans that day and shows no home match for it. A club with no
+  fixture source, a club linked only to a cup (Club Brugge to the
+  Champions League, many tier-4 clubs to the DFB-Pokal), a club whose
+  file did not load, or one with undated home matches is **kept and
+  marked** with the reason. A competition code not in the list is
+  treated as a cup, so adding one can never quietly hide clubs.
+- **A placeholder day, not only a placeholder time.** football-data.org
+  puts a whole unscheduled matchday on one day as `SCHEDULED` at 00:00
+  UTC - all nine Bundesliga matchday-12 games on Sat 5 Dec 2026, where a
+  scheduled matchday runs Friday to Sunday, measured across BL1, PD, SA,
+  FL1 and ELC. So the "time not set" match's **day** is provisional too.
+  OpenLigaDB has no status, but has the same shape: whole rounds at one
+  kickoff (all nine Regionalliga Nord round-12 games at Sun 4 Oct 13:00,
+  all nine Nordost round-12 games at Sat 10 Oct 11:00, the last
+  matchdays of every league). The filter reads a SCHEDULED match, and an
+  OpenLigaDB round where three or more matches share one kickoff, as
+  provisional, and keeps a club whose provisional home match is within
+  **three days** of the chosen day as "home match, day not fixed". The
+  three days are a judgement - a matchday runs Friday to Monday - and it
+  errs towards keeping. It also flags a genuinely simultaneous last
+  matchday as "may be provisional", which is the cautious way to be
+  wrong. The existing "time not set" display is reused as it is.
+- **Found on the way, not fixed: the club sheet shows those OpenLigaDB
+  round times as real kick-offs.** The sheet's "time not set" test is
+  football-data's status, which OpenLigaDB does not have, so a
+  Regionalliga round entered at one placeholder time reads as nine
+  confirmed 13:00 kick-offs. Nothing proves those are placeholders - a
+  round can be simultaneous - so the sheet was left alone; the route
+  filter only treats them cautiously.
+- **Tested** in headless Chromium at 390x844 (Leaflet from npm, tiles,
+  routing and geocoding stubbed, because the sandbox cannot reach
+  Stadia): a Leonberg-Munich route listed 13 clubs at 25 km in route
+  order and 4 at 5 km; on 31 Oct 2026 Augsburg and Bayern read "home
+  match", VfB Stuttgart was left out (BL1 shows it away) and the nine
+  clubs with no fixture source stayed, marked; on 5 Dec 2026 Augsburg and
+  Bayern read "home match, day not fixed" with "time not set"; a tap on a
+  listed club opened its sheet above the panel; tap-to-set worked; the
+  page did not scroll sideways; one route request and one search were
+  made; no script error; a failed route and an empty search each said
+  so. **Not tested against Stadia itself from the page** - the sandbox
+  cannot reach it. A route and a search request were made from a GitHub
+  runner with the page's key, and both answered with the shapes the code
+  reads (`trip.legs[].shape`, polyline6; GeoJSON points), with CORS open
+  to any origin. Like every UI change before it, this has no automated
+  check (see Known open problems).
 
 **Clubs on the same coordinate share one marker.** `drawClubs()` used to
 make one circle per club with no idea that another club was already
@@ -1269,6 +1346,41 @@ the key needs rotating, that is a plain edit to the `L.tileLayer` URL in
 secret `FOOTBALL_DATA_TOKEN` is, and it is fine for it to be visible in
 a page anyone can already view in their browser's network tab.
 
+**Since 2026-10-02 the same key also pays for routing and place
+search**, from the route panel on the map tab, on Alexandru's
+instruction. It is now the one constant `STADIA_KEY` in `index.html`,
+used by the tile URL, the route request and the place search, so
+rotating it is still a single edit. **What each costs, read on
+2026-10-02 from stadiamaps.com/pricing** (fetched on a runner; the
+sandbox cannot reach Stadia): the **Free plan is 200,000 credits a month,
+commercial use not allowed, and no overage** - past the allowance
+requests fail rather than bill. Raster tile **1 credit per tile**;
+Standard Routing **20 per request**; Forward Geocoding **20**;
+Autocomplete v1 **20**, v2 **1** (but no coordinates); Place Lookup **20
+per place**; Reverse Geocoding 20. The routing and autocomplete
+documentation pages both carry the "Free" plan badge. So a route between
+two typed places is 60 credits, and between home and a tapped point 20;
+ten routes a day of the dearer kind is about 18,000 a month, under a
+tenth of the allowance. Tiles are what the allowance is mostly spent on,
+and nobody has measured how many a month this app uses - the Stadia
+dashboard shows it.
+
+**The key is NOT restricted to a domain, and the brief that asked for
+this entry said it was.** Measured on 2026-10-02 from a runner: a tile
+request with the key and **no** Origin or Referer header, and one sent
+as from `https://example.com`, were both answered HTTP 200, and the
+route and geocoding API answer `Access-Control-Allow-Origin: *`. That is
+consistent with the paragraph above (domain-based auth "was not taken").
+So anyone who copies the key from the page can spend this account's
+credits, and since routing is 20 times a tile per request, that matters a
+little more than it did. On the free plan the worst case is the
+allowance running out and the map going blank until the month turns, not
+a bill. **Restricting it is Alexandru's call and is done in the Stadia
+dashboard, not in this repo**: Stadia's own documentation recommends
+domain-based authentication for web apps (it checks the browser's Origin
+and Referer), and with it the page could drop the key altogether.
+Nothing was changed here.
+
 ---
 
 ## Known open problems
@@ -1309,6 +1421,20 @@ a page anyone can already view in their browser's network tab.
     "Jong Genk U23" and "Jong KAA Gent U23" link their PARENT clubs (the
     Rapid II shape). The guard is right to refuse all four; the remedy is
     a hand link.
+  - **The four roster links are written, 2026-10-02, on Alexandru's
+    instruction**, lines 6-9 of `data/roster-links-manual.csv`. The roster
+    check on the branch read **Club NXT and Jong Genk `ok`**, and **Jong
+    KAA Gent and RSCA Futures `missing-from-wikidata`** - and no other
+    verdict moved. The instruction expected all four `ok`; two could not
+    be, for the reason the paragraph below already gave: neither club is
+    on the map, and a link only lets the roster name them. What each
+    still needs is a `clubs-manual.csv` row with country BE, tier 2 and a
+    ground, so the hand-named fallback brings it in - a tier and a ground
+    are Alexandru's to approve, and RSCA Futures' Deinze ground has still
+    not been read, so **neither row was written**. Until then the two read
+    `missing-from-wikidata` every run, which is true: they are named by
+    the division and not on the map. Belgium now reads **31 `ok` and 2
+    `missing-from-wikidata`**. As first written:
   - **The four roster links, written up and NOT written (rule 7 - a
     link is an identity claim and Alexandru's to make).** Each is one line
     in `data/roster-links-manual.csv`, ready to paste:
@@ -1472,7 +1598,13 @@ a page anyone can already view in their browser's network tab.
     is in the review file as `country-unknown` - a team seen only in the
     Champions League is never linked by name. **One `link` row
     (`Q190916,football-data,851,link`) would give Club Brugge its
-    Champions League fixtures - Alexandru's call, not written.**
+    Champions League fixtures - Alexandru's call, not written.** *Written
+    2026-10-02 on his instruction: the linker reads it back as `linked`,
+    and Club Brugge's sheet, opened in the real page (headless), lists its
+    eight league-phase matches - seven ahead (Inter, Lens, PSV, Liverpool,
+    Napoli, VfB Stuttgart, Bodø/Glimt) and Aston Villa played.
+    Its Pro League games are still not fetched, and the sheet's source line
+    says Champions League only.*
   - **Merge, under rule 7, 2026-10-01 - and what it rests on.** Every
     workflow dispatched on the branch is green (15 runs), no hand row was
     rejected (the builder's reader first refused twelve Belgian rows for a
@@ -1508,7 +1640,8 @@ a page anyone can already view in their browser's network tab.
   "unavailable" for the wrong reason would reach `main` with every tick
   green. **The last two UI fixes merged on manual headless testing
   only**: "time not set" for placeholder kick-offs (#45, `b8367c8`) and
-  the Eerste Divisie fixtures message (`253020f`). Each was checked by a
+  the Eerste Divisie fixtures message (`253020f`), and since 2026-10-02
+  the route panel. Each was checked by a
   session opening the real page in headless Chromium (Leaflet from npm,
   tiles stubbed) and reading the sheet text by eye - real, but not
   repeatable, not run on a later change, and not part of rule 7's
