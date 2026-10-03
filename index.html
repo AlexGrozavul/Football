@@ -113,10 +113,32 @@
     border-radius:8px;padding:6px 9px;font-size:12px;color:var(--dim);
     backdrop-filter:blur(8px)}
   .chip b{color:var(--ink);font-weight:600}
-  .legend{position:absolute;z-index:500;left:9px;bottom:12px;background:rgba(22,27,34,.94);
-    border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11.5px;
-    backdrop-filter:blur(8px)}
-  .legend div{display:flex;align-items:center;gap:7px;margin:2px 0;color:var(--dim)}
+  /* The tier legend is a collapsible tab, bottom left. Closed it is only its
+     header ("Leagues shown" and an arrow); open, the header sits above the
+     tier rows and the shared-ground row. Its bottom edge clears the map's
+     attribution bar, whose height the page measures (--attrH: it wraps to
+     two or three lines on a phone), and its height is capped (--legMax) so
+     a short screen scrolls the rows inside the legend, header kept in
+     view, instead of pushing it under the top row or the attribution. */
+  .legend{position:absolute;z-index:500;left:9px;bottom:calc(var(--attrH,16px) + 8px);
+    background:rgba(22,27,34,.94);border:1px solid var(--line);border-radius:8px;
+    font-size:11.5px;backdrop-filter:blur(8px);display:flex;flex-direction:column;
+    max-width:calc(100% - 18px);max-height:var(--legMax,none);overflow:hidden}
+  .legend .lhead{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    width:100%;min-height:44px;flex:0 0 auto;padding:0 12px;background:none;border:0;
+    color:var(--ink);font:inherit;font-size:12px;font-weight:600;letter-spacing:.04em;
+    cursor:pointer;text-align:left}
+  .legend .lhead:focus-visible{outline:2px solid var(--t3);outline-offset:-2px}
+  .legend .larr{width:7px;height:7px;flex:0 0 auto;border-right:2px solid var(--dim);
+    border-bottom:2px solid var(--dim);transform:rotate(45deg) translate(-2px,-2px);
+    transition:transform .18s}
+  .legend .lhead[aria-expanded="true"] .larr{transform:rotate(-135deg) translate(-2px,-2px)}
+  @media (prefers-reduced-motion:reduce){.legend .larr{transition:none}}
+  .legend .lbody{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding:0 12px 9px;border-top:1px solid var(--line)}
+  .legend .lbody[hidden]{display:none}
+  .legend .lbody div{display:flex;align-items:center;gap:7px;margin:2px 0;color:var(--dim)}
+  .legend .lbody div:first-child{margin-top:8px}
   .legend i{width:9px;height:9px;border-radius:50%;display:block}
   .off{opacity:.32}
   .legend .shared i{width:15px;height:15px;font-size:9px;font-weight:600;color:#0d1117;
@@ -312,7 +334,11 @@
           <button class="chip btn" id="derbyChip">Derbies</button>
         </div>
       </div>
-      <div class="legend" id="legend"></div>
+      <div class="legend" id="legend">
+        <button type="button" class="lhead" id="legendToggle" aria-expanded="false"
+          aria-controls="legendBody"><span>Leagues shown</span><span class="larr" aria-hidden="true"></span></button>
+        <div class="lbody" id="legendBody" hidden></div>
+      </div>
       <div class="sheet" id="sheet" hidden role="dialog" aria-label="Club details">
         <div class="grip"><i></i></div>
         <div class="shead"><div style="flex:1;min-width:0" id="sheetHead"></div>
@@ -517,11 +543,61 @@ function saveForOffline(){
 /* --------------------------------------------------------------- map */
 
 function buildLegend(){
-  document.getElementById('legend').innerHTML =
+  document.getElementById('legendBody').innerHTML =
     Object.keys(TIER_COLOUR).map(t =>
       `<div data-tier="${t}"><i style="background:${TIER_COLOUR[t]}"></i>${TIER_NAME[t]}</div>`
     ).join('') +
     '<div class="shared"><i>2</i>Shared ground &mdash; tap for the list</div>';
+  initLegendTab();
+}
+
+/* The legend tab. Open or closed is remembered on this device only, in
+   localStorage under one key: never in the repo, never read by any tool,
+   and the service worker does not touch it. Storage can be blocked
+   (private window, site data off) and even reading `localStorage` can
+   throw, so every access is wrapped and the legend simply starts closed
+   and works for the visit. */
+const LEGEND_KEY = 'football-planner-legend-open';
+function legendStored(){
+  try{ return localStorage.getItem(LEGEND_KEY) === '1'; }catch(err){ return false; }
+}
+function legendStore(open){
+  try{ localStorage.setItem(LEGEND_KEY, open ? '1' : '0'); }catch(err){ /* blocked: works for this visit only */ }
+}
+function setLegendOpen(open){
+  document.getElementById('legendToggle').setAttribute('aria-expanded', String(open));
+  document.getElementById('legendBody').hidden = !open;
+  fitLegend();
+}
+/* Keep the legend's foot above the attribution bar and its height below
+   the top row. Both are measured, never assumed: the attribution wraps to
+   a different number of lines on every phone. */
+function fitLegend(){
+  const legend = document.getElementById('legend'), pane = document.getElementById('pane-map');
+  const attr = document.querySelector('#map .leaflet-control-attribution');
+  const bar = document.querySelector('#pane-map .bar');
+  if(!legend || !pane || pane.clientHeight === 0) return;
+  const attrH = attr ? Math.ceil(attr.getBoundingClientRect().height) : 0;
+  const bottom = attrH + 8;
+  const barBottom = bar ? bar.getBoundingClientRect().bottom - pane.getBoundingClientRect().top : 0;
+  legend.style.setProperty('--attrH', attrH + 'px');
+  legend.style.setProperty('--legMax', Math.max(44, Math.floor(pane.clientHeight - bottom - barBottom - 8)) + 'px');
+}
+function initLegendTab(){
+  const btn = document.getElementById('legendToggle');
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    setLegendOpen(open);
+    legendStore(open);
+  });
+  setLegendOpen(legendStored());
+  addEventListener('resize', fitLegend);
+  if(window.ResizeObserver){
+    const ro = new ResizeObserver(fitLegend);
+    for(const el of [document.getElementById('pane-map'),
+        document.querySelector('#pane-map .bar'),
+        document.querySelector('#map .leaflet-control-attribution')]) if(el) ro.observe(el);
+  }
 }
 
 function radiusFor(tier, zoom){

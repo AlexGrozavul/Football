@@ -370,6 +370,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   files, with a **Next window** line. See the Conventions entries on
   each. The zoom rule changed the same day: every club is drawn from z9
   (Conventions, "Tier zoom bands").
+  Since 2026-10-03 the tier **legend**, bottom left, is a collapsible
+  tab: closed it shows only "Leagues shown" and an arrow, open it shows
+  the same tier rows and shared-ground row as before. Whether it is open
+  is remembered **on the device only**. See the Conventions entry "The
+  legend tab".
   Also since 2026-10-03 (Conventions, "Phone layout and plain words"):
   the club's Wikidata link is a **Details** line at the foot of the
   sheet, and the Fixtures and Ticket info sections say why something is
@@ -447,6 +452,20 @@ a subscribed calendar reads as a schedule regardless of its description.
   recorded" as the files require; and if any sheet with ticket
   information, every section open, is wider than the screen. Run against
   the page as it was before, it failed 255 of 287 checks.
+- `tools/test_legend.js` — added 2026-10-03: the collapsible tier legend
+  at 390x700 and 390x500 (and 390x300 for the scrolling fallback). Fails
+  if the legend does not start closed on a first visit, if its header is
+  not a button with `aria-expanded` and at least 44 px tall, if a tap
+  does not open and close it (the arrow must rotate), if "Leagues shown"
+  is not above every tier row and the shared-ground row, if the zoom
+  dimming stops following `zoomForTier`, if the open legend overlaps the
+  attribution bar or the bottom navigation or reaches the top row - also
+  with the attribution forced to wrap to several lines and after the
+  window shrinks while it is open - if its last row is cut off, if a
+  too-short screen does not scroll inside the legend with its header in
+  view, if the choice does not survive a reload (open or closed), or if
+  blocked storage breaks it. With the fitting code disabled in a scratch
+  copy it failed 4 of 48 checks.
 - `.github/workflows/test-pages.yml` — added 2026-10-03: runs
   `test_pwa.js`, `test_derbies.js` and `test_routes.js`, and since the
   same day `test_zoom.js`, `test_search.js`, `test_coverage.js`,
@@ -1629,8 +1648,10 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2`; it has been `v2` since 2026-10-03, when the Stadia key
-  left the page, so every installed phone drops the keyed shell).
+  (`v1` → `v2` → `v3`; it has been `v3` since 2026-10-03, when the
+  collapsible legend shipped, and `v2` before that, when the Stadia key
+  left the page - each bump makes every installed phone drop the old
+  shell cache).
   `test_pwa.js` reads the current version from `sw.js` and bumps it one
   further for its own deploy test, so it needs no edit when this changes. That is what drops the old shell cache. It is **not**
   needed for an ordinary change to `index.html` or the data - the test
@@ -1693,6 +1714,51 @@ revalidation request per shell file per open, answered 304.
   used: its PWA category was removed in Lighthouse 12. **Not tested on a
   real phone or against GitHub Pages itself** - the sandbox reaches
   neither.
+
+**The legend tab: device-only, like saved routes.** Built 2026-10-03 on
+Alexandru's instruction. The map's tier legend, bottom left, is a
+collapsible tab. **Closed** it is a button reading "Leagues shown" and an
+arrow, nothing else. **Open** (tap the header or the arrow) the same
+header sits above the tier rows, with their zoom dimming, and the
+shared-ground row; their content and the dimming logic were not changed.
+The header is a real `<button>` with `aria-expanded`, 44 px tall, and the
+arrow rotates between the two states. It **starts closed on a first
+visit**.
+- **Whether it is open is remembered on this device only**, in the
+  browser's `localStorage` under the key `football-planner-legend-open`
+  (`1` open, `0` closed). **Nothing here is ever committed**: no
+  workflow, file or tool in the repo reads or writes it, and the service
+  worker does not touch it - the same arrangement as saved routes
+  (below), with the same consequences: another phone, a Chrome Incognito
+  tab, another browser and an iPhone home-screen app each keep their own
+  choice, and *Clear & reset* for the site (step 2 of "Force-refreshing
+  the installed app") puts it back to closed. There is no export; a
+  legend setting is not worth one.
+- **Storage may be blocked**, and even reading `localStorage` can throw
+  (private window, site data off), so every read and write is wrapped:
+  blocked storage means the legend starts closed and works for that
+  visit, with no error. `test_legend.js` checks it with the accessor
+  made to throw.
+- **It never sits under the attribution bar or the bottom navigation,
+  and the open legend is capped, not trusted to fit.** The original
+  legend sat 12 px above the pane's bottom edge, and the attribution bar
+  is 16 px tall on a one-line screen - so the bottom row, "Shared ground,
+  tap for the list", was under it (measured 2026-10-03: legend bottom 624,
+  attribution top 621 at 390x700; on a real phone the attribution can
+  wrap to two or three lines and cover more). The page now **measures**
+  the attribution's height and the top row's, and sets the legend's
+  bottom edge above the attribution (`--attrH`) and its maximum height
+  below the top row (`--legMax`), again whenever the window, the top row
+  or the attribution changes size (a `ResizeObserver`, plus `resize`).
+  If every row does not fit, the legend scrolls **inside itself**, its
+  header kept in view and the map pane not scrolling. Measured: at
+  390x700 and 390x500 all nine rows fit, with 9 px between the legend
+  and the attribution; at 390x300 the rows scroll inside a legend 124 px
+  tall. The bottom navigation is outside the map pane, so the legend can
+  only reach it if the pane itself collapses; the test checks it anyway.
+- **Not tested on a real phone.** Headless Chromium has one attribution
+  line at this width; the wrapped case is forced in the test with a
+  narrower attribution, not seen on a device.
 
 **Saved routes: kept on the device, never in the repo, and shaped by
 Stadia's terms.** Built 2026-10-03 on Alexandru's instruction. **Nothing
@@ -2098,6 +2164,53 @@ how each rests on them, is in Conventions, "The installable app" and
 ---
 
 ## Known open problems
+
+- **The map's top row at 390 px: nothing overlaps or is cut off at the
+  default text size, but it breaks at a larger phone font size, and the
+  search box is the reason - reported 2026-10-03, nothing changed:
+  Alexandru decides.** Measured in headless Chromium at 390x700, every
+  chip's rectangle compared with every other and each checked for text
+  wider than its box.
+  - **At the default text size: no overlap, no cut-off, nothing
+    off-screen.** The club-count chip and the search box sit side by side
+    with a 6 px gap and the search box shrinks to fit it (167 px wide at
+    z3, 161 at z7-9, 154 from z10, when the count reads "556 clubs · z10 ·
+    25 shared grounds"); the home chip, Route and Derbies sit on the row
+    below. The home chip has room for about 45 characters of label before
+    it touches Route (the label is `settings.home.label`, "Leonberg, DE"
+    today). Real Android phones use Roboto, which is narrower than this
+    sandbox's fallback font, so there is probably a little more room there.
+  - **The search text really is larger than the chips, on purpose:** the
+    box is 16 px (the chips are 12 px) and 33 px tall against the chips'
+    31, because under 16 px iOS zooms the page when a box is focused.
+    Android Chrome does not, so the reason does not apply on Alexandru's
+    phone, but the page cannot know which phone it is on.
+  - **With the phone's font size raised, the row does break - emulated,
+    not seen on a device**: the page's text sizes were multiplied by 1.15,
+    1.3 and 1.5 (what Android's "font size" setting does to web text).
+    From **1.15** the club-count chip wraps to two lines and grows to 54
+    px, so the whole top block grows from 70 px to 94 px and covers more
+    map; at **1.3** the search box has shrunk to 133 px, and its
+    placeholder is **cut off - "Find a clu"** - which is exactly what the
+    screenshot showed; at 1.5 the box is 121 px. Even then no chip overlaps
+    another and none leaves the screen, so the only damage is the wrapped
+    count chip and the clipped placeholder.
+  - **"The Route button overlaps map labels" is the chips being slightly
+    see-through, not an overlap of chips.** Every chip is 94% opaque
+    (`rgba(22,27,34,.94)`) with an 8 px blur behind it, the search box 96%,
+    so a street or place name under Route shows through faintly. The
+    sandbox cannot load Stadia's tiles, so this was read from the style,
+    not seen on a real map.
+  - **Proposed fix, for him to choose between**: (a) put the search box on
+    its own full-width row above the chips, which gives the placeholder
+    room at any font size and moves nothing else - costs about 35 px of
+    map; (b) keep the row and shorten the count chip to "556 clubs · z9"
+    with the shared-ground count only in the coverage panel - the chip
+    stops wrapping at 1.15 and the search box keeps its width, but the
+    shared-ground count leaves the map; (c) make the chips fully opaque,
+    the cheap answer to the see-through complaint and independent of the
+    other two. (a) and (c) together would deal with everything above;
+    none is built.
 
 - **The Inter card on the Ticket info tab states "phase 1 (open
   worldwide)" flatly, and the researched rules contradict it - reported

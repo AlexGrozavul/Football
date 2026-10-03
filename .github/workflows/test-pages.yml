@@ -14,7 +14,11 @@ name: Test the page
 # sheet can be pulled off the bottom bar, if the Wikidata id is back on
 # the distance note, if the Fixtures or Ticket info sections name a file
 # outside a "Why?" line, or if "Next window" words an empty answer
-# wrongly). Each one serves the checkout locally,
+# wrongly), and since the same day the collapsible tier legend
+# (tools/test_legend.js - fails if the legend does not start closed, does
+# not toggle, lacks its "Leagues shown" header above every row, overlaps
+# the attribution bar or the bottom navigation at 390x700 and 390x500, or
+# forgets its choice on reload). Each one serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
 # credit is spent, and fails on a script error. A failing test turns the
 # run red.
@@ -119,11 +123,17 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_layout.js . 2>&1 | tee /tmp/test_layout.log
 
+      - name: Collapsible legend
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_legend.js . 2>&1 | tee /tmp/test_legend.log
+
       - name: Write the run summary
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend; do
               echo "## test_$t.js"
               echo
               echo '```'
