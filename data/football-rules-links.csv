@@ -1,0 +1,12 @@
+rulesId,clubQid,note
+fcb,Q15789,"FC Bayern München: same name, ground (Allianz Arena), tier 1 and country as DE.json; club-tickets.csv already uses this Q-id"
+vfb,Q4512,"VfB Stuttgart: same name, tier 1 and country as DE.json; ground named MHP Arena here and MHPArena on the map, the same ground"
+ksc,Q105853,"Karlsruher SC: same name, ground (Wildparkstadion), tier 2 and country as DE.json"
+fck,Q8466,"1. FC Kaiserslautern: same name, ground (Fritz-Walter-Stadion), tier 2 and country as DE.json; not Q16525407, the reserve side, which is tier 4"
+kickers,Q170105,"Stuttgarter Kickers: same name, tier 4 and country as DE.json; ground named GAZi-Stadion auf der Waldau here and Waldau-Stadion on the map, the same ground"
+poli,Q4654417,"The NAMES DIFFER: Politehnica Timișoara here, Știința Poli Timișoara on the map. Linked because everything else agrees and nothing else on the map comes close: the only club at Stadionul Electrica, tier 2, RO, and its own hand row in clubs-manual.csv says what football-rules.json says - Dan Păltinișanu demolished, playing at Electrica until Eroii Timișoarei is ready. Not Q5425107, the tier-3 reserve side at Stadionul Știința. Delete this line if that is the wrong club"
+uta,Q680770,"UTA Arad: same name, ground (Stadionul Francisc von Neumann), tier 1 and country as RO.json"
+dumbravita,Q55618976,"CSC Dumbrăvița: same name, tier 2 and country as RO.json; football-rules.json gives the ground as unknown, the map says Stadionul Ștefan Dobay"
+inter,Q631,"FC Internazionale here, FC Inter on the map (Wikidata's label); the Q-id club-tickets.csv uses, verified on 2026-09-24 against enwiki Inter Milan; tier 1, San Siro"
+milan,Q1543,"AC Milan: same name, ground (San Siro), tier 1 and country as IT.json; verified on 2026-09-24 against enwiki AC Milan"
+rcsa,Q126334,"RC Strasbourg Alsace: same name, ground (Stade de la Meinau), tier 1 and country as FR.json"

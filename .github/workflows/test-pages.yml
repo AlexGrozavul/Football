@@ -1,9 +1,14 @@
 name: Test the page
 
 # Opens index.html in headless Chromium at phone width (390x844) and runs
-# the three page tests: the installable app (tools/test_pwa.js), the
-# derbies panel (tools/test_derbies.js) and the route panel with saved
-# routes (tools/test_routes.js). Each one serves the checkout locally,
+# the page tests: the installable app (tools/test_pwa.js), the derbies
+# panel (tools/test_derbies.js), the route panel with saved routes
+# (tools/test_routes.js), and since 2026-10-03 the zoom rule
+# (tools/test_zoom.js - fails if any club on the map is not drawn at the
+# tier-3 threshold, z9, and prints the redraw timing at 4x CPU), the club
+# search (tools/test_search.js), the coverage panel
+# (tools/test_coverage.js) and the ticket section of the club sheet
+# (tools/test_sheet_tickets.js). Each one serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
 # credit is spent, and fails on a script error. A failing test turns the
 # run red.
@@ -20,6 +25,7 @@ on:
       - "sw.js"
       - "manifest.webmanifest"
       - "tools/test_*.js"
+      - "data/football-rules-links.csv"
       - ".github/workflows/test-pages.yml"
   pull_request:
     paths:
@@ -27,6 +33,7 @@ on:
       - "sw.js"
       - "manifest.webmanifest"
       - "tools/test_*.js"
+      - "data/football-rules-links.csv"
       - ".github/workflows/test-pages.yml"
   workflow_dispatch:
 
@@ -76,11 +83,35 @@ jobs:
           mkdir -p /tmp/routes
           NODE_PATH=/tmp/pw/node_modules node tools/test_routes.js . /tmp/routes 2>&1 | tee /tmp/test_routes.log
 
+      - name: Zoom rule (every club drawn at z9)
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_zoom.js . 2>&1 | tee /tmp/test_zoom.log
+
+      - name: Club search
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_search.js . 2>&1 | tee /tmp/test_search.log
+
+      - name: Coverage panel
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_coverage.js . 2>&1 | tee /tmp/test_coverage.log
+
+      - name: Ticket info on the club sheet
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_sheet_tickets.js . 2>&1 | tee /tmp/test_sheet_tickets.log
+
       - name: Write the run summary
         if: always()
         run: |
           {
-            for t in pwa derbies routes; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets; do
               echo "## test_$t.js"
               echo
               echo '```'

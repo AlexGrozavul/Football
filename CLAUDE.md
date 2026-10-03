@@ -288,6 +288,26 @@ a subscribed calendar reads as a schedule regardless of its description.
   id, so the two files can be compared without matching names. How each
   row was sourced is the Conventions entry on derbies.
 
+- `data/football-rules-links.csv` — added 2026-10-03, on Alexandru's
+  instruction. **Which club on the map each `clubs` entry of
+  `football-rules.json` is**: `rulesId` (the entry's `id`), `clubQid`,
+  `note`. Header-driven. It exists because the entries carry no Q-id and
+  `football-rules.json`'s structure is decided, so the join lives beside
+  it rather than in it. The club sheet reads it to show an entry's notes
+  on that club; `check_tickets.py` reads it back, line by line, and
+  rejects a line whose `rulesId` is no entry, whose Q-id is on no map,
+  or that links an entry twice. Written with a line **only where the
+  match was certain from the club data** - eleven of the thirteen
+  entries. `dfb` (the national team) and `uefa` (finals) are not clubs
+  and have no line. **Poli's line is the one to look at**: the names
+  differ (Politehnica Timișoara against Știința Poli Timișoara); it was
+  linked because the ground, tier and country agree, it is the only club
+  at Stadionul Electrica, and its own hand row in `clubs-manual.csv` says
+  what `football-rules.json` says about the Dan Păltinișanu and Eroii
+  Timișoarei. **A line is an identity claim**, like a
+  `fixture-links-manual.csv` row; delete one and the notes leave that
+  sheet.
+
 ### Generated — safe to overwrite
 
 - `calendars/*.ics`, `calendars/skipped.md`, `calendars/.stamps.json`
@@ -341,6 +361,15 @@ a subscribed calendar reads as a schedule regardless of its description.
   within an adjustable distance of home (default 100 km), nearest
   first; tapping one shows both clubs, opens either sheet, and the next
   meeting from the fixture files. See the Conventions entry on derbies.
+  Since 2026-10-03 the map tab also has a **club search** (top right:
+  matches as you type, ignoring case and accents, and flies to the club
+  and opens its sheet), a **coverage panel** (tap the club-count chip:
+  clubs and leagues in total, per tier, and by country and league), and
+  the sheet's ticket section shows **two labelled sources**, "Your notes"
+  from `football-rules.json` and "Researched rules" from the club-tickets
+  files, with a **Next window** line. See the Conventions entries on
+  each. The zoom rule changed the same day: every club is drawn from z9
+  (Conventions, "Tier zoom bands").
 - `manifest.webmanifest`, `sw.js`, `icons/`, `vendor/leaflet-1.9.4/` —
   the **installable app** (built 2026-10-02): the manifest Chrome reads
   to offer "Install app", the service worker that lets the installed app
@@ -376,10 +405,33 @@ a subscribed calendar reads as a schedule regardless of its description.
   no request, rename, route back, refresh, the credit estimate, opening
   a saved route offline, export, delete, import (good, repeated, broken
   and foreign files), a second tab seeing the same routes.
+- `tools/test_zoom.js` — added 2026-10-03: **fails, naming each club, if
+  any club on the map is not drawn at z9**, the tier-3 threshold; also
+  that tiers 1 and 2 keep z0 and z7, that `minZoom` is 3 and `zoomDelta`
+  and `zoomSnap` are 1 (read from the live map, and the + button moves
+  exactly one level), that every `data/clubs/??.json` is in
+  `COUNTRY_FILES`, and that every club in those files with a position
+  and a tier is on the map. It then **measures, and does not judge**, the
+  redraw at z9 over the Ruhr, northern Italy and Bucharest with the CPU
+  slowed 4x, beside the old rule, and prints the numbers.
+- `tools/test_search.js` — added 2026-10-03: the club search at 390x844
+  with the keyboard stood in for by shrinking the window to 390x500 (see
+  its Conventions entry for what that does and does not cover).
+- `tools/test_coverage.js` — added 2026-10-03: the coverage panel,
+  checked against counts the test makes from the club files itself.
+- `tools/test_sheet_tickets.js` — added 2026-10-03: the sheet's ticket
+  section for VfB, KSC, Kaiserslautern, Kickers, Poli, UTA, Bayern,
+  Nürnberg and Inter, checked against the files: each source shown
+  exactly when it exists and labelled, every text field of a notes entry
+  on the sheet as written, the Next window line naming only that club's
+  own entries, never a disputed one, always labelled, and never an
+  estimate to the day.
 - `.github/workflows/test-pages.yml` — added 2026-10-03: runs
-  `test_pwa.js`, `test_derbies.js` and `test_routes.js` on a push to
+  `test_pwa.js`, `test_derbies.js` and `test_routes.js`, and since the
+  same day `test_zoom.js`, `test_search.js`, `test_coverage.js` and
+  `test_sheet_tickets.js`, on a push to
   `main` or a pull request touching `index.html`, `sw.js`, the manifest,
-  a `tools/test_*.js` or itself. Playwright is installed in the job,
+  a `tools/test_*.js`, `data/football-rules-links.csv` or itself. Playwright is installed in the job,
   pinned, not added to the repo. **Every Stadia request in all three is
   stubbed**, so a run spends no credit and does not show that Stadia
   itself answers; that was checked separately (Secrets).
@@ -418,7 +470,9 @@ a subscribed calendar reads as a schedule regardless of its description.
   flags anything ambiguous rather than settling it with a rule.
 - `tools/check_tickets.py` — read-back and checks for the eight ticket
   files (the original three plus phases, rules, demand, sources and,
-  since 2026-09-24, country rules). Reads, never writes; exits 1 on a
+  since 2026-09-24, country rules), and since 2026-10-03
+  `data/football-rules-links.csv`, which `check-tickets.yml` now also
+  runs on. Reads, never writes; exits 1 on a
   problem. Also prints a **layered** view of what applies to each club
   and each derby — the club's rows, then its country's rows marked
   `[national]` with their `appliesTo` and `condition`, never filtered
@@ -1339,6 +1393,93 @@ countries on the map. Rule 2 applied to rivalries: a derby a person
   "linked to different fixture sources"; "No meeting in the fixture
   data." No hand-entered date - Alexandru said not yet.
 
+**Club search: names only, clubs on the map only.** Built 2026-10-03.
+The box at the top right of the map tab matches as you type against the
+names of the clubs on the map (`CLUBS`, the clubs with a position and a
+tier), never against anything off it. Case, accents and punctuation are
+set aside (Unicode NFD with the marks dropped, plus a short hand list for
+the letters NFD cannot split: ß, ø, đ, ł, æ, œ, ı, þ, ð), so "timisoara"
+finds Știința Poli Timișoara and "munchen" finds FC Bayern München. Every
+word typed must be in the name; a name that starts with what was typed
+comes first, then one where a word does, then the rest, the senior tier
+first within each. At most eight suggestions, each with the club's
+country and its competition as the club file records it - "league not
+recorded (tier N)" where it records none, never a guess - and a count
+of the rest. No match says "No club on the map matches". Enter, the
+arrow keys or a tap fly to the club at z10 or its tier's zoom if that
+is higher, and open its sheet, with its ground-mates if it shares one;
+picking closes the keyboard. **The keyboard, honestly**: headless
+Chromium has none, so `test_search.js` stands it in by shrinking the
+window to 390x500 after focusing the box - what a phone does when the
+keyboard resizes the page - and checks the list ends above it and its
+first row can be tapped. Chrome on Android can instead lay the keyboard
+over the page without resizing it; for that, the list's height is capped
+by `visualViewport.height` (the `--vvh` CSS variable), which the test
+checks follows the visible height. **No real keyboard has been opened.**
+
+**The coverage panel counts from the club files, never from a list.**
+Built 2026-10-03. Tapping the club-count chip at the top left opens it:
+total clubs on the left and total leagues on the right, large; then
+clubs and leagues per tier; then every league grouped by country, with a
+tier filter and a country filter; a league lists its clubs, and a club
+flies to its ground and opens its sheet. A **league is a competition
+name the club data records** (the club file's `competition` field),
+counted once per country and tier. The club sheet works its competition
+out from `league-tiers.csv` instead (see "The club sheet does not trust
+the club file's competition field"); **on 2026-10-03 the two agree for
+every one of the 556 clubs** (checked), so the panel and the sheet name
+the same league. A club whose file records none is listed under "league
+not recorded (tier N)" and is **not counted as a league**. First count:
+**556 clubs and 32 leagues**; 11 clubs with none recorded (six at tier
+4, three at tier 6, one each at 7 and 8). **One of the 32 is worth
+knowing about**: "Regionalliga (the generic fourth-division item)" is
+the label `league-tiers.csv` gives the generic Regionalliga item
+`Q2188121`, and it holds one club, VfB Oldenburg. It is counted because
+the data names it; it is a league history, not a sixth Regionalliga
+(see Known open problems on `Q2188121`).
+
+**The club sheet shows two kinds of ticket information side by side and
+reconciles neither.** Built 2026-10-03 on Alexandru's instruction.
+"**Your notes**" is `football-rules.json`, joined through
+`data/football-rules-links.csv`: every field of the club's entry as
+written (nested fields indented, `null` as "not recorded", `true` and
+`false` as yes and no), its `ticketEvents` (shown the way the Ticket
+info tab shows them) and the bucket-list items that name it.
+"**Researched rules**" is the club-tickets files, as before, with each
+window's **phases** from `club-ticket-phases.csv` now listed under it -
+which is where most of what the Inter entry below disagrees about
+lives. Where the two disagree each says what it says; the sheet says
+so in one line and picks nothing. A club with neither keeps "Ticket
+info unavailable".
+- **Next window** is the soonest window ahead across both sources.
+  A `football-rules.json` event counts unless it is `disputed`; a
+  `confirmed` one is shown to the day; **anything else is shown to the
+  month only** ("estimated: December 2026 - check whether it has been
+  announced"), never a day, even where the file holds one. A
+  `club-ticket-windows.csv` row has loose text and a cycle, never a
+  date, so to put it in order the **first month its text names** is
+  read in the cycle's first year if it is May to December and its
+  second if January to April (a pre-season window falls before the
+  season, an in-season one inside it). That rule fits every row in the
+  file today and it is a judgement: the line shows the row's own words
+  and says how it was placed ("read as January 2027 to put it in
+  order"). A row or event with no month or date ("about six weeks before
+  each match", the Pokal second round) cannot be placed and is named as
+  not counted. Where several fall in the soonest month all are shown,
+  since a month cannot be put before or after a day inside it.
+- **What it said on 2026-10-03**: VfB - presale right activates,
+  estimated November 2026 (your notes); KSC - KSC v FCK ticket release,
+  estimated December 2026 (your notes); Kaiserslautern, Kickers, Poli,
+  UTA - no window ahead (Poli's cup sale was September; UTA and Kickers
+  have none); Bayern - the away season ticket cycle, "late May"
+  2027-28, confirmed (researched); Nürnberg - the Frankenderby home
+  leg and the half-season ticket, both estimated November 2026
+  (researched); Inter - the derby home leg, "early to mid January"
+  2026-27, estimated (researched; the disputed August phase-1 event in
+  your notes is not counted). AC Milan - the derby sale, estimated
+  October 2026, the current month, so "check whether it has been
+  announced".
+
 **The installable app: what is cached, what deliberately is not, and
 how an update reaches the phone.** Built 2026-10-02 on Alexandru's
 instruction. The site is served from `/Football/`, not from `/`, so
@@ -1640,15 +1781,65 @@ zoom, and its number is how many those are — it never drags a club onto
 the map early because a more senior club happens to share its ground, and
 it never hides one that the zoom has switched on. The Fritz-Walter-Stadion
 is a plain 1. FC Kaiserslautern circle from z7 and turns into a "2" at
-z11, when 1. FC Kaiserslautern II's tier switches on. The Grünwalder
+z9 (z11 until 2026-10-03), when 1. FC Kaiserslautern II's tier switches
+on. The Grünwalder
 used to do it twice — a "2" at z11 and a "3" at z12, when TSV 1860
 München II's tier 5 switched on — and since that club's ground was
-cleared it is a plain "2" from z11 and stays one at every zoom above.
+cleared it is a plain "2" from z9 and stays one at every zoom above.
 The corner chip says
 how many shared grounds are on screen, so the count is visible rather than
 something to discover.
 
+**Tier zoom bands: tier 3 and everything deeper switch on together at
+z9, and that is a GUARANTEED PROPERTY, since 2026-10-03.** At z9 - the
+zoom tier 3 used on its own before - **every club on the map is drawn,
+whatever its tier**, and at every zoom above it. Tiers 1 and 2 keep
+their thresholds (z0 and z7), so the country view is unchanged.
+`TIER_FROM_ZOOM` lists tiers 1 and 2 only and `zoomForTier()` gives
+every tier from 3 down `DEEP_TIER_ZOOM`, 9, so a tier 9 or 10 club found
+later needs no change. The map's `minZoom` is 3 (it was unset), and
+`zoomDelta` and `zoomSnap` are 1 - Leaflet's defaults, **checked in the
+vendored copy and on the live map rather than assumed**, and now also
+set explicitly - so the map always rests on a whole zoom and is either
+below 9 or at it. **`tools/test_zoom.js` holds the property**: it fails,
+naming each club, if any club on the map is not drawn at z9, and it runs
+on every change to the page. First run: 556 of 556 clubs drawn at z9.
+**The earlier "eight taps" framing is dropped.** It is not written
+anywhere in this repo or its history (searched on 2026-10-03), so it is
+recorded here only as dropped: the rule is no longer how many zoom steps
+it takes to reach a deep club, it is that z9 shows them all.
+**What it costs, measured 2026-10-03** in headless Chromium at 390x844,
+CPU slowed 4x, z9, median of 15 (this sandbox, not a phone):
+
+| area | clubs on screen at z9 | `drawClubs()` | zoom 8 to 9, to painted frame | one pan |
+|---|---|---|---|---|
+| Ruhr, this rule | 22 | 75 ms | 154 ms (worst 220) | 61 ms |
+| northern Italy (Milan), this rule | 6 | 80 ms | 161 ms (worst 209) | 79 ms |
+| Bucharest, this rule | 16 | 69 ms | 155 ms (worst 244) | 59 ms |
+| Ruhr, the old rule | 11 | 62 ms | 133 ms (worst 411) | 57 ms |
+| northern Italy, the old rule | 6 | 65 ms | 153 ms (worst 291) | 67 ms |
+| Bucharest, the old rule | 16 | 70 ms | 128 ms (worst 210) | 66 ms |
+
+531 markers are in the layer at z9 now, against 443 under the old rule.
+**The change costs roughly 10-20 ms on a zoom to z9 and nothing
+measurable on a pan**; the pan cost is the same under both rules. The
+numbers are noisy run to run (the "worst" column shows it), and a pan at
+about 60 ms with the CPU slowed 4x is the existing SVG renderer, not
+this change: every marker is an SVG path (the canvas line in `initMap()`
+still does nothing - see Known open problems), and 556 clubs is still
+well under the 1,000 to 2,000 at which canvas was measured to win.
+`test_zoom.js` prints the same table on every run. **On the first GitHub
+runner (PR #53)** the same measurement read: `drawClubs()` 27-31 ms
+under this rule against 24 ms under the old one, zoom 8 to 9 38-45 ms
+against 32-34 ms (worst 81 against 72), and a pan **below the
+resolution of the method** - the empty two-frame wait is subtracted, and
+on a fast machine a pan takes less than one frame, so the pan column
+came out between -11 and +1 ms. Read a negative pan as "under a frame",
+not as a number. Neither machine is a phone.
+
 **Tier zoom bands for tier 4 and deeper were merged into one, 2026-09-19.**
+*(Superseded on 2026-10-03 by the entry above: the shared band now starts
+at tier 3 and z9. Kept as written for the reasoning.)*
 Until then `TIER_FROM_ZOOM` gave every tier its own threshold, topping out
 at tier 5's z12. europlan-online's own club-to-ground link (see below)
 turned up real clubs as deep as tier 8 — Bezirksliga, two levels past
@@ -2244,6 +2435,13 @@ how each rests on them, is in Conventions, "The installable app" and
   phone or in a probe like the one in Secrets; a data-only change (a
   cron commit, `data/derbies.csv`) does not trigger it; and nothing has
   run on a real phone.
+  **Since 2026-10-03 four more page tests run in the same workflow**:
+  `test_zoom.js` (every club drawn at z9, and every club file loaded -
+  which closes the "country file missing from `COUNTRY_FILES`" hole
+  above), `test_search.js`, `test_coverage.js` and
+  `test_sheet_tickets.js` (the ticket section of nine named clubs'
+  sheets). Still not covered: a sheet per country, and the fixtures
+  section's "unavailable" reasons.
 
 - **The Netherlands' top two tiers are on the map, 2026-10-01: Eredivisie
   18 of 18 and Eerste Divisie 20 of 20, exact - nothing missing, nothing
@@ -4133,6 +4331,24 @@ how each rests on them, is in Conventions, "The installable app" and
     `clubs` is not a list). The scheduled runs of all four would have
     gone red on their next run.
 
+- **Where `football-rules.json`'s Inter and Italy figures come from,
+  read 2026-10-03 and not changed.** The Italy-related content is the
+  `inter` and `milan` club entries, the `derby-madonnina` bucket item
+  (two confirmed fixture dates, 1 Nov 2026 at Milan and 14 Feb 2027 at
+  Inter, each with a `saleRoute`), and two ticket events, `milan-derby-
+  sale-nov` (inferred, 2026-10-01, "approx one month before the 1 Nov
+  fixture") and `inter-derby-phase1` (disputed: its own warning says the
+  source gave 13/21/24 August with no year, matching 2026 and 2015). **The
+  file names no source for any single Inter figure** - not the four
+  phases, not "up to 4 tickets", not "EUR 70-75" or "up to EUR 230".
+  What it does say is in `provenance`: facts from "the conversation" were
+  "established by checking club/UEFA/league sources directly", and
+  anything from "the bucket-list and derby documents" is "INSPIRATION,
+  NOT FACT" and enters as `verified:false`. Both Italian entries carry
+  `ageRules.verified: false`; neither says which of the two routes its
+  procedure came by. Since 2026-10-03 the Inter sheet shows these notes
+  beside the researched rows, unreconciled, so the disagreements below
+  are visible in the app.
 - **The derby PDF contradicts `football-rules.json` on Inter, and
   nothing has been changed on either side.** Found 2026-09-23 while
   incorporating the PDF. `football-rules.json` is hand-written and no
@@ -5422,6 +5638,10 @@ how each rests on them, is in Conventions, "The installable app" and
   loading from `tile.openstreetmap.org`**, which is network and could
   not be measured from here because the proxy blocks it.
 
+- *(2026-10-03: since every club is drawn from z9, all 556 are SVG
+  paths at z9 - 531 markers - where the old rule had 443. Still under
+  the crossover below; the timing is in Conventions, "Tier zoom
+  bands".)*
 - **The canvas renderer in `initMap()` has never been in effect.** The
   line `L.layerGroup([], {renderer: L.canvas({padding:.5})})` does
   nothing: `L.LayerGroup` has no `renderer` option and does not pass
@@ -6359,9 +6579,12 @@ how each rests on them, is in Conventions, "The installable app" and
    Conventions entry. **Not linked on purpose:** the hand-written
    `clubs` in `football-rules.json` (VfB, KSC, FCK, Kickers, Poli,
    UTA, Dumbrăvița …) carry ticket procedures but no Q-id, so the sheet
-   does not show them — joining them by name, or adding a Q-id to a
+   did not show them *(since 2026-10-03 it does, through
+   `data/football-rules-links.csv`, on Alexandru's instruction - see
+   Files)* — joining them by name, or adding a Q-id to a
    file whose structure is decided, is Alexandru's call.
-3. Search box on the map, top right, live matches, enter flies to the club.
+3. ~~Search box on the map~~ **— built 2026-10-03**, top right; see the
+   Conventions entry "Club search".
 4. Badges. 284 crest URLs already sit unused in `data/fixtures/`.
    Wikidata `P154` covers German clubs patchily and Romanian ones barely.
    Licensing is unresolved: only freely licensed images may be used on a
