@@ -330,6 +330,12 @@ a subscribed calendar reads as a schedule regardless of its description.
   every club within an adjustable distance of it (default 25 km) listed
   in route order, each tappable to its sheet, with an optional "home
   match on" date filter. See the Conventions entry on routes.
+  Since 2026-10-03 a route can be **saved on the device** - named,
+  renamed, deleted, exported and imported as a JSON file, reopened with
+  no Stadia request, refreshed for one, reversed as an approximate route
+  back - place searches are kept on the device for 7 days, and the panel
+  shows an estimate of this month's route and search credits. **None of
+  it is ever in the repo.** See the Conventions entry "Saved routes".
   Since 2026-10-03 a **Derbies** chip beside it opens the **derbies
   panel**: every derby in `data/derbies.csv` with both clubs on the map,
   within an adjustable distance of home (default 100 km), nearest
@@ -345,7 +351,9 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `tools/test_pwa.js` — headless Chromium test of the installable app
   at phone width: Chrome's own installability errors, a second load
   offline, fresh data after a data change, a new deploy replacing the
-  shell. Run by hand (instructions at its top); **no workflow runs it.**
+  shell, and since 2026-10-03 refused tiles raising the map card. Run
+  by `test-pages.yml` (below) on every change to the page; by hand
+  with the instructions at its top.
 - `tools/check_derbies.py` — read-back and checks for `data/derbies.csv`,
   in the style of `check_tickets.py`: prints every row as understood,
   rejects by line (no source, not a Q-id, a Q-id on no map without
@@ -360,8 +368,21 @@ a subscribed calendar reads as a schedule regardless of its description.
   at 390x844: the default 100 km list, nearest first, every row in the
   file accounted for, the slider, every derby's detail giving one of the
   four honest answers, a sheet opening above the panel, no sideways
-  scroll, no script error. Run by hand; **no workflow runs it**, the same
-  gap as `test_pwa.js`.
+  scroll, no script error. Run by `test-pages.yml` since 2026-10-03.
+- `tools/test_routes.js` — headless Chromium test of the route panel and
+  its saved routes at 390x844, added 2026-10-03, every Stadia request
+  stubbed and counted: search, route, the 7-day search cache (and its
+  expiry), save (and what a save keeps and does not), reload, open with
+  no request, rename, route back, refresh, the credit estimate, opening
+  a saved route offline, export, delete, import (good, repeated, broken
+  and foreign files), a second tab seeing the same routes.
+- `.github/workflows/test-pages.yml` — added 2026-10-03: runs
+  `test_pwa.js`, `test_derbies.js` and `test_routes.js` on a push to
+  `main` or a pull request touching `index.html`, `sw.js`, the manifest,
+  a `tools/test_*.js` or itself. Playwright is installed in the job,
+  pinned, not added to the repo. **Every Stadia request in all three is
+  stubbed**, so a run spends no credit and does not show that Stadia
+  itself answers; that was checked separately (Secrets).
 - `tools/link_fixtures.py` — joins fixture-source teams to map clubs
   and writes `fixture-links.json` and `fixture-link-review.csv`. Reads
   committed files only, no network. Run by `link-fixtures.yml` after
@@ -1258,8 +1279,8 @@ line, straight**, not a drive, and the list says so.
   cannot reach it. A route and a search request were made from a GitHub
   runner with the page's key, and both answered with the shapes the code
   reads (`trip.legs[].shape`, polyline6; GeoJSON points), with CORS open
-  to any origin. Like every UI change before it, this has no automated
-  check (see Known open problems).
+  to any origin. Since 2026-10-03 `tools/test_routes.js` repeats the
+  route checks automatically on every change to the page.
 
 **Derbies: every row names its source, and the source names the
 derby.** Built 2026-10-03, on Alexandru's instruction, for the twelve
@@ -1364,12 +1385,27 @@ revalidation request per shell file per open, answered 304.
   failing (four in a row), worded as "no connection, or Stadia Maps
   refused them", since a refused key looks the same from the page. The
   route panel's errors say "this phone is offline" when it is.
-  **Found 2026-10-02, not fixed: a refusal does not raise the card.**
-  Stadia answers a refused tile with HTTP 401 **and a PNG** (an error
-  image, 14,885 bytes), which the browser decodes and Leaflet counts as
-  loaded - in the real-browser test served as from a made-up domain,
-  12 of 12 tiles were "loaded" and the card stayed down. So "Stadia Maps
-  refused them" is never what raises it; only a network failure does.
+  **Found 2026-10-02, fixed 2026-10-03: a refusal did not raise the
+  card.** Stadia answers a refused tile with HTTP 401 **and a PNG** (an
+  error image, 14,885 bytes), which an `<img>` decodes and Leaflet counts
+  as loaded - served as from a made-up domain, 12 of 12 tiles were
+  "loaded" and the card stayed down (measured again 2026-10-03 on a
+  runner, same result). An `<img>` cannot see a status code, so the map
+  now fetches each tile with `fetch()` (`StatusTiles` in `index.html`)
+  and hands the picture to Leaflet only when the answer is 2xx; anything
+  else is a `tileerror` carrying its status. **That works only because
+  Stadia sends `Access-Control-Allow-Origin: *` on tiles, refused ones
+  included** - measured 2026-10-03 on a runner: 200 and 401 tiles both
+  carry it. If Stadia ever drops that header, every tile fetch fails and
+  the card says "no connection reached Stadia Maps" - wrong in wording,
+  but loud, never a silent blank. The card now has three wordings: this
+  phone is offline; Stadia **refused** the tiles (401/403, "not a
+  connection problem"; 429, "the monthly allowance may be used up");
+  and tiles not reaching Stadia. Four failures in a row still raise it,
+  whatever the kind. Tiles still go through the browser's ordinary HTTP
+  cache exactly as an `<img>` did (Stadia sends `max-age=21600`), and
+  the worker still never touches them. The decoded picture is handed
+  over as a blob URL and released as soon as it is drawn.
 - **Leaflet is a copy in the repo, `vendor/leaflet-1.9.4/`, not the
   CDN.** Measured, not assumed: with the page loading Leaflet from unpkg
   and unpkg unreachable, the page throws `L is not defined` and **nothing
@@ -1394,7 +1430,10 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2`). That is what drops the old shell cache. It is **not**
+  (`v1` → `v2`; it has been `v2` since 2026-10-03, when the Stadia key
+  left the page, so every installed phone drops the keyed shell).
+  `test_pwa.js` reads the current version from `sw.js` and bumps it one
+  further for its own deploy test, so it needs no edit when this changes. That is what drops the old shell cache. It is **not**
   needed for an ordinary change to `index.html` or the data - the test
   checked both: a new `index.html` with `sw.js` untouched reached the page
   on the next online load and became the offline copy, and a `v2` worker
@@ -1436,6 +1475,10 @@ revalidation request per shell file per open, answered 304.
      All sites → `alexgrozavul.github.io` → *Clear & reset*. That deletes
      the saved copies and the service worker; the next open is a first
      visit. The home-screen icon may need adding again (step 3).
+     **It also deletes every saved route on that phone** (and the search
+     cache and the credit estimate): **Export them first** from the
+     route panel, and Import the file afterwards. Step 1 deletes
+     nothing.
   3. **Reinstall**: long-press the icon → App info → Uninstall, then open
      `https://alexgrozavul.github.io/Football/` in Chrome → ⋮ → *Install
      app* (or *Add to Home screen* → Install).
@@ -1451,6 +1494,94 @@ revalidation request per shell file per open, answered 304.
   used: its PWA category was removed in Lighthouse 12. **Not tested on a
   real phone or against GitHub Pages itself** - the sandbox reaches
   neither.
+
+**Saved routes: kept on the device, never in the repo, and shaped by
+Stadia's terms.** Built 2026-10-03 on Alexandru's instruction. **Nothing
+here is ever committed**: saved routes, the place-search cache and the
+credit estimate live in the browser's IndexedDB
+(`football-planner-device`, stores `routes`, `searches`, `credits`) on
+the one device that made them. No workflow, file or tool in the repo
+reads or writes them, and the service worker does not touch them.
+Export / Import (a JSON file, `format: football-planner-saved-routes`)
+is the only way to move them to another device.
+
+- **What a saved route holds**: its name ("Start → End" by default,
+  editable, renameable), the route line in Valhalla's own polyline6
+  encoding (the compact form Stadia sends), both ends (a label, a kind -
+  `search`, `tap` or `home` - and a position), the options it was saved
+  with (the distance slider and the "home match on" date), the length and
+  driving time Stadia gave, when it was saved and when its line came from
+  Stadia. **Not the club list**: that is worked out again from the club
+  files every time the route is opened, so a club added or moved since is
+  right, and opening a route offline uses the saved club files.
+- **Opening a saved route asks Stadia for nothing.** It shows the saved
+  date and the line's date, and a **Refresh route** button that says it
+  costs about 20 credits; a refresh replaces the line, length and time
+  and keeps the name and options.
+- **Route back** reverses the line already on screen, with no request,
+  and is labelled **approximate** (dashed line, a tag, and "one-way
+  roads, junctions and motorway exits may differ; the length and time
+  are the outbound's"). It can be saved as such; refreshing it asks for
+  the real route back and drops the label.
+- **The terms, re-read 2026-10-03 on a runner** (`stadiamaps.com/terms-
+  of-service/`, still "Effective March 18, 2026"; the clauses as quoted
+  in "The installable app" above, unchanged). Two clauses decide this:
+  client-side caching is allowed only as long as the HTTP caching
+  headers say, **or 7 days when there is no header**; and "permanently
+  storing results ... from the Stadia Maps Geocoding APIs" is forbidden
+  without a paid plan. **Stadia's search and route answers carry no
+  `Cache-Control` header** (measured the same day; tiles carry
+  `max-age=21600`). So, **Alexandru's decisions of 2026-10-03, both the
+  recommended option put to him**:
+  - **A place-search answer is kept 7 days**, then dropped (on reading,
+    and on every opening of the route panel) and asked again. A search
+    answered from the device says so: "saved copy ... no request made.
+    Kept 7 days, then asked again." The key is the typed words, folded
+    for case and spacing, plus home's position.
+  - **A saved route never keeps a search answer.** An end found by
+    search is saved as **the words that were typed** and **the route
+    line's own first or last point** - routing output, not a geocoding
+    result. Stadia's label ("Leonberg, Baden-Württemberg, Germany") and
+    its coordinates are not saved. Map taps (a club's name, or "Point on
+    the map") and home are saved as they are; neither came from Stadia.
+  - **Saved route lines rest on the terms' one exception for keeping
+    data**: "caching small amounts of data for offline use in a mobile
+    application, not to exceed 100MB cached at a time per device".
+    **Whether an installed web app is "a mobile application" the terms do
+    not say**; this reading is Alexandru's, made by asking for saved
+    routes after the question was put to him. The page refuses a save
+    that would take saved routes past **50 MB**. Measured: Stadia's line
+    for a real 17.6 km route (Leonberg to Stuttgart) is 2,650 characters,
+    so a long trip is tens of KB and the cap is a backstop, not a limit
+    anyone should meet.
+- **The credit estimate** counts, per device and per UTC calendar month,
+  the routes and searches Stadia **answered with success** (a failed or
+  refused request is not counted, a search answered from the device is
+  not counted), at 20 credits each, and says it is an estimate that
+  **leaves out map tiles** (1 credit each, the bulk of the allowance) and
+  other devices. The Stadia dashboard is the real figure.
+- **Installed app and Chrome tab: the same saved routes, on Android -
+  by Chrome's design, not by a test on a phone.** An app installed from
+  Chrome on Android runs inside Chrome's own profile, and storage belongs
+  to the site (`alexgrozavul.github.io`), so the installed app and a
+  Chrome tab on that phone read one IndexedDB. **What was tested**
+  (`test_routes.js`): a second tab in the same browser profile sees the
+  same saved routes. **What could not be tested here**: a real installed
+  app on a real phone - the sandbox has neither. **Where they would NOT
+  be shared**: a Chrome Incognito tab, a different browser on the same
+  phone, another phone, and an iPhone home-screen app, which Safari
+  keeps apart from Safari tabs. Export/Import covers all of those.
+- **What deletes them**: *Clear & reset* for the site in Chrome (step 2
+  of "Force-refreshing the installed app"), clearing Chrome's browsing
+  data for the site, uninstalling Chrome. Uninstalling just the app
+  icon is not known to delete them (not tested). The page asks for
+  persistent storage on the first save (`navigator.storage.persist()`),
+  which Chrome may grant or not; **Export is the backup**.
+- **Tested 2026-10-03 in headless Chromium at 390x844**,
+  `tools/test_routes.js`, 26 checks, all passing, run by
+  `test-pages.yml` - Stadia stubbed throughout. Opening a saved route
+  **offline** listed the same 15 clubs as online and the map showed its
+  needs-a-connection card.
 
 **Clubs on the same coordinate share one marker.** `drawClubs()` used to
 make one circle per club with no idea that another club was already
@@ -1676,10 +1807,12 @@ The cautious order is page first, key second; nothing else in the repo
 uses the key (searched), and git history keeps it, which is the reason
 deleting it matters.
 
-**The installable app saves nothing from Stadia** - no tile, no route,
-no search result - and what Stadia's terms say about caching and offline
-use is in Conventions, "The installable app". Read it before changing
-that.
+**The service worker saves nothing from Stadia** - no tile, no route,
+no search result. **The page itself keeps two things since 2026-10-03,
+in the browser's IndexedDB on that device**: routes Alexandru chose to
+save, and place-search answers for 7 days. What Stadia's terms say, and
+how each rests on them, is in Conventions, "The installable app" and
+"Saved routes". Read both before changing either.
 
 ---
 

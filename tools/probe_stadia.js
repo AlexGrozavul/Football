@@ -76,7 +76,7 @@ async function page(origin, label){
   for(const [end, text] of [['from', 'Leonberg'], ['to', 'Augsburg']]){
     await pg.fill(`#routeBody .pt[data-end="${end}"] input`, text);
     await pg.click(`#routeBody .pt[data-end="${end}"] button[data-act="find"]`);
-    await pg.waitForFunction(e => !/Searching/.test(document.querySelector(`#routeBody .pt[data-end="${e}"] .hits`).textContent), end, {timeout: 30000});
+    await pg.waitForFunction(e => { const h = document.querySelector(`#routeBody .pt[data-end="${e}"] .hits`); return h.querySelector('button') || h.querySelector('.err'); }, end, {timeout: 30000}).catch(() => {});
     const hits = await pg.textContent(`#routeBody .pt[data-end="${end}"] .hits`);
     console.log(`PAGE ${label}: search "${text}" -> ${hits.replace(/\s+/g, ' ').trim().slice(0, 160)}`);
     const b = await pg.$(`#routeBody .pt[data-end="${end}"] .hits button`);
@@ -88,6 +88,17 @@ async function page(origin, label){
     await pg.waitForTimeout(1500);
     console.log(`PAGE ${label}: route -> ${(await pg.textContent('#routeOut')).replace(/\s+/g, ' ').trim().slice(0, 200)}`);
   }else console.log(`PAGE ${label}: route not attempted, ends not set`);
+  if(await pg.$('#routeSave')){
+    await pg.click('#routeSave'); await pg.waitForTimeout(500);
+    const n0 = reqs.filter(r => /route\/v1/.test(r.url())).length;
+    await pg.reload(); await pg.waitForFunction(() => typeof CLUBS !== 'undefined' && CLUBS.length > 0, null, {timeout: 60000});
+    await pg.click('#routeChip'); await pg.waitForTimeout(500); await pg.click('#savedRoutes summary');
+    await pg.click('#savedRoutes [data-act="open"]'); await pg.waitForTimeout(2000);
+    const n1 = reqs.filter(r => /route\/v1/.test(r.url())).length;
+    console.log(`PAGE ${label}: saved, reloaded, opened: route requests ${n0} -> ${n1}; ${(await pg.textContent('#routeOut')).replace(/\s+/g, ' ').slice(0, 160)}`);
+    await pg.click('#routeChip'); await pg.click('#routeChip'); await pg.waitForTimeout(300);
+    console.log(`PAGE ${label}: credits line: ${await pg.textContent('#routeCredits')}`);
+  }
   const keyed = reqs.filter(r => /api_key=/.test(r.url()));
   const sample = reqs.slice(0, 1).map(r => r.headers());
   console.log(`PAGE ${label}: ${reqs.length} Stadia requests, ${keyed.length} carrying api_key; first request headers ${JSON.stringify(sample)}`);
