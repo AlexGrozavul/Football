@@ -1,5 +1,5 @@
 // Headless Chromium test of the installable app (manifest, sw.js), at phone width.
-// Not run by any workflow: run it by hand after changing index.html, sw.js or the manifest.
+// Run by .github/workflows/test-pages.yml on any change to index.html, sw.js or the manifest; by hand:
 //
 //   npm install playwright            (anywhere; it is not a dependency of this repo)
 //   mkdir -p /tmp/site && cp -r . /tmp/site/Football     (a COPY: the test edits files in it)
@@ -8,7 +8,7 @@
 // It serves the copy at http://localhost:8765/Football/ with GitHub Pages' own
 // Cache-Control: max-age=600, stubs Stadia's tiles, and checks: Chrome's own
 // installability errors (none), a second load offline with the banner, an online
-// load after a data change showing the new data, and a new deploy replacing the
+// load after a data change showing the new data, refused tiles raising the map card, and a new deploy replacing the
 // shell (with and without a change to sw.js). Exits 1 on any failure.
 // CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -41,7 +41,7 @@ function up(){ return new Promise(r => {
 });}
 function down(){ return new Promise(r => { server.closeAllConnections(); server.close(r); }); }
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
-let netOff = false;
+let netOff = false, tilesRefused = false;
 const results = [];
 const check = (name, ok, detail='') => { results.push([ok, name, detail]); console.log((ok ? 'PASS ' : 'FAIL ') + name + (detail ? ' :: ' + detail : '')); };
 
@@ -52,7 +52,9 @@ const check = (name, ok, detail='') => { results.push([ok, name, detail]); conso
   const ctx = await chromium.launchPersistentContext(prof, { executablePath: process.env.CHROMIUM_PATH || undefined, headless: true,
     viewport: {width:390, height:844}, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
   const browser = ctx;
-  await ctx.route('https://tiles.stadiamaps.com/**', route => netOff ? route.abort('internetdisconnected') : route.fulfill({status:200, contentType:'image/png', body: PNG}));
+  // Stadia answers a refused tile with HTTP 401 AND a picture, with CORS open (measured 2026-10-03).
+  await ctx.route('https://tiles.stadiamaps.com/**', route => netOff ? route.abort('internetdisconnected')
+    : route.fulfill({status: tilesRefused ? 401 : 200, contentType:'image/png', headers: {'Access-Control-Allow-Origin': '*'}, body: PNG}));
   const page = ctx.pages()[0] || await ctx.newPage();
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
@@ -136,6 +138,16 @@ const check = (name, ok, detail='') => { results.push([ok, name, detail]); conso
   const savedName = await page.evaluate(async () => { const c = await caches.open('football-data-v1'); const r = await c.match(new URL('data/clubs/DE.json', location.href).href); return (await r.json()).clubs[0].name; });
   check('the saved copy was replaced by the new data', savedName === 'PWA TEST CHANGED NAME', savedName);
   fs.writeFileSync(de, orig);
+
+  // ---- 3b. online, Stadia refusing the tiles (HTTP 401 with a picture): the card says refused
+  tilesRefused = true;
+  await page.reload(); await waitLoaded(); await page.waitForTimeout(800);
+  const sr = await state();
+  check('tiles refused with HTTP 401 + a picture: the map card shows and says Stadia refused them',
+    sr.mapOff && /refused/.test(sr.mapOffText) && /401/.test(sr.mapOffText) && !/offline/.test(sr.mapOffText), sr.mapOffText);
+  tilesRefused = false;
+  await page.reload(); await waitLoaded(); await page.waitForTimeout(800);
+  check('...and with tiles answered again the card is gone', !(await state()).mapOff);
 
   // ---- 4a. new deploy of index.html, sw.js untouched
   const idx = path.join(SITE, 'index.html'); const idxOrig = fs.readFileSync(idx, 'utf8');

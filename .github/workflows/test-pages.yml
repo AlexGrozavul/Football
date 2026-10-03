@@ -70,6 +70,13 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_derbies.js . 2>&1 | tee /tmp/test_derbies.log
 
+      - name: Route panel and saved routes
+        if: always()
+        run: |
+          set -o pipefail
+          mkdir -p /tmp/routes
+          NODE_PATH=/tmp/pw/node_modules node tools/test_routes.js . /tmp/routes 2>&1 | tee /tmp/test_routes.log
+
       - name: Write the run summary
         if: always()
         run: |
