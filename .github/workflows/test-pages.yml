@@ -8,7 +8,13 @@ name: Test the page
 # tier-3 threshold, z9, and prints the redraw timing at 4x CPU), the club
 # search (tools/test_search.js), the coverage panel
 # (tools/test_coverage.js) and the ticket section of the club sheet
-# (tools/test_sheet_tickets.js). Each one serves the checkout locally,
+# (tools/test_sheet_tickets.js), and since the same day the layout at
+# phone width (tools/test_layout.js - fails if the Ticket info tab or a
+# club sheet with ticket information is wider than the screen, if the
+# sheet can be pulled off the bottom bar, if the Wikidata id is back on
+# the distance note, if the Fixtures or Ticket info sections name a file
+# outside a "Why?" line, or if "Next window" words an empty answer
+# wrongly). Each one serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
 # credit is spent, and fails on a script error. A failing test turns the
 # run red.
@@ -107,11 +113,17 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_sheet_tickets.js . 2>&1 | tee /tmp/test_sheet_tickets.log
 
+      - name: Layout at phone width
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_layout.js . 2>&1 | tee /tmp/test_layout.log
+
       - name: Write the run summary
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout; do
               echo "## test_$t.js"
               echo
               echo '```'

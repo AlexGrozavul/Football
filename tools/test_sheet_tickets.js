@@ -102,9 +102,9 @@ const server = http.createServer((req, res) => {
     console.log(`    ${label}: ${S.nextText}`);
     if(!entries.length && !row){ check(`${label}: no ticket information, so "Ticket info unavailable"`, S.unavailable); continue; }
     check(`${label}: "Your notes" ${entries.length ? 'shown' : 'absent, and says so'}`, S.notes && /^Your notes/.test(S.notesLabel) &&
-      (entries.length ? !/No entry in football-rules\.json is linked/.test(S.text) : /No entry in football-rules\.json is linked/.test(S.text)));
+      (entries.length ? !/None of your notes are about this club/.test(S.text) : /None of your notes are about this club/.test(S.text)));
     check(`${label}: "Researched rules" ${row ? 'shown' : 'absent, and says so'}`, S.researched && /^Researched rules/.test(S.resLabel) &&
-      (row ? /Who may buy/.test(S.text) : /club-tickets\.csv has no row/.test(S.text)));
+      (row ? /Who may buy/.test(S.text) : /Not researched yet/.test(S.text)));
     if(entries.length){
       const flat = norm(S.text);
       const missing = entries.flatMap(leaves).filter(v => !flat.includes(norm(v)));

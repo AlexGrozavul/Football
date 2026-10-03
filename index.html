@@ -26,6 +26,11 @@
   #panes{flex:1;position:relative;overflow:hidden}
   .pane{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none}
   .pane.on{display:block}
+  /* The map pane never scrolls. The pull-up panels sit in it, and a hidden
+     one is pushed below its bottom edge (translateY), which made the pane
+     itself scrollable: a swipe past the end of a sheet then dragged the
+     whole sheet up, leaving an empty band above the bottom bar. */
+  #pane-map{overflow:hidden;overflow:clip}
   #map{position:absolute;inset:0}
 
   nav{display:flex;border-top:1px solid var(--line);background:var(--panel);
@@ -42,17 +47,20 @@
   h2:first-child{margin-top:4px}
 
   .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
-    padding:12px 13px;margin-bottom:9px}
+    padding:12px 13px;margin-bottom:9px;min-width:0;overflow-wrap:anywhere}
   .card h3{margin:0 0 3px;font-size:15px;font-weight:600;line-height:1.3}
   .card p{margin:5px 0 0;color:var(--dim);font-size:13.5px}
   .meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
-  .tag{font-size:11px;padding:2px 7px;border-radius:20px;border:1px solid var(--line);
-    color:var(--dim);white-space:nowrap}
+  /* A tag wraps inside its card: some are whole warning sentences, and a
+     tag that cannot wrap is wider than a phone (Inter's was about 700 px). */
+  .tag{font-size:11px;padding:2px 7px;border-radius:11px;border:1px solid var(--line);
+    color:var(--dim);white-space:normal;overflow-wrap:anywhere;max-width:100%;min-width:0}
   .tag.ok{color:var(--ok);border-color:#1e4429}
   .tag.warn{color:var(--warn);border-color:#4a3a11}
   .tag.bad{color:var(--bad);border-color:#5a2222}
   .row{display:flex;gap:9px;font-size:13px;margin-top:6px}
   .row span:first-child{color:var(--faint);min-width:82px;flex-shrink:0}
+  .row span:last-child{overflow-wrap:anywhere;min-width:0}
   .blank{color:var(--bad);font-style:italic}
 
   .bar{position:absolute;z-index:500;left:9px;right:9px;top:9px;display:flex;
@@ -157,7 +165,7 @@
   .sheet .shead .meta{margin-top:6px}
   .sheet .x{background:none;border:1px solid var(--line);border-radius:8px;color:var(--dim);
     font:inherit;font-size:13px;padding:4px 10px;cursor:pointer;flex-shrink:0}
-  .sheet .sbody{overflow-y:auto;-webkit-overflow-scrolling:touch;
+  .sheet .sbody{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;min-height:0;
     padding:4px 14px calc(18px + env(safe-area-inset-bottom))}
   .sheet h4{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
     margin:16px 0 6px;font-weight:600}
@@ -165,6 +173,12 @@
   .sheet .sub{color:var(--faint);font-size:12px;margin-top:2px}
   .sheet .unavail{color:var(--dim);font-size:13.5px;font-style:italic;margin:4px 0 0}
   .sheet .unavail b{font-style:normal;color:var(--warn);font-weight:600}
+  /* "Why?" lines: the file-level detail behind a plain message, collapsed. */
+  .sheet details.why{border:0;padding:0;margin-top:3px}
+  .sheet details.why summary{font-size:12px;color:var(--faint)}
+  .sheet details.why div{font-size:12px;color:var(--faint);margin-top:2px;overflow-wrap:anywhere}
+  .sheet .sdetails{margin-top:18px;padding-top:8px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--faint)}
   .sheet a{color:var(--t3)}
   .fx{display:flex;gap:9px;align-items:baseline;font-size:13.5px;padding:6px 0;
     border-top:1px solid var(--line)}
@@ -862,6 +876,12 @@ function unavailable(what, why){
   return `<p class="unavail"><b>${esc(what)} unavailable.</b> ${why}</p>`;
 }
 
+/* The file-level detail behind a plain-language message, collapsed under
+   "Why?" so the sheet itself names no file. `detail` is already escaped. */
+function why(detail, label = 'Why?'){
+  return detail ? `<details class="why"><summary>${esc(label)}</summary><div>${detail}</div></details>` : '';
+}
+
 function openSheet(club, mates){
   SHEET_FOR = club.id;
   const colour = TIER_COLOUR[club.tier] || '#888';
@@ -881,13 +901,16 @@ function openSheet(club, mates){
     field('Capacity', club.capacity ? club.capacity.toLocaleString('en-GB') : null) +
     `<div id="sheetComp">${field('Competition', '…')}</div>` +
     field('Distance', km !== null ? `≈ ${km} km by road (estimate) from ${HOME.label}` : null) +
-    `<div class="sub">Straight line × ${MULTIPLIER}. Not a travel time.
-      <a href="https://www.wikidata.org/wiki/${esc(club.id)}" target="_blank" rel="noopener">${esc(club.id)}</a></div>` +
+    `<div class="sub">Straight line × ${MULTIPLIER}. Not a travel time.</div>` +
     (others.length ? `<h4>Also at this ground</h4><div class="mates">` +
       others.map(c => `<button data-id="${esc(c.id)}"><i style="background:${TIER_COLOUR[c.tier] || '#888'}"></i>${esc(c.name || c.id)}</button>`).join('') +
       `</div>` : '') +
     `<h4>Fixtures</h4><div id="sheetFix"><p class="unavail">Loading…</p></div>` +
-    `<h4>Ticket info</h4><div id="sheetTix"><p class="unavail">Loading…</p></div>`;
+    `<h4>Ticket info</h4><div id="sheetTix"><p class="unavail">Loading…</p></div>` +
+    /* The club's Wikidata item: where its name, ground, capacity and position
+       come from, and the id a hand correction in clubs-manual.csv uses. */
+    `<div class="sdetails" id="sheetDetails">Details · <a href="https://www.wikidata.org/wiki/${esc(club.id)}" ` +
+      `target="_blank" rel="noopener">Wikidata</a> (item ${esc(club.id)})</div>`;
 
   document.querySelectorAll('#sheetBody .mates button').forEach(b =>
     b.addEventListener('click', () =>
@@ -968,41 +991,52 @@ function fxRow(m, teamId){
     `<span class="comp">${esc(m._comp)}</span></span>${score}</div>`;
 }
 
+/* What the fixture sources cover, in plain words: football-data.org's free
+   tier and OpenLigaDB, as fetched by tools/fetch_fixtures.py and
+   tools/fetch_openligadb.py. Brazil, Portugal and the tournaments are
+   fetched too but no club on the map plays in them. Keep in step with
+   those two tools. */
+const FIXTURE_COVERAGE = 'Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord and Nordost, DFB-Pokal, ' +
+  'Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie and Champions League';
+const COUNTRY_ADJ = {RO:'Romanian', CH:'Swiss', AT:'Austrian', RS:'Serbian', GR:'Greek', BE:'Belgian'};
+
+/* Why a club has no fixtures: a plain sentence, and the technical one
+   behind it for the "Why?" line. */
+function noFixturesReason(club){
+  const free = "football-data.org's free tier", olg = 'OpenLigaDB is German only';
+  if(COUNTRY_ADJ[club.country]) return [`No fixture source covers the ${COUNTRY_ADJ[club.country]} leagues.`,
+    `${free} carries no ${COUNTRY_ADJ[club.country]} competition and ${olg}.` +
+    (club.country === 'BE' ? ' A team seen only in the Champions League is never linked by name, because nothing there says which country it is from.' : '')];
+  const top = {FR:['Ligue 1','Ligue 2'], IT:['Serie A','Serie B'], ES:['La Liga','the Segunda División'],
+               NL:['the Eredivisie','the Eerste Divisie']}[club.country];
+  if(top && club.tier >= 2) return [`Only ${top[0]} is covered in this country, not ${top[1]}.`,
+    `${free} carries ${top[0]} only, not ${top[1]}, and ${olg}.`];
+  if(club.country === 'DE' && club.tier >= 5) return ['No fixture source covers German football below the Regionalliga.',
+    'No fixture source this project fetches goes below the Regionalliga.'];
+  if(club.country === 'DE' && club.tier === 4){
+    const comp = club.competition || '';
+    const tech = 'OpenLigaDB carries the Regionalliga Nord and Nordost only - not Bayern, Südwest or West - ' +
+      'and no team in either matched this club\'s name with confidence.';
+    if(/Bayern|S(ü|ue)dwest|West/.test(comp) && !/Nordost|Nord\b/.test(comp))
+      return [`Its league, the ${comp}, is not covered: of the five Regionalliga divisions only Nord and Nordost are.`, tech];
+    return ['Only the Regionalliga Nord and Nordost are covered, and this club could not be matched to a team in either with confidence.', tech];
+  }
+  return ['This club could not be matched with confidence to a team in the fixture lists.',
+    'No team in the fixture files matched this club\'s name with confidence. See data/clubs/fixture-link-review.csv.'];
+}
+
 async function fixturesHtml(club){
+  const covers = `<div class="sub">Fixtures are fetched for: ${FIXTURE_COVERAGE}.</div>`;
   const links = await jsonFile('data/clubs/fixture-links.json');
-  if(!links.ok) return unavailable('Fixtures',
-    `The link file data/clubs/fixture-links.json could not be loaded (${esc(links.err)}).`);
+  if(!links.ok) return unavailable('Fixtures', 'The list of which club is which fixture team could not be loaded.') +
+    why(`data/clubs/fixture-links.json: ${esc(links.err)}`);
   const entry = links.v.clubs?.[club.id];
   if(!entry){
     const held = links.v.notLinked?.[club.id];
-    if(held) return unavailable('Fixtures', esc(held));
-    return unavailable('Fixtures', club.country === 'RO'
-      ? "football-data.org's free tier carries no Romanian competition and OpenLigaDB is German only."
-      : club.country === 'FR' && club.tier >= 2
-      ? "football-data.org's free tier carries Ligue 1 only, not Ligue 2, and OpenLigaDB is German only."
-      : club.country === 'IT' && club.tier >= 2
-      ? "football-data.org's free tier carries Serie A only, not Serie B, and OpenLigaDB is German only."
-      : club.country === 'CH'
-      ? "football-data.org's free tier carries no Swiss competition and OpenLigaDB is German only."
-      : club.country === 'AT'
-      ? "football-data.org's free tier carries no Austrian competition and OpenLigaDB is German only."
-      : club.country === 'RS'
-      ? "football-data.org's free tier carries no Serbian competition and OpenLigaDB is German only."
-      : club.country === 'GR'
-      ? "football-data.org's free tier carries no Greek competition and OpenLigaDB is German only."
-      : club.country === 'ES' && club.tier >= 2
-      ? "football-data.org's free tier carries La Liga only, not the Segunda División, and OpenLigaDB is German only."
-      : club.country === 'NL' && club.tier >= 2
-      ? "football-data.org's free tier carries the Eredivisie only, not the Eerste Divisie, and OpenLigaDB is German only."
-      : club.country === 'BE'
-      ? "football-data.org's free tier carries no Belgian league - a team seen only in the Champions League is never linked by name, because nothing there says which country it is from - and OpenLigaDB is German only."
-      : club.tier >= 5
-      ? "No fixture source this project fetches goes below the Regionalliga."
-      : club.tier === 4
-      ? "OpenLigaDB carries the Regionalliga Nord and Nordost only - not Bayern, Südwest or " +
-        "West - and no team in either matched this club's name with confidence."
-      : "No team in the fixture files matched this club's name with confidence. " +
-        "See data/clubs/fixture-link-review.csv.");
+    if(held) return unavailable('Fixtures', 'This club could not be matched with confidence to a team in the fixture lists.') +
+      covers + why(esc(held));
+    const [plain, tech] = noFixturesReason(club);
+    return unavailable('Fixtures', esc(plain)) + covers + why(esc(tech));
   }
 
   const matches = [], failed = [], seen = new Set();
@@ -1028,6 +1062,8 @@ async function fixturesHtml(club){
   const past  = matches.filter(m => isFinished(m) || fxEnd(m) < now)
                        .sort((a, b) => time(b) - time(a));
 
+  const comps = [...new Set(entry.links.flatMap(l => l.competitions.map(c => c.label)))];
+  const leagueLinked = entry.links.some(l => l.competitions.some(c => LEAGUE_CODES.has(c.code)));
   const sources = entry.links.map(l =>
     `${l.source === 'football-data' ? 'football-data.org' : 'OpenLigaDB'} ` +
     `(${l.competitions.map(c => c.label).join(', ')})` +
@@ -1037,12 +1073,13 @@ async function fixturesHtml(club){
   let html = '';
   if(ahead.length) html += ahead.slice(0, 6).map(m => fxRow(m, m._team)).join('') +
     (ahead.length > 6 ? `<div class="sub">${ahead.length - 6} more ahead.</div>` : '');
-  else html += `<p class="unavail">No match ahead in the fetched files.</p>`;
+  else html += `<p class="unavail">No match ahead in the fixture lists.</p>`;
   if(past.length) html += `<details><summary>Recent <em>— ${past.length} played</em></summary>` +
     past.slice(0, 5).map(m => fxRow(m, m._team)).join('') + `</details>`;
-  if(failed.length) html += `<p class="err">Could not load: ${esc(failed.join(', '))}.</p>`;
-  html += `<div class="sub">Times are German time. From ${esc(sources)}. Fetched data - it feeds
-    the app, never the calendars.</div>`;
+  if(failed.length) html += `<p class="err">Could not load the ${esc(failed.join(', '))} fixtures.</p>`;
+  html += `<div class="sub">Times are German time. Covers: ${esc(comps.join(', '))}.` +
+    (leagueLinked ? '' : ` Cup and European matches only: no fixture source covers ${club.competition ? 'the ' + esc(club.competition) : 'this club\'s league'}.`) +
+    `</div>` + why(`From ${esc(sources)}. Fetched data - it feeds the app, never the calendars.`, 'Source');
   return html;
 }
 
@@ -1068,7 +1105,7 @@ function scopeTag(r, names){
    window rows for the Next window line. */
 async function researchedFor(club){
   const base = await csvFile('data/club-tickets.csv');
-  if(!base.ok) return {err: `data/club-tickets.csv could not be loaded (${base.err}).`};
+  if(!base.ok) return {err: 'The ticket research could not be loaded.', errWhy: `data/club-tickets.csv: ${base.err}`};
   const row = base.v.find(r => r.clubQid === club.id && r.team === 'men');
   if(!row) return {why: 'data/club-tickets.csv has no row for this club.'};
 
@@ -1084,7 +1121,7 @@ async function researchedFor(club){
 
   const warn = [];
   if(row.country && row.country !== club.country)
-    warn.push(`club-tickets.csv says ${row.country}, the map file says ${club.country}.`);
+    warn.push(`The ticket research puts this club in ${row.country}, the map in ${club.country}.`);
 
   let h =
     (row.ticketUrl ? `<div class="row"><span>Ticket page</span><span><a href="${esc(row.ticketUrl)}" target="_blank" rel="noopener">${esc(row.ticketUrl)}</a></span></div>` : field('Ticket page', null)) +
@@ -1102,7 +1139,7 @@ async function researchedFor(club){
     warn.map(w => `<p class="err">${esc(w)}</p>`).join('');
 
   const section = (title, list, render, empty) => {
-    if(list === null) return `<p class="err">${esc(title)}: file could not be loaded.</p>`;
+    if(list === null) return `<p class="err">${esc(title)} could not be loaded.</p>`;
     if(!list.length) return empty ? `<div class="sub">${esc(empty)}</div>` : '';
     return `<details><summary>${esc(title)} <em>— ${list.length}</em></summary>` +
       list.map(render).join('') + `</details>`;
@@ -1123,7 +1160,7 @@ async function researchedFor(club){
         (p.maxTickets ? ` · max ${esc(p.maxTickets)}` : '') +
         (p.pastCycle ? `<div class="sub">past cycle${p.pastCycleFor ? ' ' + esc(p.pastCycleFor) : ''}: ${esc(p.pastCycle)}</div>` : '') +
         `<div class="meta">${confTag(p.confidence)}</div></div>`).join('')
-      : '<p class="err">data/club-ticket-phases.csv could not be loaded.</p>') + `</div>`,
+      : '<p class="err">The sale phases could not be loaded.</p>') + `</div>`,
     'No sales-window rows.');
 
   h += section('Rules', mine(rules), r =>
@@ -1137,7 +1174,7 @@ async function researchedFor(club){
     `<div>${esc(r.rule)}</div>` +
     `<div class="sub">applies to: ${esc(words(r.appliesTo))} · when: ${esc(words(r.condition))} · club latitude: ${esc(r.clubLatitude)}</div>` +
     `<div class="meta">${confTag(r.confidence)}</div></div>`,
-    `No national rows for ${country} in data/country-ticket-rules.csv.`);
+    `No national rules recorded for ${country}.`);
 
   h += section('Sell-out record', mine(demand), r =>
     `<div class="item"><b>${esc(r.season)}</b> ${scopeTag(r, names)} ${esc(r.outcome)}` +
@@ -1151,8 +1188,9 @@ async function researchedFor(club){
     `<div class="meta"><span class="tag${r.kind === 'resale-observed' ? ' warn' : ''}">${esc(r.kind)}</span>` +
     `${r.priceBasis ? `<span class="tag">${esc(r.priceBasis)}</span>` : ''}${confTag(r.confidence)}${scopeTag(r, names)}</div></div>`);
 
-  h += `<div class="sub">Hand-written in data/club-tickets.csv and the ticket files beside it,
-    joined to this club by its Wikidata id. Nothing here is generated, and no sale date is.</div>`;
+  h += `<div class="sub">Hand-written research. Nothing here is generated,
+    and no sale date is.</div>` + why('Hand-written in data/club-tickets.csv and the ticket files beside it ' +
+    '(windows, phases, rules, demand, prices, country rules, sources), joined to this club by its Wikidata id.', 'Source');
   return {row, html: h, windows: windows || [], windowsErr: windows === null};
 }
 
@@ -1165,9 +1203,10 @@ async function researchedFor(club){
 let RULES = null;
 
 async function notesFor(club){
-  if(!RULES) return {err: 'data/football-rules.json could not be loaded.'};
+  if(!RULES) return {err: 'Your notes could not be loaded.', errWhy: 'data/football-rules.json could not be loaded.'};
   const links = await csvFile('data/football-rules-links.csv');
-  if(!links.ok) return {err: `data/football-rules-links.csv could not be loaded (${links.err}).`};
+  if(!links.ok) return {err: 'Which of your notes belong to which club could not be loaded.',
+    errWhy: `data/football-rules-links.csv: ${links.err}`};
   const byId = new Map((RULES.clubs || []).map(c => [c.id, c]));
   const ids = [...new Set(links.v.filter(r => r.clubQid === club.id && byId.has(r.rulesId)).map(r => r.rulesId))];
   return {entries: ids.map(id => ({id, entry: byId.get(id),
@@ -1228,8 +1267,9 @@ function notesHtml(notes){
       n.events.map(noteEvent).join('') + `</details>` : '') +
     (n.bucket.length ? `<details><summary>On the bucket list <em>— ${n.bucket.length}</em></summary>` +
       n.bucket.map(noteBucket).join('') + `</details>` : '')).join('') +
-    `<div class="sub">Hand-written in data/football-rules.json (entry ` +
-      `${esc(notes.entries.map(n => n.id).join(', '))}), linked to this club in data/football-rules-links.csv.</div>`;
+    `<div class="sub">Your own notes, shown exactly as written.</div>` +
+    why(`Hand-written in data/football-rules.json (entry ${esc(notes.entries.map(n => n.id).join(', '))}), ` +
+      `linked to this club in data/football-rules-links.csv.`, 'Source');
 }
 
 /* ---- Next window: the soonest window ahead across BOTH sources.
@@ -1299,27 +1339,38 @@ function nextWindowHtml(notes, res){
       `<div class="nw"><b>${esc(c.name)}</b> — ${esc(c.when)}` +
       `<div class="meta">${tag(c.dateSource)}<span class="tag">${esc(c.src)}</span></div>` +
       (c.placed ? `<div class="sub">${esc(c.placed)}.</div>` : '') + `</div>`).join('');
-  }else h += `<p class="unavail">No window ahead with a date or a month, in either source.</p>`;
+  }else{
+    /* Nothing ahead. Say which of three things is true: nothing was ever
+       recorded; something was, but it is all past (or disputed); or what
+       is left names no date or month. */
+    const recorded = (notes.entries || []).reduce((n, e) => n + e.events.length, 0) + (res.windows || []).length;
+    h += `<p class="unavail">${!recorded ? 'No window recorded.'
+      : unplaced.length ? 'No upcoming window with a date or month recorded.'
+      : 'No upcoming window recorded.'}</p>`;
+  }
   if(unplaced.length) h += `<div class="sub">Not counted, because ${unplaced.length === 1 ? 'it names' : 'they name'} ` +
     `no date or month (often tied to each match): ${esc(unplaced.join('; '))}.</div>`;
-  if(res.windowsErr) h += `<p class="err">data/club-ticket-windows.csv could not be loaded.</p>`;
+  if(res.windowsErr) h += `<p class="err">The sales windows could not be loaded.</p>`;
   return h + `</div>`;
 }
 
 async function ticketsHtml(club){
   const [notes, res] = await Promise.all([notesFor(club), researchedFor(club)]);
   const hasNotes = !!(notes.entries && notes.entries.length);
-  const errs = [notes.err, res.err].filter(Boolean).map(e => `<p class="err">${esc(e)}</p>`).join('');
+  const errOf = r => r.err ? `<p class="err">${esc(r.err)}</p>` + why(esc(r.errWhy)) : '';
+  const errs = errOf(notes) + errOf(res);
   if(!hasNotes && !res.row) return unavailable('Ticket info',
-    'data/club-tickets.csv has no row for this club, and no entry in football-rules.json is linked to it ' +
-    'in data/football-rules-links.csv. That is the ordinary state: only a few clubs have been researched.') + errs;
+    'No ticket information recorded for this club yet. Only a few clubs have been researched.') +
+    why('data/club-tickets.csv has no row for this club, and no entry in football-rules.json is linked ' +
+      'to it in data/football-rules-links.csv.') + errs;
   return nextWindowHtml(notes, res) +
-    `<h5 class="srch" id="tixNotes">Your notes <em>football-rules.json</em></h5>` +
-    (hasNotes ? notesHtml(notes) : notes.err ? errs
-      : `<p class="unavail">No entry in football-rules.json is linked to this club.</p>`) +
-    `<h5 class="srch" id="tixResearched">Researched rules <em>club-tickets files</em></h5>` +
-    (res.row ? res.html : res.err ? `<p class="err">${esc(res.err)}</p>`
-      : `<p class="unavail">${esc(res.why)} Only a few clubs have been researched.</p>`) +
+    `<h5 class="srch" id="tixNotes">Your notes <em>what you wrote</em></h5>` +
+    (hasNotes ? notesHtml(notes) : notes.err ? errOf(notes)
+      : `<p class="unavail">None of your notes are about this club.</p>` +
+        why('No entry in football-rules.json is linked to this club in data/football-rules-links.csv.')) +
+    `<h5 class="srch" id="tixResearched">Researched rules <em>sourced research</em></h5>` +
+    (res.row ? res.html : res.err ? errOf(res)
+      : `<p class="unavail">Not researched yet. Only a few clubs have been.</p>` + why(esc(res.why))) +
     (hasNotes && res.row ? `<div class="sub">The two are shown side by side and not reconciled: where they ` +
       `disagree, each says what it says.</div>` : '');
 }
