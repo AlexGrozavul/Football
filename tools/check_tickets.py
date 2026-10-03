@@ -13,6 +13,9 @@ check_tickets.py -- read-back and validation for the ticket files.
     data/country-ticket-rules.csv rules no club decides: a country's law,
                                   ministry, police or league, inherited
                                   by every club whose ground is there
+    data/football-rules-links.csv which club on the map each club entry
+                                  of football-rules.json is (since
+                                  2026-10-03; read back, never written)
 
 The first three were written by hand and, until this tool existed,
 nothing read them at all. So a typo in a vocabulary column - "inferrred"
@@ -86,6 +89,8 @@ SOURCES_FILE = "data/ticket-sources.csv"
 # docs/country-ticket-rules-design.md for where a fact belongs when it
 # could sit here or in the club rules file.
 COUNTRY_FILE = "data/country-ticket-rules.csv"
+RULES_LINKS_FILE = "data/football-rules-links.csv"
+FOOTBALL_RULES_FILE = "data/football-rules.json"
 LEAGUE_TIERS_FILE = "data/league-tiers.csv"
 CLUBS_DIR = "data/clubs"
 
@@ -1025,6 +1030,115 @@ def read_back(path, rows, full):
 
 # ------------------------------------------------------------------ main
 
+def check_rules_links():
+    """Read data/football-rules-links.csv back, line by line.
+
+    The file says which club on the map each club entry of
+    football-rules.json is, because those entries carry no Wikidata id.
+    The club sheet shows an entry's notes on the club a line names, so a
+    wrong line puts somebody's notes on the wrong club. Rejected, by
+    line: a missing cell, a Q-id that is not one, an id that is not a
+    club entry in football-rules.json, a Q-id that is on no map, an
+    entry linked twice, an unquoted comma. Reported and kept: an entry
+    with no line (it simply shows nowhere), two entries on one club.
+    Returns (problems, notices)."""
+    import json
+    problems, notices = [], []
+    print()
+    print("-" * 70)
+    print(f"  {RULES_LINKS_FILE}")
+    print("-" * 70)
+    try:
+        with open(FOOTBALL_RULES_FILE, encoding="utf-8") as fh:
+            entries = {c.get("id"): c for c in json.load(fh).get("clubs", [])}
+    except (OSError, ValueError) as err:
+        problems.append(f"{RULES_LINKS_FILE}: {FOOTBALL_RULES_FILE} could "
+                        f"not be read ({err}), so no line can be checked.")
+        return problems, notices
+    on_map = {}
+    import glob
+    for path in sorted(glob.glob(os.path.join(CLUBS_DIR, "??.json"))):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        for club in data.get("clubs") or []:
+            if (isinstance(club, dict) and club.get("lat") is not None
+                    and club.get("lon") is not None
+                    and club.get("tier") is not None):
+                on_map[club["id"]] = (club.get("name") or club["id"],
+                                      data.get("country", ""),
+                                      club.get("tier"))
+    try:
+        fh = open(RULES_LINKS_FILE, encoding="utf-8-sig", newline="")
+    except OSError as err:
+        problems.append(f"{RULES_LINKS_FILE}: could not be read ({err}).")
+        return problems, notices
+    seen, by_club = {}, {}
+    with fh:
+        reader = csv.DictReader(fh, restkey=OVERFLOW)
+        header = reader.fieldnames or []
+        for col in ("rulesId", "clubQid"):
+            if col not in header:
+                problems.append(f"{RULES_LINKS_FILE}: no {col!r} column "
+                                f"in the header {header}.")
+                return problems, notices
+        for row in reader:
+            line = reader.line_num
+            if row.get(OVERFLOW):
+                problems.append(overflow_problem(RULES_LINKS_FILE, line,
+                                                 len(header), row[OVERFLOW]))
+                print(f"  line {line}: REJECTED - more values than columns "
+                      f"(an unquoted comma)")
+                continue
+            rid, qid = _s(row.get("rulesId")), _s(row.get("clubQid"))
+            why = None
+            if not rid or not qid:
+                why = "needs both rulesId and clubQid"
+            elif not QID_RE.match(qid):
+                why = f"clubQid {qid!r} is not a Q-id"
+            elif rid not in entries:
+                why = (f"{rid!r} is not the id of a club entry in "
+                       f"{FOOTBALL_RULES_FILE}")
+            elif qid not in on_map:
+                why = (f"{qid} is not on any map (no club file has it with "
+                       f"a position and a tier) - a probable typo")
+            elif rid in seen:
+                why = (f"{rid!r} is already linked on line {seen[rid]}; an "
+                       f"entry is one club")
+            if why:
+                problems.append(f"{RULES_LINKS_FILE} line {line}: {why}. "
+                                f"Ignored.")
+                print(f"  line {line}: REJECTED - {why}")
+                continue
+            seen[rid] = line
+            by_club.setdefault(qid, []).append(rid)
+            name, country, tier = on_map[qid]
+            print(f"  line {line}: {rid} ({entries[rid].get('name')}) -> "
+                  f"{qid} {name}, {country} tier {tier}")
+            note = _s(row.get("note"))
+            if note:
+                for text in _wrap(note, width=62):
+                    print("      " + text)
+    for qid, rids in by_club.items():
+        if len(rids) > 1:
+            notices.append(f"{RULES_LINKS_FILE}: {qid} {on_map[qid][0]} has "
+                           f"{len(rids)} entries linked ({', '.join(rids)}); "
+                           f"the sheet shows all of them.")
+    unlinked = [rid for rid in entries if rid not in seen]
+    if unlinked:
+        notices.append(
+            f"{RULES_LINKS_FILE}: {len(unlinked)} club entr"
+            f"{'y' if len(unlinked) == 1 else 'ies'} of {FOOTBALL_RULES_FILE} "
+            f"{'has' if len(unlinked) == 1 else 'have'} no line and show on no "
+            f"club sheet: " + ", ".join(
+                f"{rid} ({entries[rid].get('name')})" for rid in unlinked)
+            + ". Reported, not rejected.")
+    print(f"  {len(seen)} line(s) accepted.")
+    return problems, notices
+
+
 def main():
     full = "--full" in sys.argv
     today = datetime.date.today()
@@ -1298,12 +1412,18 @@ def main():
                 width=66)):
             print(("  ? " if i == 0 else "    ") + text)
 
+    # ---- the links from football-rules.json to the map
+    link_problems, link_notices = check_rules_links()
+    all_problems.extend(link_problems)
+    all_notices.extend(link_notices)
+
     # ---- the counts
     print("=" * 70)
     for path in FILES:
         rejected = len([p for p in all_problems if p.startswith(path)])
         print(f"  {path}: {len(by_file[path])} row(s) accepted, "
               f"{rejected} problem(s)")
+    print(f"  {RULES_LINKS_FILE}: {len(link_problems)} problem(s)")
 
     # ---- what was reported but changed nothing
     if all_notices:

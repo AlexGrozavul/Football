@@ -55,8 +55,52 @@
   .row span:first-child{color:var(--faint);min-width:82px;flex-shrink:0}
   .blank{color:var(--bad);font-style:italic}
 
-  .bar{position:absolute;z-index:500;left:9px;right:9px;top:9px;display:flex;gap:6px;
-    pointer-events:none}
+  .bar{position:absolute;z-index:500;left:9px;right:9px;top:9px;display:flex;
+    flex-direction:column;gap:6px;pointer-events:none}
+  .barrow{display:flex;gap:6px;align-items:flex-start;min-width:0}
+  #zoomChip{text-align:left;flex-shrink:1;min-width:0}
+
+  /* Club search, top right of the map. The suggestion list is capped by
+     the VISIBLE height (--vvh, from visualViewport), so with the phone's
+     keyboard open it still ends above the keyboard. */
+  .search{pointer-events:auto;position:relative;z-index:2;flex:1 1 150px;min-width:0;max-width:300px;
+    margin-left:auto}
+  .search input{width:100%;background:rgba(13,17,23,.96);color:var(--ink);
+    border:1px solid var(--line);border-radius:8px;padding:5px 9px;font:inherit;font-size:16px;
+    line-height:1.3;-webkit-appearance:none;appearance:none}
+  .search input:focus{outline:none;border-color:var(--t3)}
+  .shits{position:absolute;right:0;top:calc(100% + 4px);width:min(330px,calc(100vw - 18px));
+    max-height:min(360px,calc(var(--vvh,100vh) - 60px));overflow-y:auto;
+    -webkit-overflow-scrolling:touch;background:rgba(22,27,34,.98);border:1px solid var(--line);
+    border-radius:9px;box-shadow:0 8px 24px rgba(0,0,0,.45);padding:3px}
+  .shits[hidden]{display:none}
+  .shits button{display:flex;gap:8px;align-items:flex-start;width:100%;text-align:left;
+    background:none;border:0;border-radius:6px;color:var(--ink);font:inherit;font-size:14px;
+    padding:7px 8px;cursor:pointer}
+  .shits button.on,.shits button:hover{background:#1f2836}
+  .shits i{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px}
+  .shits .sn{flex:1;min-width:0;overflow-wrap:anywhere}
+  .shits .rd{display:block;color:var(--faint);font-size:12px}
+  .shits .none{padding:8px 9px;color:var(--dim);font-size:13.5px;font-style:italic}
+
+  /* Coverage panel, opened from the club-count chip. */
+  .covtot{display:flex;justify-content:space-between;gap:12px;margin:10px 0 4px}
+  .covtot div{flex:1}
+  .covtot div:last-child{text-align:right}
+  .covtot b{display:block;font-size:38px;line-height:1.05;font-weight:650;color:var(--ink)}
+  .covtot span{color:var(--dim);font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+  .covtiers{width:100%;border-collapse:collapse;font-size:12.5px;color:var(--dim);margin-top:6px}
+  .covtiers td{padding:3px 0;border-top:1px solid var(--line)}
+  .covtiers td:not(:first-child){text-align:right}
+  .covtiers i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+  .covf{display:flex;gap:8px;margin-top:12px}
+  .covf select{flex:1;min-width:0;background:#0d1117;color:var(--ink);border:1px solid var(--line);
+    border-radius:7px;padding:6px 7px;font:inherit;font-size:14px;color-scheme:dark}
+  .covc{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
+    margin:16px 0 2px;font-weight:600}
+  .covl em{font-style:normal;color:var(--faint);font-size:12px;white-space:nowrap;margin-left:auto;
+    padding-left:8px}
+  .covl.nolg .rn{font-style:italic;color:var(--dim)}
   .chip{pointer-events:auto;background:rgba(22,27,34,.94);border:1px solid var(--line);
     border-radius:8px;padding:6px 9px;font-size:12px;color:var(--dim);
     backdrop-filter:blur(8px)}
@@ -142,6 +186,16 @@
     border:1px solid var(--line);border-radius:7px;padding:5px 8px;color:var(--ink);
     font:inherit;font-size:13px;cursor:pointer}
   .sheet .mates i{width:9px;height:9px;border-radius:50%}
+  /* Ticket info: the two sources, each labelled, and the Next window line. */
+  .sheet h5.srch{font-size:13px;font-weight:600;margin:16px 0 4px;color:var(--ink);
+    border-bottom:1px solid var(--line);padding-bottom:3px}
+  .sheet h5.srch em{font-style:normal;font-weight:400;color:var(--faint);font-size:11.5px;margin-left:6px}
+  .sheet .nest{margin-top:7px;padding-left:9px;border-left:2px solid var(--line)}
+  .sheet .nk{font-size:12px;color:var(--dim);font-weight:600;margin-top:6px}
+  .nextw{background:#1b2230;border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px}
+  .nextw .nl{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600}
+  .nextw .nw{font-size:13.5px;margin-top:4px;overflow-wrap:anywhere}
+  .nextw .nw + .nw{border-top:1px solid var(--line);padding-top:5px}
 
   /* Route panel: the same pull-up shape as the club sheet, one layer
      below it, so a club opened from the route list sits on top and
@@ -212,7 +266,7 @@
   .offline span{flex:1}
   .offline button{background:#1b2230;border:1px solid #6b4f12;border-radius:7px;
     color:var(--ink);font:inherit;font-size:12.5px;padding:5px 10px}
-  .mapoff{position:absolute;z-index:450;left:50%;top:56px;transform:translateX(-50%);
+  .mapoff{position:absolute;z-index:450;left:50%;top:92px;transform:translateX(-50%);
     width:min(330px,calc(100% - 32px));background:rgba(22,27,34,.97);border:1px solid var(--warn);
     border-radius:10px;padding:11px 13px;font-size:13.5px;line-height:1.45;pointer-events:none}
   .mapoff b{display:block;color:var(--warn);font-size:15px;margin-bottom:3px}
@@ -229,10 +283,20 @@
       <div class="mapoff" id="mapOffline" hidden role="status"><b>The map needs a connection</b>
         <span id="mapOfflineWhy"></span></div>
       <div class="bar">
-        <div class="chip" id="zoomChip">…</div>
-        <div class="chip" id="homeChip">home not set</div>
-        <button class="chip btn" id="routeChip" style="margin-left:auto">Route</button>
-        <button class="chip btn" id="derbyChip">Derbies</button>
+        <div class="barrow">
+          <button class="chip btn" id="zoomChip" aria-label="Clubs and leagues on the map">…</button>
+          <div class="search" id="searchBox" role="search">
+            <input type="search" id="searchInput" placeholder="Find a club" autocomplete="off"
+              autocapitalize="off" spellcheck="false" enterkeyhint="go" aria-label="Find a club"
+              aria-autocomplete="list" aria-controls="searchHits">
+            <div class="shits" id="searchHits" role="listbox" hidden></div>
+          </div>
+        </div>
+        <div class="barrow">
+          <div class="chip" id="homeChip">home not set</div>
+          <button class="chip btn" id="routeChip" style="margin-left:auto">Route</button>
+          <button class="chip btn" id="derbyChip">Derbies</button>
+        </div>
       </div>
       <div class="legend" id="legend"></div>
       <div class="sheet" id="sheet" hidden role="dialog" aria-label="Club details">
@@ -272,6 +336,11 @@
           <button class="x" id="derbyClose" aria-label="Close">Close</button></div>
         <div class="sbody" id="derbyBody"></div>
       </div>
+      <div class="sheet route" id="coveragePanel" hidden role="dialog" aria-label="Clubs and leagues">
+        <div class="shead"><h3 id="covTitle">Clubs and leagues on the map</h3>
+          <button class="x" id="covClose" aria-label="Close">Close</button></div>
+        <div class="sbody" id="covBody"></div>
+      </div>
       <div class="pickbar" id="pickBar" hidden><span id="pickText">Tap the map</span>
         <button id="pickCancel">Cancel</button></div>
     </div>
@@ -303,21 +372,19 @@ const TIER_NAME = {
   6:'Tier 6', 7:'Tier 7', 8:'Tier 8'
 };
 
-/* Zoom at which each tier switches on. Tiers 1-3 each keep their own
-   threshold, so the country view stays readable as you zoom in. Tier 4
-   and every tier deeper than it share one threshold, DEEP_TIER_ZOOM -
-   the zoom tier 4 used on its own before this merge. A separate
-   threshold per tier tops out somewhere, and clubs have now turned up
-   as deep as tier 8 (from europlan-online's league pages, which go well
-   below the Regionalliga Wikidata tags them with); topping out either
-   drops a deep club off the map or shows it at a false shallow tier.
-   One shared band for "tier 4 or deeper" means a newly discovered
-   tier 6, 7 or 8 club falls into the right band with no further code
+/* Zoom at which each tier switches on. Tiers 1 and 2 keep their own
+   thresholds, so the country view stays readable. Tier 3 and EVERY tier
+   deeper than it share one threshold, DEEP_TIER_ZOOM - the zoom tier 3
+   used on its own before this merge (2026-10-03). That is a guaranteed
+   property, checked by tools/test_zoom.js on every change to the page:
+   at DEEP_TIER_ZOOM every club on the map is drawn, whatever its tier,
+   so nobody has to zoom further in to find a club that is there. A
+   newly discovered tier 9 or 10 club falls into the same band with no
    change here. */
-const TIER_FROM_ZOOM = {1:0, 2:7, 3:9};
-const DEEP_TIER_ZOOM = 11;
+const TIER_FROM_ZOOM = {1:0, 2:7};
+const DEEP_TIER_ZOOM = 9;
 function zoomForTier(tier){
-  return TIER_FROM_ZOOM[tier] ?? (tier >= 4 ? DEEP_TIER_ZOOM : undefined);
+  return TIER_FROM_ZOOM[tier] ?? (Number(tier) >= 3 ? DEEP_TIER_ZOOM : undefined);
 }
 
 const COUNTRY_FILES = ['data/clubs/DE.json','data/clubs/RO.json','data/clubs/FR.json','data/clubs/IT.json','data/clubs/CH.json','data/clubs/AT.json','data/clubs/RS.json','data/clubs/GR.json','data/clubs/ES.json','data/clubs/GB.json','data/clubs/NL.json','data/clubs/BE.json'];
@@ -532,7 +599,7 @@ function groundMarker(clubs, zoom){
    zoom is reached, and never before. A shared marker therefore lists
    exactly the clubs visible at the current zoom, and its number is how
    many those are. The Fritz-Walter-Stadion is a plain 1. FC
-   Kaiserslautern marker from z7 and turns into a "2" at z11, when the
+   Kaiserslautern marker from z7 and turns into a "2" at z9, when the
    reserve team's tier switches on. */
 function drawClubs(){
   const zoom = MAP.getZoom();
@@ -624,7 +691,12 @@ const StatusTiles = L.TileLayer.extend({
 });
 
 async function initMap(){
-  MAP = L.map('map', {zoomControl:false, attributionControl:true})
+  /* minZoom 3: further out, the world repeats sideways and nothing here
+     is readable. zoomDelta and zoomSnap 1: every zoom the map rests at is
+     a whole number, so it is either below DEEP_TIER_ZOOM or at it - never
+     at 8.5 with half the clubs hidden. tools/test_zoom.js checks both. */
+  MAP = L.map('map', {zoomControl:false, attributionControl:true,
+                      minZoom:3, zoomDelta:1, zoomSnap:1})
          .setView([48.80, 9.02], 8);
   L.control.zoom({position:'bottomright'}).addTo(MAP);
 
@@ -991,19 +1063,19 @@ function scopeTag(r, names){
   return `<span class="tag">${esc(r.scope)}${opp ? ' v ' + esc(opp) : ''}</span>`;
 }
 
-async function ticketsHtml(club){
+/* "Researched rules": the club-tickets files, joined by clubQid. Returns
+   the row (or why there is none), the rendered section, and the club's
+   window rows for the Next window line. */
+async function researchedFor(club){
   const base = await csvFile('data/club-tickets.csv');
-  if(!base.ok) return unavailable('Ticket info',
-    `data/club-tickets.csv could not be loaded (${esc(base.err)}).`);
+  if(!base.ok) return {err: `data/club-tickets.csv could not be loaded (${base.err}).`};
   const row = base.v.find(r => r.clubQid === club.id && r.team === 'men');
-  if(!row) return unavailable('Ticket info',
-    'data/club-tickets.csv has no row for this club. That is the ordinary state: only a ' +
-    'few clubs have been researched.');
+  if(!row) return {why: 'data/club-tickets.csv has no row for this club.'};
 
-  const [win, rules, demand, prices, national] = await Promise.all([
+  const [win, rules, demand, prices, national, phases] = await Promise.all([
     csvFile('data/club-ticket-windows.csv'), csvFile('data/club-ticket-rules.csv'),
     csvFile('data/club-ticket-demand.csv'),  csvFile('data/club-ticket-prices.csv'),
-    csvFile('data/country-ticket-rules.csv')]);
+    csvFile('data/country-ticket-rules.csv'), csvFile('data/club-ticket-phases.csv')]);
   const mine = f => f.ok ? f.v.filter(r => r.clubQid === club.id && (r.team || 'men') === 'men') : null;
 
   /* Opponent names for derby rows, from the ticket file itself. */
@@ -1036,11 +1108,22 @@ async function ticketsHtml(club){
       list.map(render).join('') + `</details>`;
   };
 
-  h += section('Sales windows', mine(win), r =>
+  const windows = mine(win);
+  h += section('Sales windows', windows, r =>
     `<div class="item"><b>${esc(r.label || r.window)}</b>` +
     (r.opensEstimate ? ` — opens ${esc(r.opensEstimate)}${r.estimateFor ? ' (' + esc(r.estimateFor) + ')' : ''}` : '') +
     (r.pastCycle ? `<div class="sub">past cycle: ${esc(r.pastCycle)}</div>` : '') +
-    `<div class="meta">${sourceTag(r.dateSource)}${r.basis ? `<span class="tag">${esc(r.basis)}</span>` : ''}${scopeTag(r, names)}</div></div>`,
+    `<div class="meta">${sourceTag(r.dateSource)}${r.basis ? `<span class="tag">${esc(r.basis)}</span>` : ''}${scopeTag(r, names)}</div>` +
+    /* The window's phases from club-ticket-phases.csv, in order. A past
+       cycle is a dated PAST phase a source recorded, never a forecast. */
+    (phases.ok ? phases.v.filter(p => p.clubQid === club.id && (p.team || 'men') === 'men' && p.window === r.window)
+      .sort((a, b) => Number(a.phase) - Number(b.phase)).map(p =>
+        `<div class="nest"><b>Phase ${esc(p.phase)}</b>: ${esc(p.buyers)}` +
+        (p.opensRelative ? ` — opens ${esc(p.opensRelative)}` : '') +
+        (p.maxTickets ? ` · max ${esc(p.maxTickets)}` : '') +
+        (p.pastCycle ? `<div class="sub">past cycle${p.pastCycleFor ? ' ' + esc(p.pastCycleFor) : ''}: ${esc(p.pastCycle)}</div>` : '') +
+        `<div class="meta">${confTag(p.confidence)}</div></div>`).join('')
+      : '<p class="err">data/club-ticket-phases.csv could not be loaded.</p>') + `</div>`,
     'No sales-window rows.');
 
   h += section('Rules', mine(rules), r =>
@@ -1070,7 +1153,175 @@ async function ticketsHtml(club){
 
   h += `<div class="sub">Hand-written in data/club-tickets.csv and the ticket files beside it,
     joined to this club by its Wikidata id. Nothing here is generated, and no sale date is.</div>`;
-  return h;
+  return {row, html: h, windows: windows || [], windowsErr: windows === null};
+}
+
+
+/* "Your notes": football-rules.json, which Alexandru writes and no tool
+   does. Its clubs carry no Wikidata id, so data/football-rules-links.csv
+   says which club on the map each entry is (tools/check_tickets.py reads
+   it back). A club with no line there has no notes here; nothing is
+   matched by name. */
+let RULES = null;
+
+async function notesFor(club){
+  if(!RULES) return {err: 'data/football-rules.json could not be loaded.'};
+  const links = await csvFile('data/football-rules-links.csv');
+  if(!links.ok) return {err: `data/football-rules-links.csv could not be loaded (${links.err}).`};
+  const byId = new Map((RULES.clubs || []).map(c => [c.id, c]));
+  const ids = [...new Set(links.v.filter(r => r.clubQid === club.id && byId.has(r.rulesId)).map(r => r.rulesId))];
+  return {entries: ids.map(id => ({id, entry: byId.get(id),
+    events: (RULES.ticketEvents || []).filter(e => e.club === id),
+    bucket: (RULES.bucketList || []).filter(b => (b.clubs || []).includes(id))}))};
+}
+
+const NOTE_LABEL = {ageRules: 'Age rules', minAgeToBuy: 'Min. age to buy', accountHolder: 'Account holder',
+  idAtGate: 'ID at the gate', standingRestriction: 'Standing restriction', memberStatus: 'Membership',
+  distanceKm: 'Distance (km)', distanceFromTimisoaraKm: 'Distance from Timișoara (km)',
+  demandNote: 'Demand', openQuestion: 'Open question', seasonTicket: 'Season ticket',
+  waitingPeriod: 'Waiting period', bigMatches: 'Big matches', walkUp: 'Walk-up', travelNote: 'Travel',
+  stadiumNote: 'Stadium'};
+const noteKey = k => NOTE_LABEL[k] ||
+  k.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().replace(/^./, c => c.toUpperCase());
+
+/* Every field of the entry as written, nested ones indented: nothing is
+   picked out, merged or tidied, so what the file says is what shows. */
+function noteRows(obj, top = true){
+  return Object.entries(obj).filter(([k]) => !(top && (k === 'id' || k === 'name'))).map(([k, v]) => {
+    if(v && typeof v === 'object' && !Array.isArray(v))
+      return `<div class="nest"><div class="nk">${esc(noteKey(k))}</div>${noteRows(v, false)}</div>`;
+    if(Array.isArray(v))
+      return `<div class="row"><span>${esc(noteKey(k))}</span><span>${v.length
+        ? v.map(x => esc(typeof x === 'object' ? JSON.stringify(x) : x)).join('<br>')
+        : '<span class="blank">not recorded</span>'}</span></div>`;
+    return field(noteKey(k), typeof v === 'boolean' ? (v ? 'yes' : 'no') : v);
+  }).join('');
+}
+
+/* A ticket event as football-rules.json writes it, the way the Ticket
+   info tab shows it. */
+function noteEvent(ev){
+  const when = ev.recurring === 'annual' ? ev.nextEstimate : (ev.date || ev.dateEstimate);
+  return `<div class="item"><b>${esc(ev.title || ev.id)}</b>` +
+    `<div class="sub">${when ? esc(when) : 'no date'}${ev.recurring ? ' · ' + esc(ev.recurring) : ''}` +
+      `${ev.status ? ' · ' + esc(ev.status) : ''}</div>` +
+    (ev.rule ? `<div>${esc(ev.rule)}</div>` : '') + (ev.action ? `<div>${esc(ev.action)}</div>` : '') +
+    (ev.derivation ? `<div class="sub">derived from: ${esc(ev.derivation)}</div>` : '') +
+    (ev.dependsOn ? `<div class="sub">depends on: ${esc(ev.dependsOn)}</div>` : '') +
+    `<div class="meta">${sourceTag(ev.dateSource)}${ev.warning ? `<span class="tag bad">${esc(ev.warning)}</span>` : ''}</div></div>`;
+}
+
+function noteBucket(b){
+  return `<div class="item"><b>${esc(b.title || b.id)}</b>` +
+    (b.status ? ` <span class="tag">${esc(b.status)}</span>` : '') +
+    (b.fixtures || []).map(f => `<div class="sub">${esc(f.date || 'no date')}` +
+      `${f.home ? ' · home: ' + esc(f.home) : ''}${f.saleRoute ? ' · ' + esc(f.saleRoute) : ''} ${sourceTag(f.dateSource)}</div>`).join('') +
+    (b.ticketRoute ? `<div class="sub">tickets: ${esc(b.ticketRoute)}</div>` : '') +
+    (b.ticketNote ? `<div class="sub">${esc(b.ticketNote)}</div>` : '') + `</div>`;
+}
+
+function notesHtml(notes){
+  return notes.entries.map(n =>
+    (notes.entries.length > 1 ? `<div class="nk">${esc(n.entry.name || n.id)}</div>` : '') +
+    noteRows(n.entry) +
+    (n.events.length ? `<details><summary>Ticket events <em>— ${n.events.length}</em></summary>` +
+      n.events.map(noteEvent).join('') + `</details>` : '') +
+    (n.bucket.length ? `<details><summary>On the bucket list <em>— ${n.bucket.length}</em></summary>` +
+      n.bucket.map(noteBucket).join('') + `</details>` : '')).join('') +
+    `<div class="sub">Hand-written in data/football-rules.json (entry ` +
+      `${esc(notes.entries.map(n => n.id).join(', '))}), linked to this club in data/football-rules-links.csv.</div>`;
+}
+
+/* ---- Next window: the soonest window ahead across BOTH sources.
+
+   football-rules.json events carry a date; a disputed one never counts.
+   A confirmed one is shown to the day. Anything else is shown to the
+   MONTH only, worded as an estimate - never a day, because a day is what
+   an inferred date cannot honestly give.
+
+   A club-ticket-windows.csv row carries loose text ("early to mid June")
+   and the cycle it is for ("2027-28"), never a date. To put it in order
+   with the others, the first month its text names is read in the cycle's
+   first year if it is May to December and in its second if it is January
+   to April - a pre-season window falls before the season, an in-season
+   one inside it. That placing is only for ordering: the line shows the
+   row's own words and says how it was placed. A row whose text names no
+   month ("about six weeks before each match") cannot be placed and is
+   named as not counted. */
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August',
+                     'September','October','November','December'];
+const MONTH_RE = new RegExp('\\b(' + MONTH_NAMES.join('|') + ')\\b');
+const monthText = ym => `${MONTH_NAMES[Number(ym.slice(5, 7)) - 1]} ${ym.slice(0, 4)}`;
+
+function windowCandidates(notes, res){
+  const today = new Date().toISOString().slice(0, 10), month = today.slice(0, 7);
+  const out = [], unplaced = [];
+  for(const n of notes.entries || []) for(const ev of n.events){
+    if(ev.dateSource === 'disputed') continue;
+    const when = ev.recurring === 'annual' ? ev.nextEstimate : (ev.date || ev.dateEstimate);
+    const name = ev.title || ev.id;
+    if(!when || !/^\d{4}-\d{2}/.test(when)){ unplaced.push(name); continue; }
+    if(ev.dateSource === 'confirmed' && /^\d{4}-\d{2}-\d{2}$/.test(when)){
+      if(when >= today) out.push({key: when, src: 'Your notes', name, dateSource: 'confirmed',
+        when: new Date(when + 'T12:00:00Z').toLocaleDateString('en-GB',
+          {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'})});
+    }else if(when.slice(0, 7) >= month){
+      out.push({key: when.slice(0, 7) + '-01', src: 'Your notes', name, dateSource: ev.dateSource,
+        when: `estimated: ${monthText(when)} - check whether it has been announced`});
+    }
+  }
+  for(const r of res.windows || []){
+    if(r.dateSource === 'disputed') continue;
+    const name = r.label || r.window;
+    const m = (r.opensEstimate || '').match(MONTH_RE), cyc = (r.estimateFor || '').match(/^(\d{4})-\d{2}$/);
+    if(!m || !cyc){ unplaced.push(name); continue; }
+    const mi = MONTH_NAMES.indexOf(m[1]) + 1;
+    const ym = `${Number(cyc[1]) + (mi >= 5 ? 0 : 1)}-${String(mi).padStart(2, '0')}`;
+    if(ym < month) continue;
+    out.push({key: ym + '-01', src: 'Researched rules', name, dateSource: r.dateSource,
+      when: `${r.dateSource === 'confirmed' ? '' : 'estimated: '}${r.opensEstimate} (for ${r.estimateFor})`,
+      placed: `read as ${monthText(ym)} to put it in order`});
+  }
+  out.sort((a, b) => a.key.localeCompare(b.key));
+  return {out, unplaced};
+}
+
+function nextWindowHtml(notes, res){
+  const {out, unplaced} = windowCandidates(notes, res);
+  const tag = s => s === 'confirmed' ? '<span class="tag ok">confirmed</span>'
+    : s === 'inferred' ? '<span class="tag warn">estimated</span>' : '<span class="tag bad">no date source</span>';
+  let h = `<div class="nextw" id="nextWindow"><div class="nl">Next window</div>`;
+  if(out.length){
+    const first = out[0].key.slice(0, 7);
+    /* Everything in the soonest month, since a month-level estimate
+       cannot be put before or after a day in the same month. */
+    h += out.filter(c => c.key.slice(0, 7) === first).map(c =>
+      `<div class="nw"><b>${esc(c.name)}</b> — ${esc(c.when)}` +
+      `<div class="meta">${tag(c.dateSource)}<span class="tag">${esc(c.src)}</span></div>` +
+      (c.placed ? `<div class="sub">${esc(c.placed)}.</div>` : '') + `</div>`).join('');
+  }else h += `<p class="unavail">No window ahead with a date or a month, in either source.</p>`;
+  if(unplaced.length) h += `<div class="sub">Not counted, because ${unplaced.length === 1 ? 'it names' : 'they name'} ` +
+    `no date or month (often tied to each match): ${esc(unplaced.join('; '))}.</div>`;
+  if(res.windowsErr) h += `<p class="err">data/club-ticket-windows.csv could not be loaded.</p>`;
+  return h + `</div>`;
+}
+
+async function ticketsHtml(club){
+  const [notes, res] = await Promise.all([notesFor(club), researchedFor(club)]);
+  const hasNotes = !!(notes.entries && notes.entries.length);
+  const errs = [notes.err, res.err].filter(Boolean).map(e => `<p class="err">${esc(e)}</p>`).join('');
+  if(!hasNotes && !res.row) return unavailable('Ticket info',
+    'data/club-tickets.csv has no row for this club, and no entry in football-rules.json is linked to it ' +
+    'in data/football-rules-links.csv. That is the ordinary state: only a few clubs have been researched.') + errs;
+  return nextWindowHtml(notes, res) +
+    `<h5 class="srch" id="tixNotes">Your notes <em>football-rules.json</em></h5>` +
+    (hasNotes ? notesHtml(notes) : notes.err ? errs
+      : `<p class="unavail">No entry in football-rules.json is linked to this club.</p>`) +
+    `<h5 class="srch" id="tixResearched">Researched rules <em>club-tickets files</em></h5>` +
+    (res.row ? res.html : res.err ? `<p class="err">${esc(res.err)}</p>`
+      : `<p class="unavail">${esc(res.why)} Only a few clubs have been researched.</p>`) +
+    (hasNotes && res.row ? `<div class="sub">The two are shown side by side and not reconciled: where they ` +
+      `disagree, each says what it says.</div>` : '');
 }
 
 (function wireSheet(){
@@ -2137,6 +2388,244 @@ async function openDerby(d, max){
   document.getElementById('routeChip').addEventListener('click', () => { panel.hidden = true; });
 })();
 
+/* ------------------------------------------------------ finding a club */
+
+/* Club names folded for matching: case, accents and punctuation set
+   aside, so "Timisoara" finds "Timișoara" and "munchen" finds "München".
+   NFD splits most accented letters from their mark; the few it cannot
+   split are mapped by hand. Only clubs on the map (CLUBS) are searched. */
+const FOLD_EXTRA = {'ß':'ss', 'ø':'o', 'đ':'d', 'ł':'l', 'æ':'ae', 'œ':'oe', 'ı':'i', 'þ':'th', 'ð':'d'};
+function fold(s){
+  return String(s ?? '').toLowerCase().normalize('NFD').replace(/\p{M}/gu, '')
+    .replace(/[ßøđłæœıþð]/g, c => FOLD_EXTRA[c]).replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+}
+
+const COUNTRY_NAME = {AT:'Austria', BE:'Belgium', CH:'Switzerland', DE:'Germany', ES:'Spain',
+  FR:'France', GB:'England and Wales', GR:'Greece', IT:'Italy', NL:'Netherlands', RO:'Romania',
+  RS:'Serbia'};
+const countryName = cc => COUNTRY_NAME[cc] || cc || 'country not recorded';
+
+/* The competition as the club file records it. A club whose file records
+   none is "league not recorded (tier N)" and is never given a name here. */
+const competitionLabel = c => c.competition || `league not recorded (tier ${c.tier})`;
+
+/* Every word typed must be in the name. A name that starts with what was
+   typed comes first, then one where a word does, then the rest; within
+   each, the senior tier first. */
+function searchClubs(q, limit = 8){
+  const f = fold(q);
+  if(!f) return {total: 0, list: []};
+  const words = f.split(' ');
+  const hits = [];
+  for(const c of CLUBS){
+    const n = c._fold ??= fold(c.name || c.id);
+    if(!words.every(w => n.includes(w))) continue;
+    const at = n.indexOf(f);
+    const rank = at === 0 ? 0 : at > 0 && n[at - 1] === ' ' ? 1 : at > 0 ? 2 : 3;
+    hits.push({c, rank});
+  }
+  hits.sort((a, b) => a.rank - b.rank || a.c.tier - b.c.tier ||
+    String(a.c.name || a.c.id).localeCompare(String(b.c.name || b.c.id)));
+  return {total: hits.length, list: hits.slice(0, limit).map(h => h.c)};
+}
+
+/* Fly to a club at a zoom where it is drawn, then open its sheet. Clubs
+   on the same ground come along as the sheet's "also at this ground". */
+function goToClub(club){
+  const zoom = Math.max(zoomForTier(club.tier) ?? DEEP_TIER_ZOOM, 10);
+  let done = false;
+  const open = () => {
+    if(done) return;
+    done = true;
+    const mates = CLUBS.filter(c => c.lat === club.lat && c.lon === club.lon &&
+                                    zoomForTier(c.tier) <= MAP.getZoom());
+    openSheet(club, mates.length > 1 ? mates : undefined);
+  };
+  if(MAP.getZoom() === zoom && MAP.getCenter().distanceTo([club.lat, club.lon]) < 5) return open();
+  MAP.once('moveend', open);
+  setTimeout(open, 2500);                 // in case the map never reports the end of the move
+  MAP.flyTo([club.lat, club.lon], zoom, {duration: 0.8});
+}
+
+let SEARCH_HITS = [], SEARCH_ON = -1;
+
+function renderSearch(){
+  const input = document.getElementById('searchInput'), box = document.getElementById('searchHits');
+  const q = input.value;
+  if(!fold(q)){ box.hidden = true; SEARCH_HITS = []; SEARCH_ON = -1; return; }
+  const r = searchClubs(q);
+  SEARCH_HITS = r.list; SEARCH_ON = r.list.length ? 0 : -1;
+  box.innerHTML = r.list.length
+    ? r.list.map((c, i) => `<button type="button" role="option" data-i="${i}"${i === 0 ? ' class="on"' : ''}>` +
+        `<i style="background:${TIER_COLOUR[c.tier] || '#888'}"></i><span class="sn">${esc(c.name || c.id)}` +
+        `<span class="rd">${esc(countryName(c.country))} · ${esc(competitionLabel(c))}</span></span></button>`).join('') +
+      (r.total > r.list.length ? `<div class="none">${r.total - r.list.length} more match. Type more of the name.</div>` : '')
+    : `<div class="none">No club on the map matches “${esc(q.trim())}”.</div>`;
+  box.hidden = false;
+}
+
+function pickSearch(i){
+  const club = SEARCH_HITS[i];
+  if(!club) return;
+  const input = document.getElementById('searchInput');
+  input.value = club.name || club.id;
+  document.getElementById('searchHits').hidden = true;
+  input.blur();                                         // closes the phone's keyboard
+  goToClub(club);
+}
+
+(function wireSearch(){
+  const input = document.getElementById('searchInput'), box = document.getElementById('searchHits');
+  /* The list is capped by the height the user can actually see, which the
+     keyboard shrinks. */
+  const vv = () => document.documentElement.style.setProperty('--vvh',
+    Math.round(window.visualViewport ? visualViewport.height : innerHeight) + 'px');
+  vv();
+  window.visualViewport?.addEventListener('resize', vv);
+  addEventListener('resize', vv);
+
+  input.addEventListener('input', renderSearch);
+  input.addEventListener('focus', () => { if(fold(input.value)) renderSearch(); });
+  input.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+      if(!SEARCH_HITS.length) return;
+      e.preventDefault();
+      SEARCH_ON = (SEARCH_ON + (e.key === 'ArrowDown' ? 1 : -1) + SEARCH_HITS.length) % SEARCH_HITS.length;
+      box.querySelectorAll('button').forEach((b, i) => b.classList.toggle('on', i === SEARCH_ON));
+    }else if(e.key === 'Enter'){
+      e.preventDefault();
+      if(box.hidden) renderSearch();
+      if(SEARCH_HITS.length) pickSearch(Math.max(0, SEARCH_ON));
+    }else if(e.key === 'Escape'){
+      box.hidden = true; input.blur();
+    }
+  });
+  /* Keep the input focused while a suggestion is pressed, so the tap is
+     not lost to the keyboard closing under it. */
+  box.addEventListener('mousedown', e => e.preventDefault());
+  box.addEventListener('click', e => {
+    const b = e.target.closest('button[data-i]');
+    if(b) pickSearch(Number(b.dataset.i));
+  });
+  document.addEventListener('pointerdown', e => {
+    if(!document.getElementById('searchBox').contains(e.target)) box.hidden = true;
+  });
+})();
+
+/* ---------------------------------------------------- coverage panel */
+
+/* What the map holds, counted from the club files as loaded, never from
+   a list written here. A league is a competition name the club data
+   records (the club file's "competition" field, which the club sheet's
+   own rule agrees with). Clubs with none are grouped by tier under
+   "league not recorded" and are not counted as leagues. */
+const COV = {tier: '', country: '', league: null};
+
+function coverage(){
+  const groups = new Map();
+  for(const c of CLUBS){
+    const key = [c.country, c.tier, c.competition || ''].join('\u0001');
+    if(!groups.has(key)) groups.set(key, {country: c.country, tier: c.tier,
+      name: competitionLabel(c), recorded: !!c.competition, clubs: []});
+    groups.get(key).clubs.push(c);
+  }
+  const list = [...groups.values()];
+  const tiers = [...new Set(CLUBS.map(c => c.tier))].sort((a, b) => a - b).map(t => ({tier: t,
+    clubs: CLUBS.filter(c => c.tier === t).length,
+    leagues: list.filter(g => g.tier === t && g.recorded).length,
+    unrecorded: list.filter(g => g.tier === t && !g.recorded).reduce((n, g) => n + g.clubs.length, 0)}));
+  return {groups: list, tiers, leagues: list.filter(g => g.recorded).length,
+    countries: [...new Set(CLUBS.map(c => c.country))].sort((a, b) => countryName(a).localeCompare(countryName(b)))};
+}
+
+function renderCoverage(){
+  const body = document.getElementById('covBody');
+  document.getElementById('covTitle').textContent = 'Clubs and leagues on the map';
+  COV.league = null;
+  if(!CLUBS.length){ body.innerHTML = '<p class="unavail">No club files loaded, so there is nothing to count.</p>'; return; }
+  const C = coverage();
+  const unrec = C.tiers.reduce((n, t) => n + t.unrecorded, 0);
+  const opt = (v, txt, on) => `<option value="${esc(v)}"${on ? ' selected' : ''}>${esc(txt)}</option>`;
+  body.innerHTML =
+    `<div class="covtot"><div><b id="covClubs">${CLUBS.length}</b><span>clubs</span></div>` +
+      `<div><b id="covLeagues">${C.leagues}</b><span>leagues</span></div></div>` +
+    `<table class="covtiers">` + C.tiers.map(t => `<tr data-tier="${t.tier}">` +
+      `<td><i style="background:${TIER_COLOUR[t.tier] || '#888'}"></i>${esc(TIER_NAME[t.tier] || 'Tier ' + t.tier)}</td>` +
+      `<td>${t.clubs} club${t.clubs === 1 ? '' : 's'}</td>` +
+      `<td>${t.leagues ? `${t.leagues} league${t.leagues === 1 ? '' : 's'}` : 'no league recorded'}` +
+      `${t.leagues && t.unrecorded ? ` + ${t.unrecorded} club${t.unrecorded === 1 ? '' : 's'} with none` : ''}</td></tr>`).join('') + `</table>` +
+    `<div class="sub">Counted from the club files on the map. A league is a competition the club data names` +
+      (unrec ? `; ${unrec} club${unrec === 1 ? ' has' : 's have'} none recorded and ${unrec === 1 ? 'is' : 'are'} listed as ` +
+        `"league not recorded", not counted as a league.` : '.') + `</div>` +
+    `<div class="covf"><select id="covTier" aria-label="Tier">${opt('', 'All tiers', !COV.tier)}` +
+      C.tiers.map(t => opt(t.tier, TIER_NAME[t.tier] || 'Tier ' + t.tier, String(t.tier) === COV.tier)).join('') + `</select>` +
+      `<select id="covCountry" aria-label="Country">${opt('', 'All countries', !COV.country)}` +
+      C.countries.map(cc => opt(cc, countryName(cc), cc === COV.country)).join('') + `</select></div>` +
+    `<div id="covList"></div>`;
+  body.querySelector('#covTier').addEventListener('change', e => { COV.tier = e.target.value; renderCovList(C); });
+  body.querySelector('#covCountry').addEventListener('change', e => { COV.country = e.target.value; renderCovList(C); });
+  renderCovList(C);
+}
+
+function renderCovList(C){
+  const shown = C.groups.filter(g => (!COV.tier || String(g.tier) === COV.tier) &&
+                                    (!COV.country || g.country === COV.country));
+  const box = document.getElementById('covList');
+  if(!shown.length){ box.innerHTML = '<p class="unavail">No league on the map for this tier and country.</p>'; return; }
+  const order = (a, b) => a.tier - b.tier || (b.recorded - a.recorded) || a.name.localeCompare(b.name);
+  let html = '';
+  const items = [];
+  for(const cc of C.countries){
+    const here = shown.filter(g => g.country === cc).sort(order);
+    if(!here.length) continue;
+    const n = here.reduce((s, g) => s + g.clubs.length, 0);
+    const lg = here.filter(g => g.recorded).length;
+    html += `<div class="covc">${esc(countryName(cc))} · ${n} club${n === 1 ? '' : 's'} · ${lg} league${lg === 1 ? '' : 's'}</div>`;
+    for(const g of here){
+      html += `<button class="rclub covl${g.recorded ? '' : ' nolg'}" data-i="${items.length}">` +
+        `<i style="background:${TIER_COLOUR[g.tier] || '#888'}"></i><span class="rn">${esc(g.name)}` +
+        `<span class="rd">${esc(TIER_NAME[g.tier] || 'Tier ' + g.tier)}</span></span>` +
+        `<em>${g.clubs.length} club${g.clubs.length === 1 ? '' : 's'}</em></button>`;
+      items.push(g);
+    }
+  }
+  box.innerHTML = html;
+  box.querySelectorAll('.covl').forEach(b => b.addEventListener('click', () => openCovLeague(items[Number(b.dataset.i)])));
+}
+
+function openCovLeague(g){
+  COV.league = g;
+  const body = document.getElementById('covBody');
+  document.getElementById('covTitle').textContent = g.name;
+  const clubs = g.clubs.slice().sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id)));
+  body.innerHTML = `<button class="b dback" id="covBack">‹ All leagues</button>` +
+    `<div class="sub">${esc(countryName(g.country))} · ${esc(TIER_NAME[g.tier] || 'Tier ' + g.tier)} · ` +
+      `${clubs.length} club${clubs.length === 1 ? '' : 's'} on the map</div>` +
+    (g.recorded ? '' : `<p class="unavail">The club files record no competition for these clubs, so none is named here.</p>`) +
+    `<div id="covClubsList">` + clubs.map((c, i) => `<button class="rclub" data-i="${i}">` +
+      `<i style="background:${TIER_COLOUR[c.tier] || '#888'}"></i><span class="rn">${esc(c.name || c.id)}` +
+      `<span class="rd">${c.venue ? esc(c.venue) : 'ground not recorded'}</span></span></button>`).join('') + `</div>`;
+  body.querySelector('#covBack').addEventListener('click', renderCoverage);
+  body.querySelectorAll('#covClubsList .rclub').forEach(b => b.addEventListener('click', () => goToClub(clubs[Number(b.dataset.i)])));
+  body.scrollTop = 0;
+}
+
+(function wireCoverage(){
+  const panel = document.getElementById('coveragePanel');
+  document.getElementById('zoomChip').addEventListener('click', () => {
+    if(PICKING) endPick();
+    closeSheet();
+    document.getElementById('routePanel').hidden = true;
+    document.getElementById('derbyPanel').hidden = true;
+    panel.hidden = !panel.hidden;
+    if(!panel.hidden && !COV.league) renderCoverage();
+  });
+  document.getElementById('covClose').addEventListener('click', () => { panel.hidden = true; });
+  /* One layer for the three panels: opening another closes this one. */
+  for(const id of ['routeChip', 'derbyChip'])
+    document.getElementById(id).addEventListener('click', () => { panel.hidden = true; });
+})();
+
 /* ------------------------------------------------------- bucket list */
 
 function bucketCard(item){
@@ -2275,6 +2764,7 @@ if('serviceWorker' in navigator){
       document.getElementById('bucketBody').innerHTML;
   }
 
+  RULES = rules;
   if(rules && rules.settings){
     MULTIPLIER = rules.settings.estimateMultiplier ?? 1.25;
     const h = rules.settings.home || {};

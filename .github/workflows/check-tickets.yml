@@ -11,6 +11,10 @@ name: Check ticket files
 #   data/club-ticket-demand.csv
 #   data/ticket-sources.csv
 #   data/country-ticket-rules.csv
+#   data/football-rules-links.csv   (since 2026-10-03: which club on the
+#                                    map each football-rules.json club
+#                                    entry is; football-rules.json is
+#                                    read, never written)
 #
 # It never writes to them, so there is nothing to commit. It exists so a
 # typo in a vocabulary column - "inferrred", "face_value" - is caught
@@ -38,6 +42,8 @@ on:
       - "data/club-ticket-demand.csv"
       - "data/ticket-sources.csv"
       - "data/country-ticket-rules.csv"
+      - "data/football-rules-links.csv"
+      - "data/football-rules.json"
       - "tools/check_tickets.py"
       - ".github/workflows/check-tickets.yml"
   pull_request:
@@ -50,6 +56,8 @@ on:
       - "data/club-ticket-demand.csv"
       - "data/ticket-sources.csv"
       - "data/country-ticket-rules.csv"
+      - "data/football-rules-links.csv"
+      - "data/football-rules.json"
       - "tools/check_tickets.py"
   workflow_dispatch:
 
