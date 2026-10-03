@@ -179,6 +179,13 @@
   .rclub .rd{display:block;color:var(--faint);font-size:12px}
   .rclub .meta{margin-top:4px}
   .rclub .notime{color:var(--faint)}
+  /* Derbies panel: the route panel's shape and layer. */
+  .dclubs{display:flex;flex-direction:column;gap:7px;margin-top:6px}
+  .dclub{border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+  .dclub b{font-weight:600}
+  .dclub .rd{display:block;color:var(--faint);font-size:12px}
+  .dclub button{margin-top:6px}
+  .dback{margin-top:8px}
   .pickbar[hidden]{display:none}
   .pickbar button{background:#1b2230;border:1px solid var(--line);border-radius:7px;
     color:var(--ink);font:inherit;font-size:13px;padding:5px 10px;cursor:pointer}
@@ -216,6 +223,7 @@
         <div class="chip" id="zoomChip">…</div>
         <div class="chip" id="homeChip">home not set</div>
         <button class="chip btn" id="routeChip" style="margin-left:auto">Route</button>
+        <button class="chip btn" id="derbyChip">Derbies</button>
       </div>
       <div class="legend" id="legend"></div>
       <div class="sheet" id="sheet" hidden role="dialog" aria-label="Club details">
@@ -246,6 +254,11 @@
             found costs 20 more. Tapping the map or using home costs nothing.</div>
           <div id="routeOut"></div>
         </div>
+      </div>
+      <div class="sheet route" id="derbyPanel" hidden role="dialog" aria-label="Derbies">
+        <div class="shead"><h3 id="derbyTitle">Derbies near home</h3>
+          <button class="x" id="derbyClose" aria-label="Close">Close</button></div>
+        <div class="sbody" id="derbyBody"></div>
       </div>
       <div class="pickbar" id="pickBar" hidden><span id="pickText">Tap the map</span>
         <button id="pickCancel">Cancel</button></div>
@@ -1405,6 +1418,223 @@ function clearRoute(){
       if(HOME) setEnd(which, HOME.lat, HOME.lon, HOME.label + ' (home)');
     });
   });
+})();
+
+/* ----------------------------------------------------------- derbies */
+
+/* Derbies near home. data/derbies.csv is hand-written, one row per derby,
+   each with a source that names the rivalry; tools/check_derbies.py reads
+   it back. Nothing here adds a derby or guesses one.
+
+   A derby is listed only when BOTH clubs are on the map. A row whose club
+   is not on the map yet (the offMap column) stays in the file and is
+   counted at the foot of the list, never drawn.
+
+   Distance is home to the NEARER of the two grounds, as the club sheet
+   measures it: straight line times the settings multiplier, a road
+   estimate and not a drive. Both grounds are shown.
+
+   The next meeting comes from the fixture files through
+   data/clubs/fixture-links.json, the same join the club sheet uses:
+   a match counts only when both teams are the two clubs' linked ids in
+   one source. Nothing is matched by name. */
+
+const DERBY_KINDS = {city: 'city derby', regional: 'regional derby', historic: 'historic rivalry'};
+let DERBY_OPEN = null;     // the derby whose detail is showing, or null for the list
+let DERBY_MAX = 100;       // km, the slider's value; 100 by default
+
+/* Same rule as tools/check_derbies.py: two clubs share a division when
+   they are in one country at one tier and that tier is one league, or
+   their own league tags name the same one. */
+function sameDivision(a, b, tiers){
+  if(a.country !== b.country) return {v: 'different', why: `${a.country} and ${b.country} pyramids`};
+  if(a.tier !== b.tier) return {v: 'different', why: `tier ${a.tier} and tier ${b.tier}`};
+  const name = c => {
+    const at = tiers.filter(t => t.country === c.country && String(t.tier) === String(c.tier));
+    const own = at.filter(t => (c.leagues || []).includes(t.leagueQid));
+    return own.length === 1 ? own[0].label : at.length === 1 ? at[0].label : null;
+  };
+  const la = name(a), lb = name(b);
+  if(la && lb) return la === lb ? {v: 'same', why: la} : {v: 'different', why: `${la} and ${lb}`};
+  return {v: 'unknown', why: `both tier ${a.tier} in ${a.country}; nothing here says whether it is one division`};
+}
+
+async function loadDerbies(){
+  const f = await csvFile('data/derbies.csv');
+  if(!f.ok) return {err: f.err};
+  const byId = new Map(CLUBS.map(c => [c.id, c]));
+  const shown = [], offMap = [], malformed = [];
+  const isQ = q => /^Q[1-9]\d*$/.test(q);
+  for(const r of f.v){
+    /* The checker rejects these; the page skips them rather than drawing
+       a derby with no source or no club. */
+    if(!r.name || !isQ(r.clubA) || !isQ(r.clubB) || !/^https?:\/\//.test(r.source || '')){
+      malformed.push(r.name || '(no name)'); continue;
+    }
+    const a = byId.get(r.clubA), b = byId.get(r.clubB);
+    if(!a || !b){ offMap.push(r); continue; }
+    shown.push({row: r, a, b});
+  }
+  return {shown, offMap, malformed};
+}
+
+function derbyDistances(d){
+  const ka = roadEstimate(d.a.lat, d.a.lon), kb = roadEstimate(d.b.lat, d.b.lon);
+  return {ka, kb, near: Math.min(ka, kb)};
+}
+
+async function renderDerbies(){
+  const body = document.getElementById('derbyBody');
+  document.getElementById('derbyTitle').textContent = 'Derbies near home';
+  DERBY_OPEN = null;
+  const [D, tiers] = await Promise.all([loadDerbies(), csvFile('data/league-tiers.csv')]);
+  if(D.err){
+    body.innerHTML = `<p class="err">data/derbies.csv could not be loaded (${esc(D.err)}).</p>`;
+    return;
+  }
+  const max = DERBY_MAX;
+  const list = D.shown.map(d => ({...d, ...derbyDistances(d),
+      div: tiers.ok ? sameDivision(d.a, d.b, tiers.v) : {v: 'unknown', why: 'data/league-tiers.csv not loaded'}}))
+    .sort((x, y) => x.near - y.near);
+  const near = list.filter(d => d.near <= max);
+
+  body.innerHTML =
+    `<div class="ctl"><span>Within</span><input type="range" id="derbyKm" min="10" max="1500" step="10" value="${max}">` +
+      `<b id="derbyKmTxt">${max} km</b><span>of ${esc(HOME.label)}</span></div>` +
+    `<h4>${near.length} derb${near.length === 1 ? 'y' : 'ies'} within ${max} km</h4>` +
+    (near.length ? near.map((d, i) => {
+      const nearA = d.ka <= d.kb;
+      const kind = DERBY_KINDS[d.row.kind] || d.row.kind;
+      let tags = `<span class="tag">${esc(kind)}</span><span class="tag">${esc(d.a.country === d.b.country ? d.a.country : d.a.country + '/' + d.b.country)}</span>`;
+      if(d.div.v === 'different') tags += '<span class="tag warn">different divisions: cup only</span>';
+      return `<button class="rclub" data-i="${i}"><i style="background:${TIER_COLOUR[Math.min(d.a.tier, d.b.tier)] || '#888'}"></i>` +
+        `<span class="rn">${esc(d.row.name)}` +
+        `<span class="rd">${esc(d.a.name)} v ${esc(d.b.name)}</span>` +
+        `<span class="rd">≈ ${d.near} km to ${esc((nearA ? d.a : d.b).venue || (nearA ? d.a : d.b).name)}` +
+        ` · ≈ ${nearA ? d.kb : d.ka} km to ${esc((nearA ? d.b : d.a).venue || (nearA ? d.b : d.a).name)}</span>` +
+        `<span class="meta">${tags}</span></span></button>`;
+    }).join('') : '<p class="unavail">No derby with both clubs on the map is that close. Move the slider.</p>') +
+    `<div class="sub">${list.length} derb${list.length === 1 ? 'y has' : 'ies have'} both clubs on the map; ` +
+      `${list.length - near.length} are further than ${max} km.` +
+      (D.offMap.length ? ` ${D.offMap.length} more in data/derbies.csv wait for a club that is not on the map yet` +
+        ` (${esc(D.offMap.map(r => r.name).join(', '))}).` : '') + `</div>` +
+    (D.malformed.length ? `<p class="err">${D.malformed.length} row(s) in data/derbies.csv skipped as incomplete: ` +
+      `${esc(D.malformed.join(', '))}. tools/check_derbies.py says why.</p>` : '') +
+    `<div class="sub">Distance is a road estimate (straight line × ${MULTIPLIER}) from home to the nearer ground, ` +
+      `not a drive. Every derby here is hand-written with a source that names it.</div>`;
+
+  const slider = body.querySelector('#derbyKm');
+  slider.addEventListener('input', () => { body.querySelector('#derbyKmTxt').textContent = slider.value + ' km'; });
+  slider.addEventListener('change', () => { DERBY_MAX = Number(slider.value); renderDerbies(); });
+  body.querySelectorAll('.rclub').forEach(b => b.addEventListener('click', () =>
+    openDerby(near[Number(b.dataset.i)], max)));
+}
+
+/* Every match in the fixture files between the two clubs' linked teams. */
+async function derbyMeetings(d){
+  const links = await jsonFile('data/clubs/fixture-links.json');
+  if(!links.ok) return {state: 'error', err: links.err};
+  const ea = links.v.clubs?.[d.a.id], eb = links.v.clubs?.[d.b.id];
+  const missing = [!ea && d.a, !eb && d.b].filter(Boolean);
+  if(missing.length) return {state: 'nosource', missing};
+  const pairs = [];
+  for(const la of ea.links) for(const lb of eb.links)
+    if(la.source === lb.source) pairs.push([la, lb]);
+  if(!pairs.length) return {state: 'nocommon', ea, eb};
+  const found = [], seen = new Set(), failed = [];
+  for(const [la, lb] of pairs){
+    const comps = new Map();
+    for(const c of la.competitions.concat(lb.competitions)) comps.set(c.file, c);
+    for(const comp of comps.values()){
+      const f = await jsonFile(comp.file);
+      if(!f.ok){ failed.push(comp.label); continue; }
+      dayInfo(f.v);                                   // marks provisional OpenLigaDB rounds
+      for(const m of f.v.matches || []){
+        const ids = [String(m.home?.id), String(m.away?.id)];
+        if(!(ids.includes(la.teamId) && ids.includes(lb.teamId))) continue;
+        const key = la.source + ':' + m.id;
+        if(seen.has(key)) continue;
+        seen.add(key);
+        found.push(Object.assign({_comp: comp.label}, m));
+      }
+    }
+  }
+  const now = Date.now() - 3*3600e3;
+  const time = m => m.utcDate ? new Date(m.utcDate).getTime() : Infinity;
+  const ahead = found.filter(m => !isFinished(m) && fxEnd(m) >= now).sort((x, y) => time(x) - time(y));
+  const past = found.filter(m => isFinished(m) || fxEnd(m) < now).sort((x, y) => time(y) - time(x));
+  return {state: 'ok', ahead, past, failed};
+}
+
+function meetingRow(m){
+  const score = isFinished(m) && m.homeGoals != null ? ` <span class="res">${m.homeGoals}–${m.awayGoals}</span>` : '';
+  const odd = m.status && !['SCHEDULED','TIMED','FINISHED'].includes(m.status)
+    ? ` <span class="tag warn">${esc(m.status.toLowerCase())}</span>` : '';
+  const prov = m._provisional && !timeNotSet(m) ? ' <span class="notime">(day and time may be provisional)</span>' : '';
+  return `<div class="fx"><span class="when">${fxWhen(m)}</span>` +
+    `<span class="who">${esc(m.home?.name || 'home not set')} v ${esc(m.away?.name || 'away not set')}${odd}${prov}` +
+    `<span class="comp">${esc(m._comp)}</span></span>${score}</div>`;
+}
+
+async function openDerby(d, max){
+  DERBY_OPEN = d.row;
+  const body = document.getElementById('derbyBody');
+  document.getElementById('derbyTitle').textContent = d.row.name;
+  const club = (c, k) => `<div class="dclub"><b>${esc(c.name)}</b>` +
+    `<span class="rd">${esc(TIER_NAME[c.tier] || 'tier ' + c.tier)} · ${esc(c.country)}</span>` +
+    `<span class="rd">${c.venue ? esc(c.venue) : '<span class="blank">ground not recorded</span>'} · ≈ ${k} km from home</span>` +
+    `<button class="b" data-id="${esc(c.id)}">Open club sheet</button></div>`;
+  const urls = d.row.source.split(';').map(u => u.trim()).filter(Boolean);
+  body.innerHTML =
+    `<button class="b dback" id="derbyBack">‹ All derbies</button>` +
+    `<div class="meta"><span class="tag">${esc(DERBY_KINDS[d.row.kind] || d.row.kind)}</span>` +
+      (d.div.v === 'different' ? '<span class="tag warn">different divisions: cup only</span>' : '') + `</div>` +
+    `<div class="dclubs">${club(d.a, d.ka)}${club(d.b, d.kb)}</div>` +
+    `<h4>Next meeting</h4><div id="derbyNext"><p class="unavail">Loading…</p></div>` +
+    (d.div.v === 'different' ? `<p class="unavail"><b>Probably not played this season.</b> The two clubs are in different ` +
+      `divisions (${esc(d.div.why)}), so they can only meet in a cup.</p>` :
+     d.div.v === 'unknown' ? `<div class="sub">Division: ${esc(d.div.why)}.</div>` : '') +
+    (d.row.note ? `<h4>Note</h4><div class="sub" style="font-size:13px;color:var(--dim)">${esc(d.row.note)}</div>` : '') +
+    `<h4>Source</h4>` + urls.map(u => `<div class="sub"><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></div>`).join('');
+
+  body.querySelector('#derbyBack').addEventListener('click', renderDerbies);
+  body.querySelectorAll('.dclub button').forEach(b => b.addEventListener('click', () =>
+    openSheet(CLUBS.find(c => c.id === b.dataset.id))));
+  body.scrollTop = 0;
+
+  const r = await derbyMeetings(d);
+  if(DERBY_OPEN !== d.row) return;
+  const box = document.getElementById('derbyNext');
+  if(r.state === 'error') box.innerHTML = `<p class="err">data/clubs/fixture-links.json could not be loaded (${esc(r.err)}).</p>`;
+  else if(r.state === 'nosource') box.innerHTML = r.missing.map(c =>
+    unavailable('Fixtures', `${esc(c.name)} has no fixture source, so nothing here can show when the two meet.`)).join('');
+  else if(r.state === 'nocommon') box.innerHTML = unavailable('Next meeting',
+    `${esc(d.a.name)} and ${esc(d.b.name)} are linked to different fixture sources ` +
+    `(${esc(r.ea.links.map(l => l.source).join(', '))} against ${esc(r.eb.links.map(l => l.source).join(', '))}), ` +
+    `so no file holds a match between the two.`);
+  else{
+    let h = r.ahead.length ? meetingRow(r.ahead[0]) +
+        (r.ahead.length > 1 ? `<details><summary>Later <em>— ${r.ahead.length - 1}</em></summary>${r.ahead.slice(1).map(meetingRow).join('')}</details>` : '')
+      : '<p class="unavail">No meeting in the fixture data.</p>';
+    if(r.past.length) h += `<details><summary>Played <em>— ${r.past.length}</em></summary>${r.past.slice(0, 5).map(meetingRow).join('')}</details>`;
+    if(r.failed.length) h += `<p class="err">Could not load: ${esc(r.failed.join(', '))}.</p>`;
+    h += `<div class="sub">Times are German time. From the fixture files via data/clubs/fixture-links.json.</div>`;
+    box.innerHTML = h;
+  }
+}
+
+(function wireDerbies(){
+  const panel = document.getElementById('derbyPanel');
+  document.getElementById('derbyChip').addEventListener('click', () => {
+    if(PICKING) endPick();
+    closeSheet();
+    document.getElementById('routePanel').hidden = true;
+    panel.hidden = !panel.hidden;
+    if(!panel.hidden && !DERBY_OPEN) renderDerbies();
+  });
+  document.getElementById('derbyClose').addEventListener('click', () => { panel.hidden = true; });
+  /* The two panels share one layer, so opening the route closes this. */
+  document.getElementById('routeChip').addEventListener('click', () => { panel.hidden = true; });
 })();
 
 /* ------------------------------------------------------- bucket list */

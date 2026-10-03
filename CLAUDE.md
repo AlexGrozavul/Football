@@ -275,6 +275,18 @@ a subscribed calendar reads as a schedule regardless of its description.
   a club that has since been placed is named in the summary as inert.
   Applying a proposal is still a `clubs-manual.csv` row; this file never
   places anything.
+- `data/derbies.csv` — added 2026-10-03. **One row per derby**: `name`,
+  `clubA`, `clubB` (Q-ids), `kind` (`city`, `regional`, `historic`),
+  `source` (a URL that NAMES the rivalry), and optionally `clubAName`,
+  `clubBName`, `offMap`, `rulesId`, `note`. Header-driven. Read by the
+  Derbies panel and `tools/check_derbies.py`; nothing writes to it. A
+  Q-id that is in no club file is rejected as a probable typo **unless**
+  `offMap` names that side and says why (`B: League One; GB tracks
+  tiers 1-2`) - Alexandru's decision of 2026-10-03, so a derby whose
+  club is off the map waits in the file instead of being lost.
+  `rulesId` is a hand-written join to a `football-rules.json` bucketList
+  id, so the two files can be compared without matching names. How each
+  row was sourced is the Conventions entry on derbies.
 
 ### Generated — safe to overwrite
 
@@ -318,6 +330,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   every club within an adjustable distance of it (default 25 km) listed
   in route order, each tappable to its sheet, with an optional "home
   match on" date filter. See the Conventions entry on routes.
+  Since 2026-10-03 a **Derbies** chip beside it opens the **derbies
+  panel**: every derby in `data/derbies.csv` with both clubs on the map,
+  within an adjustable distance of home (default 100 km), nearest
+  first; tapping one shows both clubs, opens either sheet, and the next
+  meeting from the fixture files. See the Conventions entry on derbies.
 - `manifest.webmanifest`, `sw.js`, `icons/`, `vendor/leaflet-1.9.4/` —
   the **installable app** (built 2026-10-02): the manifest Chrome reads
   to offer "Install app", the service worker that lets the installed app
@@ -329,6 +346,22 @@ a subscribed calendar reads as a schedule regardless of its description.
   at phone width: Chrome's own installability errors, a second load
   offline, fresh data after a data change, a new deploy replacing the
   shell. Run by hand (instructions at its top); **no workflow runs it.**
+- `tools/check_derbies.py` — read-back and checks for `data/derbies.csv`,
+  in the style of `check_tickets.py`: prints every row as understood,
+  rejects by line (no source, not a Q-id, a Q-id on no map without
+  `offMap`, a pair entered twice, an unquoted comma), reports and keeps
+  the rest (an unknown `kind`, a stale `offMap`, a derby in which neither
+  club is tier 1-2, a pair in different divisions, a club with no
+  fixture source), cross-checks `football-rules.json` through `rulesId`,
+  and prints the per-country counts. Exits 1 on a rejected row. Run by
+  `check-derbies.yml` on a push to `main` touching the file, the club
+  layer or the tool, and on a pull request touching the file.
+- `tools/test_derbies.js` — headless Chromium test of the derbies panel
+  at 390x844: the default 100 km list, nearest first, every row in the
+  file accounted for, the slider, every derby's detail giving one of the
+  four honest answers, a sheet opening above the panel, no sideways
+  scroll, no script error. Run by hand; **no workflow runs it**, the same
+  gap as `test_pwa.js`.
 - `tools/link_fixtures.py` — joins fixture-source teams to map clubs
   and writes `fixture-links.json` and `fixture-link-review.csv`. Reads
   committed files only, no network. Run by `link-fixtures.yml` after
@@ -1228,6 +1261,63 @@ line, straight**, not a drive, and the list says so.
   to any origin. Like every UI change before it, this has no automated
   check (see Known open problems).
 
+**Derbies: every row names its source, and the source names the
+derby.** Built 2026-10-03, on Alexandru's instruction, for the twelve
+countries on the map. Rule 2 applied to rivalries: a derby a person
+"knows" but nothing read names is not written.
+- **What counts as a source, decided before any row was written.**
+  (a) The derby's **own Wikipedia article** (English, or German where
+  English has none), whose opening paragraph or infobox names both clubs
+  - checked on a runner by resolving the article's links to Q-ids, not
+  by reading the title. (b) An entry in one of Wikipedia's rivalry
+  **lists** that gives the derby a **name**, names **both clubs**, and
+  carries **its own citation**; the row's note names the cited
+  publisher. An unnamed list line ("OFK Belgrade vs Red Star"), an
+  uncited one, a table row whose first club is only implied by a merged
+  cell, and an overview article ("London derbies", "Basque football
+  derbies") were **not used**. Where both exist, the article is the
+  source. A club-article sentence was used once, for the Südwestderby,
+  and its note says why.
+- **Where the rows came from.** Three throwaway probes on a runner
+  (removed in the same branch): Wikipedia's list of European club
+  rivalries (Austria, Romania, Serbia, Switzerland, Wales), the per-
+  country lists (German, French, Italian, Spanish, Belgian, Dutch, Greek;
+  **England has none**), Wikidata's rivalry items, and every article in
+  each country's rivalry category on English Wikipedia, opening
+  paragraph read. Wikidata's query service was rate-limiting to one
+  request a minute ("active wdqs outage"), and Wikidata's rivalry items
+  list only some participants, so the categories did most of the work.
+- **Names are the source's.** A row's name is the derby's name in its
+  source, or "A v B" where the source titles it that way. Where one
+  entry names three clubs, each pair is its own row with the pair in
+  brackets ("Rotterdam derby (Sparta v Excelsior)").
+- **`kind` is a judgement, and it is this session's**: `city` for one
+  city (Piraeus counted as Athens, as the Greek list does), `regional`
+  for a named region or neighbouring towns, `historic` for a national
+  rivalry between clubs of different regions. Nothing hangs on it but a
+  tag.
+- **Scope, Alexandru's answer of 2026-10-03**: one club at tier 1 or 2
+  is enough; the other may be lower on the map (VfB v Kickers, tier 4)
+  or off it (with `offMap`). **The panel lists a derby only when both
+  clubs are on the map**, and a pair in different divisions this season
+  - different tier, different country, or two leagues at one tier - is
+  flagged "different divisions: cup only", with "Probably not played
+  this season" in its detail.
+- **Augsburg is joined through `P831`.** Its two rivalry articles link
+  the club item `Q15755`; the map draws Augsburg as its men's-team item
+  `Q97905916`, whose `P831` is `Q15755` (the shape-5 protection below).
+  The rows use `Q97905916` and say so.
+- **Distance** is home (settings.home) to the **nearer ground**, the
+  club sheet's road estimate (straight line × 1.25), and both grounds'
+  distances are shown.
+- **Next meeting** is read through `fixture-links.json`, never by name:
+  a match counts only when its two teams are the two clubs' linked ids
+  **in the same source**. Four honest answers: a dated meeting (with the
+  sheet's "time not set" and the route's "may be provisional" for an
+  OpenLigaDB round at one kick-off); "<club> has no fixture source";
+  "linked to different fixture sources"; "No meeting in the fixture
+  data." No hand-entered date - Alexandru said not yet.
+
 **The installable app: what is cached, what deliberately is not, and
 how an update reaches the phone.** Built 2026-10-02 on Alexandru's
 instruction. The site is served from `/Football/`, not from `/`, so
@@ -1594,6 +1684,79 @@ that.
 ---
 
 ## Known open problems
+
+- **Derbies, 2026-10-03: 248 rows, 197 with both clubs on the map,
+  102 of those with a fixture source on both sides.** Per country
+  (country of the clubs; a cross-border pair has its own line):
+
+  | | rows | both on map | fixture source both sides |
+  |---|---|---|---|
+  | AT | 8 | 6 | 0 |
+  | BE | 15 | 12 | 0 |
+  | CH | 13 | 10 | 0 |
+  | DE | 25 | 24 | 21 |
+  | ES | 17 | 15 | 11 |
+  | FR | 35 | 25 | 9 |
+  | GB (incl. Wales) | 50 | 37 | 37 |
+  | GR | 16 | 9 | 0 |
+  | IT | 16 | 13 | 10 |
+  | NL | 28 | 28 | 13 |
+  | RO | 15 | 11 | 0 |
+  | RS | 9 | 6 | 0 |
+  | DE/ES (Bayern v Real Madrid) | 1 | 1 | 1 |
+
+  76 of the 197 are in different divisions this season. 51 rows wait
+  with `offMap`. `check_derbies.py` exits 0. The panel was tested in
+  headless Chromium at 390x844 (`tools/test_derbies.js`, 16 checks):
+  4 derbies within 100 km of Leonberg (Stuttgart derby, Baden-
+  Württemberg derby, Südwestderby KSC v FCK, Ostalb derby), 171 within
+  1,500 km, every one opened: 70 show a meeting, 27 "no meeting in the
+  fixture data", 74 a club with no fixture source. `test_pwa.js` still
+  passes 22 of 22. **Not tested on a real phone.**
+  - **Well-known derbies with both clubs on the map and no fixture source
+    on at least one side**: every Austrian, Swiss, Romanian, Serbian,
+    Greek and Belgian derby (the Vienna derby, the Zürich derby, both
+    Eternal derbies, the Cluj derby, the Derby of the Eternal Enemies,
+    the Classico, Anderlecht v Club Brugge - Brugge is linked to the
+    Champions League only), the Stuttgart derby (Kickers, tier 4), the
+    Derby della Lanterna (Sampdoria, Serie B), Lyon v Saint-Étienne
+    (Ligue 2), the Asturian and Canary Islands derbies (Segunda), and
+    the Dutch derbies with an Eerste Divisie side.
+  - **The Südwestderby is ambiguous, and football-rules.json's
+    `sudwest-derby` was pointed at only one reading.** German Wikipedia
+    uses the name for KSC v Kaiserslautern (the KSC article), KSC v VfB
+    Stuttgart (the Baden-Württemberg-Derby article) and Kaiserslautern v
+    Waldhof Mannheim; English Wikipedia's German list uses it for
+    Kaiserslautern v Saarbrücken. The `rulesId` row is KSC v FCK, the
+    pair football-rules.json names. Which name Alexandru wants is his.
+  - **football-rules.json's derby entries, read and not written**: nine
+    of its derby-shaped bucketList entries have a row pointing at them.
+    The Ostderby (Dynamo Dresden v Hansa Rostock) has **no row**: no page
+    the probes read names it (the German list's Union v Hansa row is
+    unnamed). Old Firm, the Intercontinental Derby and the Prague derby
+    are outside the twelve countries. Both German fixture files put the
+    Frankenderby and KSC v FCK on Sun 31 Jan 2027 13:30, an OpenLigaDB
+    round at one kick-off, inside both entries' inferred windows.
+  - **Left out on purpose, so the next pass does not rediscover them**:
+    unnamed list lines (Dinamo v Rapid, OFK v Red Star and the other
+    Belgrade pairs, Union v Hansa, Gent v Lokeren, PSV v Feyenoord,
+    Roda v VVV and v MVV, Almere v Telstar, Sion v Lausanne, Xamax v
+    Sion); named but uncited ones (Lustenau, Vorarlberg and Lower Austria
+    derbies, Hunedoara derby, Severnobački derby, Serbian El Clasico,
+    the Southern Railway rivalry, Derby de Vaud, Derby Neuchâtelois,
+    Battle of Flanders, Hainaut derby, Vissersderby, Graafschap v Go
+    Ahead, the Bochum derby, most of the Greek and Italian lists); the
+    Holstein derby (Kiel is not linked as a club in the row); rowspan
+    rows of the German table; and Wikidata rivalry items with no article
+    found (Südderby Bayern v VfB `Q16637328`, Kölner Stadtderby,
+    Aris v Iraklis, PAOK v Iraklis, Kennemerland derby). Each needs a
+    source that names it before it goes in.
+  - **`check-derbies.yml` could not be dispatched on the branch**: a
+    new workflow file runs by `workflow_dispatch` only once it is on
+    `main`, so the branch check was its `pull_request` trigger.
+  - **Every row rests on Wikipedia** (articles, and lists' cited
+    entries). That is a third party's record of the rivalry, which is
+    what was asked for; no club's own page was read.
 
 - **Belgium's top two tiers are on the map, 2026-10-01: Pro League 18 of
   18, exact; Challenger Pro League 13 drawn for 15, nothing at the wrong
