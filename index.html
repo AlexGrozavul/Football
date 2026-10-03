@@ -186,6 +186,15 @@
   .dclub .rd{display:block;color:var(--faint);font-size:12px}
   .dclub button{margin-top:6px}
   .dback{margin-top:8px}
+  .sroute{border-top:1px solid var(--line);padding:8px 0}
+  .sroute:first-of-type{border-top:0}
+  .sroute .sn{font-size:13.5px;overflow-wrap:anywhere}
+  .sroute .rd{display:block;color:var(--faint);font-size:12px}
+  .sroute .line{margin-top:5px;align-items:center}
+  .route details{border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin-top:8px}
+  .route summary{cursor:pointer;font-size:13.5px}
+  .route summary em{font-style:normal;color:var(--faint);font-size:12px}
+  #routeCredits{margin-top:12px}
   .pickbar[hidden]{display:none}
   .pickbar button{background:#1b2230;border:1px solid var(--line);border-radius:7px;
     color:var(--ink);font:inherit;font-size:13px;padding:5px 10px;cursor:pointer}
@@ -236,6 +245,7 @@
         <div class="shead"><h3>Clubs along a route</h3>
           <button class="x" id="routeClose" aria-label="Close">Close</button></div>
         <div class="sbody" id="routeBody">
+          <div id="savedRoutes"></div>
           <div class="pt" data-end="from"><label>Start</label>
             <div class="line"><input type="text" placeholder="Type a place" autocomplete="off">
               <button class="b" data-act="find">Find</button>
@@ -251,8 +261,10 @@
           <div class="ctl"><button class="b go" id="routeGo" disabled>Get route</button>
             <button class="b" id="routeClear">Clear</button></div>
           <div class="sub">Each route asks Stadia Maps once (20 credits), and each place typed and
-            found costs 20 more. Tapping the map or using home costs nothing.</div>
+            found costs 20 more, unless this device searched for the same words in the last 7 days.
+            Tapping the map, using home and opening a saved route cost nothing.</div>
           <div id="routeOut"></div>
+          <div class="sub" id="routeCredits"></div>
         </div>
       </div>
       <div class="sheet route" id="derbyPanel" hidden role="dialog" aria-label="Derbies">
@@ -316,10 +328,12 @@ const HOME_FALLBACK = {label:'Leonberg, DE (default)', lat:48.8003, lon:9.0167};
 
 let MAP, LAYER, CLUBS = [], HOME = null, MULTIPLIER = 1.25;
 
-/* Stadia Maps key: map tiles, and since 2026-10-02 the route request and
-   the place search on the map tab. It sits in the page on purpose - see
-   CLAUDE.md, Secrets. Changing or rotating it is this one line. */
-const STADIA_KEY = 'ec818681-51dd-4ceb-89c0-6f1124dbc053';
+/* Stadia Maps: map tiles, the route request and the place search on the
+   map tab. No API key: since 2026-10-03 every Stadia request is
+   authenticated by the domain it comes from (alexgrozavul.github.io,
+   registered in the Stadia dashboard), which the browser states in the
+   Origin and Referer headers. localhost needs no key either. See
+   CLAUDE.md, Secrets. */
 
 /* ----------------------------------------------------------- helpers */
 
@@ -557,30 +571,100 @@ function drawClubs(){
   document.querySelector('#legend .shared')?.classList.toggle('off', !shared);
 }
 
+/* Map tiles fetched with fetch() instead of a plain <img src>, so the
+   HTTP status of every tile can be read. Stadia answers a refused tile
+   with HTTP 401 AND an error picture, which an <img> decodes and Leaflet
+   counts as loaded - so with ordinary tiles a refusal never looked like
+   a failure (measured 2026-10-02). Here a tile that is not HTTP 2xx is a
+   tileerror carrying its status. Stadia sends Access-Control-Allow-Origin
+   on tiles, refused ones included (measured 2026-10-03), which is what
+   lets the page read the status at all. The image still goes through the
+   browser's ordinary HTTP cache, exactly like an <img>; nothing is saved
+   anywhere else. */
+const StatusTiles = L.TileLayer.extend({
+  createTile(coords, done){
+    const img = document.createElement('img');
+    img.alt = '';
+    img.setAttribute('role', 'presentation');
+    const ctl = new AbortController();
+    img._ctl = ctl;
+    fetch(this.getTileUrl(coords), {signal: ctl.signal, credentials: 'omit'})
+      .then(res => {
+        if(!res.ok){ const e = new Error('tile HTTP ' + res.status); e.status = res.status; throw e; }
+        return res.blob();
+      })
+      .then(blob => {
+        img._ctl = null;
+        const url = URL.createObjectURL(blob);
+        img.onload = () => { URL.revokeObjectURL(url); done(null, img); };
+        img.onerror = () => { URL.revokeObjectURL(url); done(new Error('tile image could not be read'), img); };
+        img.src = url;
+      })
+      .catch(err => { img._ctl = null; if(err.name !== 'AbortError') done(err, img); });
+    return img;
+  },
+  /* Leaflet cancels a loading <img> at another zoom by emptying its src;
+     a tile still being fetched has no src yet, so its fetch is aborted
+     here instead, and the tile taken away the way Leaflet would. */
+  _abortLoading(){
+    for(const key in this._tiles){
+      const t = this._tiles[key];
+      if(t.coords.z !== this._tileZoom && t.el._ctl){
+        t.el._ctl.abort(); t.el._ctl = null;
+        L.DomUtil.remove(t.el); delete this._tiles[key];
+        this.fire('tileabort', {tile: t.el, coords: t.coords});
+      }
+    }
+    L.TileLayer.prototype._abortLoading.call(this);
+  },
+  initialize(url, options){
+    L.TileLayer.prototype.initialize.call(this, url, options);
+    this.on('tileunload', e => { if(e.tile._ctl){ e.tile._ctl.abort(); e.tile._ctl = null; } });
+  }
+});
+
 async function initMap(){
   MAP = L.map('map', {zoomControl:false, attributionControl:true})
          .setView([48.80, 9.02], 8);
   L.control.zoom({position:'bottomright'}).addTo(MAP);
 
   /* Tiles are never cached by sw.js (CLAUDE.md, The installable app).
-     Offline, or when tiles keep failing, a card says the map needs a
-     connection rather than leaving a blank square. */
-  const tiles = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=' + STADIA_KEY, {
+     Offline, when tiles keep failing, or when Stadia refuses them, a card
+     says the map needs a connection rather than leaving a blank square. */
+  const tiles = new StatusTiles('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
     maxZoom: 20,
     attribution: '&copy; <a href="https://stadiamaps.com/attribution/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
   }).addTo(MAP);
-  let tileFails = 0;
+  /* Four failures in a row raise the card, whatever the kind; the last
+     failure's kind decides what it says. A refused key refuses every
+     tile, so a refusal raises it within one screenful. */
+  let tileFails = 0, lastFail = null;
   const mapNet = () => {
     const offline = navigator.onLine === false;
-    document.getElementById('mapOfflineWhy').textContent = offline
-      ? 'This phone is offline, and map tiles are never saved. Club markers, the bucket list and ticket info still work from saved data.'
-      : 'Map tiles are not loading: no connection, or Stadia Maps refused them. Club markers still work.';
+    const why = document.getElementById('mapOfflineWhy');
+    const head = document.querySelector('#mapOffline b');
+    if(offline){
+      head.textContent = 'The map needs a connection';
+      why.textContent = 'This phone is offline, and map tiles are never saved. Club markers, the bucket list and ticket info still work from saved data.';
+    }else if(lastFail === 401 || lastFail === 403){
+      head.textContent = 'Stadia Maps refused the map tiles';
+      why.textContent = `Stadia answered HTTP ${lastFail}: it did not accept this site's domain for the map. Club markers still work. This is not a connection problem.`;
+    }else if(lastFail === 429){
+      head.textContent = 'Stadia Maps refused the map tiles';
+      why.textContent = 'Stadia answered HTTP 429, too many requests: the monthly allowance may be used up. Club markers still work.';
+    }else if(typeof lastFail === 'number'){
+      head.textContent = 'The map tiles are not loading';
+      why.textContent = `Stadia answered HTTP ${lastFail}. Club markers still work.`;
+    }else{
+      head.textContent = 'The map needs a connection';
+      why.textContent = 'Map tiles are not loading: no connection reached Stadia Maps. Club markers still work.';
+    }
     document.getElementById('mapOffline').hidden = !(offline || tileFails >= 4);
   };
-  tiles.on('tileload', () => { if(tileFails){ tileFails = 0; mapNet(); } });
-  tiles.on('tileerror', () => { tileFails++; mapNet(); });
+  tiles.on('tileload', () => { if(tileFails){ tileFails = 0; lastFail = null; mapNet(); } });
+  tiles.on('tileerror', e => { tileFails++; lastFail = e.error?.status ?? 'network'; mapNet(); });
   addEventListener('offline', mapNet);
-  addEventListener('online', () => { tileFails = 0; mapNet(); tiles.redraw(); });
+  addEventListener('online', () => { tileFails = 0; lastFail = null; mapNet(); tiles.redraw(); });
   mapNet();
 
   /* Canvas rendering: DOM markers start to stutter on a phone at a
@@ -1185,8 +1269,11 @@ async function homeOnDay(club, day, links){
     note: `The linked fixtures (${[...new Set(other)].join(', ')}) do not cover this day's league games.`};
 }
 
-function setEnd(which, lat, lon, label){
-  ROUTE_ENDS[which] = {lat, lon, label};
+/* An end of the route: {lat, lon, label, kind}. kind is 'search' (found
+   with Stadia's place search; typed is what was typed), 'tap' (a point
+   tapped on the map, or a club tapped) or 'home'. */
+function setEnd(which, lat, lon, label, kind = 'tap', typed = null){
+  ROUTE_ENDS[which] = {lat, lon, label, kind, typed};
   const box = document.querySelector(`#routeBody .pt[data-end="${which}"]`);
   box.querySelector('.chosen').innerHTML = `<b>${esc(label)}</b> · ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
   box.querySelector('.hits').innerHTML = '';
@@ -1223,38 +1310,212 @@ function endPick(){
 function pickPoint(lat, lon, label){
   const which = PICKING;
   endPick();
-  setEnd(which, lat, lon, label || 'Point on the map');
+  setEnd(which, lat, lon, label || 'Point on the map', 'tap');
 }
+
+/* ------------------------------------------- what is kept on this device
+
+   Saved routes, the place-search cache and the credit estimate live in
+   this browser's IndexedDB, on this device only. Nothing here is ever
+   sent to the repo or anywhere else; export and import are the only way
+   to move saved routes between devices. CLAUDE.md, "Saved routes", has
+   the rules and why they are what they are:
+
+   - A place-search answer is kept 7 DAYS and then dropped. Stadia's terms
+     allow client-side caching only as long as the HTTP caching headers
+     say, or 7 days when there are none, and its search answers carry
+     none (measured 2026-10-03); keeping them for good is forbidden on
+     the Free plan.
+   - A saved route never keeps a place-search result. An end found by
+     search is saved as the text that was typed and the route LINE's own
+     first or last point (routing output). Map taps and home are kept as
+     they are. Alexandru's decision, 2026-10-03.
+   - Saved route lines rest on the terms' exception for small offline
+     data in a mobile application, at most 100 MB per device; the page
+     refuses a save past SAVED_LIMIT, well under that.
+   - The club list along a route is never saved: it is worked out again
+     from the club files each time a route is opened. */
+
+const SEARCH_KEEP_MS = 7 * 864e5;
+const SAVED_LIMIT = 50e6;                      // characters of saved routes, all together
+const CREDITS = {route: 20, search: 20};       // stadiamaps.com/pricing, read 2026-10-02
+
+let DEVICE_DB_P = null;
+function deviceDB(){
+  if(!DEVICE_DB_P) DEVICE_DB_P = new Promise((resolve, reject) => {
+    if(!('indexedDB' in self)) return reject(new Error('this browser has no IndexedDB'));
+    const r = indexedDB.open('football-planner-device', 1);
+    r.onupgradeneeded = () => {
+      const db = r.result;
+      db.createObjectStore('routes', {keyPath: 'id'});
+      db.createObjectStore('searches', {keyPath: 'key'});
+      db.createObjectStore('credits', {keyPath: 'month'});
+    };
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error || new Error('IndexedDB would not open'));
+    r.onblocked = () => reject(new Error('IndexedDB is blocked by another copy of the app; close it and reload'));
+  }).catch(err => { DEVICE_DB_P = null; throw err; });
+  return DEVICE_DB_P;
+}
+
+/* One transaction on one store. fn gets the store and may return a
+   request, whose result becomes the answer. */
+async function idb(store, mode, fn){
+  const db = await deviceDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, mode);
+    let out;
+    const req = fn(tx.objectStore(store));
+    if(req) req.onsuccess = () => { out = req.result; };
+    tx.oncomplete = () => resolve(out);
+    tx.onerror = () => reject(tx.error || new Error('storage error'));
+    tx.onabort = () => reject(tx.error || new Error('storage write was refused (is the device full?)'));
+  });
+}
+
+const monthKey = () => new Date().toISOString().slice(0, 7);      // UTC calendar month
+
+/* Count one request Stadia answered with success, for the estimate. */
+async function countCredit(kind){
+  try{
+    const month = monthKey();
+    const row = await idb('credits', 'readonly', st => st.get(month)) || {month, route: 0, search: 0};
+    row[kind] = (row[kind] || 0) + 1;
+    await idb('credits', 'readwrite', st => st.put(row));
+  }catch(err){ console.warn('credit estimate not updated:', err.message); }
+  renderCredits();
+}
+
+async function renderCredits(){
+  const el = document.getElementById('routeCredits');
+  if(!el) return;
+  let row;
+  try{ row = await idb('credits', 'readonly', st => st.get(monthKey())); }
+  catch(err){ el.textContent = `Credit estimate unavailable: ${err.message}.`; return; }
+  const r = row?.route || 0, s = row?.search || 0;
+  const month = new Date(monthKey() + '-01T00:00:00Z').toLocaleDateString('en-GB', {month: 'long', year: 'numeric', timeZone: 'UTC'});
+  el.innerHTML = `<b>Estimate, this device, ${esc(month)}:</b> about ${r * CREDITS.route + s * CREDITS.search} credits ` +
+    `on routes and place searches (${r} route${r === 1 ? '' : 's'} and ${s} search${s === 1 ? '' : 'es'} Stadia answered, ` +
+    `20 credits each). Map tiles (1 credit each) are not counted, nor are other devices; the Stadia dashboard has the real figure.`;
+}
+
+/* ----------------------------------------------------- the line, stored */
+
+/* Valhalla's own encoding, six decimal places, so a stored line is the
+   same compact form Stadia sends. */
+function encodeShape(pts, precision = 6){
+  const f = 10 ** precision;
+  const enc = v => {
+    v = v < 0 ? ~(v << 1) : (v << 1);
+    let s = '';
+    while(v >= 0x20){ s += String.fromCharCode((0x20 | (v & 0x1f)) + 63); v >>>= 5; }
+    return s + String.fromCharCode(v + 63);
+  };
+  let out = '', plat = 0, plon = 0;
+  for(const [lat, lon] of pts){
+    const a = Math.round(lat * f), b = Math.round(lon * f);
+    out += enc(a - plat) + enc(b - plon);
+    plat = a; plon = b;
+  }
+  return out;
+}
+
+/* ------------------------------------------------------- place search */
+
+const searchKey = text => text.trim().toLowerCase().replace(/\s+/g, ' ') +
+  (HOME ? `|${HOME.lat.toFixed(2)},${HOME.lon.toFixed(2)}` : '');
+
+async function cachedSearch(key){
+  try{
+    const row = await idb('searches', 'readonly', st => st.get(key));
+    if(!row) return null;
+    if(Date.now() - Date.parse(row.at) >= SEARCH_KEEP_MS){
+      await idb('searches', 'readwrite', st => st.delete(key));
+      return null;
+    }
+    return row;
+  }catch(err){ return null; }
+}
+
+/* Drop every search answer older than 7 days, whether or not it is asked
+   for again. */
+async function purgeSearches(){
+  try{
+    const rows = await idb('searches', 'readonly', st => st.getAll()) || [];
+    const old = rows.filter(r => !(Date.now() - Date.parse(r.at) < SEARCH_KEEP_MS));
+    if(old.length) await idb('searches', 'readwrite', st => { old.forEach(r => st.delete(r.key)); });
+  }catch(err){ /* storage unavailable: nothing kept, nothing to drop */ }
+}
+
+const fmtSaved = iso => new Date(iso).toLocaleString('en-GB', {weekday: 'short', day: 'numeric',
+  month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'});
 
 async function findPlace(which){
   const box = document.querySelector(`#routeBody .pt[data-end="${which}"]`);
   const text = box.querySelector('input').value.trim();
   const hits = box.querySelector('.hits');
   if(!text){ hits.innerHTML = '<p class="err">Type a place first.</p>'; return; }
-  hits.innerHTML = '<div class="sub">Searching…</div>';
-  const q = new URLSearchParams({text, size: '5', api_key: STADIA_KEY});
-  if(HOME){ q.set('focus.point.lat', HOME.lat); q.set('focus.point.lon', HOME.lon); }
+  const key = searchKey(text);
+  let found = null, savedAt = null;
+  const kept = await cachedSearch(key);
+  if(kept){
+    found = kept.results; savedAt = kept.at;
+  }else{
+    hits.innerHTML = '<div class="sub">Searching…</div>';
+    const q = new URLSearchParams({text, size: '5'});
+    if(HOME){ q.set('focus.point.lat', HOME.lat); q.set('focus.point.lon', HOME.lon); }
+    let res, data;
+    try{
+      res = await fetch('https://api.stadiamaps.com/geocoding/v1/search?' + q);
+      data = await res.json().catch(() => null);
+    }catch(err){
+      hits.innerHTML = `<p class="err">Place search failed: ${esc(err.message)}` +
+        (navigator.onLine === false ? ' - this phone is offline, and place search needs a connection' : '') + '.</p>'; return;
+    }
+    if(!res.ok){
+      hits.innerHTML = `<p class="err">Place search failed: HTTP ${res.status}` +
+        (data?.error ? ` - ${esc(data.error)}` : '') + '.</p>'; return;
+    }
+    countCredit('search');
+    found = (data?.features || []).filter(f => f.geometry?.coordinates).map(f => ({
+      label: f.properties?.label || f.properties?.name || text,
+      lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0]}));
+    try{ await idb('searches', 'readwrite', st => st.put({key, text, at: new Date().toISOString(), results: found})); }
+    catch(err){ console.warn('search answer not kept:', err.message); }
+  }
+  if(!found.length){
+    hits.innerHTML = `<p class="err">Nothing found for "${esc(text)}".</p>` +
+      (savedAt ? `<div class="sub">From the saved copy of ${esc(fmtSaved(savedAt))}; no request was made.</div>` : ''); return;
+  }
+  hits.innerHTML = (savedAt ? `<div class="sub"><span class="tag warn">saved copy</span> From this device's saved ` +
+      `search of ${esc(fmtSaved(savedAt))}, no request made. Kept 7 days, then asked again.</div>` : '') +
+    found.map((f, i) => `<button data-i="${i}">${esc(f.label)}</button>`).join('');
+  hits.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    const f = found[Number(b.dataset.i)];
+    setEnd(which, f.lat, f.lon, f.label, 'search', text);
+  }));
+}
+
+/* -------------------------------------------------------------- route */
+
+/* One routing request. Answers {pts, summary} or {err: html}. */
+async function requestRoute(from, to){
+  const body = {locations: [from, to].map(p => ({lat: p.lat, lon: p.lon, type: 'break'})),
+                costing: 'auto', units: 'kilometers', directions_type: 'none'};
   let res, data;
   try{
-    res = await fetch('https://api.stadiamaps.com/geocoding/v1/search?' + q);
+    res = await fetch('https://api.stadiamaps.com/route/v1', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
     data = await res.json().catch(() => null);
   }catch(err){
-    hits.innerHTML = `<p class="err">Place search failed: ${esc(err.message)}` +
-      (navigator.onLine === false ? ' - this phone is offline, and place search needs a connection' : '') + '.</p>'; return;
+    return {err: `The route request failed: ${esc(err.message)}` +
+      (navigator.onLine === false ? ' - this phone is offline, and routing needs a connection' : '') + '.'};
   }
-  if(!res.ok){
-    hits.innerHTML = `<p class="err">Place search failed: HTTP ${res.status}` +
-      (data?.error ? ` - ${esc(data.error)}` : '') + '.</p>'; return;
-  }
-  const feats = (data?.features || []).filter(f => f.geometry?.coordinates);
-  if(!feats.length){ hits.innerHTML = `<p class="err">Nothing found for "${esc(text)}".</p>`; return; }
-  hits.innerHTML = feats.map((f, i) =>
-    `<button data-i="${i}">${esc(f.properties?.label || f.properties?.name || 'unnamed')}</button>`).join('');
-  hits.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-    const f = feats[Number(b.dataset.i)];
-    setEnd(which, f.geometry.coordinates[1], f.geometry.coordinates[0],
-           f.properties?.label || f.properties?.name || text);
-  }));
+  const legs = data?.trip?.legs;
+  if(!res.ok || !legs?.length)
+    return {err: `No route: HTTP ${res.status}` + (data?.error ? ` - ${esc(data.error)}` : '') + '.'};
+  countCredit('route');
+  return {pts: legs.flatMap(l => decodeShape(l.shape)), summary: data.trip.summary};
 }
 
 async function getRoute(){
@@ -1263,52 +1524,288 @@ async function getRoute(){
   if(!ROUTE_ENDS.from || !ROUTE_ENDS.to) return;
   go.disabled = true;
   out.innerHTML = '<p class="unavail">Asking Stadia Maps for the route…</p>';
-  const body = {locations: [ROUTE_ENDS.from, ROUTE_ENDS.to].map(p => ({lat: p.lat, lon: p.lon, type: 'break'})),
-                costing: 'auto', units: 'kilometers', directions_type: 'none'};
-  let res, data;
-  try{
-    res = await fetch('https://api.stadiamaps.com/route/v1?api_key=' + STADIA_KEY, {
-      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
-    data = await res.json().catch(() => null);
-  }catch(err){
-    out.innerHTML = `<p class="err">The route request failed: ${esc(err.message)}` +
-      (navigator.onLine === false ? ' - this phone is offline, and routing needs a connection' : '') + '. Nothing is drawn.</p>';
-    go.disabled = false; return;
-  }
+  const r = await requestRoute(ROUTE_ENDS.from, ROUTE_ENDS.to);
   go.disabled = false;
-  const legs = data?.trip?.legs;
-  if(!res.ok || !legs?.length){
-    out.innerHTML = `<p class="err">No route: HTTP ${res.status}` +
-      (data?.error ? ` - ${esc(data.error)}` : '') + '. Nothing is drawn.</p>';
-    return;
-  }
-  const pts = legs.flatMap(l => decodeShape(l.shape));
-  ROUTE = {pts, line: prepareLine(pts), summary: data.trip.summary};
+  if(r.err){ out.innerHTML = `<p class="err">${r.err} Nothing is drawn.</p>`; return; }
+  showRoute({pts: r.pts, distanceKm: r.summary.length, durationSec: r.summary.time,
+             from: {...ROUTE_ENDS.from}, to: {...ROUTE_ENDS.to}, lineAt: new Date().toISOString(),
+             approximate: false, saved: null});
+}
+
+/* Draws a route and its panel. r is a fresh route, a saved one opened, or
+   a route back. Nothing here asks Stadia for anything. */
+function showRoute(r, options = null){
+  ROUTE = Object.assign(r, {line: prepareLine(r.pts)});
   ROUTE_LAYER.eachLayer(l => { if(!l.options.endMarker) ROUTE_LAYER.removeLayer(l); });
-  const poly = L.polyline(pts, {color: ROUTE_COLOUR, weight: 4, opacity: .85, interactive: false})
-    .addTo(ROUTE_LAYER);
+  const poly = L.polyline(r.pts, {color: ROUTE_COLOUR, weight: 4, opacity: .85, interactive: false,
+    dashArray: r.approximate ? '8 7' : null}).addTo(ROUTE_LAYER);
   const panel = document.getElementById('routePanel');
   MAP.fitBounds(poly.getBounds(), {paddingTopLeft: [24, 60],
     paddingBottomRight: [24, Math.min(panel.offsetHeight, MAP.getSize().y * .6) + 20]});
+
+  /* The suggested name uses what a save would keep: the typed words for
+     a searched end, the label for a tap or home. */
+  const endName = e => e.kind === 'search' ? (e.typed || e.label) : e.label;
+  const nm = r.saved ? r.saved.name : `${endName(r.from)} → ${endName(r.to)}` + (r.approximate ? ' (approximate)' : '');
+  let state;
+  if(r.saved){
+    state = `<div class="sub"><b>${esc(r.saved.name)}</b>, saved ${esc(fmtSaved(r.saved.savedAt))}. ` +
+      `Route line from Stadia Maps of ${esc(fmtSaved(r.lineAt))}; opening it made no request.</div>`;
+  }else{
+    state = `<div class="ctl"><input type="text" id="routeName" value="${esc(nm)}" aria-label="Name for the saved route">` +
+      `<button class="b" id="routeSave">Save route</button></div><div class="sub" id="routeSaveMsg">Kept on this device only.</div>`;
+  }
+  if(r.approximate) state += `<div class="meta"><span class="tag warn">approximate</span></div><div class="sub">The outbound ` +
+    `line reversed, with no request made. One-way roads, junctions and motorway exits may differ on the way back; ` +
+    `the length and time are the outbound's.</div>`;
+  const acts = `<div class="ctl">` +
+    (r.saved || r.approximate ? `<button class="b" id="routeRefresh">Refresh route</button>` : '') +
+    `<button class="b" id="routeBack">Route back (approximate)</button></div>` +
+    (r.saved || r.approximate ? `<div class="sub">Refresh route asks Stadia Maps for this route again: one request, about 20 credits.</div>` : '');
+
+  const out = document.getElementById('routeOut');
   out.innerHTML =
-    `<h4>Route</h4>` +
-    field('Length', `${ROUTE.summary.length.toFixed(0)} km by road`) +
-    field('Driving time', fmtDuration(ROUTE.summary.time) + " (Stadia Maps' estimate, no traffic)") +
+    `<h4>Route</h4>` + state + acts +
+    field('Length', `${r.distanceKm.toFixed(0)} km by road` + (r.approximate ? ' (outbound)' : '')) +
+    field('Driving time', fmtDuration(r.durationSec) + " (Stadia Maps' estimate, no traffic)" + (r.approximate ? ', outbound' : '')) +
     `<div class="ctl"><span>Within</span><input type="range" id="routeKm" min="1" max="100" step="1" value="25">` +
       `<b id="routeKmTxt">25 km</b><span>of the road</span></div>` +
     `<div class="ctl"><span>Home match on</span><input type="date" id="routeDay">` +
       `<button class="b" id="routeDayClear">Any day</button></div>` +
     `<div id="routeList"></div>`;
-  const km = document.getElementById('routeKm');
+  const km = document.getElementById('routeKm'), day = document.getElementById('routeDay');
+  if(options){
+    if(options.withinKm >= 1 && options.withinKm <= 100) km.value = options.withinKm;
+    if(/^\d{4}-\d{2}-\d{2}$/.test(options.homeMatchOn || '')) day.value = options.homeMatchOn;
+  }
+  document.getElementById('routeKmTxt').textContent = km.value + ' km';
   km.addEventListener('input', () => {
     document.getElementById('routeKmTxt').textContent = km.value + ' km';
     renderRouteList();
   });
-  document.getElementById('routeDay').addEventListener('change', renderRouteList);
-  document.getElementById('routeDayClear').addEventListener('click', () => {
-    document.getElementById('routeDay').value = ''; renderRouteList();
-  });
+  day.addEventListener('change', renderRouteList);
+  document.getElementById('routeDayClear').addEventListener('click', () => { day.value = ''; renderRouteList(); });
+  document.getElementById('routeSave')?.addEventListener('click', saveRoute);
+  document.getElementById('routeBack').addEventListener('click', routeBack);
+  document.getElementById('routeRefresh')?.addEventListener('click', refreshRoute);
   renderRouteList();
+  /* The saved list and the two ends sit above the route; bring it into view. */
+  const body = document.getElementById('routeBody');
+  body.scrollTop += out.getBoundingClientRect().top - body.getBoundingClientRect().top - 8;
+}
+
+/* The way back, worked out from the line already here: no request. */
+function routeBack(){
+  const r = ROUTE;
+  if(!r) return;
+  setEnd('from', r.to.lat, r.to.lon, r.to.label, r.to.kind, r.to.typed);
+  setEnd('to', r.from.lat, r.from.lon, r.from.label, r.from.kind, r.from.typed);
+  showRoute({pts: r.pts.slice().reverse(), distanceKm: r.distanceKm, durationSec: r.durationSec,
+             from: {...r.to}, to: {...r.from}, lineAt: r.lineAt, approximate: true, saved: null}, currentOptions());
+}
+
+const currentOptions = () => ({withinKm: Number(document.getElementById('routeKm')?.value || 25),
+                              homeMatchOn: document.getElementById('routeDay')?.value || ''});
+
+/* What an end becomes when it is saved. A searched end keeps the text
+   typed and the line's own end point, never Stadia's search answer. */
+function savedEnd(end, linePoint){
+  if(end.kind === 'search') return {kind: 'search', label: end.typed || 'searched place',
+                                    lat: +linePoint[0].toFixed(6), lon: +linePoint[1].toFixed(6)};
+  return {kind: end.kind === 'home' ? 'home' : 'tap', label: end.label, lat: end.lat, lon: end.lon};
+}
+
+async function allRoutes(){
+  return (await idb('routes', 'readonly', st => st.getAll()) || [])
+    .sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
+}
+
+const routeSize = rec => JSON.stringify(rec).length;
+
+async function putRoute(rec){
+  const others = (await allRoutes()).filter(x => x.id !== rec.id);
+  const total = others.reduce((n, x) => n + routeSize(x), 0) + routeSize(rec);
+  if(total > SAVED_LIMIT) throw new Error(`saved routes would take ${(total / 1e6).toFixed(1)} MB on this device, ` +
+    `over the ${SAVED_LIMIT / 1e6} MB this page allows (Stadia's terms cap offline data at 100 MB); delete some first`);
+  await idb('routes', 'readwrite', st => st.put(rec));
+}
+
+async function saveRoute(){
+  const r = ROUTE, msg = document.getElementById('routeSaveMsg');
+  if(!r) return;
+  const name = document.getElementById('routeName').value.trim() || 'Saved route';
+  const rec = {
+    id: 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    name, savedAt: new Date().toISOString(), lineAt: r.lineAt, approximate: !!r.approximate,
+    from: savedEnd(r.from, r.pts[0]), to: savedEnd(r.to, r.pts[r.pts.length - 1]),
+    line: encodeShape(r.pts), options: currentOptions(),
+    distanceKm: r.distanceKm, durationSec: r.durationSec};
+  try{
+    await putRoute(rec);
+    navigator.storage?.persist?.().catch(() => {});
+  }catch(err){ msg.innerHTML = `<span class="err">Not saved: ${esc(err.message)}.</span>`; return; }
+  openSaved(rec, false);
+  renderSaved();
+}
+
+/* Opening a saved route: the line comes from this device, the clubs from
+   today's club files. Nothing is asked of Stadia. */
+function openSaved(rec, fit = true){
+  let pts;
+  try{ pts = decodeShape(rec.line); }catch(err){ pts = []; }
+  if(pts.length < 2){ document.getElementById('routeOut').innerHTML = `<p class="err">"${esc(rec.name)}" has no usable route line.</p>`; return; }
+  for(const which of ['from', 'to']){
+    const e = rec[which];
+    document.querySelector(`#routeBody .pt[data-end="${which}"] input`).value = '';
+    setEnd(which, e.lat, e.lon, e.label, e.kind === 'search' ? 'search' : e.kind, e.kind === 'search' ? e.label : null);
+  }
+  showRoute({pts, distanceKm: rec.distanceKm, durationSec: rec.durationSec, from: {...ROUTE_ENDS.from},
+             to: {...ROUTE_ENDS.to}, lineAt: rec.lineAt, approximate: !!rec.approximate, saved: rec}, rec.options);
+}
+
+/* Refresh: ask for the same route again, from the saved ends. A saved
+   route gets the new line, length and time; its name and options stay. */
+async function refreshRoute(){
+  const r = ROUTE, btn = document.getElementById('routeRefresh');
+  if(!r) return;
+  btn.disabled = true; btn.textContent = 'Asking Stadia Maps…';
+  const opts = currentOptions();
+  const got = await requestRoute(r.from, r.to);
+  if(got.err){
+    btn.disabled = false; btn.textContent = 'Refresh route';
+    btn.insertAdjacentHTML('afterend', `<p class="err">${got.err} The saved line is unchanged.</p>`); return;
+  }
+  const fresh = {pts: got.pts, distanceKm: got.summary.length, durationSec: got.summary.time,
+                 from: r.from, to: r.to, lineAt: new Date().toISOString(), approximate: false, saved: null};
+  if(r.saved){
+    const rec = Object.assign({}, r.saved, {lineAt: fresh.lineAt, approximate: false, line: encodeShape(got.pts),
+      distanceKm: fresh.distanceKm, durationSec: fresh.durationSec,
+      from: savedEnd(r.from, got.pts[0]), to: savedEnd(r.to, got.pts[got.pts.length - 1])});
+    try{ await putRoute(rec); fresh.saved = rec; }
+    catch(err){ console.warn('refreshed route not saved:', err.message); }
+    renderSaved();
+  }
+  showRoute(fresh, opts);
+}
+
+/* ------------------------------------------------- the saved-route list */
+
+async function renderSaved(){
+  const box = document.getElementById('savedRoutes');
+  if(!box) return;
+  let list;
+  try{ list = await allRoutes(); }
+  catch(err){ box.innerHTML = `<p class="unavail">Saved routes are not available on this device: ${esc(err.message)}.</p>`; return; }
+  const open = box.querySelector('details')?.open ?? false;
+  box.innerHTML = `<details${open ? ' open' : ''}><summary>Saved routes on this device <em>(${list.length})</em></summary>` +
+    (list.length ? list.map(r =>
+      `<div class="sroute" data-id="${esc(r.id)}"><div class="sn"><b>${esc(r.name)}</b>` +
+      `<span class="rd">${esc(r.from.label)} → ${esc(r.to.label)} · ${Number(r.distanceKm).toFixed(0)} km · ` +
+      `saved ${esc(fmtSaved(r.savedAt))}${r.approximate ? ' · approximate' : ''}</span></div>` +
+      `<div class="line"><button class="b" data-act="open">Open</button><button class="b" data-act="rename">Rename</button>` +
+      `<button class="b" data-act="delete">Delete</button></div></div>`).join('')
+      : '<p class="unavail">None yet. After "Get route", name it and press Save route.</p>') +
+    `<div class="ctl"><button class="b" id="routesExport"${list.length ? '' : ' disabled'}>Export</button>` +
+    `<button class="b" id="routesImport">Import</button>` +
+    `<input type="file" id="routesFile" accept="application/json,.json" hidden></div>` +
+    `<div class="sub" id="routesMsg">Kept in this browser only, never in the repo. Clearing the site's data deletes them; ` +
+    `Export saves a file you can import on another device.</div></details>`;
+  box.querySelectorAll('.sroute').forEach(row => {
+    const rec = list.find(r => r.id === row.dataset.id);
+    row.querySelector('[data-act=open]').addEventListener('click', () => openSaved(rec));
+    row.querySelector('[data-act=rename]').addEventListener('click', () => {
+      row.querySelector('.line').innerHTML = `<input type="text" value="${esc(rec.name)}" aria-label="New name">` +
+        `<button class="b" data-act="ok">Rename</button><button class="b" data-act="cancel">Cancel</button>`;
+      const inp = row.querySelector('input');
+      inp.focus();
+      const ok = async () => {
+        const name = inp.value.trim();
+        if(name){
+          try{ await idb('routes', 'readwrite', st => st.put(Object.assign({}, rec, {name}))); }
+          catch(err){ alert('Not renamed: ' + err.message); }
+          if(ROUTE?.saved?.id === rec.id){ ROUTE.saved.name = name; }
+        }
+        renderSaved();
+      };
+      row.querySelector('[data-act=ok]').addEventListener('click', ok);
+      inp.addEventListener('keydown', e => { if(e.key === 'Enter') ok(); });
+      row.querySelector('[data-act=cancel]').addEventListener('click', renderSaved);
+    });
+    row.querySelector('[data-act=delete]').addEventListener('click', () => {
+      row.querySelector('.line').innerHTML = `<span class="sub">Delete "${esc(rec.name)}"?</span>` +
+        `<button class="b" data-act="yes">Delete</button><button class="b" data-act="no">Keep</button>`;
+      row.querySelector('[data-act=yes]').addEventListener('click', async () => {
+        try{ await idb('routes', 'readwrite', st => st.delete(rec.id)); }
+        catch(err){ alert('Not deleted: ' + err.message); }
+        if(ROUTE?.saved?.id === rec.id) ROUTE.saved = null;
+        renderSaved();
+      });
+      row.querySelector('[data-act=no]').addEventListener('click', renderSaved);
+    });
+  });
+  document.getElementById('routesExport').addEventListener('click', () => exportRoutes(list));
+  const file = document.getElementById('routesFile');
+  document.getElementById('routesImport').addEventListener('click', () => file.click());
+  file.addEventListener('change', () => { if(file.files[0]) importRoutes(file.files[0]); });
+}
+
+const EXPORT_FORMAT = 'football-planner-saved-routes';
+
+function exportRoutes(list){
+  const blob = new Blob([JSON.stringify({format: EXPORT_FORMAT, version: 1, exportedAt: new Date().toISOString(),
+    routes: list}, null, 1)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `saved-routes-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  document.getElementById('routesMsg').textContent = `Exported ${list.length} route${list.length === 1 ? '' : 's'} to ${a.download}.`;
+}
+
+/* A route from a file is checked field by field, and one that fails is
+   named with its reason rather than kept half-read. */
+function checkImported(r){
+  const end = e => e && typeof e.label === 'string' && Number.isFinite(e.lat) && Number.isFinite(e.lon) &&
+    Math.abs(e.lat) <= 90 && Math.abs(e.lon) <= 180 && ['search', 'tap', 'home'].includes(e.kind);
+  if(!r || typeof r !== 'object') return 'not a route';
+  if(typeof r.id !== 'string' || !r.id) return 'no id';
+  if(typeof r.name !== 'string' || !r.name.trim()) return 'no name';
+  if(!end(r.from) || !end(r.to)) return 'a start or end without a label, a kind and a position';
+  if(typeof r.line !== 'string' || !r.line) return 'no route line';
+  let pts;
+  try{ pts = decodeShape(r.line); }catch(err){ return 'a route line that cannot be read'; }
+  if(pts.length < 2 || pts.some(p => !Number.isFinite(p[0]) || !Number.isFinite(p[1]) || Math.abs(p[0]) > 90 || Math.abs(p[1]) > 180))
+    return 'a route line that cannot be read';
+  if(!Number.isFinite(r.distanceKm) || !Number.isFinite(r.durationSec)) return 'no length or time';
+  if(isNaN(Date.parse(r.savedAt)) || isNaN(Date.parse(r.lineAt))) return 'no saved date';
+  return null;
+}
+
+async function importRoutes(file){
+  const msg = document.getElementById('routesMsg');
+  let data;
+  try{ data = JSON.parse(await file.text()); }
+  catch(err){ msg.innerHTML = `<span class="err">Not imported: ${esc(file.name)} is not a JSON file.</span>`; return; }
+  if(data?.format !== EXPORT_FORMAT || !Array.isArray(data.routes)){
+    msg.innerHTML = `<span class="err">Not imported: ${esc(file.name)} is not a saved-routes export from this app.</span>`; return;
+  }
+  const have = new Set((await allRoutes()).map(r => r.id));
+  let added = 0, already = 0;
+  const bad = [];
+  for(const [i, r] of data.routes.entries()){
+    const why = checkImported(r);
+    if(why){ bad.push(`#${i + 1}${r?.name ? ` "${r.name}"` : ''}: ${why}`); continue; }
+    if(have.has(r.id)){ already++; continue; }
+    const rec = {id: r.id, name: r.name.trim(), savedAt: r.savedAt, lineAt: r.lineAt, approximate: !!r.approximate,
+      from: r.from, to: r.to, line: r.line, distanceKm: r.distanceKm, durationSec: r.durationSec,
+      options: {withinKm: Number(r.options?.withinKm) || 25, homeMatchOn: String(r.options?.homeMatchOn || '')}};
+    try{ await putRoute(rec); added++; have.add(r.id); }
+    catch(err){ bad.push(`"${r.name}": ${err.message}`); }
+  }
+  await renderSaved();
+  document.getElementById('routesMsg').innerHTML =
+    `Imported ${added}; ${already} already on this device, left as they were` +
+    (bad.length ? `; <span class="err">${bad.length} not imported - ${esc(bad.join('; '))}</span>` : '') + '.';
 }
 
 function fmtDuration(sec){
@@ -1370,7 +1867,7 @@ async function renderRouteList(){
     }else if(r.fx?.state === 'unknown'){
       tags += `<span class="tag warn">${esc(r.fx.tag)}</span>`;
       extra = `<span class="rd">${esc(r.fx.note)}</span>`;
-    }else if(!linked(c.id)){
+    }else if(links.ok && !linked(c.id)){
       tags += '<span class="tag warn">no fixture source</span>';
     }
     return `<button class="rclub" data-i="${i}"><i style="background:${colour}"></i>` +
@@ -1379,6 +1876,8 @@ async function renderRouteList(){
       `${r.along.toFixed(0)} km along the route</span>${extra}` +
       `<span class="meta">${tags}</span></span></button>`;
   }).join('') : '<p class="unavail">No club to show.</p>') +
+  (!links.ok ? `<div class="sub">The fixture links (data/clubs/fixture-links.json) could not be loaded` +
+    ` (${esc(links.err)}), so this list cannot say which clubs have a fixture source.</div>` : '') +
   `<div class="sub">Distance from the road is a straight line from the ground to the nearest
     point of the route line. Kick-off times are German time.</div>`;
 
@@ -1404,6 +1903,7 @@ function clearRoute(){
     if(PICKING) endPick();
     closeSheet();
     panel.hidden = !panel.hidden;
+    if(!panel.hidden){ purgeSearches(); renderSaved(); renderCredits(); }
   });
   document.getElementById('routeClose').addEventListener('click', () => { panel.hidden = true; });
   document.getElementById('pickCancel').addEventListener('click', endPick);
@@ -1415,7 +1915,7 @@ function clearRoute(){
     box.querySelector('input').addEventListener('keydown', e => { if(e.key === 'Enter') findPlace(which); });
     box.querySelector('[data-act=tap]').addEventListener('click', () => startPick(which));
     box.querySelector('[data-act=home]').addEventListener('click', () => {
-      if(HOME) setEnd(which, HOME.lat, HOME.lon, HOME.label + ' (home)');
+      if(HOME) setEnd(which, HOME.lat, HOME.lon, HOME.label + ' (home)', 'home');
     });
   });
 })();

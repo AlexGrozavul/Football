@@ -1,5 +1,5 @@
 // Headless Chromium test of the map tab's Derbies panel, at phone width (390x844).
-// Not run by any workflow: run it by hand after changing the panel or data/derbies.csv.
+// Run by .github/workflows/test-pages.yml on any change to the page; by hand after changing data/derbies.csv:
 //
 //   npm install playwright            (anywhere; it is not a dependency of this repo)
 //   node tools/test_derbies.js .      (serves the checkout itself; it changes no file)
@@ -37,7 +37,7 @@ const server = http.createServer((req, res) => {
   const browser = await chromium.launch({executablePath: process.env.CHROMIUM_PATH || undefined, headless: true});
   const ctx = await browser.newContext({viewport: {width:390, height:844}, isMobile: true, hasTouch: true,
     deviceScaleFactor: 2, serviceWorkers: 'block'});
-  await ctx.route('https://tiles.stadiamaps.com/**', r => r.fulfill({status:200, contentType:'image/png', body: PNG}));
+  await ctx.route('https://tiles.stadiamaps.com/**', r => r.fulfill({status:200, contentType:'image/png', headers: {'Access-Control-Allow-Origin': '*'}, body: PNG}));
   await ctx.route('https://api.stadiamaps.com/**', r => r.abort());
   const page = await ctx.newPage();
   const errors = [];

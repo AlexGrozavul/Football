@@ -1,0 +1,90 @@
+name: Test the page
+
+# Opens index.html in headless Chromium at phone width (390x844) and runs
+# the three page tests: the installable app (tools/test_pwa.js), the
+# derbies panel (tools/test_derbies.js) and the route panel with saved
+# routes (tools/test_routes.js). Each one serves the checkout locally,
+# stubs every Stadia Maps request (tiles, routing, place search) so no
+# credit is spent, and fails on a script error. A failing test turns the
+# run red.
+#
+# Runs on a change to the page, the service worker, the manifest, the
+# tests or this file: on a push to main, and on a pull request, so a
+# working branch is tested before it is merged.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "sw.js"
+      - "manifest.webmanifest"
+      - "tools/test_*.js"
+      - ".github/workflows/test-pages.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "sw.js"
+      - "manifest.webmanifest"
+      - "tools/test_*.js"
+      - ".github/workflows/test-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      # Playwright is not a dependency of this repo; it is installed here,
+      # pinned, outside the checkout.
+      - name: Install Playwright and Chromium
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      # test_pwa.js edits files in the site it serves, so it gets a copy.
+      - name: Installable app
+        run: |
+          set -o pipefail
+          mkdir -p /tmp/site/Football /tmp/pwa
+          git ls-files -z | xargs -0 cp --parents -t /tmp/site/Football
+          NODE_PATH=/tmp/pw/node_modules node tools/test_pwa.js /tmp/site /tmp/pwa 2>&1 | tee /tmp/test_pwa.log
+
+      - name: Derbies panel
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_derbies.js . 2>&1 | tee /tmp/test_derbies.log
+
+      - name: Route panel and saved routes
+        if: always()
+        run: |
+          set -o pipefail
+          mkdir -p /tmp/routes
+          NODE_PATH=/tmp/pw/node_modules node tools/test_routes.js . /tmp/routes 2>&1 | tee /tmp/test_routes.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            for t in pwa derbies routes; do
+              echo "## test_$t.js"
+              echo
+              echo '```'
+              cat /tmp/test_$t.log 2>/dev/null || echo "did not run"
+              echo '```'
+            done
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,5 +1,5 @@
 // Headless Chromium test of the installable app (manifest, sw.js), at phone width.
-// Not run by any workflow: run it by hand after changing index.html, sw.js or the manifest.
+// Run by .github/workflows/test-pages.yml on any change to index.html, sw.js or the manifest; by hand:
 //
 //   npm install playwright            (anywhere; it is not a dependency of this repo)
 //   mkdir -p /tmp/site && cp -r . /tmp/site/Football     (a COPY: the test edits files in it)
@@ -8,7 +8,7 @@
 // It serves the copy at http://localhost:8765/Football/ with GitHub Pages' own
 // Cache-Control: max-age=600, stubs Stadia's tiles, and checks: Chrome's own
 // installability errors (none), a second load offline with the banner, an online
-// load after a data change showing the new data, and a new deploy replacing the
+// load after a data change showing the new data, refused tiles raising the map card, and a new deploy replacing the
 // shell (with and without a change to sw.js). Exits 1 on any failure.
 // CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -16,6 +16,9 @@ const http = require('http'), fs = require('fs'), path = require('path'), crypto
 const ROOT = process.argv[2];            // directory that contains Football/
 const SITE = path.join(ROOT, 'Football');
 const PORT = 8765, BASE = `http://localhost:${PORT}/Football/`;
+// The shell cache version sw.js carries today, and the next one the deploy test bumps it to.
+const OLD_V = fs.readFileSync(path.join(SITE, 'sw.js'), 'utf8').match(/const SHELL_VERSION = '(v(\d+))';/)[1];
+const NEW_V = 'v' + (Number(OLD_V.slice(1)) + 1);
 const TYPES = {'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.json':'application/json',
   '.csv':'text/csv; charset=utf-8','.png':'image/png','.svg':'image/svg+xml','.webmanifest':'application/manifest+json'};
 let server = null, requests = [];
@@ -38,7 +41,7 @@ function up(){ return new Promise(r => {
 });}
 function down(){ return new Promise(r => { server.closeAllConnections(); server.close(r); }); }
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
-let netOff = false;
+let netOff = false, tilesRefused = false;
 const results = [];
 const check = (name, ok, detail='') => { results.push([ok, name, detail]); console.log((ok ? 'PASS ' : 'FAIL ') + name + (detail ? ' :: ' + detail : '')); };
 
@@ -49,7 +52,9 @@ const check = (name, ok, detail='') => { results.push([ok, name, detail]); conso
   const ctx = await chromium.launchPersistentContext(prof, { executablePath: process.env.CHROMIUM_PATH || undefined, headless: true,
     viewport: {width:390, height:844}, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
   const browser = ctx;
-  await ctx.route('https://tiles.stadiamaps.com/**', route => netOff ? route.abort('internetdisconnected') : route.fulfill({status:200, contentType:'image/png', body: PNG}));
+  // Stadia answers a refused tile with HTTP 401 AND a picture, with CORS open (measured 2026-10-03).
+  await ctx.route('https://tiles.stadiamaps.com/**', route => netOff ? route.abort('internetdisconnected')
+    : route.fulfill({status: tilesRefused ? 401 : 200, contentType:'image/png', headers: {'Access-Control-Allow-Origin': '*'}, body: PNG}));
   const page = ctx.pages()[0] || await ctx.newPage();
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
@@ -134,6 +139,16 @@ const check = (name, ok, detail='') => { results.push([ok, name, detail]); conso
   check('the saved copy was replaced by the new data', savedName === 'PWA TEST CHANGED NAME', savedName);
   fs.writeFileSync(de, orig);
 
+  // ---- 3b. online, Stadia refusing the tiles (HTTP 401 with a picture): the card says refused
+  tilesRefused = true;
+  await page.reload(); await waitLoaded(); await page.waitForTimeout(800);
+  const sr = await state();
+  check('tiles refused with HTTP 401 + a picture: the map card shows and says Stadia refused them',
+    sr.mapOff && /refused/.test(sr.mapOffText) && /401/.test(sr.mapOffText) && !/offline/.test(sr.mapOffText), sr.mapOffText);
+  tilesRefused = false;
+  await page.reload(); await waitLoaded(); await page.waitForTimeout(800);
+  check('...and with tiles answered again the card is gone', !(await state()).mapOff);
+
   // ---- 4a. new deploy of index.html, sw.js untouched
   const idx = path.join(SITE, 'index.html'); const idxOrig = fs.readFileSync(idx, 'utf8');
   fs.writeFileSync(idx, idxOrig.replace('<title>', '<meta name="deploy-test" content="deploy-2">\n<title>'));
@@ -144,16 +159,16 @@ const check = (name, ok, detail='') => { results.push([ok, name, detail]); conso
   check('...and the offline shell is that new index.html, not the old one', (await state()).deployMeta === 'deploy-2');
   await up(); netOff = false; await ctx.setOffline(false);
 
-  // ---- 4b. new deploy that changes sw.js (SHELL_VERSION v1 -> v2)
+  // ---- 4b. new deploy that changes sw.js (SHELL_VERSION vN -> vN+1, whatever N is today)
   const swf = path.join(SITE, 'sw.js'); const swOrig = fs.readFileSync(swf, 'utf8');
-  fs.writeFileSync(swf, swOrig.replace("const SHELL_VERSION = 'v1';", "const SHELL_VERSION = 'v2';"));
+  fs.writeFileSync(swf, swOrig.replace(`const SHELL_VERSION = '${OLD_V}';`, `const SHELL_VERSION = '${NEW_V}';`));
   fs.writeFileSync(idx, idxOrig.replace('<title>', '<meta name="deploy-test" content="deploy-3">\n<title>'));
   await page.reload(); await waitLoaded();
-  await poll(async () => { const k = Object.keys(await cacheKeys()); return k.includes('football-shell-v2') && !k.includes('football-shell-v1'); }, 20000);
+  await poll(async () => { const k = Object.keys(await cacheKeys()); return k.includes('football-shell-' + NEW_V) && !k.includes('football-shell-' + OLD_V); }, 20000);
   const keys4 = Object.keys(await cacheKeys());
-  check('changed sw.js installs: shell-v2 created, shell-v1 deleted, data cache kept', keys4.includes('football-shell-v2') && !keys4.includes('football-shell-v1') && keys4.includes('football-data-v1'), keys4.join(','));
-  const v2meta = await page.evaluate(async () => { const c = await caches.open('football-shell-v2'); const r = await c.match(new URL('./', location.href).href); return (await r.text()).includes('deploy-3'); });
-  check('the v2 shell cache holds the new index.html', v2meta);
+  check(`changed sw.js installs: shell-${NEW_V} created, shell-${OLD_V} deleted, data cache kept`, keys4.includes('football-shell-' + NEW_V) && !keys4.includes('football-shell-' + OLD_V) && keys4.includes('football-data-v1'), keys4.join(','));
+  const v2meta = await page.evaluate(async name => { const c = await caches.open(name); const r = await c.match(new URL('./', location.href).href); return (await r.text()).includes('deploy-3'); }, 'football-shell-' + NEW_V);
+  check(`the ${NEW_V} shell cache holds the new index.html`, v2meta);
   await down(); netOff = true; await ctx.setOffline(true);
   await page.reload(); await waitLoaded();
   const s4 = await state();
