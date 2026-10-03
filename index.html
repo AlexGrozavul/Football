@@ -316,10 +316,12 @@ const HOME_FALLBACK = {label:'Leonberg, DE (default)', lat:48.8003, lon:9.0167};
 
 let MAP, LAYER, CLUBS = [], HOME = null, MULTIPLIER = 1.25;
 
-/* Stadia Maps key: map tiles, and since 2026-10-02 the route request and
-   the place search on the map tab. It sits in the page on purpose - see
-   CLAUDE.md, Secrets. Changing or rotating it is this one line. */
-const STADIA_KEY = 'ec818681-51dd-4ceb-89c0-6f1124dbc053';
+/* Stadia Maps: map tiles, the route request and the place search on the
+   map tab. No API key: since 2026-10-03 every Stadia request is
+   authenticated by the domain it comes from (alexgrozavul.github.io,
+   registered in the Stadia dashboard), which the browser states in the
+   Origin and Referer headers. localhost needs no key either. See
+   CLAUDE.md, Secrets. */
 
 /* ----------------------------------------------------------- helpers */
 
@@ -565,7 +567,7 @@ async function initMap(){
   /* Tiles are never cached by sw.js (CLAUDE.md, The installable app).
      Offline, or when tiles keep failing, a card says the map needs a
      connection rather than leaving a blank square. */
-  const tiles = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=' + STADIA_KEY, {
+  const tiles = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
     maxZoom: 20,
     attribution: '&copy; <a href="https://stadiamaps.com/attribution/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
   }).addTo(MAP);
@@ -1232,7 +1234,7 @@ async function findPlace(which){
   const hits = box.querySelector('.hits');
   if(!text){ hits.innerHTML = '<p class="err">Type a place first.</p>'; return; }
   hits.innerHTML = '<div class="sub">Searching…</div>';
-  const q = new URLSearchParams({text, size: '5', api_key: STADIA_KEY});
+  const q = new URLSearchParams({text, size: '5'});
   if(HOME){ q.set('focus.point.lat', HOME.lat); q.set('focus.point.lon', HOME.lon); }
   let res, data;
   try{
@@ -1267,7 +1269,7 @@ async function getRoute(){
                 costing: 'auto', units: 'kilometers', directions_type: 'none'};
   let res, data;
   try{
-    res = await fetch('https://api.stadiamaps.com/route/v1?api_key=' + STADIA_KEY, {
+    res = await fetch('https://api.stadiamaps.com/route/v1', {
       method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
     data = await res.json().catch(() => null);
   }catch(err){
