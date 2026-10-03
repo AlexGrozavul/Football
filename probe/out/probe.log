@@ -1,31 +1,58 @@
 list lines 70 in scope 62
-  retry 0 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 1 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 2 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 3 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 0 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 1 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 2 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 3 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 0 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 1 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 2 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-  retry 3 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
-wikidata rivalry items 15891
-  retry 0 https://de.wikipedia.org/w/api.php?action=query&titles=N%C3%BCrnberger+Zeitung%7COtto+Brenzke%7CPaul+Vorl%C3%A4ufer%7CPa HTTP Error 429: Too Many Requests
-  retry 1 https://de.wikipedia.org/w/api.php?action=query&titles=N%C3%BCrnberger+Zeitung%7COtto+Brenzke%7CPaul+Vorl%C3%A4ufer%7CPa HTTP Error 429: Too Many Requests
-  retry 2 https://de.wikipedia.org/w/api.php?action=query&titles=N%C3%BCrnberger+Zeitung%7COtto+Brenzke%7CPaul+Vorl%C3%A4ufer%7CPa HTTP Error 429: Too Many Requests
-  retry 0 https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format HTTP Error 429: Too Many Requests
-  retry 1 https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format HTTP Error 429: Too Many Requests
-  retry 2 https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format HTTP Error 429: Too Many Requests
-  retry 3 https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format HTTP Error 429: Too Many Requests
-Traceback (most recent call last):
-  File "/home/runner/work/Football/Football/probe/probe_derbies.py", line 161, in <module>
-    pq = api(lang, action="query", titles=realt, prop="pageprops", ppprop="wikibase_item")
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/Football/Football/probe/probe_derbies.py", line 24, in api
-    return get(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(p))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/Football/Football/probe/probe_derbies.py", line 20, in get
-    raise RuntimeError("failed " + url)
-RuntimeError: failed https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format=json&formatversion=2
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=intitle%3Arivalries+Serbia+football&srlimit=8&forma HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=intitle%3Arivalries+Serbia+football&srlimit=8&forma HTTP Error 429: Too Many Requests
+wikidata rivalry items 82
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=ACF+Fiorentina%E2%80%93Juventus+FC+rivalry&prop=pageprops&ppprop= HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=ACF+Fiorentina%E2%80%93Juventus+FC+rivalry&prop=pageprops&ppprop= HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=B92&prop=wikitext&redirects=1&format=json&formatversion=2 HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=parse&page=B92&prop=wikitext&redirects=1&format=json&formatversion=2 HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Aare%7CBasel%7CBellinzona%7CBern-Mittelland+%28administrative+dis HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Carinthia&prop=pageprops&ppprop=wikibase_item&format=json&formatv HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Carinthia&prop=pageprops&ppprop=wikibase_item&format=json&formatv HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=Cluj+derby&prop=wikitext&redirects=1&format=json&formatversion=2 HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=parse&page=Cluj+derby&prop=wikitext&redirects=1&format=json&formatversion=2 HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=1952%E2%80%9353+Football+League%7C1994%E2%80%9395+in+English+foot HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=1988%E2%80%9389+Divizia+A%7C2024%E2%80%9325+Liga+I%7CArena+Na%C8% HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=1988%E2%80%9389+Divizia+A%7C2024%E2%80%9325+Liga+I%7CArena+Na%C8% HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Derby+dell%27Enza&prop=pageprops&ppprop=wikibase_item&format=json HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Derby+dell%27Enza&prop=pageprops&ppprop=wikibase_item&format=json HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=Derby+della+Mole&prop=wikitext&redirects=1&format=json&formatversio HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=1935%E2%80%9336+Coppa+Italia%7C2003%E2%80%9304+Serie+B%7C2007+Cat HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=1935%E2%80%9336+Coppa+Italia%7C2003%E2%80%9304+Serie+B%7C2007+Cat HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Derby+of+the+North&prop=pageprops&ppprop=wikibase_item&format=jso HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Derby+of+the+North&prop=pageprops&ppprop=wikibase_item&format=jso HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=East+Lancashire+derby&prop=pageprops&ppprop=wikibase_item&format= HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=FC+Astra+Giurgiu&prop=wikitext&redirects=1&format=json&formatversio HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=parse&page=FC+Astra+Giurgiu&prop=wikitext&redirects=1&format=json&formatversio HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Copou%7CFC+Politehnica+Ia%C8%99i+%282010%29%7CIa%C8%99i%7CIa%C8%9 HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Copou%7CFC+Politehnica+Ia%C8%99i+%282010%29%7CIa%C8%99i%7CIa%C8%9 HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=FC+Sportul+Studen%C8%9Besc+Bucure%C8%99ti&prop=pageprops&ppprop=w HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=Former+Ploie%C8%99ti+derby&prop=wikitext&redirects=1&format=json&fo HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=parse&page=Former+Ploie%C8%99ti+derby&prop=wikitext&redirects=1&format=json&fo HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Ain%7CBasel%7CBonn%7CCanton+of+Geneva%7CCarouge%7CCh%C3%AAne-Boug HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=1929%E2%80%9330+Eerste+Klasse%7C1942%E2%80%9343+Eerste+Klasse%7C2 HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=1929%E2%80%9330+Eerste+Klasse%7C1942%E2%80%9343+Eerste+Klasse%7C2 HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Lake+Geneva&prop=pageprops&ppprop=wikibase_item&format=json&forma HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Lake+Geneva&prop=pageprops&ppprop=wikibase_item&format=json&forma HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=Lower+Austria&prop=wikitext&redirects=1&format=json&formatversion=2 HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Austria%7CBurgomaster%7CCentral+European+Summer+Time%7CCentral+Eu HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Austria%7CBurgomaster%7CCentral+European+Summer+Time%7CCentral+Eu HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Madrid+derby&prop=pageprops&ppprop=wikibase_item&format=json&form HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Madrid+derby&prop=pageprops&ppprop=wikibase_item&format=json&form HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=North+Ba%C4%8Dka+District&prop=wikitext&redirects=1&format=json&for HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Arutela%7CCozia+Monastery%7CCraiova%7CDanube%7CEastern+European+S HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Arutela%7CCozia+Monastery%7CCraiova%7CDanube%7CEastern+European+S HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Paris+derby&prop=pageprops&ppprop=wikibase_item&format=json&forma HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=Paris+derby&prop=pageprops&ppprop=wikibase_item&format=json&forma HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=Rh%C3%B4ne&prop=wikitext&redirects=1&format=json&formatversion=2 HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=1914%E2%80%9315+FA+Cup%7C2024%E2%80%9325+EFL+Championship%7C2026% HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=1914%E2%80%9315+FA+Cup%7C2024%E2%80%9325+EFL+Championship%7C2026% HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=South+Wales+derby&prop=pageprops&ppprop=wikibase_item&format=json HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=South+Wales+derby&prop=pageprops&ppprop=wikibase_item&format=json HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Ticino&prop=pageprops&ppprop=wikibase_item&format=json&formatvers HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=parse&page=Vall%C3%A8s+derby&prop=wikitext&redirects=1&format=json&formatversi HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=parse&page=Vall%C3%A8s+derby&prop=wikitext&redirects=1&format=json&formatversi HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=Alemannic+dialects%7CAlsace%7CAustria%7CAustrian+People%27s+Party HTTP Error 429: Too Many Requests
+  retry 0 https://en.wikipedia.org/w/api.php?action=query&titles=2025%E2%80%9326+Austrian+Regionalliga%7CAustrian+Regionalliga+Eas HTTP Error 429: Too Many Requests
+  retry 1 https://en.wikipedia.org/w/api.php?action=query&titles=2025%E2%80%9326+Austrian+Regionalliga%7CAustrian+Regionalliga+Eas HTTP Error 429: Too Many Requests
+articles 115
