@@ -370,6 +370,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   files, with a **Next window** line. See the Conventions entries on
   each. The zoom rule changed the same day: every club is drawn from z9
   (Conventions, "Tier zoom bands").
+  Also since 2026-10-03 (Conventions, "Phone layout and plain words"):
+  the club's Wikidata link is a **Details** line at the foot of the
+  sheet, and the Fixtures and Ticket info sections say why something is
+  missing in plain words, with the file-level reason under a collapsed
+  **Why?** (or **Source**) line.
 - `manifest.webmanifest`, `sw.js`, `icons/`, `vendor/leaflet-1.9.4/` —
   the **installable app** (built 2026-10-02): the manifest Chrome reads
   to offer "Install app", the service worker that lets the installed app
@@ -426,10 +431,26 @@ a subscribed calendar reads as a schedule regardless of its description.
   on the sheet as written, the Next window line naming only that club's
   own entries, never a disputed one, always labelled, and never an
   estimate to the day.
+- `tools/test_layout.js` — added 2026-10-03: the phone-layout problems
+  Alexandru saw on a real phone, at 390x844 with the real data. Fails if
+  the Ticket info or Bucket list tab scrolls sideways or any card or tag
+  reaches past the screen (every warning in `football-rules.json` is
+  checked, the longest - Inter's, 135 characters, and Poli's - by name);
+  if a club sheet (a Regionalliga Bayern club, a Südwest club, Bayern)
+  can be moved off the bottom bar by scrolling past its end, or the map
+  pane can be scrolled at all; if a sheet shows a Wikidata id anywhere
+  but its bottom Details line; if the visible Fixtures or Ticket info
+  text names a file, a path, OpenLigaDB or football-data (checked on every
+  club with ticket information and one club per country and tier); if a
+  club with no fixtures is not told which leagues are covered; if Next
+  window does not say "No window recorded" / "No upcoming window
+  recorded" as the files require; and if any sheet with ticket
+  information, every section open, is wider than the screen. Run against
+  the page as it was before, it failed 255 of 287 checks.
 - `.github/workflows/test-pages.yml` — added 2026-10-03: runs
   `test_pwa.js`, `test_derbies.js` and `test_routes.js`, and since the
-  same day `test_zoom.js`, `test_search.js`, `test_coverage.js` and
-  `test_sheet_tickets.js`, on a push to
+  same day `test_zoom.js`, `test_search.js`, `test_coverage.js`,
+  `test_sheet_tickets.js` and `test_layout.js`, on a push to
   `main` or a pull request touching `index.html`, `sw.js`, the manifest,
   a `tools/test_*.js`, `data/football-rules-links.csv` or itself. Playwright is installed in the job,
   pinned, not added to the repo. **Every Stadia request in all three is
@@ -1480,6 +1501,43 @@ info unavailable".
   October 2026, the current month, so "check whether it has been
   announced".
 
+**Phone layout and plain words, 2026-10-03.** Five problems Alexandru
+saw on a real phone at about 390 px, each reproduced in headless
+Chromium first and each held by `tools/test_layout.js`:
+- **Sideways scroll on the Ticket info tab** was two warning tags that
+  could not wrap (`.tag` was `white-space: nowrap`): Inter's 135-character
+  warning made the tab 724 px wide, Poli's 479. Tags now wrap inside
+  their card, and a field's value wraps anywhere. The Bucket list tab
+  had the same tag and is tested too.
+- **The sheet ending mid-screen was a real bug, not the screenshot.**
+  The map pane was itself scrollable by 394 px, because the hidden route,
+  derbies and coverage panels sit in it pushed below its bottom edge
+  (`translateY(105%)`) and a transformed element still counts towards
+  its container's scroll area. A swipe past the end of a sheet then
+  scrolled the whole pane, carrying the sheet up and leaving an empty
+  band above the bottom bar. The map pane is now `overflow: clip` (it
+  cannot scroll at all, even by script) and every panel's body is
+  `overscroll-behavior: contain`, so it scrolls inside itself.
+- **The bare Q-id on the distance note** was a link to the club's
+  Wikidata item - where its name, ground, capacity and position come
+  from, and the id a `clubs-manual.csv` row uses. It is kept, as a
+  "Details · Wikidata (item Q…)" line at the foot of the sheet.
+- **Fixtures and Ticket info name no file** in what the sheet shows.
+  Each says why in plain words; a club with no fixtures is told which
+  competitions are fetched (`FIXTURE_COVERAGE` in `index.html` - keep it
+  in step with `fetch_fixtures.py` and `fetch_openligadb.py`), and a club
+  linked only to a cup is told its league is not covered. The file-level
+  reason is under a collapsed "Why?" (or "Source") line. The Club
+  section's competition note still names `league-tiers.csv` when it
+  cannot place a league; that was outside the ask and was left.
+- **Next window, when nothing is ahead**, says "No window recorded"
+  when neither source records any event or window for the club (on
+  2026-10-03: Kaiserslautern, Kickers, UTA, Dumbrăvița), "No upcoming
+  window recorded" when what is recorded is all past or disputed (Poli),
+  and "No upcoming window with a date or month recorded" when what is
+  left names no month (Strasbourg's resale). It used to say "No window
+  ahead with a date or a month, in either source" for all three.
+
 **The installable app: what is cached, what deliberately is not, and
 how an update reaches the phone.** Built 2026-10-02 on Alexandru's
 instruction. The site is served from `/Football/`, not from `/`, so
@@ -2040,6 +2098,29 @@ how each rests on them, is in Conventions, "The installable app" and
 ---
 
 ## Known open problems
+
+- **The Inter card on the Ticket info tab states "phase 1 (open
+  worldwide)" flatly, and the researched rules contradict it - reported
+  2026-10-03, not changed: Alexandru decides.** The card is
+  `football-rules.json`'s ticket event `inter-derby-phase1`, titled
+  "Inter home derby phase 1 (open worldwide)". It sits under "Past,
+  disputed or undated" with a red "disputed — do not trust" tag and its
+  warning about the year (13/21/24 August match 2026 and 2015). **Both
+  marks are about the DATE**; nothing on the card questions the claim in
+  its title. `club-ticket-phases.csv` (from Inter's own 2025-26
+  announcement, the derby PDF's I2) has four season-ticket-holder phases
+  first and no open-to-everyone phase before open sale - the
+  contradiction already listed under "The derby PDF contradicts
+  `football-rules.json` on Inter". The same claim is in the `inter` club
+  entry ("Phase 1 - OPEN TO EVERYONE WORLDWIDE") and the
+  `derby-madonnina` bucket item's `saleRoute`, both shown as written on
+  Inter's club sheet beside the researched phases, and on the Bucket list
+  tab. **Smallest honest fix, for him to choose**: either edit the three
+  texts in `football-rules.json` himself (no tool writes to it), or have
+  the page add one tag to a Ticket info card whose club has researched
+  phases that disagree - "unverified, see researched rules on the club
+  sheet" - which would be a page change keyed by hand to that event id,
+  since nothing machine-readable says the two disagree.
 
 - **Derbies, 2026-10-03: 248 rows, 197 with both clubs on the map,
   102 of those with a fixture source on both sides.** Per country
