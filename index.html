@@ -276,6 +276,22 @@
   .dclub .rd{display:block;color:var(--faint);font-size:12px}
   .dclub button{margin-top:6px}
   .dback{margin-top:8px}
+  /* Near me panel: two tabs, Clubs and Derbies, above one body each. */
+  .ntabs{display:flex;gap:4px;padding:8px 14px 0;border-bottom:1px solid var(--line);flex:0 0 auto}
+  .ntabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--dim);
+    font:inherit;font-size:14px;font-weight:600;padding:8px 6px 9px;min-height:40px;cursor:pointer}
+  .ntabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--t3)}
+  .ntabs button:focus-visible{outline:2px solid var(--t3);outline-offset:-2px}
+  .norig{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:13.5px}
+  .norig #nearFrom{flex:1 1 180px;min-width:0;overflow-wrap:anywhere}
+  .norig #nearFrom b{font-weight:600}
+  .ntiers{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .ntiers button{display:flex;align-items:center;gap:6px;background:#1b2230;border:1px solid var(--line);
+    border-radius:14px;color:var(--faint);font:inherit;font-size:12.5px;padding:4px 10px;cursor:pointer}
+  .ntiers button i{width:9px;height:9px;border-radius:50%;opacity:.35}
+  .ntiers button[aria-pressed="true"]{color:var(--ink);border-color:#3b4756}
+  .ntiers button[aria-pressed="true"] i{opacity:1}
+  #nearMore{width:100%;margin-top:8px}
   .sroute{border-top:1px solid var(--line);padding:8px 0}
   .sroute:first-of-type{border-top:0}
   .sroute .sn{font-size:13.5px;overflow-wrap:anywhere}
@@ -331,7 +347,7 @@
         <div class="barrow">
           <div class="chip" id="homeChip">home not set</div>
           <button class="chip btn" id="routeChip" style="margin-left:auto">Route</button>
-          <button class="chip btn" id="derbyChip">Derbies</button>
+          <button class="chip btn" id="nearChip">Near me</button>
         </div>
       </div>
       <div class="legend" id="legend">
@@ -371,10 +387,15 @@
           <div class="sub" id="routeCredits"></div>
         </div>
       </div>
-      <div class="sheet route" id="derbyPanel" hidden role="dialog" aria-label="Derbies">
-        <div class="shead"><h3 id="derbyTitle">Derbies near home</h3>
-          <button class="x" id="derbyClose" aria-label="Close">Close</button></div>
-        <div class="sbody" id="derbyBody"></div>
+      <div class="sheet route" id="nearPanel" hidden role="dialog" aria-label="Near me">
+        <div class="shead"><h3 id="derbyTitle">Clubs near home</h3>
+          <button class="x" id="nearClose" aria-label="Close">Close</button></div>
+        <div class="ntabs" role="tablist" aria-label="Near me">
+          <button type="button" role="tab" id="tabClubs" aria-selected="true" aria-controls="nearBody">Clubs</button>
+          <button type="button" role="tab" id="tabDerbies" aria-selected="false" aria-controls="derbyBody">Derbies</button>
+        </div>
+        <div class="sbody" id="nearBody" role="tabpanel" aria-labelledby="tabClubs"></div>
+        <div class="sbody" id="derbyBody" role="tabpanel" aria-labelledby="tabDerbies" hidden></div>
       </div>
       <div class="sheet route" id="coveragePanel" hidden role="dialog" aria-label="Clubs and leagues">
         <div class="shead"><h3 id="covTitle">Clubs and leagues on the map</h3>
@@ -457,10 +478,11 @@ function haversine(a, b, c, d){
 
 /* Straight line times the multiplier from settings. No routing API, so
    this is a road-distance estimate and nothing more - it is not a
-   travel time and is not turned into one. */
-function roadEstimate(lat, lon){
-  if(!HOME || lat == null || lon == null) return null;
-  return Math.round(haversine(HOME.lat, HOME.lon, lat, lon) * MULTIPLIER);
+   travel time and is not turned into one. Measured from home unless
+   another origin is given (the Near me list's "your location"). */
+function roadEstimate(lat, lon, from = HOME){
+  if(!from || lat == null || lon == null) return null;
+  return Math.round(haversine(from.lat, from.lon, lat, lon) * MULTIPLIER);
 }
 
 function field(label, value){
@@ -2501,17 +2523,161 @@ async function openDerby(d, max){
   }
 }
 
-(function wireDerbies(){
-  const panel = document.getElementById('derbyPanel');
-  document.getElementById('derbyChip').addEventListener('click', () => {
+/* ------------------------------------------------------- clubs near me */
+
+/* The Near me panel's Clubs tab: every club on the map within a distance
+   of home (or, when asked, of where the phone is), nearest first. The
+   distance is the same road estimate as everywhere else, straight line
+   times the settings multiplier - not a travel time.
+
+   "Use my location" asks the browser for a position only when pressed.
+   The position is held in NEAR.here and nowhere else: never written to
+   localStorage, IndexedDB, a cookie, the URL or the repo, and never sent
+   in any request - it is only subtracted from club positions already in
+   the page. A reload forgets it. See CLAUDE.md, "Clubs near me".
+   The tier chips remember the tiers turned OFF, so a tier whose club file
+   loads after the panel first opened is on, like every other. */
+const NEAR_PAGE = 50;
+const NEAR = {max: 100, off: new Set(), shown: NEAR_PAGE, here: null, finding: false, msg: '', ask: 0};
+let NEAR_TAB = 'clubs';
+
+const nearFrom = () => NEAR.here || HOME;
+/* Exactly the clubs drawClubs() can draw: a position, a tier, and a zoom
+   for that tier. A club whose position was cleared is not in CLUBS. */
+const onMap = c => c.lat != null && c.lon != null && zoomForTier(c.tier) !== undefined;
+
+function renderNear(){
+  const body = document.getElementById('nearBody');
+  document.getElementById('derbyTitle').textContent = NEAR.here ? 'Clubs near your location' : 'Clubs near home';
+  if(!CLUBS.length || !HOME){ body.innerHTML = '<p class="unavail">No club files loaded, so there is nothing to list.</p>'; return; }
+  const tiers = [...new Set(CLUBS.filter(onMap).map(c => c.tier))].sort((a, b) => a - b);
+  body.innerHTML =
+    `<div class="norig"><span id="nearFrom">From: ` +
+      (NEAR.here ? '<b>your current location</b> (approx.)' : `<b>${esc(HOME.label)}</b> (home)`) + `</span>` +
+      `<button class="b" id="nearLocate"${NEAR.finding ? ' disabled' : ''}>${NEAR.here ? 'Update my location' : 'Use my location'}</button>` +
+      (NEAR.here ? `<button class="b" id="nearHome">Back to home</button>` : '') + `</div>` +
+    `<div class="sub" id="nearMsg" role="status">${esc(NEAR.finding ? 'Finding your location…' : NEAR.msg)}</div>` +
+    `<div class="sub">Your location stays on this device.</div>` +
+    `<div class="ctl"><span>Within</span><input type="range" id="nearKm" min="10" max="500" step="10" value="${NEAR.max}" aria-label="Distance">` +
+      `<b id="nearKmTxt">${NEAR.max} km</b></div>` +
+    `<div class="ntiers" role="group" aria-label="Tiers">` + tiers.map(t =>
+      `<button type="button" data-tier="${t}" aria-pressed="${!NEAR.off.has(t)}">` +
+      `<i style="background:${TIER_COLOUR[t] || '#888'}"></i>${esc(TIER_NAME[t] || 'Tier ' + t)}</button>`).join('') + `</div>` +
+    `<div id="nearList"></div>` +
+    `<div class="sub">Distance is a road estimate: straight line × ${MULTIPLIER} from ` +
+      `${NEAR.here ? 'your location' : esc(HOME.label)}. It is not a travel time.</div>`;
+
+  body.querySelector('#nearLocate').addEventListener('click', locateMe);
+  body.querySelector('#nearHome')?.addEventListener('click', () => {
+    NEAR.here = null; NEAR.msg = ''; NEAR.ask++; NEAR.finding = false; NEAR.shown = NEAR_PAGE; renderNear();
+  });
+  const slider = body.querySelector('#nearKm');
+  slider.addEventListener('input', () => {
+    NEAR.max = Number(slider.value); NEAR.shown = NEAR_PAGE;
+    body.querySelector('#nearKmTxt').textContent = NEAR.max + ' km';
+    renderNearList();
+  });
+  body.querySelectorAll('.ntiers button').forEach(b => b.addEventListener('click', () => {
+    const t = Number(b.dataset.tier);
+    NEAR.off.has(t) ? NEAR.off.delete(t) : NEAR.off.add(t);
+    b.setAttribute('aria-pressed', String(!NEAR.off.has(t)));
+    NEAR.shown = NEAR_PAGE;
+    renderNearList();
+  }));
+  renderNearList();
+}
+
+function nearClubs(){
+  const from = nearFrom();
+  const inRange = [];
+  for(const c of CLUBS){
+    if(!onMap(c)) continue;
+    const km = roadEstimate(c.lat, c.lon, from);
+    if(km !== null && km <= NEAR.max) inRange.push({c, km});
+  }
+  inRange.sort((a, b) => a.km - b.km || a.c.tier - b.c.tier ||
+    String(a.c.name || a.c.id).localeCompare(String(b.c.name || b.c.id)));
+  return {inRange, list: inRange.filter(x => !NEAR.off.has(x.c.tier))};
+}
+
+function renderNearList(){
+  const box = document.getElementById('nearList');
+  if(!box) return;
+  const {inRange, list} = nearClubs();
+  const by = NEAR.here ? 'by road from your location (estimate)' : 'by road (estimate)';
+  const rows = list.slice(0, NEAR.shown);
+  box.innerHTML =
+    `<h4 id="nearCount">${list.length} club${list.length === 1 ? '' : 's'} within ${NEAR.max} km</h4>` +
+    (!inRange.length ? `<p class="unavail">No clubs within ${NEAR.max} km. Widen the distance.</p>`
+     : !list.length ? `<p class="unavail">No clubs within ${NEAR.max} km in the tiers chosen. Turn a tier back on or widen the distance.</p>`
+     : rows.map((x, i) => `<button class="rclub" data-i="${i}" data-id="${esc(x.c.id)}">` +
+        `<i style="background:${TIER_COLOUR[x.c.tier] || '#888'}" title="${esc(TIER_NAME[x.c.tier] || 'Tier ' + x.c.tier)}"></i>` +
+        `<span class="rn">${esc(x.c.name || x.c.id)}` +
+        `<span class="rd">${esc(competitionLabel(x.c))}</span>` +
+        `<span class="rd">${x.c.venue ? esc(x.c.venue) : 'ground not recorded'}</span>` +
+        `<span class="rd nkm">≈ ${x.km} km ${by}</span></span></button>`).join('') +
+      (list.length > rows.length ? `<button class="b" id="nearMore">Show more (${list.length - rows.length} more)</button>` : ''));
+  box.querySelectorAll('.rclub').forEach(b => b.addEventListener('click', () => {
+    /* What choosing a search suggestion does: close the panel, fly to the
+       club at a zoom where it is drawn, open its sheet. */
+    document.getElementById('nearPanel').hidden = true;
+    goToClub(rows[Number(b.dataset.i)].c);
+  }));
+  box.querySelector('#nearMore')?.addEventListener('click', () => { NEAR.shown += NEAR_PAGE; renderNearList(); });
+}
+
+/* Asked only when the button is pressed. The answer stays in memory. */
+function locateMe(){
+  const failed = what => `${what}, so the list ${NEAR.here ? 'stays on your last location' : 'stays on home'}.`;
+  if(!navigator.geolocation){
+    NEAR.msg = failed('This browser cannot share a location'); renderNear(); return;
+  }
+  const ask = ++NEAR.ask;
+  NEAR.finding = true; NEAR.msg = '';
+  renderNear();
+  navigator.geolocation.getCurrentPosition(pos => {
+    if(ask !== NEAR.ask) return;               // "Back to home" was pressed meanwhile
+    NEAR.finding = false;
+    NEAR.here = {lat: pos.coords.latitude, lon: pos.coords.longitude};
+    NEAR.msg = ''; NEAR.shown = NEAR_PAGE;
+    renderNear();
+  }, err => {
+    if(ask !== NEAR.ask) return;
+    NEAR.finding = false;
+    NEAR.msg = err.code === 1 ? failed('Location was not allowed. You can allow it for this site in the browser settings and try again')
+      : err.code === 3 ? failed('Finding your location took too long. Try again')
+      : failed('Your location could not be found');
+    renderNear();
+  }, {enableHighAccuracy: false, timeout: 15000, maximumAge: 300000});
+}
+
+/* ------------------------------------------------------ the Near me panel */
+
+function showNearTab(tab){
+  NEAR_TAB = tab;
+  const clubs = tab === 'clubs';
+  document.getElementById('tabClubs').setAttribute('aria-selected', String(clubs));
+  document.getElementById('tabDerbies').setAttribute('aria-selected', String(!clubs));
+  document.getElementById('nearBody').hidden = !clubs;
+  document.getElementById('derbyBody').hidden = clubs;
+  if(clubs) renderNear();
+  else if(DERBY_OPEN) document.getElementById('derbyTitle').textContent = DERBY_OPEN.name;
+  else renderDerbies();
+}
+
+(function wireNear(){
+  const panel = document.getElementById('nearPanel');
+  document.getElementById('nearChip').addEventListener('click', () => {
     if(PICKING) endPick();
     closeSheet();
     document.getElementById('routePanel').hidden = true;
     panel.hidden = !panel.hidden;
-    if(!panel.hidden && !DERBY_OPEN) renderDerbies();
+    if(!panel.hidden) showNearTab(NEAR_TAB);
   });
-  document.getElementById('derbyClose').addEventListener('click', () => { panel.hidden = true; });
-  /* The two panels share one layer, so opening the route closes this. */
+  document.getElementById('nearClose').addEventListener('click', () => { panel.hidden = true; });
+  document.getElementById('tabClubs').addEventListener('click', () => showNearTab('clubs'));
+  document.getElementById('tabDerbies').addEventListener('click', () => showNearTab('derbies'));
+  /* The panels share one layer, so opening the route closes this. */
   document.getElementById('routeChip').addEventListener('click', () => { panel.hidden = true; });
 })();
 
@@ -2743,13 +2909,13 @@ function openCovLeague(g){
     if(PICKING) endPick();
     closeSheet();
     document.getElementById('routePanel').hidden = true;
-    document.getElementById('derbyPanel').hidden = true;
+    document.getElementById('nearPanel').hidden = true;
     panel.hidden = !panel.hidden;
     if(!panel.hidden && !COV.league) renderCoverage();
   });
   document.getElementById('covClose').addEventListener('click', () => { panel.hidden = true; });
   /* One layer for the three panels: opening another closes this one. */
-  for(const id of ['routeChip', 'derbyChip'])
+  for(const id of ['routeChip', 'nearChip'])
     document.getElementById(id).addEventListener('click', () => { panel.hidden = true; });
 })();
 

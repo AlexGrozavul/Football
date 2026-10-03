@@ -18,7 +18,13 @@ name: Test the page
 # (tools/test_legend.js - fails if the legend does not start closed, does
 # not toggle, lacks its "Leagues shown" header above every row, overlaps
 # the attribution bar or the bottom navigation at 390x700 and 390x500, or
-# forgets its choice on reload). Each one serves the checkout locally,
+# forgets its choice on reload), and since the same day the Near me panel
+# (tools/test_nearme.js - its Clubs and Derbies tabs, the list against the
+# club files, the slider and tier chips, tapping a row including the
+# Grünwalder pair, "Use my location" granted, denied and timed out with the
+# position never stored or sent, and the top row at 390x700 and 390x500;
+# the derbies test reaches the derbies through the panel's tab). Each one
+# serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
 # credit is spent, and fails on a script error. A failing test turns the
 # run red.
@@ -129,11 +135,17 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_legend.js . 2>&1 | tee /tmp/test_legend.log
 
+      - name: Near me panel (clubs near me, derbies tab, location)
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_nearme.js . 2>&1 | tee /tmp/test_nearme.log
+
       - name: Write the run summary
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme; do
               echo "## test_$t.js"
               echo
               echo '```'
