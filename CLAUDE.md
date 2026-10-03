@@ -1828,7 +1828,14 @@ about 60 ms with the CPU slowed 4x is the existing SVG renderer, not
 this change: every marker is an SVG path (the canvas line in `initMap()`
 still does nothing - see Known open problems), and 556 clubs is still
 well under the 1,000 to 2,000 at which canvas was measured to win.
-`test_zoom.js` prints the same table on every run.
+`test_zoom.js` prints the same table on every run. **On the first GitHub
+runner (PR #53)** the same measurement read: `drawClubs()` 27-31 ms
+under this rule against 24 ms under the old one, zoom 8 to 9 38-45 ms
+against 32-34 ms (worst 81 against 72), and a pan **below the
+resolution of the method** - the empty two-frame wait is subtracted, and
+on a fast machine a pan takes less than one frame, so the pan column
+came out between -11 and +1 ms. Read a negative pan as "under a frame",
+not as a number. Neither machine is a phone.
 
 **Tier zoom bands for tier 4 and deeper were merged into one, 2026-09-19.**
 *(Superseded on 2026-10-03 by the entry above: the shared band now starts
