@@ -356,11 +356,18 @@ a subscribed calendar reads as a schedule regardless of its description.
   back - place searches are kept on the device for 7 days, and the panel
   shows an estimate of this month's route and search credits. **None of
   it is ever in the repo.** See the Conventions entry "Saved routes".
-  Since 2026-10-03 a **Derbies** chip beside it opens the **derbies
+  Since 2026-10-03 a **Derbies** chip beside it opened the **derbies
   panel**: every derby in `data/derbies.csv` with both clubs on the map,
   within an adjustable distance of home (default 100 km), nearest
   first; tapping one shows both clubs, opens either sheet, and the next
   meeting from the fixture files. See the Conventions entry on derbies.
+  **Later the same day the Derbies chip became a "Near me" chip**, on
+  Alexandru's instruction: it opens the same panel with two tabs, **Clubs**
+  (shown first) and **Derbies** (the derbies panel exactly as before). The
+  Clubs tab lists every club on the map within an adjustable distance
+  (default 100 km, 10-500) of home - or, on request, of where the phone is
+  - nearest first, with tier chips; tapping a club does what choosing a
+  search suggestion does. See the Conventions entry "Clubs near me".
   Since 2026-10-03 the map tab also has a **club search** (top right:
   matches as you type, ignoring case and accents, and flies to the club
   and opens its sheet), a **coverage panel** (tap the club-count chip:
@@ -404,10 +411,27 @@ a subscribed calendar reads as a schedule regardless of its description.
   `check-derbies.yml` on a push to `main` touching the file, the club
   layer or the tool, and on a pull request touching the file.
 - `tools/test_derbies.js` — headless Chromium test of the derbies panel
-  at 390x844: the default 100 km list, nearest first, every row in the
+  at 390x844 (reached since 2026-10-03 through the Near me chip and its
+  Derbies tab): the default 100 km list, nearest first, every row in the
   file accounted for, the slider, every derby's detail giving one of the
   four honest answers, a sheet opening above the panel, no sideways
   scroll, no script error. Run by `test-pages.yml` since 2026-10-03.
+- `tools/test_nearme.js` — added 2026-10-03: the Near me panel. Both
+  tabs; the Clubs list checked against the club files themselves (the
+  test works out which clubs are within the distance, at 100 and 500 km,
+  without asking the page), nearest first, each row's competition, ground
+  and road estimate; the slider, every tier chip, "Show more" and the
+  empty messages; no club without a position, and every listed club drawn
+  at z9; a tapped row closing the panel, flying to the club and opening
+  its own sheet, for both clubs at the Grünwalder; "Use my location"
+  granted (Playwright's mocked position in Bucharest gives Romanian clubs
+  only), denied, timed out, unavailable and unsupported; the position in
+  no storage, cookie, URL or request and gone after a reload; the panel
+  opened before every club file has loaded; and the top row (club count,
+  search box and its placeholder, home, Route, Near me) at 390x700 and
+  390x500 at zooms 3, 8, 9, 10 and 13 - no overlap, nothing cut off or
+  off screen. It prints how long the list takes at 500 km with the CPU
+  slowed 4x. Run by `test-pages.yml`.
 - `tools/test_routes.js` — headless Chromium test of the route panel and
   its saved routes at 390x844, added 2026-10-03, every Stadia request
   stubbed and counted: search, route, the 7-day search cache (and its
@@ -469,7 +493,8 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `.github/workflows/test-pages.yml` — added 2026-10-03: runs
   `test_pwa.js`, `test_derbies.js` and `test_routes.js`, and since the
   same day `test_zoom.js`, `test_search.js`, `test_coverage.js`,
-  `test_sheet_tickets.js` and `test_layout.js`, on a push to
+  `test_sheet_tickets.js` and `test_layout.js`, then `test_legend.js`
+  and `test_nearme.js`, on a push to
   `main` or a pull request touching `index.html`, `sw.js`, the manifest,
   a `tools/test_*.js`, `data/football-rules-links.csv` or itself. Playwright is installed in the job,
   pinned, not added to the repo. **Every Stadia request in all three is
@@ -1648,10 +1673,10 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2` → `v3`; it has been `v3` since 2026-10-03, when the
-  collapsible legend shipped, and `v2` before that, when the Stadia key
-  left the page - each bump makes every installed phone drop the old
-  shell cache).
+  (`v1` → `v2` → `v3` → `v4`; it has been `v4` since 2026-10-03, when
+  the Near me panel shipped, `v3` before that, when the collapsible legend
+  shipped, and `v2` before that, when the Stadia key left the page - each
+  bump makes every installed phone drop the old shell cache).
   `test_pwa.js` reads the current version from `sw.js` and bumps it one
   further for its own deploy test, so it needs no edit when this changes. That is what drops the old shell cache. It is **not**
   needed for an ordinary change to `index.html` or the data - the test
@@ -1714,6 +1739,64 @@ revalidation request per shell file per open, answered 304.
   used: its PWA category was removed in Lighthouse 12. **Not tested on a
   real phone or against GitHub Pages itself** - the sandbox reaches
   neither.
+
+**Clubs near me: the location is device-only - in fact memory-only - like
+saved routes.** Built 2026-10-03 on Alexandru's instruction. The Near me
+chip, beside Route, opens one panel with two tabs, **Clubs** first and
+**Derbies**; the Derbies tab is the derbies panel unchanged (same code,
+same list, same detail). The panel remembers which tab was open while the
+page is open, nowhere else.
+- **The Clubs tab** lists every club **on the map** - the clubs in
+  `CLUBS`, which have both halves of a position and a tier, so a club
+  whose position was cleared by hand never appears - within the slider's
+  distance (default 100 km, 10 to 500 km), nearest first, ties by tier
+  then name. A row shows the name, the tier's colour dot, the competition
+  as the club file records it (`competitionLabel()`, the search box's: a
+  club with none reads "league not recorded (tier N)", never a guessed
+  name), the ground (or "ground not recorded") and "≈ N km by road
+  (estimate)" - the same `roadEstimate()` as the club sheet, straight line
+  × the settings multiplier, and the panel says it is not a travel time.
+  Clubs sharing a ground each have their own row. One chip per tier
+  present on the map, all on; the chips remember the tiers turned **off**,
+  so a tier whose club file loads after the panel first opened is on.
+  "N clubs within X km" heads the list; the first 50 rows are drawn and
+  "Show more" adds 50 at a time. Nothing in range says "No clubs within X
+  km. Widen the distance."; every tier off says so too.
+- **Tapping a row** closes the panel and calls `goToClub()`, the function
+  a search suggestion calls: fly to the club at its tier's zoom or z10,
+  whichever is higher, and open its sheet with any ground-mates. It is not
+  a second copy. Checked on the Grünwalder pair: TSV 1860 München and FC
+  Bayern München II each open their own sheet, the other listed as also
+  there.
+- **"Use my location"** asks the browser (`navigator.geolocation`,
+  `enableHighAccuracy: false`, a 15 s limit, a position up to 5 minutes
+  old accepted from the browser itself) **only when pressed**, and says
+  "Finding your location…" meanwhile. Granted, the origin line reads
+  "From: your current location (approx.)", every row "from your location",
+  the list re-sorts, and **Back to home** restores home. Refused, timed
+  out, unavailable or unsupported, a plain sentence says which and the list
+  stays on home (or on the last position, when an update fails). The panel
+  always says "Your location stays on this device."
+- **Where the position lives: one variable, `NEAR.here`, in the open
+  page.** It is never written to `localStorage`, `sessionStorage`,
+  IndexedDB, a cookie, the URL or the repo, never sent in any request, and
+  the service worker never sees it: it is only subtracted from club
+  positions already in the page. **A reload forgets it**, and so does
+  closing the app. `test_nearme.js` checks all of that (every storage
+  dumped, every request's URL, body and headers searched for the mocked
+  position). **Nothing in the repo may ever read or write it.** The
+  derbies tab, the club sheet's distance and the route panel still measure
+  from home; only this list uses the position.
+- **The label is the data's**: the origin line reads "From: Leonberg, DE
+  (home)", `settings.home.label` as written, not a shortened name.
+- **Measured 2026-10-03** (headless Chromium, 390x844, this sandbox, not
+  a phone): within 100 km of Leonberg there are 9 clubs on the map - 2
+  at tier 1, 1 at tier 2, 3 at tier 3, 3 at tier 4. At 500 km there are
+  184; with the CPU slowed 4x the list (50 rows) is built in about 8 ms
+  (worst 18), and the painted frame follows about 16 ms after an empty
+  two-frame wait.
+- **Not tested on a real phone**: Playwright's mocked position stands in
+  for a real one, and a real permission prompt was never seen.
 
 **The legend tab: device-only, like saved routes.** Built 2026-10-03 on
 Alexandru's instruction. The map's tier legend, bottom left, is a
@@ -2175,11 +2258,19 @@ how each rests on them, is in Conventions, "The installable app" and
     off-screen.** The club-count chip and the search box sit side by side
     with a 6 px gap and the search box shrinks to fit it (167 px wide at
     z3, 161 at z7-9, 154 from z10, when the count reads "556 clubs · z10 ·
-    25 shared grounds"); the home chip, Route and Derbies sit on the row
-    below. The home chip has room for about 45 characters of label before
+    25 shared grounds"); the home chip, Route and Derbies (Near me since
+    the same day) sit on the row below. The home chip has room for about 45 characters of label before
     it touches Route (the label is `settings.home.label`, "Leonberg, DE"
     today). Real Android phones use Roboto, which is narrower than this
     sandbox's fallback font, so there is probably a little more room there.
+  - **Re-measured 2026-10-03 after "Derbies" became "Near me"**, at
+    390x700 and 390x500, zooms 3, 8, 9, 10 and 13, by `test_nearme.js` on
+    every change since: **still no overlap, no cut-off and nothing off
+    screen** at the default text size, including the search placeholder.
+    Near me is 66 px wide against Derbies' 61, so the free space between
+    the home chip and Route went from 159 px to 154 px; nothing else on
+    the row moved. Nothing needed fixing. The larger-font breakage below
+    is unchanged and still Alexandru's to decide.
   - **The search text really is larger than the chips, on purpose:** the
     box is 16 px (the chips are 12 px) and 33 px tall against the chips'
     31, because under 16 px iOS zooms the page when a box is focused.
@@ -2635,7 +2726,10 @@ how each rests on them, is in Conventions, "The installable app" and
   above), `test_search.js`, `test_coverage.js` and
   `test_sheet_tickets.js` (the ticket section of nine named clubs'
   sheets). Still not covered: a sheet per country, and the fixtures
-  section's "unavailable" reasons.
+  section's "unavailable" reasons. `test_legend.js` and, since the Near
+  me panel, `test_nearme.js` (its list checked against the club files,
+  the location kept off storage and the network, and the top row at
+  390x700 and 390x500) run there too.
 
 - **The Netherlands' top two tiers are on the map, 2026-10-01: Eredivisie
   18 of 18 and Eerste Divisie 20 of 20, exact - nothing missing, nothing

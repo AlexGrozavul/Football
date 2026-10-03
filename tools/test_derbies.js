@@ -5,7 +5,7 @@
 //   node tools/test_derbies.js .      (serves the checkout itself; it changes no file)
 //
 // Serves the repo at http://localhost:8766/Football/, stubs Stadia's tiles, and checks:
-// the Derbies chip opens a list at the 100 km default, nearest first, every row with
+// the Near me chip, then its Derbies tab, opens a list at the 100 km default, nearest first, every row with
 // both clubs on the map and inside the distance; the slider widens it; tapping a derby
 // shows both clubs and a next-meeting section that says one of the four honest
 // answers; a club sheet opens from it above the panel; the page never scrolls
@@ -49,7 +49,10 @@ const server = http.createServer((req, res) => {
   const noSideScroll = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1);
 
   // ---- 1. the list at the default distance
-  await page.tap('#derbyChip');
+  // Since 2026-10-03 the derbies are the second tab of the Near me panel.
+  await page.tap('#nearChip');
+  await page.waitForSelector('#nearBody h4');
+  await page.tap('#tabDerbies');
   await page.waitForSelector('#derbyBody h4');
   await page.waitForTimeout(500);                // the panel slides up for 0.22 s
   const list = async () => page.evaluate(() => {
@@ -60,11 +63,12 @@ const server = http.createServer((req, res) => {
               other: Number(t.match(/· ≈ (\d+) km/)[1])};
     });
     return {head, rows, foot: [...document.querySelectorAll('#derbyBody .sub')].map(s => s.textContent).join(' | '),
-            visible: document.getElementById('derbyPanel').getBoundingClientRect().top < innerHeight - 100};
+            visible: document.getElementById('nearPanel').getBoundingClientRect().top < innerHeight - 100 &&
+              !document.getElementById('derbyBody').hidden && document.getElementById('nearBody').hidden};
   });
   let L = await list();
   console.log('    100 km:', L.head, '-', L.rows.map(r => `${r.name} ${r.near}/${r.other}`).join('; '));
-  check('the Derbies chip opens the panel, on screen', L.visible);
+  check('Near me, then the Derbies tab, opens the derby list on screen', L.visible);
   check('default distance is 100 km', /within 100 km/.test(L.head), L.head);
   check('every listed derby is within 100 km of home', L.rows.every(r => r.near <= 100));
   check('nearest first', L.rows.every((r, i) => !i || L.rows[i-1].near <= r.near));
@@ -137,8 +141,8 @@ const server = http.createServer((req, res) => {
 
   // ---- 5. the route chip closes the derby panel
   await page.tap('#routeChip');
-  const both = await page.evaluate(() => [document.getElementById('derbyPanel').hidden, document.getElementById('routePanel').hidden]);
-  check('opening Route closes Derbies', both[0] === true && both[1] === false, JSON.stringify(both));
+  const both = await page.evaluate(() => [document.getElementById('nearPanel').hidden, document.getElementById('routePanel').hidden]);
+  check('opening Route closes the Near me panel', both[0] === true && both[1] === false, JSON.stringify(both));
 
   check('no script error', !errors.length, errors.join(' | '));
   await page.screenshot({path: path.join(process.env.SHOT_DIR || '/tmp', 'derbies-phone.png')});

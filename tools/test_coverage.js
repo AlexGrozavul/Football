@@ -157,16 +157,16 @@ for(const f of listed){
     !!document.getElementById('covList') && document.getElementById('covTier').value === '4' &&
     document.getElementById('covCountry').value === 'DE'));
 
-  // ---- one layer with Route and Derbies
+  // ---- one layer with Route and Near me
   await page.tap('#routeChip');
-  let st = await page.evaluate(() => ['coveragePanel', 'routePanel', 'derbyPanel'].map(id => document.getElementById(id).hidden));
+  let st = await page.evaluate(() => ['coveragePanel', 'routePanel', 'nearPanel'].map(id => document.getElementById(id).hidden));
   check('opening Route closes the coverage panel', st[0] && !st[1], JSON.stringify(st));
   await page.tap('#zoomChip');
-  st = await page.evaluate(() => ['coveragePanel', 'routePanel', 'derbyPanel'].map(id => document.getElementById(id).hidden));
+  st = await page.evaluate(() => ['coveragePanel', 'routePanel', 'nearPanel'].map(id => document.getElementById(id).hidden));
   check('opening the coverage panel closes Route', !st[0] && st[1], JSON.stringify(st));
-  await page.tap('#derbyChip');
-  st = await page.evaluate(() => ['coveragePanel', 'routePanel', 'derbyPanel'].map(id => document.getElementById(id).hidden));
-  check('opening Derbies closes the coverage panel', st[0] && !st[2], JSON.stringify(st));
+  await page.tap('#nearChip');
+  st = await page.evaluate(() => ['coveragePanel', 'routePanel', 'nearPanel'].map(id => document.getElementById(id).hidden));
+  check('opening Near me closes the coverage panel', st[0] && !st[2], JSON.stringify(st));
 
   check('no script error', !errors.length, errors.join(' | '));
   await browser.close(); server.close();
