@@ -1,0 +1,31 @@
+list lines 70 in scope 62
+  retry 0 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 1 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 2 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 3 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 0 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 1 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 2 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 3 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 0 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 1 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 2 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+  retry 3 https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fr%20%3FrLabel%20%3Fp%20%3Fclub%20%3Ftype%20%3FtypeLabel% HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132)
+wikidata rivalry items 15891
+  retry 0 https://de.wikipedia.org/w/api.php?action=query&titles=N%C3%BCrnberger+Zeitung%7COtto+Brenzke%7CPaul+Vorl%C3%A4ufer%7CPa HTTP Error 429: Too Many Requests
+  retry 1 https://de.wikipedia.org/w/api.php?action=query&titles=N%C3%BCrnberger+Zeitung%7COtto+Brenzke%7CPaul+Vorl%C3%A4ufer%7CPa HTTP Error 429: Too Many Requests
+  retry 2 https://de.wikipedia.org/w/api.php?action=query&titles=N%C3%BCrnberger+Zeitung%7COtto+Brenzke%7CPaul+Vorl%C3%A4ufer%7CPa HTTP Error 429: Too Many Requests
+  retry 0 https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format HTTP Error 429: Too Many Requests
+  retry 1 https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format HTTP Error 429: Too Many Requests
+  retry 2 https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format HTTP Error 429: Too Many Requests
+  retry 3 https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format HTTP Error 429: Too Many Requests
+Traceback (most recent call last):
+  File "/home/runner/work/Football/Football/probe/probe_derbies.py", line 161, in <module>
+    pq = api(lang, action="query", titles=realt, prop="pageprops", ppprop="wikibase_item")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Football/Football/probe/probe_derbies.py", line 24, in api
+    return get(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(p))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Football/Football/probe/probe_derbies.py", line 20, in get
+    raise RuntimeError("failed " + url)
+RuntimeError: failed https://de.wikipedia.org/w/api.php?action=query&titles=Stuttgarter+Stadtderby&prop=pageprops&ppprop=wikibase_item&format=json&formatversion=2
