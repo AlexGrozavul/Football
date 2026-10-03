@@ -1,0 +1,58 @@
+name: Check derbies
+
+# Reads data/derbies.csv, prints back what it understood, and complains
+# about anything it could not: a row without a source, a Q-id that is on
+# no club file without an offMap marker saying so, a pair entered twice.
+# It never writes to the file, so there is nothing to commit.
+#
+# It also re-reads the club files and fixture links, so a club leaving
+# the map or losing its fixture link shows up here; that is why the club
+# layer and the link file are in the paths too.
+#
+# The step fails when the tool rejects a row. Same caveat as the other
+# checks: the paths filter only applies to pushes on main, so an edit on
+# a working branch needs a manual "Run workflow" against that branch.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/derbies.csv"
+      - "data/clubs/*.json"
+      - "data/league-tiers.csv"
+      - "data/football-rules.json"
+      - "tools/check_derbies.py"
+      - ".github/workflows/check-derbies.yml"
+  pull_request:
+    paths:
+      - "data/derbies.csv"
+      - "tools/check_derbies.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      # set -o pipefail, or a crashing script shows a green tick.
+      - name: Read the derbies back
+        run: |
+          set -o pipefail
+          python3 tools/check_derbies.py --full 2>&1 | tee /tmp/derbies.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Derbies"
+            echo
+            echo '```'
+            cat /tmp/derbies.log 2>/dev/null || echo "the check did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
