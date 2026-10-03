@@ -27,7 +27,6 @@ on:
       - "sw.js"
       - "manifest.webmanifest"
       - "tools/test_*.js"
-      - "tools/probe_stadia.js"
       - ".github/workflows/test-pages.yml"
   workflow_dispatch:
 
@@ -89,21 +88,3 @@ jobs:
               echo '```'
             done
           } >> "$GITHUB_STEP_SUMMARY"
-
-  # TEMPORARY: real Stadia, from a runner. Removed before merge.
-  stadia-probe:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - run: |
-          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null
-          npm install --no-audit --no-fund playwright@1.56.1
-          npx playwright install --with-deps chromium
-      - run: NODE_PATH=/tmp/pw/node_modules node tools/probe_stadia.js . all 2>&1 | tee /tmp/probe.log
-      - if: always()
-        run: |
-          { echo '```'; cat /tmp/probe.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

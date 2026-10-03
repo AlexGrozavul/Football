@@ -1714,7 +1714,8 @@ a page anyone can already view in their browser's network tab.
 
 **Since 2026-10-02 the same key also pays for routing and place
 search**, from the route panel on the map tab, on Alexandru's
-instruction. It is now the one constant `STADIA_KEY` in `index.html`,
+instruction. It is now the one constant `STADIA_KEY` in `index.html`
+*(removed 2026-10-03; the page now uses no key at all)*,
 used by the tile URL, the route request and the place search, so
 rotating it is still a single edit. **What each costs, read on
 2026-10-02 from stadiamaps.com/pricing** (fetched on a runner; the
@@ -1749,6 +1750,8 @@ Nothing was changed here.
 
 **Domain-based authentication is now on, 2026-10-02, and the page
 STILL ships the key - on purpose, until Alexandru says otherwise.**
+*(He said otherwise on 2026-10-03: the key is out of the page - see
+"The key left the page" below. Kept as written, for the measurements.)*
 Alexandru registered `alexgrozavul.github.io` in the Stadia dashboard
 before the session that measured this. Stadia's own page,
 `docs.stadiamaps.com/authentication/` (read on a runner; it answered 200
@@ -1806,6 +1809,35 @@ treated like a made-up one (it could not be tested without revoking it).
 The cautious order is page first, key second; nothing else in the repo
 uses the key (searched), and git history keeps it, which is the reason
 deleting it matters.
+
+**The key left the page on 2026-10-03, on Alexandru's instruction**
+(the three edits tested 2026-10-02: the tile URL, the place search and
+the route request; `STADIA_KEY` is gone). Every Stadia request is now
+authenticated by the domain alone. `sw.js` went to `SHELL_VERSION` `v2`
+in the same change, so every installed phone drops its keyed shell copy.
+**Checked keyless on a GitHub runner the same day**, the edited page in
+headless Chromium served as from `https://alexgrozavul.github.io/Football/`
+with every Stadia request real, and again on the final code of the same
+change (tiles fetched by `StatusTiles`, saved routes in): 12 of 12 tiles
+HTTP 200, "Leonberg" and "Augsburg" found, a 173 km route drawn, saved,
+the page reloaded and the saved route reopened with **no** second route
+request, the credit estimate at 60 (one route, two searches), **0 of 51
+requests carrying a key**, no script error. Served as from a made-up
+domain: 401 on every tile and search, and the map card read "Stadia Maps
+refused the map tiles ... HTTP 401". The probe that did this was a
+temporary job, removed before the merge. Nothing else in the repo uses the key (searched again).
+**When the old key can be deleted in the dashboard: once this change is
+live on GitHub Pages**, about a minute after the merge. From then on no
+copy of the page anybody loads carries it. What is left: a phone that
+has not opened the app online since still holds the old page, but it
+only uses that page offline, where it asks Stadia for nothing; and an
+old page left open in a browser tab still sends the key until it is
+reloaded - which, from the real domain, keeps working with an unknown
+key (the made-up-key measurement above). Not measured, because it
+cannot be without doing it: whether a *revoked* key is treated like a
+made-up one. After deleting it, open the app once and check the map
+loads; if it does not, the card now says Stadia refused the tiles.
+The key stays in git history, which is why deleting it is worth doing.
 
 **The service worker saves nothing from Stadia** - no tile, no route,
 no search result. **The page itself keeps two things since 2026-10-03,
@@ -2200,6 +2232,18 @@ how each rests on them, is in Conventions, "The installable app" and
   page error, loads every country file). It does not open club sheets,
   and **no workflow runs it**, so it is still not part of rule 7's
   "clean" on its own - a session runs it by hand.
+  **Since 2026-10-03 a workflow runs the page tests**:
+  `.github/workflows/test-pages.yml` runs `test_pwa.js`,
+  `test_derbies.js` and the new `test_routes.js` on every push to `main`
+  and every pull request that touches `index.html`, `sw.js`, the manifest
+  or the tests, and a failure turns it red - so for a change to the page
+  those three are part of rule 7's "clean" from now on. **What is still
+  not covered**: no test opens a club sheet per country or checks a
+  sheet's "unavailable" reasons; every Stadia request is stubbed, so a
+  change on Stadia's side (a header, a status, CORS) shows up only on a
+  phone or in a probe like the one in Secrets; a data-only change (a
+  cron commit, `data/derbies.csv`) does not trigger it; and nothing has
+  run on a real phone.
 
 - **The Netherlands' top two tiers are on the map, 2026-10-01: Eredivisie
   18 of 18 and Eerste Divisie 20 of 20, exact - nothing missing, nothing
