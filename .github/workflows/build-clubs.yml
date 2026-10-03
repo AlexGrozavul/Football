@@ -38,7 +38,7 @@ jobs:
       - name: Derby probe
         run: |
           set -o pipefail
-          python3 probe/probe_derbies.py 2>&1 | tee /tmp/probe.log
+          python3 probe/probe2.py 2>&1 | tee /tmp/probe.log
       - name: Commit probe output
         if: always()
         run: |
