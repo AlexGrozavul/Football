@@ -30,26 +30,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TEMPORARY derby probe - removed in the same branch.
-  probe:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Derby probe
-        run: |
-          set -o pipefail
-          python3 probe/probe3.py 2>&1 | tee /tmp/probe.log
-      - name: Commit probe output
-        if: always()
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p probe/out; cp /tmp/probe.log probe/out/ || true
-          git add probe/out
-          git commit -m "probe output (temporary)" && git push
-
   clubs:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
