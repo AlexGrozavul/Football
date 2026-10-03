@@ -7,7 +7,8 @@ import glob, json, re, sys, time, urllib.parse, urllib.request
 UA = "football-planner-derby-probe/1.0 (github.com/AlexGrozavul/Football)"
 OUT = {}
 
-def get(url, data=None, tries=4):
+def get(url, data=None, tries=6):
+    time.sleep(1.0)
     for i in range(tries):
         try:
             req = urllib.request.Request(url, data=data, headers={"User-Agent": UA,
@@ -16,12 +17,17 @@ def get(url, data=None, tries=4):
                 return json.loads(r.read().decode())
         except Exception as e:
             print("  retry", i, url[:120], e, flush=True)
-            time.sleep(5 * (i + 1))
+            time.sleep((65 if "query.wikidata" in url else 20) * (i + 1))
     raise RuntimeError("failed " + url)
 
 def api(lang, **p):
     p.update(format="json", formatversion="2")
     return get(f"https://{lang}.wikipedia.org/w/api.php?" + urllib.parse.urlencode(p))
+
+import os
+def save():
+    os.makedirs("probe/out", exist_ok=True)
+    json.dump(OUT, open("probe/out/derbies.json", "w"), ensure_ascii=False, indent=1, default=list)
 
 clubs = {}
 for f in sorted(glob.glob("data/clubs/??.json")):
@@ -88,19 +94,28 @@ for ln in lines:
     ln["inScope"] = any(clubs[q]["tier"] in (1, 2) for q in ln["mapClubs"])
 OUT["list_lines_total"] = len(lines)
 OUT["list_lines"] = [ln for ln in lines if ln["inScope"]]
+OUT["list_sections"] = sorted({ln["section"] for ln in lines})
 print("list lines", len(lines), "in scope", len(OUT["list_lines"]), flush=True)
+# per-country rivalry lists, by search
+srch = {}
+for c in ["Germany", "Romania", "France", "Italy", "Switzerland", "Austria", "Serbia", "Greece", "Spain", "England", "Netherlands", "Belgium"]:
+    d = api("en", action="query", list="search", srsearch=f"intitle:rivalries {c} football", srlimit="8")
+    srch[c] = [x["title"] for x in d.get("query", {}).get("search", [])]
+OUT["search"] = srch
+save()
 
 # --------------------------------------------- 2. Wikidata rivalry items
 top = [q for q, c in clubs.items() if c["tier"] in (1, 2)]
 def sparql(q):
     return get("https://query.wikidata.org/sparql?format=json&query=" + urllib.parse.quote(q))
 wd = []
-for i in range(0, len(top), 120):
-    vals = " ".join("wd:" + q for q in top[i:i+120])
+for i in range(0, len(top), 250):
+    vals = " ".join("wd:" + q for q in top[i:i+250])
     q = f"""SELECT ?r ?rLabel ?p ?club ?type ?typeLabel ?article WHERE {{
       VALUES ?club {{ {vals} }}
       VALUES ?p {{ wdt:P710 wdt:P1923 wdt:P527 wdt:P1327 }}
       ?r ?p ?club . ?r wdt:P31 ?type .
+      ?type rdfs:label ?tl . FILTER(LANG(?tl) = "en" && REGEX(?tl, "rival|derby", "i"))
       OPTIONAL {{ ?article schema:about ?r; schema:isPartOf <https://en.wikipedia.org/> }}
       SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en,de,fr,it,es,nl,ro". }} }}"""
     try:
@@ -108,7 +123,7 @@ for i in range(0, len(top), 120):
             wd.append({k: v["value"].rsplit("/", 1)[-1] if v["value"].startswith("http://www.wikidata.org/") else v["value"] for k, v in b.items()})
     except Exception as e:
         OUT.setdefault("wd_errors", []).append(str(e))
-    time.sleep(2)
+    time.sleep(65)
 items = {}
 for b in wd:
     it = items.setdefault(b["r"], {"label": b.get("rLabel"), "types": set(), "clubs": set(), "article": b.get("article")})
@@ -123,6 +138,7 @@ for k, v in items.items():
     for t in v["types"]:
         OUT["wd_other_type_counts"][t] = OUT["wd_other_type_counts"].get(t, 0) + 1
 print("wikidata rivalry items", len(riv), flush=True)
+save()
 
 # ----------------------------------------- 3. each rivalry article, verified
 cands = set()
@@ -149,27 +165,32 @@ for lang, title in sorted(cands):
     lead = t.split("\n==", 1)[0]
     leadlinks = [a.strip() for a, b in LINK.findall(lead)]
     alllinks = [a.strip() for a, b in LINK.findall(t)]
-    r = resolve(lang, list(set(alllinks))[:2000])
+    try:
+        r = resolve(lang, list(set(leadlinks))[:200])
+    except Exception as e:
+        arts[f"{lang}:{title}"] = {"title": realt, "error": "resolve " + str(e)}; save(); continue
     leadq = sorted({r[x][1] for x in leadlinks if x in r and r[x][1]})
-    allq = sorted({v[1] for v in r.values() if v[1]})
+    allq = leadq
     plain = re.sub(r"\{\{[^{}]*\}\}", "", lead)
     plain = re.sub(r"<ref[^>]*/>|<ref.*?</ref>", "", plain, flags=re.S)
     plain = LINK.sub(lambda m: m.group(2) or m.group(1), plain)
     plain = re.sub(r"'''?|\[\[|\]\]|<[^>]+>", "", plain)
     plain = " ".join(plain.split())
     infobox_teams = re.findall(r"\|\s*(?:team|club)\s*\d\s*=\s*([^\n|]+)", t)
-    pq = api(lang, action="query", titles=realt, prop="pageprops", ppprop="wikibase_item")
-    qid = ((pq["query"]["pages"][0].get("pageprops") or {}).get("wikibase_item"))
+    try:
+        pq = api(lang, action="query", titles=realt, prop="pageprops", ppprop="wikibase_item")
+        qid = ((pq["query"]["pages"][0].get("pageprops") or {}).get("wikibase_item"))
+    except Exception:
+        qid = None
     arts[f"{lang}:{title}"] = {"title": realt, "qid": qid,
         "url": f"https://{lang}.wikipedia.org/wiki/" + urllib.parse.quote(realt.replace(' ', '_')),
         "leadClubsOnMap": [q for q in leadq if q in clubs],
-        "allClubsOnMap": [q for q in allq if q in clubs],
+        "wikitextHasClubs": [q for q in clubs if False],
         "leadQids": leadq[:40], "infoboxTeams": infobox_teams[:6],
         "lead": plain[:700]}
-    time.sleep(0.3)
+    OUT["articles"] = arts
+    if len(arts) % 10 == 0: save()
 OUT["articles"] = arts
 print("articles", len(arts), flush=True)
 
-import os
-os.makedirs("probe/out", exist_ok=True)
-json.dump(OUT, open("probe/out/derbies.json", "w"), ensure_ascii=False, indent=1, default=list)
+save()
