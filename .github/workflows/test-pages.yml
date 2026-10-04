@@ -30,7 +30,14 @@ name: Test the page
 # no upcoming-dates section on Ticket info, every ticket event reachable
 # from the Bucket list, the Frankenderby and Milan derby clubs, and no
 # estimated date shown to the day) and the ticket files' own checker
-# (tools/check_tickets.py, which must exit 0). Each one
+# (tools/check_tickets.py, which must exit 0), and since the same day the
+# Bucket list's List and Calendar sub-tabs (tools/test_calendar.js - no
+# sideways scroll on either, the sort and the star working and surviving a
+# reload, an estimated item never on a day cell, holidays shaded on exactly
+# their days, a month outside the entered holidays saying so, the sheet a
+# tapped item opens matching the List, all under Europe/Berlin and UTC) and
+# the holidays file's own checker (tools/check_holidays.py, which must exit
+# 0). Each one
 # serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
 # credit is spent, and fails on a script error. A failing test turns the
@@ -51,6 +58,8 @@ on:
       - "data/football-rules-links.csv"
       - "data/bucket-links-manual.csv"
       - "data/event-ticket-rules.csv"
+      - "data/holidays-manual.csv"
+      - "tools/check_holidays.py"
       - ".github/workflows/test-pages.yml"
   pull_request:
     paths:
@@ -61,6 +70,8 @@ on:
       - "data/football-rules-links.csv"
       - "data/bucket-links-manual.csv"
       - "data/event-ticket-rules.csv"
+      - "data/holidays-manual.csv"
+      - "tools/check_holidays.py"
       - ".github/workflows/test-pages.yml"
   workflow_dispatch:
 
@@ -158,6 +169,19 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_tickets_bucket.js . 2>&1 | tee /tmp/test_tickets_bucket.log
 
+      - name: Bucket list - calendar, favorites and sort
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_calendar.js . 2>&1 | tee /tmp/test_calendar.log
+
+      # The calendar reads the holidays file; its own checker must pass too.
+      - name: School holidays read back (check_holidays.py exits 0)
+        if: always()
+        run: |
+          set -o pipefail
+          python3 tools/check_holidays.py 2>&1 | tee /tmp/test_check_holidays.log
+
       # The page reads the ticket files; their own checker must pass too.
       - name: Ticket files read back (check_tickets.py exits 0)
         if: always()
@@ -169,7 +193,7 @@ jobs:
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket check_tickets; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar check_tickets check_holidays; do
               echo "## test_$t.js"
               echo
               echo '```'

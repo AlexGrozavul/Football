@@ -1,0 +1,56 @@
+name: Check school holidays
+
+# Reads data/holidays-manual.csv, prints back what it understood, and
+# complains about anything it could not. It never writes to the file, so
+# there is nothing to commit. The Bucket list tab's calendar shades the
+# days this file gives, so a typo in a date is caught when it is pushed
+# rather than when a wrong day is shaded.
+#
+# The step fails when the tool rejects a row: a green tick over a file
+# with a rejected row in it is the failure `set -o pipefail` was added
+# elsewhere in this repo to prevent.
+#
+# Same caveat as build-clubs.yml: the paths filter only applies to pushes
+# on main. On a working branch the pull_request trigger runs it, or a
+# manual "Run workflow" once this file is on main.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/holidays-manual.csv"
+      - "tools/check_holidays.py"
+      - ".github/workflows/check-holidays.yml"
+  pull_request:
+    paths:
+      - "data/holidays-manual.csv"
+      - "tools/check_holidays.py"
+      - ".github/workflows/check-holidays.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Read the holidays file back
+        run: |
+          set -o pipefail
+          python3 tools/check_holidays.py --full 2>&1 | tee /tmp/holidays.log
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## School holidays"
+            echo
+            echo '```'
+            cat /tmp/holidays.log 2>/dev/null || echo "the check did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

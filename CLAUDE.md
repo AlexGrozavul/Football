@@ -347,6 +347,21 @@ a subscribed calendar reads as a schedule regardless of its description.
   `blockedReason` names that window and its date, and not to
   `away-end-first`; `pokal-draw-2027`, filed under club `fcb`, is linked
   to `pokal-first-round`.
+- `data/holidays-manual.csv` — added 2026-10-04, on Alexandru's
+  instruction. **School holidays for the Bucket list calendar**, from his
+  school calendar and the Baden-Württemberg education ministry
+  (`km.baden-wuerttemberg.de/de/service/ferien`). Header-driven:
+  `name,start,end,kind,dateSource,source,note`. `kind` is
+  `school-holiday`, `school-holiday-movable` or `school-start`. **The
+  rows are exactly the ones he gave**: six holiday blocks from
+  Sommerferien 2026 to Sommerferien 2027, and Schulstart 13 Sep 2027.
+  **No movable day is entered**: the brief carried a placeholder line
+  (`Beweglicher Ferientag,YYYY-MM-DD,...`) that was never filled in, so
+  it was left out, not guessed (Known open problems). Read back by
+  `tools/check_holidays.py`, which rejects a bad date, an end before a
+  start, a missing source or an unknown `dateSource`, and reports a kind
+  it does not know without accepting it. The calendar shades
+  **confirmed** rows only. Nothing writes to it.
 
 ### Generated — safe to overwrite
 
@@ -383,7 +398,10 @@ a subscribed calendar reads as a schedule regardless of its description.
   a copy in `vendor/` (from the unpkg CDN until 2026-10-02), three tabs: map, bucket list, ticket info.
   **Since 2026-10-04 the Ticket info tab holds rules only and the dated
   reminders are the Bucket list tab's** (Conventions, "Ticket info and
-  the Bucket list"). Tapping a club opens
+  the Bucket list"). **Since the same day the Bucket list tab has two
+  sub-tabs, List and Calendar**, a star on every entry, a sort
+  (Earliest, Favorites) and a bottom sheet for an item tapped in the
+  calendar (Conventions, "The Bucket list: List, Calendar, favorites"). Tapping a club opens
   the **club detail sheet** (built 2026-09-25), a pull-up panel that
   replaced the map popup: ground, capacity, competition by name,
   distance, fixtures and ticket info, each saying "unavailable" with a
@@ -550,15 +568,48 @@ a subscribed calendar reads as a schedule regardless of its description.
   `disputed` date shown to the day; no script error. With the
   month-level rule and the country-rules order broken in a scratch copy
   it failed 15 of 53 checks.
+- `tools/test_calendar.js` — added 2026-10-04: the Bucket list's List
+  and Calendar at 390x844, checked against the files. No sideways scroll
+  on either; the sort's two options and Earliest's order (worked out by
+  the test from the files, past entries checked with the clock at June
+  2027, in a collapsed Past section); the star (44 px, aria-pressed, does
+  not open the card) and the sort surviving a reload; a stored id that is
+  no entry ignored; blocked storage; then, with the clock at 2026-10-25
+  23:30 UTC and the page under **Europe/Berlin and under UTC**, every
+  month from July 2026 to October 2027: the local today, exactly the
+  confirmed day-level items on their day cells, every month-level item
+  in the strip and never on a day, no disputed item placed, the "No
+  date" list, holiday shading on exactly each block's days, the school
+  start, the not-entered notice outside the entered span, both time
+  zones drawing every month identically; a movable day (in a served copy
+  of the file only) shaded differently; the sheet against the bottom
+  bar, scrolling inside itself, holding the same text as the List's
+  opened entry (or Reminders card); "School holiday: Pfingstferien" on
+  the Europa League final and on nothing that is not in a block. Prints
+  a month's render time at 4x CPU. With estimates also put on a day cell
+  and each holiday block's last day dropped, in a scratch copy, it failed
+  49 of 195 checks.
+- `tools/check_holidays.py` — added 2026-10-04: read-back and checks for
+  `data/holidays-manual.csv`, in the style of `check_derbies.py`. Prints
+  every row as understood (weekday, length), rejects by line (bad or
+  unreal date, end before start, missing source, unknown `dateSource`,
+  an unquoted comma), reports an unknown kind as **not accepted**, and
+  reports overlaps, a school start longer than a day, an unconfirmed row
+  and the absence of any movable day. Never writes. Exits 1 on a rejected
+  row. Run by `check-holidays.yml` (push to `main` or pull request
+  touching the file, the tool or the workflow) and by `test-pages.yml`.
 - `.github/workflows/test-pages.yml` — added 2026-10-03: runs
   `test_pwa.js`, `test_derbies.js` and `test_routes.js`, and since the
   same day `test_zoom.js`, `test_search.js`, `test_coverage.js`,
   `test_sheet_tickets.js` and `test_layout.js`, then `test_legend.js`
   and `test_nearme.js`, and since 2026-10-04 `test_tickets_bucket.js`
-  and `python3 tools/check_tickets.py` (which must exit 0), on a push to
+  and `python3 tools/check_tickets.py` (which must exit 0), and since the
+  same day `test_calendar.js` and `python3 tools/check_holidays.py`
+  (which must exit 0), on a push to
   `main` or a pull request touching `index.html`, `sw.js`, the manifest,
   a `tools/test_*.js`, `data/football-rules-links.csv`,
-  `data/bucket-links-manual.csv`, `data/event-ticket-rules.csv` or
+  `data/bucket-links-manual.csv`, `data/event-ticket-rules.csv`,
+  `data/holidays-manual.csv`, `tools/check_holidays.py` or
   itself. Playwright is installed in the job,
   pinned, not added to the repo. **Every Stadia request in all three is
   stubbed**, so a run spends no credit and does not show that Stadia
@@ -1656,12 +1707,17 @@ reminders on the other.** Built on Alexandru's instruction.
 - **Dates: one function decides what may be shown**, `placeDate()`, used
   by the sheet's Next window line and everywhere on the Bucket list tab:
   a `confirmed` day is shown to the day; anything else - `inferred`,
-  `disputed`, a range like `2027-01-30/2027-02-01`, a month - to the
-  month only ("estimated: January or February 2027"). A `disputed` date
+  `disputed`, an inferred range like `2027-01-30/2027-02-01`, a month -
+  to the month only ("estimated: January or February 2027"). **Since
+  2026-10-04 a `confirmed` range of whole days is day-level too** ("Sat
+  30 Jan 2027 to Mon 1 Feb 2027") and the calendar draws it across its
+  days: it is a published fact, not an estimate. No range in the files is
+  confirmed today, so nothing shown changed. A `disputed` date
   says "disputed: possibly the wrong year or the wrong event" and its
   warning is shown as written.
-- **The Bucket list tab** keeps every `bucketList` entry, in the same
-  Live / Blocked or deferred groups, each a card that opens to
+- **The Bucket list tab** keeps every `bucketList` entry *(since
+  2026-10-04 ordered by the sort, not in Live / Blocked or deferred
+  groups - see the next entry)*, each a card that opens to
   `bucketDetailHtml()` (the renderer the next prompt reuses inside a
   sheet): what it is, the venue if known, every hand-written date with
   its dateSource label, every other field of the entry as written; the
@@ -1683,6 +1739,67 @@ reminders on the other.** Built on Alexandru's instruction.
   the Serie A file, while your notes give Sun 1 Nov 2026, confirmed -
   both are on the card (Known open problems). The Frankenderby's is Sun
   31 Jan 2027, 13:30, "day and time may be provisional".
+
+**The Bucket list: List, Calendar, favorites, 2026-10-04.** Built on
+Alexandru's instruction. Two sub-tabs at the top of the Bucket list tab.
+- **List.** Reminders first, as before, then the entries in the chosen
+  sort. **Earliest** (the default): upcoming entries with a day-level
+  date, by date; then month-level ones, by month start, labelled
+  "estimated" and showing no day; then entries with no date; then past
+  entries in a collapsed **Past** section. An entry's place is its
+  soonest upcoming date; a disputed date places nothing. Equal dates
+  keep live before blocked or deferred, then priority. **Favorites**:
+  starred entries first, then the rest, each group in Earliest order.
+  Each card shows its date line under the title, through `placeDate()`.
+- **The star** on every card is a 44 px button with `aria-pressed`; a
+  tap stars the entry without opening the card.
+- **Favorites and the sort are kept on THIS DEVICE only**, in
+  `localStorage` (`football-planner-favorites`, a list of bucket entry
+  ids; `football-planner-bucket-sort`, `earliest` or `favorites`). **Not
+  in the repo, not read by any tool, and not exported** - there is no
+  export until the Me tab. Every read and write is wrapped, so with
+  storage blocked both still work for the visit. An id that is no longer
+  a bucket entry is ignored. *Clear & reset* for the site deletes them.
+- **Calendar.** A month grid, Monday first, with previous, next and
+  Today. A **confirmed** day-level date - an entry's date or fixture, or
+  a ticket window - goes on its day cell, a confirmed range on every day
+  it spans; an entry is a round dot, a ticket window a diamond, a
+  favorite adds a star. Tapping a day lists its items under the grid.
+  **A month-level date (an estimate) never goes on a day**: it is in a
+  strip above the grid, "Estimated this month, date not fixed", in every
+  month it spans. **A disputed date is not placed**: it is listed under
+  the grid as "Not placed: disputed date". Items with no date are listed
+  under **No date**.
+- **School holidays** from `data/holidays-manual.csv`: a fixed holiday
+  is shaded green, a movable day hatched with a dashed border, the school
+  start outlined in blue; the block's name is on its first day in the
+  month and in a line under the grid. **Outside the span the file covers
+  (today 30 Jul 2026 to 13 Sep 2027) the month says "School holidays not
+  entered for this period"** (with "before" or "after" a date for a month
+  partly outside); it never implies there are none. While no movable day
+  is entered, every month inside the span says so too.
+- **Tapping an item opens a bottom sheet** (`#bsheet`), built like the
+  club sheet, sitting on the bottom bar and scrolling inside itself. It
+  uses the List's own renderers - `bucketDetailHtml()` for an entry,
+  `eventHtml()` for a reminder no entry claims - so it holds the same
+  text; a ticket window that belongs to an entry opens the entry,
+  scrolled to the window. Switching tab closes it.
+- **"School holiday: <name>"** is shown in an entry's (or a window's)
+  detail when one of its day-level dates falls inside a holiday block,
+  and nothing otherwise. Today that is the Europa League final, 26 May
+  2027, in the Pfingstferien.
+- **Dates are plain local dates.** Nothing is converted between time
+  zones; "today" is the phone's own calendar day (`todayISO()`), which
+  `isPast()` and the Next window line now use too (they used UTC's day
+  before). Tested under Europe/Berlin and UTC at 23:30 UTC on 25 Oct
+  2026, when the two days differ.
+- **What it said on 2026-10-04** (today 2026-10-04): 2 entries with an
+  upcoming day-level date (Derby della Madonnina, 1 Nov 2026; Europa
+  League final, 26 May 2027), 2 month-level (Frankenderby, January or
+  February 2027; KSC v FCK, January 2027), 17 undated, none past. No
+  ticket window is day-level (every one is inferred or disputed), so
+  none is on a day cell. A month renders in about 17-19 ms in headless
+  Chromium with the CPU slowed 4x (this sandbox, not a phone).
 
 **Phone layout and plain words, 2026-10-03.** Five problems Alexandru
 saw on a real phone at about 390 px, each reproduced in headless
@@ -1812,8 +1929,9 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2` → `v3` → `v4` → `v5`; it has been `v5` since 2026-10-04,
-  when the Ticket info and Bucket list tabs were rebuilt, `v4` before
+  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6`; it has been `v6` since
+  2026-10-04, when the Bucket list got its calendar, `v5` before that,
+  the same day, when the Ticket info and Bucket list tabs were rebuilt, `v4` before
   that, when the Near me panel shipped, `v3` before that, when the collapsible legend
   shipped, and `v2` before that, when the Stadia key left the page - each
   bump makes every installed phone drop the old shell cache).
@@ -2387,6 +2505,28 @@ how each rests on them, is in Conventions, "The installable app" and
 ---
 
 ## Known open problems
+
+- **No movable school day is entered - found 2026-10-04, Alexandru's to
+  fill in.** The brief's holiday rows ended with a placeholder,
+  `[movable days: Beweglicher Ferientag,YYYY-MM-DD,YYYY-MM-DD,...]`,
+  which was never filled in. It was left out rather than guessed (rule
+  1), so `data/holidays-manual.csv` holds six blocks and the school
+  start, and the calendar says in every month of the span that movable
+  days are not entered. The ministry's page says the schools of
+  2026/2027 still have **four** movable days, chosen by each school - so
+  the dates have to come from his school calendar. One line each:
+  `Beweglicher Ferientag,2027-MM-DD,2027-MM-DD,school-holiday-movable,confirmed,school calendar photo,`.
+- **The ministry's footnotes 1 and 2, read 2026-10-04 on a GitHub runner
+  (no date changed because of them).** Footnote 1, on Herbstferien 2026:
+  "Am 31. Oktober ... 2026 ... (Reformationsfest) ist schulfrei" - 31 Oct
+  2026 is a Saturday, the day after the block ends. Footnote 2, on
+  Osterferien 2027: "Am ... 25. März 2027 ... (Gründonnerstag) ist
+  schulfrei" - Thursday 25 March, five days before the block starts on 30
+  March (26 March is Good Friday and 29 March Easter Monday, public
+  holidays the file does not hold either). **25 March 2027 is therefore
+  school-free and shows unshaded**; adding a row for it is his call.
+  Footnote 3 is about the movable days (above). Both notes are in the
+  rows' `note` cells. Every date in his rows matches the ministry's page.
 
 - **The map's top row at 390 px: nothing overlaps or is cut off at the
   default text size, but it breaks at a larger phone font size, and the

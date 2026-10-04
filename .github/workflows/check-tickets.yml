@@ -15,11 +15,6 @@ name: Check ticket files
 #                                    map each football-rules.json club
 #                                    entry is; football-rules.json is
 #                                    read, never written)
-#   data/event-ticket-rules.csv     (since 2026-10-04: rules for one
-#                                    bucket-list entry; header only)
-#   data/bucket-links-manual.csv    (since 2026-10-04: which clubs a
-#                                    bucket entry names, and which entry
-#                                    a ticket event belongs to)
 #
 # It never writes to them, so there is nothing to commit. It exists so a
 # typo in a vocabulary column - "inferrred", "face_value" - is caught
@@ -48,8 +43,6 @@ on:
       - "data/ticket-sources.csv"
       - "data/country-ticket-rules.csv"
       - "data/football-rules-links.csv"
-      - "data/event-ticket-rules.csv"
-      - "data/bucket-links-manual.csv"
       - "data/football-rules.json"
       - "tools/check_tickets.py"
       - ".github/workflows/check-tickets.yml"
@@ -64,8 +57,6 @@ on:
       - "data/ticket-sources.csv"
       - "data/country-ticket-rules.csv"
       - "data/football-rules-links.csv"
-      - "data/event-ticket-rules.csv"
-      - "data/bucket-links-manual.csv"
       - "data/football-rules.json"
       - "tools/check_tickets.py"
   workflow_dispatch:

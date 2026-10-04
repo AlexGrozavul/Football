@@ -28,7 +28,7 @@
    name makes it drop the old shell cache instead of keeping it forever.
 ------------------------------------------------------------------- */
 
-const SHELL_VERSION = 'v5';
+const SHELL_VERSION = 'v6';
 const SHELL_CACHE = 'football-shell-' + SHELL_VERSION;
 /* The data cache keeps its own name across shell versions, so a new
    deploy does not throw away the data a phone needs to open offline. */
