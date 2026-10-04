@@ -395,7 +395,8 @@ a subscribed calendar reads as a schedule regardless of its description.
 ### Code
 
 - `index.html` — the whole app. Single file, no framework, Leaflet from
-  a copy in `vendor/` (from the unpkg CDN until 2026-10-02), three tabs: map, bucket list, ticket info.
+  a copy in `vendor/` (from the unpkg CDN until 2026-10-02), four tabs: map, bucket list, ticket info and,
+  since 2026-10-04, **Me** (memberships and tickets held, kept on the device only - Conventions, "The Me tab").
   **Since 2026-10-04 the Ticket info tab holds rules only and the dated
   reminders are the Bucket list tab's** (Conventions, "Ticket info and
   the Bucket list"). **Since the same day the Bucket list tab has two
@@ -589,6 +590,32 @@ a subscribed calendar reads as a schedule regardless of its description.
   a month's render time at 4x CPU. With estimates also put on a day cell
   and each holiday block's last day dropped, in a scratch copy, it failed
   49 of 195 checks.
+- `tools/test_me.js` — added 2026-10-04: the Me tab at 390x844, the clock
+  at 2026-10-04 12:00 Berlin time. Fails if the four tabs do not fit the
+  bottom bar (one wider than its slot, wrapped or off screen); if adding,
+  editing or deleting a membership or a ticket goes wrong; if "Renewal due
+  in N days", "Renewal overdue by N days" or the window setting is wrong;
+  if a non-euro cost lacks its euro figure in brackets or "euro figure not
+  entered"; if a ticket with no kick-off does not say "time not set"; if
+  anything is lost on a reload; if a card number (13-19 digits passing
+  Luhn, spaced, hyphenated or not) is saved, or digits failing Luhn are
+  refused; if "You hold tickets" is missing from the linked entry in the
+  List, its opened detail, the calendar's day cell and item, or the
+  sheet - or is on any other entry; if a downloaded `.ics` is not valid
+  (CRLF, lines of at most 75 octets, one VEVENT, one VALARM, the required
+  properties, escaping, folding) or its alarm does not go off at exactly
+  the lead time (1 day before kick-off; 14 days before a renewal at 09:00;
+  a changed lead time); if the backup banner does not show after an edit
+  or a star and go after an export or an import; if export, delete
+  everything, import does not give back exactly what was exported,
+  favorites included; if any of seven broken files (not JSON, another
+  app's file, a newer version, a ticket with no status, a card number in a
+  note, a repeated id, a missing list) is not refused with the device
+  unchanged; if blocked storage breaks the tab; if the tab scrolls
+  sideways with forms or cards open; or if anything typed on the tab is in
+  any request's URL, headers or body, in a cookie, sessionStorage,
+  IndexedDB or the repository, or any request other than GET reaches the
+  site. 83 checks.
 - `tools/check_holidays.py` — added 2026-10-04: read-back and checks for
   `data/holidays-manual.csv`, in the style of `check_derbies.py`. Prints
   every row as understood (weekday, length), rejects by line (bad or
@@ -605,7 +632,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   and `test_nearme.js`, and since 2026-10-04 `test_tickets_bucket.js`
   and `python3 tools/check_tickets.py` (which must exit 0), and since the
   same day `test_calendar.js` and `python3 tools/check_holidays.py`
-  (which must exit 0), on a push to
+  (which must exit 0), and since the same day `test_me.js`, on a push to
   `main` or a pull request touching `index.html`, `sw.js`, the manifest,
   a `tools/test_*.js`, `data/football-rules-links.csv`,
   `data/bucket-links-manual.csv`, `data/event-ticket-rules.csv`,
@@ -1756,8 +1783,9 @@ Alexandru's instruction. Two sub-tabs at the top of the Bucket list tab.
 - **Favorites and the sort are kept on THIS DEVICE only**, in
   `localStorage` (`football-planner-favorites`, a list of bucket entry
   ids; `football-planner-bucket-sort`, `earliest` or `favorites`). **Not
-  in the repo, not read by any tool, and not exported** - there is no
-  export until the Me tab. Every read and write is wrapped, so with
+  in the repo and not read by any tool.** Since 2026-10-04 the favorites
+  travel in the Me tab's export file (and a star puts up its backup
+  banner); the sort does not. Every read and write is wrapped, so with
   storage blocked both still work for the visit. An id that is no longer
   a bucket entry is ignored. *Clear & reset* for the site deletes them.
 - **Calendar.** A month grid, Monday first, with previous, next and
@@ -1800,6 +1828,92 @@ Alexandru's instruction. Two sub-tabs at the top of the Bucket list tab.
   ticket window is day-level (every one is inferred or disputed), so
   none is on a day cell. A month renders in about 17-19 ms in headless
   Chromium with the CPU slowed 4x (this sandbox, not a phone).
+
+**The Me tab: memberships and tickets held, on the device only,
+2026-10-04.** Built on Alexandru's instruction. A fourth tab in the bottom
+bar (its four labels fit 390 px, one line each - `test_me.js` checks it).
+- **Where it lives: this browser's `localStorage`, nothing else.** Keys
+  `football-planner-me` (memberships, tickets, settings),
+  `football-planner-me-unsaved` (an edit since the last export) and
+  `football-planner-me-exported` (when). **Never in the repo, never read
+  by any tool, never sent in any request, and the service worker never
+  sees it** - the saved-routes arrangement. Every read and write is
+  wrapped: with storage blocked the tab says what you add lasts only until
+  the page is closed, and works for the visit.
+- **Memberships**: club or organisation (required), who it is for, scheme
+  name, cost (amount, a three-letter currency, and - only when not EUR - a
+  euro figure **he types**: no exchange rate is held, so a missing one
+  reads "euro figure not entered", the price-file rule), how often it is
+  charged (`yearly`, `per season`, `half-yearly`, `quarterly`, `monthly`,
+  `one-off`, `other` or not recorded), renewal date, benefits, notes.
+  Within the window (default 30 days, set on the tab, 1-365) a card reads
+  "Renewal due in N days" (or "due today"); before today, "Renewal
+  overdue by N days" in red; outside it, "Renews <date>". Overdue first,
+  then soonest, undated last. Days are counted between plain local dates.
+- **Tickets held**: match (required), date, kick-off (optional; none
+  reads "time not set", the club sheet's wording, and "date not set" with
+  no date), venue, block, seats, who each ticket is for (one text field),
+  price paid (as the cost), where bought, status (`requested`, `won`,
+  `bought`, `transferred`) and **Link to bucket event** - a dropdown of
+  the bucket entries **by id**, never matched by name. A link to an id no
+  longer in the bucket list is kept and says so. Past tickets (date before
+  today) are in a collapsed Past section.
+- **"You hold tickets"**: a bucket entry with at least one linked ticket
+  carries a green "You hold tickets" tag with the statuses beside it
+  ("bought", "2 requested, won"), on its List card and its sheet's header
+  (both through `bucketTags()`), a "You hold tickets" box at the top of
+  its detail (`bucketDetailHtml()`, so the List and the sheet), a green
+  "T" on its calendar day cell (and "you hold tickets" in the cell's
+  label) and the tag on its calendar item. **Every status counts,
+  `requested` included**, as the brief worded it - see Known open problems.
+- **What is not stored, by design**: no field for a barcode, a QR code, a
+  password or a card number, and **any free-text value holding 13-19
+  digits (spaces or hyphens between them allowed) that pass the Luhn check
+  is refused**, on Save and on Import, naming the field. The tab says why:
+  an export file ends up in cloud backups and downloads folders. Digits
+  that fail Luhn (a phone number, a booking reference) are kept.
+- **"Add to phone calendar"** (a page cannot alert while closed) downloads
+  a one-event `.ics` with a `VALARM` (`ACTION:DISPLAY`). **The dates are
+  his own entries and are used exactly as typed**: a kick-off is written
+  as a floating local time (`DTSTART:20261101T204500`, no time zone, so
+  the phone shows it as typed) and **no end time is invented** - the event
+  is the kick-off moment; a renewal, or a match with no kick-off, is a
+  whole-day event (`VALUE=DATE`, `DTEND` the next day). The lead time is
+  per record, set in its form: default **14 days for a renewal, 1 day for
+  a match**. For a whole-day event the alarm goes off at **09:00** that
+  many days before (`TRIGGER:-P13DT15H` for 14), because midnight is when
+  a whole-day alarm would otherwise ring; for a timed match, that many
+  days before kick-off (`-P1D`). Text is escaped and lines folded at 75
+  octets. Rule 4 is not touched: this is hand-entered data, one file per
+  tap, never a subscribed feed.
+- **Export / Import**: one JSON file, `format: football-planner-me`,
+  `version: 1`, `exportedAt`, `memberships`, `tickets`, `favorites` (the
+  bucket list stars) and `settings.renewWindowDays`. **An import is
+  checked whole first** - format, version (a newer one is refused), every
+  record through the same checks as the form, ids unique, the card-number
+  rule - and **any problem refuses the whole file with nothing changed**,
+  naming up to six reasons. A good file first says what it holds and what
+  it would replace, and **Replace** then replaces this device's
+  memberships, tickets and favorites with the file's (a favorite naming an
+  entry no longer in the list is left out, and said). Saved routes merge on
+  import; this replaces, because it is a restore, and merging would bring
+  back records deleted since.
+- **The backup banner**, "Back up your data — export", is on the tab after
+  any edit - a record, the renewal window, a star - until the next export
+  (or an import). The tab also warns that clearing Chrome's site data
+  deletes everything on it.
+- **Can saved routes share the same export? Yes, technically, and it was
+  not done (as asked).** Both are this origin's storage and JSON, and the
+  routes already have a validated export of their own
+  (`football-planner-saved-routes`, `checkImported()`). Three reasons it
+  is not a free merge: the routes import *merges* by id and this one
+  *replaces*, so one file would need two rules; the place-search cache and
+  the credit estimate must never go in a file (Stadia's 7-day rule, and
+  the estimate is per device); and a saved route line rests on Stadia's
+  "offline use ... per device" exception - a routes export already moves
+  lines off the device on purpose, but putting them in every routine
+  backup is a wider reading of that clause. Alexandru's call: keep two
+  files, or add routes to this one as an optional section that merges.
 
 **Phone layout and plain words, 2026-10-03.** Five problems Alexandru
 saw on a real phone at about 390 px, each reproduced in headless
@@ -1929,8 +2043,9 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6`; it has been `v6` since
-  2026-10-04, when the Bucket list got its calendar, `v5` before that,
+  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7`; it has been `v7` since
+  2026-10-04, when the Me tab shipped, `v6` before that, the same day,
+  when the Bucket list got its calendar, `v5` before that,
   the same day, when the Ticket info and Bucket list tabs were rebuilt, `v4` before
   that, when the Near me panel shipped, `v3` before that, when the collapsible legend
   shipped, and `v2` before that, when the Stadia key left the page - each
@@ -1979,9 +2094,10 @@ revalidation request per shell file per open, answered 304.
      the saved copies and the service worker; the next open is a first
      visit. The home-screen icon may need adding again (step 3).
      **It also deletes every saved route on that phone** (and the search
-     cache and the credit estimate): **Export them first** from the
-     route panel, and Import the file afterwards. Step 1 deletes
-     nothing.
+     cache and the credit estimate), **and everything on the Me tab and
+     the bucket list favorites**: **Export both first** - saved routes
+     from the route panel, the Me tab from its Back up section - and
+     Import the files afterwards. Step 1 deletes nothing.
   3. **Reinstall**: long-press the icon → App info → Uninstall, then open
      `https://alexgrozavul.github.io/Football/` in Chrome → ⋮ → *Install
      app* (or *Add to Home screen* → Install).
@@ -2505,6 +2621,16 @@ how each rests on them, is in Conventions, "The installable app" and
 ---
 
 ## Known open problems
+
+- **A `requested` ticket shows "You hold tickets" - built as the brief
+  worded it, 2026-10-04, Alexandru's to confirm.** The brief says an
+  entry linked to "a held ticket" shows the phrase, and every record on
+  the Me tab's "Tickets held" list is one, whatever its status. So a
+  ticket only *requested* (a ballot entered, nothing won) and one
+  *transferred* (which may mean passed on to someone else) both put
+  "You hold tickets" on the entry; the statuses are shown beside the tag
+  so it never hides which. If he wants the phrase only for `won` and
+  `bought` (or not for `transferred`), it is one line in `heldFor()`.
 
 - **No movable school day is entered - found 2026-10-04, Alexandru's to
   fill in.** The brief's holiday rows ended with a placeholder,
@@ -7176,8 +7302,10 @@ how each rests on them, is in Conventions, "The installable app" and
    Licensing is unresolved: only freely licensed images may be used on a
    public site, and Wikipedia's non-free crests may not. Fallback is a
    generated marker — club colours plus initials.
-5. Revamped bucket list and ticket info tabs, plus a fourth tab for
-   memberships and tickets already held: cost, renewal date, benefits.
+5. ~~Revamped bucket list and ticket info tabs, plus a fourth tab for
+   memberships and tickets already held~~ **— built 2026-10-04**: the
+   tabs in "Ticket info and the Bucket list" and "The Bucket list: List,
+   Calendar, favorites", the fourth tab in "The Me tab" (Conventions).
 6. Expansion to more countries, one at a time.
 7. ~~The official-roster check~~ **— built 2026-09-20, and everything
    below is the design it was built to.** `tools/check_rosters.py` and

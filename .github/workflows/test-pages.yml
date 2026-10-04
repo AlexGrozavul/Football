@@ -37,7 +37,13 @@ name: Test the page
 # their days, a month outside the entered holidays saying so, the sheet a
 # tapped item opens matching the List, all under Europe/Berlin and UTC) and
 # the holidays file's own checker (tools/check_holidays.py, which must exit
-# 0). Each one
+# 0), and since the same day the Me tab (tools/test_me.js - four tabs fit at
+# 390 px; memberships and tickets held added, edited, deleted and kept over a
+# reload; a card number refused; "You hold tickets" on the linked bucket entry
+# in the List, the sheet and the calendar; a valid .ics whose alarm matches
+# the lead time; export, delete, import round trip; broken imports refused;
+# no sideways scroll; nothing typed there in any request or in the repo).
+# Each one
 # serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
 # credit is spent, and fails on a script error. A failing test turns the
@@ -175,6 +181,12 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_calendar.js . 2>&1 | tee /tmp/test_calendar.log
 
+      - name: Me tab - memberships, tickets held, export and import
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_me.js . 2>&1 | tee /tmp/test_me.log
+
       # The calendar reads the holidays file; its own checker must pass too.
       - name: School holidays read back (check_holidays.py exits 0)
         if: always()
@@ -193,7 +205,7 @@ jobs:
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar check_tickets check_holidays; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me check_tickets check_holidays; do
               echo "## test_$t.js"
               echo
               echo '```'
