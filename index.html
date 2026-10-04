@@ -411,6 +411,45 @@
 
   .note{color:var(--faint);font-size:12.5px;margin:14px 0 0;line-height:1.5}
 
+  /* The Me tab: memberships and tickets held, kept on this device only. */
+  .me .mebanner{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#3a2a06;color:#f2d38a;
+    border:1px solid #6b4f12;border-radius:10px;padding:9px 12px;margin:0 0 10px;font-size:13.5px}
+  .me .mebanner span{flex:1 1 180px;min-width:0}
+  .me .mewarn{border:1px solid #5a2222;background:#2a1414;color:#f3b2ad;border-radius:10px;padding:9px 12px;
+    margin:10px 0;font-size:13px}
+  .me .mesec{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .me .mesec h2{flex:1;margin-bottom:9px}
+  .me button.b{min-height:44px;background:#1b2230;border:1px solid var(--line);border-radius:9px;color:var(--ink);
+    font:inherit;font-size:13.5px;padding:0 13px;cursor:pointer}
+  .me button.b.go{background:var(--t3);border-color:var(--t3);color:#0d1117;font-weight:600}
+  .me button.b.del{color:var(--bad);border-color:#5a2222}
+  .me button.b:disabled{opacity:.45;cursor:default}
+  .me .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .me .meform{background:#11161d;border:1px solid var(--t3);border-radius:10px;padding:10px 12px;margin-bottom:9px}
+  .me .meform h3{margin:0 0 4px;font-size:15px}
+  .me .meform label{display:block;font-size:12px;letter-spacing:.04em;color:var(--dim);margin-top:9px}
+  .me .meform input,.me .meform select,.me .meform textarea{display:block;width:100%;margin-top:3px;background:#0d1117;
+    color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:8px 9px;font:inherit;font-size:16px;
+    color-scheme:dark;min-width:0}
+  .me .meform textarea{min-height:64px;resize:vertical}
+  .me .meform .two{display:flex;gap:8px}
+  .me .meform .two>label{flex:1 1 0;min-width:0}
+  .me .meform .hint{font-size:11.5px;color:var(--faint);margin-top:2px;letter-spacing:0}
+  .me .meerr{color:var(--bad);font-size:13px;margin-top:8px}
+  .me .meerr:empty{display:none}
+  .me .sub{color:var(--faint);font-size:12px;margin-top:6px}
+  .me .memsg{font-size:13px;color:var(--dim);margin-top:8px;overflow-wrap:anywhere}
+  .me .memsg.bad{color:var(--bad)}
+  .me .memsg.ok{color:var(--ok)}
+  .me .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim);margin:0 0 9px}
+  .me .ctl input{width:72px;background:#0d1117;color:var(--ink);border:1px solid var(--line);border-radius:7px;
+    padding:7px 8px;font:inherit;font-size:16px}
+  .me .when .notime{display:block;color:var(--faint);font-size:12px}
+  .me details.past{margin-top:6px}
+  .me ul{margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--dim)}
+  .tag.held{color:#0d1117;background:var(--ok);border-color:var(--ok);font-weight:600}
+  .cday .mheld{font-size:9px;color:var(--ok);font-weight:700}
+
   /* Offline: the data banner, and the map's "needs a connection" card. */
   .offline{background:#3a2a06;color:#f2d38a;border-bottom:1px solid #6b4f12;
     padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top));
@@ -522,6 +561,7 @@
       <div id="calView" role="tabpanel" aria-labelledby="tabCal" hidden><div id="calBody"></div></div>
     </div></div>
     <div class="pane" id="pane-tickets"><div class="wrap" id="ticketBody"></div></div>
+    <div class="pane" id="pane-me"><div class="wrap me" id="meBody"></div></div>
     <!-- A bucket entry or ticket window tapped in the calendar: the club
          sheet's shape, against the bottom bar, the List's own renderer inside. -->
     <div class="sheet" id="bsheet" hidden role="dialog" aria-label="Bucket list entry">
@@ -535,6 +575,7 @@
     <button class="on" data-pane="map"><b>◉</b>Map</button>
     <button data-pane="bucket"><b>★</b>Bucket list</button>
     <button data-pane="tickets"><b>▤</b>Ticket info</button>
+    <button data-pane="me"><b>●</b>Me</button>
   </nav>
 </div>
 
@@ -3355,7 +3396,8 @@ async function bucketDetailHtml(item){
   const dist = item.distanceKm ?? km;
   const rest = Object.fromEntries(Object.entries(item).filter(([k]) => !BUCKET_SHOWN.has(k)));
   const unv = unverifiedParts(item);
-  let h = (item.why ? `<p class="bwhy">${esc(item.why)}</p>` : '') +
+  let h = heldDetailHtml(item.id) +
+    (item.why ? `<p class="bwhy">${esc(item.why)}</p>` : '') +
     (unv.length ? `<div class="meta">${UNVERIFIED_TAG}<span class="tag bad">your notes mark this unverified: ${esc(unv.join('; '))}</span></div>` : '') +
     field('What', item.type) +
     (item.venue ? field('Venue', item.venue) : '') +
@@ -3477,7 +3519,8 @@ function holidayLines(dates){
 }
 
 /* ---- Favorites and the sort: kept on THIS DEVICE only, in the browser's
-   localStorage, never in the repo, never exported (not until the Me tab).
+   localStorage, never in the repo. Favorites travel in the Me tab's
+   export file; the sort does not.
    Storage can be blocked, and even reading it can throw, so every access
    is wrapped: blocked, the stars and the sort still work for the visit. */
 const FAV_KEY = 'football-planner-favorites', SORT_KEY = 'football-planner-bucket-sort';
@@ -3494,6 +3537,7 @@ function setFav(id, on){
   const F = favs();
   if(on) F.add(id); else F.delete(id);
   try{ localStorage.setItem(FAV_KEY, JSON.stringify([...F])); }catch(err){ /* blocked: this visit only */ }
+  meTouched();      // favorites are in the Me tab's export, so a star is an edit to back up
 }
 function sortMode(){
   if(SORT) return SORT;
@@ -3550,6 +3594,7 @@ function bucketTags(item){
   }
   if(item.trueDerby) bits.push('<span class="tag">true derby</span>');
   if(item.verified === false) bits.push(UNVERIFIED_TAG);
+  bits.push(heldTag(item.id));      // tickets held, from the Me tab
   return bits.join('');
 }
 
@@ -3660,7 +3705,8 @@ function calItems(){
     else months.push({it, from: p.key.slice(0, 7), to: p.end});
   };
   for(const item of rules.bucketList || []){
-    const base = {kind: 'entry', id: item.id, entryId: item.id, title: item.title || item.id, fav: F.has(item.id)};
+    const base = {kind: 'entry', id: item.id, entryId: item.id, title: item.title || item.id, fav: F.has(item.id),
+      held: heldFor(item.id).length > 0};
     const dates = entryDates(item);
     if(!dates.length){ none.push({...base, sub: 'no date recorded'}); continue; }
     let disp = false;
@@ -3688,7 +3734,8 @@ function calItemButton(it){
   return `<button type="button" class="calitem" data-open="${it.kind}:${esc(it.id)}" data-ds="${esc(it.ds || '')}">` +
     `<i class="${it.kind === 'event' ? 'mtw' : 'mev'}" aria-hidden="true"></i>` +
     `<span class="ct">${it.fav ? '<span class="mfav" aria-label="favorite">★</span> ' : ''}${esc(it.title)}` +
-    `<span class="cs">${esc(it.sub)}</span></span></button>`;
+    `<span class="cs">${esc(it.sub)}</span>` +
+    (it.held ? `<span class="meta" style="margin-top:4px">${heldTag(it.id)}</span>` : '') + `</span></button>`;
 }
 
 function renderCalendar(){
@@ -3736,9 +3783,11 @@ function renderCalendar(){
     const its = I.byDay.get(iso) || [];
     const nEv = its.filter(i => i.kind === 'entry').length, nTw = its.length - nEv;
     const marks = its.slice(0, 4).map(i => `<i class="${i.kind === 'event' ? 'mtw' : 'mev'}"></i>`).join('') +
-      (its.length > 4 ? `<i>+${its.length - 4}</i>` : '') + (its.some(i => i.fav) ? '<i class="mfav">★</i>' : '');
+      (its.length > 4 ? `<i>+${its.length - 4}</i>` : '') + (its.some(i => i.fav) ? '<i class="mfav">★</i>' : '') +
+      (its.some(i => i.held) ? '<i class="mheld">T</i>' : '');
     const label = [DAY_SHORT(iso), ...hs.map(r => `${r.name} (${HOL_WORDS[r.kind]})`),
-      nEv ? `${nEv} entr${nEv === 1 ? 'y' : 'ies'}` : '', nTw ? `${nTw} ticket window${nTw === 1 ? '' : 's'}` : '']
+      nEv ? `${nEv} entr${nEv === 1 ? 'y' : 'ies'}` : '', nTw ? `${nTw} ticket window${nTw === 1 ? '' : 's'}` : '',
+      its.some(i => i.held) ? 'you hold tickets' : '']
       .filter(Boolean).join(', ');
     g += `<button type="button" class="${cls}" data-date="${iso}" aria-pressed="${CAL.sel === iso}" ` +
       `aria-label="${esc(label)}" title="${esc(label)}"><span class="dn">${d}</span>` +
@@ -3748,6 +3797,7 @@ function renderCalendar(){
   h += `<div class="calgrid" role="group" aria-label="${esc(monthText(ym))}">${g}</div>` +
     `<div class="calkey"><span><i class="mev"></i>entry</span><span><i class="mtw"></i>ticket window</span>` +
     `<span><b style="color:#f2c94c">★</b> favorite</span>` +
+    `<span><b style="color:var(--ok)">T</b> you hold tickets</span>` +
     `<span><i class="sw" style="background:#17301f"></i>school holiday</span>` +
     `<span><i class="sw" style="background:repeating-linear-gradient(135deg,#17301f 0 3px,#11161d 3px 6px);border-style:dashed"></i>movable school day</span>` +
     `<span><i class="sw" style="box-shadow:inset 0 0 0 2px var(--t3);border-color:transparent"></i>school starts</span></div>` +
@@ -3886,6 +3936,625 @@ function showBucketTab(tab){
   dragToClose(sheet, closeBSheet);
 })();
 
+/* -------------------------------------------------------------- Me tab
+
+   Memberships and tickets held: Alexandru's own entries, kept on THIS
+   DEVICE only, in the browser's localStorage - never in the repo, never
+   read by any tool, never sent anywhere, and never seen by the service
+   worker. The same arrangement as saved routes and favorites. Export /
+   Import (one JSON file, with the bucket list favorites) is the only way
+   to move them to another device or back them up.
+
+   Nothing that opens a gate or pays for something is stored: no barcode,
+   no QR code, no password, no card number. There are no fields for them,
+   and any free-text value holding 13-19 digits that pass the Luhn check
+   (the shape of a payment card number) is refused, here and on import -
+   an export file ends up in cloud backups.
+
+   Storage can be blocked, and even reading it can throw, so every access
+   is wrapped: blocked, the tab works for the visit and says so. */
+
+const ME_KEY = 'football-planner-me', ME_UNSAVED_KEY = 'football-planner-me-unsaved',
+  ME_EXPORTED_KEY = 'football-planner-me-exported';
+const ME_FORMAT = 'football-planner-me', ME_VERSION = 1;
+const TICKET_STATUS = ['requested', 'won', 'bought', 'transferred'];
+const FREQUENCIES = ['yearly', 'per season', 'half-yearly', 'quarterly', 'monthly', 'one-off', 'other'];
+const ME_DEFAULTS = {renewWindowDays: 30, renewalAlertDays: 14, matchAlertDays: 1};
+const ME_TEXT_MAX = 2000;
+const ME_MEMBERSHIP_TEXT = ['club', 'whoFor', 'scheme', 'benefits', 'notes'];
+const ME_TICKET_TEXT = ['match', 'venue', 'block', 'seats', 'whoFor', 'boughtFrom'];
+const ME_FIELD_WORDS = {club: 'Club or organisation', whoFor: 'Who it is for', scheme: 'Scheme name',
+  benefits: 'Benefits', notes: 'Notes', match: 'Match', venue: 'Venue', block: 'Block', seats: 'Seats',
+  boughtFrom: 'Where bought', currency: 'Currency'};
+
+let ME = null;                      // {memberships, tickets, settings}
+const MEUI = {form: null, msg: null, msgKind: '', pending: null, blocked: false};
+
+function meRead(key){
+  try{ return localStorage.getItem(key); }catch(err){ MEUI.blocked = true; return null; }
+}
+function meWrite(key, value){
+  try{
+    if(value == null) localStorage.removeItem(key); else localStorage.setItem(key, value);
+    return true;
+  }catch(err){ MEUI.blocked = true; return false; }
+}
+
+function meLoad(){
+  if(ME) return ME;
+  let v = null;
+  try{ v = JSON.parse(meRead(ME_KEY) || 'null'); }catch(err){ v = null; }
+  ME = {memberships: Array.isArray(v?.memberships) ? v.memberships : [],
+    tickets: Array.isArray(v?.tickets) ? v.tickets : [],
+    settings: Object.assign({}, ME_DEFAULTS, v?.settings || {})};
+  return ME;
+}
+function meSave(){
+  meWrite(ME_KEY, JSON.stringify({version: ME_VERSION, memberships: ME.memberships, tickets: ME.tickets,
+    settings: ME.settings}));
+}
+
+/* Any edit - a membership, a ticket, a setting, a star - puts up the
+   backup banner until the next export (or an import, which makes this
+   device hold exactly what a file holds). */
+let ME_UNSAVED = null;
+function meUnsaved(){
+  if(ME_UNSAVED == null) ME_UNSAVED = meRead(ME_UNSAVED_KEY) === '1';
+  return ME_UNSAVED;
+}
+function meTouched(){
+  ME_UNSAVED = true;
+  meWrite(ME_UNSAVED_KEY, '1');
+  if(document.getElementById('pane-me')?.classList.contains('on')) renderMeBanner();
+}
+function meBackedUp(){
+  ME_UNSAVED = false;
+  meWrite(ME_UNSAVED_KEY, null);
+  meWrite(ME_EXPORTED_KEY, new Date().toISOString());
+}
+
+const meId = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+/* ---- What is refused. A payment card number: 13 to 19 digits, spaces or
+   hyphens allowed between them, passing the Luhn check. */
+function luhn(d){
+  let sum = 0;
+  for(let i = 0; i < d.length; i++){
+    let n = +d[d.length - 1 - i];
+    if(i % 2){ n *= 2; if(n > 9) n -= 9; }
+    sum += n;
+  }
+  return sum % 10 === 0;
+}
+function cardLike(s){
+  for(const m of String(s ?? '').matchAll(/\d(?:[ -]?\d)+/g)){
+    const d = m[0].replace(/\D/g, '');
+    if(d.length >= 13 && d.length <= 19 && luhn(d)) return true;
+  }
+  return false;
+}
+
+/* ---- Checking a record: the same checks on Save and on Import. Returns
+   the record as kept, or the reasons it is refused. */
+const meDay = v => v === '' || realDay(v);
+const meTime = v => v === '' || /^([01]\d|2[0-3]):[0-5]\d$/.test(v);
+function meMoney(m, label, errs){
+  const out = {amount: null, currency: 'EUR', eur: null};
+  if(m == null) return out;
+  if(typeof m !== 'object'){ errs.push(`${label} is not a price`); return out; }
+  const num = (v, what) => {
+    if(v === '' || v == null) return null;
+    const n = typeof v === 'number' ? v : Number(String(v).replace(',', '.'));
+    if(!Number.isFinite(n) || n < 0 || n > 1e7){ errs.push(`${what} is not an amount between 0 and 10,000,000`); return null; }
+    return Math.round(n * 100) / 100;
+  };
+  out.amount = num(m.amount, label);
+  const cur = String(m.currency ?? 'EUR').trim().toUpperCase() || 'EUR';
+  if(!/^[A-Z]{3}$/.test(cur)) errs.push(`${label}: the currency must be a three-letter code like EUR, RON or GBP`);
+  else out.currency = cur;
+  out.eur = out.currency === 'EUR' ? null : num(m.eur, `${label} (euro figure)`);
+  return out;
+}
+function meText(r, keys, errs){
+  const out = {};
+  for(const k of keys){
+    const v = r[k] == null ? '' : r[k];
+    if(typeof v !== 'string'){ errs.push(`${ME_FIELD_WORDS[k] || k} is not text`); out[k] = ''; continue; }
+    if(v.length > ME_TEXT_MAX) errs.push(`${ME_FIELD_WORDS[k] || k} is longer than ${ME_TEXT_MAX} characters`);
+    if(cardLike(v)) errs.push(`${ME_FIELD_WORDS[k] || k} looks like it holds a payment card number, which is never stored here`);
+    out[k] = v.trim();
+  }
+  return out;
+}
+function meDays(v, label, def, errs){
+  if(v === '' || v == null) return def;
+  const n = Number(v);
+  if(!Number.isInteger(n) || n < 0 || n > 365){ errs.push(`${label} must be a whole number of days from 0 to 365`); return def; }
+  return n;
+}
+function checkMembership(r){
+  const errs = [];
+  if(!r || typeof r !== 'object') return {errs: ['not a membership']};
+  const t = meText(r, ME_MEMBERSHIP_TEXT, errs);
+  if(!t.club) errs.push('Club or organisation is empty');
+  const renewal = r.renewal == null ? '' : String(r.renewal);
+  if(!meDay(renewal)) errs.push('Renewal date is not a real date');
+  const frequency = r.frequency == null ? '' : String(r.frequency);
+  if(frequency && !FREQUENCIES.includes(frequency)) errs.push(`"${frequency}" is not one of the charging intervals`);
+  const rec = Object.assign({id: typeof r.id === 'string' && r.id ? r.id : meId('m-')}, t,
+    {cost: meMoney(r.cost, 'Cost', errs), frequency, renewal,
+     alertDays: meDays(r.alertDays, 'The alert lead time', ME_DEFAULTS.renewalAlertDays, errs)});
+  return errs.length ? {errs} : {rec};
+}
+function checkTicket(r){
+  const errs = [];
+  if(!r || typeof r !== 'object') return {errs: ['not a ticket']};
+  const t = meText(r, ME_TICKET_TEXT, errs);
+  if(!t.match) errs.push('Match is empty');
+  const date = r.date == null ? '' : String(r.date), kickoff = r.kickoff == null ? '' : String(r.kickoff);
+  if(!meDay(date)) errs.push('Date is not a real date');
+  if(!meTime(kickoff)) errs.push('Kick-off is not a time like 20:30');
+  if(kickoff && !date) errs.push('A kick-off needs a date');
+  const status = String(r.status ?? '');
+  if(!TICKET_STATUS.includes(status)) errs.push(`Status must be one of: ${TICKET_STATUS.join(', ')}`);
+  const bucketId = r.bucketId == null ? '' : String(r.bucketId);
+  if(bucketId && !/^[\w-]{1,80}$/.test(bucketId)) errs.push('The bucket entry link is not an entry id');
+  const rec = Object.assign({id: typeof r.id === 'string' && r.id ? r.id : meId('t-')}, t,
+    {date, kickoff, price: meMoney(r.price, 'Price paid', errs), status, bucketId,
+     alertDays: meDays(r.alertDays, 'The alert lead time', ME_DEFAULTS.matchAlertDays, errs)});
+  return errs.length ? {errs} : {rec};
+}
+
+/* ---- Held tickets per bucket entry: joined on the entry's id, chosen
+   from a list, never matched by name. */
+const heldFor = id => id ? meLoad().tickets.filter(t => t.bucketId === id) : [];
+function heldTag(id){
+  const ts = heldFor(id);
+  if(!ts.length) return '';
+  const n = {};
+  ts.forEach(t => { n[t.status] = (n[t.status] || 0) + 1; });
+  const what = TICKET_STATUS.filter(s => n[s]).map(s => n[s] > 1 ? `${n[s]} ${s}` : s).join(', ');
+  return `<span class="tag held" data-held="${ts.length}">You hold tickets</span><span class="tag">${esc(what)}</span>`;
+}
+function heldDetailHtml(id){
+  const ts = heldFor(id);
+  if(!ts.length) return '';
+  return `<div class="nextw heldbox"><div class="nl">You hold tickets</div>` +
+    ts.map(t => `<div class="nw">${esc(t.match)} · ${meWhenText(t)} · <b>${esc(t.status)}</b>` +
+      (t.block || t.seats ? ` · ${esc([t.block && 'block ' + t.block, t.seats && 'seats ' + t.seats].filter(Boolean).join(', '))}` : '') +
+      `</div>`).join('') +
+    `<div class="sub">From the Me tab, kept on this device only.</div></div>`;
+}
+
+/* ---- Showing a record. */
+function moneyText(m){
+  if(!m || m.amount == null) return null;
+  const a = m.amount.toFixed(2) + ' ' + m.currency;
+  if(m.currency === 'EUR') return a;
+  return a + (m.eur != null ? ` (${m.eur.toFixed(2)} EUR)` : ' (euro figure not entered)');
+}
+/* A held ticket's date, with the existing "time not set" wording when no
+   kick-off is entered. Plain local date and time, exactly as typed. */
+function meWhenText(t){
+  if(!t.date) return 'date not set';
+  return esc(DAY_FMT(t.date)) + (t.kickoff ? ' · ' + esc(t.kickoff) : ' <span class="notime">time not set</span>');
+}
+function renewalInfo(m, today = todayISO()){
+  if(!m.renewal) return {tag: '<span class="tag">renewal date not recorded</span>', order: 1e9, state: 'none'};
+  const n = dayNo(m.renewal) - dayNo(today);
+  const W = meLoad().settings.renewWindowDays;
+  if(n < 0) return {tag: `<span class="tag bad" data-renew="overdue">Renewal overdue by ${-n} day${n === -1 ? '' : 's'}</span>`, order: n, state: 'overdue'};
+  if(n === 0) return {tag: '<span class="tag warn" data-renew="due">Renewal due today</span>', order: n, state: 'due'};
+  if(n <= W) return {tag: `<span class="tag warn" data-renew="due">Renewal due in ${n} day${n === 1 ? '' : 's'}</span>`, order: n, state: 'due'};
+  return {tag: `<span class="tag" data-renew="later">Renews ${esc(DAY_FMT(m.renewal))}</span>`, order: n, state: 'later'};
+}
+const bucketTitle = id => ((RULES?.bucketList || []).find(b => b.id === id) || {}).title;
+
+function membershipCard(m){
+  const R = renewalInfo(m);
+  return `<div class="card mecard" data-kind="membership" data-id="${esc(m.id)}">` +
+    `<h3>${esc(m.club)}${m.scheme ? ' · ' + esc(m.scheme) : ''}</h3>` +
+    `<div class="meta">${R.tag}${m.frequency ? `<span class="tag">${esc(m.frequency)}</span>` : ''}</div>` +
+    field('For', m.whoFor || null) +
+    field('Cost', moneyText(m.cost)) +
+    field('Charged', m.frequency || null) +
+    field('Renewal', m.renewal ? DAY_FMT(m.renewal) : null) +
+    (m.benefits ? field('Benefits', m.benefits) : '') +
+    (m.notes ? field('Notes', m.notes) : '') +
+    `<div class="acts"><button type="button" class="b" data-act="ics"${m.renewal ? '' : ' disabled'}>Add to phone calendar</button>` +
+    `<button type="button" class="b" data-act="edit">Edit</button><button type="button" class="b del" data-act="delete">Delete</button></div>` +
+    `<div class="sub">${m.renewal ? `Calendar alert ${esc(alertWords(m.alertDays, false))}.` : 'Add a renewal date to put it in the phone calendar.'}</div></div>`;
+}
+function ticketCard(t){
+  const title = t.bucketId ? bucketTitle(t.bucketId) : null;
+  const link = !t.bucketId ? null : title ? `${title} (${t.bucketId})`
+    : `"${t.bucketId}", which is not in the bucket list now`;
+  return `<div class="card mecard" data-kind="ticket" data-id="${esc(t.id)}">` +
+    `<h3>${esc(t.match)}</h3>` +
+    `<div class="row when"><span>When</span><span>${meWhenText(t)}</span></div>` +
+    `<div class="meta"><span class="tag ${t.status === 'bought' ? 'ok' : t.status === 'requested' ? 'warn' : ''}" data-status="${esc(t.status)}">${esc(t.status)}</span></div>` +
+    field('Venue', t.venue || null) +
+    field('Block', t.block || null) +
+    field('Seats', t.seats || null) +
+    field('For', t.whoFor || null) +
+    field('Price paid', moneyText(t.price)) +
+    field('Bought from', t.boughtFrom || null) +
+    (link ? field('Bucket entry', link) : '') +
+    `<div class="acts"><button type="button" class="b" data-act="ics"${t.date ? '' : ' disabled'}>Add to phone calendar</button>` +
+    `<button type="button" class="b" data-act="edit">Edit</button><button type="button" class="b del" data-act="delete">Delete</button></div>` +
+    `<div class="sub">${t.date ? `Calendar alert ${esc(alertWords(t.alertDays, !!t.kickoff))}.` : 'Add a date to put it in the phone calendar.'}</div></div>`;
+}
+function alertWords(n, timed){
+  if(timed) return n === 0 ? 'at kick-off' : `${n} day${n === 1 ? '' : 's'} before kick-off`;
+  return n === 0 ? 'at 09:00 on the day' : `${n} day${n === 1 ? '' : 's'} before, at 09:00`;
+}
+
+/* ---- The form, for adding and editing either kind. */
+function meInput(label, name, value, attrs = '', hint = ''){
+  return `<label>${esc(label)}<input name="${name}" value="${esc(value ?? '')}" ${attrs}>` +
+    (hint ? `<span class="hint">${esc(hint)}</span>` : '') + `</label>`;
+}
+function meArea(label, name, value){
+  return `<label>${esc(label)}<textarea name="${name}">${esc(value ?? '')}</textarea></label>`;
+}
+function meSelect(label, name, value, options){
+  return `<label>${esc(label)}<select name="${name}">` +
+    options.map(([v, t]) => `<option value="${esc(v)}"${v === value ? ' selected' : ''}>${esc(t)}</option>`).join('') +
+    `</select></label>`;
+}
+function moneyInputs(label, prefix, m){
+  return `<div class="two">${meInput(label, prefix + 'Amount', m?.amount ?? '', 'inputmode="decimal" autocomplete="off"')}` +
+    meInput('Currency', prefix + 'Currency', m?.currency || 'EUR', 'maxlength="3" autocapitalize="characters" autocomplete="off"') + `</div>` +
+    meInput('Euro figure, if not in EUR', prefix + 'Eur', m?.eur ?? '', 'inputmode="decimal" autocomplete="off"',
+      'Typed by you; no exchange rate is held.');
+}
+function meFormHtml(kind, rec){
+  const S = meLoad().settings;
+  const t = kind === 'membership';
+  const head = `<h3>${rec ? 'Edit' : 'Add'} ${t ? 'membership' : 'ticket'}</h3>`;
+  let f;
+  if(t) f = meInput('Club or organisation', 'club', rec?.club, 'required autocomplete="off"') +
+    meInput('Who it is for', 'whoFor', rec?.whoFor, 'autocomplete="off"') +
+    meInput('Scheme name', 'scheme', rec?.scheme, 'autocomplete="off"') +
+    moneyInputs('Cost', 'cost', rec?.cost) +
+    meSelect('How often it is charged', 'frequency', rec?.frequency || '', [['', 'not recorded'], ...FREQUENCIES.map(x => [x, x])]) +
+    meInput('Renewal date', 'renewal', rec?.renewal, 'type="date"') +
+    meArea('Benefits', 'benefits', rec?.benefits) +
+    meArea('Notes', 'notes', rec?.notes) +
+    meInput('Calendar alert, days before the renewal', 'alertDays', rec?.alertDays ?? S.renewalAlertDays,
+      'type="number" min="0" max="365" step="1" inputmode="numeric"', 'The alert goes off at 09:00 that day.');
+  else f = meInput('Match', 'match', rec?.match, 'required autocomplete="off"') +
+    `<div class="two">${meInput('Date', 'date', rec?.date, 'type="date"')}` +
+      meInput('Kick-off', 'kickoff', rec?.kickoff, 'type="time"', 'Leave empty if not set.') + `</div>` +
+    meInput('Venue', 'venue', rec?.venue, 'autocomplete="off"') +
+    `<div class="two">${meInput('Block', 'block', rec?.block, 'autocomplete="off"')}` +
+      meInput('Seats', 'seats', rec?.seats, 'autocomplete="off"') + `</div>` +
+    meInput('Who each ticket is for', 'whoFor', rec?.whoFor, 'autocomplete="off"', 'For example: seat 12 Alexandru, seat 13 Ana.') +
+    moneyInputs('Price paid', 'price', rec?.price) +
+    meInput('Where bought', 'boughtFrom', rec?.boughtFrom, 'autocomplete="off"') +
+    meSelect('Status', 'status', rec?.status || 'requested', TICKET_STATUS.map(x => [x, x])) +
+    meSelect('Link to bucket event', 'bucketId', rec?.bucketId || '',
+      [['', 'none'], ...(rec?.bucketId && !bucketTitle(rec.bucketId) ? [[rec.bucketId, `${rec.bucketId} (not in the bucket list now)`]] : []),
+       ...(RULES?.bucketList || []).map(b => [b.id, `${b.title || b.id} (${b.id})`])]) +
+    meInput('Calendar alert, days before the match', 'alertDays', rec?.alertDays ?? S.matchAlertDays,
+      'type="number" min="0" max="365" step="1" inputmode="numeric"', 'Before kick-off; at 09:00 when no kick-off is set.');
+  return `<form class="meform" data-kind="${kind}" data-id="${esc(rec?.id || '')}" novalidate>${head}${f}` +
+    `<div class="meerr" role="alert"></div>` +
+    `<div class="acts"><button type="submit" class="b go">Save</button><button type="button" class="b" data-act="cancel">Cancel</button></div></form>`;
+}
+function meFormValues(form){
+  const v = n => form.elements[n] ? form.elements[n].value : '';
+  const money = p => ({amount: v(p + 'Amount').trim(), currency: v(p + 'Currency'), eur: v(p + 'Eur').trim()});
+  if(form.dataset.kind === 'membership')
+    return {id: form.dataset.id || undefined, club: v('club'), whoFor: v('whoFor'), scheme: v('scheme'), cost: money('cost'),
+      frequency: v('frequency'), renewal: v('renewal'), benefits: v('benefits'), notes: v('notes'), alertDays: v('alertDays')};
+  return {id: form.dataset.id || undefined, match: v('match'), date: v('date'), kickoff: v('kickoff'), venue: v('venue'),
+    block: v('block'), seats: v('seats'), whoFor: v('whoFor'), price: money('price'), boughtFrom: v('boughtFrom'),
+    status: v('status'), bucketId: v('bucketId'), alertDays: v('alertDays')};
+}
+
+/* ---- A one-event calendar file with an alarm. The dates are Alexandru's
+   own entries and are used exactly as typed: a kick-off is written as a
+   plain local time (no time zone, so the phone shows it as typed), a date
+   with no kick-off as a whole day. No end time is invented: a timed event
+   is the kick-off moment itself. */
+function icsEscape(s){
+  return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+}
+function icsFold(line){
+  const enc = new TextEncoder();
+  if(enc.encode(line).length <= 75) return line;
+  const out = [];
+  let cur = '', bytes = 0, limit = 75;
+  for(const ch of line){
+    const b = enc.encode(ch).length;
+    if(bytes + b > limit){ out.push(cur); cur = ''; bytes = 0; limit = 74; }
+    cur += ch; bytes += b;
+  }
+  out.push(cur);
+  return out.join('\r\n ');
+}
+function icsFile({uid, summary, description, location, date, time, alertDays}){
+  const d = date.replace(/-/g, '');
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const next = isoDay(dayNo(date) + 1).replace(/-/g, '');
+  const trigger = time ? (alertDays ? `-P${alertDays}D` : 'PT0S')
+    : alertDays ? `-P${alertDays - 1 ? alertDays - 1 + 'D' : ''}T15H` : 'PT9H';
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Football planner//Me tab//EN', 'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH', 'BEGIN:VEVENT', `UID:${uid}@football-planner`, `DTSTAMP:${stamp}`,
+    ...(time ? [`DTSTART:${d}T${time.replace(':', '')}00`] : [`DTSTART;VALUE=DATE:${d}`, `DTEND;VALUE=DATE:${next}`]),
+    `SUMMARY:${icsEscape(summary)}`,
+    ...(location ? [`LOCATION:${icsEscape(location)}`] : []),
+    ...(description ? [`DESCRIPTION:${icsEscape(description)}`] : []),
+    'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${icsEscape(summary)}`, `TRIGGER:${trigger}`, 'END:VALARM',
+    'END:VEVENT', 'END:VCALENDAR'];
+  return lines.map(icsFold).join('\r\n') + '\r\n';
+}
+const slug = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'event';
+function meDownload(name, text, type){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type}));
+  a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+function icsFor(kind, rec){
+  if(kind === 'membership'){
+    const what = `${rec.club}${rec.scheme ? ' - ' + rec.scheme : ''}`;
+    return {name: `renewal-${slug(what)}-${rec.renewal}.ics`, text: icsFile({uid: rec.id, date: rec.renewal, time: '',
+      alertDays: rec.alertDays, summary: `Membership renewal: ${what}`,
+      description: [rec.whoFor && `For: ${rec.whoFor}`, moneyText(rec.cost) && `Cost: ${moneyText(rec.cost)}`,
+        rec.frequency && `Charged: ${rec.frequency}`, rec.benefits && `Benefits: ${rec.benefits}`, rec.notes && `Notes: ${rec.notes}`]
+        .filter(Boolean).join('\n')})};
+  }
+  return {name: `match-${slug(rec.match)}-${rec.date}.ics`, text: icsFile({uid: rec.id, date: rec.date, time: rec.kickoff,
+    alertDays: rec.alertDays, summary: rec.match + (rec.kickoff ? '' : ' (time not set)'), location: rec.venue,
+    description: [`Status: ${rec.status}`, rec.block && `Block: ${rec.block}`, rec.seats && `Seats: ${rec.seats}`,
+      rec.whoFor && `For: ${rec.whoFor}`, rec.kickoff ? '' : 'Kick-off time not set.'].filter(Boolean).join('\n')})};
+}
+
+/* ---- Export and import. One file: memberships, tickets held and the
+   bucket list favorites, with a version number. An import is checked
+   whole before anything changes; a file with any problem is refused and
+   the device keeps exactly what it had. A good file REPLACES what is on
+   this device, after saying what it holds and what it would replace. */
+function meExport(){
+  const M = meLoad();
+  const data = {format: ME_FORMAT, version: ME_VERSION, exportedAt: new Date().toISOString(),
+    memberships: M.memberships, tickets: M.tickets, favorites: [...favs()],
+    settings: {renewWindowDays: M.settings.renewWindowDays}};
+  const name = `football-planner-me-${todayISO()}.json`;
+  meDownload(name, JSON.stringify(data, null, 1), 'application/json');
+  meBackedUp();
+  MEUI.msg = `Exported ${counts(M.memberships.length, M.tickets.length, data.favorites.length)} to ${name}.`;
+  MEUI.msgKind = 'ok';
+  renderMe();
+}
+function counts(m, t, f){
+  const n = (k, w) => `${k} ${w}${k === 1 ? '' : 's'}`;
+  return `${n(m, 'membership')}, ${n(t, 'ticket')} and ${n(f, 'favorite')}`;
+}
+function meCheckFile(data){
+  const errs = [];
+  if(!data || typeof data !== 'object' || data.format !== ME_FORMAT) return {errs: ['it is not a Me-tab export from this app']};
+  if(typeof data.version !== 'number') return {errs: ['it has no version number']};
+  if(data.version > ME_VERSION) return {errs: [`it was made by a newer version of this app (version ${data.version}; this page reads ${ME_VERSION})`]};
+  if(data.version !== ME_VERSION) return {errs: [`version ${data.version} is not one this page reads`]};
+  for(const k of ['memberships', 'tickets', 'favorites']) if(!Array.isArray(data[k])) errs.push(`it has no ${k} list`);
+  if(errs.length) return {errs};
+  const out = {memberships: [], tickets: [], favorites: [], dropped: [], unlinked: 0};
+  const ids = new Set();
+  data.memberships.forEach((r, i) => {
+    const c = checkMembership(r);
+    if(c.errs) errs.push(`membership ${i + 1}${r?.club ? ` ("${String(r.club).slice(0, 40)}")` : ''}: ${c.errs.join('; ')}`);
+    else if(typeof r.id !== 'string' || !r.id || ids.has(r.id)) errs.push(`membership ${i + 1}: no id, or the same id twice`);
+    else{ ids.add(r.id); out.memberships.push(c.rec); }
+  });
+  data.tickets.forEach((r, i) => {
+    const c = checkTicket(r);
+    if(c.errs) errs.push(`ticket ${i + 1}${r?.match ? ` ("${String(r.match).slice(0, 40)}")` : ''}: ${c.errs.join('; ')}`);
+    else if(typeof r.id !== 'string' || !r.id || ids.has(r.id)) errs.push(`ticket ${i + 1}: no id, or the same id twice`);
+    else{ ids.add(r.id); out.tickets.push(c.rec); if(c.rec.bucketId && !bucketTitle(c.rec.bucketId)) out.unlinked++; }
+  });
+  const live = new Set((RULES?.bucketList || []).map(b => b.id));
+  data.favorites.forEach((f, i) => {
+    if(typeof f !== 'string') errs.push(`favorite ${i + 1} is not an entry id`);
+    else if(live.has(f)){ if(!out.favorites.includes(f)) out.favorites.push(f); }
+    else out.dropped.push(f);
+  });
+  const w = data.settings?.renewWindowDays;
+  out.renewWindowDays = ME_DEFAULTS.renewWindowDays;
+  if(w != null){
+    if(!Number.isInteger(w) || w < 1 || w > 365) errs.push('the renewal window is not a whole number of days from 1 to 365');
+    else out.renewWindowDays = w;
+  }
+  return errs.length ? {errs} : {ok: out};
+}
+async function meImportFile(file){
+  let data;
+  MEUI.pending = null;
+  try{ data = JSON.parse(await file.text()); }
+  catch(err){ MEUI.msg = `Not imported: ${file.name} is not a JSON file. Nothing on this device was changed.`; MEUI.msgKind = 'bad'; return renderMe(); }
+  const c = meCheckFile(data);
+  if(c.errs){
+    MEUI.msg = `Not imported: ${file.name} - ${c.errs.slice(0, 6).join('; ')}${c.errs.length > 6 ? `; and ${c.errs.length - 6} more` : ''}. Nothing on this device was changed.`;
+    MEUI.msgKind = 'bad';
+    return renderMe();
+  }
+  MEUI.pending = {name: file.name, data: c.ok};
+  MEUI.msg = null;
+  renderMe();
+}
+function meImportConfirm(){
+  const P = MEUI.pending;
+  if(!P) return;
+  const M = meLoad(), before = counts(M.memberships.length, M.tickets.length, favs().size);
+  M.memberships = P.data.memberships;
+  M.tickets = P.data.tickets;
+  M.settings.renewWindowDays = P.data.renewWindowDays;
+  meSave();
+  meWrite(FAV_KEY, JSON.stringify(P.data.favorites));
+  FAVS = new Set(P.data.favorites);
+  meBackedUp();
+  MEUI.pending = null;
+  MEUI.msg = `Imported ${counts(P.data.memberships.length, P.data.tickets.length, P.data.favorites.length)} from ${P.name}, ` +
+    `replacing ${before} that were on this device.` +
+    (P.data.dropped.length ? ` ${P.data.dropped.length} favorite${P.data.dropped.length === 1 ? '' : 's'} named an entry no longer in the bucket list and ${P.data.dropped.length === 1 ? 'was' : 'were'} left out (${P.data.dropped.join(', ')}).` : '') +
+    (P.data.unlinked ? ` ${P.data.unlinked} ticket${P.data.unlinked === 1 ? ' links' : 's link'} to an entry no longer in the bucket list; the link is kept and shown as such.` : '');
+  MEUI.msgKind = 'ok';
+  meChanged(false);
+}
+
+/* After a change: redraw this tab, and the bucket list and calendar,
+   whose "You hold tickets" tags read the same records. */
+function meChanged(edit = true){
+  if(edit) meTouched();
+  renderMe();
+  if(BUCKET_RULES){
+    renderBucketList();
+    if(!document.getElementById('calView').hidden) renderCalendar();
+  }
+}
+
+function renderMeBanner(){
+  const box = document.getElementById('meBackup');
+  if(box) box.hidden = !meUnsaved();
+}
+
+function renderMe(){
+  const body = document.getElementById('meBody');
+  if(!body) return;
+  const M = meLoad();
+  meUnsaved();
+  const today = todayISO();
+  const mems = [...M.memberships].sort((a, b) => renewalInfo(a, today).order - renewalInfo(b, today).order || a.club.localeCompare(b.club));
+  const upcoming = M.tickets.filter(t => !t.date || t.date >= today)
+    .sort((a, b) => (a.date || '9999').localeCompare(b.date || '9999') || (a.kickoff || '').localeCompare(b.kickoff || ''));
+  const past = M.tickets.filter(t => t.date && t.date < today).sort((a, b) => b.date.localeCompare(a.date));
+  const F = MEUI.form;
+  const form = kind => F && F.kind === kind && !F.id ? meFormHtml(kind, null) : '';
+  const card = (kind, r) => F && F.kind === kind && F.id === r.id ? meFormHtml(kind, r)
+    : kind === 'membership' ? membershipCard(r) : ticketCard(r);
+  const exported = meRead(ME_EXPORTED_KEY);
+  const P = MEUI.pending;
+
+  body.innerHTML =
+    `<div class="mebanner" id="meBackup"${meUnsaved() ? '' : ' hidden'} role="status"><span><b>Back up your data — export.</b> ` +
+      `You changed something since the last export.</span><button type="button" class="b" data-act="export">Export</button></div>` +
+    (MEUI.blocked ? `<div class="mewarn" id="meBlocked" role="status">This browser is not letting the page keep anything ` +
+      `(storage is blocked or full), so what you add here lasts only until the page is closed. Export it before you close.</div>` : '') +
+    `<p class="note" style="margin-top:0">Kept on this device only: never in the repo and never sent anywhere. ` +
+      `Clearing Chrome's site data for this app deletes everything on this tab - export first.</p>` +
+
+    `<div class="mesec"><h2 id="meMemTitle">Memberships — ${M.memberships.length}</h2>` +
+      `<button type="button" class="b" data-act="add" data-kind="membership">Add membership</button></div>` +
+    `<div class="ctl"><label for="meWindow">Say "renewal due" within</label>` +
+      `<input id="meWindow" type="number" min="1" max="365" step="1" inputmode="numeric" value="${M.settings.renewWindowDays}"> days</div>` +
+    form('membership') +
+    `<div id="meMemberships">` + (mems.length ? mems.map(m => card('membership', m)).join('')
+      : (F?.kind === 'membership' && !F.id ? '' : '<p class="note" style="margin:0 0 9px">No memberships yet.</p>')) + `</div>` +
+
+    `<div class="mesec"><h2 id="meTixTitle">Tickets held — ${M.tickets.length}</h2>` +
+      `<button type="button" class="b" data-act="add" data-kind="ticket">Add ticket</button></div>` +
+    form('ticket') +
+    `<div id="meTickets">` + (upcoming.length ? upcoming.map(t => card('ticket', t)).join('')
+      : (F?.kind === 'ticket' && !F.id ? '' : '<p class="note" style="margin:0 0 9px">No upcoming tickets.</p>')) +
+      (past.length ? `<details class="past"><summary>Past — ${past.length}</summary>${past.map(t => card('ticket', t)).join('')}</details>` : '') +
+    `</div>` +
+    `<p class="note">A ticket linked to a bucket entry shows "You hold tickets" on that entry, in the List, its sheet and the calendar.</p>` +
+
+    `<h2>Calendar alerts</h2>` +
+    `<p class="note" style="margin-top:0">A web page cannot alert you while it is closed. "Add to phone calendar" downloads ` +
+      `a file with one event and an alarm; open it and your calendar app adds it. The dates are used exactly as you typed them. ` +
+      `A renewal, or a match with no kick-off, is a whole-day event and its alert goes off at 09:00.</p>` +
+
+    `<h2>Back up</h2>` +
+    `<p class="note" style="margin-top:0">One file with your memberships, tickets held and bucket list favorites. ` +
+      `Importing a file replaces what is on this device with what the file holds. ` +
+      (exported ? `Last export from this device: ${esc(fmtSaved(exported))}.` : 'Nothing exported from this device yet.') + `</p>` +
+    `<div class="acts"><button type="button" class="b" data-act="export" id="meExport">Export</button>` +
+      `<button type="button" class="b" data-act="import" id="meImport">Import</button>` +
+      `<input type="file" id="meFile" accept="application/json,.json" hidden></div>` +
+    (P ? `<div class="mewarn" id="meConfirm" role="alert">${esc(P.name)} holds ${counts(P.data.memberships.length, P.data.tickets.length, P.data.favorites.length)}. ` +
+      `Importing it replaces the ${counts(M.memberships.length, M.tickets.length, favs().size)} on this device.` +
+      `<div class="acts"><button type="button" class="b go" data-act="import-yes">Replace</button>` +
+      `<button type="button" class="b" data-act="import-no">Cancel</button></div></div>` : '') +
+    (MEUI.msg ? `<div class="memsg ${MEUI.msgKind}" id="meMsg" role="status">${esc(MEUI.msg)}</div>` : '') +
+
+    `<h2>What is not stored</h2>` +
+    `<p class="note" style="margin-top:0">There is no place here for a barcode, a QR code, a password or a card number, ` +
+      `and any text that looks like a payment card number is refused. The reason is the export: the file ends up in ` +
+      `cloud backups and downloads folders, where anyone who gets it could use a ticket's code or a card. ` +
+      `Keep those in the club's own app or wallet.</p>` +
+    `<div class="mewarn">Clearing Chrome's site data for this app (Settings → Site settings → All sites → ` +
+      `alexgrozavul.github.io → Clear &amp; reset) deletes everything on this tab, your favorites and your saved routes. ` +
+      `Export first.</div>`;
+  const ff = body.querySelector('form.meform');
+  if(ff){ ff.scrollIntoView({block: 'nearest'}); ff.elements[0].focus({preventScroll: true}); }
+}
+
+(function wireMe(){
+  const body = document.getElementById('meBody');
+  body.addEventListener('click', e => {
+    const b = e.target.closest('button[data-act]');
+    if(!b || b.type === 'submit') return;
+    const act = b.dataset.act, card = b.closest('.mecard');
+    const M = meLoad();
+    if(act !== 'import-yes' && act !== 'import-no' && act !== 'import') MEUI.pending = null;
+    if(act === 'add'){ MEUI.form = {kind: b.dataset.kind, id: null}; MEUI.msg = null; renderMe(); }
+    else if(act === 'cancel'){ MEUI.form = null; renderMe(); }
+    else if(act === 'edit'){ MEUI.form = {kind: card.dataset.kind, id: card.dataset.id}; MEUI.msg = null; renderMe(); }
+    else if(act === 'delete'){
+      const what = card.querySelector('h3').textContent;
+      b.closest('.acts').innerHTML = `<span class="sub">Delete "${esc(what)}"?</span>` +
+        `<button type="button" class="b del" data-act="delete-yes">Delete</button><button type="button" class="b" data-act="cancel">Keep</button>`;
+    }else if(act === 'delete-yes'){
+      const list = card.dataset.kind === 'membership' ? 'memberships' : 'tickets';
+      M[list] = M[list].filter(r => r.id !== card.dataset.id);
+      meSave(); MEUI.form = null; MEUI.msg = null;
+      meChanged();
+    }else if(act === 'ics'){
+      const kind = card.dataset.kind, rec = M[kind === 'membership' ? 'memberships' : 'tickets'].find(r => r.id === card.dataset.id);
+      if(!rec) return;
+      const f = icsFor(kind, rec);
+      meDownload(f.name, f.text, 'text/calendar');
+    }else if(act === 'export') meExport();
+    else if(act === 'import') document.getElementById('meFile').click();
+    else if(act === 'import-yes') meImportConfirm();
+    else if(act === 'import-no'){ MEUI.pending = null; MEUI.msg = 'Not imported. Nothing on this device was changed.'; MEUI.msgKind = ''; renderMe(); }
+  });
+  body.addEventListener('submit', e => {
+    const form = e.target.closest('form.meform');
+    if(!form) return;
+    e.preventDefault();
+    const kind = form.dataset.kind;
+    const c = (kind === 'membership' ? checkMembership : checkTicket)(meFormValues(form));
+    if(c.errs){
+      form.querySelector('.meerr').innerHTML = 'Not saved: ' + c.errs.map(esc).join('; ') + '.';
+      return;
+    }
+    const M = meLoad(), list = kind === 'membership' ? 'memberships' : 'tickets';
+    const i = M[list].findIndex(r => r.id === c.rec.id);
+    if(i >= 0) M[list][i] = c.rec; else M[list].push(c.rec);
+    meSave();
+    MEUI.form = null;
+    MEUI.msg = `Saved "${kind === 'membership' ? c.rec.club : c.rec.match}".`;
+    MEUI.msgKind = 'ok';
+    meChanged();
+  });
+  body.addEventListener('change', e => {
+    if(e.target.id === 'meFile'){ const f = e.target.files[0]; if(f) meImportFile(f); return; }
+    if(e.target.id === 'meWindow'){
+      const n = Number(e.target.value);
+      if(!Number.isInteger(n) || n < 1 || n > 365){ e.target.value = meLoad().settings.renewWindowDays; return; }
+      meLoad().settings.renewWindowDays = n;
+      meSave();
+      meChanged();
+    }
+  });
+})();
+
 /* ------------------------------------------------------- ticket info */
 
 /* Rules only: no dates and no upcoming windows on this tab. Two
@@ -3942,6 +4611,7 @@ document.querySelectorAll('nav button').forEach(btn => {
     btn.classList.add('on');
     document.getElementById('pane-' + btn.dataset.pane).classList.add('on');
     closeBSheet();
+    if(btn.dataset.pane === 'me') renderMe();      // "due in N days" counts from today
     if(btn.dataset.pane === 'map' && MAP) setTimeout(() => MAP.invalidateSize(), 60);
   });
 });
@@ -3980,6 +4650,7 @@ if('serviceWorker' in navigator){
     HOME = HOME_FALLBACK;
   }
 
+  renderMe();
   await initMap();
   if(rules){ renderBucket(rules); renderTickets(rules); }
 })();
