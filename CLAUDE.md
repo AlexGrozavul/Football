@@ -308,6 +308,46 @@ a subscribed calendar reads as a schedule regardless of its description.
   `fixture-links-manual.csv` row; delete one and the notes leave that
   sheet.
 
+- `data/event-ticket-rules.csv` — added 2026-10-04, on Alexandru's
+  instruction. **Ticket rules for one bucket-list entry** - a final, one
+  fixture - that belong to neither a club nor a country: the columns of
+  `club-ticket-rules.csv` with `bucketId` (an id in `football-rules.json`'s
+  `bucketList`) in place of the club key (`clubQid`, `club`, `team`):
+  `bucketId,scope,opponentQid,topic,season,rule,confidence,basis,ref,
+  sourceRefs,source,checked,note`. **Header only**: it landed with its
+  checker so it is never unread, and every bucket entry says
+  "Event-specific ticket rules not researched yet". `check_tickets.py`
+  reads it like the club rules file (closed `confidence`, `basis`,
+  `scope`; the shared `topic` list) and **refuses a day-level date in
+  `rule` as well as `topic`** - stricter than the club rules file, as the
+  brief asked - and rejects a `bucketId` that is no entry.
+- `data/bucket-links-manual.csv` — added 2026-10-04, on Alexandru's
+  instruction. **Which clubs a bucket entry names, and which entry a
+  ticket event belongs to**, because neither the `bucketList` entries
+  nor the `ticketEvents` carry a Q-id or a link of their own, and the
+  structure of `football-rules.json` is decided. Header-driven:
+  `bucketId,ticketEventId,hostQid,otherQids,leg,note`. Two kinds of line:
+  a **club line** (`ticketEventId` empty) - `hostQid`, the club whose
+  ground the match is at, where that is known, `otherQids`, a `;`-list of
+  the rest, and `leg` (`first`, `second`, `single` or empty); an entry
+  whose legs have different hosts has one line per leg (the Milan derby).
+  An **event line** - `ticketEventId` and its `bucketId`, nothing else;
+  an event belongs to one entry. Read back line by line by
+  `check_tickets.py`. **Filled only where the match was certain from
+  existing data**, each line's note saying how: 13 club lines for 12
+  entries (the venue equal to a club's ground on the map, the entry's own
+  `clubs` through `football-rules-links.csv`, or the `derbies.csv` row
+  whose `rulesId` is the entry), 8 event lines. **Not linked**: the
+  `ostderby`, `old-firm`, `intercontinental-derby` and `prague-derby`
+  entries (no row in `derbies.csv`, clubs off the map or not certain),
+  and three events - `poli-rapid-cup`, `fcb-pokal-r2`, `rcsa-resale` -
+  which show under Reminders. **A line is an identity claim**, like a
+  `fixture-links-manual.csv` row; two are judgements worth a look:
+  `fcb-away-window-2026` is linked to `klassiker-away`, whose
+  `blockedReason` names that window and its date, and not to
+  `away-end-first`; `pokal-draw-2027`, filed under club `fcb`, is linked
+  to `pokal-first-round`.
+
 ### Generated — safe to overwrite
 
 - `calendars/*.ics`, `calendars/skipped.md`, `calendars/.stamps.json`
@@ -340,7 +380,10 @@ a subscribed calendar reads as a schedule regardless of its description.
 ### Code
 
 - `index.html` — the whole app. Single file, no framework, Leaflet from
-  a copy in `vendor/` (from the unpkg CDN until 2026-10-02), three tabs: map, bucket list, ticket info. Tapping a club opens
+  a copy in `vendor/` (from the unpkg CDN until 2026-10-02), three tabs: map, bucket list, ticket info.
+  **Since 2026-10-04 the Ticket info tab holds rules only and the dated
+  reminders are the Bucket list tab's** (Conventions, "Ticket info and
+  the Bucket list"). Tapping a club opens
   the **club detail sheet** (built 2026-09-25), a pull-up panel that
   replaced the map popup: ground, capacity, competition by name,
   distance, fixtures and ticket info, each saying "unavailable" with a
@@ -490,13 +533,33 @@ a subscribed calendar reads as a schedule regardless of its description.
   view, if the choice does not survive a reload (open or closed), or if
   blocked storage breaks it. With the fitting code disabled in a scratch
   copy it failed 4 of 48 checks.
+- `tools/test_tickets_bucket.js` — added 2026-10-04: the Ticket info and
+  Bucket list tabs at 390x844, every card opened, checked against the
+  files: no sideways scroll on either; one Ticket info row per country
+  with national rules and per club with ticket information; Italy's
+  rules each with "Applies to" in plain words (never blank, never "all"
+  where the row says unknown), condition, authority, status and source;
+  Inter's "Country rules: Italy" above its researched rules and notes,
+  and its notes marked unverified where the file marks them; Nürnberg's
+  "No national rules researched for Germany (DE) yet."; no upcoming-dates
+  section on Ticket info; every bucket entry a card; every ticket event
+  inside the entry `bucket-links-manual.csv` links it to, or under
+  Reminders (soonest first, undated last); the Frankenderby's Nürnberg
+  (host) then Fürth ("No ticket rules researched for SpVgg Greuther Fürth
+  yet."); the Milan derby's AC Milan and Inter; no `inferred` or
+  `disputed` date shown to the day; no script error. With the
+  month-level rule and the country-rules order broken in a scratch copy
+  it failed 15 of 53 checks.
 - `.github/workflows/test-pages.yml` — added 2026-10-03: runs
   `test_pwa.js`, `test_derbies.js` and `test_routes.js`, and since the
   same day `test_zoom.js`, `test_search.js`, `test_coverage.js`,
   `test_sheet_tickets.js` and `test_layout.js`, then `test_legend.js`
-  and `test_nearme.js`, on a push to
+  and `test_nearme.js`, and since 2026-10-04 `test_tickets_bucket.js`
+  and `python3 tools/check_tickets.py` (which must exit 0), on a push to
   `main` or a pull request touching `index.html`, `sw.js`, the manifest,
-  a `tools/test_*.js`, `data/football-rules-links.csv` or itself. Playwright is installed in the job,
+  a `tools/test_*.js`, `data/football-rules-links.csv`,
+  `data/bucket-links-manual.csv`, `data/event-ticket-rules.csv` or
+  itself. Playwright is installed in the job,
   pinned, not added to the repo. **Every Stadia request in all three is
   stubbed**, so a run spends no credit and does not show that Stadia
   itself answers; that was checked separately (Secrets).
@@ -537,7 +600,9 @@ a subscribed calendar reads as a schedule regardless of its description.
   files (the original three plus phases, rules, demand, sources and,
   since 2026-09-24, country rules), and since 2026-10-03
   `data/football-rules-links.csv`, which `check-tickets.yml` now also
-  runs on. Reads, never writes; exits 1 on a
+  runs on, and since 2026-10-04 `data/event-ticket-rules.csv` and
+  `data/bucket-links-manual.csv` (both also on `check-tickets.yml`'s
+  paths). Reads, never writes; exits 1 on a
   problem. Also prints a **layered** view of what applies to each club
   and each derby — the club's rows, then its country's rows marked
   `[national]` with their `appliesTo` and `condition`, never filtered
@@ -1505,6 +1570,13 @@ the data names it; it is a league history, not a sixth Regionalliga
 
 **The club sheet shows two kinds of ticket information side by side and
 reconciles neither.** Built 2026-10-03 on Alexandru's instruction.
+*(Since 2026-10-04 the section is the shared club renderer of "Ticket info
+and the Bucket list" below, under the Next window line: **country rules
+first**, then Researched rules, then Your notes. Until then the national
+rules sat inside Researched rules, below the club's own, and only for a
+club with a `club-tickets.csv` row. The notes no longer list the club's
+`ticketEvents` or bucket items with their dates - only their titles, and
+the dates are on the Bucket list tab.)*
 "**Your notes**" is `football-rules.json`, joined through
 `data/football-rules-links.csv`: every field of the club's entry as
 written (nested fields indented, `null` as "not recorded", `true` and
@@ -1544,6 +1616,73 @@ info unavailable".
   your notes is not counted). AC Milan - the derby sale, estimated
   October 2026, the current month, so "check whether it has been
   announced".
+
+**Ticket info and the Bucket list, 2026-10-04: rules on one tab, dated
+reminders on the other.** Built on Alexandru's instruction.
+- **One renderer for a club's ticket information**, `clubTicketsHtml()`
+  in `index.html`, used on the club sheet (below its Next window line,
+  which is unchanged), in the Ticket info tab's club rows and in a bucket
+  entry's Ticket rules. Always in this order: "**Country rules:
+  <country>**" (every row of `country-ticket-rules.csv` for the country
+  of the club's ground - `club-tickets.csv`'s `country`, else the map's -
+  or "No national rules researched for <country> yet."), "**Researched
+  rules**" (standing fields including how to track updates and under-18s;
+  sales windows with their typical opening, which is the row's own
+  month-level text, and their phases in order; general rules; derby
+  overrides; prices in their own currency; the sell-out record; a source
+  line on each row), then "**Your notes**". A club with neither club
+  source says "No ticket rules researched for <club> yet." (on the sheet
+  it keeps "Ticket info unavailable", with its country's rules below only
+  where that country has some). Nothing reconciles the two.
+- **Each country rule says which matches it covers in plain words**:
+  `appliesTo` `unknown` reads "The sources do not say which matches this
+  covers." - never blank, never "all". Also its condition, authority,
+  the club's room (`clubLatitude`), its confidence tag and its sources
+  (publisher and title from `ticket-sources.csv`, linked).
+- **"Unverified" is shown where `football-rules.json` says
+  `"verified": false`, and only there**: a red tag on the notes naming
+  the part ("Age rules", "the whole entry") and on the nested block. For
+  Inter that is **Age rules only** - the file does not mark Inter's
+  procedure, so its "phase 1 open worldwide" claim is not marked by this
+  (see Known open problems).
+- **Prices: the euro figure goes in brackets only for a row not in
+  euros, and no exchange rate is held**, so such a row would say "euro
+  figure not recorded". Every price row today is EUR.
+- **The Ticket info tab** has two sections, **Countries** (one row per
+  country with a national rule - Italy only today) and **Clubs** (one row
+  per club with a row in any club-ticket file or a line in
+  `football-rules-links.csv` - 12 today), each opening to the renderer
+  above. No ticket window, no Next window, no list of dates.
+- **Dates: one function decides what may be shown**, `placeDate()`, used
+  by the sheet's Next window line and everywhere on the Bucket list tab:
+  a `confirmed` day is shown to the day; anything else - `inferred`,
+  `disputed`, a range like `2027-01-30/2027-02-01`, a month - to the
+  month only ("estimated: January or February 2027"). A `disputed` date
+  says "disputed: possibly the wrong year or the wrong event" and its
+  warning is shown as written.
+- **The Bucket list tab** keeps every `bucketList` entry, in the same
+  Live / Blocked or deferred groups, each a card that opens to
+  `bucketDetailHtml()` (the renderer the next prompt reuses inside a
+  sheet): what it is, the venue if known, every hand-written date with
+  its dateSource label, every other field of the entry as written; the
+  clubs, host and leg from `bucket-links-manual.csv`; for a fixture,
+  **Next meeting** - the derby panel's own `derbyMeetings()` when the
+  pair is a `derbies.csv` row (by `rulesId`, or by the two Q-ids) and
+  both clubs have a fixture source, otherwise why not and the
+  hand-written date, labelled as such; **Ticket rules** - host first,
+  each club through the shared renderer; **Event rules** from
+  `event-ticket-rules.csv`; and **Ticket windows (reminders)**, every
+  ticket event linked to it: title, window with its dateSource label,
+  the reminder lead time in words ("21 days (3 weeks) before the date"),
+  action, derivation and any warning. At the top, **Reminders**: the
+  ticket events no entry claims, soonest first, undated last, rendered
+  the same way. Facts only; nothing recommends.
+- **What it said on 2026-10-04**: Reminders - Poli v Rapid (September
+  2026, past), the Pokal second round and Strasbourg's resale (undated).
+  The Milan derby's Next meeting reads **Sat 31 Oct 2026, 20:45** from
+  the Serie A file, while your notes give Sun 1 Nov 2026, confirmed -
+  both are on the card (Known open problems). The Frankenderby's is Sun
+  31 Jan 2027, 13:30, "day and time may be provisional".
 
 **Phone layout and plain words, 2026-10-03.** Five problems Alexandru
 saw on a real phone at about 390 px, each reproduced in headless
@@ -1673,8 +1812,9 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2` → `v3` → `v4`; it has been `v4` since 2026-10-03, when
-  the Near me panel shipped, `v3` before that, when the collapsible legend
+  (`v1` → `v2` → `v3` → `v4` → `v5`; it has been `v5` since 2026-10-04,
+  when the Ticket info and Bucket list tabs were rebuilt, `v4` before
+  that, when the Near me panel shipped, `v3` before that, when the collapsible legend
   shipped, and `v2` before that, when the Stadia key left the page - each
   bump makes every installed phone drop the old shell cache).
   `test_pwa.js` reads the current version from `sw.js` and bumps it one
@@ -2303,9 +2443,27 @@ how each rests on them, is in Conventions, "The installable app" and
     other two. (a) and (c) together would deal with everything above;
     none is built.
 
+- **The Milan derby's first leg: your notes and the fixture file
+  disagree by a day - found 2026-10-04, not changed: Alexandru decides.**
+  `football-rules.json`'s `derby-madonnina` gives the first leg as
+  **Sun 1 Nov 2026**, matchday 10, `dateSource` `confirmed`;
+  football-data.org's Serie A file has AC Milan v Inter, matchday 10, at
+  **2026-10-31T19:45Z, status TIMED** - Sat 31 Oct, 20:45 German time, a
+  set kick-off, not a placeholder. The bucket card shows both, each
+  labelled. Rule 3 says the hand-written date wins wherever it is used
+  (a calendar built from it says 1 Nov), and no tool may write to that
+  file, so the fix, if the fixture file is right, is his edit.
+  `milan-derby-sale-nov`'s derivation ("one month before the 1 Nov
+  fixture") rests on the same date.
+
 - **The Inter card on the Ticket info tab states "phase 1 (open
   worldwide)" flatly, and the researched rules contradict it - reported
-  2026-10-03, not changed: Alexandru decides.** The card is
+  2026-10-03, not changed: Alexandru decides.** *(Since 2026-10-04 that
+  card is on the Bucket list tab, inside the Derby della Madonnina entry
+  under "Ticket windows (reminders)", with the same disputed tag and
+  warning, and Inter's researched phases are in the same card under
+  "Ticket rules". Inter's notes now carry an "unverified" tag - but only
+  for Age rules, which is all the file marks.)* The card is
   `football-rules.json`'s ticket event `inter-derby-phase1`, titled
   "Inter home derby phase 1 (open worldwide)". It sits under "Past,
   disputed or undated" with a red "disputed — do not trust" tag and its

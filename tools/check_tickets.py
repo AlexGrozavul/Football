@@ -16,6 +16,13 @@ check_tickets.py -- read-back and validation for the ticket files.
     data/football-rules-links.csv which club on the map each club entry
                                   of football-rules.json is (since
                                   2026-10-03; read back, never written)
+    data/event-ticket-rules.csv   ticket rules for one bucket-list entry
+                                  of football-rules.json, keyed by its id
+                                  (since 2026-10-04; header only so far)
+    data/bucket-links-manual.csv  which clubs a bucket-list entry names
+                                  (host first) and which bucket entry a
+                                  ticket event belongs to (since
+                                  2026-10-04; read back, never written)
 
 The first three were written by hand and, until this tool existed,
 nothing read them at all. So a typo in a vocabulary column - "inferrred"
@@ -90,6 +97,12 @@ SOURCES_FILE = "data/ticket-sources.csv"
 # could sit here or in the club rules file.
 COUNTRY_FILE = "data/country-ticket-rules.csv"
 RULES_LINKS_FILE = "data/football-rules-links.csv"
+# Added 2026-10-04. Rules for one bucket-list entry (a final, a derby
+# fixture) that belong to neither club nor country: the same columns as
+# the club rules file, with bucketId in place of the club. Lands header
+# only, together with this checker, so the file is never unread.
+EVENT_RULES_FILE = "data/event-ticket-rules.csv"
+BUCKET_LINKS_FILE = "data/bucket-links-manual.csv"
 FOOTBALL_RULES_FILE = "data/football-rules.json"
 LEAGUE_TIERS_FILE = "data/league-tiers.csv"
 CLUBS_DIR = "data/clubs"
@@ -98,7 +111,7 @@ CLUBS_DIR = "data/clubs"
 # against it; windows before phases, because a phase must name a window
 # that exists.
 FILES = [SOURCES_FILE, TICKETS_FILE, COUNTRY_FILE, WINDOWS_FILE,
-         PHASES_FILE, PRICES_FILE, RULES_FILE, DEMAND_FILE]
+         PHASES_FILE, PRICES_FILE, RULES_FILE, DEMAND_FILE, EVENT_RULES_FILE]
 
 # ------------------------------------------------------------- csv safety
 
@@ -233,6 +246,17 @@ SCHEMA = {
         "key": ["country", "topic", "condition", "appliesTo", "season",
                 "ref"],
     },
+    EVENT_RULES_FILE: {
+        # The club rules file's columns with bucketId - an id in
+        # football-rules.json's bucketList - in place of the club key
+        # (clubQid, club, team). A bucketId that is no entry is rejected
+        # in main(), because a rule pointing at nothing looks checked.
+        "required": ["bucketId", "topic", "rule", "confidence", "basis"],
+        "optional": ["scope", "opponentQid", "season", "ref", "sourceRefs",
+                     "source", "checked", "note"],
+        "key": ["bucketId", "scope", "opponentQid", "topic", "ref",
+                "season"],
+    },
     PRICES_FILE: {
         "required": ["clubQid", "club", "team", "season", "competition",
                      "stage", "kind", "category", "price", "currency"],
@@ -339,6 +363,9 @@ CLOSED = {
     (PRICES_FILE, "scope"): SCOPE,
     (RULES_FILE, "scope"): SCOPE,
     (DEMAND_FILE, "scope"): SCOPE,
+    (EVENT_RULES_FILE, "confidence"): CONFIDENCE,
+    (EVENT_RULES_FILE, "basis"): BASIS,
+    (EVENT_RULES_FILE, "scope"): SCOPE,
     # How much of a citation's URL is actually there. A source document
     # can print a URL it has itself cut short; that is recorded, never
     # repaired by guessing the missing part.
@@ -424,6 +451,7 @@ KNOWN = {
 # object, not a copy - because layering matches on topic, and two lists
 # would drift until the layers silently stopped meeting.
 KNOWN[(COUNTRY_FILE, "topic")] = KNOWN[(RULES_FILE, "topic")]
+KNOWN[(EVENT_RULES_FILE, "topic")] = KNOWN[(RULES_FILE, "topic")]
 
 # Semicolon-separated lists, so their tokens are checked one at a time
 # rather than the whole cell.
@@ -473,6 +501,10 @@ NO_DATE_COLUMNS = {
     # no reason to carry a day, and a law's own date belongs in
     # ticket-sources.csv's published column.
     COUNTRY_FILE: ["topic", "condition", "rule"],
+    # An event rule is guarded like a country rule, rule cell included:
+    # rule 1, and the brief that created the file, say no day-level date
+    # in a rule cell. A fixture's date belongs in football-rules.json.
+    EVENT_RULES_FILE: ["topic", "rule"],
 }
 
 MONTHS = ("januar|february|februar|january|märz|maerz|march|april|mai|may|"
@@ -815,7 +847,7 @@ def check_row(path, line, row, today, sources=None):
     expected = {"confirmed": "published", "inferred": "observed-past-cycle",
                 "unverified": "unknown"}
     if conf and basis and path in (PHASES_FILE, RULES_FILE, DEMAND_FILE,
-                                   COUNTRY_FILE):
+                                   COUNTRY_FILE, EVENT_RULES_FILE):
         if basis != expected[conf] and basis != "user-supplied":
             notices.append(
                 f"{path} line {line}: confidence is {conf!r} but basis is "
@@ -867,7 +899,7 @@ def check_row(path, line, row, today, sources=None):
                            f"cycle like 2025-26. A past date needs its "
                            f"season. Reported, not rejected.")
 
-    if path in (RULES_FILE, DEMAND_FILE, COUNTRY_FILE):
+    if path in (RULES_FILE, DEMAND_FILE, COUNTRY_FILE, EVENT_RULES_FILE):
         season = row.get("season", "")
         if season and not SEASON_RE.match(season):
             problems.append(f"{path} line {line}: season is {season!r}, "
@@ -1029,6 +1061,205 @@ def read_back(path, rows, full):
 
 
 # ------------------------------------------------------------------ main
+
+def load_football_rules():
+    """football-rules.json, read and never written. An unreadable file
+    gives {}, and each check that needs it says so."""
+    import json
+    try:
+        with open(FOOTBALL_RULES_FILE, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (OSError, ValueError):
+        return {}
+
+
+def map_clubs():
+    """Every club on a map - a position and a tier - as
+    {qid: (name, country, tier, venue)}."""
+    import glob
+    import json
+    on_map = {}
+    for path in sorted(glob.glob(os.path.join(CLUBS_DIR, "??.json"))):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        for club in data.get("clubs") or []:
+            if (isinstance(club, dict) and club.get("lat") is not None
+                    and club.get("lon") is not None
+                    and club.get("tier") is not None):
+                on_map[club["id"]] = (club.get("name") or club["id"],
+                                      data.get("country", ""),
+                                      club.get("tier"), club.get("venue"))
+    return on_map
+
+
+LEGS = ["first", "second", "single"]
+
+
+def check_bucket_links():
+    """Read data/bucket-links-manual.csv back, line by line.
+
+    Two kinds of line share the file. A CLUB line (ticketEventId empty)
+    says which clubs a bucket-list entry of football-rules.json names:
+    hostQid, the club whose ground the match is at, where that is known,
+    and otherQids, a ;-list of the rest; leg says which meeting of the
+    season it is (first, second, single) where that is known. An entry
+    with two legs has one line per leg. An EVENT line says which bucket
+    entry a ticketEvents entry belongs to; its club cells stay empty.
+
+    Rejected, by line: a missing or unknown bucketId, an unknown
+    ticketEventId, an event linked twice, a Q-id that is not one or is
+    on no map, a club line with no club, a host also listed as other, a
+    leg outside the list, a second club line for one entry and leg, an
+    event line with club cells, an unquoted comma. Reported and kept: an
+    entry whose own 'clubs' or derbies.csv rulesId names clubs its lines
+    do not, an entry naming clubs with no line, an event with no line
+    (it shows under Reminders on the Bucket list tab).
+    Returns (problems, notices)."""
+    problems, notices = [], []
+    print()
+    print("-" * 70)
+    print(f"  {BUCKET_LINKS_FILE}")
+    print("-" * 70)
+    rules = load_football_rules()
+    if not rules:
+        problems.append(f"{BUCKET_LINKS_FILE}: {FOOTBALL_RULES_FILE} could "
+                        f"not be read, so no line can be checked.")
+        return problems, notices
+    bucket = {b.get("id"): b for b in rules.get("bucketList", [])}
+    events = {e.get("id"): e for e in rules.get("ticketEvents", [])}
+    on_map = map_clubs()
+    try:
+        fh = open(BUCKET_LINKS_FILE, encoding="utf-8-sig", newline="")
+    except OSError as err:
+        problems.append(f"{BUCKET_LINKS_FILE}: could not be read ({err}).")
+        return problems, notices
+    event_seen, leg_seen, clubs_of = {}, {}, {}
+    with fh:
+        reader = csv.DictReader(fh, restkey=OVERFLOW)
+        header = [_s(h) for h in (reader.fieldnames or [])]
+        for col in ("bucketId", "ticketEventId", "hostQid", "otherQids", "leg"):
+            if col not in header:
+                problems.append(f"{BUCKET_LINKS_FILE}: no {col!r} column "
+                                f"in the header {header}.")
+                return problems, notices
+        for raw in reader:
+            line = reader.line_num
+            if raw.get(OVERFLOW):
+                problems.append(overflow_problem(BUCKET_LINKS_FILE, line,
+                                                 len(header), raw[OVERFLOW]))
+                print(f"  line {line}: REJECTED - more values than columns "
+                      f"(an unquoted comma)")
+                continue
+            row = {_s(k): _s(v) for k, v in raw.items() if k is not None}
+            if not any(row.values()):
+                continue
+            bid, eid = row.get("bucketId", ""), row.get("ticketEventId", "")
+            host, leg = row.get("hostQid", ""), row.get("leg", "")
+            others = [q.strip() for q in row.get("otherQids", "").split(";") if q.strip()]
+            why = None
+            if not bid:
+                why = "bucketId is empty"
+            elif bid not in bucket:
+                why = f"{bid!r} is not the id of a bucketList entry in {FOOTBALL_RULES_FILE}"
+            elif eid:
+                if eid not in events:
+                    why = f"ticketEventId {eid!r} is not a ticketEvents id in {FOOTBALL_RULES_FILE}"
+                elif host or others or leg:
+                    why = "an event line links an event to an entry and carries no club or leg"
+                elif eid in event_seen:
+                    why = f"{eid!r} is already linked on line {event_seen[eid]}; an event belongs to one entry"
+            else:
+                qids = ([host] if host else []) + others
+                bad = [q for q in qids if not QID_RE.match(q)]
+                if not qids:
+                    why = "a club line needs hostQid or otherQids"
+                elif bad:
+                    why = f"{', '.join(bad)} is not a Q-id"
+                elif [q for q in qids if q not in on_map]:
+                    why = (f"{', '.join(q for q in qids if q not in on_map)} is on "
+                           f"no map (no club file has it with a position and a tier) "
+                           f"- a probable typo")
+                elif len(set(qids)) != len(qids):
+                    why = "the same club is named twice on the line"
+                elif leg and leg not in LEGS:
+                    why = f"leg is {leg!r}, which is not one of {', '.join(LEGS)} or empty"
+                elif (bid, leg) in leg_seen:
+                    why = (f"{bid!r} already has a club line for leg "
+                           f"{leg or '(empty)'!r}, on line {leg_seen[(bid, leg)]}")
+            if why:
+                problems.append(f"{BUCKET_LINKS_FILE} line {line}: {why}. Ignored.")
+                print(f"  line {line}: REJECTED - {why}")
+                continue
+            if eid:
+                event_seen[eid] = line
+                print(f"  line {line}: event {eid} ({events[eid].get('title')}) "
+                      f"-> bucket {bid} ({bucket[bid].get('title')})")
+            else:
+                leg_seen[(bid, leg)] = line
+                clubs_of.setdefault(bid, set()).update(([host] if host else []) + others)
+                names = lambda qs: ", ".join(f"{q} {on_map[q][0]}" for q in qs)
+                print(f"  line {line}: bucket {bid} ({bucket[bid].get('title')})")
+                print(f"      host: {names([host]) if host else 'not recorded'}")
+                if others:
+                    print(f"      other: {names(others)}")
+                print(f"      leg: {leg or 'not recorded'}")
+            note = row.get("note", "")
+            if note:
+                for text in _wrap(note, width=62):
+                    print("      " + text)
+
+    # ---- what the entries themselves say, against the lines. Reported:
+    #      football-rules.json is hand-written, and so is this file.
+    rules_links = {}
+    try:
+        with open(RULES_LINKS_FILE, encoding="utf-8-sig", newline="") as lf:
+            for r in csv.DictReader(lf):
+                rules_links[_s(r.get("rulesId"))] = _s(r.get("clubQid"))
+    except OSError:
+        pass
+    derby_pairs = {}
+    try:
+        with open("data/derbies.csv", encoding="utf-8-sig", newline="") as df:
+            for r in csv.DictReader(df):
+                if _s(r.get("rulesId")):
+                    derby_pairs[_s(r["rulesId"])] = {_s(r.get("clubA")), _s(r.get("clubB"))}
+    except OSError:
+        pass
+    for bid, b in bucket.items():
+        named = {rules_links[c] for c in b.get("clubs") or [] if rules_links.get(c)}
+        named |= derby_pairs.get(bid, set())
+        have = clubs_of.get(bid, set())
+        if named and not have:
+            notices.append(f"{BUCKET_LINKS_FILE}: bucket entry {bid!r} names "
+                           f"{', '.join(sorted(named))} (its own clubs, or its "
+                           f"derbies.csv row) but has no club line, so it shows "
+                           f"no ticket rules. Reported, not rejected.")
+        elif named - have:
+            notices.append(f"{BUCKET_LINKS_FILE}: bucket entry {bid!r} names "
+                           f"{', '.join(sorted(named - have))} (its own clubs, or "
+                           f"its derbies.csv row), which its club lines do not. "
+                           f"Reported, not rejected.")
+        unmapped = [c for c in b.get("clubs") or [] if not rules_links.get(c)]
+        if unmapped:
+            notices.append(f"{BUCKET_LINKS_FILE}: bucket entry {bid!r} names "
+                           f"{', '.join(unmapped)} in its clubs, which "
+                           f"{RULES_LINKS_FILE} links to no club on the map. "
+                           f"Reported, not rejected.")
+    unlinked = [e for e in events if e not in event_seen]
+    if unlinked:
+        notices.append(
+            f"{BUCKET_LINKS_FILE}: {len(unlinked)} ticket event(s) belong to no "
+            f"bucket entry and show under Reminders at the top of the Bucket "
+            f"list tab: {', '.join(unlinked)}. Reported, not rejected.")
+    no_clubs = [bid for bid in bucket if bid not in clubs_of]
+    print(f"  {len(event_seen)} event line(s) and {len(leg_seen)} club line(s) "
+          f"accepted. Entries with no club line ({len(no_clubs)}): "
+          f"{', '.join(no_clubs) or 'none'}.")
+    return problems, notices
+
 
 def check_rules_links():
     """Read data/football-rules-links.csv back, line by line.
@@ -1193,6 +1424,24 @@ def main():
                 f"{sorted(numbers)}, which do not run 1, 2, 3... without a "
                 f"gap.")
 
+    # ---- cross-file: an event rule names a bucket-list entry that
+    #      exists. A rule for an id nobody has is a rule shown nowhere.
+    bucket_ids = {b.get("id") for b in load_football_rules().get("bucketList", [])}
+    kept = []
+    for row in by_file[EVENT_RULES_FILE]:
+        if row["bucketId"] not in bucket_ids:
+            all_problems.append(
+                f"{EVENT_RULES_FILE} line {row['_line']}: bucketId "
+                f"{row['bucketId']!r} is not the id of a bucketList entry in "
+                f"{FOOTBALL_RULES_FILE}. Row ignored.")
+        else:
+            kept.append(row)
+    by_file[EVENT_RULES_FILE] = kept
+    if not kept:
+        all_notices.append(
+            f"{EVENT_RULES_FILE}: no rows. Every bucket entry says "
+            f"'Event-specific ticket rules not researched yet'.")
+
     # ---- cross-file: the hand-written country of a club against the
     #      club file it sits in, where it sits in one. REPORTED only, and
     #      a blank is never filled from there: two sources for one fact
@@ -1227,7 +1476,7 @@ def main():
     # ---- cross-file: a cited source nobody cites is worth a line
     if sources:
         used = set()
-        for path in CLUB_FILES + [COUNTRY_FILE]:
+        for path in CLUB_FILES + [COUNTRY_FILE, EVENT_RULES_FILE]:
             for row in by_file[path]:
                 used.update(s.strip() for s in row.get("sourceRefs", "").split(";"))
         for sid, srow in sources.items():
@@ -1396,7 +1645,7 @@ def main():
 
     # ---- LOW CONFIDENCE. Every unverified row, in one place, so an
     #      honest gap cannot hide inside a long read-back.
-    low = [(path, r) for path in CLUB_FILES + [COUNTRY_FILE]
+    low = [(path, r) for path in CLUB_FILES + [COUNTRY_FILE, EVENT_RULES_FILE]
            for r in by_file[path]
            if r.get("confidence") == "unverified"]
     print()
@@ -1416,6 +1665,9 @@ def main():
     link_problems, link_notices = check_rules_links()
     all_problems.extend(link_problems)
     all_notices.extend(link_notices)
+    bucket_problems, bucket_notices = check_bucket_links()
+    all_problems.extend(bucket_problems)
+    all_notices.extend(bucket_notices)
 
     # ---- the counts
     print("=" * 70)
@@ -1424,6 +1676,7 @@ def main():
         print(f"  {path}: {len(by_file[path])} row(s) accepted, "
               f"{rejected} problem(s)")
     print(f"  {RULES_LINKS_FILE}: {len(link_problems)} problem(s)")
+    print(f"  {BUCKET_LINKS_FILE}: {len(bucket_problems)} problem(s)")
 
     # ---- what was reported but changed nothing
     if all_notices:

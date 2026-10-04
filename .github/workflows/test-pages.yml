@@ -23,7 +23,14 @@ name: Test the page
 # club files, the slider and tier chips, tapping a row including the
 # Grünwalder pair, "Use my location" granted, denied and timed out with the
 # position never stored or sent, and the top row at 390x700 and 390x500;
-# the derbies test reaches the derbies through the panel's tab). Each one
+# the derbies test reaches the derbies through the panel's tab), and since
+# 2026-10-04 the Ticket info and Bucket list tabs
+# (tools/test_tickets_bucket.js - every card opened at 390 px: no sideways
+# scroll, Italy's rules above Inter's, Nürnberg's "no national rules" line,
+# no upcoming-dates section on Ticket info, every ticket event reachable
+# from the Bucket list, the Frankenderby and Milan derby clubs, and no
+# estimated date shown to the day) and the ticket files' own checker
+# (tools/check_tickets.py, which must exit 0). Each one
 # serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
 # credit is spent, and fails on a script error. A failing test turns the
@@ -42,6 +49,8 @@ on:
       - "manifest.webmanifest"
       - "tools/test_*.js"
       - "data/football-rules-links.csv"
+      - "data/bucket-links-manual.csv"
+      - "data/event-ticket-rules.csv"
       - ".github/workflows/test-pages.yml"
   pull_request:
     paths:
@@ -50,6 +59,8 @@ on:
       - "manifest.webmanifest"
       - "tools/test_*.js"
       - "data/football-rules-links.csv"
+      - "data/bucket-links-manual.csv"
+      - "data/event-ticket-rules.csv"
       - ".github/workflows/test-pages.yml"
   workflow_dispatch:
 
@@ -141,11 +152,24 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_nearme.js . 2>&1 | tee /tmp/test_nearme.log
 
+      - name: Ticket info and Bucket list tabs
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_tickets_bucket.js . 2>&1 | tee /tmp/test_tickets_bucket.log
+
+      # The page reads the ticket files; their own checker must pass too.
+      - name: Ticket files read back (check_tickets.py exits 0)
+        if: always()
+        run: |
+          set -o pipefail
+          python3 tools/check_tickets.py 2>&1 | tee /tmp/test_check_tickets.log
+
       - name: Write the run summary
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket check_tickets; do
               echo "## test_$t.js"
               echo
               echo '```'

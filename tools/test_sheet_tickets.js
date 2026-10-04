@@ -11,7 +11,9 @@
 // exists; both are labelled; a "Next window" line is present, names only that club's own events
 // or windows, never a disputed one, carries a dateSource label, says "estimated" for an inferred
 // one and never shows an inferred one to the day; a club with neither source keeps "Ticket info
-// unavailable"; no sideways scroll; no script error. Prints each club's Next window line.
+// unavailable"; the club's country rules come first ("Country rules: <country>", every national row
+// of that country, or "No national rules researched for <country> yet"), then "Researched rules",
+// then "Your notes"; no sideways scroll; no script error. Prints each club's Next window line.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
@@ -46,6 +48,7 @@ const rules = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/football-rules.js
 const links = csv('data/football-rules-links.csv');
 const tickets = csv('data/club-tickets.csv');
 const windows = csv('data/club-ticket-windows.csv');
+const countryRules = csv('data/country-ticket-rules.csv');
 const leaves = obj => Object.entries(obj).flatMap(([k, v]) => k === 'id' || k === 'name' ? [] :
   v && typeof v === 'object' && !Array.isArray(v) ? leaves(v) : Array.isArray(v) ? v.filter(x => typeof x === 'string') :
   typeof v === 'string' ? [v] : []);
@@ -86,11 +89,15 @@ const server = http.createServer((req, res) => {
     return page.evaluate(() => {
       const t = document.getElementById('sheetTix');
       const nw = document.getElementById('nextWindow');
-      return {text: t.innerText, notes: !!document.getElementById('tixNotes'), researched: !!document.getElementById('tixResearched'),
-        notesLabel: document.getElementById('tixNotes')?.textContent, resLabel: document.getElementById('tixResearched')?.textContent,
+      const heads = [...t.querySelectorAll('h5.srch')].map(h => h.className);
+      return {text: t.innerText, notes: !!t.querySelector('.tix-notes'), researched: !!t.querySelector('.tix-researched'),
+        notesLabel: t.querySelector('.tix-notes')?.textContent, resLabel: t.querySelector('.tix-researched')?.textContent,
+        countryLabel: t.querySelector('.tix-country')?.textContent,
+        order: ['tix-country', 'tix-researched', 'tix-notes'].map(c => heads.findIndex(h => h.includes(c))),
         next: nw ? [...nw.querySelectorAll('.nw')].map(e => ({name: e.querySelector('b').textContent, text: e.textContent,
           tags: [...e.querySelectorAll('.tag')].map(x => x.textContent)})) : null,
-        nextText: nw ? nw.innerText.replace(/\s+/g, ' ') : null, unavailable: /Ticket info unavailable/.test(t.textContent)};
+        nextText: nw ? nw.innerText.replace(/\s+/g, ' ') : null, unavailable: /Ticket info unavailable/.test(t.textContent),
+        country: CLUBS.find(c => c.id === SHEET_FOR)?.country};
     });
   };
 
@@ -103,6 +110,12 @@ const server = http.createServer((req, res) => {
     if(!entries.length && !row){ check(`${label}: no ticket information, so "Ticket info unavailable"`, S.unavailable); continue; }
     check(`${label}: "Your notes" ${entries.length ? 'shown' : 'absent, and says so'}`, S.notes && /^Your notes/.test(S.notesLabel) &&
       (entries.length ? !/None of your notes are about this club/.test(S.text) : /None of your notes are about this club/.test(S.text)));
+    check(`${label}: "Country rules" first, then "Researched rules", then "Your notes"`,
+      S.order[0] === 0 && S.order[1] > S.order[0] && S.order[2] > S.order[1], S.order.join(','));
+    const nat = countryRules.filter(r => r.country === (row?.country || S.country));
+    check(`${label}: the country rules section names the country and ${nat.length ? `shows its ${nat.length} rules` : 'says none are researched'}`,
+      /^Country rules: /.test(S.countryLabel || '') && (nat.length ? nat.every(r => norm(S.text).includes(norm(r.rule)))
+        : /No national rules researched for .+ yet/.test(S.text)), S.countryLabel);
     check(`${label}: "Researched rules" ${row ? 'shown' : 'absent, and says so'}`, S.researched && /^Researched rules/.test(S.resLabel) &&
       (row ? /Who may buy/.test(S.text) : /Not researched yet/.test(S.text)));
     if(entries.length){
