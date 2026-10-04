@@ -99,3 +99,13 @@ jobs:
             cat /tmp/tickets.log 2>/dev/null || echo "the check did not run"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  # TEMPORARY probe, removed in the same branch: reads the ministry's
+  # school holiday page for its footnotes. Prints only.
+  probe-ferien:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Read the ministry page
+        run: python3 tools/probe_ferien.py
