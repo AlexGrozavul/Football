@@ -5,10 +5,10 @@
 //   node tools/test_layout.js .     (serves the checkout itself; it changes no file)
 //
 // What it checks, all with the real data files:
-//  1. The Ticket info tab (and the Bucket list tab, which uses the same cards and tags) is no
-//     wider than the screen: no sideways scroll, every card and every tag inside the screen, and
-//     every warning in football-rules.json - the longest are Inter's and Poli's - on a tag that
-//     wraps inside its card.
+//  1. The Ticket info tab and the Bucket list tab, every card opened, are no wider than the
+//     screen: no sideways scroll, every card and every tag inside the screen, and every warning
+//     of a ticket event or bucket entry in football-rules.json - the longest is Inter's - on a tag
+//     that wraps inside its card on the Bucket list tab.
 //  2. The club sheet sits against the bottom bar and scrolls inside itself: the map pane cannot
 //     be scrolled, by a swipe past the end of a sheet or by script; a long sheet scrolls its own
 //     body. Checked on a Regionalliga Bayern and a Regionalliga Südwest club and on Bayern.
@@ -88,6 +88,12 @@ const server = http.createServer((req, res) => {
   for(const [pane, label] of [['tickets', 'Ticket info'], ['bucket', 'Bucket list']]){
     await page.click(`nav button[data-pane=${pane}]`);
     await page.waitForTimeout(250);
+    // Every card opened, and everything inside it, so the widest content is on screen.
+    await page.$$eval(`#pane-${pane} details.card`, ds => ds.forEach(d => d.open = true));
+    await page.waitForFunction(p => ![...document.querySelectorAll(`#pane-${p} details.card > .tix`)]
+      .some(t => /Loading…/.test(t.textContent)), pane, {timeout: 30000});
+    await page.$$eval(`#pane-${pane} details`, ds => ds.forEach(d => d.open = true));
+    await page.waitForTimeout(250);
     const t = await page.evaluate(id => {
       const p = document.getElementById(id);
       return {scrollW: p.scrollWidth, clientW: p.clientWidth, docW: document.documentElement.scrollWidth,
@@ -103,7 +109,10 @@ const server = http.createServer((req, res) => {
     check(`${label} tab: nothing reaches past the screen edges`, !over.length, over.slice(0, 5).join(' | '));
     const wide = t.cards.filter(c => c.sw > c.cw + 1);
     check(`${label} tab: every one of ${t.cards.length} cards holds its content`, !wide.length, wide.map(c => c.title).join(' | '));
-    const warnings = pane === 'tickets' ? rules.ticketEvents.filter(e => e.warning) : rules.bucketList.filter(b => b.warning);
+    // Every warning in football-rules.json is a tag on the Bucket list tab since 2026-10-04: a
+    // ticket event's inside its entry or under Reminders, a bucket entry's in its card. The Ticket
+    // info tab holds rules only; a club entry's own "warning" field is a row of its notes there.
+    const warnings = pane === 'tickets' ? [] : rules.ticketEvents.filter(e => e.warning).concat(rules.bucketList.filter(b => b.warning));
     for(const w of warnings.sort((a, b) => b.warning.length - a.warning.length)){
       const tag = t.bad.find(b => b.text === w.warning);
       check(`${label} tab: ${w.id}'s warning (${w.warning.length} characters) is on a tag inside its card` +

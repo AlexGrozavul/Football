@@ -232,6 +232,38 @@
   .nextw .nl{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600}
   .nextw .nw{font-size:13.5px;margin-top:4px;overflow-wrap:anywhere}
   .nextw .nw + .nw{border-top:1px solid var(--line);padding-top:5px}
+  /* The shared ticket renderer (.tix) outside the sheet - the Ticket info
+     and Bucket list tabs - gets the sheet's look. */
+  .tix h5.srch{font-size:13px;font-weight:600;margin:16px 0 4px;color:var(--ink);
+    border-bottom:1px solid var(--line);padding-bottom:3px}
+  .tix h5.srch:first-child{margin-top:8px}
+  .tix h5.srch em{font-style:normal;font-weight:400;color:var(--faint);font-size:11.5px;margin-left:6px}
+  .tix .nest{margin-top:7px;padding-left:9px;border-left:2px solid var(--line)}
+  .tix .nk{font-size:12px;color:var(--dim);font-weight:600;margin-top:6px}
+  .tix .item{font-size:13px;padding:6px 0;border-top:1px solid var(--line)}
+  .tix .item:first-of-type{border-top:0}
+  .tix .item .meta{margin-top:4px}
+  .tix details{border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin-top:7px}
+  .tix summary{cursor:pointer;font-size:13.5px;color:var(--ink)}
+  .tix summary em{font-style:normal;color:var(--faint);font-size:12px}
+  .tix .sub{color:var(--faint);font-size:12px;margin-top:2px}
+  .tix .unavail{color:var(--dim);font-size:13.5px;font-style:italic;margin:4px 0 0}
+  .tix details.why{border:0;padding:0;margin-top:3px}
+  .tix details.why summary{font-size:12px;color:var(--faint)}
+  .tix details.why div{font-size:12px;color:var(--faint);margin-top:2px;overflow-wrap:anywhere}
+  .tix a{color:var(--t3)}
+  .tix .src{font-size:11.5px;color:var(--faint);margin-top:3px;overflow-wrap:anywhere}
+  .tix .bwhy{margin:2px 0 6px;color:var(--dim);font-size:13.5px}
+  .bclub{margin-top:10px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#11161d}
+  .bclubh{font-weight:600;font-size:14px}
+  .bclubh em{font-style:normal;font-weight:400;color:var(--faint);font-size:12px;margin-left:4px}
+  /* A card that opens: its summary is the title and tags, and says so. */
+  details.card>summary{list-style:none;cursor:pointer}
+  details.card>summary::-webkit-details-marker{display:none}
+  details.card .more::after{content:'Show details \25BE';font-size:11px;color:var(--t3);padding:2px 0 2px 4px}
+  details.card[open] .more::after{content:'Hide details \25B4'}
+  details.card>.tix{margin-top:8px;border-top:1px solid var(--line);padding-top:4px}
+  .evcard .ev{border-top:0;padding:0}
 
   /* Route panel: the same pull-up shape as the club sheet, one layer
      below it, so a club opened from the route list sits on top and
@@ -1185,6 +1217,23 @@ async function fixturesHtml(club){
 
 const words = v => (v || '').split(';').map(x => x.trim()).filter(Boolean).join(', ');
 
+/* ONE renderer for a club's ticket information - clubTicketsHtml() -
+   used in three places: the club sheet (below its Next window line), the
+   Ticket info tab's club rows, and the Ticket rules of a bucket-list
+   entry. Always in this order:
+     "Country rules: <country>"  data/country-ticket-rules.csv, the rules
+                                 no club decides, for the country of the
+                                 club's ground
+     "Researched rules"          the club-tickets files, by clubQid
+     "Your notes"                football-rules.json, joined through
+                                 data/football-rules-links.csv
+   The two club sources are shown side by side and never reconciled. No
+   dated window is shown here: dates belong to the Bucket list tab and to
+   the sheet's Next window line. */
+
+/* COUNTRY_NAME is the search box's, further down. */
+const countryLabel = c => c ? (COUNTRY_NAME[c] ? `${COUNTRY_NAME[c]} (${c})` : c) : 'its country (not recorded)';
+
 function confTag(v){
   if(v === 'confirmed')  return '<span class="tag ok">confirmed</span>';
   if(v === 'inferred')   return '<span class="tag warn">inferred</span>';
@@ -1198,19 +1247,91 @@ function scopeTag(r, names){
   return `<span class="tag">${esc(r.scope)}${opp ? ' v ' + esc(opp) : ''}</span>`;
 }
 
+/* A row's citations, from data/ticket-sources.csv by its sourceRefs, or
+   its bare source URLs when it has none. Publisher and title as the link
+   text, never the URL, and a URL the source document itself cut short
+   says so. */
+function sourcesLine(r, sources){
+  const refs = (r.sourceRefs || '').split(';').map(s => s.trim()).filter(Boolean);
+  const bits = refs.map(id => {
+    const s = sources.get(id);
+    if(!s) return esc(id);
+    const url = (s.url || '').split(/;(?=\s*https?:\/\/)/)[0].trim();
+    const text = esc(s.publisher || id) + (s.title ? ': ' + esc(s.title) : '');
+    return (/^https?:\/\//.test(url) ? `<a href="${esc(url)}" target="_blank" rel="noopener">${text}</a>` : text) +
+      (s.urlComplete && s.urlComplete !== 'yes' ? ` <span class="tag warn">link ${esc(s.urlComplete)}</span>` : '');
+  });
+  if(!bits.length) (r.source || '').split(/;(?=\s*https?:\/\/)/).map(u => u.trim()).filter(Boolean).forEach(u => {
+    let host = u; try{ host = new URL(u).hostname.replace(/^www\./, ''); }catch(e){}
+    bits.push(/^https?:\/\//.test(u) ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(host)}</a>` : esc(u));
+  });
+  return bits.length ? `<div class="src">Source: ${bits.join('; ')}</div>`
+    : '<div class="src"><span class="blank">no source recorded</span></div>';
+}
+
+async function ticketSources(){
+  const f = await csvFile('data/ticket-sources.csv');
+  return new Map(f.ok ? f.v.map(s => [s.sourceId, s]) : []);
+}
+
+/* ---- Country rules. Which matches a rule covers is said in plain words,
+   and never left blank or turned into "all" where the sources do not say
+   it (rule 2). */
+const CONDITION_WORDS = {'always': 'always', 'high-risk-match': 'high-risk matches',
+  'reserved-sector': 'reserved sectors', 'away-sector': 'the away sector'};
+const LATITUDE_WORDS = {none: 'none: every club simply complies',
+  'may-add': 'a club may add its own rules on top', implements: 'each club runs its own scheme for it'};
+
+function appliesWords(v, leagues){
+  if(v === 'unknown' || !v) return 'The sources do not say which matches this covers.';
+  if(v === 'all') return 'Every match, as the source states it.';
+  return v.split(';').map(q => q.trim()).filter(Boolean).map(q => leagues.get(q) || q).join(', ');
+}
+
+async function countryRules(country){
+  const [nat, sources, tiers] = await Promise.all([csvFile('data/country-ticket-rules.csv'), ticketSources(),
+    csvFile('data/league-tiers.csv')]);
+  if(!nat.ok) return {err: nat.err};
+  const leagues = new Map(tiers.ok ? tiers.v.map(t => [t.leagueQid, t.label]) : []);
+  return {rows: nat.v.filter(r => r.country === country), sources, leagues};
+}
+
+function countryRuleItem(r, C){
+  return `<div class="item crule"><b>${esc(r.topic)}</b> · ${esc(r.authority)}` +
+    `<div>${esc(r.rule)}</div>` +
+    field('Applies to', appliesWords(r.appliesTo, C.leagues)) +
+    field('Only when', (r.condition || '').split(';').map(c => CONDITION_WORDS[c.trim()] || c.trim()).filter(Boolean).join('; ')) +
+    field('Authority', `${r.authority}${r.authorityKind ? ' (' + words(r.authorityKind) + ')' : ''}`) +
+    field("Club's room", LATITUDE_WORDS[r.clubLatitude] || r.clubLatitude) +
+    `<div class="meta">${confTag(r.confidence)}${r.season ? `<span class="tag">${esc(r.season)}</span>` : ''}</div>` +
+    sourcesLine(r, C.sources) + `</div>`;
+}
+
+async function countryRulesHtml(country){
+  if(!country) return '<p class="unavail">No country recorded for this club, so no national rules can be shown.</p>';
+  const C = await countryRules(country);
+  if(C.err) return `<p class="err">The national rules could not be loaded.</p>` + why(esc(C.err));
+  if(!C.rows.length) return `<p class="unavail tix-nonat">No national rules researched for ${esc(countryLabel(country))} yet.</p>`;
+  return C.rows.map(r => countryRuleItem(r, C)).join('') +
+    `<div class="sub">Rules no club decides, for every club whose ground is in ${esc(countryLabel(country))}. ` +
+    `A club's own rule never replaces one of these.</div>` +
+    why('Hand-written in data/country-ticket-rules.csv, citations in data/ticket-sources.csv.', 'Source');
+}
+
 /* "Researched rules": the club-tickets files, joined by clubQid. Returns
    the row (or why there is none), the rendered section, and the club's
-   window rows for the Next window line. */
+   window rows for the Next window line. National rules are NOT here:
+   they are their own section, above this one. */
 async function researchedFor(club){
   const base = await csvFile('data/club-tickets.csv');
   if(!base.ok) return {err: 'The ticket research could not be loaded.', errWhy: `data/club-tickets.csv: ${base.err}`};
   const row = base.v.find(r => r.clubQid === club.id && r.team === 'men');
   if(!row) return {why: 'data/club-tickets.csv has no row for this club.'};
 
-  const [win, rules, demand, prices, national, phases] = await Promise.all([
+  const [win, rules, demand, prices, phases, sources] = await Promise.all([
     csvFile('data/club-ticket-windows.csv'), csvFile('data/club-ticket-rules.csv'),
     csvFile('data/club-ticket-demand.csv'),  csvFile('data/club-ticket-prices.csv'),
-    csvFile('data/country-ticket-rules.csv'), csvFile('data/club-ticket-phases.csv')]);
+    csvFile('data/club-ticket-phases.csv'), ticketSources()]);
   const mine = f => f.ok ? f.v.filter(r => r.clubQid === club.id && (r.team || 'men') === 'men') : null;
 
   /* Opponent names for derby rows, from the ticket file itself. */
@@ -1218,7 +1339,7 @@ async function researchedFor(club){
   CLUBS.forEach(c => names[c.id] ??= c.name);
 
   const warn = [];
-  if(row.country && row.country !== club.country)
+  if(row.country && club.country && row.country !== club.country)
     warn.push(`The ticket research puts this club in ${row.country}, the map in ${club.country}.`);
 
   let h =
@@ -1231,8 +1352,8 @@ async function researchedFor(club){
     field('Closes early', words(row.closesEarly)) +
     field('Demand', words(row.demand)) +
     field('Resale', words(row.resale)) +
+    field('How to track updates', words(row.updateTracking)) +
     field('Under-18s', words(row.minorEligibility)) +
-    field('Announced via', words(row.updateTracking)) +
     field('Checked', row.checked) +
     warn.map(w => `<p class="err">${esc(w)}</p>`).join('');
 
@@ -1243,52 +1364,54 @@ async function researchedFor(club){
       list.map(render).join('') + `</details>`;
   };
 
+  /* Each window's typical opening is the row's own loose text, which is
+     month-level at most (tools/check_tickets.py refuses a day in it). A
+     past cycle is a dated PAST window a source recorded - history, not a
+     forecast - and is labelled so. */
   const windows = mine(win);
-  h += section('Sales windows', windows, r =>
+  h += section('Sales windows and phases', windows, r =>
     `<div class="item"><b>${esc(r.label || r.window)}</b>` +
-    (r.opensEstimate ? ` — opens ${esc(r.opensEstimate)}${r.estimateFor ? ' (' + esc(r.estimateFor) + ')' : ''}` : '') +
-    (r.pastCycle ? `<div class="sub">past cycle: ${esc(r.pastCycle)}</div>` : '') +
+    `<div class="row" data-ds="${esc(r.dateSource)}"><span>Typically opens</span><span>${esc(r.opensEstimate)}` +
+      `${r.estimateFor ? ' (for ' + esc(r.estimateFor) + ')' : ''}</span></div>` +
     `<div class="meta">${sourceTag(r.dateSource)}${r.basis ? `<span class="tag">${esc(r.basis)}</span>` : ''}${scopeTag(r, names)}</div>` +
-    /* The window's phases from club-ticket-phases.csv, in order. A past
-       cycle is a dated PAST phase a source recorded, never a forecast. */
+    (r.pastCycle ? `<div class="sub">Past cycle, what happened (not a forecast): ${esc(r.pastCycle)}</div>` : '') +
+    /* The window's phases from club-ticket-phases.csv, in order. */
     (phases.ok ? phases.v.filter(p => p.clubQid === club.id && (p.team || 'men') === 'men' && p.window === r.window)
       .sort((a, b) => Number(a.phase) - Number(b.phase)).map(p =>
         `<div class="nest"><b>Phase ${esc(p.phase)}</b>: ${esc(p.buyers)}` +
         (p.opensRelative ? ` — opens ${esc(p.opensRelative)}` : '') +
         (p.maxTickets ? ` · max ${esc(p.maxTickets)}` : '') +
-        (p.pastCycle ? `<div class="sub">past cycle${p.pastCycleFor ? ' ' + esc(p.pastCycleFor) : ''}: ${esc(p.pastCycle)}</div>` : '') +
-        `<div class="meta">${confTag(p.confidence)}</div></div>`).join('')
-      : '<p class="err">The sale phases could not be loaded.</p>') + `</div>`,
+        (p.pastCycle ? `<div class="sub">past cycle${p.pastCycleFor ? ' ' + esc(p.pastCycleFor) : ''} (what happened, not a forecast): ${esc(p.pastCycle)}</div>` : '') +
+        `<div class="meta">${confTag(p.confidence)}</div>${sourcesLine(p, sources)}</div>`).join('')
+      : '<p class="err">The sale phases could not be loaded.</p>') + sourcesLine(r, sources) + `</div>`,
     'No sales-window rows.');
 
-  h += section('Rules', mine(rules), r =>
-    `<div class="item"><b>${esc(r.topic)}</b>${r.season ? ' · ' + esc(r.season) : ''}` +
-    `<div>${esc(r.rule)}</div><div class="meta">${confTag(r.confidence)}${scopeTag(r, names)}</div></div>`);
+  const ruleItem = r => `<div class="item"><b>${esc(r.topic)}</b>${r.season ? ' · ' + esc(r.season) : ''}` +
+    `<div>${esc(r.rule)}</div><div class="meta">${confTag(r.confidence)}${scopeTag(r, names)}</div>${sourcesLine(r, sources)}</div>`;
+  const rulesMine = mine(rules);
+  h += section('General rules', rulesMine && rulesMine.filter(r => !(r.scope || '').startsWith('derby-')), ruleItem);
+  h += section('Derby overrides', rulesMine && rulesMine.filter(r => (r.scope || '').startsWith('derby-')), ruleItem);
 
-  const country = row.country || club.country;
-  const nat = national.ok ? national.v.filter(r => r.country === country) : null;
-  h += section(`National rules [${country}]`, nat, r =>
-    `<div class="item"><b>${esc(r.topic)}</b> · ${esc(r.authority)}` +
-    `<div>${esc(r.rule)}</div>` +
-    `<div class="sub">applies to: ${esc(words(r.appliesTo))} · when: ${esc(words(r.condition))} · club latitude: ${esc(r.clubLatitude)}</div>` +
-    `<div class="meta">${confTag(r.confidence)}</div></div>`,
-    `No national rules recorded for ${country}.`);
+  /* Prices in the row's own currency. The euro figure goes in brackets
+     only when the row is not in euros - and no exchange rate is held
+     here, so it says so rather than converting with an invented one. */
+  h += section('Prices', mine(prices), r => {
+    const amount = `${esc(r.price)}${r.priceMax ? '–' + esc(r.priceMax) : ''} ${esc(r.currency)}`;
+    return `<div class="item">${esc(r.season)} · ${esc(r.competition)}${r.stage ? ' · ' + esc(r.stage) : ''}` +
+    ` · ${esc(r.category)}${r.opponentTier ? ' · ' + esc(r.opponentTier) : ''}${r.priceClass ? ' · ' + esc(r.priceClass) : ''}: ` +
+    `<b>${amount}</b>${r.currency && r.currency !== 'EUR' ? ' (euro figure not recorded: no exchange rate is held)' : ''}` +
+    `<div class="meta"><span class="tag${r.kind === 'resale-observed' ? ' warn' : ''}">${esc(r.kind)}</span>` +
+    `${r.priceBasis ? `<span class="tag">${esc(r.priceBasis)}</span>` : ''}${confTag(r.confidence)}${scopeTag(r, names)}</div></div>`;
+  });
 
   h += section('Sell-out record', mine(demand), r =>
     `<div class="item"><b>${esc(r.season)}</b> ${scopeTag(r, names)} ${esc(r.outcome)}` +
     (r.timing ? ` — ${esc(r.timing)}` : '') + (r.attendance ? ` · ${esc(r.attendance)}` : '') +
-    `<div class="meta">${confTag(r.confidence)}</div></div>`);
-
-  h += section('Prices', mine(prices), r =>
-    `<div class="item">${esc(r.season)} · ${esc(r.competition)}${r.stage ? ' · ' + esc(r.stage) : ''}` +
-    ` · ${esc(r.category)}${r.opponentTier ? ' · ' + esc(r.opponentTier) : ''}${r.priceClass ? ' · ' + esc(r.priceClass) : ''}: ` +
-    `<b>${esc(r.price)}${r.priceMax ? '–' + esc(r.priceMax) : ''} ${esc(r.currency)}</b>` +
-    `<div class="meta"><span class="tag${r.kind === 'resale-observed' ? ' warn' : ''}">${esc(r.kind)}</span>` +
-    `${r.priceBasis ? `<span class="tag">${esc(r.priceBasis)}</span>` : ''}${confTag(r.confidence)}${scopeTag(r, names)}</div></div>`);
+    `<div class="meta">${confTag(r.confidence)}</div>${sourcesLine(r, sources)}</div>`);
 
   h += `<div class="sub">Hand-written research. Nothing here is generated,
     and no sale date is.</div>` + why('Hand-written in data/club-tickets.csv and the ticket files beside it ' +
-    '(windows, phases, rules, demand, prices, country rules, sources), joined to this club by its Wikidata id.', 'Source');
+    '(windows, phases, rules, demand, prices, sources), joined to this club by its Wikidata id.', 'Source');
   return {row, html: h, windows: windows || [], windowsErr: windows === null};
 }
 
@@ -1317,16 +1440,27 @@ const NOTE_LABEL = {ageRules: 'Age rules', minAgeToBuy: 'Min. age to buy', accou
   distanceKm: 'Distance (km)', distanceFromTimisoaraKm: 'Distance from Timișoara (km)',
   demandNote: 'Demand', openQuestion: 'Open question', seasonTicket: 'Season ticket',
   waitingPeriod: 'Waiting period', bigMatches: 'Big matches', walkUp: 'Walk-up', travelNote: 'Travel',
-  stadiumNote: 'Stadium'};
+  stadiumNote: 'Stadium', blockedReason: 'Blocked', unblockCondition: 'Unblocks when',
+  deferReason: 'Deferred', conflict: 'Clashes with', ticketRoute: 'Tickets', ticketNote: 'Ticket note',
+  ticketRoutes: 'Ticket routes', leadTimeDays: 'Reminder (days before)'};
 const noteKey = k => NOTE_LABEL[k] ||
   k.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().replace(/^./, c => c.toUpperCase());
+
+/* Where football-rules.json itself marks something "verified": false.
+   The tag says exactly which part the file marks, and nothing more. */
+function unverifiedParts(obj, at = []){
+  if(!obj || typeof obj !== 'object' || Array.isArray(obj)) return [];
+  const here = obj.verified === false ? [at.length ? at.map(noteKey).join(' › ') : 'the whole entry'] : [];
+  return here.concat(Object.entries(obj).flatMap(([k, v]) => unverifiedParts(v, at.concat(k))));
+}
+const UNVERIFIED_TAG = '<span class="tag bad">unverified</span>';
 
 /* Every field of the entry as written, nested ones indented: nothing is
    picked out, merged or tidied, so what the file says is what shows. */
 function noteRows(obj, top = true){
   return Object.entries(obj).filter(([k]) => !(top && (k === 'id' || k === 'name'))).map(([k, v]) => {
     if(v && typeof v === 'object' && !Array.isArray(v))
-      return `<div class="nest"><div class="nk">${esc(noteKey(k))}</div>${noteRows(v, false)}</div>`;
+      return `<div class="nest"><div class="nk">${esc(noteKey(k))}${v.verified === false ? ' ' + UNVERIFIED_TAG : ''}</div>${noteRows(v, false)}</div>`;
     if(Array.isArray(v))
       return `<div class="row"><span>${esc(noteKey(k))}</span><span>${v.length
         ? v.map(x => esc(typeof x === 'object' ? JSON.stringify(x) : x)).join('<br>')
@@ -1335,47 +1469,98 @@ function noteRows(obj, top = true){
   }).join('');
 }
 
-/* A ticket event as football-rules.json writes it, the way the Ticket
-   info tab shows it. */
-function noteEvent(ev){
-  const when = ev.recurring === 'annual' ? ev.nextEstimate : (ev.date || ev.dateEstimate);
-  return `<div class="item"><b>${esc(ev.title || ev.id)}</b>` +
-    `<div class="sub">${when ? esc(when) : 'no date'}${ev.recurring ? ' · ' + esc(ev.recurring) : ''}` +
-      `${ev.status ? ' · ' + esc(ev.status) : ''}</div>` +
-    (ev.rule ? `<div>${esc(ev.rule)}</div>` : '') + (ev.action ? `<div>${esc(ev.action)}</div>` : '') +
-    (ev.derivation ? `<div class="sub">derived from: ${esc(ev.derivation)}</div>` : '') +
-    (ev.dependsOn ? `<div class="sub">depends on: ${esc(ev.dependsOn)}</div>` : '') +
-    `<div class="meta">${sourceTag(ev.dateSource)}${ev.warning ? `<span class="tag bad">${esc(ev.warning)}</span>` : ''}</div></div>`;
-}
-
-function noteBucket(b){
-  return `<div class="item"><b>${esc(b.title || b.id)}</b>` +
-    (b.status ? ` <span class="tag">${esc(b.status)}</span>` : '') +
-    (b.fixtures || []).map(f => `<div class="sub">${esc(f.date || 'no date')}` +
-      `${f.home ? ' · home: ' + esc(f.home) : ''}${f.saleRoute ? ' · ' + esc(f.saleRoute) : ''} ${sourceTag(f.dateSource)}</div>`).join('') +
-    (b.ticketRoute ? `<div class="sub">tickets: ${esc(b.ticketRoute)}</div>` : '') +
-    (b.ticketNote ? `<div class="sub">${esc(b.ticketNote)}</div>` : '') + `</div>`;
-}
-
+/* The club entry's own fields. Its dated ticket events are NOT listed
+   here - this renderer holds rules, and the dates are the Bucket list
+   tab's - only their titles, so nothing goes unmentioned. */
 function notesHtml(notes){
-  return notes.entries.map(n =>
-    (notes.entries.length > 1 ? `<div class="nk">${esc(n.entry.name || n.id)}</div>` : '') +
-    noteRows(n.entry) +
-    (n.events.length ? `<details><summary>Ticket events <em>— ${n.events.length}</em></summary>` +
-      n.events.map(noteEvent).join('') + `</details>` : '') +
-    (n.bucket.length ? `<details><summary>On the bucket list <em>— ${n.bucket.length}</em></summary>` +
-      n.bucket.map(noteBucket).join('') + `</details>` : '')).join('') +
+  return notes.entries.map(n => {
+    const unv = unverifiedParts(n.entry);
+    return (notes.entries.length > 1 ? `<div class="nk">${esc(n.entry.name || n.id)}</div>` : '') +
+      (unv.length ? `<div class="meta unv">${UNVERIFIED_TAG}<span class="tag bad">your notes mark this unverified: ` +
+        `${esc(unv.join('; '))}</span></div>` : '') +
+      noteRows(n.entry) +
+      (n.events.length ? `<div class="sub">Dated ticket windows for this club, on the Bucket list tab (${n.events.length}): ` +
+        `${esc(n.events.map(e => e.title || e.id).join('; '))}.</div>` : '') +
+      (n.bucket.length ? `<div class="sub">On the bucket list: ${esc(n.bucket.map(b => b.title || b.id).join('; '))}.</div>` : '');
+  }).join('') +
     `<div class="sub">Your own notes, shown exactly as written.</div>` +
     why(`Hand-written in data/football-rules.json (entry ${esc(notes.entries.map(n => n.id).join(', '))}), ` +
       `linked to this club in data/football-rules-links.csv.`, 'Source');
 }
 
+/* The shared club renderer (see the top of this section). `club` is a map
+   club ({id, name, country}). Returns the html and both sources, so the
+   sheet can put its Next window line above it; `none` when the club has
+   neither source. */
+async function clubTicketsHtml(club){
+  const [notes, res] = await Promise.all([notesFor(club), researchedFor(club)]);
+  const hasNotes = !!(notes.entries && notes.entries.length);
+  const country = (res.row && res.row.country) || club.country || (hasNotes ? notes.entries[0].entry.country : '') || '';
+  const errOf = r => r.err ? `<p class="err">${esc(r.err)}</p>` + why(esc(r.errWhy)) : '';
+  const nat = `<h5 class="srch tix-country">Country rules: ${esc(countryLabel(country))} <em>national, no club decides</em></h5>` +
+    await countryRulesHtml(country);
+  const none = !hasNotes && !res.row && !notes.err && !res.err;
+  if(none) return {none, notes, res, country, html: `<div class="tix">${nat}` +
+    `<p class="unavail tix-none">No ticket rules researched for ${esc(club.name || club.id)} yet.</p></div>`};
+  return {none, notes, res, country, html: `<div class="tix">${nat}` +
+    `<h5 class="srch tix-researched">Researched rules <em>sourced research</em></h5>` +
+    (res.row ? res.html : res.err ? errOf(res)
+      : `<p class="unavail">Not researched yet. Only a few clubs have been.</p>` + why(esc(res.why))) +
+    `<h5 class="srch tix-notes">Your notes <em>what you wrote</em></h5>` +
+    (hasNotes ? notesHtml(notes) : notes.err ? errOf(notes)
+      : `<p class="unavail">None of your notes are about this club.</p>` +
+        why('No entry in football-rules.json is linked to this club in data/football-rules-links.csv.')) +
+    (hasNotes && res.row ? `<div class="sub">The two are shown side by side and not reconciled: where they ` +
+      `disagree, each says what it says.</div>` : '') + `</div>`};
+}
+
+/* ---- Dates from football-rules.json: ONE place decides what may be
+   shown, used by the sheet's Next window line and by every ticket window
+   and bucket entry on the Bucket list tab.
+
+   A confirmed day is shown to the day. Anything else - inferred,
+   disputed, a range, a month - is shown to the MONTH only, never a day,
+   because a day is what an estimate cannot honestly give. A range
+   ("2027-01-30/2027-02-01") is the month or months it spans. */
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August',
+                     'September','October','November','December'];
+const MONTH_RE = new RegExp('\\b(' + MONTH_NAMES.join('|') + ')\\b');
+const monthText = ym => `${MONTH_NAMES[Number(ym.slice(5, 7)) - 1]} ${ym.slice(0, 4)}`;
+const DAY_FMT = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB',
+  {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'});
+
+/* The date a ticket event is about: the next estimate of an annual one,
+   otherwise its date or estimate. */
+const eventRaw = ev => ev.recurring === 'annual' ? ev.nextEstimate : (ev.date || ev.dateEstimate);
+
+function placeDate(raw, dateSource){
+  if(!raw || !/^\d{4}-\d{2}/.test(raw)) return null;
+  const [a, b] = String(raw).split('/');
+  if(dateSource === 'confirmed' && !b && /^\d{4}-\d{2}-\d{2}$/.test(a))
+    return {key: a, end: a.slice(0, 7), day: true, text: DAY_FMT(a)};
+  const m1 = a.slice(0, 7), m2 = b && /^\d{4}-\d{2}/.test(b) ? b.slice(0, 7) : m1;
+  const text = m1 === m2 ? monthText(m1) : m1.slice(0, 4) === m2.slice(0, 4)
+    ? `${MONTH_NAMES[Number(m1.slice(5)) - 1]} or ${monthText(m2)}` : `${monthText(m1)} or ${monthText(m2)}`;
+  return {key: m1 + '-01', end: m2, day: false, text};
+}
+
+/* What a date line says, from placeDate(). Never a day unless confirmed. */
+function dateWords(p, dateSource){
+  if(p.day) return p.text;
+  if(dateSource === 'inferred') return `estimated: ${p.text}`;
+  if(dateSource === 'disputed') return `${p.text} — disputed: possibly the wrong year or the wrong event`;
+  return p.text;
+}
+
+function isPast(p){
+  const today = new Date().toISOString().slice(0, 10);
+  return p.day ? p.key < today : p.end < today.slice(0, 7);
+}
+
 /* ---- Next window: the soonest window ahead across BOTH sources.
 
    football-rules.json events carry a date; a disputed one never counts.
-   A confirmed one is shown to the day. Anything else is shown to the
-   MONTH only, worded as an estimate - never a day, because a day is what
-   an inferred date cannot honestly give.
+   placeDate() decides how it is shown: to the day only if confirmed.
 
    A club-ticket-windows.csv row carries loose text ("early to mid June")
    and the cycle it is for ("2027-28"), never a date. To put it in order
@@ -1386,27 +1571,17 @@ function notesHtml(notes){
    row's own words and says how it was placed. A row whose text names no
    month ("about six weeks before each match") cannot be placed and is
    named as not counted. */
-const MONTH_NAMES = ['January','February','March','April','May','June','July','August',
-                     'September','October','November','December'];
-const MONTH_RE = new RegExp('\\b(' + MONTH_NAMES.join('|') + ')\\b');
-const monthText = ym => `${MONTH_NAMES[Number(ym.slice(5, 7)) - 1]} ${ym.slice(0, 4)}`;
-
 function windowCandidates(notes, res){
-  const today = new Date().toISOString().slice(0, 10), month = today.slice(0, 7);
+  const month = new Date().toISOString().slice(0, 7);
   const out = [], unplaced = [];
   for(const n of notes.entries || []) for(const ev of n.events){
     if(ev.dateSource === 'disputed') continue;
-    const when = ev.recurring === 'annual' ? ev.nextEstimate : (ev.date || ev.dateEstimate);
     const name = ev.title || ev.id;
-    if(!when || !/^\d{4}-\d{2}/.test(when)){ unplaced.push(name); continue; }
-    if(ev.dateSource === 'confirmed' && /^\d{4}-\d{2}-\d{2}$/.test(when)){
-      if(when >= today) out.push({key: when, src: 'Your notes', name, dateSource: 'confirmed',
-        when: new Date(when + 'T12:00:00Z').toLocaleDateString('en-GB',
-          {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'})});
-    }else if(when.slice(0, 7) >= month){
-      out.push({key: when.slice(0, 7) + '-01', src: 'Your notes', name, dateSource: ev.dateSource,
-        when: `estimated: ${monthText(when)} - check whether it has been announced`});
-    }
+    const p = placeDate(eventRaw(ev), ev.dateSource);
+    if(!p){ unplaced.push(name); continue; }
+    if(isPast(p)) continue;
+    out.push({key: p.key, src: 'Your notes', name, dateSource: p.day ? 'confirmed' : ev.dateSource,
+      when: p.day ? p.text : `${dateWords(p, ev.dateSource === 'confirmed' ? 'inferred' : ev.dateSource)} - check whether it has been announced`});
   }
   for(const r of res.windows || []){
     if(r.dateSource === 'disputed') continue;
@@ -1452,25 +1627,20 @@ function nextWindowHtml(notes, res){
   return h + `</div>`;
 }
 
+/* The sheet: the Next window line, then the shared renderer. A club with
+   neither source keeps its plain "unavailable" line, followed by its
+   country's rules only where that country has some. */
 async function ticketsHtml(club){
-  const [notes, res] = await Promise.all([notesFor(club), researchedFor(club)]);
-  const hasNotes = !!(notes.entries && notes.entries.length);
-  const errOf = r => r.err ? `<p class="err">${esc(r.err)}</p>` + why(esc(r.errWhy)) : '';
-  const errs = errOf(notes) + errOf(res);
-  if(!hasNotes && !res.row) return unavailable('Ticket info',
-    'No ticket information recorded for this club yet. Only a few clubs have been researched.') +
-    why('data/club-tickets.csv has no row for this club, and no entry in football-rules.json is linked ' +
-      'to it in data/football-rules-links.csv.') + errs;
-  return nextWindowHtml(notes, res) +
-    `<h5 class="srch" id="tixNotes">Your notes <em>what you wrote</em></h5>` +
-    (hasNotes ? notesHtml(notes) : notes.err ? errOf(notes)
-      : `<p class="unavail">None of your notes are about this club.</p>` +
-        why('No entry in football-rules.json is linked to this club in data/football-rules-links.csv.')) +
-    `<h5 class="srch" id="tixResearched">Researched rules <em>sourced research</em></h5>` +
-    (res.row ? res.html : res.err ? errOf(res)
-      : `<p class="unavail">Not researched yet. Only a few clubs have been.</p>` + why(esc(res.why))) +
-    (hasNotes && res.row ? `<div class="sub">The two are shown side by side and not reconciled: where they ` +
-      `disagree, each says what it says.</div>` : '');
+  const T = await clubTicketsHtml(club);
+  if(T.none){
+    const C = T.country ? await countryRules(T.country) : {rows: []};
+    return unavailable('Ticket info', 'No ticket information recorded for this club yet. Only a few clubs have been researched.') +
+      why('data/club-tickets.csv has no row for this club, and no entry in football-rules.json is linked ' +
+        'to it in data/football-rules-links.csv.') +
+      (C.rows && C.rows.length ? `<div class="tix"><h5 class="srch tix-country">Country rules: ${esc(countryLabel(T.country))} ` +
+        `<em>national, no club decides</em></h5>${await countryRulesHtml(T.country)}</div>` : '');
+  }
+  return nextWindowHtml(T.notes, T.res) + T.html;
 }
 
 (function wireSheet(){
@@ -2512,15 +2682,7 @@ async function openDerby(d, max){
     `${esc(d.a.name)} and ${esc(d.b.name)} are linked to different fixture sources ` +
     `(${esc(r.ea.links.map(l => l.source).join(', '))} against ${esc(r.eb.links.map(l => l.source).join(', '))}), ` +
     `so no file holds a match between the two.`);
-  else{
-    let h = r.ahead.length ? meetingRow(r.ahead[0]) +
-        (r.ahead.length > 1 ? `<details><summary>Later <em>— ${r.ahead.length - 1}</em></summary>${r.ahead.slice(1).map(meetingRow).join('')}</details>` : '')
-      : '<p class="unavail">No meeting in the fixture data.</p>';
-    if(r.past.length) h += `<details><summary>Played <em>— ${r.past.length}</em></summary>${r.past.slice(0, 5).map(meetingRow).join('')}</details>`;
-    if(r.failed.length) h += `<p class="err">Could not load: ${esc(r.failed.join(', '))}.</p>`;
-    h += `<div class="sub">Times are German time. From the fixture files via data/clubs/fixture-links.json.</div>`;
-    box.innerHTML = h;
-  }
+  else box.innerHTML = meetingsHtml(r);
 }
 
 /* ------------------------------------------------------- clubs near me */
@@ -2921,6 +3083,218 @@ function openCovLeague(g){
 
 /* ------------------------------------------------------- bucket list */
 
+/* Which clubs a bucket entry names, and which entry a ticket event
+   belongs to: data/bucket-links-manual.csv, hand-written and read back by
+   tools/check_tickets.py. Never matched by name. A line the checker would
+   reject is skipped here rather than drawn half-right. */
+async function bucketLinks(){
+  const f = await csvFile('data/bucket-links-manual.csv');
+  const clubs = new Map(), events = new Map();
+  if(!f.ok) return {err: f.err, clubs, events};
+  const ids = new Set((RULES?.bucketList || []).map(b => b.id));
+  const evIds = new Set((RULES?.ticketEvents || []).map(e => e.id));
+  const isQ = q => /^Q[1-9]\d*$/.test(q);
+  for(const r of f.v){
+    if(!ids.has(r.bucketId)) continue;
+    if(r.ticketEventId){
+      if(evIds.has(r.ticketEventId) && !events.has(r.ticketEventId)) events.set(r.ticketEventId, r.bucketId);
+      continue;
+    }
+    const others = (r.otherQids || '').split(';').map(q => q.trim()).filter(Boolean);
+    if((r.hostQid && !isQ(r.hostQid)) || !others.every(isQ) || (!r.hostQid && !others.length)) continue;
+    if(!clubs.has(r.bucketId)) clubs.set(r.bucketId, []);
+    clubs.get(r.bucketId).push({host: r.hostQid || '', others, leg: r.leg || ''});
+  }
+  const LEG_ORDER = {first: 0, second: 1, single: 2, '': 3};
+  clubs.forEach(rows => rows.sort((a, b) => (LEG_ORDER[a.leg] ?? 9) - (LEG_ORDER[b.leg] ?? 9)));
+  return {clubs, events};
+}
+
+const mapClub = q => CLUBS.find(c => c.id === q);
+const clubName = q => mapClub(q)?.name || q;
+const LEG_WORDS = {first: 'first leg', second: 'second leg', single: 'single match'};
+
+/* A football-rules.json club id (inter, milan) to the club on the map,
+   through data/football-rules-links.csv. */
+async function rulesClubQid(rulesId){
+  const links = await csvFile('data/football-rules-links.csv');
+  return links.ok ? (links.v.find(l => l.rulesId === rulesId) || {}).clubQid || null : null;
+}
+
+/* Reminder lead time in plain words. */
+function leadWords(n){
+  if(n == null || n === '') return null;
+  const d = Number(n);
+  return `${d} day${d === 1 ? '' : 's'}${d >= 14 && d % 7 === 0 ? ` (${d / 7} weeks)` : ''} before the date`;
+}
+
+/* ONE renderer for a ticket event (a dated reminder from
+   football-rules.json's ticketEvents), used for the windows linked to a
+   bucket entry and for the Reminders section. The window goes through
+   placeDate(), so an estimate is never shown to the day. */
+function eventHtml(ev){
+  const clubs = Object.fromEntries((RULES?.clubs || []).map(c => [c.id, c.name]));
+  const p = placeDate(eventRaw(ev), ev.dateSource);
+  const when = p ? dateWords(p, ev.dateSource) + (isPast(p) ? ' (past)' : '')
+    : ev.rule ? `no date: ${ev.rule}` : 'no date recorded';
+  /* With no date there is nothing to call estimated: the label then says
+     what the file records, plainly. */
+  const dsTag = !p && ev.dateSource ? `<span class="tag">date source: ${esc(ev.dateSource)}</span>`
+    : ev.dateSource === 'inferred' ? '<span class="tag warn">estimated</span>' : sourceTag(ev.dateSource);
+  return `<div class="item ev" data-ev="${esc(ev.id)}"><b>${esc(ev.title || ev.id)}</b>` +
+    `<div class="row" data-ds="${esc(ev.dateSource || '')}"><span>Window</span><span>${esc(when)}</span></div>` +
+    `<div class="meta">${dsTag}` +
+      (ev.status ? `<span class="tag">${esc(ev.status)}</span>` : '') +
+      (ev.recurring ? `<span class="tag">${esc(ev.recurring)}</span>` : '') +
+      (ev.priority ? `<span class="tag">priority ${esc(ev.priority)}</span>` : '') +
+      (ev.feed ? `<span class="tag">${esc(ev.feed)}</span>` : '') + `</div>` +
+    field('Club', clubs[ev.club] || ev.club) +
+    field('Reminder', leadWords(ev.leadTimeDays)) +
+    field('Action', ev.action) +
+    (ev.rule && p ? field('Rule', ev.rule) : '') +
+    (ev.derivation ? field('Derived from', ev.derivation) : '') +
+    (ev.dependsOn ? field('Depends on', ev.dependsOn) : '') +
+    (ev.warning ? `<div class="meta"><span class="tag bad">${esc(ev.warning)}</span></div>` : '') + `</div>`;
+}
+
+/* A hand-written date line, with its dateSource label. */
+function dateLine(label, raw, ds, extra = ''){
+  const p = placeDate(raw, ds);
+  const tag = ds === 'inferred' ? '<span class="tag warn">estimated</span>' : ds ? sourceTag(ds) : '';
+  return `<div class="row" data-ds="${esc(ds || '')}"><span>${esc(label)}</span><span>` +
+    (p ? esc(dateWords(p, ds) + (p.day && extra ? ' · ' + extra : '')) : '<span class="blank">not recorded</span>') +
+    ` ${tag}</span></div>`;
+}
+
+/* Every hand-written date on an entry: its date, its nextFixture, its
+   fixtures (each leg's home club through football-rules-links.csv). */
+async function handDates(item){
+  const out = [];
+  if(item.date) out.push(dateLine('Date', item.date, item.dateSource, item.kickoff || ''));
+  if(item.nextFixture){
+    const n = item.nextFixture;
+    out.push(dateLine(`Next fixture${n.matchday ? ' (matchday ' + n.matchday + ')' : ''}`, n.dateEstimate || n.date, n.dateSource) +
+      (n.derivation ? `<div class="sub">derived from: ${esc(n.derivation)}</div>` : '') +
+      (n.missed ? `<div class="sub">missed: ${esc(n.missed)}</div>` : ''));
+  }
+  for(const [i, f] of (item.fixtures || []).entries()){
+    const q = f.home ? await rulesClubQid(f.home) : null;
+    out.push(dateLine(`Fixture ${i + 1}${f.matchday ? ' (matchday ' + f.matchday + ')' : ''}`, f.date, f.dateSource) +
+      (f.home ? `<div class="sub">home: ${esc(q ? clubName(q) : f.home)}</div>` : '') +
+      (f.saleRoute ? `<div class="sub">sale route: ${esc(f.saleRoute)}</div>` : ''));
+  }
+  return out;
+}
+
+/* The fixture-file answer for a pair, as the derby panel shows it. */
+function meetingsHtml(r){
+  let h = r.ahead.length ? meetingRow(r.ahead[0]) +
+      (r.ahead.length > 1 ? `<details><summary>Later <em>— ${r.ahead.length - 1}</em></summary>${r.ahead.slice(1).map(meetingRow).join('')}</details>` : '')
+    : '<p class="unavail">No meeting in the fixture data.</p>';
+  if(r.past.length) h += `<details><summary>Played <em>— ${r.past.length}</em></summary>${r.past.slice(0, 5).map(meetingRow).join('')}</details>`;
+  if(r.failed.length) h += `<p class="err">Could not load: ${esc(r.failed.join(', '))}.</p>`;
+  return h + `<div class="sub">Times are German time. From the fixture files via data/clubs/fixture-links.json.</div>`;
+}
+
+function noMeetingWhy(d, r){
+  if(r.state === 'error') return `The fixture links could not be loaded (${esc(r.err)}).`;
+  if(r.state === 'nosource') return r.missing.map(c => `${esc(c.name)} has no fixture source`).join('; ') + '.';
+  if(r.state === 'nocommon') return `${esc(d.a.name)} and ${esc(d.b.name)} are linked to different fixture sources, so no file holds a match between the two.`;
+  return '';
+}
+
+/* "Next meeting": the derby panel's own function when the entry's pair
+   is a row of data/derbies.csv (by its rulesId, or by the two Q-ids its
+   link lines give) and both clubs have a fixture source; otherwise the
+   hand-written date, saying that is what it is. */
+async function nextMeetingHtml(item, rows){
+  const hand = await handDates(item);
+  const handHtml = hand.length ? `<div class="sub">The hand-written date in your notes, not from a fixture file:</div>` + hand.join('')
+    : '<p class="unavail">No date is written for it in your notes either.</p>';
+  const D = await loadDerbies();
+  const qids = [...new Set(rows.flatMap(r => (r.host ? [r.host] : []).concat(r.others)))];
+  const d = D.shown && (D.shown.find(x => x.row.rulesId === item.id) ||
+    (qids.length === 2 && D.shown.find(x => qids.includes(x.row.clubA) && qids.includes(x.row.clubB))));
+  if(!d) return `<p class="unavail">Not a pair in the derbies list, so no fixture file is read for it.</p>` + handHtml;
+  const r = await derbyMeetings(d);
+  if(r.state === 'ok') return `<div class="sub">${esc(d.row.name)}: ${esc(d.a.name)} v ${esc(d.b.name)}.</div>` + meetingsHtml(r) +
+    (r.ahead.length ? '' : handHtml);
+  return `<p class="unavail">${noMeetingWhy(d, r)}</p>` + handHtml;
+}
+
+/* The entry's own fields not shown above, exactly as written. */
+const BUCKET_SHOWN = new Set(['id', 'title', 'type', 'priority', 'status', 'trueDerby', 'why', 'venue', 'date',
+  'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'distanceKm', 'clubs', 'verified', 'warning']);
+
+/* ONE renderer for a bucket entry's detail; the Bucket list tab uses it
+   inside each card, and the next sheet can use it as it is. */
+async function bucketDetailHtml(item){
+  const L = await bucketLinks();
+  const rows = L.clubs.get(item.id) || [];
+  const km = roadEstimate(item.lat, item.lon);
+  const dist = item.distanceKm ?? km;
+  const rest = Object.fromEntries(Object.entries(item).filter(([k]) => !BUCKET_SHOWN.has(k)));
+  const unv = unverifiedParts(item);
+  let h = (item.why ? `<p class="bwhy">${esc(item.why)}</p>` : '') +
+    (unv.length ? `<div class="meta">${UNVERIFIED_TAG}<span class="tag bad">your notes mark this unverified: ${esc(unv.join('; '))}</span></div>` : '') +
+    field('What', item.type) +
+    (item.venue ? field('Venue', item.venue) : '') +
+    (await handDates(item)).join('') +
+    (!item.date && !item.nextFixture && !(item.fixtures || []).length ? field('Date', null) : '') +
+    field('Distance', dist != null ? '≈ ' + dist + ' km' : null) +
+    (item.warning ? `<div class="meta"><span class="tag bad">${esc(item.warning)}</span></div>` : '') +
+    (Object.keys(rest).length ? `<div class="nest"><div class="nk">More from your notes</div>${noteRows(rest, false)}</div>` : '');
+
+  /* Host and leg, for an entry whose link lines name clubs. */
+  if(rows.length){
+    h += `<h5 class="srch">Clubs</h5>` + rows.map(r =>
+      `<div class="row"><span>${esc(r.leg ? LEG_WORDS[r.leg] || r.leg : 'Leg not recorded')}</span><span>` +
+      (r.host ? `host: <b>${esc(clubName(r.host))}</b>${r.others.length ? ' · visitor: ' + esc(r.others.map(clubName).join(', ')) : ''}`
+        : `host not recorded · clubs: ${esc(r.others.map(clubName).join(', '))}`) + `</span></div>`).join('');
+  }
+  if(item.type === 'fixture'){
+    h += `<h5 class="srch">Next meeting</h5>` + await nextMeetingHtml(item, rows);
+  }
+
+  /* Ticket rules: the host first, then the other club(s); each through
+     the shared club renderer, its country's rules on top. */
+  if(rows.length){
+    const order = [];
+    const role = new Map();
+    for(const r of rows){
+      for(const q of (r.host ? [r.host] : []).concat(r.others)){
+        if(!order.includes(q)) order.push(q);
+        const what = q === r.host ? `host${r.leg ? ', ' + (LEG_WORDS[r.leg] || r.leg) : ''}`
+          : r.host ? `visitor${r.leg ? ', ' + (LEG_WORDS[r.leg] || r.leg) : ''}` : 'named in the entry';
+        role.set(q, (role.get(q) ? role.get(q) + '; ' : '') + what);
+      }
+    }
+    h += `<h5 class="srch">Ticket rules</h5>`;
+    for(const q of order){
+      const club = mapClub(q) || {id: q, name: q, country: ''};
+      const T = await clubTicketsHtml(club);
+      h += `<div class="bclub" data-qid="${esc(q)}"><div class="bclubh">${esc(club.name)} <em>${esc(role.get(q))}</em></div>${T.html}</div>`;
+    }
+  }
+
+  /* Event rules: data/event-ticket-rules.csv, keyed by the entry's id. */
+  const ER = await csvFile('data/event-ticket-rules.csv');
+  const mine = ER.ok ? ER.v.filter(r => r.bucketId === item.id) : [];
+  const sources = await ticketSources();
+  h += `<h5 class="srch">Event rules</h5>` + (!ER.ok ? `<p class="err">The event rules could not be loaded.</p>` + why(esc(ER.err))
+    : mine.length ? mine.map(r => `<div class="item"><b>${esc(r.topic)}</b>${r.season ? ' · ' + esc(r.season) : ''}` +
+        `<div>${esc(r.rule)}</div><div class="meta">${confTag(r.confidence)}${r.scope && r.scope !== 'general' ? `<span class="tag">${esc(r.scope)}</span>` : ''}</div>` +
+        sourcesLine(r, sources) + `</div>`).join('')
+    : `<p class="unavail">Event-specific ticket rules not researched yet.</p>`);
+
+  /* Ticket windows: every ticket event linked to this entry. */
+  const evs = (RULES?.ticketEvents || []).filter(e => L.events.get(e.id) === item.id);
+  h += `<h5 class="srch">Ticket windows (reminders)</h5>` + (evs.length ? evs.map(eventHtml).join('')
+    : `<p class="unavail">No ticket window is linked to this entry.</p>`);
+  if(L.err) h += `<p class="err">Which clubs and windows belong to this entry could not be loaded.</p>` + why(esc(L.err));
+  return h;
+}
+
 function bucketCard(item){
   const bits = [];
   if(item.type)     bits.push(`<span class="tag">${esc(item.type)}</span>`);
@@ -2931,97 +3305,98 @@ function bucketCard(item){
     bits.push(`<span class="tag ${cls}">${esc(item.status)}</span>`);
   }
   if(item.trueDerby) bits.push('<span class="tag">true derby</span>');
-
-  const km = roadEstimate(item.lat, item.lon);
-  const dist = item.distanceKm ?? km;
-
-  let dates = '';
-  if(item.date) dates += field('Date', item.date + (item.kickoff ? ' · ' + item.kickoff : ''));
-  if(item.nextFixture) dates += field('Next fixture',
-      item.nextFixture.dateEstimate || item.nextFixture.date);
-  if(Array.isArray(item.fixtures))
-    item.fixtures.forEach(f => dates += field('Fixture', f.date));
-
-  return `<div class="card">
-    <h3>${esc(item.title || item.id)}</h3>
-    ${item.why ? `<p>${esc(item.why)}</p>` : ''}
-    <div class="meta">${bits.join('')}</div>
-    ${dates}
-    ${field('Venue', item.venue)}
-    ${dist != null ? field('Distance', '≈ ' + dist + ' km') : field('Distance', null)}
-    ${item.ticketRoute ? field('Tickets', item.ticketRoute) : ''}
-    ${item.ticketNote ? field('Ticket note', item.ticketNote) : ''}
-    ${item.blockedReason ? field('Blocked', item.blockedReason) : ''}
-    ${item.unblockCondition ? field('Unblocks when', item.unblockCondition) : ''}
-    ${item.deferReason ? field('Deferred', item.deferReason) : ''}
-    ${item.conflict ? field('Clashes with', item.conflict) : ''}
-    ${item.warning ? `<div class="meta"><span class="tag bad">${esc(item.warning)}</span></div>` : ''}
-  </div>`;
+  if(item.verified === false) bits.push(UNVERIFIED_TAG);
+  return `<details class="card bucket" data-id="${esc(item.id)}"><summary>` +
+    `<h3>${esc(item.title || item.id)}</h3><div class="meta">${bits.join('')}<span class="more"></span></div></summary>` +
+    `<div class="tix bdetail"><p class="unavail">Loading…</p></div></details>`;
 }
 
-function renderBucket(rules){
+/* Rendered on first opening, so the tab does not load every club's
+   ticket files before anyone asks. */
+function wireLazy(root, render){
+  root.querySelectorAll('details.card').forEach(d => d.addEventListener('toggle', () => {
+    if(!d.open || d.dataset.done) return;
+    d.dataset.done = '1';
+    render(d).then(h => { d.querySelector('.tix').innerHTML = h; },
+      err => { d.querySelector('.tix').innerHTML = `<p class="err">Could not be shown: ${esc(err.message)}</p>`; });
+  }));
+}
+
+async function renderBucket(rules){
   const items = rules.bucketList || [];
   const rank = {high:0, medium:1, low:2};
   const live = items.filter(i => i.status !== 'blocked' && i.status !== 'deferred');
   const held = items.filter(i => i.status === 'blocked' || i.status === 'deferred');
   live.sort((a,b) => (rank[a.priority] ?? 9) - (rank[b.priority] ?? 9));
 
-  document.getElementById('bucketBody').innerHTML =
+  /* Reminders: the ticket events no bucket entry claims, soonest first,
+     undated last. */
+  const L = await bucketLinks();
+  const loose = (rules.ticketEvents || []).filter(e => !L.events.has(e.id)).map(e => ({e, p: placeDate(eventRaw(e), e.dateSource)}))
+    .sort((a, b) => (a.p ? a.p.key : '9999').localeCompare(b.p ? b.p.key : '9999')).map(x => x.e);
+
+  const body = document.getElementById('bucketBody');
+  body.innerHTML =
+    `<h2>Reminders — ${loose.length}</h2>` +
+    `<p class="note" style="margin:0 0 9px">Ticket windows that belong to no entry below, soonest first, undated last. ` +
+      `The rest are inside their entry.</p>` +
+    (loose.length ? loose.map(e => `<div class="card evcard tix">${eventHtml(e)}</div>`).join('')
+      : '<p class="note">Every ticket window belongs to an entry below.</p>') +
+    (L.err ? `<p class="err">Which windows belong to which entry could not be loaded (${esc(L.err)}), so every window is listed here.</p>` : '') +
     `<h2>Live — ${live.length}</h2>` + live.map(bucketCard).join('') +
     (held.length ? `<h2>Blocked or deferred — ${held.length}</h2>` +
       held.map(bucketCard).join('') : '') +
     `<p class="note">Distances are straight-line × ${MULTIPLIER}, measured from
      ${esc(HOME ? HOME.label : 'an unset home location')}. They are a road-distance
-     estimate, not a travel time.</p>`;
+     estimate, not a travel time. An estimated date is shown to the month only.</p>`;
+  wireLazy(body, d => bucketDetailHtml(items.find(i => i.id === d.dataset.id)));
 }
 
 /* ------------------------------------------------------- ticket info */
 
-function ticketCard(ev, clubName){
-  const when = ev.recurring === 'annual'
-    ? ev.nextEstimate
-    : (ev.date || ev.dateEstimate);
+/* Rules only: no dates and no upcoming windows on this tab. Two
+   sections: every country with a national rule, and every club with any
+   ticket information, each opened to the shared renderer. */
+async function renderTickets(rules){
+  const files = ['data/country-ticket-rules.csv', 'data/club-tickets.csv', 'data/club-ticket-windows.csv',
+    'data/club-ticket-phases.csv', 'data/club-ticket-rules.csv', 'data/club-ticket-demand.csv',
+    'data/club-ticket-prices.csv', 'data/football-rules-links.csv'];
+  const [nat, base, ...rest] = await Promise.all(files.map(csvFile));
+  const links = rest[rest.length - 1];
+  const entries = new Map((rules.clubs || []).map(c => [c.id, c]));
 
-  return `<div class="card">
-    <h3>${esc(ev.title || ev.id)}</h3>
-    ${ev.action ? `<p>${esc(ev.action)}</p>` : ''}
-    <div class="meta">
-      ${sourceTag(ev.dateSource)}
-      ${ev.feed ? `<span class="tag">${esc(ev.feed)}</span>` : ''}
-      ${ev.status ? `<span class="tag">${esc(ev.status)}</span>` : ''}
-      ${ev.recurring ? `<span class="tag">${esc(ev.recurring)}</span>` : ''}
-    </div>
-    ${field('Date', when)}
-    ${field('Club', clubName)}
-    ${field('Reminder', ev.leadTimeDays != null ? ev.leadTimeDays + ' days before' : null)}
-    ${ev.rule ? field('Rule', ev.rule) : ''}
-    ${ev.derivation ? field('Derived from', ev.derivation) : ''}
-    ${ev.dependsOn ? field('Depends on', ev.dependsOn) : ''}
-    ${ev.warning ? `<div class="meta"><span class="tag bad">${esc(ev.warning)}</span></div>` : ''}
-  </div>`;
-}
+  const countries = nat.ok ? [...new Set(nat.v.map(r => r.country).filter(Boolean))].sort() : [];
+  const qids = new Set();
+  [base, ...rest.slice(0, -1)].forEach(f => f.ok && f.v.forEach(r => r.clubQid && (r.team || 'men') === 'men' && qids.add(r.clubQid)));
+  if(links.ok) links.v.forEach(l => entries.has(l.rulesId) && l.clubQid && qids.add(l.clubQid));
+  const clubs = [...qids].map(q => {
+    const row = base.ok ? base.v.find(r => r.clubQid === q) : null;
+    const entry = links.ok ? entries.get((links.v.find(l => l.clubQid === q) || {}).rulesId) : null;
+    return mapClub(q) || {id: q, name: row?.club || entry?.name || q, country: row?.country || entry?.country || ''};
+  }).sort((a, b) => a.name.localeCompare(b.name));
+  const linked = new Set(links.ok ? links.v.filter(l => entries.has(l.rulesId)).map(l => l.clubQid) : []);
+  const researched = new Set(base.ok ? base.v.map(r => r.clubQid) : []);
 
-function renderTickets(rules){
-  const clubs = {};
-  (rules.clubs || []).forEach(c => clubs[c.id] = c.name);
-
-  const events = (rules.ticketEvents || []).slice();
-  const today = new Date().toISOString().slice(0,10);
-  const dateOf = e => e.recurring === 'annual'
-    ? e.nextEstimate : (e.date || e.dateEstimate) || '9999';
-
-  const upcoming = events.filter(e => dateOf(e) >= today && e.dateSource !== 'disputed');
-  const other    = events.filter(e => !(dateOf(e) >= today && e.dateSource !== 'disputed'));
-  upcoming.sort((a,b) => dateOf(a).localeCompare(dateOf(b)));
-
-  document.getElementById('ticketBody').innerHTML =
-    `<h2>Ahead — ${upcoming.length}</h2>` +
-    upcoming.map(e => ticketCard(e, clubs[e.club])).join('') +
-    (other.length ? `<h2>Past, disputed or undated — ${other.length}</h2>` +
-      other.map(e => ticketCard(e, clubs[e.club])).join('') : '') +
-    `<p class="note">Every rule and date on this tab is hand-written in
-     football-rules.json. Nothing here is generated, and a field shown as
-     "not recorded" is blank in the file rather than unknown to the app.</p>`;
+  const body = document.getElementById('ticketBody');
+  body.innerHTML =
+    `<h2>Countries — ${countries.length}</h2>` +
+    (nat.ok ? '' : `<p class="err">The national rules could not be loaded (${esc(nat.err)}).</p>`) +
+    countries.map(c => `<details class="card tcountry" data-country="${esc(c)}"><summary><h3>${esc(countryLabel(c))}</h3>` +
+      `<div class="meta"><span class="tag">${nat.v.filter(r => r.country === c).length} national rules</span><span class="more"></span></div></summary>` +
+      `<div class="tix"><p class="unavail">Loading…</p></div></details>`).join('') +
+    `<p class="note">Rules no club decides - a country's law, ministry, police or league - for every club whose ground is there.</p>` +
+    `<h2>Clubs — ${clubs.length}</h2>` +
+    clubs.map(c => `<details class="card tclub" data-qid="${esc(c.id)}"><summary><h3>${esc(c.name)}</h3>` +
+      `<div class="meta"><span class="tag">${esc(c.country || 'country not recorded')}</span>` +
+      (researched.has(c.id) ? '<span class="tag ok">researched rules</span>' : '') +
+      (linked.has(c.id) ? '<span class="tag">your notes</span>' : '') + `<span class="more"></span></div></summary>` +
+      `<div class="tix"><p class="unavail">Loading…</p></div></details>`).join('') +
+    `<p class="note">Rules only. Dated ticket windows and reminders are on the Bucket list tab; ` +
+      `a club's soonest one is also on its map sheet as "Next window". The researched rules and your notes ` +
+      `are shown side by side and never reconciled.</p>`;
+  wireLazy(body, async d => d.dataset.country
+    ? `<h5 class="srch tix-country">Country rules: ${esc(countryLabel(d.dataset.country))}</h5>` + await countryRulesHtml(d.dataset.country)
+    : (await clubTicketsHtml(clubs.find(c => c.id === d.dataset.qid))).html);
 }
 
 /* -------------------------------------------------------------- boot */
