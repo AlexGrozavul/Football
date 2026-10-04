@@ -340,6 +340,75 @@
     gap:8px;align-items:center;justify-content:space-between;background:rgba(22,27,34,.96);
     border:1px solid var(--t3);border-radius:9px;padding:9px 11px;font-size:13.5px}
 
+  /* Bucket list: List and Calendar sub-tabs, the sort control, stars. */
+  .btabs{display:flex;gap:4px;margin:0 0 10px;border-bottom:1px solid var(--line)}
+  .btabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--dim);
+    font:inherit;font-size:14px;font-weight:600;padding:8px 6px 9px;min-height:44px;cursor:pointer}
+  .btabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--t3)}
+  .btabs button:focus-visible{outline:2px solid var(--t3);outline-offset:-2px}
+  .bsort{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 6px;font-size:13px;color:var(--dim)}
+  .bsort button{min-height:44px;padding:0 14px;background:#1b2230;border:1px solid var(--line);border-radius:9px;
+    color:var(--dim);font:inherit;font-size:13.5px;cursor:pointer}
+  .bsort button[aria-checked="true"]{color:var(--ink);border-color:var(--t3);background:#1f2a3a}
+  details.card.bucket{position:relative}
+  details.card.bucket>summary{padding-right:40px}
+  .star{position:absolute;top:2px;right:2px;width:44px;height:44px;display:flex;align-items:center;
+    justify-content:center;background:none;border:0;border-radius:10px;color:var(--faint);font-size:22px;
+    line-height:1;cursor:pointer}
+  .star[aria-pressed="true"]{color:#f2c94c}
+  .star:focus-visible{outline:2px solid var(--t3);outline-offset:-4px}
+  .bwhen{font-size:12.5px;color:var(--dim);margin-top:3px}
+  .bsub{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:12px 0 6px;font-weight:600}
+  details.past{margin-top:16px}
+  details.past>summary{cursor:pointer;font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
+    font-weight:600;padding:10px 0;min-height:44px}
+  .hol{font-size:13px;color:#b7d7a8;margin-top:6px}
+  .tix .ev.focus{outline:2px solid var(--warn);outline-offset:3px;border-radius:4px}
+  #bsheet{z-index:1001}
+  #bsheet .bwhen{margin-top:4px}
+
+  /* Calendar: a Monday-first month grid that fits 390 px. */
+  .calnav{display:flex;align-items:center;gap:6px}
+  .calnav h3{flex:1;margin:0;font-size:16px;font-weight:600;text-align:center}
+  .calnav button{min-width:44px;min-height:44px;background:#1b2230;border:1px solid var(--line);border-radius:9px;
+    color:var(--ink);font:inherit;font-size:15px;cursor:pointer;padding:0 10px}
+  .calest{margin-top:10px;border:1px dashed var(--warn);border-radius:9px;padding:7px 10px;font-size:13px}
+  .calest .cl{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);font-weight:600}
+  .calest .none{color:var(--faint);font-style:italic;margin-top:3px}
+  .calitem{display:flex;gap:8px;align-items:flex-start;width:100%;text-align:left;background:none;border:0;
+    border-top:1px solid var(--line);color:var(--ink);font:inherit;font-size:13.5px;padding:9px 0;min-height:44px;cursor:pointer}
+  .calitem:first-of-type{border-top:0}
+  .calitem .ct{flex:1;min-width:0;overflow-wrap:anywhere}
+  .calitem .cs{display:block;color:var(--faint);font-size:12px}
+  .calnotice{margin-top:8px;font-size:13px;color:var(--warn)}
+  .calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:10px}
+  .calgrid .wd{align-self:end;font-size:11px;color:var(--faint);text-align:center;padding:2px 0}
+  .cday{position:relative;height:56px;min-width:0;display:flex;flex-direction:column;align-items:stretch;
+    background:#11161d;border:1px solid var(--line);border-radius:7px;color:var(--ink);font:inherit;
+    padding:3px 3px 2px;cursor:pointer;text-align:left;overflow:hidden}
+  .cday .dn{font-size:12.5px;font-weight:600}
+  .cday .hn{display:block;font-size:9px;line-height:1.1;color:#b7d7a8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cday .mk{display:flex;flex-wrap:wrap;gap:2px;margin-top:auto;align-items:center}
+  .cday .mk i{display:block;font-style:normal;font-size:9px;line-height:1}
+  .mev{display:block;flex-shrink:0;width:8px;height:8px;border-radius:50%;background:var(--t3)}
+  .mtw{display:block;flex-shrink:0;width:8px;height:8px;border-radius:1px;background:var(--warn);transform:rotate(45deg)}
+  .calitem>.mev,.calitem>.mtw{margin-top:6px}
+  .mfav{color:#f2c94c}
+  .cday .mfav{color:#f2c94c;font-size:10px}
+  .cday.shol{background:#17301f;border-color:#2c5a3a}
+  .cday.mov{background:repeating-linear-gradient(135deg,#17301f 0 5px,#11161d 5px 10px);border-color:#2c5a3a;border-style:dashed}
+  .cday.start{box-shadow:inset 0 0 0 2px var(--t3)}
+  .cday.today .dn{color:var(--accent)}
+  .cday.today{border-color:var(--accent)}
+  .cday[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:-2px}
+  .cday.blank{background:none;border:0;cursor:default}
+  .calkey{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;font-size:12px;color:var(--dim)}
+  .calkey span{display:flex;align-items:center;gap:5px}
+  .calkey .sw{width:14px;height:12px;border-radius:3px;border:1px solid #2c5a3a}
+  .calday,.calnodate{margin-top:12px}
+  .calhols{margin-top:8px}
+  .calhols div{font-size:12.5px;color:#b7d7a8;margin-top:2px}
+
   .note{color:var(--faint);font-size:12.5px;margin:14px 0 0;line-height:1.5}
 
   /* Offline: the data banner, and the map's "needs a connection" card. */
@@ -437,8 +506,30 @@
       <div class="pickbar" id="pickBar" hidden><span id="pickText">Tap the map</span>
         <button id="pickCancel">Cancel</button></div>
     </div>
-    <div class="pane" id="pane-bucket"><div class="wrap" id="bucketBody"></div></div>
+    <div class="pane" id="pane-bucket"><div class="wrap">
+      <div class="btabs" role="tablist" aria-label="Bucket list">
+        <button type="button" role="tab" id="tabList" aria-selected="true" aria-controls="bucketListView">List</button>
+        <button type="button" role="tab" id="tabCal" aria-selected="false" aria-controls="calView">Calendar</button>
+      </div>
+      <div id="bucketListView" role="tabpanel" aria-labelledby="tabList">
+        <div class="bsort" role="radiogroup" aria-label="Sort the entries">
+          <span>Sort</span>
+          <button type="button" role="radio" data-sort="earliest" aria-checked="true">Earliest</button>
+          <button type="button" role="radio" data-sort="favorites" aria-checked="false">Favorites</button>
+        </div>
+        <div id="bucketBody"></div>
+      </div>
+      <div id="calView" role="tabpanel" aria-labelledby="tabCal" hidden><div id="calBody"></div></div>
+    </div></div>
     <div class="pane" id="pane-tickets"><div class="wrap" id="ticketBody"></div></div>
+    <!-- A bucket entry or ticket window tapped in the calendar: the club
+         sheet's shape, against the bottom bar, the List's own renderer inside. -->
+    <div class="sheet" id="bsheet" hidden role="dialog" aria-label="Bucket list entry">
+      <div class="grip"><i></i></div>
+      <div class="shead"><div style="flex:1;min-width:0" id="bsheetHead"></div>
+        <button class="x" id="bsheetClose" aria-label="Close">Close</button></div>
+      <div class="sbody tix" id="bsheetBody"></div>
+    </div>
   </div>
   <nav>
     <button class="on" data-pane="map"><b>◉</b>Map</button>
@@ -966,8 +1057,15 @@ function parseCSV(text){
   }
   if(cell !== '' || row.length){ row.push(cell); rows.push(row); }
   const head = rows.shift() || [];
+  /* A row with more cells than the header is marked (not enumerable, so
+     nothing that lists a row's fields sees it): an unquoted comma, which
+     the tools in tools/ reject. Readers that care check `_over`. */
   return rows.filter(r => r.some(c => c.trim() !== ''))
-             .map(r => Object.fromEntries(head.map((h, i) => [h.trim(), (r[i] ?? '').trim()])));
+             .map(r => {
+               const o = Object.fromEntries(head.map((h, i) => [h.trim(), (r[i] ?? '').trim()]));
+               if(r.length > head.length) Object.defineProperty(o, '_over', {value: true});
+               return o;
+             });
 }
 
 const csvFile  = path => loadOnce(path, async () => parseCSV(await getText(path)));
@@ -1536,8 +1634,14 @@ const eventRaw = ev => ev.recurring === 'annual' ? ev.nextEstimate : (ev.date ||
 function placeDate(raw, dateSource){
   if(!raw || !/^\d{4}-\d{2}/.test(raw)) return null;
   const [a, b] = String(raw).split('/');
-  if(dateSource === 'confirmed' && !b && /^\d{4}-\d{2}-\d{2}$/.test(a))
-    return {key: a, end: a.slice(0, 7), day: true, text: DAY_FMT(a)};
+  const isDay = v => /^\d{4}-\d{2}-\d{2}$/.test(v || '');
+  if(dateSource === 'confirmed' && !b && isDay(a))
+    return {key: a, last: a, end: a.slice(0, 7), day: true, text: DAY_FMT(a)};
+  /* A CONFIRMED range of whole days (since 2026-10-04) is day-level too:
+     it is a published fact, not an estimate, so the calendar draws it
+     across its days. An inferred or disputed range stays month-level. */
+  if(dateSource === 'confirmed' && isDay(a) && isDay(b) && b > a)
+    return {key: a, last: b, end: b.slice(0, 7), day: true, text: `${DAY_FMT(a)} to ${DAY_FMT(b)}`};
   const m1 = a.slice(0, 7), m2 = b && /^\d{4}-\d{2}/.test(b) ? b.slice(0, 7) : m1;
   const text = m1 === m2 ? monthText(m1) : m1.slice(0, 4) === m2.slice(0, 4)
     ? `${MONTH_NAMES[Number(m1.slice(5)) - 1]} or ${monthText(m2)}` : `${monthText(m1)} or ${monthText(m2)}`;
@@ -1552,9 +1656,18 @@ function dateWords(p, dateSource){
   return p.text;
 }
 
+/* Today as a plain LOCAL date, YYYY-MM-DD: the phone's own calendar day.
+   Every date in the files is a plain date too, and none is ever turned
+   into a moment in time, so nothing shifts a day across a time zone. */
+const pad2 = n => String(n).padStart(2, '0');
+function todayISO(){
+  const d = new Date();
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+}
+
 function isPast(p){
-  const today = new Date().toISOString().slice(0, 10);
-  return p.day ? p.key < today : p.end < today.slice(0, 7);
+  const today = todayISO();
+  return p.day ? (p.last || p.key) < today : p.end < today.slice(0, 7);
 }
 
 /* ---- Next window: the soonest window ahead across BOTH sources.
@@ -1572,7 +1685,7 @@ function isPast(p){
    month ("about six weeks before each match") cannot be placed and is
    named as not counted. */
 function windowCandidates(notes, res){
-  const month = new Date().toISOString().slice(0, 7);
+  const month = todayISO().slice(0, 7);
   const out = [], unplaced = [];
   for(const n of notes.entries || []) for(const ev of n.events){
     if(ev.dateSource === 'disputed') continue;
@@ -1648,7 +1761,12 @@ async function ticketsHtml(club){
   document.getElementById('sheetClose').addEventListener('click', closeSheet);
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSheet(); });
 
-  /* Drag the handle or the title down to close. */
+  dragToClose(sheet, closeSheet);
+})();
+
+/* Drag a sheet's handle or title down to close it. Used by the club
+   sheet and the bucket entry sheet. */
+function dragToClose(sheet, close){
   let y0 = null;
   const grab = sheet.querySelectorAll('.grip, .shead');
   grab.forEach(el => el.addEventListener('pointerdown', e => {
@@ -1664,10 +1782,10 @@ async function ticketsHtml(club){
     if(y0 === null) return;
     const dy = e.clientY - y0; y0 = null;
     sheet.style.transition = ''; sheet.style.transform = '';
-    if(dy > 70) closeSheet();
+    if(dy > 70) close();
   };
   grab.forEach(el => { el.addEventListener('pointerup', drop); el.addEventListener('pointercancel', drop); });
-})();
+}
 
 /* ------------------------------------------------------------- route */
 
@@ -3148,6 +3266,7 @@ function eventHtml(ev){
       (ev.recurring ? `<span class="tag">${esc(ev.recurring)}</span>` : '') +
       (ev.priority ? `<span class="tag">priority ${esc(ev.priority)}</span>` : '') +
       (ev.feed ? `<span class="tag">${esc(ev.feed)}</span>` : '') + `</div>` +
+    (p && p.day ? holidayLines([{p, label: 'Window'}]) : '') +
     field('Club', clubs[ev.club] || ev.club) +
     field('Reminder', leadWords(ev.leadTimeDays)) +
     field('Action', ev.action) +
@@ -3229,6 +3348,7 @@ const BUCKET_SHOWN = new Set(['id', 'title', 'type', 'priority', 'status', 'true
 /* ONE renderer for a bucket entry's detail; the Bucket list tab uses it
    inside each card, and the next sheet can use it as it is. */
 async function bucketDetailHtml(item){
+  await loadHolidays();
   const L = await bucketLinks();
   const rows = L.clubs.get(item.id) || [];
   const km = roadEstimate(item.lat, item.lon);
@@ -3240,6 +3360,7 @@ async function bucketDetailHtml(item){
     field('What', item.type) +
     (item.venue ? field('Venue', item.venue) : '') +
     (await handDates(item)).join('') +
+    holidayLines(entryDates(item).filter(d => d.ds !== 'disputed')) +
     (!item.date && !item.nextFixture && !(item.fixtures || []).length ? field('Date', null) : '') +
     field('Distance', dist != null ? '≈ ' + dist + ' km' : null) +
     (item.warning ? `<div class="meta"><span class="tag bad">${esc(item.warning)}</span></div>` : '') +
@@ -3295,19 +3416,154 @@ async function bucketDetailHtml(item){
   return h;
 }
 
-function bucketCard(item){
+/* ---- School holidays: data/holidays-manual.csv, hand-written and read
+   back by tools/check_holidays.py. The calendar shades exactly the rows
+   that file holds. A row the checker would reject, a kind it does not
+   know, and a row that is not confirmed are NOT drawn - each is named
+   under the calendar instead. Outside the span the rows cover, the
+   calendar says the holidays are not entered; it never implies there are
+   none. All dates are plain dates: no time, no time zone, no conversion. */
+const HOLIDAY_KINDS = ['school-holiday', 'school-holiday-movable', 'school-start'];
+let HOLS = {rows: [], first: null, last: null, movable: false, skipped: [], err: null};
+const dayNo = iso => Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 864e5;
+const isoDay = n => new Date(n * 864e5).toISOString().slice(0, 10);   // arithmetic on plain dates only
+const realDay = v => /^\d{4}-\d{2}-\d{2}$/.test(v || '') && isoDay(dayNo(v)) === v;
+const DAY_SHORT = iso => new Date(iso + 'T12:00:00Z').toLocaleDateString('en-GB',
+  {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'});
+const HOL_WORDS = {'school-holiday': 'school holiday', 'school-holiday-movable': 'movable school day',
+  'school-start': 'school starts'};
+
+function loadHolidays(){
+  return loadOnce('holidays', async () => {
+    const f = await csvFile('data/holidays-manual.csv');
+    const H = {rows: [], first: null, last: null, movable: false, skipped: [], err: f.ok ? null : f.err};
+    for(const r of f.ok ? f.v : []){
+      const empty = ['name', 'start', 'end', 'kind', 'dateSource', 'source'].filter(k => !r[k]);
+      const why = r._over ? 'an unquoted comma splits a cell'
+        : empty.length ? `${empty.join(', ')} empty`
+        : !realDay(r.start) || !realDay(r.end) ? 'not a real date written YYYY-MM-DD'
+        : r.end < r.start ? 'ends before it starts'
+        : !['confirmed', 'inferred', 'disputed'].includes(r.dateSource) ? `dateSource "${r.dateSource}" is not one the files use`
+        : !HOLIDAY_KINDS.includes(r.kind) ? `kind "${r.kind}" is not one the calendar knows`
+        : r.dateSource !== 'confirmed' ? `${r.dateSource}, and only confirmed rows are shaded` : '';
+      if(why){ H.skipped.push(`${r.name || 'a row with no name'}: ${why}`); continue; }
+      H.rows.push(r);
+    }
+    if(H.rows.length){
+      H.first = H.rows.map(r => r.start).sort()[0];
+      H.last = H.rows.map(r => r.end).sort().pop();
+    }
+    H.movable = H.rows.some(r => r.kind === 'school-holiday-movable');
+    HOLS = H;
+    return H;
+  });
+}
+const holidaysOn = iso => HOLS.rows.filter(r => r.start <= iso && iso <= r.end);
+
+/* "School holiday: <name>" for each day-level date that falls inside a
+   holiday block; nothing otherwise. A month-level estimate cannot be
+   said to fall inside one, so it never gets the line. */
+function holidayLines(dates){
+  const out = [];
+  for(const d of dates){
+    if(!d.p.day) continue;
+    for(const r of HOLS.rows){
+      if(r.kind === 'school-start' || r.end < d.p.key || r.start > d.p.last) continue;
+      out.push(`<div class="hol">School holiday: ${esc(r.name)}` +
+        (dates.length > 1 ? ` <span class="sub">(${esc(d.label)}, ${esc(d.p.text)})</span>` : '') + `</div>`);
+    }
+  }
+  return out.join('');
+}
+
+/* ---- Favorites and the sort: kept on THIS DEVICE only, in the browser's
+   localStorage, never in the repo, never exported (not until the Me tab).
+   Storage can be blocked, and even reading it can throw, so every access
+   is wrapped: blocked, the stars and the sort still work for the visit. */
+const FAV_KEY = 'football-planner-favorites', SORT_KEY = 'football-planner-bucket-sort';
+let FAVS = null, SORT = null, BUCKET_RULES = null, BLINKS = {clubs: new Map(), events: new Map()};
+function favs(){
+  if(FAVS) return FAVS;
+  let ids = [];
+  try{ const v = JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); if(Array.isArray(v)) ids = v; }catch(err){ /* blocked or unreadable */ }
+  /* An id that is no longer a bucket entry is ignored. */
+  const live = new Set((RULES?.bucketList || []).map(b => b.id));
+  return (FAVS = new Set(ids.filter(id => live.has(id))));
+}
+function setFav(id, on){
+  const F = favs();
+  if(on) F.add(id); else F.delete(id);
+  try{ localStorage.setItem(FAV_KEY, JSON.stringify([...F])); }catch(err){ /* blocked: this visit only */ }
+}
+function sortMode(){
+  if(SORT) return SORT;
+  try{ SORT = localStorage.getItem(SORT_KEY) === 'favorites' ? 'favorites' : 'earliest'; }catch(err){ SORT = 'earliest'; }
+  return SORT;
+}
+function setSort(v){
+  SORT = v;
+  try{ localStorage.setItem(SORT_KEY, v); }catch(err){ /* blocked: this visit only */ }
+}
+
+/* Every hand-written date on an entry, through placeDate(). */
+function entryDates(item){
+  const out = [];
+  const add = (raw, ds, label) => { const p = placeDate(raw, ds); if(p) out.push({p, ds, label}); };
+  if(item.date) add(item.date, item.dateSource, 'Date');
+  if(item.nextFixture) add(item.nextFixture.dateEstimate || item.nextFixture.date, item.nextFixture.dateSource, 'Next fixture');
+  (item.fixtures || []).forEach((f, i) => add(f.date, f.dateSource, `Fixture ${i + 1}`));
+  return out;
+}
+
+/* Where an entry falls in "Earliest": its soonest upcoming day-level date;
+   else its soonest upcoming month-level one (an estimate); else no date;
+   else, when every date has passed, past. A disputed date places nothing. */
+function entryWhen(item){
+  const all = entryDates(item), dates = all.filter(d => d.ds !== 'disputed');
+  const by = (a, b) => a.p.key.localeCompare(b.p.key);
+  const up = dates.filter(d => !isPast(d.p)).sort(by);
+  const day = up.find(d => d.p.day), mon = up.find(d => !d.p.day);
+  if(day) return {group: 'day', key: day.p.key, text: dateWords(day.p, day.ds), ds: day.ds};
+  if(mon) return {group: 'month', key: mon.p.key, text: dateWords(mon.p, mon.ds), ds: mon.ds};
+  if(dates.length){ const d = dates.sort(by).pop(); return {group: 'past', key: d.p.key, text: dateWords(d.p, d.ds) + ' (past)', ds: d.ds}; }
+  if(all.length) return {group: 'none', key: '', text: 'disputed date, not placed', ds: 'disputed'};
+  return {group: 'none', key: '', text: 'no date recorded', ds: ''};
+}
+
+const PRIO = {high: 0, medium: 1, low: 2};
+const isHeld = i => i.status === 'blocked' || i.status === 'deferred';
+function earliestOrder(items){
+  const W = new Map(items.map(i => [i.id, entryWhen(i)]));
+  const tie = (a, b) => (isHeld(a) - isHeld(b)) || ((PRIO[a.priority] ?? 9) - (PRIO[b.priority] ?? 9));
+  const grp = g => items.filter(i => W.get(i.id).group === g)
+    .sort((a, b) => W.get(a.id).key.localeCompare(W.get(b.id).key) || tie(a, b));
+  return {day: grp('day'), month: grp('month'), none: grp('none'), past: grp('past'), when: W};
+}
+
+function bucketTags(item){
   const bits = [];
   if(item.type)     bits.push(`<span class="tag">${esc(item.type)}</span>`);
   if(item.priority) bits.push(`<span class="tag">priority ${esc(item.priority)}</span>`);
   if(item.status){
-    const cls = item.status === 'blocked' ? 'bad'
-              : item.status === 'deferred' ? 'warn' : '';
+    const cls = item.status === 'blocked' ? 'bad' : item.status === 'deferred' ? 'warn' : '';
     bits.push(`<span class="tag ${cls}">${esc(item.status)}</span>`);
   }
   if(item.trueDerby) bits.push('<span class="tag">true derby</span>');
   if(item.verified === false) bits.push(UNVERIFIED_TAG);
+  return bits.join('');
+}
+
+function starButton(item){
+  const on = favs().has(item.id);
+  return `<button type="button" class="star" data-fav="${esc(item.id)}" aria-pressed="${on}" ` +
+    `aria-label="Favorite: ${esc(item.title || item.id)}">${on ? '★' : '☆'}</button>`;
+}
+
+function bucketCard(item, when){
   return `<details class="card bucket" data-id="${esc(item.id)}"><summary>` +
-    `<h3>${esc(item.title || item.id)}</h3><div class="meta">${bits.join('')}<span class="more"></span></div></summary>` +
+    `<h3>${esc(item.title || item.id)}</h3>` +
+    `<div class="bwhen" data-ds="${esc(when.ds)}" data-group="${when.group}">${esc(when.text)}</div>` +
+    `<div class="meta">${bucketTags(item)}<span class="more"></span></div>${starButton(item)}</summary>` +
     `<div class="tix bdetail"><p class="unavail">Loading…</p></div></details>`;
 }
 
@@ -3322,20 +3578,53 @@ function wireLazy(root, render){
   }));
 }
 
+/* One group of entries in Earliest order: upcoming to the day, then
+   estimated to the month, then no date, then past (collapsed). `head`
+   draws a section heading: h2 on its own, a smaller one inside a group. */
+function earliestHtml(items, head){
+  const O = earliestOrder(items);
+  const cards = list => list.map(i => bucketCard(i, O.when.get(i.id))).join('');
+  return (O.day.length ? head(`Upcoming — ${O.day.length}`, 'day') + cards(O.day) : '') +
+    (O.month.length ? head(`Estimated — ${O.month.length}`, 'month') +
+      `<p class="note" style="margin:0 0 8px">Month only: the date is not fixed.</p>` + cards(O.month) : '') +
+    (O.none.length ? head(`No date — ${O.none.length}`, 'none') + cards(O.none) : '') +
+    (O.past.length ? `<details class="past" data-sec="past"><summary>Past — ${O.past.length}</summary>${cards(O.past)}</details>` : '');
+}
+
 async function renderBucket(rules){
+  BUCKET_RULES = rules;
+  await loadHolidays();
+  BLINKS = await bucketLinks();
+  renderBucketList();
+  if(!document.getElementById('calView').hidden) renderCalendar();
+}
+
+function renderBucketList(){
+  const rules = BUCKET_RULES;
   const items = rules.bucketList || [];
-  const rank = {high:0, medium:1, low:2};
-  const live = items.filter(i => i.status !== 'blocked' && i.status !== 'deferred');
-  const held = items.filter(i => i.status === 'blocked' || i.status === 'deferred');
-  live.sort((a,b) => (rank[a.priority] ?? 9) - (rank[b.priority] ?? 9));
+  const body = document.getElementById('bucketBody');
+  const wasOpen = [...body.querySelectorAll('details.bucket[open]')].map(d => d.dataset.id);
+  const pastOpen = [...body.querySelectorAll('details.past[open]')].length;
+  document.querySelectorAll('.bsort button').forEach(b => b.setAttribute('aria-checked', b.dataset.sort === sortMode()));
 
   /* Reminders: the ticket events no bucket entry claims, soonest first,
      undated last. */
-  const L = await bucketLinks();
+  const L = BLINKS;
   const loose = (rules.ticketEvents || []).filter(e => !L.events.has(e.id)).map(e => ({e, p: placeDate(eventRaw(e), e.dateSource)}))
     .sort((a, b) => (a.p ? a.p.key : '9999').localeCompare(b.p ? b.p.key : '9999')).map(x => x.e);
 
-  const body = document.getElementById('bucketBody');
+  let list;
+  if(sortMode() === 'favorites'){
+    const F = favs();
+    const fav = items.filter(i => F.has(i.id)), rest = items.filter(i => !F.has(i.id));
+    const sub = t => `<div class="bsub">${esc(t)}</div>`;
+    list = `<h2 data-sec="favorites">Favorites — ${fav.length}</h2>` +
+      (fav.length ? earliestHtml(fav, sub) : '<p class="note" style="margin:0 0 9px">No favorites yet. Tap ☆ on an entry to add it.</p>') +
+      `<h2 data-sec="rest">Everything else — ${rest.length}</h2>` + earliestHtml(rest, sub);
+  }else{
+    list = earliestHtml(items, (t, g) => `<h2 data-sec="${g}">${esc(t)}</h2>`);
+  }
+
   body.innerHTML =
     `<h2>Reminders — ${loose.length}</h2>` +
     `<p class="note" style="margin:0 0 9px">Ticket windows that belong to no entry below, soonest first, undated last. ` +
@@ -3343,14 +3632,259 @@ async function renderBucket(rules){
     (loose.length ? loose.map(e => `<div class="card evcard tix">${eventHtml(e)}</div>`).join('')
       : '<p class="note">Every ticket window belongs to an entry below.</p>') +
     (L.err ? `<p class="err">Which windows belong to which entry could not be loaded (${esc(L.err)}), so every window is listed here.</p>` : '') +
-    `<h2>Live — ${live.length}</h2>` + live.map(bucketCard).join('') +
-    (held.length ? `<h2>Blocked or deferred — ${held.length}</h2>` +
-      held.map(bucketCard).join('') : '') +
+    list +
     `<p class="note">Distances are straight-line × ${MULTIPLIER}, measured from
      ${esc(HOME ? HOME.label : 'an unset home location')}. They are a road-distance
-     estimate, not a travel time. An estimated date is shown to the month only.</p>`;
+     estimate, not a travel time. An estimated date is shown to the month only.
+     Favorites and the sort are kept on this device only.</p>`;
   wireLazy(body, d => bucketDetailHtml(items.find(i => i.id === d.dataset.id)));
+  if(pastOpen) body.querySelectorAll('details.past').forEach(d => d.open = true);
+  wasOpen.forEach(id => body.querySelectorAll('details.bucket').forEach(d => { if(d.dataset.id === id) d.open = true; }));
 }
+
+/* ------------------------------------------------------------ calendar */
+
+const CAL = {month: null, sel: null};       // 'YYYY-MM', and the day tapped
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+/* What the calendar can place, from the same files and the same
+   placeDate() as the List. A day-level date (confirmed) goes on its day
+   cells, a range on every day it spans; a month-level one (an estimate)
+   only in the month strip; a disputed one nowhere; no date, under the grid. */
+function calItems(){
+  const rules = BUCKET_RULES, F = favs();
+  const byDay = new Map(), months = [], none = [], disputed = [];
+  const put = (it, p) => {
+    if(p.day){ for(let n = dayNo(p.key); n <= dayNo(p.last); n++){
+      const k = isoDay(n); if(!byDay.has(k)) byDay.set(k, []); byDay.get(k).push(it); } }
+    else months.push({it, from: p.key.slice(0, 7), to: p.end});
+  };
+  for(const item of rules.bucketList || []){
+    const base = {kind: 'entry', id: item.id, entryId: item.id, title: item.title || item.id, fav: F.has(item.id)};
+    const dates = entryDates(item);
+    if(!dates.length){ none.push({...base, sub: 'no date recorded'}); continue; }
+    let disp = false;
+    for(const d of dates){
+      if(d.ds === 'disputed'){ disp = true; continue; }
+      put({...base, sub: `${d.label}: ${dateWords(d.p, d.ds)}`, ds: d.ds}, d.p);
+    }
+    if(disp) disputed.push({...base, sub: 'a date your notes mark disputed'});
+  }
+  for(const ev of rules.ticketEvents || []){
+    const entryId = BLINKS.events.get(ev.id) || null;
+    const entry = entryId && (rules.bucketList || []).find(b => b.id === entryId);
+    const p = placeDate(eventRaw(ev), ev.dateSource);
+    const it = {kind: 'event', id: ev.id, entryId, title: ev.title || ev.id, fav: !!entryId && F.has(entryId),
+      sub: (entry ? `ticket window · ${entry.title || entry.id}` : 'ticket window · reminder') +
+        (p ? ` · ${dateWords(p, ev.dateSource)}` : ''), ds: ev.dateSource || ''};
+    if(!p) none.push({...it, sub: it.sub + (ev.rule ? ` · no date: ${ev.rule}` : ' · no date recorded')});
+    else if(ev.dateSource === 'disputed') disputed.push(it);
+    else put(it, p);
+  }
+  return {byDay, months, none, disputed};
+}
+
+function calItemButton(it){
+  return `<button type="button" class="calitem" data-open="${it.kind}:${esc(it.id)}" data-ds="${esc(it.ds || '')}">` +
+    `<i class="${it.kind === 'event' ? 'mtw' : 'mev'}" aria-hidden="true"></i>` +
+    `<span class="ct">${it.fav ? '<span class="mfav" aria-label="favorite">★</span> ' : ''}${esc(it.title)}` +
+    `<span class="cs">${esc(it.sub)}</span></span></button>`;
+}
+
+function renderCalendar(){
+  if(!BUCKET_RULES) return;
+  const today = todayISO();
+  if(!CAL.month) CAL.month = today.slice(0, 7);
+  const ym = CAL.month, y = +ym.slice(0, 4), m = +ym.slice(5, 7);
+  const first = `${ym}-01`, ndays = new Date(Date.UTC(y, m, 0)).getUTCDate(), last = `${ym}-${pad2(ndays)}`;
+  if(CAL.sel && CAL.sel.slice(0, 7) !== ym) CAL.sel = null;
+  if(!CAL.sel && today.slice(0, 7) === ym) CAL.sel = today;
+  const I = calItems();
+
+  /* Above the grid: the month's estimates, which never go on a day. */
+  const est = I.months.filter(x => x.from <= ym && ym <= x.to).map(x => x.it);
+  let h = `<div class="calnav"><button type="button" data-cal="prev" aria-label="Previous month">‹</button>` +
+    `<h3 id="calTitle">${esc(monthText(ym))}</h3>` +
+    `<button type="button" data-cal="next" aria-label="Next month">›</button>` +
+    `<button type="button" data-cal="today">Today</button></div>` +
+    `<div class="calest" id="calEst"><div class="cl">Estimated this month, date not fixed</div>` +
+    (est.length ? est.map(calItemButton).join('') : '<div class="none">Nothing estimated for this month.</div>') + `</div>`;
+
+  /* School holidays: what is entered for this month, and where nothing is. */
+  const notice = [];
+  if(HOLS.err) notice.push(`School holidays could not be loaded (${esc(HOLS.err)}).`);
+  else if(!HOLS.first || last < HOLS.first || first > HOLS.last) notice.push('School holidays not entered for this period.');
+  else{
+    if(first < HOLS.first) notice.push(`School holidays not entered for this period before ${esc(DAY_SHORT(HOLS.first))}.`);
+    if(last > HOLS.last) notice.push(`School holidays not entered for this period after ${esc(DAY_SHORT(HOLS.last))}.`);
+    if(!HOLS.movable) notice.push('Movable school days (bewegliche Ferientage) are not entered, so a day without shading may still be one.');
+  }
+  const blocks = HOLS.rows.filter(r => r.start <= last && r.end >= first);
+
+  /* The grid, Monday first. Blank cells pad the first and last week. */
+  const lead = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 6) % 7;
+  let g = WEEKDAYS.map(w => `<div class="wd" aria-hidden="true">${w}</div>`).join('') +
+    '<div class="cday blank" aria-hidden="true"></div>'.repeat(lead);
+  for(let d = 1; d <= ndays; d++){
+    const iso = `${ym}-${pad2(d)}`;
+    const hs = holidaysOn(iso);
+    const fixed = hs.filter(r => r.kind === 'school-holiday'), mov = hs.filter(r => r.kind === 'school-holiday-movable');
+    const start = hs.filter(r => r.kind === 'school-start');
+    const cls = ['cday', fixed.length ? 'shol' : mov.length ? 'mov' : '', start.length ? 'start' : '',
+      iso === today ? 'today' : ''].filter(Boolean).join(' ');
+    const names = hs.filter(r => r.start === iso || d === 1).map(r => r.name);
+    const its = I.byDay.get(iso) || [];
+    const nEv = its.filter(i => i.kind === 'entry').length, nTw = its.length - nEv;
+    const marks = its.slice(0, 4).map(i => `<i class="${i.kind === 'event' ? 'mtw' : 'mev'}"></i>`).join('') +
+      (its.length > 4 ? `<i>+${its.length - 4}</i>` : '') + (its.some(i => i.fav) ? '<i class="mfav">★</i>' : '');
+    const label = [DAY_SHORT(iso), ...hs.map(r => `${r.name} (${HOL_WORDS[r.kind]})`),
+      nEv ? `${nEv} entr${nEv === 1 ? 'y' : 'ies'}` : '', nTw ? `${nTw} ticket window${nTw === 1 ? '' : 's'}` : '']
+      .filter(Boolean).join(', ');
+    g += `<button type="button" class="${cls}" data-date="${iso}" aria-pressed="${CAL.sel === iso}" ` +
+      `aria-label="${esc(label)}" title="${esc(label)}"><span class="dn">${d}</span>` +
+      (names.length ? `<span class="hn">${esc(names.join(' · '))}</span>` : '') +
+      `<span class="mk">${marks}</span></button>`;
+  }
+  h += `<div class="calgrid" role="group" aria-label="${esc(monthText(ym))}">${g}</div>` +
+    `<div class="calkey"><span><i class="mev"></i>entry</span><span><i class="mtw"></i>ticket window</span>` +
+    `<span><b style="color:#f2c94c">★</b> favorite</span>` +
+    `<span><i class="sw" style="background:#17301f"></i>school holiday</span>` +
+    `<span><i class="sw" style="background:repeating-linear-gradient(135deg,#17301f 0 3px,#11161d 3px 6px);border-style:dashed"></i>movable school day</span>` +
+    `<span><i class="sw" style="box-shadow:inset 0 0 0 2px var(--t3);border-color:transparent"></i>school starts</span></div>` +
+    (blocks.length ? `<div class="calhols" id="calHols">` + blocks.map(r =>
+      `<div>${esc(r.name)}: ${esc(r.start === r.end ? DAY_SHORT(r.start) : DAY_SHORT(r.start) + ' to ' + DAY_SHORT(r.end))} (${HOL_WORDS[r.kind]})</div>`).join('') + `</div>` : '') +
+    notice.map(t => `<div class="calnotice">${t}</div>`).join('') +
+    (HOLS.skipped.length ? `<div class="calnotice">Not shaded, from the holidays file: ${esc(HOLS.skipped.join('; '))}.</div>` : '');
+
+  /* The day tapped. */
+  h += `<div class="calday" id="calDay">`;
+  if(CAL.sel){
+    const its = I.byDay.get(CAL.sel) || [];
+    const hs = holidaysOn(CAL.sel);
+    h += `<h2 style="margin-top:0">${esc(DAY_FMT(CAL.sel))}</h2>` +
+      hs.map(r => `<div class="hol">${r.kind === 'school-start' ? 'School starts' : 'School holiday'}: ${esc(r.name)}` +
+        (r.kind === 'school-holiday-movable' ? ' (movable school day)' : '') + `</div>`).join('') +
+      (its.length ? its.map(calItemButton).join('') : '<p class="note" style="margin:4px 0 0">Nothing with a fixed date on this day.</p>');
+  }else h += `<p class="note" style="margin:0">Tap a day to see what is on it.</p>`;
+  h += `</div>`;
+
+  h += `<div class="calnodate" id="calNone"><h2>No date — ${I.none.length}</h2>` +
+    (I.none.length ? I.none.map(calItemButton).join('') : '<p class="note">Everything has a date.</p>') + `</div>` +
+    (I.disputed.length ? `<div class="calnodate" id="calDisputed"><h2>Not placed: disputed date — ${I.disputed.length}</h2>` +
+      `<p class="note" style="margin:0 0 6px">Possibly the wrong year or the wrong event, so not put on the calendar.</p>` +
+      I.disputed.map(calItemButton).join('') + `</div>` : '') +
+    `<p class="note">Only a confirmed date goes on a day. An estimate stays in the strip above the grid, ` +
+      `to the month. Dates are plain calendar dates; nothing is converted between time zones.</p>`;
+  document.getElementById('calBody').innerHTML = h;
+}
+
+/* ---------------------------------------------- the bucket entry sheet */
+
+let BSHEET_FOR = null;
+function closeBSheet(){
+  document.getElementById('bsheet').hidden = true;
+  BSHEET_FOR = null;
+}
+
+/* The List's own renderers: bucketDetailHtml() for an entry, eventHtml()
+   for a reminder no entry claims. A ticket window that belongs to an
+   entry opens that entry, scrolled to the window. */
+async function openBSheet(kind, id){
+  const rules = BUCKET_RULES;
+  let item = null, ev = null, focus = null;
+  if(kind === 'event'){
+    ev = (rules.ticketEvents || []).find(e => e.id === id);
+    const eid = BLINKS.events.get(id);
+    if(eid){ item = (rules.bucketList || []).find(b => b.id === eid); focus = id; }
+  }else item = (rules.bucketList || []).find(b => b.id === id);
+  if(!item && !ev) return;
+  const key = kind + ':' + id;
+  BSHEET_FOR = key;
+  const head = document.getElementById('bsheetHead'), body = document.getElementById('bsheetBody');
+  if(item){
+    const w = entryWhen(item);
+    head.innerHTML = `<h3>${esc(item.title || item.id)}</h3>` +
+      `<div class="bwhen" data-ds="${esc(w.ds)}">${esc(w.text)}</div>` +
+      `<div class="meta">${bucketTags(item)}</div>`;
+    head.dataset.id = item.id;
+  }else{
+    head.innerHTML = `<h3>${esc(ev.title || ev.id)}</h3><div class="meta"><span class="tag">ticket window</span>` +
+      `<span class="tag">reminder</span></div>`;
+    head.dataset.id = '';
+  }
+  body.innerHTML = '<p class="unavail">Loading…</p>';
+  body.dataset.open = key;
+  const sheet = document.getElementById('bsheet');
+  sheet.hidden = false;
+  body.scrollTop = 0;
+  let html;
+  try{ html = item ? await bucketDetailHtml(item) : eventHtml(ev); }
+  catch(err){ html = `<p class="err">Could not be shown: ${esc(err.message)}</p>`; }
+  if(BSHEET_FOR !== key) return;
+  body.innerHTML = html;
+  if(focus){
+    const el = [...body.querySelectorAll('.ev')].find(e => e.dataset.ev === focus);
+    if(el){ el.classList.add('focus'); body.scrollTop = el.getBoundingClientRect().top - body.getBoundingClientRect().top - 8; }
+  }
+}
+
+function showBucketTab(tab){
+  const cal = tab === 'calendar';
+  document.getElementById('tabList').setAttribute('aria-selected', !cal);
+  document.getElementById('tabCal').setAttribute('aria-selected', cal);
+  document.getElementById('bucketListView').hidden = cal;
+  document.getElementById('calView').hidden = !cal;
+  closeBSheet();
+  if(cal) renderCalendar();
+}
+
+(function wireBucket(){
+  document.getElementById('tabList').addEventListener('click', () => showBucketTab('list'));
+  document.getElementById('tabCal').addEventListener('click', () => showBucketTab('calendar'));
+  document.querySelectorAll('.bsort button').forEach(b => b.addEventListener('click', () => {
+    if(sortMode() === b.dataset.sort) return;
+    setSort(b.dataset.sort);
+    if(BUCKET_RULES) renderBucketList();
+  }));
+  /* A star, wherever it is: the button sits inside the card's summary, so
+     the click must not also open or close the card. */
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.star');
+    if(!b) return;
+    e.preventDefault(); e.stopPropagation();
+    const id = b.dataset.fav, on = !favs().has(id);
+    setFav(id, on);
+    if(sortMode() === 'favorites') renderBucketList();
+    else document.querySelectorAll('.star').forEach(x => {
+      if(x.dataset.fav !== id) return;
+      x.setAttribute('aria-pressed', on); x.textContent = on ? '★' : '☆';
+    });
+    if(!document.getElementById('calView').hidden) renderCalendar();
+  });
+  document.getElementById('calBody').addEventListener('click', e => {
+    const nav = e.target.closest('[data-cal]'), day = e.target.closest('.cday[data-date]'), it = e.target.closest('.calitem');
+    if(nav){
+      const [y, m] = CAL.month.split('-').map(Number);
+      if(nav.dataset.cal === 'today'){ CAL.month = todayISO().slice(0, 7); CAL.sel = todayISO(); }
+      else{
+        const d = new Date(Date.UTC(y, m - 1 + (nav.dataset.cal === 'next' ? 1 : -1), 1));
+        CAL.month = `${d.getUTCFullYear()}-${pad2(d.getUTCMonth() + 1)}`; CAL.sel = null;
+      }
+      renderCalendar();
+    }else if(day){
+      CAL.sel = day.dataset.date;
+      renderCalendar();
+      document.getElementById('calDay').scrollIntoView({block: 'nearest'});
+    }else if(it){
+      const [kind, ...rest] = it.dataset.open.split(':');
+      openBSheet(kind, rest.join(':'));
+    }
+  });
+  const sheet = document.getElementById('bsheet');
+  document.getElementById('bsheetClose').addEventListener('click', closeBSheet);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeBSheet(); });
+  dragToClose(sheet, closeBSheet);
+})();
 
 /* ------------------------------------------------------- ticket info */
 
@@ -3407,6 +3941,7 @@ document.querySelectorAll('nav button').forEach(btn => {
     document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
     btn.classList.add('on');
     document.getElementById('pane-' + btn.dataset.pane).classList.add('on');
+    closeBSheet();
     if(btn.dataset.pane === 'map' && MAP) setTimeout(() => MAP.invalidateSize(), 60);
   });
 });

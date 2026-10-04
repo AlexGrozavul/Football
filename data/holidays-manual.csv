@@ -1,0 +1,8 @@
+name,start,end,kind,dateSource,source,note
+Sommerferien,2026-07-30,2026-09-12,school-holiday,confirmed,ministry,
+Herbstferien,2026-10-26,2026-10-30,school-holiday,confirmed,ministry,"Ministry footnote 1, read 2026-10-04 on a GitHub runner: 31 October 2026 (Reformationsfest) is school-free. That day is a Saturday. Dates not changed because of it."
+Weihnachtsferien,2026-12-23,2027-01-09,school-holiday,confirmed,ministry,
+Osterferien,2027-03-30,2027-04-03,school-holiday,confirmed,ministry,"Ministry footnote 2, read 2026-10-04 on a GitHub runner: 25 March 2027 (Gründonnerstag) is school-free. That day is not in this row and no row was added for it; dates not changed because of it."
+Pfingstferien,2027-05-18,2027-05-29,school-holiday,confirmed,ministry,
+Sommerferien,2027-07-29,2027-09-11,school-holiday,confirmed,ministry,
+Schulstart,2027-09-13,2027-09-13,school-start,confirmed,school calendar photo,
