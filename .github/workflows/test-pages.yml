@@ -42,7 +42,14 @@ name: Test the page
 # reload; a card number refused; "You hold tickets" on the linked bucket entry
 # in the List, the sheet and the calendar; a valid .ics whose alarm matches
 # the lead time; export, delete, import round trip; broken imports refused;
-# no sideways scroll; nothing typed there in any request or in the repo).
+# no sideways scroll; nothing typed there in any request or in the repo),
+# and since 2026-10-06 Karlsruher SC's ticket information
+# (tools/test_ksc_tickets.js - KSC listed under Clubs on Ticket info with
+# "Country rules: Germany" above its researched rules and its notes, every
+# KSC rule and window in the entry, the same order on its club sheet, the
+# Südwestderby entry with KSC as host and Kaiserslautern not researched, and
+# no estimated date shown to the day anywhere it appears). Since the same day
+# a change to the ticket files themselves also runs this workflow.
 # Each one
 # serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
@@ -66,6 +73,11 @@ on:
       - "data/event-ticket-rules.csv"
       - "data/holidays-manual.csv"
       - "tools/check_holidays.py"
+      - "data/club-ticket*.csv"
+      - "data/club-tickets.csv"
+      - "data/country-ticket-rules.csv"
+      - "data/ticket-sources.csv"
+      - "tools/check_tickets.py"
       - ".github/workflows/test-pages.yml"
   pull_request:
     paths:
@@ -78,6 +90,11 @@ on:
       - "data/event-ticket-rules.csv"
       - "data/holidays-manual.csv"
       - "tools/check_holidays.py"
+      - "data/club-ticket*.csv"
+      - "data/club-tickets.csv"
+      - "data/country-ticket-rules.csv"
+      - "data/ticket-sources.csv"
+      - "tools/check_tickets.py"
       - ".github/workflows/test-pages.yml"
   workflow_dispatch:
 
@@ -187,6 +204,12 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_me.js . 2>&1 | tee /tmp/test_me.log
 
+      - name: Karlsruher SC ticket information (Ticket info, sheet, Südwestderby)
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_ksc_tickets.js . 2>&1 | tee /tmp/test_ksc_tickets.log
+
       # The calendar reads the holidays file; its own checker must pass too.
       - name: School holidays read back (check_holidays.py exits 0)
         if: always()
@@ -205,7 +228,7 @@ jobs:
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me check_tickets check_holidays; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets check_tickets check_holidays; do
               echo "## test_$t.js"
               echo
               echo '```'

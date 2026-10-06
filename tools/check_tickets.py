@@ -404,13 +404,19 @@ KNOWN = {
                                "ucl-league-phase",
                                "home-single-match", "derby-home",
                                "rueckrunde-half-season-ticket",
-                               "season-ticket-resale"],
+                               "season-ticket-resale",
+                               # Karlsruher SC, 2026-10-06.
+                               "season-ticket", "away-single-match",
+                               "derby-away"],
     (PHASES_FILE, "eligibility"): [
         "members", "season-ticket-and-fan-clubs", "free-sale",
         "second-tier-blue-season-ticket", "full-season-ticket",
         "plus-season-ticket-and-inter-club-plus",
         "base-season-ticket-and-inter-club-base", "siamo-noi-card",
-        "interista-registered", "bper-mastercard", "open-sale"],
+        "interista-registered", "bper-mastercard", "open-sale",
+        # Karlsruher SC, 2026-10-06: its phase 2 is season-ticket holders
+        # AND members, not fan clubs.
+        "season-ticket-and-members"],
     (PRICES_FILE, "competition"): ["bundesliga", "dfb-pokal", "ucl",
                                    "2-bundesliga", "serie-a"],
     (PRICES_FILE, "stage"): ["regular", "early-rounds", "league-phase"],
@@ -422,14 +428,22 @@ KNOWN = {
         "terzo-rosso", "terzo-rosso-centrale", "secondo-rosso",
         "secondo-rosso-centrale", "primo-rosso-laterale", "primo-arancio",
         "secondo-arancio", "secondo-arancio-centrale", "poltroncina-rossa",
-        "secondo-verde"],
+        "secondo-verde",
+        # Karlsruher SC's own block groups (2026-10-06), and the guest
+        # blocks of the Fritz-Walter-Stadion as KSC sells its allocation.
+        "suedtribuene-s1-s5", "ost-o1-o5", "ost-o2-o4", "ost-o2-o3-polster",
+        "suedost-so", "nord-n1-n3", "nordwest-familienblock", "suedwest-sw",
+        "west-w1-w4", "west-w2-w3", "gastblock-17-1", "gastblock-18-1",
+        "gastblock-17-2-bis-18-4"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
     (PRICES_FILE, "opponentTier"): ["top-opponent", "standard-opponent",
                                     "category-a", "category-b"],
     (PRICES_FILE, "placeType"): ["standing", "seat"],
-    (PRICES_FILE, "priceClass"): ["normal", "member"],
+    # reduced and child are Karlsruher SC's 'Ermäßigt' and 'Kind'
+    # (2026-10-06): one seat, three prices, so the key needs them.
+    (PRICES_FILE, "priceClass"): ["normal", "member", "reduced", "child"],
     (RULES_FILE, "topic"): [
         "sales-channel", "membership", "presale-rights", "fees",
         "update-tracking", "queue", "sector-separation", "personalisation",
@@ -440,11 +454,16 @@ KNOWN = {
         "legal-framework", "residency-limits", "fidelity-card-foreign",
         "card-cutoff", "purchase-limit", "second-ticket-card", "minors",
         "sector-rules", "away-allocation", "price-list",
-        "unofficial-resale", "entrances", "source-caveat"],
+        "unofficial-resale", "entrances", "source-caveat",
+        # 2026-10-06: Germany's DFB rule on matches with increased risk,
+        # and KSC's derby rows on what that classification did.
+        "risk-classification"],
     (DEMAND_FILE, "outcome"): ["sold-out", "nearly-sold-out", "seats-left",
                                "sold-out-before-open-sale"],
     (SOURCES_FILE, "publisherKind"): ["club", "league", "press", "fan-site",
-                                      "government", "other-club"],
+                                      "government", "other-club",
+                                      # 2026-10-06: the DFB, and Wikipedia
+                                      "federation", "wiki"],
 }
 
 # The country file shares the rules file's topic list - the SAME list
