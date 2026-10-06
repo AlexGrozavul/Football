@@ -188,7 +188,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   The other ticket files point at it through `sourceRefs`. Since
   2026-09-24 it also has an optional `country` column, filled on a
   source a country row cites; a source cited by both files keeps one
-  row and one id.
+  row and one id. Since 2026-10-06 `publisherKind` also takes
+  `federation` (the DFB) and `wiki` (Wikipedia, a third party's record),
+  and the KSC research added 34 rows (`K1`-`K34`) and Germany 4
+  (`DE1`-`DE4`); the KSC ids are this project's own, not a source
+  document's item numbers, so the KSC rows leave `ref` blank.
 - `data/country-ticket-rules.csv` — added 2026-09-24. Rules **no club
   decides** — a country's law, ministry, police or league — held once
   and inherited by every club whose ground is in that country. Same
@@ -200,7 +204,13 @@ a subscribed calendar reads as a schedule regardless of its description.
   club row on the same topic; a club row **never replaces** a country
   row. The design, including where a fact belongs when it could sit in
   either file, is `docs/country-ticket-rules-design.md`. Holds Italy's
-  four rows today, moved out of Inter's club rows rather than copied.
+  four rows, moved out of Inter's club rows rather than copied, and
+  **since 2026-10-06 Germany's first three** - the DFB's away-ticket
+  floor (§ 25), the DFB's rule on matches with increased risk (§ 32) and
+  the DFL's fair-play cap on official resale - each from a source that
+  speaks for the federation or the league (Conventions, "Karlsruher SC and
+  Germany's first national rows"). They now show on **every German club
+  sheet**, Bayern's and Nürnberg's included.
 - `data/fixture-links-manual.csv` — added 2026-09-25. Hand corrections
   to which fixture-source team a map club is: `clubQid`, `source`
   (`football-data` or `openligadb`), `teamId`, `action` (`link` or
@@ -560,7 +570,10 @@ a subscribed calendar reads as a schedule regardless of its description.
   where the row says unknown), condition, authority, status and source;
   Inter's "Country rules: Italy" above its researched rules and notes,
   and its notes marked unverified where the file marks them; Nürnberg's
-  "No national rules researched for Germany (DE) yet."; no upcoming-dates
+  "No national rules researched for Germany (DE) yet." (since 2026-10-06,
+  when Germany got national rows, Nürnberg's "Country rules: Germany"
+  holding all of them, and the Frankenderby's Germany section above
+  Nürnberg's researched rules - the test follows the file); no upcoming-dates
   section on Ticket info; every bucket entry a card; every ticket event
   inside the entry `bucket-links-manual.csv` links it to, or under
   Reminders (soonest first, undated last); the Frankenderby's Nürnberg
@@ -616,6 +629,20 @@ a subscribed calendar reads as a schedule regardless of its description.
   any request's URL, headers or body, in a cookie, sessionStorage,
   IndexedDB or the repository, or any request other than GET reaches the
   site. 83 checks.
+- `tools/test_ksc_tickets.js` — added 2026-10-06: Karlsruher SC's ticket
+  information at 390x844, checked against the files. Fails if KSC is not
+  listed under Clubs on the Ticket info tab; if its entry does not open
+  with "Country rules: Germany" holding every DE row of
+  `country-ticket-rules.csv` (or "No national rules researched for
+  Germany" if the file has none) **above** "Researched rules", itself
+  above "Your notes"; if any KSC row of `club-ticket-rules.csv` or window
+  of `club-ticket-windows.csv` (label and typical opening) is missing from
+  the entry; if the club sheet has another order or its Next window words
+  an estimate other than as one; if the Bucket list's Südwestderby entry
+  does not show KSC (host) with its researched rules under Germany's and
+  Kaiserslautern as not researched; if an `inferred` or `disputed` date is
+  shown to the day in any of the three; on sideways scroll or a script
+  error. 22 checks.
 - `tools/check_holidays.py` — added 2026-10-04: read-back and checks for
   `data/holidays-manual.csv`, in the style of `check_derbies.py`. Prints
   every row as understood (weekday, length), rejects by line (bad or
@@ -632,11 +659,15 @@ a subscribed calendar reads as a schedule regardless of its description.
   and `test_nearme.js`, and since 2026-10-04 `test_tickets_bucket.js`
   and `python3 tools/check_tickets.py` (which must exit 0), and since the
   same day `test_calendar.js` and `python3 tools/check_holidays.py`
-  (which must exit 0), and since the same day `test_me.js`, on a push to
+  (which must exit 0), and since the same day `test_me.js`, and since
+  2026-10-06 `test_ksc_tickets.js`, on a push to
   `main` or a pull request touching `index.html`, `sw.js`, the manifest,
   a `tools/test_*.js`, `data/football-rules-links.csv`,
   `data/bucket-links-manual.csv`, `data/event-ticket-rules.csv`,
-  `data/holidays-manual.csv`, `tools/check_holidays.py` or
+  `data/holidays-manual.csv`, `tools/check_holidays.py`, and since
+  2026-10-06 the ticket files themselves (`data/club-ticket*.csv`,
+  `data/club-tickets.csv`, `data/country-ticket-rules.csv`,
+  `data/ticket-sources.csv`) and `tools/check_tickets.py`, or
   itself. Playwright is installed in the job,
   pinned, not added to the repo. **Every Stadia request in all three is
   stubbed**, so a run spends no credit and does not show that Stadia
@@ -1695,6 +1726,99 @@ info unavailable".
   October 2026, the current month, so "check whether it has been
   announced".
 
+**Karlsruher SC and Germany's first national rows, 2026-10-06.**
+Researched on Alexandru's instruction for an outside buyer - a member of
+neither club, living in Germany but not in Karlsruhe, wanting **two
+tickets together** - with the Südwestderby against Kaiserslautern as the
+high-demand fixture. Written in the shape of the Nürnberg and Inter rows.
+- **How it was read.** The sandbox's proxy refuses ksc.de and every news
+  site, so pages were read on a GitHub runner by a throwaway probe in
+  `build-clubs.yml` (four rounds, removed in the same branch; the file is
+  byte-for-byte as before). ksc.de answered 200 everywhere and its
+  `robots.txt` disallows only `/*?id=*`. **Two refusals, not worked
+  around:** bnn.de answered 403 (a stop; its Internet Archive capture of
+  June 2025 then answered 429, rate-limited, and was not retried), and
+  the Polizei NRW copy of the DFB security rules put up a "Security
+  Check" page (503) - the DFB's own PDF was read instead.
+- **The fixture.** KSC is `Q105853`, Kaiserslautern `Q8466` (both from
+  `data/clubs/DE.json`). The OpenLigaDB 2. Bundesliga file has the first
+  leg **at Kaiserslautern**, matchday 2, played 15 Aug 2026 (0-0), and the
+  second leg **at Karlsruhe**, matchday 19, with all nine matches of the
+  round at one kick-off in late January 2027 - a placeholder by this
+  project's reading, so the day is not fixed. dpa (K23) and KSC's own away
+  sale (K26) confirm the first leg; no DFL or club source for the second
+  leg's date was read. `bucket-links-manual.csv` already says KSC hosts
+  the second leg, and that agrees; **nothing in it was changed**.
+- **What a non-member can do, in one paragraph.** An ordinary KSC home
+  game reaches free sale (members, then season-ticket holders with
+  members, then everyone, a week or so apart, three to five weeks before
+  kickoff; up to four tickets per KSC-ID). **The home derby has not: no
+  free sale in 2022-23 ("aus Sicherheitsgründen"), 2023-24, 2024-25 or
+  2025-26**, and 2025-26 sold out a few hours into the members' presale.
+  The routes are a membership taken out well ahead (EUR 75 a year for an
+  adult from July 2026; up to 30 working days to process; one presale
+  right per KSC-ID, so two people need two), a seated season ticket, or
+  the club's Ticketzweitmarkt once the game is sold out (nothing
+  guaranteed). The guest blocks NO and N4 are sold only by Kaiserslautern.
+- **Germany's national rows, and the boundary test applied to each
+  candidate.** Three went in, each from a source that speaks for the
+  federation or the league: **DFB § 25** (the home club reserves 10% of
+  seats and of standing for the away club; away fans not charged more -
+  `may-add`, a floor), **DFB § 32** (a "match with increased risk" is
+  decided by the home club after hearing the police, the DFB may classify
+  one itself, and limiting ticket sales, buffer blocks and alcohol limits
+  are measures to consider - `implements`), and the **DFL's fair-play
+  rules** for the official secondary market (at most the original
+  single-ticket price, a service fee of at most 15% - `implements`,
+  `appliesTo` Bundesliga and 2. Bundesliga). **Kept as club rows**: KSC's
+  ban on away colours in home areas, its alcohol ban at the 2024-25 derby
+  (the consequence of a classification, one fixture), its "no free sale",
+  its 40/20/40 split of away tickets, its ATGB resale terms (+15%) - each
+  something KSC could change tomorrow. **Not written**: a PAngV row on VAT
+  (gesetze-im-internet.de timed out from the runner, so the law was not
+  read), and a German personalisation rule (none found; an absence is a
+  fact only when stated). The DFB text read is the edition of 1 Feb 2023.
+- **What moved because Germany now has national rows** - listed exactly:
+  (1) Ticket info tab: Nürnberg's and Bayern's entries lost "No national
+  rules researched for Germany (DE) yet." and gained "Country rules:
+  Germany" with the three rows, above their researched rules; (2) the
+  same on both club sheets; (3) **every other German club sheet** - 149
+  German clubs are on the map - now shows "Ticket info unavailable"
+  followed by Germany's three rows, because a sheet shows its country's
+  rules wherever there are some (the DFL row says it applies to the
+  Bundesliga and 2. Bundesliga, but like every country row it is shown,
+  not filtered, so tier 3-8 clubs show it too, with its "Applies to");
+  (4) the Bucket list: the Frankenderby's Nürnberg and Fürth blocks, the
+  Südwestderby's KSC and Kaiserslautern blocks and every other entry with
+  a German club; (5) `check_tickets.py`'s layered view: three
+  `[national]` lines under Bayern, Nürnberg and KSC, Nürnberg's
+  `resale-price-cap` (line 19) and KSC's (line 53) now read as "this
+  club's implementation of it", and KSC's derby `risk-classification`
+  rows likewise. Nothing moved into "CHECK THESE AGREE": no German row is
+  `none`. `test_tickets_bucket.js`'s Nürnberg check now follows the file.
+- **Prices.** The club's PDFs are headed "TAGESKARTEN 26 / 27"; ka-news
+  prints exactly the same figures as the **2025/26** prices and reports
+  the club adjusts prices every two years. The rows say 2026-27, the
+  club's own label, and their note says what ka-news says. `priceBasis`
+  is `unknown`, as the brief asked, because no source states VAT or fees
+  for a home ticket; the only fees stated are EUR 2 at the matchday box
+  office and EUR 1 on away tickets. The derby was category A in 2024-25
+  and 2025-26; 2026-27 is `inferred`. For two adults in category A the
+  cheapest seats (N1-N3) are 2 x EUR 37.80, standing 2 x EUR 20.30.
+- **Timing.** The members' presale for a home derby opened 26-34 days
+  before kickoff in all four seasons read, so for a late-January kickoff
+  the estimate is "late December or early January", `inferred` /
+  `observed-past-cycle`. **When the DFL scheduled each past derby was not
+  read**, so the start is stated relative to kickoff only.
+- **Minors.** Under-18s can be members (7-17, EUR 40, with a presale
+  right), pay the reduced rate, and a child's ticket (up to 14 in one
+  wording of the ATGB) is sold only with an adult ticket and admits the
+  child only with an adult. Whether an under-18 may buy in their own name
+  is not stated: `minorEligibility` is `unknown`.
+- **Kaiserslautern's own selling rules are not researched.** Its pages for
+  the 2024-25 and 2025-26 derbies were read in passing (K29, K30), only to
+  confirm that FCK sells the guest blocks at the Wildpark.
+
 **Ticket info and the Bucket list, 2026-10-04: rules on one tab, dated
 reminders on the other.** Built on Alexandru's instruction.
 - **One renderer for a club's ticket information**, `clubTicketsHtml()`
@@ -2621,6 +2745,69 @@ how each rests on them, is in Conventions, "The installable app" and
 ---
 
 ## Known open problems
+
+- **The KSC research contradicts the hand-written KSC entries of
+  `football-rules.json` in four places - found 2026-10-06, nothing
+  changed: Alexandru decides** (no tool writes that file).
+  - **`ksc-fck-sale`**: `dateEstimate` 2026-12-15 (inferred), derivation
+    "sales for a late-January fixture typically open around December".
+    In the four home derbies read the members' presale opened **26 to 34
+    days before kickoff**; mid-December is about six weeks before a
+    late-January kickoff, earlier than any of them. The evidence supports
+    **late December or early January**, and only the end of December, not
+    its middle. The 30-day lead time still puts the reminder in good time.
+  - **`ksc-fck-sale`'s action** ("Decide home end or away end FIRST. Away
+    end requires FCK membership arranged before release") implies the home
+    end is open to a non-member. **It has not been**: no free sale for the
+    home derby in four seasons, so the home end too needs a KSC membership
+    (or a season ticket) arranged before release - and a membership can
+    take up to 30 working days to process.
+  - **`ksc.ageRules.idAtGate: false`**: KSC's ticket terms (ATGB 2.6)
+    require carrying an official photo ID and showing it on request. No
+    derby announcement read mentions an ID check, so "false" may be what
+    happens at the gate, but the terms allow one.
+  - **`fck.procedure.away` and `sudwest-derby.ticketRoutes.awayEnd`**
+    ("requires FCK membership"): Kaiserslautern's own pages for the
+    2024-25 and 2025-26 derbies, read in passing, say FCK members
+    **and/or FCK season-ticket holders**. FCK's rules are not researched,
+    so this is a pointer, not a finding.
+  What the research **supports**: `ksc.procedure.home` (ordinary games in
+  general sale, the derby sells out), `ksc.procedure.away` (the away end
+  at KSC is allocated by the visitor), `sudwest-derby.nextFixture`
+  (matchday 19, late January; the fixture file's round is a placeholder)
+  and its `missed` (first leg at Kaiserslautern, 15 Aug 2026).
+
+- **KSC rows left `unverified`, 2026-10-06, and why** - all three are
+  gaps, recorded so they are not mistaken for rules: the derby's **sector
+  separation** (fans in away colours are refused in home areas, but no
+  source says whether home areas are otherwise separated; an ordinary
+  2026-27 game had separation only towards the guest area); the derby's
+  **capacity and attendance** (no source read gives either; see the next
+  item); and **resale prices** for the derby (none credible found).
+  `inferred`: the 2026-27 derby's price category (A, as in the two seasons
+  before) and the "routes in for a non-member" synthesis. **Single-source
+  rows**, confirmed but resting on one source only: the membership fees
+  (the club's page), the fees row, the 40/20/40 away split, the 2024-25
+  alcohol ban, the 2025-26 high-risk classification (press), the 2026-27
+  away-derby prices (press restating the club; the club's 2025-26 article
+  gives the same figures), and the DFB § 32 country row (the DFB's own
+  text).
+- **Which Wildpark capacity applies to the derby: none of the sources
+  says, 2026-10-06.** The figures in play: **33,180** (the club's
+  announced matchday capacity for 2025-26, on the map and on German
+  Wikipedia), **34,302** (English Wikipedia's 2026-27 table), **32,190**
+  (the largest 2024-25 home attendance, v 1. FC Köln, Die falsche 9), and
+  Wikidata's old **29,699** (repeated by news.de). No derby attendance was
+  read, and nothing says whether the derby is played with buffer blocks
+  (which DFB § 32 lists as a measure for high-risk matches).
+- **KSC's ticket terms page holds two wordings of clause 5.1, found
+  2026-10-06.** One makes children up to 14 "Kindertickets" and under-18s
+  reduced; the other makes every under-18 reduced. Which is current was
+  not settled; the rows cite only what both say. No "Stand" date was found.
+- **The DFB rules were read in the edition of 1 Feb 2023**; whether a
+  newer edition exists was not looked for. Both DFB country rows say
+  `appliesTo` `unknown`, because which competitions count as
+  "Bundesspiele" is defined in §§ 41-42 of the DFB-Spielordnung, not read.
 
 - **A `requested` ticket shows "You hold tickets" - built as the brief
   worded it, 2026-10-04, Alexandru's to confirm.** The brief says an
@@ -7282,6 +7469,9 @@ how each rests on them, is in Conventions, "The installable app" and
    the Conventions entry on it above.
    **What is still not built is the display.** `index.html` does not
    show any of these files. Item 2 below is where that belongs.
+   **Four clubs since 2026-10-06**: Karlsruher SC was researched for an
+   outside buyer (Conventions, "Karlsruher SC and Germany's first
+   national rows").
    **Three clubs now, not one.** 1. FC Nürnberg and Inter were added on
    2026-09-23 from the derby PDF, and the four files that took to hold
    them — phases, rules, demand, sources — are described under Files

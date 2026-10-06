@@ -11,7 +11,8 @@
 //    with ticket information (the club-ticket files, or a line in football-rules-links.csv);
 //    Italy opens to each of its rules, with "Applies to" never blank and never "all" where the
 //    row says unknown; Inter shows "Country rules: Italy" above its researched rules and its
-//    notes, with Italy's rules in it; Nürnberg says no national rules are researched for Germany;
+//    notes, with Italy's rules in it; Nürnberg shows Germany's national rules (or says none are researched, if the
+//    file has none);
 //    Inter's notes carry the "unverified" marking football-rules.json gives them;
 //  - Ticket info has no upcoming-dates section: no ticket window, no Next window, no heading but
 //    Countries and Clubs;
@@ -160,7 +161,12 @@ const server = http.createServer((req, res) => {
   check('Inter: its notes are visibly marked unverified, as football-rules.json marks them',
     !!inter && inter.unv.some(t => /unverified: Age rules/.test(t)), inter ? inter.unv.join(' | ') : '');
   const fcn = await club('Q15786');
-  check('Nürnberg: says no national rules are researched for Germany', !!fcn && /No national rules researched for Germany \(DE\) yet\./.test(fcn.text));
+  // Since 2026-10-04 Germany had no national rows and Nürnberg said so; since 2026-10-06 it has three (DFB, DFL), so the
+  // check follows the file: every German rule inside Nürnberg's entry, under "Country rules: Germany", or the old line.
+  const deRows = nat.filter(r => r.country === 'DE');
+  check(deRows.length ? `Nürnberg: "Country rules: Germany" with all ${deRows.length} of Germany's national rules` : 'Nürnberg: says no national rules are researched for Germany',
+    !!fcn && (deRows.length ? /^Country rules: Germany/.test(fcn.country) && deRows.every(r => norm(fcn.text).includes(norm(r.rule)))
+      : /No national rules researched for Germany \(DE\) yet\./.test(fcn.text)), fcn ? fcn.country : 'no Nürnberg row');
   check('Nürnberg: country rules first', !!fcn && fcn.order[0] === 0 && fcn.order[1] > 0);
   check('Ticket info: no inferred or disputed date shown to the day', !(await dayLevel('tickets')).length,
     JSON.stringify(await dayLevel('tickets')).slice(0, 300));
@@ -204,7 +210,9 @@ const server = http.createServer((req, res) => {
     /host/.test(frank.clubs[0].head), frank ? frank.clubs.map(c => c.head).join(' | ') : 'no card');
   check('Frankenderby: Fürth "not researched"', !!frank && /No ticket rules researched for SpVgg Greuther Fürth yet\./.test(frank.clubs[1]?.text || ''));
   check("Frankenderby: Nürnberg's researched rules are shown, Germany's national line on top",
-    !!frank && /Researched rules/.test(frank.clubs[0].text) && frank.clubs[0].text.indexOf('No national rules researched for Germany') < frank.clubs[0].text.indexOf('Researched rules'));
+    !!frank && /Researched rules/.test(frank.clubs[0].text) &&
+    (() => { const i = frank.clubs[0].text.indexOf(deRows.length ? 'Country rules: Germany' : 'No national rules researched for Germany');
+      return i >= 0 && i < frank.clubs[0].text.indexOf('Researched rules'); })());
   const mad = B.inside.find(c => c.id === 'derby-madonnina');
   check('Milan derby: shows AC Milan and Inter', !!mad && ['Q1543', 'Q631'].every(q => mad.clubs.some(c => c.qid === q)),
     mad ? mad.clubs.map(c => c.head).join(' | ') : 'no card');
