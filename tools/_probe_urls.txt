@@ -1,16 +1,5 @@
-https://www.ksc.de/ticketing/tages-dauerkarten/dauerkarten/atgb grep=Weiterverkauf|Zweitmarkt|10\.2|ermäßig|Minderj|18\.\s*Lebensjahr|Lebensjahr|Gebühr|personali|Anzahl|Höchst|Kind|Jugendlich linkgrep=atgb|pdf
-https://www.ksc.de/ticketing/tages-dauerkarten/vorverkaufs-informationen max=8000 alllinks linkgrep=news/show/article linkmax=6000
-https://www.ksc.de/ticketing/tages-dauerkarten/ticketzweitmarkt max=6000
-https://www.ksc.de/ticketing/informationen/schwarzmarkt max=6000
-https://www.ksc.de/archiv/newsletter/anmeldung-ksc-newsletter grep=Newsletter.{0,200}(Ticket|Vorverkauf|informier)
-https://www.ksc.de/profis/saison/news alllinks linkgrep=news/show/article linkmax=8000 max=100
-http://web.archive.org/web/20250624095715/https://bnn.de/karlsruhe/ausverkauftes-derby-gegen-lautern-welcher-weg-ksc-fans-noch-ins-wildparkstadion-fuehren-kann grep=Ticket|Zweitmarkt|ausverkauft|Mitglied|frei
-https://recht24-7.de/en/ksc-gegen-viagogo-gericht-verbietet-ticket-wucher-fans-atmen-auf/ max=5000
-https://www.tagesspiegel.de/sport/weniger-gastekarten-bei-hochrisikospielen-im-fussball-3638545.html grep=Prozent|Gäste|Kontingent|Richtlinie
-https://web.de/magazine/sport/fussball/bundesliga/bundesliga-dritten-spieltag-stadien-gaeste-fans-erlaubt-35993126 grep=Prozent
-https://www.dfb.de/fileadmin/_dfbdam/279659-Heft_05_Durchfuehrungsbestimmungen_20230201.pdf grep=erhöhtem Risiko|Risikospiel|personalisiert|Kartenverkauf|Kartenvorverkauf
-https://www.news.de/sport/858574666/karlsruher-sc-vs-1-fc-kaiserslautern-am-04-05-2025-in-der-2-bundesliga-24-25-tv-spielbericht-tore-aufstellung-und-tabelle-in-der-zusammenfassung/1/ grep=Zuschauer
-https://www.diefalsche9.de/?p=55226 grep=Zuschauer|ausverkauft|32\.190
-https://www.fotmob.com/de/matches/karlsruher-sc-vs-1fc-kaiserslautern/2ahhrh grep=Zuschauer|attendance|32[.,]\d{3}
-https://www.wochenblatt-reporter.de/karlsruhe/c-sport/suedwest-derby-im-wildpark-fck-fuehrt-ksc-gleicht-aus-1-zu-1-final_a495783 grep=Zuschauer|ausverkauft
-https://www.gesetze-im-internet.de/pangv_2022/__3.html max=3000
+https://www.dfl.de/de/hintergrund/ticketzweitmarkt/ max=9000
+https://www.bundesliga.com/de/bundesliga/news/rechtsstreit-viagogo-schutz-fans-erfolg-nicht-autorisierter-ticketzweitmarkt-38704 grep=15 Prozent|Fair-Play|Originalpreis|Zweitm
+https://recht24-7.de/en/ksc-gegen-viagogo-gericht-verbietet-ticket-wucher-fans-atmen-auf/ grep=Karlsruhe|KSC|court|Court|percent|%
+https://www.cec-zev.eu/?p=6394 grep=DFL|15 Prozent|Fair-Play
+https://www.ksc.de/profis/saison/news/show/article/ksc-hdh-vorverkauf-ab-montag/ max=5000
