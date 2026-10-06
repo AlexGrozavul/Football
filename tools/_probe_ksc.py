@@ -27,14 +27,22 @@ def fetch(u):
     r = subprocess.run(["curl","-sS","-L","--max-time","40","-A",UA,"-o","/tmp/p.bin","-w","%{http_code} %{content_type} %{url_effective} %{size_download}",u],capture_output=True,text=True)
     return r.stdout.strip(), r.stderr.strip()
 
-for u in [l.strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]:
+for line in [l.strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]:
+    u, *opts = line.split()
+    o = dict(x.split("=",1) if "=" in x else (x, "1") for x in opts)
+    MAX = int(o.get("max", MAXC)); GREP = o.get("grep")
     meta, err = fetch(u)
     print("\n" + "="*100 + f"\nURL {u}\nMETA {meta} {err}")
     data = open("/tmp/p.bin","rb").read() if meta else b""
     if b"%PDF" in data[:10]:
         subprocess.run(["pdftotext","-layout","/tmp/p.bin","/tmp/p.txt"])
-        txt = open("/tmp/p.txt",errors="replace").read()
-        print(re.sub(r"[ \t]+"," ",txt)[:MAXC*2]); continue
+        txt = re.sub(r"[ \t]+"," ",open("/tmp/p.txt",errors="replace").read())
+        if GREP:
+            for mm in re.finditer(GREP, txt, re.I):
+                print("...", txt[max(0,mm.start()-500):mm.end()+700].replace("\n"," / "))
+        else:
+            print(txt[:MAX])
+        continue
     doc = data.decode("utf-8","replace")
     m = re.search(r"<title>(.*?)</title>", doc, re.S|re.I)
     print("TITLE", html.unescape(m.group(1).strip()) if m else None)
@@ -43,14 +51,18 @@ for u in [l.strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith
         if mm: print("DATE", k, mm.group(1)); break
     body = doc
     mm = re.search(r"<main.*?</main>", doc, re.S|re.I) or re.search(r"<article.*?</article>", doc, re.S|re.I)
-    if mm and len(mm.group(0)) > 2000: body = mm.group(0)
+    if mm and len(re.sub(r"<[^>]+>","",mm.group(0))) > 3000: body = mm.group(0)
     p = T(); p.feed(doc)
     q = T(); q.feed(body)
     txt = re.sub(r"\n\s*\n+", "\n", re.sub(r"[ \t\xa0]+"," ","".join(q.out))).strip()
-    print(txt[:MAXC])
+    if GREP:
+        for mm in re.finditer(GREP, txt, re.I):
+            print("...", txt[max(0,mm.start()-600):mm.end()+900].replace("\n"," / "))
+    else:
+        print(txt[:MAX])
     seen=set()
     for h in p.links:
         a = urllib.parse.urljoin(u, h)
-        if KEY.search(a) and a not in seen and not a.startswith("mailto"):
+        if (KEY.search(a) or "alllinks" in o) and a not in seen and not a.startswith("mailto"):
             seen.add(a)
     print("LINKS", " ".join(sorted(seen))[:3000])
