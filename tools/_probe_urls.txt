@@ -1,23 +1,16 @@
-https://www.ksc.de/fileadmin/Ticketing/Preislisten_Tageskarten_26-27_KAT-A.pdf max=9000
-https://www.ksc.de/fileadmin/Ticketing/Preislisten_Tageskarten_26-27_KAT-B.pdf max=9000
-https://www.ksc.de/fileadmin/Ticketing/Preislisten_Dauerkarte_26-27_PUBLIC.pdf max=5000
-https://www.ksc.de/ticketing/tages-dauerkarten/tageskarten max=30000
-https://mitgliedschaft-ksc.de/ max=12000 alllinks
-https://www.ksc.de/archiv/newsletter/anmeldung-ksc-newsletter max=3000
-https://www.ksc.de/stadion/stadionbesuch/stadionordnung grep=Jahr|Minderj|Kinder|Begleit|Ausweis|Personal|Ticket
-https://www.ksc.de/club/allgemein/sicherheitspolitik-des-ksc max=6000
-https://www.ksc.de/ticketing max=6000 alllinks
-https://www.ksc.de/profis/saison/news max=4000 alllinks
-https://tickets.ksc.de/shop/5 max=2000 alllinks
-https://www.ksc.de/fileadmin/Ticketing/2425_KSC_Dauerkartenabonnementvertrag.pdf grep=ATGB|Minderj|Jahr
-https://www.wochenblatt-reporter.de/karlsruhe/c-sport/ksc-startet-verkauf-der-dauerkarten-fuer-den-bbbank-wildpark_a800912 grep=Mitglied|Dauerkart|Vorkauf
-https://www.wochenblatt-reporter.de/karlsruhe/c-sport/karlsruher-sc-startet-vorverkauf-fuer-dfb-pokalspiel_a891544 grep=Vorverkauf|Mitglied|Preis|frei
-https://www.ka-news.de/ksc/karlsruher-sc-ticketpreise-2025-26-steigen-was-kosten-ksc-dauerkarte-und-tageskarten-28-9-25-109173986 grep=Euro|Kategorie|Preis
-https://www.ka-news.de/region/karlsruhe/ksc-gegen-kaiserslautern-polizei-gibt-sicherheitstipps-und-anreiseinfos-zum-derby-4-5-25-art-3315045 grep=Risiko|Trennung|Ticket|Gäste|Alkohol|Polizei
-https://dueren.polizei.nrw/sites/default/files/2018-06/1309richtlinien.pdf grep=Gästekontingent|Kartenkontingent|10 %|zehn Prozent|Spiele mit erhöhtem|personalisiert|Eintrittskarten.{0,40}Gast
-https://www.dfb.de/fileadmin/_dfbdam/279659-Heft_05_Durchfuehrungsbestimmungen_20230201.pdf grep=Gästekontingent|Kartenkontingent|Gastverein.{0,80}Karten|10 Prozent|zehn Prozent
+https://www.ksc.de/ticketing/tages-dauerkarten/dauerkarten/atgb grep=Weiterverkauf|Zweitmarkt|10\.2|ermäßig|Minderj|18\.\s*Lebensjahr|Lebensjahr|Gebühr|personali|Anzahl|Höchst|Kind|Jugendlich linkgrep=atgb|pdf
+https://www.ksc.de/ticketing/tages-dauerkarten/vorverkaufs-informationen max=8000 alllinks linkgrep=news/show/article linkmax=6000
+https://www.ksc.de/ticketing/tages-dauerkarten/ticketzweitmarkt max=6000
+https://www.ksc.de/ticketing/informationen/schwarzmarkt max=6000
+https://www.ksc.de/archiv/newsletter/anmeldung-ksc-newsletter grep=Newsletter.{0,200}(Ticket|Vorverkauf|informier)
+https://www.ksc.de/profis/saison/news alllinks linkgrep=news/show/article linkmax=8000 max=100
+http://web.archive.org/web/20250624095715/https://bnn.de/karlsruhe/ausverkauftes-derby-gegen-lautern-welcher-weg-ksc-fans-noch-ins-wildparkstadion-fuehren-kann grep=Ticket|Zweitmarkt|ausverkauft|Mitglied|frei
+https://recht24-7.de/en/ksc-gegen-viagogo-gericht-verbietet-ticket-wucher-fans-atmen-auf/ max=5000
+https://www.tagesspiegel.de/sport/weniger-gastekarten-bei-hochrisikospielen-im-fussball-3638545.html grep=Prozent|Gäste|Kontingent|Richtlinie
+https://web.de/magazine/sport/fussball/bundesliga/bundesliga-dritten-spieltag-stadien-gaeste-fans-erlaubt-35993126 grep=Prozent
+https://www.dfb.de/fileadmin/_dfbdam/279659-Heft_05_Durchfuehrungsbestimmungen_20230201.pdf grep=erhöhtem Risiko|Risikospiel|personalisiert|Kartenverkauf|Kartenvorverkauf
+https://www.news.de/sport/858574666/karlsruher-sc-vs-1-fc-kaiserslautern-am-04-05-2025-in-der-2-bundesliga-24-25-tv-spielbericht-tore-aufstellung-und-tabelle-in-der-zusammenfassung/1/ grep=Zuschauer
+https://www.diefalsche9.de/?p=55226 grep=Zuschauer|ausverkauft|32\.190
+https://www.fotmob.com/de/matches/karlsruher-sc-vs-1fc-kaiserslautern/2ahhrh grep=Zuschauer|attendance|32[.,]\d{3}
+https://www.wochenblatt-reporter.de/karlsruhe/c-sport/suedwest-derby-im-wildpark-fck-fuehrt-ksc-gleicht-aus-1-zu-1-final_a495783 grep=Zuschauer|ausverkauft
 https://www.gesetze-im-internet.de/pangv_2022/__3.html max=3000
-https://www.gesetze-im-internet.de/pangv_2022/__2.html max=3000
-https://archive.org/wayback/available?url=bnn.de/karlsruhe/ausverkauftes-derby-gegen-lautern-welcher-weg-ksc-fans-noch-ins-wildparkstadion-fuehren-kann max=800
-https://en.wikipedia.org/wiki/2026%E2%80%9327_2._Bundesliga grep=Karlsruhe
-https://de.wikipedia.org/wiki/Wildparkstadion grep=Zuschauer|Kapazit|Plätze

@@ -65,4 +65,6 @@ for line in [l.strip() for l in open(sys.argv[1]) if l.strip() and not l.startsw
         a = urllib.parse.urljoin(u, h)
         if (KEY.search(a) or "alllinks" in o) and a not in seen and not a.startswith("mailto"):
             seen.add(a)
-    print("LINKS", " ".join(sorted(seen))[:3000])
+    if "linkgrep" in o:
+        seen = {a for a in seen if re.search(o["linkgrep"], a)}
+    print("LINKS", " ".join(sorted(seen))[:int(o.get("linkmax", 3000))])
