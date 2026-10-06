@@ -3907,31 +3907,6 @@
    "winner": null
   },
   {
-   "id": 561917,
-   "utcDate": "2026-11-03T19:45:00Z",
-   "status": "TIMED",
-   "matchday": 14,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 332,
-    "name": "Birmingham City FC",
-    "shortName": "Birmingham",
-    "tla": "BIR",
-    "crest": "https://crests.football-data.org/332.png"
-   },
-   "away": {
-    "id": 384,
-    "name": "Millwall FC",
-    "shortName": "Millwall",
-    "tla": "MIL",
-    "crest": "https://crests.football-data.org/384.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 561918,
    "utcDate": "2026-11-03T19:45:00Z",
    "status": "TIMED",
@@ -4101,6 +4076,31 @@
     "shortName": "Bolton",
     "tla": "BOL",
     "crest": "https://crests.football-data.org/60.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 561917,
+   "utcDate": "2026-11-03T20:00:00Z",
+   "status": "TIMED",
+   "matchday": 14,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 332,
+    "name": "Birmingham City FC",
+    "shortName": "Birmingham",
+    "tla": "BIR",
+    "crest": "https://crests.football-data.org/332.png"
+   },
+   "away": {
+    "id": 384,
+    "name": "Millwall FC",
+    "shortName": "Millwall",
+    "tla": "MIL",
+    "crest": "https://crests.football-data.org/384.png"
    },
    "homeGoals": null,
    "awayGoals": null,
