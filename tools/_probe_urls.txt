@@ -1,5 +1,0 @@
-https://www.dfl.de/de/hintergrund/ticketzweitmarkt/ max=9000
-https://www.bundesliga.com/de/bundesliga/news/rechtsstreit-viagogo-schutz-fans-erfolg-nicht-autorisierter-ticketzweitmarkt-38704 grep=15 Prozent|Fair-Play|Originalpreis|Zweitm
-https://recht24-7.de/en/ksc-gegen-viagogo-gericht-verbietet-ticket-wucher-fans-atmen-auf/ grep=Karlsruhe|KSC|court|Court|percent|%
-https://www.cec-zev.eu/?p=6394 grep=DFL|15 Prozent|Fair-Play
-https://www.ksc.de/profis/saison/news/show/article/ksc-hdh-vorverkauf-ab-montag/ max=5000
