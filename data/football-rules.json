@@ -730,42 +730,6 @@
    "dateSource": "inferred"
   },
   {
-   "id": "vfb-schalke-away-members-sale",
-   "club": "vfb",
-   "title": "VfB members' sale opens 09:00 - Schalke v VfB (away, 21 Nov)",
-   "date": "2026-10-08",
-   "rule": "Members' sale, max. 2 tickets per member. A presale right is needed, so it does not apply while not a member.",
-   "derivation": "Published by the club in its ticket shop's away-game calendar (tickets.vfb.de, read 7 Oct 2026; ticket-sources V18).",
-   "action": "Open tickets.vfb.de/shop/103 at 09:00 and buy.",
-   "leadTimeDays": 1,
-   "feed": "local",
-   "dateSource": "confirmed"
-  },
-  {
-   "id": "vfb-frankfurt-members-sale",
-   "club": "vfb",
-   "title": "VfB members' sale opens 09:00 - VfB v Eintracht Frankfurt (home, 28 Nov)",
-   "date": "2026-10-13",
-   "rule": "Members' sale, online with a virtual queue, max. 2 tickets per member. A presale right is needed, so it does not apply while not a member. A free sale follows only if tickets are left.",
-   "derivation": "Published by the club in its ticket shop's home-game calendar (tickets.vfb.de, read 7 Oct 2026; ticket-sources V17).",
-   "action": "Join the queue at tickets.vfb.de/shop/103 at 09:00.",
-   "leadTimeDays": 3,
-   "feed": "local",
-   "dateSource": "confirmed"
-  },
-  {
-   "id": "vfb-lille-members-sale",
-   "club": "vfb",
-   "title": "VfB members' sale opens 09:00 - VfB v Lille (Champions League, home, 9 Dec)",
-   "date": "2026-10-27",
-   "rule": "Members' sale for members with no or one 4-match Champions League package, max. 2 tickets per member. A presale right is needed, so it does not apply while not a member. A free sale follows only if tickets are left.",
-   "derivation": "Published by the club in its ticket shop's home-game calendar (tickets.vfb.de, read 7 Oct 2026; ticket-sources V17).",
-   "action": "Join the queue at tickets.vfb.de/shop/103 at 09:00.",
-   "leadTimeDays": 7,
-   "feed": "local",
-   "dateSource": "confirmed"
-  },
-  {
    "id": "milan-derby-sale-nov",
    "club": "milan",
    "title": "Milan home derby sale phases open",

@@ -17,7 +17,7 @@
 //  4. The Fixtures and Ticket info sections name no file, path or internal source (OpenLigaDB,
 //     football-data.org) in their visible text; that detail is only under a collapsed "Why?" or
 //     "Source" line. A club with no fixtures is told which leagues are covered.
-//  5. "Next window" says "No window recorded" when neither source records one for the club,
+//  5. (since 2026-10-07) no sheet has a "Next window" line: sale dates are the Bucket list's only. It said "No window recorded" when neither source records one for the club,
 //     "No upcoming window recorded" when what is recorded is all past, and never "none ahead".
 //  6. For every club with any ticket information, the sheet, with every section opened, is no
 //     wider than the screen.
@@ -226,36 +226,14 @@ const server = http.createServer((req, res) => {
   }
   check('at least one sheet with no fixtures was checked', fixturesUnavailable > 0, String(fixturesUnavailable));
 
-  // ---- 5. The Next window wording, against the files
-  let saw = {none: 0, past: 0};
+  // ---- 5. No sale date on any sheet: the Next window line is gone (sale dates are the Bucket list's only)
+  const withNext = [];
   for(const qid of onMap){
     await open(qid);
-    const N = await page.evaluate(() => { const nw = document.getElementById('nextWindow');
-      return nw ? {text: nw.innerText.replace(/\s+/g, ' '), entries: nw.querySelectorAll('.nw').length} : null; });
-    const name = await page.evaluate(() => document.querySelector('#sheetHead h3').textContent);
-    if(!N){ check(`${name}: has ticket information, so a Next window line`, false); continue; }
-    const ids = links.filter(l => l.clubQid === qid).map(l => l.rulesId);
-    const recorded = rules.ticketEvents.filter(e => ids.includes(e.club)).length + windows.filter(w => w.clubQid === qid).length;
-    console.log(`    ${name}: ${recorded} recorded; "${N.text}"`);
-    check(`${name}: Next window never says "none ahead" or "No window ahead"`, !/none ahead|No window ahead/i.test(N.text));
-    if(N.entries) continue;
-    if(!recorded){ saw.none++; check(`${name}: nothing recorded in either source, so "No window recorded"`, /\bNo window recorded\./.test(N.text), N.text); }
-    else { saw.past++; check(`${name}: ${recorded} recorded and none ahead, so "No upcoming window ... recorded"`, /No upcoming window( with a date or month)? recorded\./.test(N.text), N.text); }
+    if(await page.evaluate(() => !!document.getElementById('nextWindow') || /Next window|Typically opens/.test(document.getElementById('sheetTix')?.innerText || '')))
+      withNext.push(qid);
   }
-  console.log(`    real data: ${saw.none} club(s) with nothing recorded, ${saw.past} with nothing ahead`);
-  // The two wordings, from made-up inputs, so they stay tested whatever the files hold.
-  const synth = await page.evaluate(() => {
-    const txt = h => { const d = document.createElement('div'); d.innerHTML = h; return d.textContent.replace(/\s+/g, ' '); };
-    return {
-      none: txt(nextWindowHtml({entries: []}, {windows: []})),
-      past: txt(nextWindowHtml({entries: [{events: [{title: 'Old sale', date: '2020-05-01', dateSource: 'confirmed'}]}]}, {windows: []})),
-      pastWin: txt(nextWindowHtml({entries: []}, {windows: [{label: 'Old window', opensEstimate: 'late June', estimateFor: '2020-21', dateSource: 'inferred'}]})),
-      disputed: txt(nextWindowHtml({entries: [{events: [{title: 'Doubtful', date: '2099-01-01', dateSource: 'disputed'}]}]}, {windows: []}))};
-  });
-  check('made-up: no window in either source reads "No window recorded."', /^Next window ?No window recorded\.$/.test(synth.none.trim()), synth.none);
-  check('made-up: a past event only reads "No upcoming window recorded."', /No upcoming window recorded\./.test(synth.past), synth.past);
-  check('made-up: a past window row only reads "No upcoming window recorded."', /No upcoming window recorded\./.test(synth.pastWin), synth.pastWin);
-  check('made-up: a disputed event only is recorded but not ahead, "No upcoming window recorded."', /No upcoming window recorded\./.test(synth.disputed) && !/Doubtful/.test(synth.disputed), synth.disputed);
+  check(`no sheet shows a Next window line or a "Typically opens" line (${onMap.length} checked)`, !withNext.length, withNext.join(','));
 
   check('no script error', !errors.length, errors.join(' | '));
   await browser.close(); server.close();

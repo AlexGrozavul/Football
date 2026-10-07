@@ -16,6 +16,7 @@ on:
       - "data/football-rules.json"
       - "data/fixtures-manual.csv"
       - "tools/build_calendars.py"
+      - "tools/check_sale_dates.py"
       - "tools/fetch_fixtures.py"
       - ".github/workflows/build-calendars.yml"
   workflow_dispatch:
@@ -65,6 +66,10 @@ jobs:
           print(f"OK: {len(data['ticketEvents'])} ticketEvents, "
                 f"{len(data['bucketList'])} bucketList, {len(data['clubs'])} clubs")
           PY
+
+      - name: Check the dated sale entries (warnings only)
+        # Offline, never fails the build: CLAUDE.md rule 8.
+        run: python3 tools/check_sale_dates.py || true
 
       - name: Build the calendars
         run: |

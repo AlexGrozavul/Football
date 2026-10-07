@@ -85,6 +85,22 @@ not ask for — is still left undone and written up under Known open
 problems; the merge carries the write-up, never the decision. Rules 1
 to 6 are unchanged by this and outrank it.
 
+**8. Sale dates are shown only in the Bucket list.** Since 2026-10-07,
+on Alexandru's instruction: the map's club sheet and the Ticket info tab
+show no sale date - no "Next window" line, no window's "Typically opens"
+or past-cycle line - and the Bucket list tab and its calendar are the
+only place one is drawn. Sale phases, rules and prices stay on the sheet
+and Ticket info, and every data file is unchanged. **A hand-written dated
+sale or deadline entry** (a `ticketEvents` entry of `football-rules.json`
+with a date) **needs a source URL (`source`) and a `checkedOn` date**, and
+**nothing fetches or verifies them automatically**.
+`tools/check_sale_dates.py` lists, offline and as warnings only (it always
+exits 0), the dated entries missing either field, those whose date passed
+more than 14 days ago, and those whose `checkedOn` is over 30 days old
+while the date is still ahead; `build-calendars.yml` runs it. Existing
+entries have neither field yet: the warnings are the to-do list, and no
+value was filled in for them (rules 1 and 2).
+
 ---
 
 ## dateSource
@@ -664,6 +680,10 @@ a subscribed calendar reads as a schedule regardless of its description.
   past). 27 checks on 2026-10-07.
   With a price row and the `minors` rule dropped from the page in a
   scratch copy it failed 5.
+- `tools/check_sale_dates.py` — added 2026-10-07 (rule 8): offline, warnings
+  only, always exits 0. Lists dated `ticketEvents` entries missing `source` or
+  `checkedOn`, dates passed more than 14 days ago, and `checkedOn` over 30 days
+  old with the date still ahead. Run by `build-calendars.yml`. Never writes.
 - `tools/check_holidays.py` — added 2026-10-04: read-back and checks for
   `data/holidays-manual.csv`, in the style of `check_derbies.py`. Prints
   every row as understood (weekday, length), rejects by line (bad or
@@ -2257,7 +2277,8 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7`; it has been `v7` since
+  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7` → `v8`; it has been `v8` since
+  2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,
   the same day, when the Ticket info and Bucket list tabs were rebuilt, `v4` before
@@ -2910,6 +2931,10 @@ how each rests on them, is in Conventions, "The installable app" and
   each is a club rule, as their rows already say. **VfB's own pages
   disagree** on that cap: the ATGB allow +20% plus EUR 5, the help centre
   says "zum Originalpreis"; both are in the row.
+- **REMOVED 2026-10-07, on Alexandru's instruction: the three published VfB
+  sale reminders below** (`vfb-schalke-away-members-sale`,
+  `vfb-frankfurt-members-sale`, `vfb-lille-members-sale`) are out of
+  `football-rules.json` (git history has them); the paragraph is kept for the dates.
 - **The three published sale dates are in `football-rules.json` since
   2026-10-07, hand-written on Alexandru's instruction** (no tool wrote them;
   the ticket files still hold none). On 7 Oct 2026 the club's shop announced

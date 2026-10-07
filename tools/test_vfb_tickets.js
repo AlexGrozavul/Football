@@ -8,10 +8,10 @@
 //  - the Ticket info tab lists VfB under Clubs; its entry opens with "Country rules: Germany" holding every DE row of
 //    data/country-ticket-rules.csv (or "No national rules researched for Germany" if there are none), ABOVE
 //    "Researched rules", which is above "Your notes" (football-rules.json's vfb entry, through football-rules-links.csv);
-//  - every VfB rule, window (label and typical opening) and phase is in that entry, and its Prices and Sell-out record
+//  - every VfB rule, window (its label) and phase is in that entry, and its Prices and Sell-out record
 //    sections hold exactly as many rows as the files - no row dropped;
 //  - no inferred (or disputed) date is shown to the day, in the entry, on the club sheet or in the vfb-regular card;
-//  - the club sheet shows the same order and the same rows, and its Next window line words every estimate as one;
+//  - the club sheet shows the same order and the same rows, and neither it nor the entry shows a sale date (no Next window, no "Typically opens");
 //  - the Bucket list's vfb-regular entry shows VfB with Germany's rules above its researched rules and its notes;
 //  - no sideways scroll, no script error.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
@@ -112,7 +112,7 @@ const linked = rulesLinks.some(l => l.rulesId === 'vfb' && l.clubQid === VFB);
   const everyRowIn = async (text, label, sel) => {
     const t = norm(text);
     const r = vRules.filter(x => !t.includes(norm(x.rule))).map(x => `rule ${x.topic}/${x.season}`);
-    const w = vWindows.filter(x => !t.includes(norm(x.label)) || !t.includes(norm(x.opensEstimate))).map(x => `window ${x.window}`);
+    const w = vWindows.filter(x => !t.includes(norm(x.label))).map(x => `window ${x.window}`);
     const p = vPhases.filter(x => !t.includes(norm(x.buyers))).map(x => `phase ${x.window}/${x.phase}`);
     const missing = [...r, ...w, ...p];
     check(`${label}: every one of VfB's ${vRules.length} rules, ${vWindows.length} windows and ${vPhases.length} phases is shown`,
@@ -139,6 +139,7 @@ const linked = rulesLinks.some(l => l.rulesId === 'vfb' && l.clubQid === VFB);
     !!V && /^Country rules: Germany/.test(V.country) && germanyOk(V.text), V ? germanyMissing(V.text) || V.country : 'no VfB row');
   check('VfB: country rules above researched rules, researched rules above your notes (both sources under one club)',
     !!V && V.order[0] === 0 && V.order[1] > V.order[0] && V.order[2] > V.order[1], V ? V.order.join(',') : '');
+  check('VfB (Ticket info): no sale date - no "Typically opens"', !!V && !/Typically opens|Next window/.test(V.text));
   check("VfB: Your notes holds football-rules.json's vfb entry", !!V && norm(V.text).includes(norm(rules.clubs.find(c => c.id === 'vfb').procedure.home)));
   if(V) await everyRowIn(V.text, 'VfB (Ticket info)', `details.tclub[data-qid="${VFB}"]`);
   let days = await dayLevelIn(`details.tclub[data-qid="${VFB}"]`);
@@ -155,32 +156,14 @@ const linked = rulesLinks.some(l => l.rulesId === 'vfb' && l.clubQid === VFB);
     const heads = [...t.querySelectorAll('h5.srch')].map(h => h.className);
     return {text: t.innerText, country: t.querySelector('.tix-country')?.textContent || '',
       order: ['tix-country', 'tix-researched', 'tix-notes'].map(c => heads.findIndex(h => h.includes(c))),
-      next: nw ? [...nw.querySelectorAll('.nw')].map(e => ({text: e.textContent.replace(/\s+/g, ' '),
-        tags: [...e.querySelectorAll('.tag')].map(x => x.textContent)})) : []};
+      hasNext: !!nw};
   });
   check('VfB sheet: "Country rules: Germany" first, then researched rules, then your notes',
     /^Country rules: Germany/.test(S.country) && germanyOk(S.text) && S.order[0] === 0 && S.order[1] > 0 && S.order[2] > S.order[1],
     `${S.order.join(',')} ${germanyMissing(S.text)}`);
   await everyRowIn(S.text, 'VfB sheet', '#sheetTix');
-  check('VfB sheet: Next window has at least one line', S.next.length > 0);
-  for(const n of S.next){
-    if(n.tags.includes('estimated'))
-      check(`VfB sheet Next window: "${n.text.slice(0, 60)}…" is worded as an estimate and never to the day`, /estimated/.test(n.text) && !DAY.test(n.text), n.text);
-  }
-  // A confirmed vfb ticket event (a sale date the club published) is shown to the day and not as an estimate.
-  // Today is the machine's own local day, as the page's todayISO() reads it.
-  const now = new Date(), today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-  const confirmed = rules.ticketEvents.filter(e => e.club === 'vfb' && e.dateSource === 'confirmed' && e.date && e.date >= today)
-    .sort((a, b) => a.date.localeCompare(b.date));
-  for(const ev of confirmed){
-    const line = S.next.find(n => n.text.includes(ev.title));
-    if(line) check(`VfB sheet Next window: confirmed "${ev.id}" is shown to the day, not as an estimate`,
-      DAY.test(line.text) && !line.tags.includes('estimated'), line.text);
-  }
-  // The soonest one must be on the line when it falls in the current month (nothing can come before it then).
-  if(confirmed.length && confirmed[0].date.slice(0, 7) === today.slice(0, 7))
-    check(`VfB sheet Next window: names the soonest confirmed sale, "${confirmed[0].id}"`,
-      S.next.some(n => n.text.includes(confirmed[0].title)), S.next.map(n => n.text).join(' | ').slice(0, 300));
+  // Sale dates are shown only on the Bucket list: the sheet has no Next window line and no window date line.
+  check('VfB sheet: no sale date - no Next window line, no "Typically opens"', !S.hasNext && !/Next window|Typically opens/.test(S.text), S.text.slice(0, 120));
   days = await dayLevelIn('#sheetTix');
   check('VfB sheet: no inferred or disputed date shown to the day', !days.length, JSON.stringify(days).slice(0, 300));
   check('VfB sheet: no sideways scroll', await noSideways());

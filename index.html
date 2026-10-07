@@ -222,7 +222,7 @@
     border:1px solid var(--line);border-radius:7px;padding:5px 8px;color:var(--ink);
     font:inherit;font-size:13px;cursor:pointer}
   .sheet .mates i{width:9px;height:9px;border-radius:50%}
-  /* Ticket info: the two sources, each labelled, and the Next window line. */
+  /* Ticket info: the two sources, each labelled. No sale date. */
   .sheet h5.srch{font-size:13px;font-weight:600;margin:16px 0 4px;color:var(--ink);
     border-bottom:1px solid var(--line);padding-bottom:3px}
   .sheet h5.srch em{font-style:normal;font-weight:400;color:var(--faint);font-size:11.5px;margin-left:6px}
@@ -1357,18 +1357,19 @@ async function fixturesHtml(club){
 const words = v => (v || '').split(';').map(x => x.trim()).filter(Boolean).join(', ');
 
 /* ONE renderer for a club's ticket information - clubTicketsHtml() -
-   used in three places: the club sheet (below its Next window line), the
-   Ticket info tab's club rows, and the Ticket rules of a bucket-list
-   entry. Always in this order:
+   used in three places: the club sheet, the Ticket info tab's club rows,
+   and the Ticket rules of a bucket-list entry. Always in this order:
      "Country rules: <country>"  data/country-ticket-rules.csv, the rules
                                  no club decides, for the country of the
                                  club's ground
      "Researched rules"          the club-tickets files, by clubQid
      "Your notes"                football-rules.json, joined through
                                  data/football-rules-links.csv
-   The two club sources are shown side by side and never reconciled. No
-   dated window is shown here: dates belong to the Bucket list tab and to
-   the sheet's Next window line. */
+   The two club sources are shown side by side and never reconciled. Sale
+   dates belong to the Bucket list tab only: a sale window's own date lines
+   ("Typically opens", its past cycle) are drawn only when the caller says
+   so - clubTicketsHtml(club, {dates: true}), which only the Bucket list
+   does. The club sheet and the Ticket info tab show no sale date. */
 
 /* COUNTRY_NAME is the search box's, further down. */
 const countryLabel = c => c ? (COUNTRY_NAME[c] ? `${COUNTRY_NAME[c]} (${c})` : c) : 'its country (not recorded)';
@@ -1459,9 +1460,9 @@ async function countryRulesHtml(country){
 
 /* "Researched rules": the club-tickets files, joined by clubQid. Returns
    the row (or why there is none), the rendered section, and the club's
-   window rows for the Next window line. National rules are NOT here:
+   window rows. National rules are NOT here:
    they are their own section, above this one. */
-async function researchedFor(club){
+async function researchedFor(club, dates){
   const base = await csvFile('data/club-tickets.csv');
   if(!base.ok) return {err: 'The ticket research could not be loaded.', errWhy: `data/club-tickets.csv: ${base.err}`};
   const row = base.v.find(r => r.clubQid === club.id && r.team === 'men');
@@ -1510,10 +1511,10 @@ async function researchedFor(club){
   const windows = mine(win);
   h += section('Sales windows and phases', windows, r =>
     `<div class="item"><b>${esc(r.label || r.window)}</b>` +
-    `<div class="row" data-ds="${esc(r.dateSource)}"><span>Typically opens</span><span>${esc(r.opensEstimate)}` +
-      `${r.estimateFor ? ' (for ' + esc(r.estimateFor) + ')' : ''}</span></div>` +
+    (dates ? `<div class="row" data-ds="${esc(r.dateSource)}"><span>Typically opens</span><span>${esc(r.opensEstimate)}` +
+      `${r.estimateFor ? ' (for ' + esc(r.estimateFor) + ')' : ''}</span></div>` : '') +
     `<div class="meta">${sourceTag(r.dateSource)}${r.basis ? `<span class="tag">${esc(r.basis)}</span>` : ''}${scopeTag(r, names)}</div>` +
-    (r.pastCycle ? `<div class="sub">Past cycle, what happened (not a forecast): ${esc(r.pastCycle)}</div>` : '') +
+    (dates && r.pastCycle ? `<div class="sub">Past cycle, what happened (not a forecast): ${esc(r.pastCycle)}</div>` : '') +
     /* The window's phases from club-ticket-phases.csv, in order. */
     (phases.ok ? phases.v.filter(p => p.clubQid === club.id && (p.team || 'men') === 'men' && p.window === r.window)
       .sort((a, b) => Number(a.phase) - Number(b.phase)).map(p =>
@@ -1629,10 +1630,10 @@ function notesHtml(notes){
 
 /* The shared club renderer (see the top of this section). `club` is a map
    club ({id, name, country}). Returns the html and both sources, so the
-   sheet can put its Next window line above it; `none` when the club has
+   sheet can tell the two sources apart; `none` when the club has
    neither source. */
-async function clubTicketsHtml(club){
-  const [notes, res] = await Promise.all([notesFor(club), researchedFor(club)]);
+async function clubTicketsHtml(club, {dates = false} = {}){
+  const [notes, res] = await Promise.all([notesFor(club), researchedFor(club, dates)]);
   const hasNotes = !!(notes.entries && notes.entries.length);
   const country = (res.row && res.row.country) || club.country || (hasNotes ? notes.entries[0].entry.country : '') || '';
   const errOf = r => r.err ? `<p class="err">${esc(r.err)}</p>` + why(esc(r.errWhy)) : '';
@@ -1654,7 +1655,7 @@ async function clubTicketsHtml(club){
 }
 
 /* ---- Dates from football-rules.json: ONE place decides what may be
-   shown, used by the sheet's Next window line and by every ticket window
+   shown, used by every ticket window
    and bucket entry on the Bucket list tab.
 
    A confirmed day is shown to the day. Anything else - inferred,
@@ -1711,77 +1712,7 @@ function isPast(p){
   return p.day ? (p.last || p.key) < today : p.end < today.slice(0, 7);
 }
 
-/* ---- Next window: the soonest window ahead across BOTH sources.
-
-   football-rules.json events carry a date; a disputed one never counts.
-   placeDate() decides how it is shown: to the day only if confirmed.
-
-   A club-ticket-windows.csv row carries loose text ("early to mid June")
-   and the cycle it is for ("2027-28"), never a date. To put it in order
-   with the others, the first month its text names is read in the cycle's
-   first year if it is May to December and in its second if it is January
-   to April - a pre-season window falls before the season, an in-season
-   one inside it. That placing is only for ordering: the line shows the
-   row's own words and says how it was placed. A row whose text names no
-   month ("about six weeks before each match") cannot be placed and is
-   named as not counted. */
-function windowCandidates(notes, res){
-  const month = todayISO().slice(0, 7);
-  const out = [], unplaced = [];
-  for(const n of notes.entries || []) for(const ev of n.events){
-    if(ev.dateSource === 'disputed') continue;
-    const name = ev.title || ev.id;
-    const p = placeDate(eventRaw(ev), ev.dateSource);
-    if(!p){ unplaced.push(name); continue; }
-    if(isPast(p)) continue;
-    out.push({key: p.key, src: 'Your notes', name, dateSource: p.day ? 'confirmed' : ev.dateSource,
-      when: p.day ? p.text : `${dateWords(p, ev.dateSource === 'confirmed' ? 'inferred' : ev.dateSource)} - check whether it has been announced`});
-  }
-  for(const r of res.windows || []){
-    if(r.dateSource === 'disputed') continue;
-    const name = r.label || r.window;
-    const m = (r.opensEstimate || '').match(MONTH_RE), cyc = (r.estimateFor || '').match(/^(\d{4})-\d{2}$/);
-    if(!m || !cyc){ unplaced.push(name); continue; }
-    const mi = MONTH_NAMES.indexOf(m[1]) + 1;
-    const ym = `${Number(cyc[1]) + (mi >= 5 ? 0 : 1)}-${String(mi).padStart(2, '0')}`;
-    if(ym < month) continue;
-    out.push({key: ym + '-01', src: 'Researched rules', name, dateSource: r.dateSource,
-      when: `${r.dateSource === 'confirmed' ? '' : 'estimated: '}${r.opensEstimate} (for ${r.estimateFor})`,
-      placed: `read as ${monthText(ym)} to put it in order`});
-  }
-  out.sort((a, b) => a.key.localeCompare(b.key));
-  return {out, unplaced};
-}
-
-function nextWindowHtml(notes, res){
-  const {out, unplaced} = windowCandidates(notes, res);
-  const tag = s => s === 'confirmed' ? '<span class="tag ok">confirmed</span>'
-    : s === 'inferred' ? '<span class="tag warn">estimated</span>' : '<span class="tag bad">no date source</span>';
-  let h = `<div class="nextw" id="nextWindow"><div class="nl">Next window</div>`;
-  if(out.length){
-    const first = out[0].key.slice(0, 7);
-    /* Everything in the soonest month, since a month-level estimate
-       cannot be put before or after a day in the same month. */
-    h += out.filter(c => c.key.slice(0, 7) === first).map(c =>
-      `<div class="nw"><b>${esc(c.name)}</b> — ${esc(c.when)}` +
-      `<div class="meta">${tag(c.dateSource)}<span class="tag">${esc(c.src)}</span></div>` +
-      (c.placed ? `<div class="sub">${esc(c.placed)}.</div>` : '') + `</div>`).join('');
-  }else{
-    /* Nothing ahead. Say which of three things is true: nothing was ever
-       recorded; something was, but it is all past (or disputed); or what
-       is left names no date or month. */
-    const recorded = (notes.entries || []).reduce((n, e) => n + e.events.length, 0) + (res.windows || []).length;
-    h += `<p class="unavail">${!recorded ? 'No window recorded.'
-      : unplaced.length ? 'No upcoming window with a date or month recorded.'
-      : 'No upcoming window recorded.'}</p>`;
-  }
-  if(unplaced.length) h += `<div class="sub">Not counted, because ${unplaced.length === 1 ? 'it names' : 'they name'} ` +
-    `no date or month (often tied to each match): ${esc(unplaced.join('; '))}.</div>`;
-  if(res.windowsErr) h += `<p class="err">The sales windows could not be loaded.</p>`;
-  return h + `</div>`;
-}
-
-/* The sheet: the Next window line, then the shared renderer. A club with
+/* The sheet: the shared renderer. A club with
    neither source keeps its plain "unavailable" line, followed by its
    country's rules only where that country has some. */
 async function ticketsHtml(club){
@@ -1794,7 +1725,7 @@ async function ticketsHtml(club){
       (C.rows && C.rows.length ? `<div class="tix"><h5 class="srch tix-country">Country rules: ${esc(countryLabel(T.country))} ` +
         `<em>national, no club decides</em></h5>${await countryRulesHtml(T.country)}</div>` : '');
   }
-  return nextWindowHtml(T.notes, T.res) + T.html;
+  return T.html;
 }
 
 (function wireSheet(){
@@ -3435,7 +3366,7 @@ async function bucketDetailHtml(item){
     h += `<h5 class="srch">Ticket rules</h5>`;
     for(const q of order){
       const club = mapClub(q) || {id: q, name: q, country: ''};
-      const T = await clubTicketsHtml(club);
+      const T = await clubTicketsHtml(club, {dates: true});
       h += `<div class="bclub" data-qid="${esc(q)}"><div class="bclubh">${esc(club.name)} <em>${esc(role.get(q))}</em></div>${T.html}</div>`;
     }
   }
@@ -4595,7 +4526,7 @@ async function renderTickets(rules){
       (linked.has(c.id) ? '<span class="tag">your notes</span>' : '') + `<span class="more"></span></div></summary>` +
       `<div class="tix"><p class="unavail">Loading…</p></div></details>`).join('') +
     `<p class="note">Rules only. Dated ticket windows and reminders are on the Bucket list tab; ` +
-      `a club's soonest one is also on its map sheet as "Next window". The researched rules and your notes ` +
+      `Sale dates are shown only there. The researched rules and your notes ` +
       `are shown side by side and never reconciled.</p>`;
   wireLazy(body, async d => d.dataset.country
     ? `<h5 class="srch tix-country">Country rules: ${esc(countryLabel(d.dataset.country))}</h5>` + await countryRulesHtml(d.dataset.country)
