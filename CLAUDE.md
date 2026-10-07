@@ -192,7 +192,9 @@ a subscribed calendar reads as a schedule regardless of its description.
   `federation` (the DFB) and `wiki` (Wikipedia, a third party's record),
   and the KSC research added 34 rows (`K1`-`K34`) and Germany 4
   (`DE1`-`DE4`); the KSC ids are this project's own, not a source
-  document's item numbers, so the KSC rows leave `ref` blank.
+  document's item numbers, so the KSC rows leave `ref` blank. Since
+  2026-10-07 the VfB research added 31 more (`V1`-`V31`), its own ids in
+  the same way, so the VfB rows leave `ref` blank too.
 - `data/country-ticket-rules.csv` — added 2026-09-24. Rules **no club
   decides** — a country's law, ministry, police or league — held once
   and inherited by every club whose ground is in that country. Same
@@ -643,6 +645,21 @@ a subscribed calendar reads as a schedule regardless of its description.
   Kaiserslautern as not researched; if an `inferred` or `disputed` date is
   shown to the day in any of the three; on sideways scroll or a script
   error. 22 checks.
+- `tools/test_vfb_tickets.js` — added 2026-10-07: VfB Stuttgart's ticket
+  information at 390x844, checked against the files. Fails if
+  `football-rules-links.csv` does not link `vfb` to `Q4512`; if VfB is not
+  under Clubs on Ticket info; if its entry does not open with "Country
+  rules: Germany" holding every DE row, above "Researched rules", above
+  "Your notes" (and the notes must hold the `vfb` entry); if any VfB rule,
+  window (label and typical opening) or phase is missing, or the Prices or
+  Sell-out record section holds a different number of rows from the files
+  (counted in the page) - the same on the club sheet; if the Next window
+  line words an estimate other than as one; if the Bucket list's
+  `vfb-regular` entry lacks VfB's block with Germany's rules above its
+  researched rules; if an `inferred` or `disputed` date is shown to the day
+  in any of the three; on sideways scroll or a script error. 24 checks.
+  With a price row and the `minors` rule dropped from the page in a
+  scratch copy it failed 5.
 - `tools/check_holidays.py` — added 2026-10-04: read-back and checks for
   `data/holidays-manual.csv`, in the style of `check_derbies.py`. Prints
   every row as understood (weekday, length), rejects by line (bad or
@@ -660,7 +677,8 @@ a subscribed calendar reads as a schedule regardless of its description.
   and `python3 tools/check_tickets.py` (which must exit 0), and since the
   same day `test_calendar.js` and `python3 tools/check_holidays.py`
   (which must exit 0), and since the same day `test_me.js`, and since
-  2026-10-06 `test_ksc_tickets.js`, on a push to
+  2026-10-06 `test_ksc_tickets.js`, and since 2026-10-07
+  `test_vfb_tickets.js`, on a push to
   `main` or a pull request touching `index.html`, `sw.js`, the manifest,
   a `tools/test_*.js`, `data/football-rules-links.csv`,
   `data/bucket-links-manual.csv`, `data/event-ticket-rules.csv`,
@@ -1819,6 +1837,74 @@ high-demand fixture. Written in the shape of the Nürnberg and Inter rows.
   the 2024-25 and 2025-26 derbies were read in passing (K29, K30), only to
   confirm that FCK sells the guest blocks at the Wildpark.
 
+**VfB Stuttgart, 2026-10-07.** Researched on Alexandru's instruction for
+an outside buyer - a member of no club, living near Stuttgart, wanting
+**two tickets together** - for Bundesliga and Champions League home games
+at the MHPArena, men's first team only. `Q4512`, from `data/clubs/DE.json`;
+`football-rules-links.csv` already linked `vfb` to it, so "Researched rules"
+and "Your notes" show under one club. Written in the shape of the KSC rows:
+1 club row, 4 windows, 10 phases, 23 rules, 3 demand rows, 50 prices,
+31 sources (`V1`-`V31`).
+- **How it was read.** The sandbox's proxy refuses vfb.de and every news
+  site, and WebFetch is refused too; web search works. Pages were read on a
+  GitHub runner by a throwaway probe - five rounds, removed in the same
+  branch. **`workflow_dispatch` answered HTTP 500 all session** (and `git
+  push` did for the first quarter of an hour), so the probe ran as a job in
+  `check-holidays.yml` on the pull request's own trigger; the file is byte
+  for byte as before. vfb.de, shop.vfb.de, tickets.vfb.de and
+  service.vfb.de all answered 200 - **no bot-management block**;
+  `vfb.de/robots.txt` disallows only `/fileadmin/` (PDFs allowed). The
+  Stuttgarter Zeitung and Stuttgarter Nachrichten are paywalled: only their
+  teasers, captions and first lines were read, and the rows say so. The
+  Internet Archive's CDX answered 503 for the one club page that had gone
+  (the 2025-26 sale calendar), so the 2025-26 members' sale dates seen in a
+  search-result summary were **not** written.
+- **What a non-member can do, in one paragraph.** Every home sale opens
+  with a **members' sale**: online, a virtual queue with one random place
+  per member, **up to two tickets per member** - so one membership covers
+  the buyer and a companion. A **free sale** happens only when tickets are
+  left; it did for every Bundesliga home game of early 2026 (press), but on
+  7 Oct 2026 the Atlético and Gladbach games were sold out in the members'
+  sale. A new member waits **three months** for the presale right (since
+  1 Jul 2025), after about **two weeks'** processing. Adult membership is
+  EUR 60 a year (26-64; EUR 30 for 15-25). The club's **Ticketbörse**
+  resells returns of sold-out games at the official price (seller refunded
+  minus 20%); for season-ticket seats it is visible to "other members", for
+  day tickets who may buy is not stated. Away: nothing from VfB's
+  allocation reaches a non-member; the home club's own sale is the route.
+- **Prices: the earlier claim, verified half-way.** The club's own help
+  centre says day-ticket prices vary from match to match and appear only
+  once a match's sale starts (SPOX said the same in 2024) - **no single
+  price list, verified**. **By opponent or by game category: not stated by
+  anything read** (an `unverified` row). The only 2026-27 list by category
+  is for **season tickets** (written, labelled `stage` `season-ticket`, not
+  open to non-members); the only day-ticket list by category found is the
+  **2024-25 Champions League** one (written, season `2024-25`, never
+  relabelled). One Bundesliga day price: EUR 70 at the side of the
+  Gegengerade, January 2026, from one press report (`unverified`).
+  `priceBasis` is `unknown` throughout.
+- **Timing.** The club's shop on 7 Oct 2026 announced members' sales
+  opening **46 and 43 days before kickoff** (Frankfurt, Lille) - both still
+  ahead, so neither date is written anywhere; the window says "about six
+  weeks before kickoff", `inferred`. Sales are listed only for games the
+  DFL has timed; when the DFL timed each game was not read. Season tickets:
+  late May to June (one cycle read). Champions League packages: early
+  August (two cycles).
+- **Germany's national rows: nothing added.** Every candidate failed the
+  boundary test or the source test: the under-14 rule is the ground's
+  Stadionordnung and the club's ATGB (the club could change them); the
+  resale caps and banned platforms are the ATGB; the draft federal law on
+  the ticket secondary market (seen in the Bundestag's lobby register in
+  search results) is a proposal, not a rule. **So nothing moved above the
+  Bayern, Nürnberg or KSC entries.**
+- **A key gap, the fourth of its shape, not fixed (the brief said: use the
+  existing schema).** `club-ticket-demand.csv`'s key is club, team, scope,
+  opponent, season, and only a derby row may name an opponent - so a club
+  can hold ONE general demand row per season, and VfB v Bayern and VfB v
+  Dortmund in the same season cannot each have one. The 2025-26 row is
+  therefore `varied-by-fixture` (a new value) with the fixtures in its
+  `timing` and note. Alexandru's call (Known open problems).
+
 **Ticket info and the Bucket list, 2026-10-04: rules on one tab, dated
 reminders on the other.** Built on Alexandru's instruction.
 - **One renderer for a club's ticket information**, `clubTicketsHtml()`
@@ -2745,6 +2831,95 @@ how each rests on them, is in Conventions, "The installable app" and
 ---
 
 ## Known open problems
+
+- **The VfB research contradicts the hand-written VfB entries of
+  `football-rules.json` in several places - found 2026-10-07, nothing
+  changed: Alexandru decides** (no tool writes that file).
+  - **`vfb-presale-active`** (2026-11-30, inferred; "3 months after
+    joining"). **The rule is supported** - three months, since 1 Jul 2025,
+    for the e.V. and the kids' clubs alike (V1, V4, V6, V7). **The date
+    cannot hold**: `vfb.memberStatus` says "not a member - decision
+    pending", and a membership applied for on 7 Oct 2026 takes about two
+    weeks to process, so the right would activate around mid to late
+    January 2027 at the earliest. **It matters for the Bayern home game**:
+    matchday 18 is a placeholder at late January 2027, and by the
+    six-weeks pattern its members' sale would open in December 2026 -
+    before a membership taken out now would have its presale right.
+  - **`vfb.procedure.home`**: "High-demand fixtures use an application
+    lottery". **Since 2025-26 home games are not drawn**: every members'
+    sale is an online sale with a virtual queue, and applications with a
+    draw are used only for away games with a members' allocation under 500
+    (V1, V18). The lottery was 2024-25's Champions League practice (V16).
+  - **`vfb.procedure.pricing`**: "Member discount EUR 17". The **EUR 17 is
+    the season-ticket member discount** (V14). For day tickets the club's
+    help centre lists reductions for under-18s, 65+ and disability and says
+    "Weitere Ermäßigungen sind nicht vorgesehen" (V8) - no member discount
+    on a day ticket was found. On "verify whether they stack": on the
+    season-ticket list, member and reduced are alternative prices, not
+    stacked.
+  - **`vfb.procedure.membership`**: "Fritzle- und Jugendclub cheaper,
+    exact fee unconfirmed" - **EUR 33 a year each, plus EUR 18.93 joining
+    fee for the Fritzle-Club** (V5, V6, V7). The adult EUR 60 is right
+    (ages 26-64; 15-25 pay EUR 30).
+  - **`vfb.ageRules.note`**: "Under 18 joins the VfB Fritzle- und
+    Jugendclub, not the adult e.V." - **the e.V. has under-18 rates too**
+    (EUR 21 to 14, EUR 30 from 15; V5), so it is a choice, not a rule.
+  - **`vfb.ageRules.idAtGate: false`**: the ATGB (2.7) require carrying an
+    official photo ID and showing it on request, and proof of a reduction
+    must be shown unasked when buying (V8, V11) - the KSC finding again.
+  - **`vfb-regular`'s action** ("Join the Fritzle- und Jugendclub, then
+    wait three months") applies only to someone aged 5-18 (Fritzle 5-12,
+    Jugendclub 13-18); for an adult the route is the e.V. Which applies
+    depends on an age the files do not hold.
+  What the research **supports**: max 2 tickets; the three-month wait;
+  "home matches frequently sell out in the member presale" (with the
+  early-2026 free sales as the exception); the REWE family block for
+  kids'-club members only; "cheapest is standing"; VVS travel included.
+- **VfB rows left `unverified`, 2026-10-07, and why** - each a gap, not a
+  rule: **`price-category`** (whether prices depend on the opponent - no
+  source says); **`capacity`** (below); **`resale-prices`** (no credible
+  data; only asking prices on platforms the club bans); and the one
+  Bundesliga day price, **EUR 70** (one press report, category and price
+  class unstated). **Single-source rows**, confirmed but resting on one
+  source: the adult fee (the club's fee table; a 2019 press list gave the
+  pre-2022 EUR 48, so it is not a second source), personalisation and ID
+  (the ATGB), the 2026-27 sell-outs and "no free sale yet" (the shop's
+  live calendar), the season-ticket prices (the club's PDF). **The two
+  free-sale press reports are one newsroom** (Stuttgarter Nachrichten and
+  Stuttgarter Zeitung, one author), so the early-2026 free sales rest on
+  one press source.
+- **Which MHPArena capacity the sources use: they disagree, 2026-10-07.**
+  60,058 (German Wikipedia's infobox, the map, and English Wikipedia's
+  attendance for the Köln game, 4 Sep 2026); 60,449 (the 2011 figure, and
+  English Wikipedia's highest 2025-26 home attendance - above 60,058);
+  54,812 all-seated for international games (German Wikipedia), while
+  English Wikipedia gives 57,000-60,000 for European home games. No club
+  figure was read. The club gives 2024-25's average as 59,438.
+- **VfB's resale fee against Germany's DFL row - does not sit easily,
+  found 2026-10-07.** The DFL row (from the KSC session) caps the official
+  secondary market's service fee at 15% of the order value; VfB's
+  Ticketbörse keeps 20% from the seller (V1, V8, V12). Either VfB is not in
+  the DFL scheme (its page does not say every club takes part) or the 15%
+  is a buyer-side fee. Not settled. **Nothing else in the VfB research
+  contradicts the KSC or Nürnberg entries on German rules**: the private
+  handover caps differ (KSC +15%, Nürnberg +10%, VfB +20% plus EUR 5) but
+  each is a club rule, as their rows already say. **VfB's own pages
+  disagree** on that cap: the ATGB allow +20% plus EUR 5, the help centre
+  says "zum Originalpreis"; both are in the row.
+- **Published future sale dates, NOT written (rule 1), for Alexandru to
+  hand-write if he wants them**: on 7 Oct 2026 the club's shop announced
+  the members' sale for VfB v Frankfurt (28 Nov) opening Tue 13 Oct 2026
+  09:00, for VfB v Lille (UCL, 9 Dec) Tue 27 Oct 2026 09:00 (for members
+  with no or one 4-package), and for Schalke away (21 Nov) Thu 8 Oct 2026
+  09:00. They are the club's own published dates (`confirmed`), and they
+  belong in `football-rules.json` if anywhere.
+- **The demand file's key cannot hold a non-derby fixture - found
+  2026-10-07, not changed (the brief said to use the existing schema).**
+  One general row per club per season; VfB's 2025-26 row is therefore
+  `varied-by-fixture`, with Bayern (sold out, December) and the January
+  free sales in its text. The fix, if wanted, is the familiar one: a
+  `fixture` column in the key (or letting a general row name an opponent),
+  and one line in the Sell-out record renderer. Alexandru's call.
 
 - **The KSC research contradicts the hand-written KSC entries of
   `football-rules.json` in four places - found 2026-10-06, nothing
@@ -7469,6 +7644,8 @@ how each rests on them, is in Conventions, "The installable app" and
    the Conventions entry on it above.
    **What is still not built is the display.** `index.html` does not
    show any of these files. Item 2 below is where that belongs.
+   **Five clubs since 2026-10-07**: VfB Stuttgart was researched for an
+   outside buyer (Conventions, "VfB Stuttgart, 2026-10-07").
    **Four clubs since 2026-10-06**: Karlsruher SC was researched for an
    outside buyer (Conventions, "Karlsruher SC and Germany's first
    national rows").
