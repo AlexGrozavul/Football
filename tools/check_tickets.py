@@ -387,7 +387,10 @@ KNOWN = {
     (RULES_FILE, "team"): ["men"],
     (DEMAND_FILE, "team"): ["men"],
     (TICKETS_FILE, "access"): ["members-only", "open-with-member-presale",
-                               "open-with-account"],
+                               "open-with-account",
+                               # VfB Stuttgart, 2026-10-07: every sale opens
+                               # to members; free sale only if tickets remain.
+                               "members-first-leftovers-free-sale"],
     (TICKETS_FILE, "salesModel"): ["request-then-lottery", "phased-sale",
                                    "open-sale"],
     (TICKETS_FILE, "closesEarly"): ["yes", "no", "unknown",
@@ -416,10 +419,15 @@ KNOWN = {
         "interista-registered", "bper-mastercard", "open-sale",
         # Karlsruher SC, 2026-10-06: its phase 2 is season-ticket holders
         # AND members, not fan clubs.
-        "season-ticket-and-members"],
+        "season-ticket-and-members",
+        # VfB Stuttgart, 2026-10-07: its Champions League and away phases.
+        "season-ticket-holders", "fan-clubs", "away-season-ticket"],
     (PRICES_FILE, "competition"): ["bundesliga", "dfb-pokal", "ucl",
                                    "2-bundesliga", "serie-a"],
-    (PRICES_FILE, "stage"): ["regular", "early-rounds", "league-phase"],
+    (PRICES_FILE, "stage"): ["regular", "early-rounds", "league-phase",
+                             # VfB Stuttgart, 2026-10-07: a season ticket's
+                             # price, the only 2026-27 list it publishes.
+                             "season-ticket"],
     (PRICES_FILE, "category"): [
         "1", "2", "3", "4", "5",
         "haupttribuene-kat-1", "haupttribuene-kat-2", "haupttribuene-kat-3",
@@ -434,7 +442,12 @@ KNOWN = {
         "suedtribuene-s1-s5", "ost-o1-o5", "ost-o2-o4", "ost-o2-o3-polster",
         "suedost-so", "nord-n1-n3", "nordwest-familienblock", "suedwest-sw",
         "west-w1-w4", "west-w2-w3", "gastblock-17-1", "gastblock-18-1",
-        "gastblock-17-2-bis-18-4"],
+        "gastblock-17-2-bis-18-4",
+        # VfB Stuttgart's own categories 1-7 (2026-10-07), named by their
+        # stands, and the one press price that names only a stand side.
+        "kat-1-mitte-1", "kat-2-mitte-2", "kat-3-seite-1", "kat-4-seite-2",
+        "kat-5-kurve-sitz-1", "kat-6-kurve-sitz-2", "kat-7-stehplatz",
+        "gegentribuene-seite"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
@@ -459,7 +472,11 @@ KNOWN = {
         # and KSC's derby rows on what that classification did.
         "risk-classification"],
     (DEMAND_FILE, "outcome"): ["sold-out", "nearly-sold-out", "seats-left",
-                               "sold-out-before-open-sale"],
+                               "sold-out-before-open-sale",
+                               # VfB Stuttgart 2025-26 (2026-10-07): one
+                               # general row per season holds games that
+                               # sold out and games that reached free sale.
+                               "varied-by-fixture"],
     (SOURCES_FILE, "publisherKind"): ["club", "league", "press", "fan-site",
                                       "government", "other-club",
                                       # 2026-10-06: the DFB, and Wikipedia
@@ -477,7 +494,9 @@ KNOWN[(EVENT_RULES_FILE, "topic")] = KNOWN[(RULES_FILE, "topic")]
 KNOWN_TOKENS = {
     (TICKETS_FILE, "requestTypes"): ["home", "away", "ucl", "pokal"],
     (TICKETS_FILE, "updateTracking"): ["newsletter", "per-match-article",
-                                       "notify-button", "news-section"],
+                                       "notify-button", "news-section",
+                                       # VfB Stuttgart, 2026-10-07
+                                       "ticket-shop-calendar", "email"],
     # A list because one rule can have two authorities (the Osservatorio
     # sets residency limits with the local Questura/Prefettura) and bite
     # under two conditions (high-risk matches and reserved sectors).

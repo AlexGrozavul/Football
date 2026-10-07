@@ -49,7 +49,12 @@ name: Test the page
 # KSC rule and window in the entry, the same order on its club sheet, the
 # Südwestderby entry with KSC as host and Kaiserslautern not researched, and
 # no estimated date shown to the day anywhere it appears). Since the same day
-# a change to the ticket files themselves also runs this workflow.
+# a change to the ticket files themselves also runs this workflow. Since
+# 2026-10-07 VfB Stuttgart's ticket information (tools/test_vfb_tickets.js -
+# VfB under Clubs with "Country rules: Germany" above its researched rules
+# and its notes, every VfB rule, window and phase shown and its price and
+# sell-out sections holding every row, the same on its club sheet and in the
+# vfb-regular bucket entry, and no estimated date shown to the day).
 # Each one
 # serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
@@ -210,6 +215,12 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_ksc_tickets.js . 2>&1 | tee /tmp/test_ksc_tickets.log
 
+      - name: VfB Stuttgart ticket information (Ticket info, sheet, vfb-regular)
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_vfb_tickets.js . 2>&1 | tee /tmp/test_vfb_tickets.log
+
       # The calendar reads the holidays file; its own checker must pass too.
       - name: School holidays read back (check_holidays.py exits 0)
         if: always()
@@ -228,7 +239,7 @@ jobs:
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets check_tickets check_holidays; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets check_tickets check_holidays; do
               echo "## test_$t.js"
               echo
               echo '```'
