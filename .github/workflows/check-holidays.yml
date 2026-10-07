@@ -32,14 +32,6 @@ permissions:
   contents: read
 
 jobs:
-  # TEMPORARY probe for the VfB ticket research, removed in the same branch.
-  probe:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - run: sudo apt-get install -y -qq poppler-utils >/dev/null 2>&1 || true
-      - run: python3 tools/_probe_vfb.py tools/_probe_urls.txt 7000
-
   check:
     runs-on: ubuntu-latest
 
