@@ -167,6 +167,20 @@ const linked = rulesLinks.some(l => l.rulesId === 'vfb' && l.clubQid === VFB);
     if(n.tags.includes('estimated'))
       check(`VfB sheet Next window: "${n.text.slice(0, 60)}…" is worded as an estimate and never to the day`, /estimated/.test(n.text) && !DAY.test(n.text), n.text);
   }
+  // A confirmed vfb ticket event (a sale date the club published) is shown to the day and not as an estimate.
+  // Today is the machine's own local day, as the page's todayISO() reads it.
+  const now = new Date(), today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const confirmed = rules.ticketEvents.filter(e => e.club === 'vfb' && e.dateSource === 'confirmed' && e.date && e.date >= today)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  for(const ev of confirmed){
+    const line = S.next.find(n => n.text.includes(ev.title));
+    if(line) check(`VfB sheet Next window: confirmed "${ev.id}" is shown to the day, not as an estimate`,
+      DAY.test(line.text) && !line.tags.includes('estimated'), line.text);
+  }
+  // The soonest one must be on the line when it falls in the current month (nothing can come before it then).
+  if(confirmed.length && confirmed[0].date.slice(0, 7) === today.slice(0, 7))
+    check(`VfB sheet Next window: names the soonest confirmed sale, "${confirmed[0].id}"`,
+      S.next.some(n => n.text.includes(confirmed[0].title)), S.next.map(n => n.text).join(' | ').slice(0, 300));
   days = await dayLevelIn('#sheetTix');
   check('VfB sheet: no inferred or disputed date shown to the day', !days.length, JSON.stringify(days).slice(0, 300));
   check('VfB sheet: no sideways scroll', await noSideways());
