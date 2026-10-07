@@ -657,7 +657,11 @@ a subscribed calendar reads as a schedule regardless of its description.
   line words an estimate other than as one; if the Bucket list's
   `vfb-regular` entry lacks VfB's block with Germany's rules above its
   researched rules; if an `inferred` or `disputed` date is shown to the day
-  in any of the three; on sideways scroll or a script error. 24 checks.
+  in any of the three; on sideways scroll or a script error; and, since the
+  same day, if a `confirmed` vfb ticket event is shown other than to the day,
+  or the soonest one is missing from Next window when it falls in the current
+  month (these checks follow today's date, so they stop once the sales are
+  past). 27 checks on 2026-10-07.
   With a price row and the `minors` rule dropped from the page in a
   scratch copy it failed 5.
 - `tools/check_holidays.py` — added 2026-10-04: read-back and checks for
@@ -2906,13 +2910,23 @@ how each rests on them, is in Conventions, "The installable app" and
   each is a club rule, as their rows already say. **VfB's own pages
   disagree** on that cap: the ATGB allow +20% plus EUR 5, the help centre
   says "zum Originalpreis"; both are in the row.
-- **Published future sale dates, NOT written (rule 1), for Alexandru to
-  hand-write if he wants them**: on 7 Oct 2026 the club's shop announced
-  the members' sale for VfB v Frankfurt (28 Nov) opening Tue 13 Oct 2026
-  09:00, for VfB v Lille (UCL, 9 Dec) Tue 27 Oct 2026 09:00 (for members
-  with no or one 4-package), and for Schalke away (21 Nov) Thu 8 Oct 2026
-  09:00. They are the club's own published dates (`confirmed`), and they
-  belong in `football-rules.json` if anywhere.
+- **The three published sale dates are in `football-rules.json` since
+  2026-10-07, hand-written on Alexandru's instruction** (no tool wrote them;
+  the ticket files still hold none). On 7 Oct 2026 the club's shop announced
+  the members' sale for Schalke away (21 Nov) Thu 8 Oct 2026 09:00, for VfB v
+  Frankfurt (28 Nov) Tue 13 Oct 2026 09:00 and for VfB v Lille (UCL, 9 Dec)
+  Tue 27 Oct 2026 09:00 (for members with no or one 4-package). They are
+  `ticketEvents` `vfb-schalke-away-members-sale`, `vfb-frankfurt-members-sale`
+  and `vfb-lille-members-sale`, `confirmed`, in the `local` feed (Schalke away
+  too, though Gelsenkirchen is not day-trip range - it is a VfB sale), lead
+  times 1, 3 and 7 days; the 09:00 is in the title, because a ticket event
+  has no time field and the calendar draws it as a whole day. **Each is a
+  members' sale**: it needs a presale right, which `vfb.memberStatus` ("not a
+  member - decision pending") does not give, and each event says so. They are
+  in no bucket entry (`bucket-links-manual.csv` was not touched), so they show
+  under Reminders; linking them to `vfb-regular` is Alexandru's call. **The
+  dates come from a live shop page read once**; if the club moves a sale, the
+  JSON is not updated by anything.
 - **The demand file's key cannot hold a non-derby fixture - found
   2026-10-07, not changed (the brief said to use the existing schema).**
   One general row per club per season; VfB's 2025-26 row is therefore
