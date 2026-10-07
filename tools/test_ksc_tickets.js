@@ -10,7 +10,7 @@
 //    "Researched rules", which is above "Your notes";
 //  - every KSC rule of data/club-ticket-rules.csv and every KSC window of data/club-ticket-windows.csv is in that entry;
 //  - no inferred (or disputed) date is shown to the day, in the entry, on the club sheet or in the Südwestderby card;
-//  - the club sheet shows the same order, and its Next window line words every estimate as one, never to the day;
+//  - the club sheet shows the same order, and neither shows a sale date (no Next window, no "Typically opens");
 //  - the Bucket list's Südwestderby entry shows KSC (host) with its researched rules, Germany's rules above them, and
 //    1. FC Kaiserslautern as not researched ("Researched rules - Not researched yet", since its notes exist);
 //  - no sideways scroll, no script error.
@@ -121,8 +121,8 @@ const kscWindows = csv('data/club-ticket-windows.csv').filter(r => r.clubQid ===
   const missingRules = K ? kscRules.filter(r => !norm(K.text).includes(norm(r.rule))) : kscRules;
   check(`KSC: every one of its ${kscRules.length} researched rules is in the entry`, !missingRules.length,
     missingRules.map(r => `${r.scope}/${r.topic}`).join(', '));
-  const missingWin = K ? kscWindows.filter(w => !norm(K.text).includes(norm(w.label)) || !norm(K.text).includes(norm(w.opensEstimate))) : kscWindows;
-  check(`KSC: every one of its ${kscWindows.length} sales windows is in the entry, with its typical opening`, !missingWin.length,
+  const missingWin = K ? kscWindows.filter(w => !norm(K.text).includes(norm(w.label))) : kscWindows;
+  check(`KSC: every one of its ${kscWindows.length} sales windows is in the entry, by its label (no sale date)`, !missingWin.length,
     missingWin.map(w => w.window).join(', '));
   let days = await dayLevelIn(`details.tclub[data-qid="${KSC}"]`);
   check('KSC (Ticket info): no inferred or disputed date shown to the day', !days.length, JSON.stringify(days).slice(0, 300));
@@ -138,18 +138,14 @@ const kscWindows = csv('data/club-ticket-windows.csv').filter(r => r.clubQid ===
     const heads = [...t.querySelectorAll('h5.srch')].map(h => h.className);
     return {text: t.innerText, country: t.querySelector('.tix-country')?.textContent || '',
       order: ['tix-country', 'tix-researched', 'tix-notes'].map(c => heads.findIndex(h => h.includes(c))),
-      next: nw ? [...nw.querySelectorAll('.nw')].map(e => ({text: e.textContent.replace(/\s+/g, ' '),
-        tags: [...e.querySelectorAll('.tag')].map(x => x.textContent)})) : []};
+      hasNext: !!nw};
   });
   check('KSC sheet: "Country rules: Germany" first, then researched rules, then your notes',
     /^Country rules: Germany/.test(S.country) && germanyOk(S.text) && S.order[0] === 0 && S.order[1] > 0 && S.order[2] > S.order[1],
     `${S.order.join(',')} ${germanyMissing(S.text)}`);
   check('KSC sheet: its researched derby rules are shown', kscRules.filter(r => r.scope === 'derby-home').every(r => norm(S.text).includes(norm(r.rule))));
-  for(const n of S.next){
-    if(n.tags.includes('estimated'))
-      check(`KSC sheet Next window: "${n.text.slice(0, 60)}…" is worded as an estimate and never to the day`, /estimated/.test(n.text) && !DAY.test(n.text), n.text);
-  }
-  check('KSC sheet: Next window has at least one line', S.next.length > 0);
+  // Sale dates are shown only on the Bucket list: the sheet has no Next window line and no window date line.
+  check('KSC sheet: no sale date - no Next window line, no "Typically opens"', !S.hasNext && !/Next window|Typically opens/.test(S.text), S.text.slice(0, 120));
   days = await dayLevelIn('#sheetTix');
   check('KSC sheet: no inferred or disputed date shown to the day', !days.length, JSON.stringify(days).slice(0, 300));
   check('KSC sheet: no sideways scroll', await noSideways());

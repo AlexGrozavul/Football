@@ -15,7 +15,8 @@
 //    file has none);
 //    Inter's notes carry the "unverified" marking football-rules.json gives them;
 //  - Ticket info has no upcoming-dates section: no ticket window, no Next window, no heading but
-//    Countries and Clubs;
+//    Countries and Clubs; since 2026-10-07 neither it nor any club sheet shows a sale date at all, and the
+//    Bucket list still does;
 //  - the Bucket list shows every bucketList entry; every ticketEvents entry is reachable from it,
 //    inside the entry data/bucket-links-manual.csv links it to or under Reminders, which holds
 //    exactly the unlinked ones, soonest first and undated last;
@@ -128,6 +129,26 @@ const server = http.createServer((req, res) => {
     T.h2.length === 2 && /^Countries/.test(T.h2[0]) && /^Clubs/.test(T.h2[1]) && !T.ev && !T.next && !T.reminders,
     `${T.h2.join(' / ')}; ${T.ev} windows; ${T.next} next-window lines`);
 
+  // Sale dates are shown only on the Bucket list (CLAUDE.md, "Sale dates"): no Ticket info card and no club sheet
+  // carries a "Next window" line or a window's "Typically opens" / past-cycle line - for every club that has a
+  // sales-window row, which is where those lines used to come from.
+  const windowQids = [...new Set(csv('data/club-ticket-windows.csv').filter(r => (r.team || 'men') === 'men').map(r => r.clubQid))];
+  const noSaleDate = t => !/Next window|Typically opens|Past cycle, what happened/.test(t);
+  const tickText = await page.evaluate(() => document.getElementById('ticketBody').innerText);
+  const sheetsWith = [];
+  for(const q of windowQids){
+    if(!await page.evaluate(q2 => !!CLUBS.find(c => c.id === q2), q)) continue;
+    await page.evaluate(q2 => openSheet(CLUBS.find(c => c.id === q2)), q);
+    await page.waitForFunction(() => !/Loading/.test(document.getElementById('sheetTix').textContent), null, {timeout: 15000});
+    await page.$$eval('#sheetTix details', ds => ds.forEach(d => d.open = true));
+    sheetsWith.push(await page.evaluate(() => ({text: document.getElementById('sheetTix').innerText,
+      next: !!document.getElementById('nextWindow')})));
+    await page.evaluate(() => typeof closeSheet === 'function' && closeSheet());
+  }
+  check(`Ticket info and ${sheetsWith.length} club sheets (every club with a sales window) show no sale date: no Next window, no "Typically opens"`,
+    sheetsWith.length > 0 && noSaleDate(tickText) && !T.next && sheetsWith.every(x => noSaleDate(x.text) && !x.next),
+    `${sheetsWith.length} sheets`);
+
   // Italy, opened
   const IT = await page.evaluate(() => {
     const d = document.querySelector('details.tcountry[data-country="IT"]');
@@ -209,6 +230,10 @@ const server = http.createServer((req, res) => {
   check('Frankenderby: shows Nürnberg, host, first, then Fürth', !!frank && frank.clubs.map(c => c.qid).join() === 'Q15786,Q153539' &&
     /host/.test(frank.clubs[0].head), frank ? frank.clubs.map(c => c.head).join(' | ') : 'no card');
   check('Frankenderby: Fürth "not researched"', !!frank && /No ticket rules researched for SpVgg Greuther Fürth yet\./.test(frank.clubs[1]?.text || ''));
+  check('Bucket list still shows its ticket window reminders: every ticket event is on a card or under Reminders, and a club block keeps "Typically opens"',
+    rules.ticketEvents.length > 0 && B.reminders.length + B.inside.reduce((n, c) => n + c.ev.length, 0) === rules.ticketEvents.length &&
+    !!frank && /Typically opens/.test(frank.clubs[0].text),
+    `${B.reminders.length} under Reminders, ${B.inside.reduce((n, c) => n + c.ev.length, 0)} inside entries`);
   check("Frankenderby: Nürnberg's researched rules are shown, Germany's national line on top",
     !!frank && /Researched rules/.test(frank.clubs[0].text) &&
     (() => { const i = frank.clubs[0].text.indexOf(deRows.length ? 'Country rules: Germany' : 'No national rules researched for Germany');

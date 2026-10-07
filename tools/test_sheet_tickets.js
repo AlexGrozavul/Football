@@ -106,7 +106,6 @@ const server = http.createServer((req, res) => {
     const entries = rules.clubs.filter(c => ids.includes(c.id));
     const row = tickets.find(t => t.clubQid === qid && t.team === 'men');
     const S = await open(qid);
-    console.log(`    ${label}: ${S.nextText}`);
     if(!entries.length && !row){ check(`${label}: no ticket information, so "Ticket info unavailable"`, S.unavailable); continue; }
     check(`${label}: "Your notes" ${entries.length ? 'shown' : 'absent, and says so'}`, S.notes && /^Your notes/.test(S.notesLabel) &&
       (entries.length ? !/None of your notes are about this club/.test(S.text) : /None of your notes are about this club/.test(S.text)));
@@ -123,20 +122,9 @@ const server = http.createServer((req, res) => {
       const missing = entries.flatMap(leaves).filter(v => !flat.includes(norm(v)));
       check(`${label}: every text field of the football-rules.json entry is on the sheet, as written`, !missing.length, missing.join(' | '));
     }
-    // Next window
-    check(`${label}: a Next window line`, S.next !== null);
-    const own = new Set([...rules.ticketEvents.filter(e => ids.includes(e.club)).map(e => e.title || e.id),
-      ...windows.filter(w => w.clubQid === qid).map(w => w.label || w.window)]);
-    const disputed = rules.ticketEvents.filter(e => ids.includes(e.club) && e.dateSource === 'disputed').map(e => e.title || e.id);
-    for(const n of S.next || []){
-      check(`${label}: next window "${n.name}" is this club's own event or window`, own.has(n.name));
-      check(`${label}: "${n.name}" carries a dateSource label`, n.tags.some(t => /^(confirmed|estimated|no date source)$/.test(t)), n.tags.join(','));
-      check(`${label}: "${n.name}" is never a disputed entry`, !disputed.includes(n.name));
-      if(n.tags.includes('estimated')){
-        check(`${label}: "${n.name}" is estimated, so worded as an estimate and never to the day`,
-          /estimated/.test(n.text.replace(n.tags.join(''), '')) && !DAY.test(n.text), n.text);
-      }
-    }
+    // Sale dates are shown only on the Bucket list: no Next window line, no window date line.
+    check(`${label}: no sale date on the sheet - no Next window line, no "Typically opens"`,
+      S.next === null && !/Next window|Typically opens/.test(S.text));
     check(`${label}: no sideways scroll`, await noSideScroll());
     if(label === 'Inter') await page.screenshot({path: path.join(process.env.SHOT_DIR || '/tmp', 'sheet-inter.png')});
   }
@@ -149,7 +137,7 @@ const server = http.createServer((req, res) => {
   const linked = new Set(links.map(l => l.clubQid)), researched = new Set(tickets.map(t => t.clubQid));
   if(!linked.has(plain) && !researched.has(plain)){
     const S = await open(plain);
-    check(`a club with neither source (${plain}) keeps "Ticket info unavailable"`, S.unavailable && S.next === null);
+    check(`a club with neither source (${plain}) keeps "Ticket info unavailable"`, S.unavailable && S.next === null && !/Typically opens/.test(S.text));
   }
 
   check('no script error', !errors.length, errors.join(' | '));
