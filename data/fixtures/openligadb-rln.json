@@ -3751,7 +3751,7 @@
   {
    "id": 87127,
    "utcDate": "2026-10-06T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "11. Spieltag",
    "roundOrder": 11,
    "home": {
@@ -3766,9 +3766,20 @@
     "shortName": "Hannover 96 II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
