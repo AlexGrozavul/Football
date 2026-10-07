@@ -54,9 +54,24 @@
   "hash": "d140012f3e992fe9",
   "sequence": 1
  },
+ "vfb-frankfurt-members-sale@football.local": {
+  "dtstamp": "20261007T174202Z",
+  "hash": "5e702f57c3f35cfb",
+  "sequence": 0
+ },
+ "vfb-lille-members-sale@football.local": {
+  "dtstamp": "20261007T174202Z",
+  "hash": "aa8fa7cb0577ea08",
+  "sequence": 0
+ },
  "vfb-presale-active@football.local": {
   "dtstamp": "20260908T132236Z",
   "hash": "cbe3c9099d156569",
   "sequence": 1
+ },
+ "vfb-schalke-away-members-sale@football.local": {
+  "dtstamp": "20261007T174202Z",
+  "hash": "5b730032741759cf",
+  "sequence": 0
  }
 }
