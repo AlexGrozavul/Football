@@ -1,22 +1,12 @@
-https://shop.vfb.de/agb/atgb/agab grep=Ticket-Geschäftsbedingungen|Stand|personalis|Ausweis|Weiterverkauf|Weitergabe|Kinder|Jugend|minderjährig|18\sJahre|Gebühr|Höchstzahl|maximal|Ermäßig|viagogo|Zweitmarkt|Ticketbörse|Mitglied max=3000 linkmax=200
-https://shop.vfb.de/de/mitgliedschaften/beitragsuebersicht max=7000 linkmax=300
-https://shop.vfb.de/de/Tickets max=9000 linkmax=1500
-https://shop.vfb.de/de/mitgliedschaften max=4000 linkmax=500
-https://assets.vfb.de/webasset/src?src=/Contentseiten/Tickets/Dauerkarte_Preise_26_27.pdf max=8000
-https://tickets.vfb.de/shop?wes=empty_session_103&language=1&shopid=103&nextstate=2&lpShortcutId=2 max=5000 linkmax=600
-https://tickets.vfb.de/shop?wes=empty_session_103&language=1&shopid=103&nextstate=2&lpShortcutId=3 max=5000 linkmax=600
-https://tickets.vfb.de/shop?wes=empty_session_103&language=1&shopid=103&nextstate=2&lpShortcutId=4 max=5000 linkmax=600
-https://tickets.vfb.de/shop?wes=empty_session_103&language=1&shopid=103&nextstate=2&lpShortcutId=5 max=5000 linkmax=600
-https://tickets.vfb.de/shop/103/event/2794 max=4000 linkmax=600
-https://tickets.vfb.de/shop/103/event/2795 max=4000 linkmax=600
-https://service.vfb.de/categories.html?hl=de&c=2005_18962_18963_ max=8000 linkmax=300
-https://service.vfb.de/categories.html?hl=de&c=2005_18962_18964_ max=8000 linkmax=300
-https://service.vfb.de/categories.html?hl=de&c=2005_18962_18975_ max=8000 linkmax=300
-https://service.vfb.de/categories.html?hl=de&c=2005_18962_18978_ max=8000 linkmax=300
-https://service.vfb.de/categories.html?hl=de&c=2005_18962_18979_ max=8000 linkmax=300
-https://service.vfb.de/categories.html?hl=de&c=2005_18962_18980_ max=8000 linkmax=300
-https://www.vfb.de/de/1893/erlebnis/stadionerlebnis/sicherheit/ grep=Ausweis|personal|Gäste|Gast|Trennung|Farben max=2000 linkmax=200
-https://de.wikipedia.org/wiki/MHPArena grep=Zuschauer|Plätze|Kapazität max=2000 linkmax=100
-https://en.wikipedia.org/wiki/2025%E2%80%9326_VfB_Stuttgart_season grep=Attendance|attendance|60,|59,|58,|57, max=2000 linkmax=100
-https://www.stuttgarter-zeitung.de/sport/vfb-stuttgart/vfb-stuttgart-stadion-kapazitaet-frankfurt-ueberholt-der-vfb-79392667.html grep=Kapazität|Zuschauer|Plätze linkmax=100
-https://www.diefalsche9.de/?p=52752 max=4000 linkmax=100
+https://tickets.vfb.de/shop/103?nextstate=12&alternativelayout=flexshop_3_shoptext&wes=empty_session_103&language=1&shopid=103 max=60000 linkmax=10
+https://www.vfb.de/de/vfb/aktuell/neues/fans/2025/besucherinfos--vfb---fc-bayern-muenchen-2526/ max=5000 linkmax=10
+https://shop.vfb.de/de/tickets/allgemeine-informationen max=12000 linkmax=1500
+https://shop.vfb.de/de/Dauerkarten max=8000 linkmax=1000
+https://www.vfb.de/de/vfb/aktuell/neues/fans/2025/ticketvergabe-25-26/ max=10 alllinks linkgrep=pdf|proxy|webasset|jpg|png linkmax=3000
+https://www.vfb.de/de/vfb/aktuell/neues/fans/2026/ticket-update-zur-uefa-champions-league-2627/ max=10 alllinks linkgrep=pdf|proxy|webasset linkmax=3000
+http://web.archive.org/cdx/search/cdx?url=shop.vfb.de/en/bundesliga-termine&output=txt&limit=60 max=6000
+http://web.archive.org/cdx/search/cdx?url=shop.vfb.de/de/bundesliga-termine&output=txt&limit=60 max=6000
+http://web.archive.org/cdx/search/cdx?url=tickets.vfb.de/shop*&output=txt&limit=80&filter=statuscode:200 max=9000
+https://en.wikipedia.org/wiki/2026%E2%80%9327_VfB_Stuttgart_season grep=Attendance:\s[\d,]+ max=10 linkmax=10
+https://www.diefalsche9.de/?p=50819 max=4000 linkmax=10
+https://www.diefalsche9.de/?p=56662 max=4000 linkmax=10
