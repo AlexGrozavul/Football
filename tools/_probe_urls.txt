@@ -1,16 +1,22 @@
-https://tickets.vfb.de/shop/103 max=6000 alllinks linkmax=3000
-https://shop.vfb.de/de/bundesliga-termine max=9000 linkmax=1500
-https://shop.vfb.de/en/bundesliga-termine max=3000 linkmax=500
-https://shop.vfb.de/mitgliedschaften/verein/ max=6000 linkmax=1500
-https://shop.vfb.de/mitgliedschaften/jugendclub/ max=5000 linkmax=500
-https://shop.vfb.de/mitgliedschaften/fritzle-club/ max=4000 linkmax=500
-https://www.vfb.de/de/1893/club/service/formales/agb/ max=3000 linkmax=3000
-https://service.vfb.de/index.html max=5000 alllinks linkmax=4000
-https://shop.vfb.de/en/season-tickets max=5000 linkmax=1500
-https://www.vfb.de/?proxy=redaktion%2Fimages%2Fneues%2Fprofis%2F2024-2025%2FPreisuebersicht_UCL_24-25.pdf max=5000
-https://www.spox.com/fussball/listen/vfb-stuttgart-tickets-wo-kann-ich-karten-kaufen-und-was-kosten-sie/6828808 max=5000 linkmax=100
-https://www.goal.com/de/meldungen/vfb-stuttgart-tickets-wo-gibt-es-karten-wie-teuer-sind-sie/blt45c2be7eebdbcda9 max=6000 linkmax=100
-https://www.stuttgarter-nachrichten.de/inhalt.vfb-stuttgart-ticket-chance-fuer-nicht-mitglieder-freier-verkauf-laeuft.e185992a-125a-4ef5-bfa0-33b81cfbab4a.html grep=Nicht-Mitglied|freie|Verkauf linkmax=100
-https://www.stuttgarter-zeitung.de/sport/vfb-stuttgart/vfb-stuttgart-freier-ticket-verkauf-fuer-hoffenheim-spiel-startet-79429578.html grep=VfB-Stuttgart:|freie|Verkauf|Uhr linkmax=100
-https://www.diefalsche9.de/?p=40970 max=5000 linkmax=100
-https://news-7.de/trends/vfb-tickets/ max=4000 linkmax=100
+https://shop.vfb.de/agb/atgb/agab grep=Ticket-Geschäftsbedingungen|Stand|personalis|Ausweis|Weiterverkauf|Weitergabe|Kinder|Jugend|minderjährig|18\sJahre|Gebühr|Höchstzahl|maximal|Ermäßig|viagogo|Zweitmarkt|Ticketbörse|Mitglied max=3000 linkmax=200
+https://shop.vfb.de/de/mitgliedschaften/beitragsuebersicht max=7000 linkmax=300
+https://shop.vfb.de/de/Tickets max=9000 linkmax=1500
+https://shop.vfb.de/de/mitgliedschaften max=4000 linkmax=500
+https://assets.vfb.de/webasset/src?src=/Contentseiten/Tickets/Dauerkarte_Preise_26_27.pdf max=8000
+https://tickets.vfb.de/shop?wes=empty_session_103&language=1&shopid=103&nextstate=2&lpShortcutId=2 max=5000 linkmax=600
+https://tickets.vfb.de/shop?wes=empty_session_103&language=1&shopid=103&nextstate=2&lpShortcutId=3 max=5000 linkmax=600
+https://tickets.vfb.de/shop?wes=empty_session_103&language=1&shopid=103&nextstate=2&lpShortcutId=4 max=5000 linkmax=600
+https://tickets.vfb.de/shop?wes=empty_session_103&language=1&shopid=103&nextstate=2&lpShortcutId=5 max=5000 linkmax=600
+https://tickets.vfb.de/shop/103/event/2794 max=4000 linkmax=600
+https://tickets.vfb.de/shop/103/event/2795 max=4000 linkmax=600
+https://service.vfb.de/categories.html?hl=de&c=2005_18962_18963_ max=8000 linkmax=300
+https://service.vfb.de/categories.html?hl=de&c=2005_18962_18964_ max=8000 linkmax=300
+https://service.vfb.de/categories.html?hl=de&c=2005_18962_18975_ max=8000 linkmax=300
+https://service.vfb.de/categories.html?hl=de&c=2005_18962_18978_ max=8000 linkmax=300
+https://service.vfb.de/categories.html?hl=de&c=2005_18962_18979_ max=8000 linkmax=300
+https://service.vfb.de/categories.html?hl=de&c=2005_18962_18980_ max=8000 linkmax=300
+https://www.vfb.de/de/1893/erlebnis/stadionerlebnis/sicherheit/ grep=Ausweis|personal|Gäste|Gast|Trennung|Farben max=2000 linkmax=200
+https://de.wikipedia.org/wiki/MHPArena grep=Zuschauer|Plätze|Kapazität max=2000 linkmax=100
+https://en.wikipedia.org/wiki/2025%E2%80%9326_VfB_Stuttgart_season grep=Attendance|attendance|60,|59,|58,|57, max=2000 linkmax=100
+https://www.stuttgarter-zeitung.de/sport/vfb-stuttgart/vfb-stuttgart-stadion-kapazitaet-frankfurt-ueberholt-der-vfb-79392667.html grep=Kapazität|Zuschauer|Plätze linkmax=100
+https://www.diefalsche9.de/?p=52752 max=4000 linkmax=100
