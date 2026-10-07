@@ -1,0 +1,12 @@
+https://www.vfb.de/robots.txt max=2000
+https://www.vfb.de/de/ max=1500 linkmax=6000
+https://www.vfb.de/de/vfb/aktuell/neues/fans/2025/ticketvergabe-25-26/ max=9000
+https://www.vfb.de/de/vfb/aktuell/neues/fans/2026/ticket-update-zur-uefa-champions-league-2627/ max=9000
+https://www.vfb.de/de/vfb/aktuell/neues/fans/2026/ticketinfos-fuers-dfb-pokalfinale-2026/ max=4000
+https://shop.vfb.de/en/tickets-copy max=4000 linkmax=4000
+https://www.stuttgarter-zeitung.de/sport/vfb-stuttgart/vfb-stuttgart-ein-mitglied-ein-ticket-der-vfb-weitet-die-neue-praxis-aus-79019641.html max=7000
+https://www.stuttgarter-zeitung.de/sport/vfb-stuttgart/vfb-stuttgart-tickets-fuer-alle-der-neue-normalfall-78923315.html max=7000
+https://www.stuttgarter-zeitung.de/sport/vfb-stuttgart/vfb-stuttgart-eine-ticketboerse-von-fans-fuer-fans-greifbar-und-zu-fairen-bedingungen-78982398.html max=7000
+https://www.stuttgarter-zeitung.de/sport/vfb-stuttgart/vfb-stuttgart-grosser-andrang-auf-auswaertstickets-so-laeuft-der-verkauf-79000017.html max=6000
+https://www.stuttgarter-zeitung.de/sport/vfb-stuttgart/vfb-stuttgart-tickets-tausende-neue-mitglieder-so-laeuft-der-dauerkarten-verkauf-79016018.html max=6000
+https://www.wochenblatt-reporter.de/c-sport/vfb-stuttgart-ticketverkauf-fuer-champions-league-laeuft_a862240 max=6000
