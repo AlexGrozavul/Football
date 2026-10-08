@@ -4,31 +4,233 @@ Generated 2026-10-08 by tools/build_calendars.py.
 Nothing below is an error in the code. Each line is either a
 deliberate exclusion or a field you still need to fill in.
 
+- **afc-asian-cup-2027-saudi-arabia** - AFC Asian Cup 2027 (Saudi Arabia)
+  - no date of any kind
+- **africa-cup-of-nations-2027-kenya-tanzania-uganda** - Africa Cup of Nations 2027 (Kenya, Tanzania, Uganda)
+  - no date of any kind
+- **ajax-v-feyenoord-de-klassieker** - Ajax v Feyenoord (De Klassieker)
+  - no date of any kind
+- **ajax-v-psv-de-topper** - Ajax v PSV (De Topper)
+  - no date of any kind
+- **al-ahly-v-zamalek-cairo-derby** - Al Ahly v Zamalek (Cairo derby)
+  - no date of any kind
+- **america-v-chivas-clasico-nacional** - América v Chivas (Clásico Nacional)
+  - no date of any kind
+- **anderlecht-v-club-brugge** - Anderlecht v Club Brugge
+  - no date of any kind
+- **arminia-bielefeld-v-paderborn** - Arminia Bielefeld v Paderborn
+  - no date of any kind
+- **arsenal-v-tottenham-north-london-derby** - Arsenal v Tottenham (North London derby)
+  - no date of any kind
+- **aston-villa-v-birmingham-city-second-city-derby** - Aston Villa v Birmingham City (Second City derby)
+  - no date of any kind
+- **athletic-club-v-real-sociedad-basque-derby** - Athletic Club v Real Sociedad (Basque derby)
+  - no date of any kind
+- **atletico-madrid-v-real-madrid-derbi-madrileno** - Atlético Madrid v Real Madrid (Derbi madrileño)
+  - no date of any kind
+- **atletico-mineiro-v-cruzeiro-classico-mineiro** - Atlético Mineiro v Cruzeiro (Clássico Mineiro)
+  - no date of any kind
+- **atletico-nacional-v-independiente-medellin-clasico-paisa** - Atlético Nacional v Independiente Medellín (Clásico Paisa)
+  - no date of any kind
 - **away-end-first** - Any proper away end
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
+- **barcelona-v-espanyol-derbi-barceloni** - Barcelona v Espanyol (Derbi barceloní)
+  - no date of any kind
+- **barcelona-v-real-madrid-el-clasico** - Barcelona v Real Madrid (El Clásico)
+  - no date of any kind
+- **basel-v-young-boys** - Basel v Young Boys
+  - no date of any kind
+- **benfica-v-porto-o-classico** - Benfica v Porto (O Clássico)
+  - no date of any kind
+- **benfica-v-sporting-derby-de-lisboa** - Benfica v Sporting (Derby de Lisboa)
+  - no date of any kind
+- **besiktas-v-galatasaray** - Beşiktaş v Galatasaray
+  - no date of any kind
+- **boca-juniors-v-river-plate-superclasico** - Boca Juniors v River Plate (Superclásico)
+  - no date of any kind
+- **bochum-v-schalke** - Bochum v Schalke
+  - no date of any kind
+- **braga-v-vitoria-guimaraes-minho-derby** - Braga v Vitória Guimarães (Minho derby)
+  - no date of any kind
+- **brazil-v-argentina** - Brazil v Argentina
+  - no date of any kind
+- **cardiff-city-v-swansea-city-south-wales-derby** - Cardiff City v Swansea City (South Wales derby)
+  - no date of any kind
+- **carl-zeiss-jena-v-rot-weiss-erfurt** - Carl Zeiss Jena v Rot-Weiß Erfurt
+  - no date of any kind
+- **celta-vigo-v-deportivo-la-coruna-galician-derby** - Celta Vigo v Deportivo La Coruña (Galician derby)
+  - no date of any kind
+- **cfr-cluj-v-universitatea-cluj** - CFR Cluj v Universitatea Cluj
+  - no date of any kind
+- **colo-colo-v-universidad-de-chile-superclasico** - Colo-Colo v Universidad de Chile (Superclásico)
+  - no date of any kind
+- **copa-del-rey-final** - Copa del Rey final
+  - no date of any kind
+- **copa-libertadores-final** - Copa Libertadores final
+  - no date of any kind
+- **coppa-italia-final** - Coppa Italia final
+  - no date of any kind
+- **corinthians-v-palmeiras-derbi-paulista** - Corinthians v Palmeiras (Dérbi Paulista)
+  - no date of any kind
+- **coupe-de-france-final** - Coupe de France final
+  - no date of any kind
+- **crystal-palace-v-brighton** - Crystal Palace v Brighton
+  - no date of any kind
+- **cupa-romaniei-final** - Cupa României final
+  - no date of any kind
 - **derby-du-nord** - Derby du Nord - Lens v Lille
   - no date of any kind
 - **derby-eternal-enemies** - Derby of the Eternal Enemies - Olympiacos v Panathinaikos
   - no date of any kind
+- **dfb-pokal-final** - DFB-Pokal final
+  - no date of any kind
+- **dfl-supercup** - DFL-Supercup
+  - no date of any kind
+- **dundee-v-dundee-united** - Dundee v Dundee United
+  - no date of any kind
+- **dynamo-dresden-v-erzgebirge-aue** - Dynamo Dresden v Erzgebirge Aue
+  - no date of any kind
+- **efl-cup-final** - EFL Cup final
+  - no date of any kind
+- **eintracht-frankfurt-v-darmstadt-98** - Eintracht Frankfurt v Darmstadt 98
+  - no date of any kind
+- **eintracht-frankfurt-v-kickers-offenbach** - Eintracht Frankfurt v Kickers Offenbach
+  - no date of any kind
+- **eintracht-frankfurt-v-mainz-rhein-main-derby** - Eintracht Frankfurt v Mainz (Rhein-Main-Derby)
+  - no date of any kind
+- **england-v-scotland** - England v Scotland
+  - no date of any kind
 - **eternal-derby-belgrade** - Eternal Derby - Red Star v Partizan
+  - no date of any kind
+- **fa-community-shield** - FA Community Shield
+  - no date of any kind
+- **fa-cup-final** - FA Cup final
+  - no date of any kind
+- **fc-kobenhavn-v-brondby** - FC København v Brøndby
+  - no date of any kind
+- **fc-koln-v-bayer-leverkusen** - FC Köln v Bayer Leverkusen
+  - no date of any kind
+- **fc-koln-v-borussia-monchengladbach** - FC Köln v Borussia Mönchengladbach
+  - no date of any kind
+- **fc-koln-v-fortuna-dusseldorf-rheinderby** - FC Köln v Fortuna Düsseldorf (Rheinderby)
+  - no date of any kind
+- **fc-magdeburg-v-hallescher-fc** - FC Magdeburg v Hallescher FC
+  - no date of any kind
+- **fc-zurich-v-grasshoppers-zurich-derby** - FC Zürich v Grasshoppers (Zürich derby)
   - no date of any kind
 - **fcb-pokal-r2** - DFB-Pokal second round request window
   - no date or dateEstimate
 - **fcsb-dinamo** - Eternul derby - FCSB v Dinamo București
   - no date of any kind
+- **ferencvaros-v-ujpest-orokrangado** - Ferencváros v Újpest (Örökrangadó)
+  - no date of any kind
+- **fifa-world-cup-2030** - FIFA World Cup 2030
+  - no date of any kind
+- **fiorentina-v-bologna-derby-dell-appennino** - Fiorentina v Bologna (Derby dell'Appennino)
+  - no date of any kind
+- **flamengo-v-fluminense-fla-flu** - Flamengo v Fluminense (Fla-Flu)
+  - no date of any kind
+- **gamba-osaka-v-cerezo-osaka-osaka-derby** - Gamba Osaka v Cerezo Osaka (Osaka derby)
+  - no date of any kind
+- **genoa-v-sampdoria-derby-della-lanterna** - Genoa v Sampdoria (Derby della Lanterna)
+  - no date of any kind
+- **germany-v-netherlands** - Germany v Netherlands
+  - no date of any kind
+- **gornik-zabrze-v-ruch-chorzow-silesian-derby** - Górnik Zabrze v Ruch Chorzów (Silesian derby)
+  - no date of any kind
+- **gremio-v-internacional-gre-nal** - Grêmio v Internacional (Gre-Nal)
+  - no date of any kind
+- **hajduk-split-v-dinamo-zagreb** - Hajduk Split v Dinamo Zagreb
+  - no date of any kind
+- **hajduk-split-v-rijeka** - Hajduk Split v Rijeka
+  - no date of any kind
+- **hannover-96-v-eintracht-braunschweig** - Hannover 96 v Eintracht Braunschweig
+  - no date of any kind
+- **hearts-v-hibs-edinburgh-derby** - Hearts v Hibs (Edinburgh derby)
+  - no date of any kind
+- **holstein-kiel-v-hansa-rostock** - Holstein Kiel v Hansa Rostock
+  - no date of any kind
+- **holstein-kiel-v-hsv** - Holstein Kiel v HSV
+  - no date of any kind
+- **hsv-v-st-pauli-hamburg-derby** - HSV v St. Pauli (Hamburg derby)
+  - no date of any kind
+- **independiente-v-racing-avellaneda-derby** - Independiente v Racing (Avellaneda derby)
+  - no date of any kind
 - **inter-derby-phase1** - Inter home derby phase 1 (open worldwide)
   - dateSource is disputed - the date may be from the wrong year or event
+- **inter-v-juventus-derby-d-italia** - Inter v Juventus (Derby d'Italia)
+  - no date of any kind
 - **intercontinental-derby** - Intercontinental Derby - Galatasaray v Fenerbahçe
+  - no date of any kind
+- **juventus-v-torino-derby-della-mole** - Juventus v Torino (Derby della Mole)
+  - no date of any kind
+- **kaizer-chiefs-v-orlando-pirates-soweto-derby** - Kaizer Chiefs v Orlando Pirates (Soweto derby)
+  - no date of any kind
+- **karlsruher-sc-v-freiburg** - Karlsruher SC v Freiburg
   - no date of any kind
 - **klassiker-away** - Der Klassiker - Borussia Dortmund v Bayern, away end
   - no date of any kind
+- **knvb-beker-final** - KNVB Beker final
+  - no date of any kind
+- **la-galaxy-v-lafc-el-trafico** - LA Galaxy v LAFC (El Tráfico)
+  - no date of any kind
+- **lask-v-blau-weiss-linz** - LASK v Blau-Weiß Linz
+  - no date of any kind
+- **lechia-gdansk-v-arka-gdynia-tri-city-derby** - Lechia Gdańsk v Arka Gdynia (Tri-City derby)
+  - no date of any kind
+- **leeds-v-manchester-united-roses-derby** - Leeds v Manchester United (Roses derby)
+  - no date of any kind
+- **legia-warsaw-v-lech-poznan-klasyk** - Legia Warsaw v Lech Poznań (Klasyk)
+  - no date of any kind
+- **levski-sofia-v-cska-sofia** - Levski Sofia v CSKA Sofia
+  - no date of any kind
 - **liga2-playoff** - Liga 2 promotion play-off, decisive round
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
+- **liverpool-v-everton-merseyside-derby** - Liverpool v Everton (Merseyside derby)
+  - no date of any kind
+- **liverpool-v-manchester-united** - Liverpool v Manchester United
+  - no date of any kind
+- **lok-leipzig-v-chemie-leipzig** - Lok Leipzig v Chemie Leipzig
+  - no date of any kind
+- **lyon-v-saint-etienne-derby-du-rhone** - Lyon v Saint-Étienne (Derby du Rhône)
+  - no date of any kind
+- **manchester-city-v-manchester-united** - Manchester City v Manchester United
+  - no date of any kind
+- **men-s-olympic-football-2028-los-angeles** - Men's Olympic football 2028 (Los Angeles)
+  - no date of any kind
 - **milan-derby-sale-nov** - Milan home derby sale phases open
   - occurrence 2026-10-01 is in the past - history stays in the JSON only
+- **millwall-v-west-ham** - Millwall v West Ham
+  - no date of any kind
+- **mls-cup** - MLS Cup
+  - no date of any kind
+- **nantes-v-rennes** - Nantes v Rennes
+  - no date of any kind
+- **napoli-v-roma-derby-del-sole** - Napoli v Roma (Derby del Sole)
+  - no date of any kind
+- **newcastle-v-sunderland-tyne-wear-derby** - Newcastle v Sunderland (Tyne-Wear derby)
+  - no date of any kind
+- **nice-v-monaco** - Nice v Monaco
+  - no date of any kind
+- **norwich-v-ipswich-old-farm-derby** - Norwich v Ipswich (Old Farm derby)
+  - no date of any kind
+- **nottingham-forest-v-derby-county-east-midlands-derby** - Nottingham Forest v Derby County (East Midlands derby)
+  - no date of any kind
 - **old-firm** - Old Firm - Celtic v Rangers
   - no date of any kind
+- **olimpija-ljubljana-v-maribor** - Olimpija Ljubljana v Maribor
+  - no date of any kind
+- **omonia-v-apoel** - Omonia v APOEL
+  - no date of any kind
 - **ostderby** - Ostderby - Dynamo Dresden v Hansa Rostock
+  - no date of any kind
+- **palermo-v-catania-sicilian-derby** - Palermo v Catania (Sicilian derby)
+  - no date of any kind
+- **paok-v-aris** - PAOK v Aris
+  - no date of any kind
+- **paris-saint-germain-v-marseille-le-classique** - Paris Saint-Germain v Marseille (Le Classique)
+  - no date of any kind
+- **penarol-v-nacional-clasico** - Peñarol v Nacional (Clásico)
   - no date of any kind
 - **pokal-first-round** - DFB-Pokal first round at an amateur host
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
@@ -36,7 +238,23 @@ deliberate exclusion or a field you still need to fill in.
   - occurrence 2026-09-02 is in the past - history stays in the JSON only
 - **poli-uta** - Politehnica Timișoara v UTA Arad - Derby-ul Vestului
   - no date of any kind
+- **porto-v-sporting** - Porto v Sporting
+  - no date of any kind
 - **prague-derby** - Prague Derby - Sparta v Slavia
+  - no date of any kind
+- **preussen-munster-v-vfl-osnabruck** - Preußen Münster v VfL Osnabrück
+  - no date of any kind
+- **raja-casablanca-v-wydad-casablanca** - Raja Casablanca v Wydad Casablanca
+  - no date of any kind
+- **rapid-bucuresti-v-dinamo-bucuresti** - Rapid București v Dinamo București
+  - no date of any kind
+- **rapid-bucuresti-v-fcsb** - Rapid București v FCSB
+  - no date of any kind
+- **rapid-bucuresti-v-petrolul-ploiesti** - Rapid București v Petrolul Ploiești
+  - no date of any kind
+- **rapid-wien-v-austria-wien-wiener-derby** - Rapid Wien v Austria Wien (Wiener Derby)
+  - no date of any kind
+- **rayo-vallecano-v-atletico-madrid** - Rayo Vallecano v Atlético Madrid
   - no date of any kind
 - **rcsa-resale** - Strasbourg official resale opens
   - recurring per fixture - needs the fixture list, which does not exist until step 3
@@ -44,7 +262,79 @@ deliberate exclusion or a field you still need to fill in.
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
 - **revierderby** - Revierderby - Schalke 04 v Borussia Dortmund
   - no date of any kind
+- **roma-v-lazio-derby-della-capitale** - Roma v Lazio (Derby della Capitale)
+  - no date of any kind
+- **romania-national-team-home-match** - Romania national team home match
+  - no date of any kind
+- **rosario-central-v-newell-s-old-boys** - Rosario Central v Newell's Old Boys
+  - no date of any kind
+- **rot-weiss-essen-v-msv-duisburg** - Rot-Weiss Essen v MSV Duisburg
+  - no date of any kind
+- **saarbrucken-v-sv-elversberg** - Saarbrücken v SV Elversberg
+  - no date of any kind
+- **salzburg-v-rapid-wien** - Salzburg v Rapid Wien
+  - no date of any kind
+- **sarajevo-v-zeljeznicar** - Sarajevo v Željezničar
+  - no date of any kind
+- **scottish-cup-final** - Scottish Cup final
+  - no date of any kind
+- **seattle-sounders-v-portland-timbers-cascadia-derby** - Seattle Sounders v Portland Timbers (Cascadia derby)
+  - no date of any kind
+- **sepsi-sfantu-gheorghe-v-csikszereda-miercurea-ciuc** - Sepsi Sfântu Gheorghe v Csíkszereda Miercurea Ciuc
+  - no date of any kind
+- **sevilla-v-real-betis-derbi-sevillano** - Sevilla v Real Betis (Derbi sevillano)
+  - no date of any kind
+- **sheffield-united-v-sheffield-wednesday-steel-city-derby** - Sheffield United v Sheffield Wednesday (Steel City derby)
+  - no date of any kind
+- **slovan-bratislava-v-spartak-trnava** - Slovan Bratislava v Spartak Trnava
+  - no date of any kind
+- **southampton-v-portsmouth-south-coast-derby** - Southampton v Portsmouth (South Coast derby)
+  - no date of any kind
+- **stockholm-derbies-hammarby-djurgarden-aik** - Stockholm derbies (Hammarby, Djurgården, AIK)
+  - no date of any kind
+- **strasbourg-v-metz** - Strasbourg v Metz
+  - no date of any kind
+- **sturm-graz-v-gak** - Sturm Graz v GAK
+  - no date of any kind
+- **supercopa-de-espana** - Supercopa de España
+  - no date of any kind
+- **taca-de-portugal-final** - Taça de Portugal final
+  - no date of any kind
+- **uefa-champions-league-final** - UEFA Champions League final
+  - no date of any kind
+- **uefa-conference-league-final** - UEFA Conference League final
+  - no date of any kind
+- **uefa-euro-2028-uk-and-ireland** - UEFA Euro 2028 (UK and Ireland)
+  - no date of any kind
+- **uefa-euro-2032-italy-and-turkey** - UEFA Euro 2032 (Italy and Turkey)
+  - no date of any kind
+- **uefa-nations-league-finals-2027** - UEFA Nations League Finals 2027
+  - no date of any kind
+- **uefa-super-cup** - UEFA Super Cup
+  - no date of any kind
+- **union-berlin-v-hertha-bsc-berlin-derby** - Union Berlin v Hertha BSC (Berlin derby)
+  - no date of any kind
+- **union-berlin-weihnachtssingen** - Union Berlin Weihnachtssingen
+  - no date of any kind
+- **universitatea-craiova-v-fcsb** - Universitatea Craiova v FCSB
+  - no date of any kind
+- **urawa-reds-home-match** - Urawa Reds home match
+  - no date of any kind
+- **valencia-v-levante-valencian-derby** - Valencia v Levante (Valencian derby)
+  - no date of any kind
 - **vfb-regular** - Become a regular at the Cannstatter Kurve
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
+- **vfb-stuttgart-v-freiburg** - VfB Stuttgart v Freiburg
+  - no date of any kind
+- **vfb-stuttgart-v-stuttgarter-kickers** - VfB Stuttgart v Stuttgarter Kickers
+  - no date of any kind
+- **waldhof-mannheim-v-1-fc-kaiserslautern** - Waldhof Mannheim v 1. FC Kaiserslautern
+  - no date of any kind
+- **werder-bremen-v-hsv-nordderby** - Werder Bremen v HSV (Nordderby)
+  - no date of any kind
+- **west-brom-v-wolves-black-country-derby** - West Brom v Wolves (Black Country derby)
+  - no date of any kind
+- **wisla-krakow-v-cracovia-holy-war** - Wisła Kraków v Cracovia (Holy War)
+  - no date of any kind
 - **womens-football** - Any women's match
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
