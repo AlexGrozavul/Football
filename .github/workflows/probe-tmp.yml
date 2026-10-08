@@ -6,18 +6,27 @@ jobs:
   p:
     runs-on: ubuntu-latest
     steps:
-      - name: EC bulletin page, attempt 1
+      - name: EC bulletin xlsx, attempt 2
         run: |
-          curl -sSL -m 60 -A "Mozilla/5.0 (football-planner research)" -o page.html -w "%{http_code} %{content_type} %{size_download}\n" "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en" || true
-          grep -oE 'href="[^"]*(xlsx|csv|xls|pdf|download)[^"]*"' page.html | sort -u | head -40
-      - name: Stadia route summary (no key, page origin)
-        run: |
-          curl -sS -m 60 -X POST "https://api.stadiamaps.com/route/v1" -H "Content-Type: application/json" \
-            -H "Origin: https://alexgrozavul.github.io" -H "Referer: https://alexgrozavul.github.io/Football/" \
-            -d '{"locations":[{"lat":48.8,"lon":9.01,"type":"break"},{"lat":48.14,"lon":11.58,"type":"break"}],"costing":"auto","units":"kilometers","directions_type":"none"}' > r.json || true
-          python3 -c "import json;d=json.load(open('r.json'));print(json.dumps(d['trip']['summary']));print(list(d['trip'].keys()));print([ (k,v) for k,v in d['trip']['legs'][0].get('summary',{}).items()])"
-          echo "--- toll route (Leonberg -> Innsbruck-ish, Austria vignette/ferry test)"
-          curl -sS -m 60 -X POST "https://api.stadiamaps.com/route/v1" -H "Content-Type: application/json" \
-            -H "Origin: https://alexgrozavul.github.io" -H "Referer: https://alexgrozavul.github.io/Football/" \
-            -d '{"locations":[{"lat":48.8,"lon":9.01,"type":"break"},{"lat":43.3,"lon":5.4,"type":"break"}],"costing":"auto","units":"kilometers","directions_type":"none"}' > r2.json || true
-          python3 -c "import json;d=json.load(open('r2.json'));print(json.dumps(d['trip']['summary']))"
+          pip install -q openpyxl
+          curl -sSL -m 90 -A "Mozilla/5.0 (football-planner research)" -o page.html "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en"
+          python3 - <<'PY'
+          import re, html, urllib.parse, subprocess
+          t = open('page.html', encoding='utf-8').read()
+          for m in re.finditer(r'href="(/document/download/[^"]*prices[^"]*)"', t, re.I):
+              print('LINK', html.unescape(m.group(1)))
+          m = re.search(r'href="(/document/download/[^"]*Weekly(?:%20|\+| )Oil(?:%20|\+| )Bulletin(?:%20|\+| )Weekly(?:%20|\+| )prices(?:%20|\+| )with(?:%20|\+| )Taxes[^"]*\.xlsx)"', t, re.I)
+          print('MATCH', m and m.group(1))
+          url = 'https://energy.ec.europa.eu' + html.unescape(m.group(1))
+          subprocess.run(['curl','-sSL','-m','90','-o','w.xlsx','-w','%{http_code} %{content_type} %{size_download}\n',url], check=True)
+          import openpyxl
+          wb = openpyxl.load_workbook('w.xlsx', data_only=True)
+          for ws in wb:
+              print('SHEET', ws.title, ws.max_row, ws.max_column)
+              for row in ws.iter_rows(min_row=1, max_row=6, values_only=True):
+                  print(row[:14])
+          ws = wb.worksheets[0]
+          for row in ws.iter_rows(values_only=True):
+              if row and any(isinstance(c, str) and c.strip() in ('DE','RO','DE ','RO ','Germany','Romania') for c in row[:3]):
+                  print('ROW', row[:14])
+          PY
