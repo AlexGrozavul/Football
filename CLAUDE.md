@@ -2063,6 +2063,41 @@ Alexandru's instruction. Two sub-tabs at the top of the Bucket list tab.
   none is on a day cell. A month renders in about 17-19 ms in headless
   Chromium with the CPU slowed 4x (this sandbox, not a phone).
 
+**The 160-entry bucket batch, 2026-10-08: undated, in a fixed order, with
+unverified "why" texts.** Added on Alexandru's instruction: 145 new
+`bucketList` entries and 15 existing ones that already covered the same
+fixture, in his order, which the List now shows by default.
+- **The why texts were written from memory by an assistant and stay
+  unverified until a verification pass.** Nothing in them was read from a
+  source. They carry no date, capacity, ticket rule or sale window of ours,
+  and every entry shows them under "Not yet verified" (`whyStatus`
+  `unverified`). Some contain ticket-access claims (lottery, members first,
+  away fans not allowed); they are claims to check, not rules, and live
+  only in `why`. A verification pass flips `whyStatus` entry by entry.
+- **Fields.** New: `group`, `country` (`none` where the entry has no
+  country), `sortKey` (10, 20 ... 1600, in his order), `why`, `whyStatus`,
+  `leagueCheck: true` where his line ends in [LC] (the label reads "Needs a
+  league check: both clubs must share a league or cup in that season"; the
+  check itself is not built), and `listOnly: true`, which keeps an entry off
+  the calendar (undated entries would otherwise fill its "No date" list).
+- **The 15 existing entries kept every hand-written field, date and link.**
+  They got `group`, `country`, `sortKey`, `whyStatus`, `leagueCheck` and,
+  because each already has a hand-written `why`, his new text in
+  `whyAssistant` instead (rule 3: hand-written wins). They are not
+  `listOnly`, so the calendar is unchanged for them.
+- **Clubs** are linked in `bucket-links-manual.csv` only where a club's name
+  equals one on a map club file of the entry's country (the fixture-link
+  matcher's rules), never from memory; the host is left empty, since the order
+  of names in a title says nothing about home or away. A club without an exact
+  match stays unlinked, and an ambiguous one (Dinamo București: two items)
+  too. A line may therefore name one of two clubs; its note says which is not
+  linked.
+- **The List** has three sorts: Group order (default; entries by `sortKey`
+  under their group, the "other countries" group with a sub-heading per
+  country, entries without a `sortKey` last), Earliest and Favorites. An
+  undated entry reads "Date not set". A stored choice of Earliest or
+  Favorites is kept. `SHELL_VERSION` is `v9`.
+
 **The Me tab: memberships and tickets held, on the device only,
 2026-10-04.** Built on Alexandru's instruction. A fourth tab in the bottom
 bar (its four labels fit 390 px, one line each - `test_me.js` checks it).
@@ -2277,8 +2312,8 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7` → `v8`; it has been `v8` since
-  2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
+  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7` → `v8` → `v9`; it has been `v9` since
+  2026-10-08, when the 160-entry bucket batch and Group order shipped, `v8` before that, from 2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,
   the same day, when the Ticket info and Bucket list tabs were rebuilt, `v4` before

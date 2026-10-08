@@ -7,7 +7,7 @@
 // Added 2026-10-04 with the calendar, favorites and the sort. Checked against the files read here
 // (data/football-rules.json, data/bucket-links-manual.csv, data/holidays-manual.csv):
 //  - neither List nor Calendar scrolls sideways or reaches past the screen at 390 px;
-//  - the sort has two options, Earliest is the default, and Earliest puts upcoming day-level
+//  - the sort has three options, Group order is the default (Earliest and Favorites are kept), and Earliest puts upcoming day-level
 //    entries first by date, then month-level ones ("estimated") by month, then undated ones, then
 //    past ones in a COLLAPSED "Past" section (checked with the clock moved to June 2027);
 //  - Favorites puts starred entries first, each group in Earliest order; the star is a 44 px
@@ -82,6 +82,7 @@ const addDay = (k, p) => { for(let n = dayN(p.from); n <= dayN(p.to); n++){ cons
 const addMonth = (k, p) => { for(let ym = p.from; ym <= p.to; ym = nextYm(ym)){ if(!want.months.has(ym)) want.months.set(ym, []); want.months.get(ym).push(k); } };
 const nextYm = ym => { const [y, m] = ym.split('-').map(Number); return m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, '0')}`; };
 for(const b of rules.bucketList){
+  if(b.listOnly) continue;      // added to the List only: never on the calendar
   const k = 'entry:' + b.id, ds = entryDates(b);
   if(!ds.length) want.none.add(k);
   for(const d of ds){ if(d.ds === 'disputed') want.disputed.add(k); else (d.p.day ? addDay : addMonth)(k, d.p); }
@@ -106,7 +107,7 @@ const server = http.createServer((req, res) => {
   await new Promise(r => server.listen(PORT, r));
   const browser = await chromium.launch({executablePath: process.env.CHROMIUM_PATH || undefined, headless: true});
   const errors = [];
-  async function open({tz = 'Europe/Berlin', at = '2026-10-25T23:30:00Z', blockStorage = false, holidays = null, init = null} = {}){
+  async function open({tz = 'Europe/Berlin', at = '2026-10-25T23:30:00Z', blockStorage = false, holidays = null, init = null, sort = 'earliest'} = {}){
     const ctx = await browser.newContext({viewport: {width: W, height: H}, isMobile: true, hasTouch: true,
       deviceScaleFactor: 2, serviceWorkers: 'block', timezoneId: tz});
     await ctx.clock.setFixedTime(new Date(at));
@@ -116,6 +117,9 @@ const server = http.createServer((req, res) => {
     if(blockStorage) await ctx.addInitScript(() => {
       Object.defineProperty(window, 'localStorage', {get(){ throw new Error('storage blocked'); }});
     });
+    // The List now opens in Group order; the older checks below are about Earliest, so they ask for it
+    // (sort: null leaves the default alone).
+    if(sort) await ctx.addInitScript(v => { try{ localStorage.setItem('football-planner-bucket-sort', v); }catch(e){} }, sort);
     if(init) await ctx.addInitScript(init);
     const page = await ctx.newPage();
     page.on('pageerror', e => errors.push(`${tz}${blockStorage ? ' blocked' : ''}: ${e.message}`));
@@ -144,13 +148,66 @@ const server = http.createServer((req, res) => {
   });
 
   // ==================================================================== List
-  let {ctx, page} = await open();
+  let {ctx, page} = await open({sort: null});
   let s = await sideways(page);
   check(`List: no sideways scroll at ${W} px (${s.sw} wide in ${s.cw})`, s.sw <= s.cw + 1 && s.doc <= W + 1 && !s.over.length, s.over.join(' | '));
   const sortUi = await page.$$eval('.bsort button', bs => bs.map(b => ({sort: b.dataset.sort, checked: b.getAttribute('aria-checked'), h: b.getBoundingClientRect().height})));
-  check('Sort: two options, Earliest and Favorites, Earliest chosen by default, each at least 44 px tall',
-    sortUi.length === 2 && sortUi[0].sort === 'earliest' && sortUi[0].checked === 'true' && sortUi[1].sort === 'favorites' && sortUi.every(b => b.h >= 44),
+  check('Sort: three options, Group order, Earliest and Favorites, Group order chosen by default, each at least 44 px tall',
+    sortUi.length === 3 && sortUi.map(b => b.sort).join() === 'group,earliest,favorites' && sortUi[0].checked === 'true' && sortUi.every(b => b.h >= 44),
     JSON.stringify(sortUi));
+
+  // ---- Group order (the default): the entries with a sortKey in sortKey order under their group's heading, then the rest in file order.
+  const keyed = rules.bucketList.filter(b => b.sortKey != null).sort((a, c) => a.sortKey - c.sortKey);
+  const unkeyed = rules.bucketList.filter(b => b.sortKey == null);
+  const addedL = rules.bucketList.filter(b => b.listOnly);
+  const groupDom = await page.evaluate(() => [...document.querySelectorAll('#bucketBody h2[data-sec^="group:"], #bucketBody .bsub[data-sec^="country:"], #bucketBody details.bucket')]
+    .map(el => el.matches('details.bucket') ? {id: el.dataset.id, when: el.querySelector('.bwhen').textContent, tags: el.querySelector('.meta').textContent,
+      why: el.querySelector('.bwhyc')?.textContent || ''} : {head: el.dataset.sec, text: el.textContent}));
+  const gotIds = groupDom.filter(x => x.id).map(x => x.id);
+  check(`Group order: ${keyed.length} entries with a sortKey (10, 20 ... ${keyed.length * 10}, no gap, no repeat), shown in sortKey order, then ${unkeyed.length} entries without one in file order`,
+    keyed.every((b, i) => b.sortKey === (i + 1) * 10) && gotIds.join() === keyed.concat(unkeyed).map(b => b.id).join(),
+    gotIds.slice(0, 5).join());
+  const wantHeads = [...new Set(keyed.map(b => b.group))];
+  const gotHeads = groupDom.filter(x => x.head && x.head.startsWith('group:') && x.head !== 'group:ungrouped').map(x => x.head.slice(6));
+  check('Group order: the group headings come in the order of the first sortKey of each group, once each', gotHeads.join('|') === wantHeads.join('|'), gotHeads.join('|'));
+  const subHeads = groupDom.filter(x => x.head && x.head.startsWith('country:')).map(x => x.head.slice(8));
+  const wantSub = []; for(const b of keyed.filter(b => b.group === 'Club fixtures, other countries')) if(wantSub[wantSub.length - 1] !== b.country) wantSub.push(b.country);
+  check(`Group order: the "other countries" group has a sub-heading for each of its ${wantSub.length} countries, in order`, subHeads.join('|') === wantSub.join('|'), subHeads.join('|'));
+  const dated = new Set(rules.bucketList.filter(b => entryDates(b).length).map(b => b.id));
+  const undatedCards = groupDom.filter(x => x.id && !dated.has(x.id));
+  check('Undated entries say "Date not set"', undatedCards.length > 0 && undatedCards.every(x => x.when === 'Date not set'), undatedCards.filter(x => x.when !== 'Date not set').map(x => x.id + ':' + x.when).join(', '));
+  const newCards = groupDom.filter(x => x.id && addedL.some(b => b.id === x.id));
+  check(`All ${addedL.length} added entries are cards, each undated, each showing its why text and the label "Not yet verified"`,
+    newCards.length === addedL.length && newCards.every(x => x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why.length > 10),
+    newCards.filter(x => !(x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why.length > 10)).map(x => x.id).join(', '));
+  const LCT = 'Needs a league check: both clubs must share a league or cup in that season';
+  const lcWant = new Set(rules.bucketList.filter(b => b.leagueCheck).map(b => b.id));
+  check(`The league-check label is on exactly the ${lcWant.size} entries flagged leagueCheck`,
+    groupDom.filter(x => x.id).every(x => x.tags.includes(LCT) === lcWant.has(x.id)) && lcWant.size > 0);
+  // The sheet of a flagged entry's opened card holds the why and the labels too.
+  const lcId = [...lcWant].find(id => addedL.some(b => b.id === id));
+  await page.click(`details.bucket[data-id="${lcId}"] summary h3`);
+  await page.waitForFunction(id => !/^Loading…/.test(document.querySelector(`details.bucket[data-id="${id}"] .bdetail`).textContent.trim()), lcId, {timeout: 10000});
+  const opened = await page.$eval(`details.bucket[data-id="${lcId}"]`, d => d.textContent);
+  const lcEntry = rules.bucketList.find(b => b.id === lcId);
+  check('An opened added entry shows its why text', opened.includes(lcEntry.why), lcId);
+  // Existing entries kept their dates: the snapshot below is HEAD's, from before the 160 were added.
+  const SNAP = {"klassiker-away":{},"away-end-first":{},"poli-uta":{},"el-final-2027":{"date":"2027-05-26","kickoff":"21:00","dateSource":"confirmed"},"frankenderby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-30/2027-02-01","derivation":"Inferred from the mirrored fixture list - matchday 20 is Bielefeld away on 6 Feb 2027. Verify against the DFL schedule.","missed":"First leg at the Ronhof, 15 Aug 2026.","dateSource":"inferred"}},"sudwest-derby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-29/2027-01-31","missed":"First leg on the Betzenberg, 15 Aug 2026.","dateSource":"inferred"}},"derby-madonnina":{"fixtures":[{"date":"2026-11-01","home":"milan","matchday":10,"saleRoute":"Cuore Rossonero phase then free sale. Card needed well in advance.","dateSource":"confirmed"},{"date":"2027-02-14","home":"inter","matchday":24,"saleRoute":"Phase 1, open worldwide, primo anello rosso/arancio.","dateSource":"confirmed"}]},"revierderby":{},"pokal-first-round":{},"liga2-playoff":{},"relegation":{},"vfb-regular":{},"womens-football":{},"eternal-derby-belgrade":{},"intercontinental-derby":{},"old-firm":{},"derby-eternal-enemies":{},"fcsb-dinamo":{},"derby-du-nord":{},"ostderby":{},"prague-derby":{}};
+  const drift = Object.keys(SNAP).filter(id => { const b = rules.bucketList.find(x => x.id === id);
+    return !b || ['date', 'kickoff', 'dateSource', 'nextFixture', 'fixtures'].some(k => JSON.stringify(b[k]) !== JSON.stringify(SNAP[id][k])); });
+  check(`The ${Object.keys(SNAP).length} entries that existed before kept their dates, kickoffs, dateSources, nextFixtures and fixtures`, drift.length === 0, drift.join(', '));
+  // None of the added entries is on the calendar, in any month the calendar can show.
+  await page.click('#tabCal');
+  const onCal = await page.evaluate(ids => { const hit = [];
+    for(let ym = '2026-07'; ym <= '2027-12'; ym = (m => m === 12 ? `${+ym.slice(0, 4) + 1}-01` : `${ym.slice(0, 4)}-${String(m + 1).padStart(2, '0')}`)(+ym.slice(5))){
+      CAL.month = ym; CAL.sel = null; renderCalendar();
+      for(const b of document.querySelectorAll('#calBody .calitem')) if(ids.some(id => b.dataset.open === 'entry:' + id)) hit.push(ym + ' ' + b.dataset.open);
+      for(const id of ids){ for(const d of document.querySelectorAll('#calBody .cday')) if((d.getAttribute('aria-label') || '').includes(id)) hit.push(ym + ' cell ' + id); }
+    }
+    return hit; }, addedL.map(b => b.id));
+  check(`None of the ${addedL.length} added entries is on the calendar (grid, strip, "No date" or "Not placed") in July 2026 to December 2027`, onCal.length === 0, onCal.slice(0, 5).join(' | '));
+  await page.click('#tabList');
+  await page.click('.bsort button[data-sort=earliest]');
 
   // Earliest, worked out from the files with today = 2026-10-26.
   const today0 = '2026-10-26';
