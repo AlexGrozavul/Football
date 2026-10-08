@@ -138,7 +138,8 @@ const server = http.createServer((req, res) => {
 
   // ---- 1b. fuel cost: 268.4 km x 7 l/100 km x 2.000 EUR/L = 37.58, 10% either way = 34 to 41
   const costTxt = () => page.textContent('#costResult');
-  await page.waitForFunction(() => /fuel estimate/.test(document.getElementById('costResult').textContent), null, {timeout: 8000});
+  await page.waitForFunction(() => /fuel estimate/.test(document.getElementById('costResult').textContent), null, {timeout: 8000})
+    .catch(async e => { console.log('COST BOX: ' + await page.textContent('#costResult')); throw e; });
   let ct = await costTxt();
   check('cost: known distance gives the range, rounded to whole euros', /One way, fuel estimate: about €34 to €41/.test(ct), ct);
   check('cost: shows distance, consumption, price used, its source and the bulletin week',
