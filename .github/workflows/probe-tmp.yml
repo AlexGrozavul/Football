@@ -1,0 +1,23 @@
+name: probe-tmp
+on:
+  pull_request:
+    paths: [".github/workflows/probe-tmp.yml"]
+jobs:
+  p:
+    runs-on: ubuntu-latest
+    steps:
+      - name: EC bulletin page, attempt 1
+        run: |
+          curl -sSL -m 60 -A "Mozilla/5.0 (football-planner research)" -o page.html -w "%{http_code} %{content_type} %{size_download}\n" "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en" || true
+          grep -oE 'href="[^"]*(xlsx|csv|xls|pdf|download)[^"]*"' page.html | sort -u | head -40
+      - name: Stadia route summary (no key, page origin)
+        run: |
+          curl -sS -m 60 -X POST "https://api.stadiamaps.com/route/v1" -H "Content-Type: application/json" \
+            -H "Origin: https://alexgrozavul.github.io" -H "Referer: https://alexgrozavul.github.io/Football/" \
+            -d '{"locations":[{"lat":48.8,"lon":9.01,"type":"break"},{"lat":48.14,"lon":11.58,"type":"break"}],"costing":"auto","units":"kilometers","directions_type":"none"}' > r.json || true
+          python3 -c "import json;d=json.load(open('r.json'));print(json.dumps(d['trip']['summary']));print(list(d['trip'].keys()));print([ (k,v) for k,v in d['trip']['legs'][0].get('summary',{}).items()])"
+          echo "--- toll route (Leonberg -> Innsbruck-ish, Austria vignette/ferry test)"
+          curl -sS -m 60 -X POST "https://api.stadiamaps.com/route/v1" -H "Content-Type: application/json" \
+            -H "Origin: https://alexgrozavul.github.io" -H "Referer: https://alexgrozavul.github.io/Football/" \
+            -d '{"locations":[{"lat":48.8,"lon":9.01,"type":"break"},{"lat":43.3,"lon":5.4,"type":"break"}],"costing":"auto","units":"kilometers","directions_type":"none"}' > r2.json || true
+          python3 -c "import json;d=json.load(open('r2.json'));print(json.dumps(d['trip']['summary']))"
