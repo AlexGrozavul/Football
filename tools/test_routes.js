@@ -15,7 +15,13 @@
 // labelled approximate; refresh at one request; the credit estimate; opening it offline (club list
 // works, map shows its needs-a-connection card); export to a file, delete, import, a bad file
 // refused, a second import left alone; a second tab in the same profile seeing the same routes; no
-// sideways scroll; no script error. Exits 1 on any failure.
+// sideways scroll; no script error. Since the fuel cost estimate: the one-way range for the known
+// 268.4 km route at made-up test prices (DE 2.000, RO 1.500 - a fixture served in place of
+// data/fuel-prices.json, not a real price), a manual price (decimal comma) overriding it, bad numbers
+// refused, the allowance on its own line, the "Enter a diesel price" message, the same range on a
+// saved route "at current settings" and following the settings, an older saved route with no
+// distance showing none and asking Stadia for nothing, the tolls/ferries line, and no sideways scroll
+// with the cost block open. Exits 1 on any failure.
 // CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
@@ -49,9 +55,16 @@ const GEO = {
   leonberg: {label: 'Leonberg, Baden-Württemberg, Germany', lat: 48.8011, lon: 9.0144},
   münchen:  {label: 'Munich, Bavaria, Germany', lat: 48.1374, lon: 11.5755}};
 
+// Test fixture served in place of data/fuel-prices.json: invented round prices, so the expected
+// ranges below can be worked out by hand. Never a real price.
+const FUEL = {fuel: 'diesel', bulletinWeek: '2026-10-05', sourceUrl: 'https://example.invalid/bulletin.xlsx',
+  prices: {DE: 2.0, RO: 1.5}, missing: {}};
+let TOLL = false;
 const server = http.createServer((req, res) => {
   const p = decodeURIComponent(req.url.split('?')[0]);
   if(!p.startsWith('/Football/')){ res.writeHead(404); return res.end(); }
+  if(p === '/Football/data/fuel-prices.json'){
+    res.writeHead(200, {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}); return res.end(JSON.stringify(FUEL)); }
   let f = path.join(ROOT, p.slice('/Football/'.length)); if(p.endsWith('/')) f = path.join(f, 'index.html');
   fs.stat(f, (e, st) => {
     if(e || !st.isFile()){ res.writeHead(404); return res.end('nf'); }
@@ -84,7 +97,7 @@ const server = http.createServer((req, res) => {
     if(u.pathname.startsWith('/route/v1')){
       count.route++;
       return r.fulfill({status: 200, contentType: 'application/json', headers: CORS, body: JSON.stringify({trip: {
-        legs: [{shape: SHAPE}], summary: {length: 268.4, time: 9720}}})});
+        legs: [{shape: SHAPE}], summary: {length: 268.4, time: 9720, has_toll: TOLL, has_highway: true, has_ferry: false}}})});
     }
     return r.fulfill({status: 404, headers: CORS, body: '{}'});
   });
@@ -123,6 +136,41 @@ const server = http.createServer((req, res) => {
   const defName = await page.inputValue('#routeName');
   check('the suggested name is "Start → End", from the typed words', defName === 'Leonberg → München', defName);
 
+  // ---- 1b. fuel cost: 268.4 km x 7 l/100 km x 2.000 EUR/L = 37.58, 10% either way = 34 to 41
+  const costTxt = () => page.textContent('#costResult');
+  await page.waitForFunction(() => /fuel estimate/.test(document.getElementById('costResult').textContent), null, {timeout: 8000});
+  let ct = await costTxt();
+  check('cost: known distance gives the range, rounded to whole euros', /One way, fuel estimate: about €34 to €41/.test(ct), ct);
+  check('cost: shows distance, consumption, price used, its source and the bulletin week',
+    /268 km/.test(ct) && /7 l\/100 km/.test(ct) && /€2\.000\/L/.test(ct) && /EU Weekly Oil Bulletin/.test(ct) && /week of 5 Oct 2026/.test(ct), ct);
+  check('cost: no tolls line when Stadia says there are none', !/tolls/.test(ct));
+  check('cost: the settings block is in the route result with the default consumption',
+    (await page.inputValue('#costL100')) === '7' && /Cost settings/.test(await routeText()));
+  await page.fill('#costPrice', '1,5');            // decimal comma, a manual price
+  ct = await costTxt();
+  check('cost: a manual price (decimal comma) overrides the fetched one: 25 to 31',
+    /about €25 to €31/.test(ct) && /€1\.500\/L \(your entry\)/.test(ct) && !/Bulletin week/.test(ct), ct);
+  const stored = await page.evaluate(() => [localStorage.getItem('football-planner-route-cost'), localStorage.getItem('football-planner-me')]);
+  check('cost: settings kept on the device, and not in the Me tab data', JSON.parse(stored[0]).price === 1.5 && !(stored[1] || '').includes('route-cost'), stored[0]);
+  for(const bad of ['abc', '0', '-3', '1,2,3']){
+    await page.fill('#costPrice', bad);
+    const inv = await page.getAttribute('#costPrice', 'aria-invalid'), msg = await page.textContent('#costMsg');
+    check(`cost: "${bad}" is refused, the last good price still used`, inv === 'true' && /above zero/.test(msg) && /about €25 to €31/.test(await costTxt()), msg);
+  }
+  await page.fill('#costExtra', '0.1');
+  ct = await costTxt();
+  check('cost: the allowance is on its own line, not in the fuel figure', /Extra allowance \(separate\)/.test(ct) && /about €27/.test(ct) &&
+    /about €25 to €31/.test(ct), ct);
+  await page.fill('#costExtra', '');
+  await page.fill('#costPrice', '');
+  ct = await costTxt();
+  check('cost: back to the bulletin price once the manual one is cleared', /about €34 to €41/.test(ct), ct);
+  await page.evaluate(() => { window.__fuel = FUELDATA; FUELDATA = {...FUELDATA, prices: {}}; renderCost(); });
+  ct = await costTxt();
+  check('cost: no price at all says to enter one', /Enter a diesel price to see the cost/.test(ct) && !/fuel estimate/.test(ct), ct);
+  await page.evaluate(() => { FUELDATA = window.__fuel; renderCost(); });
+  check('cost: the route panel with the cost block open does not scroll sideways', await noSideScroll());
+
   // ---- 2. the same search again: the saved copy, no request
   await search('from', 'leonberg');
   const hitTxt = await page.textContent(pt('from', '.hits'));
@@ -139,13 +187,21 @@ const server = http.createServer((req, res) => {
   const [rec] = await idbRoutes();
   const keys = rec ? Object.keys(rec).sort().join(',') : '';
   check('saved: name, line, ends, options, length, time, dates - and no club list',
-    rec && keys === 'approximate,distanceKm,durationSec,from,id,line,lineAt,name,options,savedAt,to' && rec.line === SHAPE &&
+    rec && keys === 'approximate,distanceKm,durationSec,from,hasFerry,hasToll,id,line,lineAt,name,options,savedAt,to' && rec.line === SHAPE &&
     rec.options.withinKm === 30 && rec.distanceKm === 268.4 && rec.durationSec === 9720, keys);
   const lineEnd = LINE[LINE.length - 1];
   check('a searched end is kept as the typed words and the LINE\'s end point, never the search answer',
     rec.from.kind === 'search' && rec.from.label === 'Leonberg' && rec.from.lat === LINE[0][0] && rec.from.lon === LINE[0][1] &&
     rec.to.label === 'München' && rec.to.lat === lineEnd[0] && rec.to.lon === lineEnd[1] && !JSON.stringify(rec).includes('Baden-Württemberg'),
     JSON.stringify([rec.from, rec.to]));
+
+  const rowTxt = () => page.$eval('#savedRoutes .sroute', e => e.textContent);
+  await page.waitForFunction(() => /at current settings/.test(document.querySelector('#savedRoutes .sroute')?.textContent || ''), null, {timeout: 5000});
+  check('saved route: the same range, labelled "at current settings"', /about €34 to €41 at current settings/.test(await rowTxt()), await rowTxt());
+  await page.fill('#costPrice', '1.5');
+  await page.waitForFunction(() => /€25 to €31/.test(document.querySelector('#savedRoutes .sroute')?.textContent || ''), null, {timeout: 5000});
+  check('saved route: the range follows the settings', /about €25 to €31 at current settings/.test(await rowTxt()), await rowTxt());
+  await page.fill('#costPrice', '');
 
   // ---- 4. reload, then open it: no request, the club list worked out again
   await page.reload(); await loaded();
@@ -163,6 +219,35 @@ const server = http.createServer((req, res) => {
   check('...shows its saved date and a Refresh route button costing about 20 credits',
     /saved \w{3}, \d+ \w{3} \d{4}/.test(txt) && /Refresh route/.test(txt) && /about 20 credits/.test(txt), txt.slice(0, 200));
   check('the route panel does not scroll the page sideways', await noSideScroll());
+
+  // ---- 4b. a saved route with the new cost shown, and an older one with no distance
+  const opened = await routeText();
+  check('opened saved route shows its range and carries its distance', /about €34 to €41/.test(opened) && /268 km/.test(opened), opened.slice(0, 160));
+  await page.evaluate(rec => new Promise((res, rej) => {
+    const old = {...rec, id: 'old-no-distance', name: 'Older route', savedAt: '2026-01-01T10:00:00.000Z'};
+    delete old.distanceKm; delete old.durationSec; delete old.hasToll; delete old.hasFerry;
+    const r = indexedDB.open('football-planner-device');
+    r.onsuccess = () => { const t = r.result.transaction('routes', 'readwrite'); t.objectStore('routes').put(old);
+      t.oncomplete = () => res(); t.onerror = () => rej(t.error); };
+  }), (await idbRoutes())[0]);
+  await page.reload(); await loaded(); await openPanel();
+  await page.click('#savedRoutes summary');
+  const rows = await page.$$eval('#savedRoutes .sroute', els => els.map(e => e.textContent));
+  const oldRow = rows.find(t => /Older route/.test(t)), newRow = rows.find(t => /Leonberg → München/.test(t));
+  const rb = {...count};
+  check('older saved route (no distance): no cost and no NaN in its row', oldRow && !/fuel estimate|NaN|diesel/.test(oldRow), oldRow);
+  check('...while the route saved with a distance still shows its range', /about €34 to €41 at current settings/.test(newRow || ''), newRow);
+  await page.click('#savedRoutes .sroute:has-text("Older route") [data-act="open"]');
+  await page.waitForFunction(() => /No distance is kept/.test(document.getElementById('routeOut').textContent), null, {timeout: 5000});
+  const oldTxt = await routeText();
+  check('...opening it shows no cost, no NaN, and asks Stadia for nothing', !/fuel estimate: about|NaN/.test(oldTxt) && count.route === rb.route && count.search === rb.search, oldTxt.slice(0, 160));
+  check('...and the page still does not scroll sideways', await noSideScroll());
+  await page.evaluate(() => new Promise((res, rej) => { const r = indexedDB.open('football-planner-device');
+    r.onsuccess = () => { const t = r.result.transaction('routes', 'readwrite'); t.objectStore('routes').delete('old-no-distance');
+      t.oncomplete = () => res(); t.onerror = () => rej(t.error); }; }));
+  await page.reload(); await loaded(); await openPanel();
+  await page.click('#savedRoutes summary');
+  await page.click('#savedRoutes [data-act="open"]'); await listReady();
 
   // ---- 5. rename
   await page.click('#savedRoutes [data-act="rename"]');
@@ -255,6 +340,18 @@ const server = http.createServer((req, res) => {
   await page.setInputFiles('#routesFile', bad);
   await page.waitForFunction(() => /not a saved-routes export/.test(document.getElementById('routesMsg').textContent));
   check('a JSON file that is not an export is refused', true);
+
+  // ---- 11b. tolls and ferries: Stadia's has_toll is true, the estimate says it is not in the cost
+  TOLL = true;
+  if(await page.$eval('#routePanel', e => e.hidden)) await openPanel();
+  await page.evaluate(() => { setEnd('from', 48.8003, 9.0167, 'Start point', 'tap'); setEnd('to', 48.1351, 11.582, 'End point', 'tap'); });
+  await page.click('#routeGo'); await listReady();
+  await page.waitForFunction(() => /fuel estimate/.test(document.getElementById('costResult').textContent), null, {timeout: 8000});
+  const tollTxt = await page.textContent('#costResult');
+  check('cost: has_toll from Stadia shows "Route includes tolls/ferries, not in this cost", range unchanged',
+    /Route includes tolls\/ferries, not in this cost/.test(tollTxt) && /about €34 to €41/.test(tollTxt), tollTxt);
+  check('cost: the tolls line does not scroll the page sideways', await noSideScroll());
+  TOLL = false;
 
   // ---- 12. a second tab in the same browser profile
   const tab2 = await ctx.newPage();

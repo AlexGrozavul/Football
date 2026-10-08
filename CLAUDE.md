@@ -1679,6 +1679,8 @@ line, straight**, not a drive, and the list says so.
   to any origin. Since 2026-10-03 `tools/test_routes.js` repeats the
   route checks automatically on every change to the page.
 
+**Route fuel cost (2026-10-08) is an estimate** from a fetched country-average diesel price (`data/fuel-prices.json`, EU Weekly Oil Bulletin, written only by `tools/fetch_fuel_prices.py`, never hand-edited, never in calendar events) or a manual entry on the device, over Stadia's own route length; tolls and ferries are not priced.
+
 **Derbies: every row names its source, and the source names the
 derby.** Built 2026-10-03, on Alexandru's instruction, for the twelve
 countries on the map. Rule 2 applied to rivalries: a derby a person

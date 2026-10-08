@@ -281,6 +281,12 @@
   .route .line{display:flex;gap:6px;flex-wrap:wrap}
   .route input[type=text]{flex:1 1 140px;min-width:0;background:#0d1117;color:var(--ink);
     border:1px solid var(--line);border-radius:7px;padding:7px 9px;font:inherit;font-size:16px}
+  .route input.num{flex:0 1 84px;width:84px;min-width:0;background:#0d1117;color:var(--ink);
+    border:1px solid var(--line);border-radius:7px;padding:7px 9px;font:inherit;font-size:16px}
+  .route input.num[aria-invalid=true]{border-color:#e5534b}
+  .route .ctl label{flex:0 1 auto;color:var(--dim)}
+  .costmain{font-size:15px;font-weight:600;margin:8px 0 2px;overflow-wrap:anywhere}
+  .warnline{color:#e3b341}
   .route button.b{background:#1b2230;border:1px solid var(--line);border-radius:7px;
     color:var(--ink);font:inherit;font-size:13px;padding:6px 10px;cursor:pointer}
   .route button.b:disabled{opacity:.4;cursor:default}
@@ -2217,6 +2223,12 @@ async function requestRoute(from, to){
   return {pts: legs.flatMap(l => decodeShape(l.shape)), summary: data.trip.summary};
 }
 
+/* Stadia's summary says whether the route has tolls (has_toll) or ferries
+   (has_ferry). has_highway is also there but a free motorway is not a
+   charge, so it is not read. Anything but a true/false is kept as unknown. */
+const tollFlags = sm => ({hasToll: typeof sm?.has_toll === 'boolean' ? sm.has_toll : undefined,
+                          hasFerry: typeof sm?.has_ferry === 'boolean' ? sm.has_ferry : undefined});
+
 async function getRoute(){
   const out = document.getElementById('routeOut');
   const go = document.getElementById('routeGo');
@@ -2226,9 +2238,154 @@ async function getRoute(){
   const r = await requestRoute(ROUTE_ENDS.from, ROUTE_ENDS.to);
   go.disabled = false;
   if(r.err){ out.innerHTML = `<p class="err">${r.err} Nothing is drawn.</p>`; return; }
-  showRoute({pts: r.pts, distanceKm: r.summary.length, durationSec: r.summary.time,
+  showRoute({pts: r.pts, distanceKm: r.summary.length, durationSec: r.summary.time, ...tollFlags(r.summary),
              from: {...ROUTE_ENDS.from}, to: {...ROUTE_ENDS.to}, lineAt: new Date().toISOString(),
              approximate: false, saved: null});
+}
+
+/* ------------------------------------------- one-way fuel cost estimate
+
+   An estimate, not a quote: the route's length (Stadia's own figure, kept
+   with the route) x the consumption x a diesel price, shown as a range of
+   10% either way. The price is the manual entry if there is one, else the
+   European Commission's Weekly Oil Bulletin average for the country of the
+   start and of the end (data/fuel-prices.json, fetched weekly, never
+   hand-edited), averaged if the two differ. A country is only used when it
+   is known: home's own label, or every club within COST_COUNTRY_KM of the
+   point being in one country. Otherwise there is no price and no cost.
+   Tolls and ferries are NOT priced: when Stadia says the route has any, the
+   estimate says so. The three settings live in this browser's localStorage
+   only: not in the repo, not in the Me tab's export, not in any request. */
+const COST_KEY = 'football-planner-route-cost';
+const COST_L100_DEFAULT = 7;
+const COST_MARGIN = 0.10;
+const COST_COUNTRY_KM = 10;
+let COST = null;       // {l100, price, extra}; null for "not set"
+let FUELDATA = null;   // data/fuel-prices.json once loaded and valid
+
+function costSettings(){
+  if(COST) return COST;
+  COST = {l100: null, price: null, extra: null};
+  try{
+    const v = JSON.parse(localStorage.getItem(COST_KEY) || '{}');
+    for(const k of Object.keys(COST)) if(Number.isFinite(v[k]) && v[k] > 0) COST[k] = v[k];
+  }catch(err){ /* blocked or unreadable: defaults for this visit */ }
+  return COST;
+}
+function saveCostSettings(){
+  try{ localStorage.setItem(COST_KEY, JSON.stringify(COST)); }catch(err){ /* blocked: this visit only */ }
+}
+
+/* Positive number, decimal comma or point. {empty}, {n} or {bad}. */
+function parsePositive(txt){
+  const t = String(txt).trim().replace(',', '.');
+  if(t === '') return {empty: true};
+  if(!/^(\d+\.?\d*|\.\d+)$/.test(t)) return {bad: true};
+  const n = Number(t);
+  return n > 0 && Number.isFinite(n) ? {n} : {bad: true};
+}
+
+async function ensureFuel(){
+  if(FUELDATA) return;
+  const f = await jsonFile('data/fuel-prices.json');
+  const v = f.ok ? f.v : null;
+  if(v && v.prices && typeof v.prices === 'object' && typeof v.bulletinWeek === 'string') FUELDATA = v;
+}
+
+/* The country of one end of a route, or null. Never guessed: home's own
+   label ("Leonberg, DE") or the one country of every club near the point. */
+function endCountry(e){
+  if(e.kind === 'home'){
+    const m = /,\s*([A-Z]{2})\b/.exec(HOME?.label || '');
+    if(m) return m[1];
+  }
+  const seen = new Set();
+  for(const c of CLUBS) if(c.country && haversine(e.lat, e.lon, c.lat, c.lon) <= COST_COUNTRY_KM) seen.add(c.country);
+  return seen.size === 1 ? [...seen][0] : null;
+}
+
+function fmtEuro(n){ return '€' + n.toFixed(n < 10 ? 3 : 2); }
+function fmtWeek(iso){
+  const d = new Date(iso + 'T12:00:00Z');
+  return isNaN(d) ? iso : d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'});
+}
+
+/* What the cost is for a route-like {distanceKm, from, to, hasToll, hasFerry}.
+   {none: true} with no distance; {noPrice, why} with no price; else the range. */
+function costFor(r){
+  const s = costSettings();
+  if(!Number.isFinite(r.distanceKm) || r.distanceKm <= 0) return {none: true};
+  let price, source = null;
+  if(s.price){ price = {value: s.price, manual: true}; }
+  else if(FUELDATA){
+    const cc = [endCountry(r.from), endCountry(r.to)];
+    if(cc.every(Boolean)){
+      const used = [...new Set(cc)], each = used.map(c => FUELDATA.prices[c]);
+      if(each.every(Number.isFinite))
+        price = {value: each.reduce((a, b) => a + b, 0) / each.length, countries: used, each, week: FUELDATA.bulletinWeek};
+      else source = `No bulletin price for ${used.filter((c, i) => !Number.isFinite(each[i])).join(', ')}.`;
+    }else source = `The country of the ${!cc[0] && !cc[1] ? 'start and end' : !cc[0] ? 'start' : 'end'} could not be told from the route.`;
+  }else source = 'The fetched bulletin prices are not available.';
+  if(!price) return {noPrice: true, why: source};
+  const l100 = s.l100 || COST_L100_DEFAULT;
+  const fuel = r.distanceKm * l100 / 100 * price.value;
+  return {price, l100, km: r.distanceKm, lo: Math.round(fuel * (1 - COST_MARGIN)), hi: Math.round(fuel * (1 + COST_MARGIN)),
+          extra: s.extra ? Math.round(r.distanceKm * s.extra) : null, extraRate: s.extra,
+          tolls: r.hasToll === true || r.hasFerry === true};
+}
+
+function costHtml(r){
+  const c = costFor(r);
+  if(c.none) return '<div class="sub">No distance is kept for this route, so no cost is shown. Refresh route would fetch one.</div>';
+  if(c.noPrice) return `<div class="costmain">Enter a diesel price to see the cost</div><div class="sub">${esc(c.why)}</div>`;
+  const p = c.price;
+  const priceTxt = p.manual ? `${fmtEuro(p.value)}/L (your entry)`
+    : `${fmtEuro(p.value)}/L (EU Weekly Oil Bulletin, ${p.countries.map((k, i) => k + ' ' + fmtEuro(p.each[i])).join(' and ')}` +
+      `${p.countries.length > 1 ? ', averaged' : ''})`;
+  return `<div class="costmain" id="costRange">One way, fuel estimate: about €${c.lo} to €${c.hi}</div>` +
+    field('Distance', `${c.km.toFixed(0)} km` + (r.approximate ? ' (outbound)' : '')) +
+    field('Consumption', `${c.l100} l/100 km`) +
+    field('Diesel price used', priceTxt) +
+    (p.manual ? '' : field('Bulletin week', `week of ${fmtWeek(p.week)}`)) +
+    (c.extra != null ? field('Extra allowance (separate)', `about €${c.extra} (${fmtEuro(c.extraRate)}/km), not in the fuel figure`) : '') +
+    (c.tolls ? '<div class="sub warnline">Route includes tolls/ferries, not in this cost</div>' : '') +
+    '<div class="sub">An estimate: length × consumption × price, with 10% either way.</div>';
+}
+
+function renderCost(){
+  const box = document.getElementById('costResult');
+  if(box && ROUTE) box.innerHTML = costHtml(ROUTE);
+  renderSaved();
+}
+
+function costSettingsHtml(){
+  const s = costSettings();
+  const row = (id, label, val, unit) => `<div class="ctl"><label for="${id}">${label}</label>` +
+    `<input type="text" inputmode="decimal" class="num" id="${id}" value="${val == null ? '' : val}" autocomplete="off">` +
+    `<span>${unit}</span></div>`;
+  return `<h4>Cost settings</h4>` +
+    row('costL100', 'Consumption', s.l100 || COST_L100_DEFAULT, 'l/100 km') +
+    row('costPrice', 'Diesel price (optional)', s.price, '€/L') +
+    row('costExtra', 'Extra allowance (optional)', s.extra, '€/km') +
+    `<div class="sub" id="costMsg">A manual price wins over the bulletin. Kept on this device only; not in the Me tab export.</div>`;
+}
+
+function wireCostSettings(){
+  const fields = [['costL100', 'l100', 'Consumption'], ['costPrice', 'price', 'Diesel price'], ['costExtra', 'extra', 'Extra allowance']];
+  const onInput = () => {
+    const s = costSettings(), bad = [];
+    for(const [id, key, name] of fields){
+      const el = document.getElementById(id), v = parsePositive(el.value);
+      el.setAttribute('aria-invalid', v.bad ? 'true' : 'false');
+      if(v.bad) bad.push(name); else s[key] = v.empty ? null : v.n;
+    }
+    saveCostSettings();
+    document.getElementById('costMsg').innerHTML = bad.length
+      ? `<span class="err">${esc(bad.join(', '))}: enter a number above zero (comma or point). The last good value is still used.</span>`
+      : 'A manual price wins over the bulletin. Kept on this device only; not in the Me tab export.';
+    renderCost();
+  };
+  for(const [id] of fields) document.getElementById(id).addEventListener('input', onInput);
 }
 
 /* Draws a route and its panel. r is a fresh route, a saved one opened, or
@@ -2265,8 +2422,9 @@ function showRoute(r, options = null){
   const out = document.getElementById('routeOut');
   out.innerHTML =
     `<h4>Route</h4>` + state + acts +
-    field('Length', `${r.distanceKm.toFixed(0)} km by road` + (r.approximate ? ' (outbound)' : '')) +
-    field('Driving time', fmtDuration(r.durationSec) + " (Stadia Maps' estimate, no traffic)" + (r.approximate ? ', outbound' : '')) +
+    (Number.isFinite(r.distanceKm) ? field('Length', `${r.distanceKm.toFixed(0)} km by road` + (r.approximate ? ' (outbound)' : '')) : '') +
+    (Number.isFinite(r.durationSec) ? field('Driving time', fmtDuration(r.durationSec) + " (Stadia Maps' estimate, no traffic)" + (r.approximate ? ', outbound' : '')) : '') +
+    `<h4>Fuel cost</h4><div id="costResult"></div>` + costSettingsHtml() +
     `<div class="ctl"><span>Within</span><input type="range" id="routeKm" min="1" max="100" step="1" value="25">` +
       `<b id="routeKmTxt">25 km</b><span>of the road</span></div>` +
     `<div class="ctl"><span>Home match on</span><input type="date" id="routeDay">` +
@@ -2288,6 +2446,9 @@ function showRoute(r, options = null){
   document.getElementById('routeBack').addEventListener('click', routeBack);
   document.getElementById('routeRefresh')?.addEventListener('click', refreshRoute);
   renderRouteList();
+  wireCostSettings();
+  document.getElementById('costResult').innerHTML = costHtml(r);
+  ensureFuel().then(() => { if(ROUTE === r) document.getElementById('costResult').innerHTML = costHtml(r); renderSaved(); });
   /* The saved list and the two ends sit above the route; bring it into view. */
   const body = document.getElementById('routeBody');
   body.scrollTop += out.getBoundingClientRect().top - body.getBoundingClientRect().top - 8;
@@ -2300,7 +2461,7 @@ function routeBack(){
   setEnd('from', r.to.lat, r.to.lon, r.to.label, r.to.kind, r.to.typed);
   setEnd('to', r.from.lat, r.from.lon, r.from.label, r.from.kind, r.from.typed);
   showRoute({pts: r.pts.slice().reverse(), distanceKm: r.distanceKm, durationSec: r.durationSec,
-             from: {...r.to}, to: {...r.from}, lineAt: r.lineAt, approximate: true, saved: null}, currentOptions());
+             hasToll: r.hasToll, hasFerry: r.hasFerry, from: {...r.to}, to: {...r.from}, lineAt: r.lineAt, approximate: true, saved: null}, currentOptions());
 }
 
 const currentOptions = () => ({withinKm: Number(document.getElementById('routeKm')?.value || 25),
@@ -2339,6 +2500,8 @@ async function saveRoute(){
     from: savedEnd(r.from, r.pts[0]), to: savedEnd(r.to, r.pts[r.pts.length - 1]),
     line: encodeShape(r.pts), options: currentOptions(),
     distanceKm: r.distanceKm, durationSec: r.durationSec};
+  if(typeof r.hasToll === 'boolean') rec.hasToll = r.hasToll;
+  if(typeof r.hasFerry === 'boolean') rec.hasFerry = r.hasFerry;
   try{
     await putRoute(rec);
     navigator.storage?.persist?.().catch(() => {});
@@ -2358,7 +2521,8 @@ function openSaved(rec, fit = true){
     document.querySelector(`#routeBody .pt[data-end="${which}"] input`).value = '';
     setEnd(which, e.lat, e.lon, e.label, e.kind === 'search' ? 'search' : e.kind, e.kind === 'search' ? e.label : null);
   }
-  showRoute({pts, distanceKm: rec.distanceKm, durationSec: rec.durationSec, from: {...ROUTE_ENDS.from},
+  showRoute({pts, distanceKm: rec.distanceKm, durationSec: rec.durationSec, hasToll: rec.hasToll,
+             hasFerry: rec.hasFerry, from: {...ROUTE_ENDS.from},
              to: {...ROUTE_ENDS.to}, lineAt: rec.lineAt, approximate: !!rec.approximate, saved: rec}, rec.options);
 }
 
@@ -2374,11 +2538,11 @@ async function refreshRoute(){
     btn.disabled = false; btn.textContent = 'Refresh route';
     btn.insertAdjacentHTML('afterend', `<p class="err">${got.err} The saved line is unchanged.</p>`); return;
   }
-  const fresh = {pts: got.pts, distanceKm: got.summary.length, durationSec: got.summary.time,
+  const fresh = {pts: got.pts, distanceKm: got.summary.length, durationSec: got.summary.time, ...tollFlags(got.summary),
                  from: r.from, to: r.to, lineAt: new Date().toISOString(), approximate: false, saved: null};
   if(r.saved){
     const rec = Object.assign({}, r.saved, {lineAt: fresh.lineAt, approximate: false, line: encodeShape(got.pts),
-      distanceKm: fresh.distanceKm, durationSec: fresh.durationSec,
+      distanceKm: fresh.distanceKm, durationSec: fresh.durationSec, hasToll: fresh.hasToll, hasFerry: fresh.hasFerry,
       from: savedEnd(r.from, got.pts[0]), to: savedEnd(r.to, got.pts[got.pts.length - 1])});
     try{ await putRoute(rec); fresh.saved = rec; }
     catch(err){ console.warn('refreshed route not saved:', err.message); }
@@ -2389,9 +2553,20 @@ async function refreshRoute(){
 
 /* ------------------------------------------------- the saved-route list */
 
+/* The same range as the route panel, "at current settings"; nothing for a
+   route kept without a distance (never fetched again for it). */
+function savedCostHtml(r){
+  const c = costFor(r);
+  if(c.none) return '';
+  if(c.noPrice) return '<span class="rd saved-cost">Enter a diesel price to see the cost</span>';
+  return `<span class="rd saved-cost">One way, fuel estimate: about €${c.lo} to €${c.hi} at current settings` +
+    `${c.tolls ? ' · route includes tolls/ferries, not in this cost' : ''}</span>`;
+}
+
 async function renderSaved(){
   const box = document.getElementById('savedRoutes');
   if(!box) return;
+  await ensureFuel();
   let list;
   try{ list = await allRoutes(); }
   catch(err){ box.innerHTML = `<p class="unavail">Saved routes are not available on this device: ${esc(err.message)}.</p>`; return; }
@@ -2399,8 +2574,8 @@ async function renderSaved(){
   box.innerHTML = `<details${open ? ' open' : ''}><summary>Saved routes on this device <em>(${list.length})</em></summary>` +
     (list.length ? list.map(r =>
       `<div class="sroute" data-id="${esc(r.id)}"><div class="sn"><b>${esc(r.name)}</b>` +
-      `<span class="rd">${esc(r.from.label)} → ${esc(r.to.label)} · ${Number(r.distanceKm).toFixed(0)} km · ` +
-      `saved ${esc(fmtSaved(r.savedAt))}${r.approximate ? ' · approximate' : ''}</span></div>` +
+      `<span class="rd">${esc(r.from.label)} → ${esc(r.to.label)} · ${Number.isFinite(r.distanceKm) ? Number(r.distanceKm).toFixed(0) + ' km · ' : ''}` +
+      `saved ${esc(fmtSaved(r.savedAt))}${r.approximate ? ' · approximate' : ''}</span>${savedCostHtml(r)}</div>` +
       `<div class="line"><button class="b" data-act="open">Open</button><button class="b" data-act="rename">Rename</button>` +
       `<button class="b" data-act="delete">Delete</button></div></div>`).join('')
       : '<p class="unavail">None yet. After "Get route", name it and press Save route.</p>') +
@@ -2497,6 +2672,7 @@ async function importRoutes(file){
     if(have.has(r.id)){ already++; continue; }
     const rec = {id: r.id, name: r.name.trim(), savedAt: r.savedAt, lineAt: r.lineAt, approximate: !!r.approximate,
       from: r.from, to: r.to, line: r.line, distanceKm: r.distanceKm, durationSec: r.durationSec,
+      ...tollFlags({has_toll: r.hasToll, has_ferry: r.hasFerry}),
       options: {withinKm: Number(r.options?.withinKm) || 25, homeMatchOn: String(r.options?.homeMatchOn || '')}};
     try{ await putRoute(rec); added++; have.add(r.id); }
     catch(err){ bad.push(`"${r.name}": ${err.message}`); }
