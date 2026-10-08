@@ -84,6 +84,11 @@ on:
       - "data/country-ticket-rules.csv"
       - "data/ticket-sources.csv"
       - "tools/check_tickets.py"
+      - "data/competitions.csv"
+      - "data/competition-info.csv"
+      - "data/competition-sources.csv"
+      - "tools/check_competitions.py"
+      - "data/football-rules.json"
       - ".github/workflows/test-pages.yml"
   pull_request:
     paths:
@@ -101,6 +106,11 @@ on:
       - "data/country-ticket-rules.csv"
       - "data/ticket-sources.csv"
       - "tools/check_tickets.py"
+      - "data/competitions.csv"
+      - "data/competition-info.csv"
+      - "data/competition-sources.csv"
+      - "tools/check_competitions.py"
+      - "data/football-rules.json"
       - ".github/workflows/test-pages.yml"
   workflow_dispatch:
 
@@ -222,6 +232,21 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_vfb_tickets.js . 2>&1 | tee /tmp/test_vfb_tickets.log
 
+      - name: Competitions tab and the Bucket list filter chip
+        if: always()
+        run: |
+          set -o pipefail
+          NODE_PATH=/tmp/pw/node_modules node tools/test_competitions.js . 2>&1 | tee /tmp/test_competitions.log
+
+      # The Competitions tab reads three hand-written files; their own checker must pass too.
+      # Day-level future dates, an unknown topic, status or id fail it; a row with no source or
+      # check date, or one checked over 365 days ago, only warns.
+      - name: Competition files read back (check_competitions.py exits 0)
+        if: always()
+        run: |
+          set -o pipefail
+          python3 tools/check_competitions.py 2>&1 | tee /tmp/test_check_competitions.log
+
       # The calendar reads the holidays file; its own checker must pass too.
       - name: School holidays read back (check_holidays.py exits 0)
         if: always()
@@ -240,7 +265,7 @@ jobs:
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets check_tickets check_holidays; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets competitions check_tickets check_holidays check_competitions; do
               echo "## test_$t.js"
               echo
               echo '```'

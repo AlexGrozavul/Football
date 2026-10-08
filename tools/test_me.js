@@ -5,7 +5,7 @@
 //   node tools/test_me.js .         (serves the checkout itself; it changes no file)
 //
 // Added 2026-10-04 with the Me tab. Checks, with the clock at 2026-10-04 12:00 Berlin time:
-//  - four tabs fit the bottom bar at 390 px: none wider than its slot, none wrapped, none off screen;
+//  - five tabs (since 2026-10-08, Competitions between Ticket info and Me) fit the bottom bar at 390 px: none wider than its slot, none wrapped, none off screen;
 //  - add, edit and delete a membership and a ticket; "Renewal due in N days" inside the window,
 //    "Renewal overdue by N days" before today, a plain "Renews" date outside it, and the window setting;
 //    a non-euro cost with the euro figure in brackets, or "euro figure not entered"; a ticket with no
@@ -165,7 +165,7 @@ function alarmAt(ev, al){
   const ctx = await newCtx();
   const page = await openMe(ctx);
 
-  // Four tabs at 390 px.
+  // Five tabs at 390 px.
   const nav = await page.evaluate(() => {
     const bs = [...document.querySelectorAll('nav button')];
     return {n: bs.length, labels: bs.map(b => b.textContent.replace(/\s+/g, ' ').trim()), navW: document.querySelector('nav').scrollWidth,
@@ -176,8 +176,8 @@ function alarmAt(ev, al){
         const r = document.createRange(); const node = [...b.childNodes].find(n => n.nodeType === 3); r.selectNodeContents(node);
         return r.getClientRects().length; })};
   });
-  check('Four tabs in the bottom bar, the fourth "Me"', nav.n === 4 && /Me$/.test(nav.labels[3]), nav.labels.join(' | '));
-  check('All four fit at 390 px: none wider than its slot or off screen', !nav.bad.length && nav.navW <= W, JSON.stringify(nav.bad) + ` nav ${nav.navW}`);
+  check('Five tabs in the bottom bar, "Competitions" fourth and "Me" fifth', nav.n === 5 && /Competitions$/.test(nav.labels[3]) && /Me$/.test(nav.labels[4]), nav.labels.join(' | '));
+  check('All five fit at 390 px: none wider than its slot or off screen', !nav.bad.length && nav.navW <= W, JSON.stringify(nav.bad) + ` nav ${nav.navW}`);
   check('No tab label wraps to a second line, all the same height', nav.lines.every(n => n === 1) && new Set(nav.heights).size === 1,
     JSON.stringify({lines: nav.lines, heights: nav.heights}));
 

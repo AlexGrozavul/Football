@@ -196,8 +196,8 @@ const server = http.createServer((req, res) => {
     playB.slice(2).every(b => b.whyStatus === 'unverified' && Array.isArray(b.whySources) && b.whySources.length >= 2 && b.whySources.every(u => /^https?:\/\//.test(u)) &&
       !('ticketRoute' in b) && !('ticketRoutes' in b) && !('ticketNote' in b) && !('capacity' in b) && !('leadTimeDays' in b)));
   const firstIn = g => keyed.filter(b => b.group === g).map(b => b.id);
-  check('Group order: the Pokal and the three German play-off entries open the Germany group, the two Romanian ones open the Romania group, before any derby',
-    firstIn('Club fixtures, Germany').slice(0, 4).join() === PLAY.slice(0, 4).join() && firstIn('Club fixtures, Romania').slice(0, 2).join() === PLAY.slice(4).join(),
+  check('Group order: the Pokal and the three German play-off entries open the Germany group, liga2-playoff (moved there 2026-10-08) and the two Romanian ones open the Romania group, before any derby',
+    firstIn('Club fixtures, Germany').slice(0, 4).join() === PLAY.slice(0, 4).join() && firstIn('Club fixtures, Romania').slice(0, 3).join() === ['liga2-playoff', ...PLAY.slice(4)].join(),
     firstIn('Club fixtures, Germany').slice(0, 5).join());
   const LCT = 'Needs a league check: both clubs must share a league or cup in that season';
   const lcWant = new Set(rules.bucketList.filter(b => b.leagueCheck).map(b => b.id));

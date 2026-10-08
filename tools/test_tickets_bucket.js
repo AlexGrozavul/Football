@@ -240,6 +240,102 @@ const server = http.createServer((req, res) => {
   check('Bucket list: no inferred or disputed date shown to the day', !days.length, JSON.stringify(days).slice(0, 400));
   await page.screenshot({path: path.join(process.env.SHOT_DIR || '/tmp', 'bucket-list.png')});
 
+  // ---------------------------------------------------------------- the filter (2026-10-08)
+  // Counts come from football-rules.json read here, never from a number written in this file.
+  {
+    const all = rules.bucketList;
+    const isDE = e => e.countryCode === 'DE';
+    const deIds = new Set(all.filter(isDE).map(e => e.id));
+    const cardIds = () => page.$$eval('#bucketBody details.bucket', ds => ds.map(d => d.dataset.id));
+    const chipText = () => page.textContent('#bfChip').then(t => t.replace(/\s+/g, ' '));
+    const pick = (g, v) => page.click(`#fpBody .fopt[data-g=${g}][data-v="${v}"]`);
+    const openPanel = async () => { if(await page.$('#filterPanel:not([hidden])') === null){ await page.click('#bfChip'); await page.waitForSelector('#filterPanel:not([hidden])'); } };
+    const closePanel = async () => { if(await page.$('#filterPanel:not([hidden])')){ await page.click('#fpClose'); await page.waitForSelector('#filterPanel[hidden]', {state: 'attached'}); } };
+    const calIds = () => page.$$eval('#calBody [data-open^="entry:"]', bs => [...new Set(bs.map(b => b.dataset.open.slice(6)))]);
+
+    check('every entry has a type and, where it is one country, an ISO-2 country code',
+      all.every(e => e.kind && /^[a-z-]+$/.test(e.kind) && (e.countryCode === '' || /^[A-Z]{2}$/.test(e.countryCode))),
+      all.filter(e => !e.kind || !/^(|[A-Z]{2})$/.test(e.countryCode ?? 'x')).map(e => e.id).join(','));
+    check('Bucket filter: the chip reads "n of total" at the top of the List',
+      new RegExp(`${all.length} of ${all.length}\\b`).test(await chipText()), await chipText());
+    check('Bucket filter: the chip is above the first group heading',
+      await page.evaluate(() => document.getElementById('bfChip').getBoundingClientRect().bottom <= document.querySelector('#bucketBody h2').getBoundingClientRect().top));
+    await openPanel();
+    const pf = await page.$$eval('#fpBody .fopt', bs => bs.map(b => ({g: b.dataset.g, v: b.dataset.v, n: +b.querySelector('em').textContent})));
+    const wantF = (g, f) => { const m = {}; for(const e of all){ const v = f(e) || '~'; m[v] = (m[v] || 0) + 1; } return m; };
+    const gotF = g => Object.fromEntries(pf.filter(x => x.g === g).map(x => [x.v, x.n]));
+    check('Bucket filter: Country shows only countries that exist, with their counts',
+      JSON.stringify(Object.entries(gotF('country')).sort()) === JSON.stringify(Object.entries(wantF('country', e => e.countryCode)).sort()),
+      JSON.stringify(gotF('country')).slice(0, 200));
+    check('Bucket filter: Type shows only types that exist, with their counts',
+      JSON.stringify(Object.entries(gotF('kind')).sort()) === JSON.stringify(Object.entries(wantF('kind', e => e.kind)).sort()),
+      JSON.stringify(gotF('kind')));
+    s = await sideways('bucket');
+    check('Bucket filter: the open panel fits 390 px, no sideways scroll',
+      s.doc <= W + 1 && await page.evaluate(() => { const r = document.getElementById('filterPanel').getBoundingClientRect(); return r.left >= -1 && r.right <= innerWidth + 1 && document.getElementById('fpBody').scrollWidth <= document.getElementById('fpBody').clientWidth + 1; }));
+
+    await pick('country', 'DE');
+    await page.waitForTimeout(200);
+    const gotDE = await cardIds();
+    check('Bucket filter: Country = Germany shows only German entries, and all of them',
+      gotDE.length === deIds.size && gotDE.every(id => deIds.has(id)), `${gotDE.length} shown, ${deIds.size} expected`);
+    check('Bucket filter: the chip follows ("n of total")', new RegExp(`${deIds.size} of ${all.length}\\b`).test(await chipText()), await chipText());
+    const heads = await page.$$eval('#bucketBody h2[data-sec^="group:"]', hs => hs.map(h => h.dataset.sec.slice(6)));
+    const wantGroups = [...new Set(all.filter(isDE).sort((a, b) => a.sortKey - b.sortKey).map(e => e.group))];
+    check('Bucket filter: groups with no German entry are hidden, the others keep their headings and order',
+      JSON.stringify(heads) === JSON.stringify(wantGroups), `${heads.join(' | ')} vs ${wantGroups.join(' | ')}`);
+    check('Bucket filter: a group heading counts only what is shown',
+      await page.evaluate(() => [...document.querySelectorAll('#bucketBody h2[data-sec^="group:"]')].every(h => {
+        let n = 0; for(let e = h.nextElementSibling; e && e.tagName !== 'H2'; e = e.nextElementSibling) if(e.matches('details.bucket')) n++;
+        return new RegExp('— ' + n + '$').test(h.textContent.trim()); })));
+    await page.click('#fpClose');
+    // The same filter on the calendar.
+    await page.click('#tabCal');
+    await page.waitForSelector('#calBody .calgrid');
+    const calDE = await calIds();
+    check('Bucket filter: the calendar shows only German entries too', calDE.every(id => deIds.has(id)), calDE.filter(id => !deIds.has(id)).join(','));
+    await page.click('#tabList');
+    await openPanel();
+    await page.click('#fpReset');
+    await page.waitForTimeout(200);
+    check('Bucket filter: "Show all" brings every entry back', (await cardIds()).length === all.length && new RegExp(`${all.length} of ${all.length}\\b`).test(await chipText()));
+    await page.click('#fpClose');
+    await page.click('#tabCal');
+    await page.waitForSelector('#calBody .calgrid');
+    const calAll = await calIds();
+    check('Bucket filter: without the filter the calendar lists entries from other countries (so the filter above did bite)',
+      calAll.some(id => !deIds.has(id)) && calAll.length > calDE.length, `${calAll.length} against ${calDE.length}`);
+    await page.click('#tabList');
+
+    // An empty result.
+    await openPanel();
+    await pick('country', 'DE'); await pick('kind', 'tournament');
+    await page.waitForTimeout(200);
+    const emptyList = await page.textContent('#bucketBody');
+    check('Bucket filter: an empty result says "No entries match" with a reset button',
+      /No entries match/.test(emptyList) && !!(await page.$('#bucketBody [data-freset=bucket]')) && !(await cardIds()).length && /0 of /.test(await chipText()));
+    await page.click('#fpClose');
+    await page.click('#tabCal');
+    await page.waitForSelector('#calBody .calgrid');
+    check('Bucket filter: the calendar says "No entries match" too', /No entries match/.test(await page.textContent('#calBody')));
+    await page.click('#calBody [data-freset=bucket]');
+    await page.waitForTimeout(200);
+    check('Bucket filter: the calendar reset button restores everything', !/No entries match/.test(await page.textContent('#calBody')) && new RegExp(`${all.length} of ${all.length}\\b`).test(await chipText()));
+    await page.click('#tabList');
+
+    // Kept on the device.
+    await openPanel(); await pick('country', 'DE'); await page.click('#fpClose');
+    await page.reload();
+    await page.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    await page.click('nav button[data-pane=bucket]');
+    await page.waitForFunction(() => /\d+ of \d+/.test(document.getElementById('bfCount').textContent), null, {timeout: 15000});
+    check('Bucket filter: the choice is kept on the device over a reload', new RegExp(`${deIds.size} of ${all.length}\\b`).test(await chipText()), await chipText());
+    await openPanel(); await page.click('#fpReset'); await page.click('#fpClose');
+    check('Bucket filter: after reset the stored choice is gone', (await page.evaluate(() => localStorage.getItem('football-planner-bucket-filter'))) === JSON.stringify({country: [], kind: []}));
+    s = await sideways('bucket');
+    check('Bucket list with the filter chip: no sideways scroll at 390 px', s.sw <= s.cw + 1 && s.doc <= W + 1);
+  }
+
   check('no script error', !errors.length, errors.join(' | '));
   await browser.close(); server.close();
   const failed = results.filter(x => !x).length;
