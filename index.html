@@ -35,8 +35,8 @@
 
   nav{display:flex;border-top:1px solid var(--line);background:var(--panel);
     padding-bottom:env(safe-area-inset-bottom)}
-  nav button{flex:1;background:none;border:0;color:var(--faint);padding:11px 4px 9px;
-    font:inherit;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+  nav button{flex:1 1 0;min-width:0;background:none;border:0;color:var(--faint);padding:11px 1px 9px;
+    font:inherit;font-size:10px;letter-spacing:.01em;text-transform:uppercase;white-space:nowrap}
   nav button b{display:block;font-size:17px;margin-bottom:2px;font-weight:600}
   nav button.on{color:var(--ink)}
   nav button.on b{color:var(--accent)}
@@ -365,7 +365,25 @@
     font-weight:600;padding:10px 0;min-height:44px}
   .hol{font-size:13px;color:#b7d7a8;margin-top:6px}
   .tix .ev.focus{outline:2px solid var(--warn);outline-offset:3px;border-radius:4px}
-  #bsheet{z-index:1001}
+  #bsheet,#csheet{z-index:1001}
+  #filterPanel{z-index:1002}
+  /* Filter chip row (Bucket list, Competitions) and its checkbox rows. */
+  .bfrow{display:flex;gap:8px;align-items:center;margin:0 0 8px;min-width:0}
+  .bfrow .chip{min-height:44px;display:inline-flex;align-items:center;flex-shrink:0}
+  .bfrow .search{margin-left:auto}
+  .bfrow .search input{min-height:44px}
+  .fopt{min-height:44px;align-items:center}
+  .fopt i{border-radius:3px;border:1px solid var(--faint);margin-top:0}
+  .fopt[aria-pressed="true"] i{background:var(--t3);border-color:var(--t3)}
+  .fopt em{font-style:normal;color:var(--faint);font-size:12px;white-space:nowrap;margin-left:auto;padding-left:8px}
+  .fhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .bempty{margin:14px 0}
+  .comprow{min-height:44px;align-items:center}
+  .comprow em{font-style:normal;color:var(--faint);font-size:12px;text-align:right;margin-left:auto;padding-left:8px;flex-shrink:0;max-width:40%}
+  .bempty button.b{background:#1b2230;border:1px solid var(--line);border-radius:7px;color:var(--ink);
+    font:inherit;font-size:13px;min-height:44px;padding:6px 14px;cursor:pointer;margin-top:6px}
+  .fhead .b{min-height:44px}
+  .cpara{margin:4px 0 2px;font-size:13.5px;overflow-wrap:anywhere}
   #bsheet .bwhen{margin-top:4px}
 
   /* Calendar: a Monday-first month grid that fits 390 px. */
@@ -551,6 +569,7 @@
         <button type="button" role="tab" id="tabList" aria-selected="true" aria-controls="bucketListView">List</button>
         <button type="button" role="tab" id="tabCal" aria-selected="false" aria-controls="calView">Calendar</button>
       </div>
+      <div class="bfrow"><button type="button" class="chip btn" id="bfChip" aria-haspopup="dialog" aria-controls="filterPanel">Filter · <b id="bfCount"></b></button></div>
       <div id="bucketListView" role="tabpanel" aria-labelledby="tabList">
         <div class="bsort" role="radiogroup" aria-label="Sort the entries">
           <span>Sort</span>
@@ -563,6 +582,11 @@
       <div id="calView" role="tabpanel" aria-labelledby="tabCal" hidden><div id="calBody"></div></div>
     </div></div>
     <div class="pane" id="pane-tickets"><div class="wrap" id="ticketBody"></div></div>
+    <div class="pane" id="pane-competitions"><div class="wrap">
+      <div class="bfrow"><button type="button" class="chip btn" id="cfChip" aria-haspopup="dialog" aria-controls="filterPanel">Filter · <b id="cfCount"></b></button>
+        <div class="search"><input type="search" id="compSearch" placeholder="Find a competition" aria-label="Find a competition by name" autocomplete="off" spellcheck="false"></div></div>
+      <div id="compBody"></div>
+    </div></div>
     <div class="pane" id="pane-me"><div class="wrap me" id="meBody"></div></div>
     <!-- A bucket entry or ticket window tapped in the calendar: the club
          sheet's shape, against the bottom bar, the List's own renderer inside. -->
@@ -572,11 +596,26 @@
         <button class="x" id="bsheetClose" aria-label="Close">Close</button></div>
       <div class="sbody tix" id="bsheetBody"></div>
     </div>
+    <!-- A competition tapped in the Competitions list: the same shape. -->
+    <div class="sheet" id="csheet" hidden role="dialog" aria-label="Competition">
+      <div class="grip"><i></i></div>
+      <div class="shead"><div style="flex:1;min-width:0" id="csheetHead"></div>
+        <button class="x" id="csheetClose" aria-label="Close">Close</button></div>
+      <div class="sbody tix" id="csheetBody"></div>
+    </div>
+    <!-- The filter panel of the Bucket list and the Competitions tab: the
+         coverage panel's shape (a route-style sheet) with checkbox rows. -->
+    <div class="sheet route" id="filterPanel" hidden role="dialog" aria-label="Filter">
+      <div class="shead"><h3 id="fpTitle">Filter</h3>
+        <button class="x" id="fpClose" aria-label="Close">Close</button></div>
+      <div class="sbody" id="fpBody"></div>
+    </div>
   </div>
   <nav>
     <button class="on" data-pane="map"><b>◉</b>Map</button>
     <button data-pane="bucket"><b>★</b>Bucket list</button>
     <button data-pane="tickets"><b>▤</b>Ticket info</button>
+    <button data-pane="competitions"><b>◆</b>Competitions</button>
     <button data-pane="me"><b>●</b>Me</button>
   </nav>
 </div>
@@ -3279,7 +3318,8 @@ async function nextMeetingHtml(item, rows){
 /* The entry's own fields not shown above, exactly as written. */
 const BUCKET_SHOWN = new Set(['id', 'title', 'type', 'priority', 'status', 'trueDerby', 'why', 'venue', 'date',
   'group', 'country', 'sortKey', 'whyAssistant', 'whyStatus', 'whySources', 'leagueCheck', 'listOnly',
-  'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'distanceKm', 'clubs', 'verified', 'warning']);
+  'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'distanceKm', 'clubs', 'verified', 'warning',
+  'kind', 'countryCode']);
 
 /* ONE renderer for a bucket entry's detail; the Bucket list tab uses it
    inside each card, and the next sheet can use it as it is. */
@@ -3569,14 +3609,18 @@ async function renderBucket(rules){
 
 function renderBucketList(){
   const rules = BUCKET_RULES;
-  const items = rules.bucketList || [];
+  const all = rules.bucketList || [];
+  const items = applyFilter('bucket', all);       // the chip's filter; the List and the calendar share it
   const body = document.getElementById('bucketBody');
   const wasOpen = [...body.querySelectorAll('details.bucket[open]')].map(d => d.dataset.id);
   const pastOpen = [...body.querySelectorAll('details.past[open]')].length;
   document.querySelectorAll('.bsort button').forEach(b => b.setAttribute('aria-checked', b.dataset.sort === sortMode()));
 
   let list;
-  if(sortMode() === 'group'){
+  if(!items.length){
+    list = `<div class="bempty" data-sec="empty"><p class="unavail">No entries match</p>` +
+      `<button type="button" class="b" data-freset="bucket">Show all</button></div>`;
+  }else if(sortMode() === 'group'){
     list = groupHtml(items);
   }else if(sortMode() === 'favorites'){
     const F = favs();
@@ -3595,7 +3639,8 @@ function renderBucketList(){
      ${esc(HOME ? HOME.label : 'an unset home location')}. They are a road-distance
      estimate, not a travel time. An estimated date is shown to the month only.
      Favorites and the sort are kept on this device only.</p>`;
-  wireLazy(body, d => bucketDetailHtml(items.find(i => i.id === d.dataset.id)));
+  wireLazy(body, d => bucketDetailHtml(all.find(i => i.id === d.dataset.id)));
+  updateFilterChip('bucket');
   if(pastOpen) body.querySelectorAll('details.past').forEach(d => d.open = true);
   wasOpen.forEach(id => body.querySelectorAll('details.bucket').forEach(d => { if(d.dataset.id === id) d.open = true; }));
 }
@@ -3617,7 +3662,7 @@ function calItems(){
       const k = isoDay(n); if(!byDay.has(k)) byDay.set(k, []); byDay.get(k).push(it); } }
     else months.push({it, from: p.key.slice(0, 7), to: p.end});
   };
-  for(const item of rules.bucketList || []){
+  for(const item of applyFilter('bucket', rules.bucketList || [])){
     if(item.listOnly) continue;         // added to the List only, undated: not on the calendar
     const base = {kind: 'entry', id: item.id, entryId: item.id, title: item.title || item.id, fav: F.has(item.id),
       held: heldFor(item.id).length > 0};
@@ -3652,10 +3697,13 @@ function renderCalendar(){
   if(CAL.sel && CAL.sel.slice(0, 7) !== ym) CAL.sel = null;
   if(!CAL.sel && today.slice(0, 7) === ym) CAL.sel = today;
   const I = calItems();
+  const noMatch = !applyFilter('bucket', BUCKET_RULES.bucketList || []).length;
 
   /* Above the grid: the month's estimates, which never go on a day. */
   const est = I.months.filter(x => x.from <= ym && ym <= x.to).map(x => x.it);
-  let h = `<div class="calnav"><button type="button" data-cal="prev" aria-label="Previous month">‹</button>` +
+  let h = (noMatch ? `<div class="bempty" data-sec="empty"><p class="unavail">No entries match</p>` +
+      `<button type="button" class="b" data-freset="bucket">Show all</button></div>` : '') +
+    `<div class="calnav"><button type="button" data-cal="prev" aria-label="Previous month">‹</button>` +
     `<h3 id="calTitle">${esc(monthText(ym))}</h3>` +
     `<button type="button" data-cal="next" aria-label="Next month">›</button>` +
     `<button type="button" data-cal="today">Today</button></div>` +
@@ -3732,6 +3780,312 @@ function renderCalendar(){
       `to the month. Dates are plain calendar dates; nothing is converted between time zones.</p>`;
   document.getElementById('calBody').innerHTML = h;
 }
+
+/* ------------------------------------------------ filters and competitions
+
+   ONE filter, two lists. The chip above the Bucket list and the chip on
+   the Competitions tab open the same panel (the coverage panel's sheet,
+   with checkbox rows). Choices inside a group are "or", groups are "and",
+   and nothing chosen means everything. Only values that exist in the data
+   are offered, with how many entries have each. The choice is kept on THIS
+   DEVICE only (localStorage, wrapped), like the sort and the stars: never
+   in the repo, never read by a tool, not in the Me tab's export. */
+
+const ISO_LABEL = {AR:'Argentina', AT:'Austria', BA:'Bosnia and Herzegovina', BE:'Belgium', BG:'Bulgaria',
+  BR:'Brazil', CH:'Switzerland', CL:'Chile', CO:'Colombia', CY:'Cyprus', CZ:'Czechia', DE:'Germany',
+  DK:'Denmark', EG:'Egypt', ES:'Spain', FR:'France', GB:'United Kingdom', GR:'Greece', HR:'Croatia',
+  HU:'Hungary', IT:'Italy', JP:'Japan', MA:'Morocco', MX:'Mexico', NL:'Netherlands', PL:'Poland',
+  PT:'Portugal', RO:'Romania', RS:'Serbia', SE:'Sweden', SI:'Slovenia', SK:'Slovakia', TR:'Turkey',
+  US:'United States', UY:'Uruguay', ZA:'South Africa'};
+const isoLabel = cc => ISO_LABEL[cc] || COUNTRY_NAME[cc] || cc;
+const KIND_LABEL = {tournament:'Tournament', final:'Final', 'national-team':'National team', derby:'Derby',
+  playoff:'Play-off', 'cup-round':'Cup round', event:'Event', other:'Other'};
+const NONE = '~';           // the stored value for "no single country"
+
+const FILTERS = {
+  bucket: {key: 'football-planner-bucket-filter', noun: 'entries', empty: 'Several countries or none',
+    groups: [{id: 'country', label: 'Country'}, {id: 'kind', label: 'Type'}], sel: null},
+  comp: {key: 'football-planner-comp-filter', noun: 'competitions', empty: 'Europe and international',
+    groups: [{id: 'country', label: 'Country'}], sel: null}
+};
+const filterItems = name => name === 'bucket' ? (BUCKET_RULES?.bucketList || []) : (COMPS ? COMPS.comps : []);
+function filterValue(name, item, gid){
+  if(gid === 'country') return (name === 'bucket' ? item.countryCode : item.country) || NONE;
+  return item.kind || 'other';
+}
+function filterSel(name){
+  const F = FILTERS[name];
+  if(F.sel) return F.sel;
+  F.sel = {};
+  F.groups.forEach(g => { F.sel[g.id] = new Set(); });
+  try{
+    const v = JSON.parse(localStorage.getItem(F.key) || '{}');
+    for(const g of F.groups) if(Array.isArray(v[g.id])) v[g.id].forEach(x => F.sel[g.id].add(String(x)));
+  }catch(err){ /* blocked or unreadable: no filter */ }
+  return F.sel;
+}
+function saveSel(name){
+  const F = FILTERS[name], o = {};
+  for(const g of F.groups) o[g.id] = [...filterSel(name)[g.id]];
+  try{ localStorage.setItem(F.key, JSON.stringify(o)); }catch(err){ /* blocked: this visit only */ }
+}
+const filterActive = name => FILTERS[name].groups.some(g => filterSel(name)[g.id].size > 0);
+function filterFacets(name, gid){
+  const m = new Map();
+  for(const it of filterItems(name)){ const v = filterValue(name, it, gid); m.set(v, (m.get(v) || 0) + 1); }
+  const label = v => gid === 'kind' ? (KIND_LABEL[v] || v) : v === NONE ? FILTERS[name].empty : isoLabel(v);
+  const rows = [...m].map(([v, n]) => ({v, n, label: label(v)}));
+  if(gid === 'kind'){ const k = Object.keys(KIND_LABEL); rows.sort((a, b) => k.indexOf(a.v) - k.indexOf(b.v)); }
+  else rows.sort((a, b) => (a.v === NONE) - (b.v === NONE) || a.label.localeCompare(b.label));
+  return rows;
+}
+/* A stored value that no longer exists in the data is ignored. */
+function applyFilter(name, items){
+  const sel = filterSel(name), F = FILTERS[name];
+  for(const g of F.groups){
+    if(!sel[g.id].size) continue;
+    const have = new Set(filterItems(name).map(i => filterValue(name, i, g.id)));
+    if(have.size) for(const v of [...sel[g.id]]) if(!have.has(v)) sel[g.id].delete(v);
+  }
+  return items.filter(i => F.groups.every(g => !sel[g.id].size || sel[g.id].has(filterValue(name, i, g.id))));
+}
+function updateFilterChip(name){
+  const el = document.getElementById(name === 'bucket' ? 'bfCount' : 'cfCount');
+  if(!el) return;
+  const total = filterItems(name).length;
+  const n = name === 'bucket' ? applyFilter('bucket', filterItems('bucket')).length : visibleComps().length;
+  el.textContent = `${n} of ${total}`;
+  el.parentElement.classList.toggle('on', filterActive(name));
+}
+
+let FP_FOR = null;
+function closeFilter(){ document.getElementById('filterPanel').hidden = true; FP_FOR = null; }
+function openFilter(name){
+  const panel = document.getElementById('filterPanel');
+  if(!panel.hidden && FP_FOR === name){ closeFilter(); return; }
+  closeBSheet(); closeCSheet();
+  FP_FOR = name;
+  document.getElementById('fpTitle').textContent = name === 'bucket' ? 'Filter the Bucket list' : 'Filter competitions';
+  renderFilterPanel();
+  panel.hidden = false;
+}
+function renderFilterPanel(){
+  const name = FP_FOR, F = FILTERS[name], sel = filterSel(name);
+  const body = document.getElementById('fpBody');
+  body.innerHTML =
+    `<div class="fhead"><button type="button" class="b" id="fpReset">Show all</button>` +
+      `<span class="sub" id="fpCount"></span></div>` +
+    F.groups.map(g => `<div class="covc" data-g="${g.id}">${esc(g.label)}</div>` +
+      filterFacets(name, g.id).map(r => `<button type="button" class="rclub fopt" data-g="${g.id}" ` +
+        `data-v="${esc(r.v)}" aria-pressed="${sel[g.id].has(r.v)}"><i></i><span class="rn">${esc(r.label)}</span>` +
+        `<em>${r.n}</em></button>`).join('')).join('');
+  updatePanelCount();
+}
+function updatePanelCount(){
+  const el = document.getElementById('fpCount');
+  if(!el || !FP_FOR) return;
+  const n = FP_FOR === 'bucket' ? applyFilter('bucket', filterItems('bucket')).length : visibleComps().length;
+  el.textContent = `${n} of ${filterItems(FP_FOR).length} ${FILTERS[FP_FOR].noun} shown`;
+}
+function filterChanged(name){
+  updateFilterChip(name);
+  updatePanelCount();
+  if(name === 'bucket'){
+    if(BUCKET_RULES){ renderBucketList(); if(!document.getElementById('calView').hidden) renderCalendar(); }
+  }else renderCompList();
+}
+function resetFilter(name){
+  const F = FILTERS[name], sel = filterSel(name);
+  F.groups.forEach(g => sel[g.id].clear());
+  saveSel(name);
+  if(name === 'comp'){ COMP.q = ''; document.getElementById('compSearch').value = ''; }
+  if(FP_FOR === name) renderFilterPanel();
+  filterChanged(name);
+}
+(function wireFilters(){
+  document.getElementById('bfChip').addEventListener('click', () => openFilter('bucket'));
+  document.getElementById('cfChip').addEventListener('click', () => openFilter('comp'));
+  document.getElementById('fpClose').addEventListener('click', closeFilter);
+  document.getElementById('fpBody').addEventListener('click', e => {
+    if(e.target.closest('#fpReset')){ resetFilter(FP_FOR); return; }
+    const b = e.target.closest('.fopt');
+    if(!b || !FP_FOR) return;
+    const set = filterSel(FP_FOR)[b.dataset.g], on = !set.has(b.dataset.v);
+    if(on) set.add(b.dataset.v); else set.delete(b.dataset.v);
+    b.setAttribute('aria-pressed', on);
+    saveSel(FP_FOR);
+    filterChanged(FP_FOR);
+  });
+  document.addEventListener('click', e => {
+    const r = e.target.closest('[data-freset]');
+    if(r) resetFilter(r.dataset.freset);
+  });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeFilter(); });
+})();
+
+/* ------------------------------------------------------- competitions
+
+   data/competitions.csv, competition-info.csv and competition-sources.csv
+   are hand-written; nothing fetched ever becomes a row. A competition with
+   no info row says "Not researched yet", never a guess. */
+
+const COMP_TOPICS = [['format', 'Format'], ['qualification', 'Who takes part and how they qualify'],
+  ['promotion-relegation', 'Promotion and relegation'], ['season-window', 'Season window'],
+  ['schedule-announcement', 'Schedule announcements'], ['tracking', 'Where to follow it'], ['other', 'Other']];
+const COMP_STATUS = {confirmed: 'Confirmed', inferred: 'Estimated, based on past seasons', unverified: 'Not yet verified'};
+const COMP_TYPE = {league: 'League', cup: 'Cup', supercup: 'Super cup', playoff: 'Play-off',
+  international: 'International club competition', tournament: 'Tournament'};
+const COMP_TYPE_ORDER = ['league', 'cup', 'supercup', 'playoff', 'international', 'tournament'];
+let COMPS = null;
+const COMP = {q: ''};
+
+function loadCompetitions(){
+  return loadOnce('competitions', async () => {
+    const [c, i, s] = await Promise.all([csvFile('data/competitions.csv'),
+      csvFile('data/competition-info.csv'), csvFile('data/competition-sources.csv')]);
+    if(!c.ok) throw new Error('data/competitions.csv could not be loaded (' + c.err + ')');
+    const R = {comps: [], info: new Map(), sources: new Map(), notes: []};
+    for(const r of c.v){
+      if(r._over || !r.id || !r.name || !COMP_TYPE_ORDER.includes(r.type)){
+        R.notes.push(`${r.name || r.id || 'a row'}: not shown (${r._over ? 'an unquoted comma splits a cell' : 'no id, no name or an unknown type'})`);
+        continue;
+      }
+      R.comps.push({id: r.id, name: r.name, country: r.country || '', level: r.level ? Number(r.level) : null,
+        type: r.type, officialUrl: r.officialUrl || ''});
+    }
+    if(s.ok){ for(const r of s.v) if(r.sourceId) R.sources.set(r.sourceId, r); }
+    else R.notes.push('data/competition-sources.csv could not be loaded: sources are not linked.');
+    if(i.ok){
+      for(const r of i.v){
+        if(r._over || !r.competitionId || !r.text) continue;
+        if(!R.info.has(r.competitionId)) R.info.set(r.competitionId, []);
+        R.info.get(r.competitionId).push(r);
+      }
+    }else R.notes.push('data/competition-info.csv could not be loaded: nothing can be shown as researched.');
+    R.comps.sort(compOrder);
+    COMPS = R;
+    return R;
+  });
+}
+/* Germany, Romania, other countries A-Z, then Europe and international;
+   inside a country the leagues by level, then cups, super cups, play-offs. */
+function compGroupRank(c){ return c.country === 'DE' ? 0 : c.country === 'RO' ? 1 : c.country ? 2 : 3; }
+function compOrder(a, b){
+  return compGroupRank(a) - compGroupRank(b) ||
+    (a.country && b.country ? isoLabel(a.country).localeCompare(isoLabel(b.country)) : 0) ||
+    COMP_TYPE_ORDER.indexOf(a.type) - COMP_TYPE_ORDER.indexOf(b.type) ||
+    (a.level ?? 99) - (b.level ?? 99) || a.name.localeCompare(b.name);
+}
+function visibleComps(){
+  if(!COMPS) return [];
+  const q = fold(COMP.q).split(' ').filter(Boolean);
+  return applyFilter('comp', COMPS.comps).filter(c => { const n = fold(c.name); return q.every(w => n.includes(w)); });
+}
+function compSub(c){
+  return COMP_TYPE[c.type] + (c.level != null ? ` · level ${c.level}` : '');
+}
+function renderCompList(){
+  const box = document.getElementById('compBody');
+  if(!COMPS){ box.innerHTML = '<p class="unavail">Loading…</p>'; return; }
+  updateFilterChip('comp');
+  const list = visibleComps();
+  if(!list.length){
+    box.innerHTML = `<div class="bempty"><p class="unavail">No competitions match</p>` +
+      `<button type="button" class="b" data-freset="comp">Show all</button></div>`;
+    return;
+  }
+  let h = '', cc = null;
+  for(const c of list){
+    if(c.country !== cc){
+      cc = c.country;
+      h += `<h2 data-sec="country:${esc(cc || NONE)}">${esc(cc ? isoLabel(cc) : FILTERS.comp.empty)} — ` +
+        `${list.filter(x => x.country === cc).length}</h2>`;
+    }
+    const n = (COMPS.info.get(c.id) || []).length;
+    h += `<button type="button" class="rclub comprow" data-id="${esc(c.id)}"><span class="rn">${esc(c.name)}` +
+      `<span class="rd">${esc(compSub(c))}</span></span>` +
+      `<em>${n ? `${n} topic${n === 1 ? '' : 's'}` : 'Not researched yet'}</em></button>`;
+  }
+  box.innerHTML = h + (COMPS.notes.length ? `<p class="note">${COMPS.notes.map(esc).join(' ')}</p>` : '');
+}
+async function openCompetitionsTab(){
+  const box = document.getElementById('compBody');
+  if(!COMPS){ renderCompList(); const r = await loadCompetitions();
+    if(!r.ok){ box.innerHTML = `<p class="err">Could not load the competitions — ${esc(r.err)}</p>`; return; } }
+  renderCompList();
+}
+
+/* Month level for anything in the future: a day-level future date in a
+   text (the checker rejects one, so this is a second line of defence) is
+   shown as its month. */
+function monthOnly(text){
+  const today = todayISO(), mon = new RegExp('\\b(\\d{1,2})(?:st|nd|rd|th)?\\.?\\s+(' + MONTH_NAMES.join('|') + ')\\s+(\\d{4})\\b', 'g');
+  return String(text)
+    .replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, (m, y, mo, d) => m > today ? monthText(`${y}-${mo}`) : m)
+    .replace(mon, (m, d, mn, y) => {
+      const iso = `${y}-${pad2(MONTH_NAMES.indexOf(mn) + 1)}-${pad2(+d)}`;
+      return iso > today ? `${mn} ${y}` : m;
+    });
+}
+function checkedWords(iso){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  return m ? `${+m[3]} ${MONTH_NAMES[+m[2] - 1].slice(0, 3)} ${m[1]}` : '';
+}
+function compSourcesHtml(ids){
+  const refs = String(ids || '').split(';').map(x => x.trim()).filter(Boolean);
+  if(!refs.length) return '<div class="sub" data-f="source">No source recorded</div>';
+  return `<div class="sub" data-f="source">Source: ` + refs.map(id => {
+    const s = COMPS.sources.get(id);
+    return s && /^https?:\/\//.test(s.url)
+      ? `<a href="${esc(s.url)}" target="_blank" rel="noopener" title="${esc(s.note || '')}">${esc(s.title || s.url)}</a>`
+      : `source ${esc(id)} (not in the sources file)`;
+  }).join(' · ') + `</div>`;
+}
+function compDetailHtml(c){
+  const rows = COMPS.info.get(c.id) || [];
+  let h = '';
+  if(c.officialUrl && /^https?:\/\//.test(c.officialUrl))
+    h += `<p class="sub"><a href="${esc(c.officialUrl)}" target="_blank" rel="noopener">Official site</a></p>`;
+  if(!rows.length) return h + '<p class="unavail" data-topic="none">Not researched yet</p>';
+  for(const [t, title] of COMP_TOPICS){
+    h += `<h4>${esc(title)}</h4>`;
+    const here = rows.filter(r => r.topic === t);
+    if(!here.length){ h += `<p class="unavail" data-topic="${t}">Not researched yet</p>`; continue; }
+    for(const r of here){
+      const st = COMP_STATUS[r.status] || 'Not yet verified';
+      h += `<div data-topic="${t}" data-status="${esc(r.status)}"><div class="meta"><span class="tag ${r.status === 'confirmed' ? 'ok' : 'warn'}">${esc(st)}</span></div>` +
+        `<p class="cpara">${esc(monthOnly(r.text))}</p>` +
+        (r.basis ? `<div class="sub" data-f="basis">Basis: ${esc(monthOnly(r.basis))}</div>` : '') +
+        compSourcesHtml(r.sourceId) +
+        `<div class="sub" data-f="checked">${r.checkedOn ? 'Checked on ' + esc(checkedWords(r.checkedOn)) : 'No check date recorded'}</div></div>`;
+    }
+  }
+  return h;
+}
+function closeCSheet(){ document.getElementById('csheet').hidden = true; }
+function openCSheet(id){
+  const c = COMPS && COMPS.comps.find(x => x.id === id);
+  if(!c) return;
+  closeBSheet(); closeFilter();
+  document.getElementById('csheetHead').innerHTML = `<h3>${esc(c.name)}</h3>` +
+    `<div class="meta"><span class="tag">${esc(c.country ? isoLabel(c.country) : FILTERS.comp.empty)}</span>` +
+    `<span class="tag">${esc(compSub(c))}</span></div>`;
+  const body = document.getElementById('csheetBody');
+  body.innerHTML = compDetailHtml(c);
+  body.dataset.open = c.id;
+  document.getElementById('csheet').hidden = false;
+  body.scrollTop = 0;
+}
+(function wireCompetitions(){
+  document.getElementById('compBody').addEventListener('click', e => {
+    const b = e.target.closest('.comprow');
+    if(b) openCSheet(b.dataset.id);
+  });
+  document.getElementById('compSearch').addEventListener('input', e => { COMP.q = e.target.value; renderCompList(); updatePanelCount(); });
+  document.getElementById('csheetClose').addEventListener('click', closeCSheet);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeCSheet(); });
+  dragToClose(document.getElementById('csheet'), closeCSheet);
+})();
 
 /* ---------------------------------------------- the bucket entry sheet */
 
@@ -4498,7 +4852,8 @@ document.querySelectorAll('nav button').forEach(btn => {
     document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
     btn.classList.add('on');
     document.getElementById('pane-' + btn.dataset.pane).classList.add('on');
-    closeBSheet();
+    closeBSheet(); closeCSheet(); closeFilter();
+    if(btn.dataset.pane === 'competitions') openCompetitionsTab();
     if(btn.dataset.pane === 'me') renderMe();      // "due in N days" counts from today
     if(btn.dataset.pane === 'map' && MAP) setTimeout(() => MAP.invalidateSize(), 60);
   });

@@ -327,7 +327,9 @@
    "country": "Germany",
    "sortKey": 360,
    "whyAssistant": "Germany's top fixture: Bayern's tifo-heavy Südkurve in Munich, and Dortmund's standing Südtribüne in Dortmund.",
-   "whyStatus": "unverified"
+   "whyStatus": "unverified",
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "poli-uta",
@@ -352,10 +354,12 @@
    "warning": "3 Mar 2027 is a Wednesday in German term time.",
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "sortKey": 740,
+   "sortKey": 750,
    "whyAssistant": "West Romania derby, with Arad's new stadium against Timișoara's large Dan Păltinișanu and its ultra following.",
    "whyStatus": "unverified",
-   "leagueCheck": true
+   "leagueCheck": true,
+   "kind": "derby",
+   "countryCode": "RO"
   },
   {
    "id": "el-final-2027",
@@ -375,7 +379,9 @@
    "country": "none",
    "sortKey": 90,
    "whyAssistant": "One match in May at a rotating venue, with much better odds of a ticket than the Champions League final.",
-   "whyStatus": "unverified"
+   "whyStatus": "unverified",
+   "kind": "final",
+   "countryCode": ""
   },
   {
    "id": "frankenderby",
@@ -404,7 +410,9 @@
    "sortKey": 550,
    "whyAssistant": "Franconia's local derby between two neighbouring cities.",
    "whyStatus": "unverified",
-   "leagueCheck": true
+   "leagueCheck": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "sudwest-derby",
@@ -437,7 +445,9 @@
    "sortKey": 500,
    "whyAssistant": "Southwest Germany's biggest rivalry, played at the Wildpark or the hilltop Fritz-Walter-Stadion.",
    "whyStatus": "unverified",
-   "leagueCheck": true
+   "leagueCheck": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "derby-madonnina",
@@ -476,9 +486,11 @@
    ],
    "group": "Club fixtures, other countries",
    "country": "Italy",
-   "sortKey": 1250,
+   "sortKey": 1260,
    "whyAssistant": "Played at San Siro, shared by both clubs, with replacement plans under discussion.",
-   "whyStatus": "unverified"
+   "whyStatus": "unverified",
+   "kind": "derby",
+   "countryCode": "IT"
   },
   {
    "id": "revierderby",
@@ -502,7 +514,9 @@
    "sortKey": 380,
    "whyAssistant": "Ruhr derby between clubs about 30 km apart, widely seen as Germany's most hostile fixture.",
    "whyStatus": "unverified",
-   "leagueCheck": true
+   "leagueCheck": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "pokal-first-round",
@@ -522,7 +536,9 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "listOnly": true,
-   "sortKey": 310
+   "sortKey": 310,
+   "kind": "cup-round",
+   "countryCode": "DE"
   },
   {
    "id": "liga2-playoff",
@@ -540,7 +556,12 @@
     "action": "Check Bilete.ro once the top six is settled."
    },
    "note": "Overlaps the Whitsun holidays, 18-29 May 2027.",
-   "leadTimeDays": 14
+   "leadTimeDays": 14,
+   "group": "Club fixtures, Romania",
+   "country": "Romania",
+   "sortKey": 660,
+   "kind": "playoff",
+   "countryCode": "RO"
   },
   {
    "id": "relegation",
@@ -565,7 +586,9 @@
     "https://www.heidelberg24.de/sport/fussball/relegation-2026-2-bundesliga-3-liga-termine-hinspiel-rueckspiel-wann-stadion-essen-94306757.html"
    ],
    "whyStatus": "unverified",
-   "sortKey": 320
+   "sortKey": 320,
+   "kind": "playoff",
+   "countryCode": "DE"
   },
   {
    "id": "eternal-derby-belgrade",
@@ -584,9 +607,11 @@
    "verified": false,
    "group": "Club fixtures, other countries",
    "country": "Serbia",
-   "sortKey": 1460,
+   "sortKey": 1470,
    "whyAssistant": "The Belgrade \"Eternal Derby\", among Europe's loudest atmospheres.",
-   "whyStatus": "unverified"
+   "whyStatus": "unverified",
+   "kind": "derby",
+   "countryCode": "RS"
   },
   {
    "id": "intercontinental-derby",
@@ -605,9 +630,11 @@
    "verified": false,
    "group": "Club fixtures, other countries",
    "country": "Turkey",
-   "sortKey": 1620,
+   "sortKey": 1630,
    "whyAssistant": "One of the loudest derbies anywhere, split between Europe and Asia. Away fans are often banned.",
-   "whyStatus": "unverified"
+   "whyStatus": "unverified",
+   "kind": "derby",
+   "countryCode": "TR"
   },
   {
    "id": "old-firm",
@@ -626,9 +653,11 @@
    "verified": false,
    "group": "Club fixtures, other countries",
    "country": "Scotland",
-   "sortKey": 1430,
+   "sortKey": 1440,
    "whyAssistant": "A unique atmosphere with deep historical baggage. Away allocations vary.",
-   "whyStatus": "unverified"
+   "whyStatus": "unverified",
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "derby-eternal-enemies",
@@ -647,9 +676,11 @@
    "verified": false,
    "group": "Club fixtures, other countries",
    "country": "Greece",
-   "sortKey": 1180,
+   "sortKey": 1190,
    "whyAssistant": "Athens' biggest rivalry. Away fans are often not allowed, so tickets can be hard for outsiders.",
-   "whyStatus": "unverified"
+   "whyStatus": "unverified",
+   "kind": "derby",
+   "countryCode": "GR"
   },
   {
    "id": "fcsb-dinamo",
@@ -669,10 +700,12 @@
    "verified": false,
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "sortKey": 690,
+   "sortKey": 700,
    "whyAssistant": "Bucharest's biggest fixture. Venues vary and are unverified.",
    "whyStatus": "unverified",
-   "leagueCheck": true
+   "leagueCheck": true,
+   "kind": "derby",
+   "countryCode": "RO"
   },
   {
    "id": "derby-du-nord",
@@ -689,10 +722,12 @@
    "verified": false,
    "group": "Club fixtures, other countries",
    "country": "France",
-   "sortKey": 1120,
+   "sortKey": 1130,
    "whyAssistant": "Lens's Bollaert-Delelis is among France's most atmospheric stadiums.",
    "whyStatus": "unverified",
-   "leagueCheck": true
+   "leagueCheck": true,
+   "kind": "derby",
+   "countryCode": "FR"
   },
   {
    "id": "ostderby",
@@ -713,7 +748,9 @@
    "sortKey": 410,
    "whyAssistant": "East German rivalry between two large supporter bases, with heavy security around it.",
    "whyStatus": "unverified",
-   "leagueCheck": true
+   "leagueCheck": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "prague-derby",
@@ -731,9 +768,11 @@
    "verified": false,
    "group": "Club fixtures, other countries",
    "country": "Czechia",
-   "sortKey": 950,
+   "sortKey": 960,
    "whyAssistant": "The country's biggest match between two grounds a few kilometres apart, with strong, choreographed support.",
-   "whyStatus": "unverified"
+   "whyStatus": "unverified",
+   "kind": "derby",
+   "countryCode": "CZ"
   },
   {
    "id": "afc-asian-cup-2027-saudi-arabia",
@@ -744,7 +783,9 @@
    "sortKey": 10,
    "why": "24 teams in Asia's national-team championship, hosted by a country investing heavily in stadiums. Dates unverified.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "tournament",
+   "countryCode": ""
   },
   {
    "id": "africa-cup-of-nations-2027-kenya-tanzania-uganda",
@@ -755,7 +796,9 @@
    "sortKey": 20,
    "why": "The first AFCON in East Africa, with 24 teams and three co-hosts. Dates unverified.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "tournament",
+   "countryCode": ""
   },
   {
    "id": "uefa-nations-league-finals-2027",
@@ -766,7 +809,9 @@
    "sortKey": 30,
    "why": "Four national teams play semi-finals, a third-place match and a final in one host country, in June. Host unverified.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "tournament",
+   "countryCode": ""
   },
   {
    "id": "men-s-olympic-football-2028-los-angeles",
@@ -777,7 +822,9 @@
    "sortKey": 40,
    "why": "Under-23 tournament with a few older players per squad, held in a World Cup 2026 host region. Venues unverified.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "tournament",
+   "countryCode": ""
   },
   {
    "id": "uefa-euro-2028-uk-and-ireland",
@@ -788,7 +835,9 @@
    "sortKey": 50,
    "why": "24 teams in nine stadiums across England, Scotland, Wales and Ireland, with the final at Wembley. Casement Park in Belfast has had construction problems.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "tournament",
+   "countryCode": ""
   },
   {
    "id": "fifa-world-cup-2030",
@@ -799,7 +848,9 @@
    "sortKey": 60,
    "why": "48 teams in Spain, Portugal and Morocco, with opening matches in Uruguay, Argentina and Paraguay. First World Cup on three continents. Final venue unconfirmed.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "tournament",
+   "countryCode": ""
   },
   {
    "id": "uefa-euro-2032-italy-and-turkey",
@@ -810,7 +861,9 @@
    "sortKey": 70,
    "why": "Matches in Italian and Turkish stadiums, awarded in October 2023.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "tournament",
+   "countryCode": ""
   },
   {
    "id": "uefa-champions-league-final",
@@ -821,7 +874,9 @@
    "sortKey": 80,
    "why": "One match in late May or early June at a neutral venue set years ahead. The finalists get most tickets, with a small public allocation (route unverified).",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": ""
   },
   {
    "id": "uefa-conference-league-final",
@@ -832,7 +887,9 @@
    "sortKey": 100,
    "why": "One match in May at a rotating venue, with the lowest prices of the three UEFA finals and a loud travelling crowd.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": ""
   },
   {
    "id": "uefa-super-cup",
@@ -843,7 +900,9 @@
    "sortKey": 110,
    "why": "Champions League winner against Europa League winner in August at a rotating venue. Easier to get into than the finals.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": ""
   },
   {
    "id": "copa-libertadores-final",
@@ -854,7 +913,9 @@
    "sortKey": 120,
    "why": "One match with the venue chosen each year, South America's top club final, with an ultras atmosphere.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": ""
   },
   {
    "id": "mls-cup",
@@ -865,7 +926,9 @@
    "sortKey": 130,
    "why": "Hosted by the finalist with the better record, in December, with a US stadium and fan culture.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "US"
   },
   {
    "id": "dfb-pokal-final",
@@ -876,7 +939,9 @@
    "sortKey": 140,
    "why": "Played at the Olympiastadion Berlin each year, with both fan groups travelling. Underdogs reach it: third-division Bielefeld played VfB in 2025.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "DE"
   },
   {
    "id": "dfl-supercup",
@@ -887,7 +952,9 @@
    "sortKey": 150,
    "why": "Bundesliga champion against DFB-Pokal winner before the season, an early look at the top two German teams. Host stadium varies.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "DE"
   },
   {
    "id": "cupa-romaniei-final",
@@ -898,7 +965,9 @@
    "sortKey": 160,
    "why": "The national cup decider, usually between two clubs that bring large supporter groups. Venue chosen each year.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "RO"
   },
   {
    "id": "efl-cup-final",
@@ -909,7 +978,9 @@
    "sortKey": 170,
    "why": "Wembley in February or March, the first major trophy of the English season.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "GB"
   },
   {
    "id": "fa-cup-final",
@@ -920,7 +991,9 @@
    "sortKey": 180,
    "why": "Wembley in May, with a deep ritual around the day and fans of both finalists filling the stadium.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "GB"
   },
   {
    "id": "fa-community-shield",
@@ -931,7 +1004,9 @@
    "sortKey": 190,
    "why": "League champions against FA Cup winners at Wembley in August, a season opener with usually cheaper tickets than cup finals.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "GB"
   },
   {
    "id": "coupe-de-france-final",
@@ -942,7 +1017,9 @@
    "sortKey": 200,
    "why": "Stade de France in May. Amateur clubs can reach it.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "FR"
   },
   {
    "id": "coppa-italia-final",
@@ -953,7 +1030,9 @@
    "sortKey": 210,
    "why": "Usually the Stadio Olimpico in Rome, with an Italian ultras final in the city's biggest stadium.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "IT"
   },
   {
    "id": "knvb-beker-final",
@@ -964,7 +1043,9 @@
    "sortKey": 220,
    "why": "Usually at De Kuip in Rotterdam, a cup final in a stadium Feyenoord plan to leave.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "NL"
   },
   {
    "id": "taca-de-portugal-final",
@@ -975,7 +1056,9 @@
    "sortKey": 230,
    "why": "Estádio Nacional in Jamor, a fixed national occasion at a traditional ground with a day-out feel.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "PT"
   },
   {
    "id": "scottish-cup-final",
@@ -986,7 +1069,9 @@
    "sortKey": 240,
    "why": "Hampden Park in May, one of Europe's oldest big stadiums.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "GB"
   },
   {
    "id": "copa-del-rey-final",
@@ -997,7 +1082,9 @@
    "sortKey": 250,
    "why": "One match in spring, with the venue chosen each year, often Barcelona or Madrid against a Basque or other regional crowd.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "ES"
   },
   {
    "id": "supercopa-de-espana",
@@ -1008,7 +1095,9 @@
    "sortKey": 260,
    "why": "A four-team knockout, played in Saudi Arabia since 2020, often featuring Barcelona and Real Madrid. Host may change.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "final",
+   "countryCode": "ES"
   },
   {
    "id": "germany-v-netherlands",
@@ -1019,7 +1108,9 @@
    "sortKey": 270,
    "why": "A long-running rivalry between two of Europe's football cultures. Scheduling varies.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "national-team",
+   "countryCode": ""
   },
   {
    "id": "romania-national-team-home-match",
@@ -1030,7 +1121,9 @@
    "sortKey": 280,
    "why": "Matches at the Arena Națională, the national stadium in Bucharest.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "national-team",
+   "countryCode": "RO"
   },
   {
    "id": "brazil-v-argentina",
@@ -1041,7 +1134,9 @@
    "sortKey": 290,
    "why": "The Superclásico das Américas, played in World Cup qualifiers every cycle at the Maracanã or the Monumental in Buenos Aires.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "national-team",
+   "countryCode": ""
   },
   {
    "id": "england-v-scotland",
@@ -1052,7 +1147,9 @@
    "sortKey": 300,
    "why": "The oldest international rivalry. No regular fixture exists now, so check what is scheduled.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "national-team",
+   "countryCode": ""
   },
   {
    "id": "arminia-bielefeld-v-paderborn",
@@ -1064,7 +1161,9 @@
    "why": "East Westphalia derby between two mid-sized clubs, with large fan groups on both sides.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "bochum-v-schalke",
@@ -1076,7 +1175,9 @@
    "why": "Ruhr derby in a compact ground with fans close to the pitch.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "carl-zeiss-jena-v-rot-weiss-erfurt",
@@ -1088,7 +1189,9 @@
    "why": "Thuringia derby at an old stadium with a hostile reputation.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "dynamo-dresden-v-erzgebirge-aue",
@@ -1100,7 +1203,9 @@
    "why": "Saxony derby with one of Germany's best atmospheres in Dresden and a travelling Aue following.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "eintracht-frankfurt-v-darmstadt-98",
@@ -1112,7 +1217,9 @@
    "why": "Hesse derby pairing a large modern stadium with the Böllenfalltor, one of the last terraced grounds, in a wooded setting.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "eintracht-frankfurt-v-kickers-offenbach",
@@ -1124,7 +1231,9 @@
    "why": "Main derby between neighbouring cities, played at the traditional, hostile Bieberer Berg when Offenbach host. Likely cup only.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "eintracht-frankfurt-v-mainz-rhein-main-derby",
@@ -1136,7 +1245,9 @@
    "why": "Regional derby with a loud atmosphere in both stadiums.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "hannover-96-v-eintracht-braunschweig",
@@ -1148,7 +1259,9 @@
    "why": "Lower Saxony's main rivalry, with loyal away followings.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "holstein-kiel-v-hansa-rostock",
@@ -1160,7 +1273,9 @@
    "why": "Baltic Sea derby, with Rostock's Ostseestadion among the loudest grounds in the east.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "holstein-kiel-v-hsv",
@@ -1172,7 +1287,9 @@
    "why": "Schleswig-Holstein derby at a small ground on the Baltic with a large travelling Hamburg crowd. Likely cup only.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "hsv-v-st-pauli-hamburg-derby",
@@ -1183,7 +1300,9 @@
    "sortKey": 480,
    "why": "Two city clubs with opposite cultures, at the Volksparkstadion and the Millerntor, one of Germany's most distinctive grounds.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "karlsruher-sc-v-freiburg",
@@ -1195,7 +1314,9 @@
    "why": "Baden derby between two stadiums of similar size, with both sets of fans travelling a short distance.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "fc-koln-v-bayer-leverkusen",
@@ -1207,7 +1328,9 @@
    "why": "Rhineland derby between Köln's loud, city-wide support and Leverkusen's compact ground.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "fc-koln-v-borussia-monchengladbach",
@@ -1219,7 +1342,9 @@
    "why": "Long, bitter Rhineland rivalry with strong atmospheres at both grounds.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "fc-koln-v-fortuna-dusseldorf-rheinderby",
@@ -1231,7 +1356,9 @@
    "why": "Two cities about 40 km apart with a long rivalry.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "fc-magdeburg-v-hallescher-fc",
@@ -1243,7 +1370,9 @@
    "why": "Saxony-Anhalt derby, with a loud, big home stand in Magdeburg and a strong Halle following.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "lok-leipzig-v-chemie-leipzig",
@@ -1255,7 +1384,9 @@
    "why": "Leipzig city derby in the Regionalliga, with large fan groups, choreography and old grounds that put the crowd at the pitch.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "preussen-munster-v-vfl-osnabruck",
@@ -1267,7 +1398,9 @@
    "why": "Westphalia-Lower Saxony derby with large terraces and a big away following.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "rot-weiss-essen-v-msv-duisburg",
@@ -1279,7 +1412,9 @@
    "why": "Ruhr derby with working-class grounds and a strong ultra presence.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "saarbrucken-v-sv-elversberg",
@@ -1291,7 +1426,9 @@
    "why": "Saarland derby between a traditional club and a smaller rival that rose quickly, in small grounds.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "union-berlin-v-hertha-bsc-berlin-derby",
@@ -1303,7 +1440,9 @@
    "why": "East against west: Union's mostly standing Alte Försterei against Hertha's Olympiastadion.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "union-berlin-weihnachtssingen",
@@ -1314,7 +1453,9 @@
    "sortKey": 610,
    "why": "Christmas carol event where fans fill the pitch and terraces of the Alte Försterei. Not a match. Ticket allocation by lottery, unverified.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "event",
+   "countryCode": "DE"
   },
   {
    "id": "vfb-stuttgart-v-freiburg",
@@ -1326,7 +1467,9 @@
    "why": "Baden-Württemberg Bundesliga fixture, with VfB's Cannstatter Kurve against Freiburg's modern stadium.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "vfb-stuttgart-v-stuttgarter-kickers",
@@ -1338,7 +1481,9 @@
    "why": "City derby played at the Gazi-Stadion auf der Waldau, a small, steep ground on a wooded hillside. Only possible through the cup.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "waldhof-mannheim-v-1-fc-kaiserslautern",
@@ -1350,7 +1495,9 @@
    "why": "Kurpfalz-Pfalz derby between clubs 50 km apart, with large, loud away followings.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "werder-bremen-v-hsv-nordderby",
@@ -1362,7 +1509,9 @@
    "why": "Northern German classic, the Weserstadion against the Volksparkstadion.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DE"
   },
   {
    "id": "cfr-cluj-v-universitatea-cluj",
@@ -1370,11 +1519,13 @@
    "title": "CFR Cluj v Universitatea Cluj",
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "sortKey": 680,
+   "sortKey": 690,
    "why": "Cluj derby, a city split into two clubs.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "RO"
   },
   {
    "id": "rapid-bucuresti-v-dinamo-bucuresti",
@@ -1382,11 +1533,13 @@
    "title": "Rapid București v Dinamo București",
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "sortKey": 700,
+   "sortKey": 710,
    "why": "The other Bucharest derby, with Rapid's Giulești as a compact, modern ground and a heavy security presence.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "RO"
   },
   {
    "id": "rapid-bucuresti-v-fcsb",
@@ -1394,11 +1547,13 @@
    "title": "Rapid București v FCSB",
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "sortKey": 710,
+   "sortKey": 720,
    "why": "Rapid's rebuilt Giulești is one of Romania's loudest grounds. FCSB's home venue is unsettled, so verify.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "RO"
   },
   {
    "id": "rapid-bucuresti-v-petrolul-ploiesti",
@@ -1406,11 +1561,13 @@
    "title": "Rapid București v Petrolul Ploiești",
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "sortKey": 720,
+   "sortKey": 730,
    "why": "Two traditional clubs 60 km apart, with a large away following from Ploiești.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "RO"
   },
   {
    "id": "sepsi-sfantu-gheorghe-v-csikszereda-miercurea-ciuc",
@@ -1418,11 +1575,13 @@
    "title": "Sepsi Sfântu Gheorghe v Csíkszereda Miercurea Ciuc",
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "sortKey": 730,
+   "sortKey": 740,
    "why": "Székely derby between two Hungarian-speaking towns in Transylvania, with a small, tight atmosphere. Both clubs' leagues unverified.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "RO"
   },
   {
    "id": "universitatea-craiova-v-fcsb",
@@ -1430,11 +1589,13 @@
    "title": "Universitatea Craiova v FCSB",
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "sortKey": 750,
+   "sortKey": 760,
    "why": "Title rivalry at the Ion Oblemenco, the best-attended ground outside Bucharest.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "RO"
   },
   {
    "id": "boca-juniors-v-river-plate-superclasico",
@@ -1442,10 +1603,12 @@
    "title": "Boca Juniors v River Plate (Superclásico)",
    "group": "Club fixtures, other countries",
    "country": "Argentina",
-   "sortKey": 760,
+   "sortKey": 770,
    "why": "Often named the most intense club match in the world; La Bombonera against El Monumental. Visiting fans are generally not allowed in.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "AR"
   },
   {
    "id": "independiente-v-racing-avellaneda-derby",
@@ -1453,10 +1616,12 @@
    "title": "Independiente v Racing (Avellaneda derby)",
    "group": "Club fixtures, other countries",
    "country": "Argentina",
-   "sortKey": 770,
+   "sortKey": 780,
    "why": "Two big grounds a few hundred metres apart on one street.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "AR"
   },
   {
    "id": "rosario-central-v-newell-s-old-boys",
@@ -1464,10 +1629,12 @@
    "title": "Rosario Central v Newell's Old Boys",
    "group": "Club fixtures, other countries",
    "country": "Argentina",
-   "sortKey": 780,
+   "sortKey": 790,
    "why": "Rosario derby, Argentina's most intense outside Buenos Aires. Away fans are usually not allowed in.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "AR"
   },
   {
    "id": "lask-v-blau-weiss-linz",
@@ -1475,11 +1642,13 @@
    "title": "LASK v Blau-Weiß Linz",
    "group": "Club fixtures, other countries",
    "country": "Austria",
-   "sortKey": 790,
+   "sortKey": 800,
    "why": "Linz derby with a loud home end in a modern stadium.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "AT"
   },
   {
    "id": "rapid-wien-v-austria-wien-wiener-derby",
@@ -1487,10 +1656,12 @@
    "title": "Rapid Wien v Austria Wien (Wiener Derby)",
    "group": "Club fixtures, other countries",
    "country": "Austria",
-   "sortKey": 800,
+   "sortKey": 810,
    "why": "Vienna's biggest fixture, green against violet.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "AT"
   },
   {
    "id": "salzburg-v-rapid-wien",
@@ -1498,10 +1669,12 @@
    "title": "Salzburg v Rapid Wien",
    "group": "Club fixtures, other countries",
    "country": "Austria",
-   "sortKey": 810,
+   "sortKey": 820,
    "why": "The Austrian Bundesliga's main fixture, often a title decider.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "AT"
   },
   {
    "id": "sturm-graz-v-gak",
@@ -1509,11 +1682,13 @@
    "title": "Sturm Graz v GAK",
    "group": "Club fixtures, other countries",
    "country": "Austria",
-   "sortKey": 820,
+   "sortKey": 830,
    "why": "Graz derby, a city with two clubs and a strong local fan culture.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "AT"
   },
   {
    "id": "anderlecht-v-club-brugge",
@@ -1521,10 +1696,12 @@
    "title": "Anderlecht v Club Brugge",
    "group": "Club fixtures, other countries",
    "country": "Belgium",
-   "sortKey": 830,
+   "sortKey": 840,
    "why": "Two of Belgium's most successful clubs in the country's biggest fixture.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "BE"
   },
   {
    "id": "sarajevo-v-zeljeznicar",
@@ -1532,10 +1709,12 @@
    "title": "Sarajevo v Željezničar",
    "group": "Club fixtures, other countries",
    "country": "Bosnia and Herzegovina",
-   "sortKey": 840,
+   "sortKey": 850,
    "why": "Bosnia's biggest rivalry, played at Koševo.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "BA"
   },
   {
    "id": "atletico-mineiro-v-cruzeiro-classico-mineiro",
@@ -1543,10 +1722,12 @@
    "title": "Atlético Mineiro v Cruzeiro (Clássico Mineiro)",
    "group": "Club fixtures, other countries",
    "country": "Brazil",
-   "sortKey": 850,
+   "sortKey": 860,
    "why": "Played at the Mineirão, the stadium of Germany's 7-1 win over Brazil in 2014.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "BR"
   },
   {
    "id": "corinthians-v-palmeiras-derbi-paulista",
@@ -1554,10 +1735,12 @@
    "title": "Corinthians v Palmeiras (Dérbi Paulista)",
    "group": "Club fixtures, other countries",
    "country": "Brazil",
-   "sortKey": 860,
+   "sortKey": 870,
    "why": "São Paulo's biggest rivalry, with huge, organised crowds.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "BR"
   },
   {
    "id": "flamengo-v-fluminense-fla-flu",
@@ -1565,10 +1748,12 @@
    "title": "Flamengo v Fluminense (Fla-Flu)",
    "group": "Club fixtures, other countries",
    "country": "Brazil",
-   "sortKey": 870,
+   "sortKey": 880,
    "why": "Rio's classic, played at the Maracanã.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "BR"
   },
   {
    "id": "gremio-v-internacional-gre-nal",
@@ -1576,10 +1761,12 @@
    "title": "Grêmio v Internacional (Gre-Nal)",
    "group": "Club fixtures, other countries",
    "country": "Brazil",
-   "sortKey": 880,
+   "sortKey": 890,
    "why": "Porto Alegre's rivalry between the Arena do Grêmio and the Beira-Rio, a 2014 World Cup venue.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "BR"
   },
   {
    "id": "levski-sofia-v-cska-sofia",
@@ -1587,10 +1774,12 @@
    "title": "Levski Sofia v CSKA Sofia",
    "group": "Club fixtures, other countries",
    "country": "Bulgaria",
-   "sortKey": 890,
+   "sortKey": 900,
    "why": "The Eternal derby, Bulgaria's biggest match, with intense, loud ultras.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "BG"
   },
   {
    "id": "colo-colo-v-universidad-de-chile-superclasico",
@@ -1598,10 +1787,12 @@
    "title": "Colo-Colo v Universidad de Chile (Superclásico)",
    "group": "Club fixtures, other countries",
    "country": "Chile",
-   "sortKey": 900,
+   "sortKey": 910,
    "why": "Chile's biggest rivalry, with a strong ultras culture.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "CL"
   },
   {
    "id": "atletico-nacional-v-independiente-medellin-clasico-paisa",
@@ -1609,10 +1800,12 @@
    "title": "Atlético Nacional v Independiente Medellín (Clásico Paisa)",
    "group": "Club fixtures, other countries",
    "country": "Colombia",
-   "sortKey": 910,
+   "sortKey": 920,
    "why": "The city's two clubs share one stadium, with divided fan sections and a large ultra scene.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "CO"
   },
   {
    "id": "hajduk-split-v-dinamo-zagreb",
@@ -1620,10 +1813,12 @@
    "title": "Hajduk Split v Dinamo Zagreb",
    "group": "Club fixtures, other countries",
    "country": "Croatia",
-   "sortKey": 920,
+   "sortKey": 930,
    "why": "Croatia's biggest fixture, with Hajduk's Torcida and the Poljud, a modernist stadium.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "HR"
   },
   {
    "id": "hajduk-split-v-rijeka",
@@ -1631,10 +1826,12 @@
    "title": "Hajduk Split v Rijeka",
    "group": "Club fixtures, other countries",
    "country": "Croatia",
-   "sortKey": 930,
+   "sortKey": 940,
    "why": "Adriatic derby between two coastal clubs with loud, organised fans.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "HR"
   },
   {
    "id": "omonia-v-apoel",
@@ -1642,10 +1839,12 @@
    "title": "Omonia v APOEL",
    "group": "Club fixtures, other countries",
    "country": "Cyprus",
-   "sortKey": 940,
+   "sortKey": 950,
    "why": "Cyprus's biggest match, with large, organised fan groups sharing one ground in Nicosia.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "CY"
   },
   {
    "id": "fc-kobenhavn-v-brondby",
@@ -1653,10 +1852,12 @@
    "title": "FC København v Brøndby",
    "group": "Club fixtures, other countries",
    "country": "Denmark",
-   "sortKey": 960,
+   "sortKey": 970,
    "why": "Denmark's biggest match, with Parken as the national stadium.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "DK"
   },
   {
    "id": "al-ahly-v-zamalek-cairo-derby",
@@ -1664,10 +1865,12 @@
    "title": "Al Ahly v Zamalek (Cairo derby)",
    "group": "Club fixtures, other countries",
    "country": "Egypt",
-   "sortKey": 970,
+   "sortKey": 980,
    "why": "Africa's biggest club rivalry, in the Cairo International Stadium. Attendance is sometimes restricted.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "EG"
   },
   {
    "id": "arsenal-v-tottenham-north-london-derby",
@@ -1675,10 +1878,12 @@
    "title": "Arsenal v Tottenham (North London derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 980,
+   "sortKey": 990,
    "why": "Two big London clubs with new stadiums. Tickets mostly go to members.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "aston-villa-v-birmingham-city-second-city-derby",
@@ -1686,11 +1891,13 @@
    "title": "Aston Villa v Birmingham City (Second City derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 990,
+   "sortKey": 1000,
    "why": "Birmingham's rivalry. Villa Park is also a Euro 2028 venue.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "crystal-palace-v-brighton",
@@ -1698,11 +1905,13 @@
    "title": "Crystal Palace v Brighton",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1000,
+   "sortKey": 1010,
    "why": "Selhurst Park is an old, tight ground with a loud Holmesdale end, and the fixture has real animosity.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "leeds-v-manchester-united-roses-derby",
@@ -1710,11 +1919,13 @@
    "title": "Leeds v Manchester United (Roses derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1010,
+   "sortKey": 1020,
    "why": "Yorkshire against Lancashire, Elland Road against Old Trafford.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "liverpool-v-everton-merseyside-derby",
@@ -1722,11 +1933,13 @@
    "title": "Liverpool v Everton (Merseyside derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1020,
+   "sortKey": 1030,
    "why": "Anfield against Everton's new Hill Dickinson Stadium, opened 2025.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "liverpool-v-manchester-united",
@@ -1734,10 +1947,12 @@
    "title": "Liverpool v Manchester United",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1030,
+   "sortKey": 1040,
    "why": "The two most successful English clubs by league titles, in two of England's biggest grounds.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "manchester-city-v-manchester-united",
@@ -1745,10 +1960,12 @@
    "title": "Manchester City v Manchester United",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1040,
+   "sortKey": 1050,
    "why": "The Premier League's biggest modern derby, in two huge grounds.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "millwall-v-west-ham",
@@ -1756,11 +1973,13 @@
    "title": "Millwall v West Ham",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1050,
+   "sortKey": 1060,
    "why": "East London rivalry with a hostile reputation at The Den and heavy policing.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "newcastle-v-sunderland-tyne-wear-derby",
@@ -1768,10 +1987,12 @@
    "title": "Newcastle v Sunderland (Tyne-Wear derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1060,
+   "sortKey": 1070,
    "why": "Two of England's loudest grounds, in the same league since Sunderland's 2025 promotion.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "norwich-v-ipswich-old-farm-derby",
@@ -1779,11 +2000,13 @@
    "title": "Norwich v Ipswich (Old Farm derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1070,
+   "sortKey": 1080,
    "why": "East of England derby, with traditional grounds and strong atmospheres.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "nottingham-forest-v-derby-county-east-midlands-derby",
@@ -1791,11 +2014,13 @@
    "title": "Nottingham Forest v Derby County (East Midlands derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1080,
+   "sortKey": 1090,
    "why": "Two clubs a short drive apart, at traditional grounds.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "sheffield-united-v-sheffield-wednesday-steel-city-derby",
@@ -1803,11 +2028,13 @@
    "title": "Sheffield United v Sheffield Wednesday (Steel City derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1090,
+   "sortKey": 1100,
    "why": "Bramall Lane, often called the oldest professional ground in use, against Hillsborough.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "southampton-v-portsmouth-south-coast-derby",
@@ -1815,11 +2042,13 @@
    "title": "Southampton v Portsmouth (South Coast derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1100,
+   "sortKey": 1110,
    "why": "Fratton Park is a traditional old ground with a loud home end.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "west-brom-v-wolves-black-country-derby",
@@ -1827,11 +2056,13 @@
    "title": "West Brom v Wolves (Black Country derby)",
    "group": "Club fixtures, other countries",
    "country": "England",
-   "sortKey": 1110,
+   "sortKey": 1120,
    "why": "The Hawthorns is the highest ground in English league football.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "lyon-v-saint-etienne-derby-du-rhone",
@@ -1839,11 +2070,13 @@
    "title": "Lyon v Saint-Étienne (Derby du Rhône)",
    "group": "Club fixtures, other countries",
    "country": "France",
-   "sortKey": 1130,
+   "sortKey": 1140,
    "why": "Historic rivalry, with a loud Geoffroy-Guichard. Saint-Étienne's league status may not line up.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "FR"
   },
   {
    "id": "nantes-v-rennes",
@@ -1851,11 +2084,13 @@
    "title": "Nantes v Rennes",
    "group": "Club fixtures, other countries",
    "country": "France",
-   "sortKey": 1140,
+   "sortKey": 1150,
    "why": "Western derby between two well-supported clubs, with both stadiums known for atmosphere.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "FR"
   },
   {
    "id": "nice-v-monaco",
@@ -1863,11 +2098,13 @@
    "title": "Nice v Monaco",
    "group": "Club fixtures, other countries",
    "country": "France",
-   "sortKey": 1150,
+   "sortKey": 1160,
    "why": "Côte d'Azur derby, with Monaco's compact Stade Louis II against Nice's Allianz Riviera.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "FR"
   },
   {
    "id": "paris-saint-germain-v-marseille-le-classique",
@@ -1875,10 +2112,12 @@
    "title": "Paris Saint-Germain v Marseille (Le Classique)",
    "group": "Club fixtures, other countries",
    "country": "France",
-   "sortKey": 1160,
+   "sortKey": 1170,
    "why": "France's biggest fixture, with the Vélodrome among its loudest stadiums.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "FR"
   },
   {
    "id": "strasbourg-v-metz",
@@ -1886,11 +2125,13 @@
    "title": "Strasbourg v Metz",
    "group": "Club fixtures, other countries",
    "country": "France",
-   "sortKey": 1170,
+   "sortKey": 1180,
    "why": "Alsace against Lorraine, played at the Meinau or at Saint-Symphorien. Unverified, and the league status of both clubs is unclear.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "FR"
   },
   {
    "id": "paok-v-aris",
@@ -1898,10 +2139,12 @@
    "title": "PAOK v Aris",
    "group": "Club fixtures, other countries",
    "country": "Greece",
-   "sortKey": 1190,
+   "sortKey": 1200,
    "why": "Thessaloniki derby, with Toumba one of Greece's loudest grounds and the city split along club lines.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GR"
   },
   {
    "id": "ferencvaros-v-ujpest-orokrangado",
@@ -1909,10 +2152,12 @@
    "title": "Ferencváros v Újpest (Örökrangadó)",
    "group": "Club fixtures, other countries",
    "country": "Hungary",
-   "sortKey": 1200,
+   "sortKey": 1210,
    "why": "Budapest's historic rivalry, between a modern arena and a very traditional ground.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "HU"
   },
   {
    "id": "fiorentina-v-bologna-derby-dell-appennino",
@@ -1920,11 +2165,13 @@
    "title": "Fiorentina v Bologna (Derby dell'Appennino)",
    "group": "Club fixtures, other countries",
    "country": "Italy",
-   "sortKey": 1210,
+   "sortKey": 1220,
    "why": "Two cities on opposite sides of the Apennines. The Franchi is under renovation, so capacity may be reduced.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "IT"
   },
   {
    "id": "genoa-v-sampdoria-derby-della-lanterna",
@@ -1932,11 +2179,13 @@
    "title": "Genoa v Sampdoria (Derby della Lanterna)",
    "group": "Club fixtures, other countries",
    "country": "Italy",
-   "sortKey": 1220,
+   "sortKey": 1230,
    "why": "Two sets of fans staging choreographies in one shared ground.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "IT"
   },
   {
    "id": "inter-v-juventus-derby-d-italia",
@@ -1944,10 +2193,12 @@
    "title": "Inter v Juventus (Derby d'Italia)",
    "group": "Club fixtures, other countries",
    "country": "Italy",
-   "sortKey": 1230,
+   "sortKey": 1240,
    "why": "One of Italy's biggest league fixtures.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "IT"
   },
   {
    "id": "juventus-v-torino-derby-della-mole",
@@ -1955,10 +2206,12 @@
    "title": "Juventus v Torino (Derby della Mole)",
    "group": "Club fixtures, other countries",
    "country": "Italy",
-   "sortKey": 1240,
+   "sortKey": 1250,
    "why": "Turin's two clubs, with both sets of fans strongly organised.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "IT"
   },
   {
    "id": "napoli-v-roma-derby-del-sole",
@@ -1966,10 +2219,12 @@
    "title": "Napoli v Roma (Derby del Sole)",
    "group": "Club fixtures, other countries",
    "country": "Italy",
-   "sortKey": 1260,
+   "sortKey": 1270,
    "why": "Played at the Stadio Diego Armando Maradona, one of Italy's loudest grounds.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "IT"
   },
   {
    "id": "palermo-v-catania-sicilian-derby",
@@ -1977,11 +2232,13 @@
    "title": "Palermo v Catania (Sicilian derby)",
    "group": "Club fixtures, other countries",
    "country": "Italy",
-   "sortKey": 1270,
+   "sortKey": 1280,
    "why": "Sicily's biggest rivalry, with strong ultras. League status varies.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "IT"
   },
   {
    "id": "roma-v-lazio-derby-della-capitale",
@@ -1989,10 +2246,12 @@
    "title": "Roma v Lazio (Derby della Capitale)",
    "group": "Club fixtures, other countries",
    "country": "Italy",
-   "sortKey": 1280,
+   "sortKey": 1290,
    "why": "One of Europe's most intense ultras atmospheres, with Curva Sud and Curva Nord in the Olimpico.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "IT"
   },
   {
    "id": "gamba-osaka-v-cerezo-osaka-osaka-derby",
@@ -2000,11 +2259,13 @@
    "title": "Gamba Osaka v Cerezo Osaka (Osaka derby)",
    "group": "Club fixtures, other countries",
    "country": "Japan",
-   "sortKey": 1290,
+   "sortKey": 1300,
    "why": "Japan's top local derby, with some of the J.League's best-organised chants and banners.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "JP"
   },
   {
    "id": "urawa-reds-home-match",
@@ -2012,10 +2273,12 @@
    "title": "Urawa Reds home match",
    "group": "Club fixtures, other countries",
    "country": "Japan",
-   "sortKey": 1300,
+   "sortKey": 1310,
    "why": "Not a derby: the biggest supporter culture in Japan, at Saitama Stadium, one of Asia's largest football stadiums.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "other",
+   "countryCode": "JP"
   },
   {
    "id": "america-v-chivas-clasico-nacional",
@@ -2023,10 +2286,12 @@
    "title": "América v Chivas (Clásico Nacional)",
    "group": "Club fixtures, other countries",
    "country": "Mexico",
-   "sortKey": 1310,
+   "sortKey": 1320,
    "why": "Mexico's biggest match, played at the Estadio Azteca, rebuilt for the 2026 World Cup.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "MX"
   },
   {
    "id": "raja-casablanca-v-wydad-casablanca",
@@ -2034,10 +2299,12 @@
    "title": "Raja Casablanca v Wydad Casablanca",
    "group": "Club fixtures, other countries",
    "country": "Morocco",
-   "sortKey": 1320,
+   "sortKey": 1330,
    "why": "One of Africa's biggest ultras rivalries, with elaborate tifos.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "MA"
   },
   {
    "id": "ajax-v-feyenoord-de-klassieker",
@@ -2045,10 +2312,12 @@
    "title": "Ajax v Feyenoord (De Klassieker)",
    "group": "Club fixtures, other countries",
    "country": "Netherlands",
-   "sortKey": 1330,
+   "sortKey": 1340,
    "why": "Amsterdam against Rotterdam, with De Kuip a classic stadium.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "NL"
   },
   {
    "id": "ajax-v-psv-de-topper",
@@ -2056,10 +2325,12 @@
    "title": "Ajax v PSV (De Topper)",
    "group": "Club fixtures, other countries",
    "country": "Netherlands",
-   "sortKey": 1340,
+   "sortKey": 1350,
    "why": "Amsterdam against Eindhoven, the rivalry for the Eredivisie title.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "NL"
   },
   {
    "id": "gornik-zabrze-v-ruch-chorzow-silesian-derby",
@@ -2067,11 +2338,13 @@
    "title": "Górnik Zabrze v Ruch Chorzów (Silesian derby)",
    "group": "Club fixtures, other countries",
    "country": "Poland",
-   "sortKey": 1350,
+   "sortKey": 1360,
    "why": "Silesia's industrial region with a strong fan culture and large away followings.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "PL"
   },
   {
    "id": "lechia-gdansk-v-arka-gdynia-tri-city-derby",
@@ -2079,11 +2352,13 @@
    "title": "Lechia Gdańsk v Arka Gdynia (Tri-City derby)",
    "group": "Club fixtures, other countries",
    "country": "Poland",
-   "sortKey": 1360,
+   "sortKey": 1370,
    "why": "One of Poland's most heated local derbies, in a modern stadium on the Baltic coast.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "PL"
   },
   {
    "id": "legia-warsaw-v-lech-poznan-klasyk",
@@ -2091,10 +2366,12 @@
    "title": "Legia Warsaw v Lech Poznań (Klasyk)",
    "group": "Club fixtures, other countries",
    "country": "Poland",
-   "sortKey": 1370,
+   "sortKey": 1380,
    "why": "Poland's biggest fixture.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "PL"
   },
   {
    "id": "wisla-krakow-v-cracovia-holy-war",
@@ -2102,11 +2379,13 @@
    "title": "Wisła Kraków v Cracovia (Holy War)",
    "group": "Club fixtures, other countries",
    "country": "Poland",
-   "sortKey": 1380,
+   "sortKey": 1390,
    "why": "One of Poland's fiercest rivalries.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "PL"
   },
   {
    "id": "benfica-v-porto-o-classico",
@@ -2114,10 +2393,12 @@
    "title": "Benfica v Porto (O Clássico)",
    "group": "Club fixtures, other countries",
    "country": "Portugal",
-   "sortKey": 1390,
+   "sortKey": 1400,
    "why": "Portugal's biggest fixture.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "PT"
   },
   {
    "id": "benfica-v-sporting-derby-de-lisboa",
@@ -2125,10 +2406,12 @@
    "title": "Benfica v Sporting (Derby de Lisboa)",
    "group": "Club fixtures, other countries",
    "country": "Portugal",
-   "sortKey": 1400,
+   "sortKey": 1410,
    "why": "Both big clubs in one city, at two large stadiums.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "PT"
   },
   {
    "id": "braga-v-vitoria-guimaraes-minho-derby",
@@ -2136,10 +2419,12 @@
    "title": "Braga v Vitória Guimarães (Minho derby)",
    "group": "Club fixtures, other countries",
    "country": "Portugal",
-   "sortKey": 1410,
+   "sortKey": 1420,
    "why": "Braga's stadium is built into a quarry wall, in a heated fixture between two close cities.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "PT"
   },
   {
    "id": "porto-v-sporting",
@@ -2147,10 +2432,12 @@
    "title": "Porto v Sporting",
    "group": "Club fixtures, other countries",
    "country": "Portugal",
-   "sortKey": 1420,
+   "sortKey": 1430,
    "why": "A top-two meeting in Portugal's league, in two modern grounds.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "PT"
   },
   {
    "id": "dundee-v-dundee-united",
@@ -2158,10 +2445,12 @@
    "title": "Dundee v Dundee United",
    "group": "Club fixtures, other countries",
    "country": "Scotland",
-   "sortKey": 1440,
+   "sortKey": 1450,
    "why": "Dens Park and Tannadice are about 200 yards apart, two small, traditional grounds with a wholly local rivalry.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "hearts-v-hibs-edinburgh-derby",
@@ -2169,10 +2458,12 @@
    "title": "Hearts v Hibs (Edinburgh derby)",
    "group": "Club fixtures, other countries",
    "country": "Scotland",
-   "sortKey": 1450,
+   "sortKey": 1460,
    "why": "A compact, loud Scottish derby, easier to get into than the Old Firm.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "slovan-bratislava-v-spartak-trnava",
@@ -2180,10 +2471,12 @@
    "title": "Slovan Bratislava v Spartak Trnava",
    "group": "Club fixtures, other countries",
    "country": "Slovakia",
-   "sortKey": 1470,
+   "sortKey": 1480,
    "why": "Slovakia's biggest match, with a large and active away following.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "SK"
   },
   {
    "id": "olimpija-ljubljana-v-maribor",
@@ -2191,10 +2484,12 @@
    "title": "Olimpija Ljubljana v Maribor",
    "group": "Club fixtures, other countries",
    "country": "Slovenia",
-   "sortKey": 1480,
+   "sortKey": 1490,
    "why": "Slovenia's biggest fixture, with Maribor's fans travelling in numbers.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "SI"
   },
   {
    "id": "kaizer-chiefs-v-orlando-pirates-soweto-derby",
@@ -2202,10 +2497,12 @@
    "title": "Kaizer Chiefs v Orlando Pirates (Soweto derby)",
    "group": "Club fixtures, other countries",
    "country": "South Africa",
-   "sortKey": 1490,
+   "sortKey": 1500,
    "why": "South Africa's biggest match, at FNB Stadium, Africa's largest, which hosted the 2010 World Cup final.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ZA"
   },
   {
    "id": "athletic-club-v-real-sociedad-basque-derby",
@@ -2213,10 +2510,12 @@
    "title": "Athletic Club v Real Sociedad (Basque derby)",
    "group": "Club fixtures, other countries",
    "country": "Spain",
-   "sortKey": 1500,
+   "sortKey": 1510,
    "why": "The two sets of fans mix, which is unusual, at San Mamés and Anoeta.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ES"
   },
   {
    "id": "atletico-madrid-v-real-madrid-derbi-madrileno",
@@ -2224,10 +2523,12 @@
    "title": "Atlético Madrid v Real Madrid (Derbi madrileño)",
    "group": "Club fixtures, other countries",
    "country": "Spain",
-   "sortKey": 1510,
+   "sortKey": 1520,
    "why": "Heated rivalry at the Metropolitano and the Bernabéu.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ES"
   },
   {
    "id": "barcelona-v-espanyol-derbi-barceloni",
@@ -2235,10 +2536,12 @@
    "title": "Barcelona v Espanyol (Derbi barceloní)",
    "group": "Club fixtures, other countries",
    "country": "Spain",
-   "sortKey": 1520,
+   "sortKey": 1530,
    "why": "Catalonia's biggest club against the local rival. Barcelona's home ground is in rebuild phases.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ES"
   },
   {
    "id": "barcelona-v-real-madrid-el-clasico",
@@ -2246,10 +2549,12 @@
    "title": "Barcelona v Real Madrid (El Clásico)",
    "group": "Club fixtures, other countries",
    "country": "Spain",
-   "sortKey": 1530,
+   "sortKey": 1540,
    "why": "Two of the biggest clubs on earth, with a rebuilt Bernabéu and a Camp Nou being rebuilt.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ES"
   },
   {
    "id": "celta-vigo-v-deportivo-la-coruna-galician-derby",
@@ -2257,11 +2562,13 @@
    "title": "Celta Vigo v Deportivo La Coruña (Galician derby)",
    "group": "Club fixtures, other countries",
    "country": "Spain",
-   "sortKey": 1540,
+   "sortKey": 1550,
    "why": "Two grounds with strong local identity. The clubs may not share a league.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ES"
   },
   {
    "id": "rayo-vallecano-v-atletico-madrid",
@@ -2269,10 +2576,12 @@
    "title": "Rayo Vallecano v Atlético Madrid",
    "group": "Club fixtures, other countries",
    "country": "Spain",
-   "sortKey": 1550,
+   "sortKey": 1560,
    "why": "An unusually small stadium in a working-class neighbourhood, with a very vocal, political home crowd.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ES"
   },
   {
    "id": "sevilla-v-real-betis-derbi-sevillano",
@@ -2280,10 +2589,12 @@
    "title": "Sevilla v Real Betis (Derbi sevillano)",
    "group": "Club fixtures, other countries",
    "country": "Spain",
-   "sortKey": 1560,
+   "sortKey": 1570,
    "why": "Often cited as one of Spain's best atmospheres, with the whole city split in two.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ES"
   },
   {
    "id": "valencia-v-levante-valencian-derby",
@@ -2291,11 +2602,13 @@
    "title": "Valencia v Levante (Valencian derby)",
    "group": "Club fixtures, other countries",
    "country": "Spain",
-   "sortKey": 1570,
+   "sortKey": 1580,
    "why": "Mestalla is one of La Liga's steepest old grounds.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "ES"
   },
   {
    "id": "stockholm-derbies-hammarby-djurgarden-aik",
@@ -2303,10 +2616,12 @@
    "title": "Stockholm derbies (Hammarby, Djurgården, AIK)",
    "group": "Club fixtures, other countries",
    "country": "Sweden",
-   "sortKey": 1580,
+   "sortKey": 1590,
    "why": "Sweden's biggest club fixtures, with some of Europe's best tifos. Hammarby and Djurgården share the Tele2 Arena.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "SE"
   },
   {
    "id": "basel-v-young-boys",
@@ -2314,10 +2629,12 @@
    "title": "Basel v Young Boys",
    "group": "Club fixtures, other countries",
    "country": "Switzerland",
-   "sortKey": 1590,
+   "sortKey": 1600,
    "why": "Switzerland's top fixture, at the country's largest club stadium, with large, organised fan sections.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "CH"
   },
   {
    "id": "fc-zurich-v-grasshoppers-zurich-derby",
@@ -2325,10 +2642,12 @@
    "title": "FC Zürich v Grasshoppers (Zürich derby)",
    "group": "Club fixtures, other countries",
    "country": "Switzerland",
-   "sortKey": 1600,
+   "sortKey": 1610,
    "why": "Switzerland's biggest city rivalry, at the shared Letzigrund.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "CH"
   },
   {
    "id": "besiktas-v-galatasaray",
@@ -2336,10 +2655,12 @@
    "title": "Beşiktaş v Galatasaray",
    "group": "Club fixtures, other countries",
    "country": "Turkey",
-   "sortKey": 1610,
+   "sortKey": 1620,
    "why": "Played at Beşiktaş Stadium on the Bosphorus shore.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "TR"
   },
   {
    "id": "la-galaxy-v-lafc-el-trafico",
@@ -2347,10 +2668,12 @@
    "title": "LA Galaxy v LAFC (El Tráfico)",
    "group": "Club fixtures, other countries",
    "country": "United States",
-   "sortKey": 1630,
+   "sortKey": 1640,
    "why": "The MLS rivalry of Los Angeles since 2018.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "US"
   },
   {
    "id": "seattle-sounders-v-portland-timbers-cascadia-derby",
@@ -2358,10 +2681,12 @@
    "title": "Seattle Sounders v Portland Timbers (Cascadia derby)",
    "group": "Club fixtures, other countries",
    "country": "United States",
-   "sortKey": 1640,
+   "sortKey": 1650,
    "why": "One of MLS's best fan cultures, with Portland's Timbers Army at Providence Park.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "US"
   },
   {
    "id": "penarol-v-nacional-clasico",
@@ -2369,10 +2694,12 @@
    "title": "Peñarol v Nacional (Clásico)",
    "group": "Club fixtures, other countries",
    "country": "Uruguay",
-   "sortKey": 1650,
+   "sortKey": 1660,
    "why": "Played at the Estadio Centenario, built for the 1930 World Cup and recognised by FIFA as a historic monument.",
    "whyStatus": "unverified",
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "UY"
   },
   {
    "id": "cardiff-city-v-swansea-city-south-wales-derby",
@@ -2380,11 +2707,13 @@
    "title": "Cardiff City v Swansea City (South Wales derby)",
    "group": "Club fixtures, other countries",
    "country": "Wales",
-   "sortKey": 1660,
+   "sortKey": 1670,
    "why": "One of the most heated rivalries in Britain, with strict policing and often restricted away allocations.",
    "whyStatus": "unverified",
    "leagueCheck": true,
-   "listOnly": true
+   "listOnly": true,
+   "kind": "derby",
+   "countryCode": "GB"
   },
   {
    "id": "zweite-liga-relegation",
@@ -2405,7 +2734,9 @@
    ],
    "whyStatus": "unverified",
    "listOnly": true,
-   "sortKey": 330
+   "sortKey": 330,
+   "kind": "playoff",
+   "countryCode": "DE"
   },
   {
    "id": "regionalliga-aufstiegsspiele",
@@ -2424,7 +2755,9 @@
    ],
    "whyStatus": "unverified",
    "listOnly": true,
-   "sortKey": 340
+   "sortKey": 340,
+   "kind": "playoff",
+   "countryCode": "DE"
   },
   {
    "id": "superliga-relegation-baraj",
@@ -2445,7 +2778,9 @@
    ],
    "whyStatus": "unverified",
    "listOnly": true,
-   "sortKey": 660
+   "sortKey": 670,
+   "kind": "playoff",
+   "countryCode": "RO"
   },
   {
    "id": "liga3-promotion-tournament",
@@ -2465,7 +2800,9 @@
    ],
    "whyStatus": "unverified",
    "listOnly": true,
-   "sortKey": 670
+   "sortKey": 680,
+   "kind": "playoff",
+   "countryCode": "RO"
   }
  ],
  "ticketEvents": [

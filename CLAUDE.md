@@ -108,6 +108,23 @@ while the date is still ahead; `build-calendars.yml` runs it. Existing
 entries have neither field yet: the warnings are the to-do list, and no
 value was filled in for them (rules 1 and 2).
 
+**9. Competition info is hand-written, and every row needs a source and a
+checked date.** Added 2026-10-08. `data/competitions.csv`,
+`data/competition-info.csv` and `data/competition-sources.csv` are never
+written by a script and **fetched data never becomes competition info
+automatically**: `data/fixtures/`, the OpenLigaDB files and the club layer
+may seed a competition's *name* once, never a format, a qualification rule
+or a date. Every info row carries `sourceId` and `checkedOn`; a row without
+either is a warning, not a pass. **Rules change between seasons**, which is
+why every row says when it was checked and `check_competitions.py` warns
+past 365 days. **Schedule rows are month level and `inferred` only**
+(topic `schedule-announcement`: who announces dates and kick-offs and
+roughly when, `basis` `observed-past-cycle`); a day-level date in a text
+cell fails the checker, because a plausible-sounding wrong date is worse
+than a blank. A page that could not be opened is read from the search
+result and the row says `unverified`, never `confirmed`. A competition
+with no info row shows "Not researched yet".
+
 ---
 
 ## dateSource
@@ -397,6 +414,31 @@ a subscribed calendar reads as a schedule regardless of its description.
   start, a missing source or an unknown `dateSource`, and reports a kind
   it does not know without accepting it. The calendar shades
   **confirmed** rows only. Nothing writes to it.
+
+- `data/competitions.csv` — added 2026-10-08. **One row per competition**:
+  `id` (`<country>-<slug>`, `int-<slug>` for international), `name`,
+  `country` (ISO-2, blank = Europe and international), `level` (a whole
+  number for a league, blank otherwise), `type` (`league`, `cup`,
+  `supercup`, `playoff`, `international`, `tournament`), `wikidataQ` (only
+  where `league-tiers.csv` already holds the Q-id), `officialUrl` (blank
+  unless verified; none is). First filled once from `league-tiers.csv`
+  (leagues with clubs on the map; the generic Regionalliga item
+  `Q2188121` is not a competition and was left out), the football-data.org
+  and OpenLigaDB competitions, and the cups, finals, super cups and
+  play-offs of the bucket list, deduplicated by name and country: **64
+  competitions**. Nothing refreshes it.
+- `data/competition-info.csv` — added 2026-10-08. `competitionId`, `topic`
+  (closed, in this order: `format`, `qualification`,
+  `promotion-relegation`, `season-window`, `schedule-announcement`,
+  `tracking`, `other`), `text`, `status` (closed: `confirmed`, `inferred`,
+  `unverified`), `basis`, `sourceId` (a `;`-list), `checkedOn`. Seeded with
+  the DFB-Pokal (5 rows, all `unverified`: dfb.de could not be opened, two
+  tries, so everything is from search-result summaries; the schedule row is
+  `inferred`) and five play-off competitions, whose formats and sources are
+  copied from the PR #65 bucket entries, `unverified`. Nothing else is
+  researched.
+- `data/competition-sources.csv` — added 2026-10-08. `sourceId`, `url`,
+  `title`, `retrievedOn` (blank where the page was not opened), `note`.
 
 ### Generated — safe to overwrite
 
@@ -691,6 +733,19 @@ a subscribed calendar reads as a schedule regardless of its description.
   only, always exits 0. Lists dated `ticketEvents` entries missing `source` or
   `checkedOn`, dates passed more than 14 days ago, and `checkedOn` over 30 days
   old with the date still ahead. Run by `build-calendars.yml`. Never writes.
+- `tools/check_competitions.py` — added 2026-10-08: read-back and checks for
+  the three competition files. **Fails (exit 1)** on an invalid topic,
+  status or type, an unknown `competitionId` or `sourceId`, a repeated id, a
+  malformed row, a bad date and a day-level date after today in a text or
+  basis cell; **only warns (exit 0)** on a row with no source or no
+  `checkedOn` and on one checked over 365 days ago. Never writes. Run by
+  `test-pages.yml`.
+- `tools/test_competitions.js` — added 2026-10-08: the Competitions tab at
+  390x844, checked against the three files (48 checks): five tabs fit, every
+  competition listed in the fixed group order, "Not researched yet", every
+  researched sheet with its seven topics in order, status labels, source
+  links and "Checked on", no future day-level date, the country filter and
+  name search. Run by `test-pages.yml`.
 - `tools/check_holidays.py` — added 2026-10-04: read-back and checks for
   `data/holidays-manual.csv`, in the style of `check_derbies.py`. Prints
   every row as understood (weekday, length), rejects by line (bad or
@@ -2175,6 +2230,49 @@ fixture, in his order, which the List now shows by default.
   undated entry reads "Date not set". A stored choice of Earliest or
   Favorites is kept. `SHELL_VERSION` is `v9`.
 
+**The Bucket list filter and the Competitions tab, 2026-10-08.** Built on
+Alexandru's instruction.
+- **Two fields were added to every `bucketList` entry, not the ones the
+  brief named, because those were taken.** `type` already exists
+  (`fixture`, `experience`, `event`) and the page's "Next meeting" logic
+  reads it, so the filter's type is **`kind`** (`tournament`, `final`,
+  `national-team`, `derby`, `playoff`, `cup-round`, `event`, `other`).
+  `country` already exists on 166 entries as a **name** ("Germany",
+  "Scotland", `none` for several) and the "other countries" sub-headings
+  read it, and the brief said never to overwrite a non-empty one, so the
+  ISO-2 code is **`countryCode`** (empty for a multi-country tournament).
+  Both derived from the group and title; `countryCode` agrees with the
+  country of every linked club's file (`bucket-links-manual.csv`,
+  `football-rules-links.csv`) for every linked entry - no disagreement.
+  Scotland, England and Wales are all `GB` (GB.json is England's pyramid
+  with Welsh clubs); the filter calls it "United Kingdom". A derby is any
+  club fixture between two clubs, linked or not, including pairs that are
+  not rivalries.
+- **`liga2-playoff` moved to the start of the Romania group** (`group`,
+  `country` "Romania" - the name, not "RO" - and `countryCode` "RO"); every
+  entry now has group, country and `sortKey`, which was renumbered 10, 20 ...
+  1670 in the old relative order. "Other entries" no longer shows, because
+  nothing lacks a `sortKey`.
+- **One filter, two lists.** The chip ("Filter · n of total") above the
+  Bucket list's sub-tabs and the one on the Competitions tab open the same
+  panel (the coverage panel's sheet, checkbox rows). Choices in a group are
+  "or", groups are "and", only values that exist are offered with their
+  counts. It filters the List (all three sorts, empty groups hidden) and the
+  calendar; an empty result says "No entries match" with a reset button.
+  **Kept on this device only**, `football-planner-bucket-filter` and
+  `football-planner-comp-filter` in `localStorage`, not in the Me tab's
+  export, not read by any tool.
+- **The Competitions tab** is fifth, between Ticket info and Me. Bottom-bar
+  labels had to shrink (10 px, no side padding) for "COMPETITIONS" to fit
+  five slots at 390 px; it fits, with almost no gap beside TICKET INFO. A
+  list grouped Germany, Romania, other countries A-Z, then Europe and
+  international; a name search; the same country filter; a tap opens a sheet
+  in the club sheet's shape with the seven topics, a status label per row
+  ("Confirmed", "Estimated, based on past seasons", "Not yet verified"), its
+  source links and "Checked on <date>". A day-level future date in a text is
+  shown as its month as a second line of defence.
+- `SHELL_VERSION` is `v11`.
+
 **The Me tab: memberships and tickets held, on the device only,
 2026-10-04.** Built on Alexandru's instruction. A fourth tab in the bottom
 bar (its four labels fit 390 px, one line each - `test_me.js` checks it).
@@ -2389,7 +2487,7 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7` → `v8` → `v9` → `v10`; it has been `v10` since 2026-10-08, when the Reminders came out, and `v9` before that, since
+  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7` → `v8` → `v9` → `v10` → `v11`; it has been `v11` since 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
   2026-10-08, when the 160-entry bucket batch and Group order shipped, `v8` before that, from 2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,
@@ -3135,6 +3233,21 @@ how each rests on them, is in Conventions, "The installable app" and
   `appliesTo` `unknown`, because which competitions count as
   "Bundesspiele" is defined in §§ 41-42 of the DFB-Spielordnung, not read.
 
+- **Competitions, 2026-10-08 - open for Alexandru.** (1) The DFB-Pokal rows
+  rest on search-result summaries: `dfb.de` answered "blocked by the network
+  egress proxy" twice, and the second summary was not attributable to one
+  page, so every row is `unverified` and none is `confirmed`; one source
+  counts the regional places differently (22 cup winners) and the row says
+  so. (2) A search-result summary gave a different day for the 2026-27 second
+  round draw than another; neither is written (rule 1). (3) 58 of 64
+  competitions show "Not researched yet". (4) `type` for the MLS Cup is
+  `playoff`, UEFA club competitions and the Copa Libertadores `international`,
+  super cups `supercup`: judgements, one cell each. (5) `level` of the
+  Brazilian and Portuguese top flights is 1 and neither has clubs on the map.
+  (6) The play-off rows copy the PR #65 entries' text, including a result of
+  the 2026 play-offs; none was re-checked. (7) The `season-window` rows of
+  those entries say "late May", "May", "May to early June", "June"; the
+  entries marked them inferred, the rows say `unverified`.
 - **A `requested` ticket shows "You hold tickets" - built as the brief
   worded it, 2026-10-04, Alexandru's to confirm.** The brief says an
   entry linked to "a held ticket" shows the phrase, and every record on
