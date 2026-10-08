@@ -1,0 +1,75 @@
+name: Fetch fuel prices
+
+# Diesel pump prices (EUR per litre, taxes included) from the European
+# Commission's Weekly Oil Bulletin, into data/fuel-prices.json. The route
+# cost estimate in the app reads it. Fetched and never hand-edited; nothing
+# here touches calendars/. If the workbook cannot be read nothing is
+# committed and the run shows red.
+#
+# On a pull request the tool runs with --dry-run and commits nothing.
+
+on:
+  schedule:
+    # Fridays 07:43 UTC - after the bulletin's Thursday publication, off the hour.
+    - cron: "43 7 * * 5"
+  push:
+    branches: [main]
+    paths:
+      - "tools/fetch_fuel_prices.py"
+      - ".github/workflows/fetch-fuel-prices.yml"
+  pull_request:
+    paths:
+      - "tools/fetch_fuel_prices.py"
+      - ".github/workflows/fetch-fuel-prices.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-fuel-prices
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Fetch diesel prices
+        run: |
+          set -o pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            python3 tools/fetch_fuel_prices.py --dry-run | tee /tmp/fuel.log
+          else
+            python3 tools/fetch_fuel_prices.py | tee /tmp/fuel.log
+          fi
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "## Fuel price fetch"
+            echo
+            echo '```'
+            cat /tmp/fuel.log 2>/dev/null || echo "fetch did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit only if the output changed
+        if: success() && github.event_name != 'pull_request'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/fuel-prices.json
+          if git diff --cached --quiet; then
+            echo "Nothing changed. No commit."
+            exit 0
+          fi
+          git commit -m "chore: fetch diesel prices ($(date -u +%Y-%m-%d))"
+          git push || {
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          }
