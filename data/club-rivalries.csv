@@ -1,0 +1,39 @@
+clubQ,rivalQ,rivalName,class,sourceId,checkedOn
+Q104770,Q101959,Borussia Mönchengladbach,other,R1,2026-10-03
+Q104770,Q695008,FC Viktoria Köln,other,R2,2026-10-03
+Q104770,Q310608,SC Fortuna Köln,other,R2,2026-10-03
+Q141971,Q159930,BFC Dynamo,other,R2,2026-10-03
+Q141971,Q102720,Hertha BSC,other,R3,2026-10-03
+Q41420,Q15789,FC Bayern München,other,R4,2026-10-03
+Q41420,Q32494,FC Schalke 04,other,R5,2026-10-03
+Q101959,Q104770,1. FC Köln,other,R1,2026-10-03
+Q38245,Q157352,FSV Frankfurt,other,R2,2026-10-03
+Q38245,Q479351,SV Darmstadt 98,other,R2,2026-10-03
+Q97905916,Q131603,TSV 1860 München,other,R6,2026-10-03
+Q97905916,,TSV Schwaben Augsburg,other,R7,2026-10-03
+Q15789,Q41420,Borussia Dortmund,other,R4,2026-10-03
+Q15789,Q8682,Real Madrid Club de Fútbol,other,R9,2026-10-03
+Q15789,Q131603,TSV 1860 München,other,R8,2026-10-03
+Q15789,Q51976,Werder Bremen,other,R2,2026-10-03
+Q32494,Q41420,Borussia Dortmund,other,R5,2026-10-03
+Q51974,Q6463,FC St. Pauli,other,R10,2026-10-03
+Q51974,Q51976,Werder Bremen,other,R11,2026-10-03
+Q4512,Q105853,Karlsruher SC,other,R12,2026-10-03
+Q4512,Q170105,Stuttgarter Kickers,other,R13,2026-10-03
+Q51976,Q15789,FC Bayern München,other,R2,2026-10-03
+Q51976,Q51974,Hamburger SV,other,R11,2026-10-03
+Q162251,Q692586,VfR Aalen,other,R2,2026-10-03
+Q8466,Q157463,1. FC Saarbrücken,other,R2,2026-10-03
+Q8466,Q105853,Karlsruher SC,other,R14,2026-10-03
+Q15786,Q153539,SpVgg Greuther Fürth,other,R15,2026-10-03
+Q105844,Q316865,Preußen Münster,other,R2,2026-10-03
+Q154053,Q33748,Hannover 96,other,R16,2026-10-03
+Q6463,Q51974,Hamburger SV,other,R10,2026-10-03
+Q6463,Q142005,Hansa Rostock,other,R17,2026-10-03
+Q33748,Q154053,Eintracht Braunschweig,other,R16,2026-10-03
+Q102720,Q141971,1. FC Union Berlin,other,R3,2026-10-03
+Q105853,Q8466,1. FC Kaiserslautern,other,R14,2026-10-03
+Q105853,Q4512,VfB Stuttgart,other,R12,2026-10-03
+Q479351,Q38245,Eintracht Frankfurt,other,R2,2026-10-03
+Q153539,Q15786,1. FC Nürnberg,other,R15,2026-10-03
+Q160530,Q316865,Preußen Münster,other,R2,2026-10-03

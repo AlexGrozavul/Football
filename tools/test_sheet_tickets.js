@@ -140,6 +140,94 @@ const server = http.createServer((req, res) => {
     check(`a club with neither source (${plain}) keeps "Ticket info unavailable"`, S.unavailable && S.next === null && !/Typically opens/.test(S.text));
   }
 
+
+  // ---- Rivalries section: read from the data files, no club name or count written here.
+  const riv = csv('data/club-rivalries.csv'), rivSrc = csv('data/rivalry-sources.csv');
+  const bucketLines = csv('data/bucket-links-manual.csv').filter(r => !r.ticketEventId);
+  const RANK = {other: 0, local: 1, main: 2}, LABEL = {main: 'Main rival', local: 'Local rival', other: 'Other rivalry'};
+  const expectOrder = rows => [...rows].sort((a, b) => RANK[a.class] - RANK[b.class] || a.rivalName.localeCompare(b.rivalName));
+  const rivalSheet = async (pg, qid) => {
+    await pg.evaluate(q => openSheet(CLUBS.find(c => c.id === q)), qid);
+    await pg.waitForFunction(() => !/Loading/.test(document.getElementById('sheetTix').textContent), null, {timeout: 10000});
+    await pg.waitForTimeout(200);
+    return pg.evaluate(() => {
+      const b = document.getElementById('sheetBody'), sb = document.querySelector('#sheet .sbody');
+      return {h4: [...b.querySelectorAll('h4')].map(h => h.textContent),
+        rows: [...b.querySelectorAll('.riv')].map(r => ({name: r.querySelector('.rvname').textContent,
+          cls: r.querySelector('.rvclass').textContent, tap: r.querySelector('.rvname').tagName === 'BUTTON',
+          rivalId: r.querySelector('.rvname').dataset.id || '', href: r.querySelector('a')?.href || '',
+          sub: r.querySelector('.sub').textContent, bucket: [...r.querySelectorAll('.rvbucket')].map(x => x.dataset.bucket),
+          wide: r.scrollWidth > r.clientWidth + 1})),
+        sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
+    });
+  };
+  const onMap = await page.evaluate(() => CLUBS.map(c => c.id));
+  const withRows = [...new Set(riv.map(r => r.clubQ))].filter(q => onMap.includes(q));
+  check('at least one club has rivalry rows', withRows.length > 0, `${withRows.length} clubs`);
+  let sectionOk = true, orderOk = true, linkOk = true, widthOk = true, bucketOk = true, bad = [];
+  for(const q of withRows){
+    const want = expectOrder(riv.filter(r => r.clubQ === q));
+    const R = await rivalSheet(page, q);
+    const name = await page.evaluate(i => CLUBS.find(c => c.id === i).name, q);
+    if(R.h4.filter(h => h === 'Rivalries').length !== 1) { sectionOk = false; bad.push(`${name}: section`); }
+    if(JSON.stringify(R.rows.map(r => r.name)) !== JSON.stringify(want.map(r => r.rivalName)) ||
+       JSON.stringify(R.rows.map(r => r.cls)) !== JSON.stringify(want.map(r => LABEL[r.class]))){ orderOk = false; bad.push(`${name}: order`); }
+    if(R.rows.length && RANK[want[want.length - 1].class] !== Math.max(...want.map(r => RANK[r.class]))){ orderOk = false; bad.push(`${name}: biggest not last`); }
+    R.rows.forEach((r, i) => {
+      const src = rivalSrc(want[i].sourceId), d = want[i].checkedOn;
+      if(!src || r.href !== src.url || !/Checked on /.test(r.sub) || !r.sub.includes(src.title)) { linkOk = false; bad.push(`${name}: source of ${r.name}`); }
+      if(r.tap !== !!(want[i].rivalQ && onMap.includes(want[i].rivalQ))) { linkOk = false; bad.push(`${name}: tap on ${r.name}`); }
+      const exp = want[i].rivalQ ? bucketLines.filter(l => [l.hostQid, ...l.otherQids.split(';')].map(x => x.trim()).includes(q) &&
+        [l.hostQid, ...l.otherQids.split(';')].map(x => x.trim()).includes(want[i].rivalQ)).map(l => l.bucketId) : [];
+      if(JSON.stringify([...new Set(exp)].sort()) !== JSON.stringify([...r.bucket].sort())) { bucketOk = false; bad.push(`${name}: bucket link for ${r.name}`); }
+      if(r.wide) { widthOk = false; bad.push(`${name}: ${r.name} wider than the sheet`); }
+    });
+    if(R.sideways) { widthOk = false; bad.push(`${name}: sideways scroll`); }
+    if(R.rows.length > 5) { sectionOk = false; bad.push(`${name}: more than 5`); }
+  }
+  function rivalSrc(id){ return rivSrc.find(r => r.sourceId === id); }
+  check('every club with rows shows one Rivalries section', sectionOk, bad.join(' | '));
+  check('rivals in class order, other then local then main, alphabetical within a class, biggest last', orderOk, bad.join(' | '));
+  check('each row has its class label, a source link and "Checked on", and taps only when the rival is on the map', linkOk, bad.join(' | '));
+  check('a bucket link shows exactly when a bucket entry names both clubs by Wikidata id', bucketOk, bad.join(' | '));
+  check('the Rivalries section fits 390 px, no sideways scroll', widthOk, bad.join(' | '));
+
+  const without = await page.evaluate(have => { const c = CLUBS.find(c => !have.includes(c.id)); return c && {id: c.id, name: c.name}; }, withRows);
+  const W = await rivalSheet(page, without.id);
+  check(`a club without rows (${without.name}) shows no Rivalries section`, !W.h4.includes('Rivalries') && !W.rows.length);
+
+  // A rival on the map opens its own sheet when tapped.
+  const tapFrom = withRows.find(q => riv.some(r => r.clubQ === q && r.rivalQ && onMap.includes(r.rivalQ)));
+  if(tapFrom){
+    const R = await rivalSheet(page, tapFrom);
+    const row = R.rows.find(r => r.tap);
+    await page.click(`#sheetBody .rivs .rvname[data-id="${row.rivalId}"]`);
+    await page.waitForFunction(id => SHEET_FOR === id && !document.getElementById('sheet').hidden, row.rivalId, {timeout: 8000}).catch(() => {});
+    const now = await page.evaluate(() => ({id: SHEET_FOR, head: document.querySelector('#sheetHead h3')?.textContent}));
+    check(`tapping a rival on the map (${row.name}) opens its own sheet`, now.id === row.rivalId, now.head);
+  }else check('a rival on the map exists to tap', false);
+
+  // The order is tested against mixed classes too: a served copy of the file, same club, classes rotated.
+  const many = withRows.sort((a, b) => riv.filter(r => r.clubQ === b).length - riv.filter(r => r.clubQ === a).length)[0];
+  const classes = ['main', 'other', 'local', 'main', 'other'];
+  const lines = fs.readFileSync(path.join(ROOT, 'data/club-rivalries.csv'), 'utf8').split('\n');
+  let k = 0;
+  const mixed = lines.map((l, i) => i && l.startsWith(many + ',') ? l.replace(/,(main|local|other),/, `,${classes[k++ % 5]},`) : l).join('\n');
+  const pg2 = await ctx.newPage();
+  await pg2.route('**/data/club-rivalries.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: mixed}));
+  pg2.on('pageerror', e => errors.push(e.message));
+  await pg2.goto(BASE);
+  await pg2.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  const M = await rivalSheet(pg2, many);
+  const mrows = csvText(mixed).filter(r => r.clubQ === many);
+  const mwant = expectOrder(mrows);
+  check('mixed classes: other first, then local, then main last, alphabetical within a class',
+    new Set(mrows.map(r => r.class)).size > 1 && JSON.stringify(M.rows.map(r => r.name)) === JSON.stringify(mwant.map(r => r.rivalName)) &&
+    JSON.stringify(M.rows.map(r => r.cls)) === JSON.stringify(mwant.map(r => LABEL[r.class])) && M.rows[M.rows.length - 1].cls === LABEL[mwant[mwant.length - 1].class],
+    M.rows.map(r => `${r.name}:${r.cls}`).join(' | '));
+  await pg2.close();
+  function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
+
   check('no script error', !errors.length, errors.join(' | '));
   await browser.close(); server.close();
   const failed = results.filter(x => !x).length;
