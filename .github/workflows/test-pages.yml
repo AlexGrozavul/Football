@@ -53,8 +53,9 @@ name: Test the page
 # 2026-10-07 VfB Stuttgart's ticket information (tools/test_vfb_tickets.js -
 # VfB under Clubs with "Country rules: Germany" above its researched rules
 # and its notes, every VfB rule, window and phase shown and its price and
-# sell-out sections holding every row, the same on its club sheet and in the
-# vfb-regular bucket entry, and no estimated date shown to the day).
+# sell-out sections holding every row, the same on its club sheet; the Bucket
+# list has no VfB entry (vfb-regular was removed 2026-10-08); no estimated date
+# is shown to the day).
 # Each one
 # serves the checkout locally,
 # stubs every Stadia Maps request (tiles, routing, place search) so no
@@ -215,7 +216,7 @@ jobs:
           set -o pipefail
           NODE_PATH=/tmp/pw/node_modules node tools/test_ksc_tickets.js . 2>&1 | tee /tmp/test_ksc_tickets.log
 
-      - name: VfB Stuttgart ticket information (Ticket info, sheet, vfb-regular)
+      - name: VfB Stuttgart ticket information (Ticket info, sheet, Bucket list)
         if: always()
         run: |
           set -o pipefail

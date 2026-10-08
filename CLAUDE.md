@@ -85,14 +85,21 @@ not ask for — is still left undone and written up under Known open
 problems; the merge carries the write-up, never the decision. Rules 1
 to 6 are unchanged by this and outrank it.
 
-**8. Sale dates are shown only in the Bucket list.** Since 2026-10-07,
-on Alexandru's instruction: the map's club sheet and the Ticket info tab
-show no sale date - no "Next window" line, no window's "Typically opens"
-or past-cycle line - and the Bucket list tab and its calendar are the
-only place one is drawn. Sale phases, rules and prices stay on the sheet
-and Ticket info, and every data file is unchanged. **A hand-written dated
-sale or deadline entry** (a `ticketEvents` entry of `football-rules.json`
-with a date) **needs a source URL (`source`) and a `checkedOn` date**, and
+**8. Sale dates are currently shown nowhere in the app.** Since 2026-10-07
+the map's club sheet and the Ticket info tab show no sale date (no "Next
+window" line, no window's "Typically opens" or past-cycle line), and since
+2026-10-08, on Alexandru's instruction, **the Bucket list's Reminders
+section is gone too**: no `ticketEvents` entry is drawn on the List, inside
+a bucket entry or on the calendar, so no dated sale or deadline from
+`football-rules.json` is shown anywhere. **The data is kept**: every
+`ticketEvents` entry, every ticket CSV and `calendars/local.ics` (which is
+built from those entries, not from the page) are unchanged. The one piece
+of sale timing still drawn is the month-level "Typically opens" pattern of
+`club-ticket-windows.csv` inside a club block of a Bucket list entry - a
+loose-text estimate, not a dated entry - and it stays until he says
+otherwise. **A hand-written dated sale or deadline entry** (a `ticketEvents`
+entry of `football-rules.json` with a date) **still needs a source URL
+(`source`) and a `checkedOn` date**, shown or not, and
 **nothing fetches or verifies them automatically**.
 `tools/check_sale_dates.py` lists, offline and as warnings only (it always
 exits 0), the dated entries missing either field, those whose date passed
@@ -362,7 +369,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   An **event line** - `ticketEventId` and its `bucketId`, nothing else;
   an event belongs to one entry. Read back line by line by
   `check_tickets.py`. **Filled only where the match was certain from
-  existing data**, each line's note saying how: 13 club lines for 12
+  existing data**, each line's note saying how: 12 club lines for 11 (13 for 12 until 2026-10-08, when `vfb-regular` and its two lines went)
   entries (the venue equal to a club's ground on the map, the entry's own
   `clubs` through `football-rules-links.csv`, or the `derbies.csv` row
   whose `rulesId` is the entry), 8 event lines. **Not linked**: the
@@ -2063,6 +2070,76 @@ Alexandru's instruction. Two sub-tabs at the top of the Bucket list tab.
   none is on a day cell. A month renders in about 17-19 ms in headless
   Chromium with the CPU slowed 4x (this sandbox, not a phone).
 
+**Reminders removed, three entries removed, Pokal and play-offs grouped,
+2026-10-08.** Done on Alexandru's instruction; rendering and entries only.
+- **Reminders removed from the page.** Gone: the Bucket list's "Reminders"
+  section, the "Ticket windows (reminders)" block inside every entry, the
+  ticket-window items and diamonds on the calendar, and the sheet that
+  opened them (`eventHtml()`, `leadWords()`, the event branch of
+  `openBSheet()`); the club sheet's notes no longer list "Dated ticket
+  windows for this club" and the Ticket info note says no dated window is
+  shown. **Nothing was deleted from data**: every `ticketEvents` entry, every
+  CSV and the Me tab's own reminders and `.ics` export are untouched.
+  **`calendars/local.ics` is fed by `ticketEvents` entries with `feed`
+  `local` through `build_calendars.py`, not by the page**, and today holds
+  two `[?]` inferred sale dates (`vfb-presale-active`, `ksc-fck-sale`) -
+  so it still contains sale dates. `tools/test_tickets_bucket.js` and
+  `tools/test_calendar.js` now assert the Reminders section and every
+  ticket-window item are absent (the old "shows its reminders" assertion of
+  PR #63 is replaced); `test_layout.js` no longer expects ticket-event
+  warnings on a tab.
+- **Three entries removed from `bucketList`**: `vfb-regular` ("Become a
+  regular at the Cannstatter Kurve"), `away-end-first` ("Any proper away
+  end") and `womens-football` ("Any women's match") - the only
+  women's-football entry (searched for women, Frauen, Damen, lionesses, UWCL,
+  ladies, female, NWSL; rule 6). Their two lines in
+  `bucket-links-manual.csv` (both `vfb-regular`; the other two had none) went
+  with them; no `ticketEvents`, club entry or ticket file was touched.
+  `test_vfb_tickets.js` no longer looks for a VfB card in the Bucket list.
+  **Ticket events now linked to no entry: `vfb-presale-active`** (it was
+  linked to `vfb-regular`). Unlinked before and still unlinked: `poli-rapid-cup`,
+  `fcb-pokal-r2`, `rcsa-resale`. **Now shown nowhere in the app**, all four
+  and every other ticket event too, because nothing draws them.
+- **"Other entries"** (no `sortKey`) now holds one entry, `liga2-playoff`
+  ("Liga 2 promotion play-off, decisive round", Poli's track); it was left
+  as it is.
+- **The Pokal and the play-offs open the German and Romanian groups.** The
+  existing hand-written `pokal-first-round` ("DFB-Pokal first round at an
+  amateur host") and `relegation` ("Bundesliga Relegation, second leg") were
+  kept with every hand-written field and moved to the start of "Club
+  fixtures, Germany" (flagged `listOnly`, so off the calendar); **the Pokal
+  entry is undated**: no `date`, `nextFixture` or `fixtures`, only its trigger
+  text (draw in June, played August/early September) and a linked
+  `pokal-draw-2027` event (inferred, 2027-06-05), which is no longer shown.
+  Its home-advantage rule was **not** researched or written. `relegation`
+  already covered the Bundesliga relegation, so no duplicate was added; it
+  gained the researched note as `whyAssistant`, `whySources`, `whyStatus`
+  `unverified`.
+- **New undated entries, formats researched on 2026-10-08 and subject to
+  rule changes** (the sources are search-result summaries of the pages named
+  in `whySources`; the sandbox blocks fetching them, so none was opened):
+  `zweite-liga-relegation` (16th of the 2. Bundesliga against the 3rd of the
+  3. Liga, two legs, aggregate, no away goals, extra time and penalties;
+  played in May in 2026), `regionalliga-aufstiegsspiele` (**not** 3. Liga
+  v Regionalliga: two Regionalliga champions play home and away for the last
+  3. Liga place; the June 2026 reform vote gave no clear result and a change
+  is put at 2028/29 at the earliest, so the current model is expected for
+  2026/27 - not confirmed by the DFB), `superliga-relegation-baraj` (two
+  Superliga clubs above the directly relegated places against Liga 2's third
+  and fourth, two legs; May to early June 2026; the 2026-27 rules were not
+  found) and `liga3-promotion-tournament` (runners-up of the Liga 3
+  play-off groups, single-match semi-finals and a final for the fifth Liga 2
+  place, 2025-26 rules; older editions differed; Liga 2's own relegation
+  baraj is between Liga 2 clubs and has no entry). Each: `whyStatus`
+  `unverified`, a new `whySources` list of URLs (shown as "Sources for the
+  note"), the playing month only, tagged inferred and observed in 2025-26 /
+  2026, and no host, club, capacity, ticket rule or sale date. A format the
+  sources would not confirm gets no entry.
+- **`sortKey` renumbered 10, 20 ... 1660 with no gap**, existing relative
+  order unchanged; the Pokal and the three German entries are the first four
+  of Germany, the two Romanian ones the first two of Romania. `bucketList`
+  now holds 167 entries (166 - 3 + 4).
+
 **The 160-entry bucket batch, 2026-10-08: undated, in a fixed order, with
 unverified "why" texts.** Added on Alexandru's instruction: 145 new
 `bucketList` entries and 15 existing ones that already covered the same
@@ -2312,7 +2389,7 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7` → `v8` → `v9`; it has been `v9` since
+  (`v1` → `v2` → `v3` → `v4` → `v5` → `v6` → `v7` → `v8` → `v9` → `v10`; it has been `v10` since 2026-10-08, when the Reminders came out, and `v9` before that, since
   2026-10-08, when the 160-entry bucket batch and Group order shipped, `v8` before that, from 2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,

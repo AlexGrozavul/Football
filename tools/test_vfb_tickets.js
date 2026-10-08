@@ -10,9 +10,9 @@
 //    "Researched rules", which is above "Your notes" (football-rules.json's vfb entry, through football-rules-links.csv);
 //  - every VfB rule, window (its label) and phase is in that entry, and its Prices and Sell-out record
 //    sections hold exactly as many rows as the files - no row dropped;
-//  - no inferred (or disputed) date is shown to the day, in the entry, on the club sheet or in the vfb-regular card;
+//  - no inferred (or disputed) date is shown to the day, in the entry or on the club sheet;
 //  - the club sheet shows the same order and the same rows, and neither it nor the entry shows a sale date (no Next window, no "Typically opens");
-//  - the Bucket list's vfb-regular entry shows VfB with Germany's rules above its researched rules and its notes;
+//  - since 2026-10-08 the Bucket list has no vfb-regular entry (it was removed); VfB's rules are on Ticket info and the club sheet;
 //  - no sideways scroll, no script error.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -169,20 +169,14 @@ const linked = rulesLinks.some(l => l.rulesId === 'vfb' && l.clubQid === VFB);
   check('VfB sheet: no sideways scroll', await noSideways());
   await page.evaluate(() => typeof closeSheet === 'function' && closeSheet());
 
-  // ---------------------------------------------------------------- the vfb-regular bucket entry
+  // ---------------------------------------------------------------- the Bucket list
+  // The vfb-regular entry was removed on 2026-10-08 (Alexandru's instruction), so VfB's rules are reached from Ticket info
+  // and the club sheet only; the Bucket list holds no VfB entry and no card of it.
   await openAll('bucket');
-  const B = await page.evaluate(() => {
-    const d = document.querySelector('details.bucket[data-id="vfb-regular"]');
-    return d ? {clubs: [...d.querySelectorAll('.bclub')].map(c => ({qid: c.dataset.qid, text: c.innerText})), text: d.innerText} : null;
-  });
-  const vb = B?.clubs.find(c => c.qid === VFB)?.text || '';
-  check('vfb-regular: the card shows a VfB block', !!vb, B ? B.clubs.map(c => c.qid).join() : 'no card');
-  check("vfb-regular: Germany's national rules above VfB's researched rules, both shown",
-    germanyOk(vb) && vb.indexOf(deRows.length ? 'Country rules: Germany' : 'No national rules researched for Germany') >= 0 &&
-    vb.indexOf(deRows.length ? 'Country rules: Germany' : 'No national rules researched for Germany') < vb.indexOf('Researched rules') &&
-    vRules.every(r => norm(vb).includes(norm(r.rule))));
-  days = await dayLevelIn('details.bucket[data-id="vfb-regular"]');
-  check('vfb-regular: no inferred or disputed date shown to the day', !days.length, JSON.stringify(days).slice(0, 300));
+  const B = await page.evaluate(() => ({vfbCard: !!document.querySelector('details.bucket[data-id="vfb-regular"]')}));
+  check('vfb-regular: the entry is gone from the Bucket list (no card)', !B.vfbCard, JSON.stringify(B));
+  check('vfb-regular: absent from football-rules.json and bucket-links-manual.csv',
+    !rules.bucketList.some(b => b.id === 'vfb-regular') && !fs.readFileSync(path.join(ROOT, 'data/bucket-links-manual.csv'), 'utf8').includes('vfb-regular'));
   check('Bucket list: no sideways scroll with every card open', await noSideways());
   await page.screenshot({path: path.join(process.env.SHOT_DIR || '/tmp', 'vfb-tickets.png')});
 

@@ -23,8 +23,8 @@
 //    the entered holidays says "School holidays not entered for this period"; a movable day
 //    (added by this test only, in a served copy of the file) shaded differently from a fixed one;
 //  - tapping an item opens a sheet against the bottom bar that scrolls inside itself and holds
-//    the same text as the List's opened entry (or Reminders card); a window that belongs to an
-//    entry opens that entry; "School holiday: <name>" is shown for an entry whose date is in a
+//    the same text as the List's opened entry; the Reminders section is absent from the List and
+//    no ticket window is on the calendar (since 2026-10-08); "School holiday: <name>" is shown for an entry whose date is in a
 //    block and for no other;
 //  - no script error. Prints how long one month takes to render with the CPU slowed 4x.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
@@ -87,10 +87,7 @@ for(const b of rules.bucketList){
   if(!ds.length) want.none.add(k);
   for(const d of ds){ if(d.ds === 'disputed') want.disputed.add(k); else (d.p.day ? addDay : addMonth)(k, d.p); }
 }
-for(const e of rules.ticketEvents){
-  const k = 'event:' + e.id, p = place(evRaw(e), e.dateSource);
-  if(!p) want.none.add(k); else if(e.dateSource === 'disputed') want.disputed.add(k); else (p.day ? addDay : addMonth)(k, p);
-}
+// Ticket events are not on the calendar any more (Reminders removed 2026-10-08): they add nothing to `want`.
 
 const server = http.createServer((req, res) => {
   const p = decodeURIComponent(req.url.split('?')[0]);
@@ -176,10 +173,32 @@ const server = http.createServer((req, res) => {
   const dated = new Set(rules.bucketList.filter(b => entryDates(b).length).map(b => b.id));
   const undatedCards = groupDom.filter(x => x.id && !dated.has(x.id));
   check('Undated entries say "Date not set"', undatedCards.length > 0 && undatedCards.every(x => x.when === 'Date not set'), undatedCards.filter(x => x.when !== 'Date not set').map(x => x.id + ':' + x.when).join(', '));
-  const newCards = groupDom.filter(x => x.id && addedL.some(b => b.id === x.id));
-  check(`All ${addedL.length} added entries are cards, each undated, each showing its why text and the label "Not yet verified"`,
-    newCards.length === addedL.length && newCards.every(x => x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why.length > 10),
+  // pokal-first-round is an older, hand-written entry that was flagged listOnly on 2026-10-08; it carries no whyStatus.
+  const addedNew = addedL.filter(b => b.id !== 'pokal-first-round');
+  const newCards = groupDom.filter(x => x.id && addedNew.some(b => b.id === x.id));
+  check(`All ${addedNew.length} added entries are cards, each undated, each showing its why text and the label "Not yet verified"`,
+    newCards.length === addedNew.length && newCards.every(x => x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why.length > 10),
     newCards.filter(x => !(x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why.length > 10)).map(x => x.id).join(', '));
+  // Removed 2026-10-08, and the Pokal and play-off entries added or moved (their data is in football-rules.json only).
+  const GONE = ['vfb-regular', 'away-end-first', 'womens-football'];
+  check('Removed entries are absent: vfb-regular, away-end-first, womens-football - from the file, the List and bucket-links-manual.csv',
+    GONE.every(id => !rules.bucketList.some(b => b.id === id) && !gotIds.includes(id)) &&
+    csv('data/bucket-links-manual.csv').every(r => !GONE.includes(r.bucketId)),
+    GONE.filter(id => rules.bucketList.some(b => b.id === id) || gotIds.includes(id)).join(','));
+  check("No women's-football entry remains in the bucket list", !rules.bucketList.some(b => /women|frauen|damen|lioness|uwcl/i.test((b.id || '') + ' ' + (b.title || ''))));
+  const PLAY = ['pokal-first-round', 'relegation', 'zweite-liga-relegation', 'regionalliga-aufstiegsspiele', 'superliga-relegation-baraj', 'liga3-promotion-tournament'];
+  const playB = PLAY.map(id => rules.bucketList.find(b => b.id === id));
+  const playCards = groupDom.filter(x => PLAY.includes(x.id));
+  check('Pokal and play-off entries: all six are in the List, undated ("Date not set"), listOnly (off the calendar) and carry no date field',
+    playB.every(Boolean) && playCards.length === 6 && playCards.every(x => x.when === 'Date not set') &&
+    playB.every(b => b.listOnly === true && !b.date && !b.nextFixture && !(b.fixtures || []).length && !b.dateSource), playCards.map(x => x.id + ':' + x.when).join(', '));
+  check('The four new play-off entries are unverified, each with whySources (http links) and no capacity, ticket rule or sale date',
+    playB.slice(2).every(b => b.whyStatus === 'unverified' && Array.isArray(b.whySources) && b.whySources.length >= 2 && b.whySources.every(u => /^https?:\/\//.test(u)) &&
+      !('ticketRoute' in b) && !('ticketRoutes' in b) && !('ticketNote' in b) && !('capacity' in b) && !('leadTimeDays' in b)));
+  const firstIn = g => keyed.filter(b => b.group === g).map(b => b.id);
+  check('Group order: the Pokal and the three German play-off entries open the Germany group, the two Romanian ones open the Romania group, before any derby',
+    firstIn('Club fixtures, Germany').slice(0, 4).join() === PLAY.slice(0, 4).join() && firstIn('Club fixtures, Romania').slice(0, 2).join() === PLAY.slice(4).join(),
+    firstIn('Club fixtures, Germany').slice(0, 5).join());
   const LCT = 'Needs a league check: both clubs must share a league or cup in that season';
   const lcWant = new Set(rules.bucketList.filter(b => b.leagueCheck).map(b => b.id));
   check(`The league-check label is on exactly the ${lcWant.size} entries flagged leagueCheck`,
@@ -192,7 +211,7 @@ const server = http.createServer((req, res) => {
   const lcEntry = rules.bucketList.find(b => b.id === lcId);
   check('An opened added entry shows its why text', opened.includes(lcEntry.why), lcId);
   // Existing entries kept their dates: the snapshot below is HEAD's, from before the 160 were added.
-  const SNAP = {"klassiker-away":{},"away-end-first":{},"poli-uta":{},"el-final-2027":{"date":"2027-05-26","kickoff":"21:00","dateSource":"confirmed"},"frankenderby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-30/2027-02-01","derivation":"Inferred from the mirrored fixture list - matchday 20 is Bielefeld away on 6 Feb 2027. Verify against the DFL schedule.","missed":"First leg at the Ronhof, 15 Aug 2026.","dateSource":"inferred"}},"sudwest-derby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-29/2027-01-31","missed":"First leg on the Betzenberg, 15 Aug 2026.","dateSource":"inferred"}},"derby-madonnina":{"fixtures":[{"date":"2026-11-01","home":"milan","matchday":10,"saleRoute":"Cuore Rossonero phase then free sale. Card needed well in advance.","dateSource":"confirmed"},{"date":"2027-02-14","home":"inter","matchday":24,"saleRoute":"Phase 1, open worldwide, primo anello rosso/arancio.","dateSource":"confirmed"}]},"revierderby":{},"pokal-first-round":{},"liga2-playoff":{},"relegation":{},"vfb-regular":{},"womens-football":{},"eternal-derby-belgrade":{},"intercontinental-derby":{},"old-firm":{},"derby-eternal-enemies":{},"fcsb-dinamo":{},"derby-du-nord":{},"ostderby":{},"prague-derby":{}};
+  const SNAP = {"klassiker-away":{},"poli-uta":{},"el-final-2027":{"date":"2027-05-26","kickoff":"21:00","dateSource":"confirmed"},"frankenderby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-30/2027-02-01","derivation":"Inferred from the mirrored fixture list - matchday 20 is Bielefeld away on 6 Feb 2027. Verify against the DFL schedule.","missed":"First leg at the Ronhof, 15 Aug 2026.","dateSource":"inferred"}},"sudwest-derby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-29/2027-01-31","missed":"First leg on the Betzenberg, 15 Aug 2026.","dateSource":"inferred"}},"derby-madonnina":{"fixtures":[{"date":"2026-11-01","home":"milan","matchday":10,"saleRoute":"Cuore Rossonero phase then free sale. Card needed well in advance.","dateSource":"confirmed"},{"date":"2027-02-14","home":"inter","matchday":24,"saleRoute":"Phase 1, open worldwide, primo anello rosso/arancio.","dateSource":"confirmed"}]},"revierderby":{},"pokal-first-round":{},"liga2-playoff":{},"relegation":{},"eternal-derby-belgrade":{},"intercontinental-derby":{},"old-firm":{},"derby-eternal-enemies":{},"fcsb-dinamo":{},"derby-du-nord":{},"ostderby":{},"prague-derby":{}};
   const drift = Object.keys(SNAP).filter(id => { const b = rules.bucketList.find(x => x.id === id);
     return !b || ['date', 'kickoff', 'dateSource', 'nextFixture', 'fixtures'].some(k => JSON.stringify(b[k]) !== JSON.stringify(SNAP[id][k])); });
   check(`The ${Object.keys(SNAP).length} entries that existed before kept their dates, kickoffs, dateSources, nextFixtures and fixtures`, drift.length === 0, drift.join(', '));
@@ -423,23 +442,25 @@ const server = http.createServer((req, res) => {
   const elHol = hols.find(r => r.kind === 'school-holiday' && r.start <= '2027-05-26' && '2027-05-26' <= r.end);
   check(`${elf}: the sheet matches the List's entry and says "School holiday: ${elHol?.name}"`,
     norm(S.text) === L && !!elHol && S.text.includes(`School holiday: ${elHol.name}`) && L.includes(`School holiday: ${elHol.name}`));
-  // A window that belongs to an entry opens that entry, at the window.
-  const linked = rules.ticketEvents.find(e => evLinks.has(e.id) && e.dateSource === 'inferred' && evRaw(e));
-  if(linked){
-    S = await sheetOpen(evRaw(linked).slice(0, 7), 'event:' + linked.id, 'est');
-    await page.click('#bsheetClose');
-    L = await listText(`details.bucket[data-id="${evLinks.get(linked.id)}"]`);
-    check(`Ticket window ${linked.id} opens its entry ${evLinks.get(linked.id)}, at the window`, norm(S.text) === L && S.focus === linked.id, S.focus);
-  }
-  // A reminder no entry claims opens its own card.
-  const loose = rules.ticketEvents.find(e => !evLinks.has(e.id) && e.dateSource === 'inferred' && evRaw(e));
-  if(loose){
-    S = await sheetOpen(evRaw(loose).slice(0, 7), 'event:' + loose.id, 'est');
-    await page.click('#bsheetClose');
-    await page.click('#tabList');
-    const R = norm(await page.$eval(`#bucketBody .evcard .ev[data-ev="${loose.id}"]`, e => e.closest('.evcard').textContent));
-    check(`Reminder ${loose.id}: the sheet matches its Reminders card`, norm(S.text) === R);
-  }
+  // The Reminders section is gone (2026-10-08): no ticket window is drawn on the calendar in any month, none opens a
+  // sheet, and the List has no Reminders section and no "Ticket windows (reminders)" block inside an entry.
+  const noEv = await page.evaluate(() => {
+    const out = [];
+    for(const ym of ['2026-10', '2026-11', '2026-12', '2027-01', '2027-02', '2027-03', '2027-05', '2027-06']){
+      CAL.month = ym; CAL.sel = null; renderCalendar();
+      out.push(document.getElementById('calView').querySelectorAll('.calitem[data-open^="event:"], .mtw').length);
+    }
+    return out;
+  });
+  check('Calendar: no ticket window (event item or diamond) in any month', noEv.every(n => n === 0), noEv.join(','));
+  await page.click('#tabList');
+  const rem = await page.evaluate(() => ({h2: [...document.querySelectorAll('#bucketBody > h2')].map(h => h.textContent),
+    cards: document.querySelectorAll('#bucketBody .evcard').length, text: document.getElementById('bucketBody').textContent}));
+  check('List: no Reminders section and no ticket-event card', !rem.h2.some(t => /^Reminders/.test(t)) && rem.cards === 0 && !/Reminders —/.test(rem.text), rem.h2.join(' | '));
+  L = await listText('details.bucket[data-id="zweite-liga-relegation"]');
+  check('A play-off entry shows its added note, "not yet verified", and its sources', /Added note, not yet verified/.test(L) && /Sources for the note/.test(L), L.slice(0, 160));
+  L = await listText(`details.bucket[data-id="${mad}"]`);
+  check('List: an opened entry has no "Ticket windows (reminders)" block', !/Ticket windows \(reminders\)|No ticket window is linked/.test(L));
   // Leaving the tab closes the sheet.
   await sheetOpen('2026-11', 'entry:' + mad);
   await page.click('nav button[data-pane=map]');
