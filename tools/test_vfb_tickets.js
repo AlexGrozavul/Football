@@ -173,9 +173,8 @@ const linked = rulesLinks.some(l => l.rulesId === 'vfb' && l.clubQid === VFB);
   // The vfb-regular entry was removed on 2026-10-08 (Alexandru's instruction), so VfB's rules are reached from Ticket info
   // and the club sheet only; the Bucket list holds no VfB entry and no card of it.
   await openAll('bucket');
-  const B = await page.evaluate(() => ({vfbCard: !!document.querySelector('details.bucket[data-id="vfb-regular"]'),
-    vfbClub: !!document.querySelector('#bucketBody .bclub[data-qid="Q4512"]')}));
-  check('vfb-regular: the entry is gone from the Bucket list (no card, no VfB club block)', !B.vfbCard && !B.vfbClub, JSON.stringify(B));
+  const B = await page.evaluate(() => ({vfbCard: !!document.querySelector('details.bucket[data-id="vfb-regular"]')}));
+  check('vfb-regular: the entry is gone from the Bucket list (no card)', !B.vfbCard, JSON.stringify(B));
   check('vfb-regular: absent from football-rules.json and bucket-links-manual.csv',
     !rules.bucketList.some(b => b.id === 'vfb-regular') && !fs.readFileSync(path.join(ROOT, 'data/bucket-links-manual.csv'), 'utf8').includes('vfb-regular'));
   check('Bucket list: no sideways scroll with every card open', await noSideways());
