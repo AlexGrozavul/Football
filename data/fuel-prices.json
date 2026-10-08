@@ -1,0 +1,24 @@
+{
+  "fuel": "diesel",
+  "unit": "EUR per litre, pump price incl. taxes",
+  "bulletinWeek": "2026-10-05",
+  "sourceUrl": "https://energy.ec.europa.eu/document/download/264c2d0f-f161-4ea3-a777-78faae59bea0_en?filename=Weekly%20Oil%20Bulletin%20Weekly%20prices%20with%20Taxes%20-%202026-09-21.xlsx",
+  "sourcePage": "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en",
+  "prices": {
+    "AT": 2.138,
+    "BE": 2.3488,
+    "DE": 2.254,
+    "ES": 1.9176,
+    "FR": 2.3555,
+    "GR": 2.166,
+    "IT": 2.2735,
+    "NL": 2.5061,
+    "RO": 2.0496
+  },
+  "missing": {
+    "CH": "not listed in the bulletin",
+    "GB": "not listed in the bulletin",
+    "RS": "not listed in the bulletin"
+  },
+  "fetchedOn": "2026-10-08"
+}
