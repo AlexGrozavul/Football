@@ -32,8 +32,6 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **atletico-nacional-v-independiente-medellin-clasico-paisa** - Atlético Nacional v Independiente Medellín (Clásico Paisa)
   - no date of any kind
-- **away-end-first** - Any proper away end
-  - trigger only, no date - belongs in the bucket-list tab, not a calendar
 - **barcelona-v-espanyol-derbi-barceloni** - Barcelona v Espanyol (Derbi barceloní)
   - no date of any kind
 - **barcelona-v-real-madrid-el-clasico** - Barcelona v Real Madrid (El Clásico)
@@ -186,6 +184,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **liga2-playoff** - Liga 2 promotion play-off, decisive round
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
+- **liga3-promotion-tournament** - Liga 3 promotion tournament for the last Liga 2 place
+  - trigger only, no date - belongs in the bucket-list tab, not a calendar
 - **liverpool-v-everton-merseyside-derby** - Liverpool v Everton (Merseyside derby)
   - no date of any kind
 - **liverpool-v-manchester-united** - Liverpool v Manchester United
@@ -258,6 +258,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **rcsa-resale** - Strasbourg official resale opens
   - recurring per fixture - needs the fixture list, which does not exist until step 3
+- **regionalliga-aufstiegsspiele** - Aufstiegsspiele zur 3. Liga (Regionalliga champions' play-off)
+  - trigger only, no date - belongs in the bucket-list tab, not a calendar
 - **relegation** - Bundesliga Relegation, second leg
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
 - **revierderby** - Revierderby - Schalke 04 v Borussia Dortmund
@@ -298,6 +300,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **supercopa-de-espana** - Supercopa de España
   - no date of any kind
+- **superliga-relegation-baraj** - Superliga relegation play-off against Liga 2
+  - trigger only, no date - belongs in the bucket-list tab, not a calendar
 - **taca-de-portugal-final** - Taça de Portugal final
   - no date of any kind
 - **uefa-champions-league-final** - UEFA Champions League final
@@ -322,8 +326,6 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **valencia-v-levante-valencian-derby** - Valencia v Levante (Valencian derby)
   - no date of any kind
-- **vfb-regular** - Become a regular at the Cannstatter Kurve
-  - trigger only, no date - belongs in the bucket-list tab, not a calendar
 - **vfb-stuttgart-v-freiburg** - VfB Stuttgart v Freiburg
   - no date of any kind
 - **vfb-stuttgart-v-stuttgarter-kickers** - VfB Stuttgart v Stuttgarter Kickers
@@ -336,5 +338,5 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **wisla-krakow-v-cracovia-holy-war** - Wisła Kraków v Cracovia (Holy War)
   - no date of any kind
-- **womens-football** - Any women's match
+- **zweite-liga-relegation** - 2. Bundesliga relegation play-off against the 3. Liga
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
