@@ -222,6 +222,15 @@
     border:1px solid var(--line);border-radius:7px;padding:5px 8px;color:var(--ink);
     font:inherit;font-size:13px;cursor:pointer}
   .sheet .mates i{width:9px;height:9px;border-radius:50%}
+  .sheet .riv{padding:7px 0;border-top:1px solid var(--line);min-width:0}
+  .sheet .riv:first-child{border-top:0}
+  .sheet .rvtop{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .sheet .rvname{font-size:14px;color:var(--ink);overflow-wrap:anywhere;min-width:0}
+  .sheet button.rvname,.sheet button.rvbucket{background:#1b2230;border:1px solid var(--line);
+    border-radius:7px;padding:6px 9px;font:inherit;font-size:13.5px;cursor:pointer;text-align:left;
+    min-height:36px;max-width:100%}
+  .sheet button.rvbucket{display:block;margin-top:6px;color:var(--t3);font-size:12.5px}
+  .sheet .riv .sub{overflow-wrap:anywhere}
   /* Ticket info: the two sources, each labelled. No sale date. */
   .sheet h5.srch{font-size:13px;font-weight:600;margin:16px 0 4px;color:var(--ink);
     border-bottom:1px solid var(--line);padding-bottom:3px}
@@ -1222,6 +1231,7 @@ function openSheet(club, mates){
       others.map(c => `<button data-id="${esc(c.id)}"><i style="background:${TIER_COLOUR[c.tier] || '#888'}"></i>${esc(c.name || c.id)}</button>`).join('') +
       `</div>` : '') +
     `<h4>Fixtures</h4><div id="sheetFix"><p class="unavail">Loading…</p></div>` +
+    `<div id="sheetRiv"></div>` +
     `<h4>Ticket info</h4><div id="sheetTix"><p class="unavail">Loading…</p></div>` +
     /* The club's Wikidata item: where its name, ground, capacity and position
        come from, and the id a hand correction in clubs-manual.csv uses. */
@@ -1247,8 +1257,68 @@ function openSheet(club, mates){
   };
   competitionHtml(club).then(h => fill('sheetComp', h));
   fixturesHtml(club).then(h => fill('sheetFix', h));
+  rivalriesHtml(club).then(h => fill('sheetRiv', h));
   ticketsHtml(club).then(h => fill('sheetTix', h));
 }
+
+/* ---- rivalries. data/club-rivalries.csv is hand-written, one row per club
+   per rival, each with its own class (main, local, other) taken only from
+   the wording of its source (data/rivalry-sources.csv). The section is
+   drawn only for a club that has rows; the biggest rivalry is last, so
+   the order is other, then local, then main, alphabetical within a class.
+   Nothing here ranks a rivalry: a class is what the source said. */
+const RIV_ORDER = {other: 0, local: 1, main: 2};
+const RIV_LABEL = {main: 'Main rival', local: 'Local rival', other: 'Other rivalry'};
+const rivDate = d => /^\d{4}-\d{2}-\d{2}$/.test(d)
+  ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'})
+  : '';
+
+async function rivalriesHtml(club){
+  const [R, S] = await Promise.all([csvFile('data/club-rivalries.csv'), csvFile('data/rivalry-sources.csv')]);
+  if(!R.ok || !S.ok){
+    const miss = R.ok ? 'rivalry-sources.csv' : 'club-rivalries.csv';
+    return `<h4>Rivalries</h4>` + unavailable('Rivalries', 'The rivalry information could not be loaded.') +
+      why(`data/${miss} could not be loaded (${esc((R.ok ? S : R).err)}).`);
+  }
+  const src = new Map(S.v.map(r => [r.sourceId, r]));
+  const rows = R.v.filter(r => r.clubQ === club.id && !r._over && RIV_ORDER[r.class] !== undefined && src.has(r.sourceId))
+    .sort((a, b) => RIV_ORDER[a.class] - RIV_ORDER[b.class] || a.rivalName.localeCompare(b.rivalName));
+  if(!rows.length) return '';
+  const B = await bucketLinks();
+  const entries = new Map((RULES?.bucketList || []).map(b => [b.id, b]));
+  const bucketFor = q => {
+    if(!q) return [];
+    const out = [];
+    for(const [id, lines] of B.clubs){
+      if(!entries.has(id)) continue;
+      if(lines.some(l => { const all = [l.host, ...l.others]; return all.includes(club.id) && all.includes(q); })) out.push(id);
+    }
+    return out;
+  };
+  return `<h4>Rivalries</h4><div class="rivs">` + rows.map(r => {
+    const rival = r.rivalQ ? mapClub(r.rivalQ) : null;
+    const name = rival
+      ? `<button class="rvname" data-id="${esc(rival.id)}">${esc(r.rivalName)}</button>`
+      : `<span class="rvname">${esc(r.rivalName)}</span>`;
+    const s = src.get(r.sourceId), d = rivDate(r.checkedOn);
+    const links = bucketFor(r.rivalQ).map(id =>
+      `<button class="rvbucket" data-bucket="${esc(id)}">Bucket list: ${esc(entries.get(id).title || id)}</button>`).join('');
+    return `<div class="riv" data-class="${esc(r.class)}">` +
+      `<div class="rvtop">${name}<span class="tag rvclass">${RIV_LABEL[r.class]}</span></div>` +
+      `<div class="sub"><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title || s.url)}</a> · ` +
+      `Checked on ${d ? esc(d) : 'a date not recorded'}</div>${links}</div>`;
+  }).join('') + `</div>`;
+}
+
+document.getElementById('sheetBody').addEventListener('click', e => {
+  const n = e.target.closest('.rivs .rvname[data-id]');
+  if(n){ const c = mapClub(n.dataset.id); if(c) goToClub(c); return; }
+  const b = e.target.closest('.rivs .rvbucket');
+  if(b){
+    document.querySelector('nav button[data-pane="bucket"]').click();
+    openBSheet('entry', b.dataset.bucket);
+  }
+});
 
 async function competitionHtml(club){
   const t = await csvFile('data/league-tiers.csv');

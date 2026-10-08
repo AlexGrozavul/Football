@@ -440,6 +440,8 @@ a subscribed calendar reads as a schedule regardless of its description.
 - `data/competition-sources.csv` — added 2026-10-08. `sourceId`, `url`,
   `title`, `retrievedOn` (blank where the page was not opened), `note`.
 
+- `data/club-rivalries.csv` and `data/rivalry-sources.csv` — added 2026-10-08. **Rivalry rows are hand-written, the class (`main`, `local`, `other`) comes only from the wording of the row's source, and no ranking is invented**: where the source does not say how big a rivalry is the row is `other`, where it does not say a rivalry exists there is no row. One row per club per rival, stored separately for each club; at most 5 per club; read by the club sheet's Rivalries section (other, then local, then main last) and by `tools/check_rivalries.py`. Batch 1 (German tier 1-2) was filled from the existing `data/derbies.csv` citations only, all `other`: no source could be opened that day (Wikipedia and bundesliga.com are blocked from the sandbox) to read any wording.
+
 ### Generated — safe to overwrite
 
 - `calendars/*.ics`, `calendars/skipped.md`, `calendars/.stamps.json`
