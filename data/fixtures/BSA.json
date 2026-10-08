@@ -7009,7 +7009,7 @@
   {
    "id": 555022,
    "utcDate": "2026-10-07T22:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 29,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7027,14 +7027,14 @@
     "tla": "MIR",
     "crest": "https://crests.football-data.org/4364.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 555025,
    "utcDate": "2026-10-07T22:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 29,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7052,14 +7052,14 @@
     "tla": "COR",
     "crest": "https://crests.football-data.org/1779.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555027,
    "utcDate": "2026-10-07T22:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 29,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7077,14 +7077,14 @@
     "tla": "FBP",
     "crest": "https://crests.football-data.org/1767.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 555029,
    "utcDate": "2026-10-07T23:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 29,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7102,14 +7102,14 @@
     "tla": "CHA",
     "crest": "https://crests.football-data.org/1772_large.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555021,
    "utcDate": "2026-10-07T23:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 29,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7127,14 +7127,14 @@
     "tla": "VAS",
     "crest": "https://crests.football-data.org/1780.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 555023,
    "utcDate": "2026-10-08T00:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 29,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7152,9 +7152,9 @@
     "tla": "PAU",
     "crest": "https://crests.football-data.org/1776.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555028,
