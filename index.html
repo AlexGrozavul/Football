@@ -254,6 +254,7 @@
   .tix a{color:var(--t3)}
   .tix .src{font-size:11.5px;color:var(--faint);margin-top:3px;overflow-wrap:anywhere}
   .tix .bwhy{margin:2px 0 6px;color:var(--dim);font-size:13.5px}
+  .bwhyc{margin:4px 0 0;color:var(--dim);font-size:13px;font-weight:400}
   .bclub{margin-top:10px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#11161d}
   .bclubh{font-weight:600;font-size:14px}
   .bclubh em{font-style:normal;font-weight:400;color:var(--faint);font-size:12px;margin-left:4px}
@@ -553,7 +554,8 @@
       <div id="bucketListView" role="tabpanel" aria-labelledby="tabList">
         <div class="bsort" role="radiogroup" aria-label="Sort the entries">
           <span>Sort</span>
-          <button type="button" role="radio" data-sort="earliest" aria-checked="true">Earliest</button>
+          <button type="button" role="radio" data-sort="group" aria-checked="true">Group order</button>
+          <button type="button" role="radio" data-sort="earliest" aria-checked="false">Earliest</button>
           <button type="button" role="radio" data-sort="favorites" aria-checked="false">Favorites</button>
         </div>
         <div id="bucketBody"></div>
@@ -3315,6 +3317,7 @@ async function nextMeetingHtml(item, rows){
 
 /* The entry's own fields not shown above, exactly as written. */
 const BUCKET_SHOWN = new Set(['id', 'title', 'type', 'priority', 'status', 'trueDerby', 'why', 'venue', 'date',
+  'group', 'country', 'sortKey', 'whyAssistant', 'whyStatus', 'leagueCheck', 'listOnly',
   'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'distanceKm', 'clubs', 'verified', 'warning']);
 
 /* ONE renderer for a bucket entry's detail; the Bucket list tab uses it
@@ -3329,6 +3332,7 @@ async function bucketDetailHtml(item){
   const unv = unverifiedParts(item);
   let h = heldDetailHtml(item.id) +
     (item.why ? `<p class="bwhy">${esc(item.why)}</p>` : '') +
+    (item.whyAssistant ? `<p class="bwhy" data-why="added">Added note${item.whyStatus === 'unverified' ? ', not yet verified' : ''}: ${esc(item.whyAssistant)}</p>` : '') +
     (unv.length ? `<div class="meta">${UNVERIFIED_TAG}<span class="tag bad">your notes mark this unverified: ${esc(unv.join('; '))}</span></div>` : '') +
     field('What', item.type) +
     (item.venue ? field('Venue', item.venue) : '') +
@@ -3472,7 +3476,8 @@ function setFav(id, on){
 }
 function sortMode(){
   if(SORT) return SORT;
-  try{ SORT = localStorage.getItem(SORT_KEY) === 'favorites' ? 'favorites' : 'earliest'; }catch(err){ SORT = 'earliest'; }
+  /* Group order is the default; a stored choice of Earliest or Favorites is kept. */
+  try{ const v = localStorage.getItem(SORT_KEY); SORT = v === 'favorites' || v === 'earliest' ? v : 'group'; }catch(err){ SORT = 'group'; }
   return SORT;
 }
 function setSort(v){
@@ -3502,7 +3507,7 @@ function entryWhen(item){
   if(mon) return {group: 'month', key: mon.p.key, text: dateWords(mon.p, mon.ds), ds: mon.ds};
   if(dates.length){ const d = dates.sort(by).pop(); return {group: 'past', key: d.p.key, text: dateWords(d.p, d.ds) + ' (past)', ds: d.ds}; }
   if(all.length) return {group: 'none', key: '', text: 'disputed date, not placed', ds: 'disputed'};
-  return {group: 'none', key: '', text: 'no date recorded', ds: ''};
+  return {group: 'none', key: '', text: 'Date not set', ds: ''};
 }
 
 const PRIO = {high: 0, medium: 1, low: 2};
@@ -3515,6 +3520,7 @@ function earliestOrder(items){
   return {day: grp('day'), month: grp('month'), none: grp('none'), past: grp('past'), when: W};
 }
 
+const LEAGUE_CHECK_TEXT = 'Needs a league check: both clubs must share a league or cup in that season';
 function bucketTags(item){
   const bits = [];
   if(item.type)     bits.push(`<span class="tag">${esc(item.type)}</span>`);
@@ -3525,6 +3531,8 @@ function bucketTags(item){
   }
   if(item.trueDerby) bits.push('<span class="tag">true derby</span>');
   if(item.verified === false) bits.push(UNVERIFIED_TAG);
+  if(item.whyStatus === 'unverified') bits.push('<span class="tag warn">Not yet verified</span>');
+  if(item.leagueCheck) bits.push(`<span class="tag warn">${LEAGUE_CHECK_TEXT}</span>`);
   bits.push(heldTag(item.id));      // tickets held, from the Me tab
   return bits.join('');
 }
@@ -3539,6 +3547,7 @@ function bucketCard(item, when){
   return `<details class="card bucket" data-id="${esc(item.id)}"><summary>` +
     `<h3>${esc(item.title || item.id)}</h3>` +
     `<div class="bwhen" data-ds="${esc(when.ds)}" data-group="${when.group}">${esc(when.text)}</div>` +
+    (item.sortKey != null && (item.why || item.whyAssistant) ? `<p class="bwhy bwhyc">${esc(item.whyAssistant || item.why)}</p>` : '') +
     `<div class="meta">${bucketTags(item)}<span class="more"></span></div>${starButton(item)}</summary>` +
     `<div class="tix bdetail"><p class="unavail">Loading…</p></div></details>`;
 }
@@ -3567,6 +3576,30 @@ function earliestHtml(items, head){
     (O.past.length ? `<details class="past" data-sec="past"><summary>Past — ${O.past.length}</summary>${cards(O.past)}</details>` : '');
 }
 
+/* Group order: the entries that carry a sortKey, in sortKey order, under
+   their group's heading (and, in the one group that spans many countries,
+   the country as a sub-heading). Entries without a sortKey follow in file
+   order under their own heading. Past entries are not split out here: an
+   entry stays where its sortKey puts it, and says its date or "Date not set". */
+function groupHtml(items){
+  const W = i => entryWhen(i);
+  const keyed = items.filter(i => i.sortKey != null).sort((a, b) => a.sortKey - b.sortKey);
+  const rest = items.filter(i => i.sortKey == null);
+  let h = '', g = null, c = null;
+  for(const i of keyed){
+    if(i.group !== g){
+      g = i.group; c = null;
+      h += `<h2 data-sec="group:${esc(g)}">${esc(g)} — ${keyed.filter(x => x.group === g).length}</h2>`;
+    }
+    if(g === 'Club fixtures, other countries' && i.country !== c){
+      c = i.country; h += `<div class="bsub" data-sec="country:${esc(c)}">${esc(c)}</div>`;
+    }
+    h += bucketCard(i, W(i));
+  }
+  if(rest.length) h += `<h2 data-sec="group:ungrouped">Other entries — ${rest.length}</h2>` + rest.map(i => bucketCard(i, W(i))).join('');
+  return h;
+}
+
 async function renderBucket(rules){
   BUCKET_RULES = rules;
   await loadHolidays();
@@ -3590,7 +3623,9 @@ function renderBucketList(){
     .sort((a, b) => (a.p ? a.p.key : '9999').localeCompare(b.p ? b.p.key : '9999')).map(x => x.e);
 
   let list;
-  if(sortMode() === 'favorites'){
+  if(sortMode() === 'group'){
+    list = groupHtml(items);
+  }else if(sortMode() === 'favorites'){
     const F = favs();
     const fav = items.filter(i => F.has(i.id)), rest = items.filter(i => !F.has(i.id));
     const sub = t => `<div class="bsub">${esc(t)}</div>`;
@@ -3636,6 +3671,7 @@ function calItems(){
     else months.push({it, from: p.key.slice(0, 7), to: p.end});
   };
   for(const item of rules.bucketList || []){
+    if(item.listOnly) continue;         // added to the List only, undated: not on the calendar
     const base = {kind: 'entry', id: item.id, entryId: item.id, title: item.title || item.id, fav: F.has(item.id),
       held: heldFor(item.id).length > 0};
     const dates = entryDates(item);

@@ -191,7 +191,7 @@ function alarmAt(ev, al){
     const out = [];
     for(const k of ['membership', 'ticket']){
       document.querySelector(`button[data-act=add][data-kind=${k}]`).click();
-      out.push(...[...document.querySelectorAll('form.meform [name]')].map(e => e.name + ' ' + (e.closest('label')?.textContent || '')));
+      out.push(...[...document.querySelectorAll('form.meform [name]')].map(e => e.name + ' ' + (c => c ? (c.querySelectorAll('select').forEach(x => x.remove()), c.textContent) : '')(e.closest('label')?.cloneNode(true))));   // the caption, not the bucket entries listed in a dropdown
       document.querySelector('form.meform [data-act=cancel]').click();
     }
     return out;
