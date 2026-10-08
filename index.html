@@ -1621,8 +1621,6 @@ function notesHtml(notes){
       (unv.length ? `<div class="meta unv">${UNVERIFIED_TAG}<span class="tag bad">your notes mark this unverified: ` +
         `${esc(unv.join('; '))}</span></div>` : '') +
       noteRows(n.entry) +
-      (n.events.length ? `<div class="sub">Dated ticket windows for this club, on the Bucket list tab (${n.events.length}): ` +
-        `${esc(n.events.map(e => e.title || e.id).join('; '))}.</div>` : '') +
       (n.bucket.length ? `<div class="sub">On the bucket list: ${esc(n.bucket.map(b => b.title || b.id).join('; '))}.</div>` : '');
   }).join('') +
     `<div class="sub">Your own notes, shown exactly as written.</div>` +
@@ -3213,43 +3211,6 @@ async function rulesClubQid(rulesId){
   return links.ok ? (links.v.find(l => l.rulesId === rulesId) || {}).clubQid || null : null;
 }
 
-/* Reminder lead time in plain words. */
-function leadWords(n){
-  if(n == null || n === '') return null;
-  const d = Number(n);
-  return `${d} day${d === 1 ? '' : 's'}${d >= 14 && d % 7 === 0 ? ` (${d / 7} weeks)` : ''} before the date`;
-}
-
-/* ONE renderer for a ticket event (a dated reminder from
-   football-rules.json's ticketEvents), used for the windows linked to a
-   bucket entry and for the Reminders section. The window goes through
-   placeDate(), so an estimate is never shown to the day. */
-function eventHtml(ev){
-  const clubs = Object.fromEntries((RULES?.clubs || []).map(c => [c.id, c.name]));
-  const p = placeDate(eventRaw(ev), ev.dateSource);
-  const when = p ? dateWords(p, ev.dateSource) + (isPast(p) ? ' (past)' : '')
-    : ev.rule ? `no date: ${ev.rule}` : 'no date recorded';
-  /* With no date there is nothing to call estimated: the label then says
-     what the file records, plainly. */
-  const dsTag = !p && ev.dateSource ? `<span class="tag">date source: ${esc(ev.dateSource)}</span>`
-    : ev.dateSource === 'inferred' ? '<span class="tag warn">estimated</span>' : sourceTag(ev.dateSource);
-  return `<div class="item ev" data-ev="${esc(ev.id)}"><b>${esc(ev.title || ev.id)}</b>` +
-    `<div class="row" data-ds="${esc(ev.dateSource || '')}"><span>Window</span><span>${esc(when)}</span></div>` +
-    `<div class="meta">${dsTag}` +
-      (ev.status ? `<span class="tag">${esc(ev.status)}</span>` : '') +
-      (ev.recurring ? `<span class="tag">${esc(ev.recurring)}</span>` : '') +
-      (ev.priority ? `<span class="tag">priority ${esc(ev.priority)}</span>` : '') +
-      (ev.feed ? `<span class="tag">${esc(ev.feed)}</span>` : '') + `</div>` +
-    (p && p.day ? holidayLines([{p, label: 'Window'}]) : '') +
-    field('Club', clubs[ev.club] || ev.club) +
-    field('Reminder', leadWords(ev.leadTimeDays)) +
-    field('Action', ev.action) +
-    (ev.rule && p ? field('Rule', ev.rule) : '') +
-    (ev.derivation ? field('Derived from', ev.derivation) : '') +
-    (ev.dependsOn ? field('Depends on', ev.dependsOn) : '') +
-    (ev.warning ? `<div class="meta"><span class="tag bad">${esc(ev.warning)}</span></div>` : '') + `</div>`;
-}
-
 /* A hand-written date line, with its dateSource label. */
 function dateLine(label, raw, ds, extra = ''){
   const p = placeDate(raw, ds);
@@ -3317,7 +3278,7 @@ async function nextMeetingHtml(item, rows){
 
 /* The entry's own fields not shown above, exactly as written. */
 const BUCKET_SHOWN = new Set(['id', 'title', 'type', 'priority', 'status', 'trueDerby', 'why', 'venue', 'date',
-  'group', 'country', 'sortKey', 'whyAssistant', 'whyStatus', 'leagueCheck', 'listOnly',
+  'group', 'country', 'sortKey', 'whyAssistant', 'whyStatus', 'whySources', 'leagueCheck', 'listOnly',
   'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'distanceKm', 'clubs', 'verified', 'warning']);
 
 /* ONE renderer for a bucket entry's detail; the Bucket list tab uses it
@@ -3333,6 +3294,8 @@ async function bucketDetailHtml(item){
   let h = heldDetailHtml(item.id) +
     (item.why ? `<p class="bwhy">${esc(item.why)}</p>` : '') +
     (item.whyAssistant ? `<p class="bwhy" data-why="added">Added note${item.whyStatus === 'unverified' ? ', not yet verified' : ''}: ${esc(item.whyAssistant)}</p>` : '') +
+    (Array.isArray(item.whySources) && item.whySources.length ? `<p class="bwhy" data-why="sources">Sources for the note: ` +
+      item.whySources.filter(u => /^https?:\/\//.test(u)).map(u => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a>`).join(' · ') + `</p>` : '') +
     (unv.length ? `<div class="meta">${UNVERIFIED_TAG}<span class="tag bad">your notes mark this unverified: ${esc(unv.join('; '))}</span></div>` : '') +
     field('What', item.type) +
     (item.venue ? field('Venue', item.venue) : '') +
@@ -3385,11 +3348,7 @@ async function bucketDetailHtml(item){
         sourcesLine(r, sources) + `</div>`).join('')
     : `<p class="unavail">Event-specific ticket rules not researched yet.</p>`);
 
-  /* Ticket windows: every ticket event linked to this entry. */
-  const evs = (RULES?.ticketEvents || []).filter(e => L.events.get(e.id) === item.id);
-  h += `<h5 class="srch">Ticket windows (reminders)</h5>` + (evs.length ? evs.map(eventHtml).join('')
-    : `<p class="unavail">No ticket window is linked to this entry.</p>`);
-  if(L.err) h += `<p class="err">Which clubs and windows belong to this entry could not be loaded.</p>` + why(esc(L.err));
+  if(L.err) h += `<p class="err">Which clubs belong to this entry could not be loaded.</p>` + why(esc(L.err));
   return h;
 }
 
@@ -3616,12 +3575,6 @@ function renderBucketList(){
   const pastOpen = [...body.querySelectorAll('details.past[open]')].length;
   document.querySelectorAll('.bsort button').forEach(b => b.setAttribute('aria-checked', b.dataset.sort === sortMode()));
 
-  /* Reminders: the ticket events no bucket entry claims, soonest first,
-     undated last. */
-  const L = BLINKS;
-  const loose = (rules.ticketEvents || []).filter(e => !L.events.has(e.id)).map(e => ({e, p: placeDate(eventRaw(e), e.dateSource)}))
-    .sort((a, b) => (a.p ? a.p.key : '9999').localeCompare(b.p ? b.p.key : '9999')).map(x => x.e);
-
   let list;
   if(sortMode() === 'group'){
     list = groupHtml(items);
@@ -3637,12 +3590,6 @@ function renderBucketList(){
   }
 
   body.innerHTML =
-    `<h2>Reminders — ${loose.length}</h2>` +
-    `<p class="note" style="margin:0 0 9px">Ticket windows that belong to no entry below, soonest first, undated last. ` +
-      `The rest are inside their entry.</p>` +
-    (loose.length ? loose.map(e => `<div class="card evcard tix">${eventHtml(e)}</div>`).join('')
-      : '<p class="note">Every ticket window belongs to an entry below.</p>') +
-    (L.err ? `<p class="err">Which windows belong to which entry could not be loaded (${esc(L.err)}), so every window is listed here.</p>` : '') +
     list +
     `<p class="note">Distances are straight-line × ${MULTIPLIER}, measured from
      ${esc(HOME ? HOME.label : 'an unset home location')}. They are a road-distance
@@ -3683,17 +3630,8 @@ function calItems(){
     }
     if(disp) disputed.push({...base, sub: 'a date your notes mark disputed'});
   }
-  for(const ev of rules.ticketEvents || []){
-    const entryId = BLINKS.events.get(ev.id) || null;
-    const entry = entryId && (rules.bucketList || []).find(b => b.id === entryId);
-    const p = placeDate(eventRaw(ev), ev.dateSource);
-    const it = {kind: 'event', id: ev.id, entryId, title: ev.title || ev.id, fav: !!entryId && F.has(entryId),
-      sub: (entry ? `ticket window · ${entry.title || entry.id}` : 'ticket window · reminder') +
-        (p ? ` · ${dateWords(p, ev.dateSource)}` : ''), ds: ev.dateSource || ''};
-    if(!p) none.push({...it, sub: it.sub + (ev.rule ? ` · no date: ${ev.rule}` : ' · no date recorded')});
-    else if(ev.dateSource === 'disputed') disputed.push(it);
-    else put(it, p);
-  }
+  /* Ticket events (football-rules.json) are not drawn here: the calendar
+     shows bucket entries only. */
   return {byDay, months, none, disputed};
 }
 
@@ -3803,46 +3741,29 @@ function closeBSheet(){
   BSHEET_FOR = null;
 }
 
-/* The List's own renderers: bucketDetailHtml() for an entry, eventHtml()
-   for a reminder no entry claims. A ticket window that belongs to an
-   entry opens that entry, scrolled to the window. */
+/* The List's own renderer, bucketDetailHtml(), for the entry tapped. */
 async function openBSheet(kind, id){
   const rules = BUCKET_RULES;
-  let item = null, ev = null, focus = null;
-  if(kind === 'event'){
-    ev = (rules.ticketEvents || []).find(e => e.id === id);
-    const eid = BLINKS.events.get(id);
-    if(eid){ item = (rules.bucketList || []).find(b => b.id === eid); focus = id; }
-  }else item = (rules.bucketList || []).find(b => b.id === id);
-  if(!item && !ev) return;
+  const item = (rules.bucketList || []).find(b => b.id === id);
+  if(!item) return;
   const key = kind + ':' + id;
   BSHEET_FOR = key;
   const head = document.getElementById('bsheetHead'), body = document.getElementById('bsheetBody');
-  if(item){
-    const w = entryWhen(item);
-    head.innerHTML = `<h3>${esc(item.title || item.id)}</h3>` +
-      `<div class="bwhen" data-ds="${esc(w.ds)}">${esc(w.text)}</div>` +
-      `<div class="meta">${bucketTags(item)}</div>`;
-    head.dataset.id = item.id;
-  }else{
-    head.innerHTML = `<h3>${esc(ev.title || ev.id)}</h3><div class="meta"><span class="tag">ticket window</span>` +
-      `<span class="tag">reminder</span></div>`;
-    head.dataset.id = '';
-  }
+  const w = entryWhen(item);
+  head.innerHTML = `<h3>${esc(item.title || item.id)}</h3>` +
+    `<div class="bwhen" data-ds="${esc(w.ds)}">${esc(w.text)}</div>` +
+    `<div class="meta">${bucketTags(item)}</div>`;
+  head.dataset.id = item.id;
   body.innerHTML = '<p class="unavail">Loading…</p>';
   body.dataset.open = key;
   const sheet = document.getElementById('bsheet');
   sheet.hidden = false;
   body.scrollTop = 0;
   let html;
-  try{ html = item ? await bucketDetailHtml(item) : eventHtml(ev); }
+  try{ html = await bucketDetailHtml(item); }
   catch(err){ html = `<p class="err">Could not be shown: ${esc(err.message)}</p>`; }
   if(BSHEET_FOR !== key) return;
   body.innerHTML = html;
-  if(focus){
-    const el = [...body.querySelectorAll('.ev')].find(e => e.dataset.ev === focus);
-    if(el){ el.classList.add('focus'); body.scrollTop = el.getBoundingClientRect().top - body.getBoundingClientRect().top - 8; }
-  }
 }
 
 function showBucketTab(tab){
@@ -4561,8 +4482,8 @@ async function renderTickets(rules){
       (researched.has(c.id) ? '<span class="tag ok">researched rules</span>' : '') +
       (linked.has(c.id) ? '<span class="tag">your notes</span>' : '') + `<span class="more"></span></div></summary>` +
       `<div class="tix"><p class="unavail">Loading…</p></div></details>`).join('') +
-    `<p class="note">Rules only. Dated ticket windows and reminders are on the Bucket list tab; ` +
-      `Sale dates are shown only there. The researched rules and your notes ` +
+    `<p class="note">Rules only. No dated ticket window or reminder is shown in the app. ` +
+      `The researched rules and your notes ` +
       `are shown side by side and never reconciled.</p>`;
   wireLazy(body, async d => d.dataset.country
     ? `<h5 class="srch tix-country">Country rules: ${esc(countryLabel(d.dataset.country))}</h5>` + await countryRulesHtml(d.dataset.country)

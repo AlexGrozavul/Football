@@ -17,9 +17,8 @@
 //  - Ticket info has no upcoming-dates section: no ticket window, no Next window, no heading but
 //    Countries and Clubs; since 2026-10-07 neither it nor any club sheet shows a sale date at all, and the
 //    Bucket list still does;
-//  - the Bucket list shows every bucketList entry; every ticketEvents entry is reachable from it,
-//    inside the entry data/bucket-links-manual.csv links it to or under Reminders, which holds
-//    exactly the unlinked ones, soonest first and undated last;
+//  - the Bucket list shows every bucketList entry; since 2026-10-08 it has NO Reminders section and draws no
+//    ticketEvents entry at all (the data is kept), and a club block still shows "Typically opens";
 //  - the Frankenderby entry shows Nürnberg (host) then Fürth, Fürth "not researched"; the Milan
 //    derby entry shows AC Milan and Inter; every entry says event rules are not researched yet;
 //  - no inferred (or disputed) date is shown at day level anywhere on either tab;
@@ -213,27 +212,19 @@ const server = http.createServer((req, res) => {
   });
   check(`Bucket list: every one of ${rules.bucketList.length} entries has a card`,
     rules.bucketList.every(b => B.cards.includes(b.id)) && B.cards.length === rules.bucketList.length);
-  const evLinks = new Map(bucketLinks.filter(r => r.ticketEventId).map(r => [r.ticketEventId, r.bucketId]));
-  const reachable = new Set([...B.reminders, ...B.inside.flatMap(c => c.ev)]);
-  check(`Bucket list: every one of ${rules.ticketEvents.length} ticket events is reachable`,
-    rules.ticketEvents.every(e => reachable.has(e.id)), rules.ticketEvents.filter(e => !reachable.has(e.id)).map(e => e.id).join(','));
-  for(const e of rules.ticketEvents){
-    const where = evLinks.get(e.id);
-    check(`ticket event ${e.id}: ${where ? 'inside ' + where : 'under Reminders'}`,
-      where ? (B.inside.find(c => c.id === where)?.ev || []).includes(e.id) && !B.reminders.includes(e.id) : B.reminders.includes(e.id));
-  }
-  const keyOf = id => { const e = rules.ticketEvents.find(x => x.id === id); const raw = e.recurring === 'annual' ? e.nextEstimate : (e.date || e.dateEstimate);
-    return raw && /^\d{4}-\d{2}/.test(raw) ? raw.slice(0, 7) : '9999'; };
-  check('Reminders: soonest first, undated last', B.reminders.every((id, i) => i === 0 || keyOf(B.reminders[i - 1]) <= keyOf(id)),
-    B.reminders.map(id => `${id} ${keyOf(id)}`).join(', '));
+  // Reminders removed 2026-10-08 (the data stays): no ticket event is drawn on the Bucket list - not under a Reminders
+  // heading, not as a card, not inside an entry - and no sale date from ticketEvents is shown anywhere in it.
+  const remGone = await page.evaluate(() => { const body = document.getElementById('bucketBody');
+    return {h2: [...body.querySelectorAll('h2')].map(h => h.textContent), ev: body.querySelectorAll('.ev, .evcard').length,
+      block: /Ticket windows \(reminders\)|No ticket window is linked/.test(body.innerText)}; });
+  check('Bucket list: the Reminders section is absent from the List (no heading, no ticket-event card, no "Ticket windows (reminders)" block in any entry)',
+    rules.ticketEvents.length > 0 && !remGone.h2.some(t => /^Reminders/.test(t)) && remGone.ev === 0 && !remGone.block, remGone.h2.slice(0, 3).join(' | '));
   const frank = B.inside.find(c => c.id === 'frankenderby');
   check('Frankenderby: shows Nürnberg, host, first, then Fürth', !!frank && frank.clubs.map(c => c.qid).join() === 'Q15786,Q153539' &&
     /host/.test(frank.clubs[0].head), frank ? frank.clubs.map(c => c.head).join(' | ') : 'no card');
   check('Frankenderby: Fürth "not researched"', !!frank && /No ticket rules researched for SpVgg Greuther Fürth yet\./.test(frank.clubs[1]?.text || ''));
-  check('Bucket list still shows its ticket window reminders: every ticket event is on a card or under Reminders, and a club block keeps "Typically opens"',
-    rules.ticketEvents.length > 0 && B.reminders.length + B.inside.reduce((n, c) => n + c.ev.length, 0) === rules.ticketEvents.length &&
-    !!frank && /Typically opens/.test(frank.clubs[0].text),
-    `${B.reminders.length} under Reminders, ${B.inside.reduce((n, c) => n + c.ev.length, 0)} inside entries`);
+  check('Bucket list: a club block keeps its "Typically opens" (month-level pattern; only the ticketEvents reminders are gone)',
+    !!frank && /Typically opens/.test(frank.clubs[0].text));
   check("Frankenderby: Nürnberg's researched rules are shown, Germany's national line on top",
     !!frank && /Researched rules/.test(frank.clubs[0].text) &&
     (() => { const i = frank.clubs[0].text.indexOf(deRows.length ? 'Country rules: Germany' : 'No national rules researched for Germany');
@@ -247,16 +238,6 @@ const server = http.createServer((req, res) => {
     B.inside.every(c => c.eventRules), B.inside.filter(c => !c.eventRules).map(c => c.id).join(','));
   const days = await dayLevel('bucket');
   check('Bucket list: no inferred or disputed date shown to the day', !days.length, JSON.stringify(days).slice(0, 400));
-  // Each inferred ticket event with a date shows its month instead.
-  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const evText = await page.evaluate(() => Object.fromEntries([...document.querySelectorAll('#bucketBody .ev')]
-    .map(e => [e.dataset.ev, e.querySelector('[data-ds]').innerText.replace(/\s+/g, ' ')])));
-  for(const e of rules.ticketEvents.filter(e => e.dateSource !== 'confirmed')){
-    const raw = e.recurring === 'annual' ? e.nextEstimate : (e.date || e.dateEstimate);
-    if(!raw) continue;
-    const month = `${MONTHS[Number(raw.slice(5, 7)) - 1]} ${raw.slice(0, 4)}`;
-    check(`${e.id} (${e.dateSource}): shown as ${month}, not to the day`, (evText[e.id] || '').includes(month) && !DAY.test(evText[e.id] || ''), evText[e.id]);
-  }
   await page.screenshot({path: path.join(process.env.SHOT_DIR || '/tmp', 'bucket-list.png')});
 
   check('no script error', !errors.length, errors.join(' | '));

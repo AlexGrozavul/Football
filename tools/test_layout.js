@@ -109,10 +109,10 @@ const server = http.createServer((req, res) => {
     check(`${label} tab: nothing reaches past the screen edges`, !over.length, over.slice(0, 5).join(' | '));
     const wide = t.cards.filter(c => c.sw > c.cw + 1);
     check(`${label} tab: every one of ${t.cards.length} cards holds its content`, !wide.length, wide.map(c => c.title).join(' | '));
-    // Every warning in football-rules.json is a tag on the Bucket list tab since 2026-10-04: a
-    // ticket event's inside its entry or under Reminders, a bucket entry's in its card. The Ticket
-    // info tab holds rules only; a club entry's own "warning" field is a row of its notes there.
-    const warnings = pane === 'tickets' ? [] : rules.ticketEvents.filter(e => e.warning).concat(rules.bucketList.filter(b => b.warning));
+    // A bucket entry's warning is a tag in its card on the Bucket list tab. Ticket events are not drawn since the
+    // Reminders came out (2026-10-08), so their warnings are on no tab. The Ticket info tab holds rules only; a
+    // club entry's own "warning" field is a row of its notes there.
+    const warnings = pane === 'tickets' ? [] : rules.bucketList.filter(b => b.warning);
     for(const w of warnings.sort((a, b) => b.warning.length - a.warning.length)){
       const tag = t.bad.find(b => b.text === w.warning);
       check(`${label} tab: ${w.id}'s warning (${w.warning.length} characters) is on a tag inside its card` +
