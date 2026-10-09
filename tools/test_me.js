@@ -29,6 +29,11 @@
 //  - nothing typed on the tab appears in any network request (URL, headers or body), no request
 //    other than GET is made, nothing is in cookies, sessionStorage or IndexedDB, and nothing in the
 //    repository holds it;
+//  - since 2026-10-09 the Me tab has four sub-tabs (Stats, Matches, Events, Tickets; all existing checks above run on the fourth),
+//    the first three read data/attended.json: the sub-tabs appear in order and fit at 390 px in English and Romanian; the
+//    file is not requested before one of them is opened and only once after; the stats and the list counts equal counts made
+//    here from the file itself; every match and event is listed in the old app's order and opens the header sheet; en and ro
+//    have identical key sets and every key the page uses exists; the page reads no browser storage on them; a failed load says so;
 //  - no script error.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -127,6 +132,7 @@ function alarmAt(ev, al){
     await page.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
     await page.waitForFunction(() => document.querySelector('#bucketBody details.bucket'), null, {timeout: 15000});
     await page.click('nav button[data-pane=me]');
+    await page.click('#meTabTix');           // the existing content is the fourth sub-tab
     await page.waitForSelector('#meMemTitle');
     return page;
   }
@@ -333,7 +339,7 @@ function alarmAt(ev, al){
   const snap = await stored(page);
   await page.reload();
   await page.waitForFunction(() => document.querySelector('#bucketBody details.bucket'), null, {timeout: 30000});
-  await page.click('nav button[data-pane=me]');
+  await page.click('nav button[data-pane=me]'); await page.click('#meTabTix');
   check('After a reload: both memberships and both tickets are back', await stored(page) === snap &&
     /Memberships — 2/.test(await page.textContent('#meMemTitle')) && /Tickets held — 2/.test(await page.textContent('#meTixTitle')) &&
     /Renewal due in 16 days/.test(await cardText(page, 'membership', 'VfB')), '');
@@ -343,7 +349,7 @@ function alarmAt(ev, al){
 
   // ---- Export, delete everything, import.
   await page.click(`#bucketBody details.bucket[data-id="el-final-2027"] .star`);
-  await page.click('nav button[data-pane=me]');
+  await page.click('nav button[data-pane=me]'); await page.click('#meTabTix');
   let exp = await download(page, () => page.click('#meExport'));
   const file = JSON.parse(exp.text);
   check('Export: one JSON file with a format and a version number', file.format === 'football-planner-me' && file.version === 1 && /\.json$/.test(exp.name), exp.name);
@@ -352,7 +358,7 @@ function alarmAt(ev, al){
   check('The backup banner goes after an export', await page.$eval('#meBackup', e => e.hidden), '');
   await page.click('nav button[data-pane=bucket]');
   await page.click(`#bucketBody details.bucket[data-id="poli-uta"] .star`);
-  await page.click('nav button[data-pane=me]');
+  await page.click('nav button[data-pane=me]'); await page.click('#meTabTix');
   check('A star is an edit too: the banner is back', !(await page.$eval('#meBackup', e => e.hidden)), '');
   for(const kind of ['membership', 'ticket']){
     while(await page.$(`.mecard[data-kind=${kind}] [data-act=delete]`)){
@@ -379,7 +385,7 @@ function alarmAt(ev, al){
   const stars = await page.$$eval('#bucketBody .star[aria-pressed=true]', s => [...new Set(s.map(x => x.dataset.fav))]);
   check('...and the bucket list shows the imported favorite and the held tickets again', JSON.stringify(stars) === '["el-final-2027"]' &&
     /You hold tickets/.test(await page.$eval(`#bucketBody details.bucket[data-id="${LINK_ID}"] summary`, s => s.textContent)), stars.join(','));
-  await page.click('nav button[data-pane=me]');
+  await page.click('nav button[data-pane=me]'); await page.click('#meTabTix');
 
   // ---- Broken imports are refused, nothing changed.
   const good = JSON.parse(exp.text);
@@ -435,6 +441,169 @@ function alarmAt(ev, al){
   await page2.click('nav button[data-pane=bucket]');
   check('Storage blocked: the bucket list still shows "You hold tickets"', /You hold tickets/.test(await page2.$eval(`#bucketBody details.bucket[data-id="${LINK_ID}"] summary`, s => s.textContent)), '');
   await ctx2.close();
+
+
+  // ---- Attended matches and events: the first three sub-tabs, from data/attended.json.
+  const ATTF = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/attended.json'), 'utf8'));
+  const fx = {
+    n: ATTF.matches.length, ne: ATTF.events.length,
+    goals: ATTF.matches.reduce((n, m) => n + m.goals.length, 0),
+    pens: ATTF.matches.reduce((n, m) => n + m.goals.filter(g => g.pen).length, 0),
+    stadiums: new Set(ATTF.matches.map(m => m.stadium)).size,
+    yellow: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'yellow').length, 0),
+    red: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type !== 'yellow').length, 0),
+    cities: new Set(ATTF.matches.map(m => m.city.en)).size,
+    countries: new Set(ATTF.matches.map(m => m.country.en)).size,
+    comps: new Set(ATTF.matches.map(m => (m.competitionKey || m.competition).en)).size,
+    big: Math.max(...ATTF.matches.map(m => m.attendance && m.attendance.value || 0)),
+    small: Math.min(...ATTF.matches.filter(m => m.attendance && m.attendance.value).map(m => m.attendance.value))
+  };
+  const attOrder = ATTF.matches.map((m, i) => [m, i]).sort((a, b) => a[0].date < b[0].date ? -1 : a[0].date > b[0].date ? 1 : a[1] - b[1]).map(x => x[0]);
+
+  const reqs3 = [];
+  const ctx3 = await newCtx();
+  await ctx3.addInitScript(() => {            // every localStorage read, to show the new sub-tabs read none
+    window.__reads = [];
+    const g = Storage.prototype.getItem;
+    Storage.prototype.getItem = function(k){ window.__reads.push(k); return g.call(this, k); };
+  });
+  const p3 = await ctx3.newPage();
+  p3.on('pageerror', e => errors.push(e.message));
+  p3.on('request', r => reqs3.push(r.url()));
+  await p3.goto(BASE);
+  await p3.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await p3.waitForFunction(() => document.querySelector('#bucketBody details.bucket'), null, {timeout: 15000});
+  const attReqs = () => reqs3.filter(u => u.includes('attended.json')).length;
+  check('data/attended.json is not requested before a Me sub-tab is opened', attReqs() === 0, String(attReqs()));
+  await p3.evaluate(() => { window.__reads.length = 0; });
+  await p3.click('nav button[data-pane=me]');
+  await p3.waitForSelector('#meStats .astat');
+  check('Opening the Me tab opens Stats first and requests the file once', attReqs() === 1 &&
+    await p3.$eval('#meTabStats', b => b.getAttribute('aria-selected')) === 'true', String(attReqs()));
+
+  const subs = await p3.evaluate(() => {
+    const bs = [...document.querySelectorAll('#meSubs button')];
+    return {labels: bs.map(b => b.textContent.trim()), roles: bs.map(b => b.getAttribute('role')),
+      bad: bs.filter(b => { const r = b.getBoundingClientRect(); return b.scrollWidth > b.clientWidth + 1 || r.right > innerWidth + 1 || r.left < -1 || r.height < 40; }).map(b => b.textContent),
+      lines: bs.map(b => { const r = document.createRange(); r.selectNodeContents(b); return new Set([...r.getClientRects()].map(x => Math.round(x.top))).size; })};
+  });
+  check('Four sub-tabs in order: Stats, Matches, Events, Tickets', JSON.stringify(subs.labels) === '["Stats","Matches","Events","Tickets"]', subs.labels.join(' | '));
+  check('The four sub-tabs fit at 390 px: none cut off or off screen, none wrapped, each at least 40 px tall', !subs.bad.length && subs.lines.every(n => n === 1), JSON.stringify(subs));
+
+  const tiles = await p3.$$eval('#meStats .astat', ts => ts.map(t => [t.querySelector('b').textContent.replace(/[^\d]/g, ''), t.querySelector('span').textContent]));
+  const tv = tiles.map(t => +t[0]);
+  check('Stats: matches, goals, penalties, stadiums, yellow and red cards equal the counts in the file',
+    JSON.stringify(tv) === JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red]), JSON.stringify(tv) + ' file ' + JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red]));
+  const lists = await p3.evaluate(() => {
+    const out = {};
+    document.querySelectorAll('#meStats .aeye').forEach(h => {
+      const rows = []; let n = h.nextElementSibling;
+      while(n && !n.classList.contains('aeye')){ if(n.classList.contains('arow')) rows.push([n.querySelector('.k').textContent, n.querySelector('.v')?.textContent || '']); n = n.nextElementSibling; }
+      out[h.textContent] = rows;
+    });
+    return out;
+  });
+  const sum = rows => rows.reduce((n, r) => n + (+r[1].replace(/\D/g, '') || 0), 0);
+  check('Stats: the stadium, city, country and competition lists have the file\'s distinct counts, each summing to the match count',
+    lists.Stadiums.length === fx.stadiums && lists.Cities.length === fx.cities && lists.Countries.length === fx.countries && lists.Competitions.length === fx.comps &&
+    [lists.Stadiums, lists.Cities, lists.Countries, lists.Competitions].every(r => sum(r) === fx.n),
+    [lists.Stadiums.length, lists.Cities.length, lists.Countries.length, lists.Competitions.length].join(','));
+  check('Stats: biggest and smallest crowd are the file\'s largest and smallest figures',
+    lists['Biggest crowd'].every(r => +r[1].replace(/\D/g, '') === fx.big) && lists['Smallest crowd'].every(r => +r[1].replace(/\D/g, '') === fx.small),
+    JSON.stringify([lists['Biggest crowd'], lists['Smallest crowd'], fx.big, fx.small]));
+  check('Stats: a most-seen team is named', lists['Most-seen team'].length >= 1 && +lists['Most-seen team'][0][1] >= 2, JSON.stringify(lists['Most-seen team']));
+  noSideways('Stats: no sideways scroll at 390 px', await sideways(p3));
+
+  await p3.click('#meTabMatches');
+  await p3.waitForSelector('#meMatches .acard');
+  const mcards = await p3.$$eval('#meMatches .acard', cs => cs.map(c => ({id: c.dataset.id, n: c.querySelector('.an').textContent, text: c.innerText.replace(/\s+/g, ' ')})));
+  check('Matches: one card per match in the file', mcards.length === fx.n && new Set(mcards.map(c => c.id)).size === fx.n, `${mcards.length} of ${fx.n}`);
+  check('Matches: oldest first by date, the same date in the file\'s order, numbered 1..n',
+    JSON.stringify(mcards.map(c => c.id)) === JSON.stringify(attOrder.map(m => m.id)) && mcards.every((c, i) => c.n === String(i + 1)), mcards.map(c => c.id).join(' ').slice(0, 120));
+  const missingText = [];
+  ATTF.matches.forEach(m => {
+    const c = mcards.find(x => x.id === m.id);
+    const need = [(m.home.nameEn || m.home.name), (m.away.nameEn || m.away.name), m.score, m.competition.en, m.stage.en, m.stadium, m.city.en, new Date(m.date + 'T12:00:00').getFullYear() + ''];
+    if(!c || need.some(x => !c.text.includes(x))) missingText.push(m.id);
+  });
+  check('Matches: every card shows teams, score, competition, stage, stadium, city and the date', !missingText.length, missingText.join(', '));
+  noSideways('Matches: no sideways scroll at 390 px', await sideways(p3));
+
+  await p3.click('#meTabEvents');
+  await p3.waitForSelector('#meEvents .acard');
+  const ecards = await p3.$$eval('#meEvents .acard', cs => cs.map(c => ({id: c.dataset.id, text: c.innerText.replace(/\s+/g, ' ')})));
+  check('Events: one card per event, in the file\'s order', JSON.stringify(ecards.map(c => c.id)) === JSON.stringify(ATTF.events.map(e => e.id)), `${ecards.length} of ${fx.ne}`);
+  check('Events: every card shows its title, place and date', ATTF.events.every((e, i) => ecards[i] && ecards[i].text.includes(e.title.en) && ecards[i].text.includes(e.place.en) &&
+    ecards[i].text.includes(String(new Date(e.date + 'T12:00:00').getFullYear()))), '');
+  noSideways('Events: no sideways scroll at 390 px', await sideways(p3));
+  check('The file was requested once for all three sub-tabs', attReqs() === 1, String(attReqs()));
+  check('The three sub-tabs read nothing from browser storage', (await p3.evaluate(() => window.__reads)).length === 0, JSON.stringify(await p3.evaluate(() => window.__reads)));
+
+  // Every entry opens the header sheet.
+  const sheetBad = [];
+  async function tapAll(sub, tabId, entries, need){
+    await p3.click(tabId);
+    for(const e of entries){
+      await p3.click(`#${sub} .acard[data-id="${e.id}"]`);
+      await p3.waitForTimeout(350);               // the sheet's slide-in
+      const r = await p3.evaluate(() => {
+        const s = document.getElementById('asheet'), rc = s.getBoundingClientRect(), nav = document.querySelector('nav').getBoundingClientRect();
+        return {hidden: s.hidden, text: s.innerText.replace(/\s+/g, ' '), right: rc.right, left: rc.left, bottom: rc.bottom, navTop: nav.top,
+          body: document.getElementById('asheetBody').scrollWidth <= document.getElementById('asheetBody').clientWidth + 1};
+      });
+      if(r.hidden || need(e).some(x => !r.text.includes(x)) || r.right > W + 1 || r.left < -1 || r.bottom > r.navTop + 1 || !r.body) sheetBad.push(e.id + ' ' + JSON.stringify(r).slice(0, 200));
+      await p3.click('#asheetClose');
+      if(!(await p3.$eval('#asheet', s => s.hidden))) sheetBad.push(e.id + ' did not close');
+    }
+  }
+  await tapAll('meMatches', '#meTabMatches', ATTF.matches, m => [m.home.nameEn || m.home.name, m.away.nameEn || m.away.name, m.score, m.competition.en, m.stage.en, m.stadium, m.city.en, m.country.en]);
+  await tapAll('meEvents', '#meTabEvents', ATTF.events, e => [e.title.en, e.place.en]);
+  check(`Tapping any of the ${fx.n} matches and ${fx.ne} events opens the header sheet above the bottom bar, inside 390 px, and Close shuts it`, !sheetBad.length, sheetBad.slice(0, 2).join(' | '));
+  await p3.click('#meTabMatches'); await p3.click('#meMatches .acard');
+  await p3.click('nav button[data-pane=bucket]');
+  check('Leaving the Me tab shuts the sheet', await p3.$eval('#asheet', s => s.hidden), '');
+  await p3.click('nav button[data-pane=me]');
+  check('The Me tab reopens on the sub-tab that was open', await p3.$eval('#meTabMatches', b => b.getAttribute('aria-selected')) === 'true', '');
+  await p3.click('#meTabMatches');
+
+  // Languages.
+  const keys = await p3.evaluate(() => ({en: Object.keys(I18N.en).sort(), ro: Object.keys(I18N.ro).sort(),
+    emptyEn: Object.entries(I18N.en).filter(([, v]) => !v).length, emptyRo: Object.entries(I18N.ro).filter(([, v]) => !v).length}));
+  check('en and ro have identical key sets, none empty', JSON.stringify(keys.en) === JSON.stringify(keys.ro) && !keys.emptyEn && !keys.emptyRo && keys.en.length > 20, `${keys.en.length} / ${keys.ro.length}`);
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  const used = new Set([...html.matchAll(/\bt\('([a-z]+(?:\.[A-Za-z]+)+)'/g)].map(m => m[1]).concat([...html.matchAll(/data-i18n(?:-aria)?="([^"]+)"/g)].map(m => m[1])));
+  const unknown = [...used].filter(k => !keys.en.includes(k));
+  check('Every key the page asks t() or data-i for exists in the dictionary', used.size > 15 && !unknown.length, unknown.join(', '));
+  check('Language defaults to English and no language toggle is shown', await p3.evaluate(() => LANG === 'en' && document.documentElement.lang === 'en' &&
+    !document.querySelector('#langBtn,[data-lang],.langtoggle')), '');
+  await p3.evaluate(() => setLang('ro'));
+  const ro = await p3.evaluate(() => ({labels: [...document.querySelectorAll('#meSubs button')].map(b => b.textContent.trim()), stored: localStorage.getItem('football-planner-lang'),
+    first: document.querySelector('#meMatches .acard')?.innerText.replace(/\s+/g, ' ')}));
+  check('setLang(\'ro\') switches the labels and the data text, and is stored on the device', JSON.stringify(ro.labels) === '["Statistici","Meciuri","Evenimente","Bilete"]' &&
+    ro.stored === 'ro' && /Timișoara/.test(ro.first), JSON.stringify(ro));
+  const subsRo = await p3.evaluate(() => [...document.querySelectorAll('#meSubs button')].filter(b => { const r = b.getBoundingClientRect(); return b.scrollWidth > b.clientWidth + 1 || r.right > innerWidth + 1 || r.left < -1; }).map(b => b.textContent));
+  check('The Romanian sub-tab labels fit at 390 px', !subsRo.length, subsRo.join(', '));
+  await p3.click('#meTabStats');
+  noSideways('Romanian stats: no sideways scroll at 390 px', await sideways(p3));
+  await p3.click('#meTabEvents');
+  noSideways('Romanian events: no sideways scroll at 390 px', await sideways(p3));
+  await p3.reload();
+  await p3.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  check('The chosen language survives a reload', await p3.evaluate(() => LANG) === 'ro', '');
+  await p3.evaluate(() => setLang('en'));
+  await ctx3.close();
+
+  // A failed load says so.
+  const ctx4 = await newCtx();
+  await ctx4.route('**/data/attended.json', r => r.abort());
+  const p4 = await ctx4.newPage();
+  p4.on('pageerror', e => errors.push(e.message));
+  await p4.goto(BASE);
+  await p4.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await p4.click('nav button[data-pane=me]');
+  await p4.waitForSelector('#meStats .aerr');
+  check('A failed load of the file says so and shows no numbers', /Could not load data\/attended\.json/.test(await p4.textContent('#meStats')) && !(await p4.$('#meStats .astat')), await p4.textContent('#meStats'));
+  await ctx4.close();
 
   check('no script error', !errors.length, errors.slice(0, 3).join(' | '));
   await browser.close(); server.close();
