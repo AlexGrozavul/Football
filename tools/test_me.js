@@ -29,7 +29,7 @@
 //  - nothing typed on the tab appears in any network request (URL, headers or body), no request
 //    other than GET is made, nothing is in cookies, sessionStorage or IndexedDB, and nothing in the
 //    repository holds it;
-//  - since 2026-10-09 the Me tab has four sub-tabs (Stats, Matches, Events, Tickets; all existing checks above run on the fourth),
+//  - since 2026-10-09 the Me tab has four sub-tabs (Stats, Matches, Events, Tickets/Memberships; all existing checks above run on the fourth),
 //    the first three read data/attended.json: the sub-tabs appear in order and fit at 390 px in English and Romanian; the
 //    file is not requested before one of them is opened and only once after; the stats and the list counts equal counts made
 //    here from the file itself; every match and event is listed in the old app's order and opens the header sheet; en and ro
@@ -50,6 +50,11 @@
 //    imported matches and saying photos and videos are not included, its round trip, its refusals (a card number, a clash with the file's ids, a
 //    newer version, the old app's export shape), and a version 1 file still importing and leaving those alone; nothing overflows at 390 px in English
 //    and Romanian;
+//  - since 2026-10-09 the whole interface is translated (English and Romanian, the Romanian written by the assistant and unchecked): the dictionary's
+//    key sets, no ro value equal to its en value outside a short whitelist of names, every {placeholder} kept; Settings reached from the top of the
+//    Me tab, the choice stored under football-planner-lang and kept over a reload, the fourth sub-tab renamed Tickets/Memberships in both languages;
+//    in Romanian every main tab, the four Me sub-tabs, the panels and the sheets are free of English interface text (data-content areas excepted)
+//    and fit at 390 px; a change of language redraws an open sheet and keeps a form being filled in;
 //  - no script error.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -195,7 +200,7 @@ function alarmAt(ev, al){
         .map(b => b.textContent.trim()),
       heights: bs.map(b => Math.round(b.getBoundingClientRect().height)),
       lines: bs.map(b => { const t = [...b.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('');
-        const r = document.createRange(); const node = [...b.childNodes].find(n => n.nodeType === 3); r.selectNodeContents(node);
+        const r = document.createRange(); const node = b.querySelector('span')?.firstChild || [...b.childNodes].find(n => n.nodeType === 3); r.selectNodeContents(node);
         return r.getClientRects().length; })};
   });
   check('Five tabs in the bottom bar, "Competitions" fourth and "Me" fifth', nav.n === 5 && /Competitions$/.test(nav.labels[3]) && /Me$/.test(nav.labels[4]), nav.labels.join(' | '));
@@ -505,8 +510,8 @@ function alarmAt(ev, al){
       bad: bs.filter(b => { const r = b.getBoundingClientRect(); return b.scrollWidth > b.clientWidth + 1 || r.right > innerWidth + 1 || r.left < -1 || r.height < 40; }).map(b => b.textContent),
       lines: bs.map(b => { const r = document.createRange(); r.selectNodeContents(b); return new Set([...r.getClientRects()].map(x => Math.round(x.top))).size; })};
   });
-  check('Four sub-tabs in order: Stats, Matches, Events, Tickets', JSON.stringify(subs.labels) === '["Stats","Matches","Events","Tickets"]', subs.labels.join(' | '));
-  check('The four sub-tabs fit at 390 px: none cut off or off screen, none wrapped, each at least 40 px tall', !subs.bad.length && subs.lines.every(n => n === 1), JSON.stringify(subs));
+  check('Four sub-tabs in order: Stats, Matches, Events, Tickets/Memberships', JSON.stringify(subs.labels) === '["Stats","Matches","Events","Tickets/Memberships"]', subs.labels.join(' | '));
+  check('The four sub-tabs fit at 390 px: none cut off or off screen, only the long last label wraps (to two lines), each at least 40 px tall', !subs.bad.length && subs.lines.slice(0, 3).every(n => n === 1) && subs.lines[3] <= 2, JSON.stringify(subs));
 
   const tiles = await p3.$$eval('#meStats .astat', ts => ts.map(t => [t.querySelector('b').textContent.replace(/[^\d]/g, ''), t.querySelector('span').textContent]));
   const tv = tiles.map(t => +t[0]);
@@ -786,12 +791,12 @@ function alarmAt(ev, al){
   const used = new Set([...html.matchAll(/\bt\('([a-z]+(?:\.[A-Za-z]+)+)'/g)].map(m => m[1]).concat([...html.matchAll(/data-i18n(?:-aria)?="([^"]+)"/g)].map(m => m[1])));
   const unknown = [...used].filter(k => !keys.en.includes(k));
   check('Every key the page asks t() or data-i for exists in the dictionary', used.size > 15 && !unknown.length, unknown.join(', '));
-  check('Language defaults to English and no language toggle is shown', await p3.evaluate(() => LANG === 'en' && document.documentElement.lang === 'en' &&
-    !document.querySelector('#langBtn,[data-lang],.langtoggle')), '');
+  check('Language defaults to English, and the only language buttons are inside the Settings sheet', await p3.evaluate(() => LANG === 'en' && document.documentElement.lang === 'en' &&
+    [...document.querySelectorAll('[data-lang]')].every(b => b.closest('#ssheet'))), '');
   await p3.evaluate(() => setLang('ro'));
   const ro = await p3.evaluate(() => ({labels: [...document.querySelectorAll('#meSubs button')].map(b => b.textContent.trim()), stored: localStorage.getItem('football-planner-lang'),
     first: document.querySelector('#meMatches .acard')?.innerText.replace(/\s+/g, ' ')}));
-  check('setLang(\'ro\') switches the labels and the data text, and is stored on the device', JSON.stringify(ro.labels) === '["Statistici","Meciuri","Evenimente","Bilete"]' &&
+  check('setLang(\'ro\') switches the labels and the data text, and is stored on the device', JSON.stringify(ro.labels) === '["Statistici","Meciuri","Evenimente","Bilete/Abonamente"]' &&
     ro.stored === 'ro' && /Timișoara/.test(ro.first), JSON.stringify(ro));
   const subsRo = await p3.evaluate(() => [...document.querySelectorAll('#meSubs button')].filter(b => { const r = b.getBoundingClientRect(); return b.scrollWidth > b.clientWidth + 1 || r.right > innerWidth + 1 || r.left < -1; }).map(b => b.textContent));
   check('The Romanian sub-tab labels fit at 390 px', !subsRo.length, subsRo.join(', '));
@@ -1162,6 +1167,127 @@ function alarmAt(ev, al){
   check('When the browser\'s quota is exceeded the sheet says there is no room left, naming the file', /There is no room left on this device for big\.png/.test(await p7.textContent('#aMmsg')), await p7.textContent('#aMmsg'));
   await ctx7.close();
 
+  }
+
+
+  {
+  // ---- 2026-10-09: the whole interface in two languages. The dictionary, the Settings sheet, the choice kept on the device, every
+  //      main tab and the four Me sub-tabs in Romanian at 390 px, no English left outside the data's own text, and a live change.
+  const NAMES_SAME = new Set(['tl.pen', 'imp.placeholder', 'md.video', 'sheet.club', 'atm.derby', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',
+    'cov.club.one', 'cnm.Austria', 'cnm.Argentina', 'cnm.Serbia', 'cnm.Bulgaria', 'cnm.Chile', 'cnm.Slovenia', 'cnm.Uruguay', 'iso.AR', 'iso.AT', 'iso.BG', 'iso.CL',
+    'iso.RS', 'iso.SI', 'iso.UY', 'kind.derby', 'ctopic.format', 'me.cost', 'me.plus', 'bk.tabCal', 'nl.context', 'nl.bonus', 'nl.realism']);       // names, units and abbreviations that are the same word in Romanian
+  const ctxL = await newCtx();
+  const pL = await ctxL.newPage();
+  pL.on('pageerror', e => errors.push(e.message));
+  await pL.goto(BASE);
+  await pL.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await pL.waitForFunction(() => document.querySelector('#bucketBody details.bucket'), null, {timeout: 15000});
+  const dict = await pL.evaluate(() => ({en: I18N.en, ro: I18N.ro}));
+  const same = Object.keys(dict.en).filter(k => dict.en[k] === dict.ro[k] && !NAMES_SAME.has(k));
+  check('en and ro have identical key sets across the whole interface (' + Object.keys(dict.en).length + ' keys), none empty',
+    JSON.stringify(Object.keys(dict.en).sort()) === JSON.stringify(Object.keys(dict.ro).sort()) && Object.values(dict.en).every(Boolean) && Object.values(dict.ro).every(Boolean) && Object.keys(dict.en).length > 400, '');
+  check('No ro value equals its en value, except the short whitelist of names, units and abbreviations', !same.length, same.slice(0, 10).join(', '));
+  const placeholders = Object.keys(dict.en).filter(k => JSON.stringify((dict.en[k].match(/\{\w+\}/g) || []).sort()) !== JSON.stringify((dict.ro[k].match(/\{\w+\}/g) || []).sort()));
+  check('Every {placeholder} in an English text is in its Romanian text and no other', !placeholders.length, placeholders.slice(0, 10).join(', '));
+
+  // English first: the renamed sub-tab, and Settings reached from the top of the Me tab.
+  await pL.click('nav button[data-pane=me]');
+  const en0 = await pL.evaluate(() => ({labels: [...document.querySelectorAll('#meSubs button')].map(b => b.textContent.trim()), lang: document.documentElement.lang,
+    btn: !!document.querySelector('#pane-me .mehead #settingsBtn'), nav: [...document.querySelectorAll('nav button')].map(b => b.textContent.replace(/[^A-Za-z ]/g, '').trim())}));
+  check('English: the fourth sub-tab is "Tickets/Memberships", the page language is en, Settings is a small button at the top of the Me tab (no new tab)',
+    JSON.stringify(en0.labels) === '["Stats","Matches","Events","Tickets/Memberships"]' && en0.lang === 'en' && en0.btn && en0.nav.length === 5 && en0.nav.includes('Ticket info'), JSON.stringify(en0));
+  const subFit = async name => {
+    const bad = await pL.evaluate(() => [...document.querySelectorAll('#meSubs button')].filter(b => { const r = b.getBoundingClientRect();
+      return b.scrollWidth > b.clientWidth + 1 || r.right > innerWidth + 1 || r.left < -1 || r.width < 40; }).map(b => b.textContent));
+    const heights = await pL.evaluate(() => [...document.querySelectorAll('#meSubs button')].map(b => Math.round(b.getBoundingClientRect().height)));
+    check(name, !bad.length, JSON.stringify({bad, heights}));
+  };
+  await subFit('English: the four Me sub-tabs fit at 390 px (each tab as wide as its label, nothing overflows)');
+  await pL.click('#settingsBtn');
+  check('Settings opens as a sheet with English and Română, English chosen', await pL.evaluate(() => { const s = document.getElementById('ssheet');
+    return !s.hidden && [...s.querySelectorAll('[data-lang]')].map(b => b.textContent + ':' + b.getAttribute('aria-pressed')).join() === 'English:true,Română:false'; }), '');
+  // The toggle: stored under the existing key, applied at once, kept over a reload.
+  await pL.click('#ssheet button[data-lang=ro]');
+  const r1 = await pL.evaluate(() => ({stored: localStorage.getItem('football-planner-lang'), lang: document.documentElement.lang, LANG,
+    labels: [...document.querySelectorAll('#meSubs button')].map(b => b.textContent.trim()), pressed: document.querySelector('#ssheet [data-lang=ro]').getAttribute('aria-pressed'),
+    nav: [...document.querySelectorAll('nav button')].map(b => b.textContent.replace(/[^A-Za-zĂÂÎȘȚăâîșț ]/g, '').trim())}));
+  check('Choosing Română: stored under football-planner-lang, <html lang="ro">, the sub-tab labels and the bottom bar change at once',
+    r1.stored === 'ro' && r1.lang === 'ro' && r1.LANG === 'ro' && r1.pressed === 'true' && JSON.stringify(r1.labels) === '["Statistici","Meciuri","Evenimente","Bilete/Abonamente"]' &&
+    r1.nav.join() === 'Hartă,Dorințe,Info bilete,Competiții,Eu', JSON.stringify(r1));
+  await subFit('Romanian: the four Me sub-tabs fit at 390 px');
+  check('Romanian: the five bottom-bar labels each fit their slot and none overlaps another', await pL.evaluate(() => {
+    const bs = [...document.querySelectorAll('nav button')];
+    const spans = bs.map(b => { const r = document.createRange(); r.selectNodeContents(b.querySelector('span')); return r.getBoundingClientRect(); });
+    return bs.every((b, i) => { const r = b.getBoundingClientRect(); return spans[i].left >= r.left - 0.5 && spans[i].right <= r.right + 0.5 && b.querySelector('span').getClientRects().length === 1; }) &&
+      spans.every((x, i) => !i || spans[i - 1].right <= x.left + 0.5);
+  }), '');
+  await pL.click('#ssheetClose');
+  await pL.reload();
+  await pL.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  check('The choice is kept over a reload (and English stays the default on a device that never chose)', await pL.evaluate(() => LANG === 'ro' && document.documentElement.lang === 'ro' &&
+    document.getElementById('zoomChip').textContent.includes('cluburi')), '');
+
+  // Romanian: no text of the interface left in English, at 390 px, on every main tab and sub-tab and their sheets.
+  const roVals = new Set(Object.values(dict.ro));      // a Romanian word that is also an English UI word ("Favorite") is not English
+  const enVals = Object.keys(dict.en).filter(k => dict.en[k] !== dict.ro[k] && !/\{/.test(dict.en[k]) && dict.en[k].length > 2 && !roVals.has(dict.en[k])).map(k => dict.en[k]);
+  const scanEnglish = () => pL.evaluate(vals => {
+    const set = new Set(vals), bad = [];
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for(let n; (n = w.nextNode());){
+      const el = n.parentElement;
+      if(!el || el.closest('script,style,[hidden],[data-content]') || el.closest('#map .leaflet-control-attribution')) continue;
+      const txt = n.textContent.replace(/\s+/g, ' ').trim();
+      if(txt && set.has(txt)) bad.push(txt);
+    }
+    return [...new Set(bad)];
+  }, enVals);
+  const fits = () => pL.evaluate(() => { const wrap = document.querySelector('.pane.on .wrap');
+    return {doc: document.documentElement.scrollWidth, wrap: wrap ? [wrap.scrollWidth, wrap.clientWidth] : null}; });
+  const view = async (name, fn) => {
+    if(fn) await fn();
+    const bad = await scanEnglish(), f = await fits();
+    check(`Romanian, ${name}: no interface text left in English, no sideways scroll at 390 px`, !bad.length && f.doc <= W && (!f.wrap || f.wrap[0] <= f.wrap[1]), JSON.stringify({bad: bad.slice(0, 8), f}));
+  };
+  await view('Map (legend, chips)', async () => { await pL.click('nav button[data-pane=map]'); await pL.click('#legendToggle').catch(() => {}); });
+  await view('club sheet', async () => { await pL.evaluate(() => openSheet(CLUBS.find(c => c.id === 'Q4512'))); await pL.waitForFunction(() => document.querySelector('#sheetTix .tix') && document.querySelector('#sheetFix .fx, #sheetFix .unavail'), null, {timeout: 15000}); await pL.click('#sheetTix details summary').catch(() => {}); });
+  await view('coverage panel', async () => { await pL.click('#sheetClose'); await pL.click('#zoomChip'); await pL.waitForSelector('#covBody .covtiers'); });
+  await view('route panel', async () => { await pL.click('#covClose'); await pL.click('#routeChip'); });
+  await view('Near me (clubs)', async () => { await pL.click('#routeClose'); await pL.click('#nearChip'); await pL.waitForSelector('#nearList .rclub'); });
+  await view('Near me (derbies)', async () => { await pL.click('#tabDerbies'); await pL.waitForSelector('#derbyBody .rclub'); });
+  await view('Bucket list (List)', async () => { await pL.click('#nearClose'); await pL.click('nav button[data-pane=bucket]'); await pL.click('#bucketBody details.bucket summary h3'); await pL.waitForTimeout(600); });
+  await view('Bucket list (filter panel)', async () => { await pL.click('#bfChip'); await pL.waitForSelector('#fpBody .fopt'); });
+  await view('Bucket list (Calendar)', async () => { await pL.click('#fpClose'); await pL.click('#tabCal'); await pL.waitForSelector('#calBody .calgrid'); });
+  await view('Ticket info', async () => { await pL.click('nav button[data-pane=tickets]'); await pL.waitForSelector('#ticketBody details.tclub'); await pL.click('#ticketBody details.tclub summary'); await pL.waitForTimeout(800); });
+  await view('Competitions (list)', async () => { await pL.click('nav button[data-pane=competitions]'); await pL.waitForSelector('#compBody .comprow'); });
+  await view('Competitions (sheet)', async () => { await pL.evaluate(nr => { [...document.querySelectorAll('#compBody .comprow')].find(b => b.querySelector('em').textContent !== nr).click(); }, dict.ro['comp.notResearched']); await pL.waitForSelector('#csheetBody h4'); });
+  for(const [id, name] of [['#meTabStats', 'Me, Stats'], ['#meTabMatches', 'Me, Matches'], ['#meTabEvents', 'Me, Events'], ['#meTabTix', 'Me, Tickets/Memberships']])
+    await view(name, async () => { await pL.click('nav button[data-pane=me]'); await pL.click(id); await pL.waitForTimeout(500); });
+  await view('Me, Tickets/Memberships with the add-membership form open', async () => { await pL.click('[data-act=add][data-kind=membership]'); await pL.waitForSelector('form.meform'); });
+  await view('Me, a match sheet', async () => { await pL.click('[data-act=cancel]'); await pL.click('#meTabMatches'); await pL.waitForSelector('#meMatches .acard'); await pL.click('#meMatches .acard'); await pL.waitForTimeout(500); });
+  await view('Settings sheet', async () => { await pL.click('#asheetClose'); await pL.click('#settingsBtn'); });
+  await pL.click('#ssheetClose');
+
+  // Live change: an open sheet and the open tab are redrawn when the language changes, nothing is lost.
+  await pL.click('nav button[data-pane=map]');
+  await pL.evaluate(() => openSheet(CLUBS.find(c => c.id === 'Q4512')));
+  await pL.waitForSelector('#sheetTix .tix');
+  const before = await pL.evaluate(() => document.querySelector('#sheetBody h4').textContent);
+  await pL.evaluate(() => setLang('en'));
+  await pL.waitForFunction(() => document.querySelector('#sheetBody h4')?.textContent === 'Club', null, {timeout: 5000}).catch(() => {});
+  const after = await pL.evaluate(() => ({h: document.querySelector('#sheetBody h4').textContent, open: !document.getElementById('sheet').hidden, chip: document.getElementById('zoomChip').textContent}));
+  check('Changing the language while a club sheet is open redraws the sheet in place (still open) and the map chips',
+    before === 'Club' && after.h === 'Club' && after.open && /clubs/.test(after.chip) && await pL.evaluate(() => document.querySelector('#sheetTix .tix h5')?.textContent.startsWith('Country rules')), JSON.stringify({before, after}));
+  await pL.evaluate(() => setLang('ro'));
+  await pL.waitForFunction(() => /Reguli naționale/.test(document.querySelector('#sheetTix .tix h5')?.textContent || ''), null, {timeout: 5000}).catch(() => {});
+  check('... and back to Romanian: the ticket section and the Bucket list are redrawn without reopening anything',
+    await pL.evaluate(() => /Reguli naționale/.test(document.querySelector('#sheetTix .tix h5')?.textContent || '') && /Filtru/.test(document.getElementById('bfChip').textContent)), '');
+  // A form that is open is not thrown away by a language change.
+  await pL.click('nav button[data-pane=me]'); await pL.click('#meTabTix'); await pL.click('[data-act=add][data-kind=membership]');
+  await pL.fill('form.meform input[name=club]', 'Typed ' + TAG);
+  await pL.evaluate(() => setLang('en'));
+  check('A form being filled in keeps what was typed when the language changes', await pL.inputValue('form.meform input[name=club]') === 'Typed ' + TAG, '');
+  await pL.evaluate(() => setLang('en'));
+  await ctxL.close();
   }
 
   // A failed load says so.

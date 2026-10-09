@@ -94,7 +94,7 @@ const server = http.createServer((req, res) => {
       navW: document.querySelector('nav').scrollWidth,
       bad: bs.filter(b => { const r = b.getBoundingClientRect(); return b.scrollWidth > b.clientWidth + 1 || r.right > innerWidth + 1 || r.left < -1; }).map(b => b.textContent.trim()),
       heights: bs.map(b => Math.round(b.getBoundingClientRect().height)),
-      lines: bs.map(b => { const node = [...b.childNodes].find(n => n.nodeType === 3); const r = document.createRange(); r.selectNodeContents(node); return r.getClientRects().length; })};
+      lines: bs.map(b => { const node = b.querySelector('span')?.firstChild || [...b.childNodes].find(n => n.nodeType === 3); const r = document.createRange(); r.selectNodeContents(node); return r.getClientRects().length; })};
   });
   check('The Competitions tab exists: five tabs, fourth, between Ticket info and Me',
     nav.n === 5 && nav.panes[2] === 'tickets' && nav.panes[3] === 'competitions' && nav.panes[4] === 'me' && /Competitions$/.test(nav.labels[3]), nav.labels.join(' | '));
