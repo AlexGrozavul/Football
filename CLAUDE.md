@@ -442,7 +442,7 @@ a subscribed calendar reads as a schedule regardless of its description.
 
 - `data/club-rivalries.csv`, `data/club-atmosphere.csv` and `data/club-culture-sources.csv` — rivalries added 2026-10-08, atmosphere and the shared source file 2026-10-09. **All three are hand-written and no script ever writes to them; fetched data never overwrites them.** `club-rivalries.csv` (`clubQ,rivalQ,rivalName,class,sourceId,checkedOn`): one row per club per rival, stored separately for each club; **the class (`main`, `local`, `other`) comes only from the wording of the row's source** (arch-rival or biggest rivalry = main, derby or nearby-city rivalry = local, anything else = other); where the source does not say a rivalry exists there is no row, and no ranking is invented. `club-atmosphere.csv` (`clubQ,situation,opponentQ,opponentName,where,whenText,what,attribution,basis,sourceId,checkedOn`): **every row is an attributed claim, never our own fact**. `situation` is `derby`, `european`, `cup`, `big-occasion`, `regular-home` or `other`; blank `opponentQ` and `opponentName` mean any opponent; `whenText` is month level or a season phase, never a future day; `what` is one sentence in our own words, and "best", "loudest" or "most intense" appear only inside a quotation or an attribution ("According to ..."); `basis` is `documented` (a checkable fact: a sell-out, an attendance record, a choreography with press coverage) or `reported` (a press, club or fan-media statement about noise or intensity). No forum posts or social media. `club-culture-sources.csv` (`sourceId,url,title,retrievedOn,kind`; kind `wikipedia`, `club`, `press`, `fan-media`) holds the citations of both; the ids `R1`-`R17` are the old `rivalry-sources.csv`, moved here unchanged. **There is no row target and no row limit**: a row exists because a source supports it, never to fill a club; a club with no sourced rows gets no section. Read by the club sheet's **Rivalries** section (main, then local, then other, alphabetical within a class; the first 5 shown, the rest behind "Show all (n)") and, directly below, **When the atmosphere is best** (groups in the fixed order above, collapsible, count in each heading, only the first group with rows open, a "Reported" or "Documented" label on each row, and the note "Opinions of the cited sources, not measured."), and by `tools/check_club_culture.py`, which replaced `check_rivalries.py` (and its limit of 5 rows a club). **State on 2026-10-09: scope was the 18 German tier-1 clubs, and no row was added to `club-atmosphere.csv` and none to `club-rivalries.csv`.** Every page host tried (Wikipedia, dfb.de, bundesliga.com, kicker.de, mainz05.de) answered "blocked by the network egress proxy", spiegel.de was refused, and a search-result summary is not an opened page, so under the two-tries rule no row was written. The 38 rivalry rows from 2026-10-08 are unchanged (all `other`, from `derbies.csv` citations). Tiers 2, 3 and 4 of Germany (18, 20 and 88 clubs) are not started.
 
-- `data/attended.json` — added 2026-10-09. **The matches and events Alexandru attended**, moved unchanged from the old Meciuri app's `data.js` (`matches`: 23, `events`: 3; every entry deep-equal to the original, ids and order unchanged; nothing added, corrected or completed). **Hand-written; no script ever writes to it.** **Its factual notes (`note` on a match, `what` and `why` on an event) were written by an assistant from memory and are unverified**; they are not shown anywhere yet (step 2), and a verification pass is what would change that. Read by the Me tab's first three sub-tabs, loaded only when one of them is opened. **Device-only items are never committed**: the old app kept the personal notes, supported team, ticket, seat, block and companions in the phone's `localStorage` (`mf_personal`), photos and videos in IndexedDB (`mf_media`, store `items`) and imported matches in `mf_imported`; none of that is in this repo, none is read by this site yet, and none may ever be committed.
+- `data/attended.json` — added 2026-10-09. **The matches and events Alexandru attended**, moved unchanged from the old Meciuri app's `data.js` (`matches`: 23, `events`: 3; every entry deep-equal to the original, ids and order unchanged; nothing added, corrected or completed). **Hand-written; no script ever writes to it.** **Its factual notes (`note` on a match, `what` and `why` on an event) were written by an assistant from memory and are unverified**; they are shown on the detail sheet with the label "Written by an assistant from memory, not yet verified", and a verification pass is what would change that. Read by the Me tab's first three sub-tabs, loaded only when one of them is opened. **Device-only items are never committed**: the old app kept the personal notes, supported team, ticket, seat, block and companions in the phone's `localStorage` (`mf_personal`), photos and videos in IndexedDB (`mf_media`, store `items`) and imported matches in `mf_imported`; none of that is in this repo, none is read by this site yet, and none may ever be committed.
 
 ### Generated — safe to overwrite
 
@@ -699,12 +699,12 @@ a subscribed calendar reads as a schedule regardless of its description.
   sideways with forms or cards open; or if anything typed on the tab is in
   any request's URL, headers or body, in a cookie, sessionStorage,
   IndexedDB or the repository, or any request other than GET reaches the
-  site. 83 checks; since 2026-10-09 113, as it also covers the Me tab's four
+  site. 83 checks; since 2026-10-09 131 (113 before the detail sheet), as it also covers the Me tab's four
   sub-tabs (Conventions, "The Me tab's attended matches and events"): their order
   and fit at 390 px in English and Romanian, the file requested only once the Me
   tab is opened, the stats and list counts against counts made from
-  `data/attended.json` itself, every entry rendered and opening the header sheet,
-  identical `en` and `ro` key sets, no browser storage read, a failed load said.
+  `data/attended.json` itself, every entry rendered and opening its detail sheet (line-ups, pitch, timeline, stats, note, personal fields),
+  identical `en` and `ro` key sets, no browser storage read by the list tabs and no `mf_` key read or written by the sheet, a failed load said.
 - `tools/test_ksc_tickets.js` — added 2026-10-06: Karlsruher SC's ticket
   information at 390x844, checked against the files. Fails if KSC is not
   listed under Clubs on the Ticket info tab; if its entry does not open
@@ -2304,16 +2304,50 @@ four sub-tabs, in this order: **Stats**, **Matches**, **Events**, **Tickets**
 - **Order.** Matches by `date`, oldest first, the same date in the file's order,
   numbered 1..n, as the old app listed them; events in the file's order.
   A card shows teams and score, competition and stage, stadium and city, date.
-  Tapping one opens the sheet (`#asheet`, the club sheet's shape) with the basic
-  header fields only: for a match date, teams, score, competition, stage,
-  stadium, city, country; for an event title, date, place. **No line-ups, pitch,
-  timeline or notes: that is step 2.**
+  Tapping one opens the sheet (`#asheet`, the club sheet's shape): until
+  2026-10-09 with the basic header fields only, since then the full detail
+  sheet (next entry).
+- **Detail sheet, 2026-10-09 (step 2).** Tapping a match or event opens the full
+  detail sheet (`#asheet`, the club sheet's shape), from `data/attended.json`
+  only. The old app's match detail had five sub-tabs: **Line-ups** (a pitch of
+  the starting eleven laid out from the formation, goal, card and substitution
+  badges beside names, a home/away switch, coach, substitutions with minutes,
+  unused bench), **Timeline** (goals, cards and substitutions sorted by minute,
+  stoppage time after its minute, a card with no minute first and shown as "—",
+  the away side mirrored), **Stats** (six paired bars and the source),
+  **Photos/videos** and **Notes** (the factual note, "My note", ticket, seat,
+  block, who I went with); an event's detail had What it was, Why it mattered,
+  My note, ticket/seat/block (only `atStadium`), who I went with, and media.
+  **Reproduced, stacked in the sheet in that order, each only if the data has
+  something for it** (an absent pane is not drawn empty): header (the old
+  header's attendance, referee and after-90 score added when the file has
+  them), line-ups with the pitch as inline SVG, timeline, stats, factual note,
+  personal fields; for an event, what, why, the `atStadium` flag and the
+  personal fields. **Not reproduced: photos and videos (step 3).** The pitch is
+  drawn only where the formation's rows add up to the ten outfield players of an
+  eleven-man list; otherwise the starting eleven is listed with no pitch. **A
+  formation is never inferred.** On 2026-10-09 the file holds 21 matches with
+  line-ups (40 teams, every one with a formation that draws), 15 with stats.
+  The assistant-written factual notes (`note`, and an event's `what` and `why`)
+  are labelled "Written by an assistant from memory, not yet verified".
+- **Personal fields are device-only and never committed.** My notes, Ticket,
+  Seat, Block and Who I went with are kept in this browser's `localStorage`
+  under `football-attended-personal`, one object keyed by entry id with the old
+  app's `mf_personal` shape (`{id: {note, ticket, seat, block, withWho}}`), saved as
+  typed. **Never in the repo, never read by any tool, never in the Me tab's
+  export (nothing was added to it), never in a request.** The page does **not**
+  read the old app's `mf_personal`, `mf_imported`, `mf_lang`, `mf_theme` or the
+  IndexedDB `mf_media`; moving that data is step 3 and needs an export file. A
+  value on Ticket, Seat, Block or Who I went with holding a payment card number
+  (the Me tab's own check, 13-19 digits passing Luhn) is refused and not saved,
+  with the reason shown; My notes is not checked. Storage blocked: the fields
+  work for the visit and the sheet says so. `tools/test_me.js` checks the new key
+  is the only one used and no read or write is an `mf_` key (131 checks).
 - **Not reproduced from the old app** (all need data kept on the old app's
   phone): the win/draw/loss record "with the team you supported" (it counts
   the `supported` choice made on the device), the supporter buttons on a match
   card, the "Add a match" import and "Save a copy" export, the match detail's
-  line-ups, timeline, stats, photos/videos and notes tabs, and the theme
-  switch.
+  photos/videos (step 3), and the theme switch.
 - **Language.** Every new string goes through `t(key)` and the `I18N`
   dictionary, with the same keys in `en` and `ro` (checked by
   `tools/test_me.js`). The `ro` block is marked **"RO unchecked by the user"**:
@@ -2322,7 +2356,9 @@ four sub-tabs, in this order: **Stats**, **Matches**, **Events**, **Tickets**
   toggle yet.** The strings that were already on the Tickets sub-tab are
   English only and were not moved into the dictionary.
 - **Step 2 and the device.** The new sub-tabs read **nothing** from browser
-  storage except that language key (the test records every `localStorage` read).
+  storage except the language key and, once a detail sheet is opened,
+  `football-attended-personal` (the test records every `localStorage` read and
+  write; none is an `mf_` key). The old `supported` choice is not kept.
   The old app's keys are `mf_personal` (per match or event id: `note`, `ticket`,
   `seat`, `block`, `withWho`, `supported`), `mf_imported`, `mf_lang`, `mf_theme`,
   and IndexedDB `mf_media` (store `items`); ids in `data/attended.json` are the
@@ -2544,7 +2580,7 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15`; it has been `v15` since 2026-10-09, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
+  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16`; it has been `v16` since 2026-10-09, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
   2026-10-08, when the 160-entry bucket batch and Group order shipped, `v8` before that, from 2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,
