@@ -674,7 +674,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   a month's render time at 4x CPU. With estimates also put on a day cell
   and each holiday block's last day dropped, in a scratch copy, it failed
   49 of 195 checks.
-- `tools/test_me.js` — (since 2026-10-09 it also covers the translated interface: see "The interface is translated", 32 more checks) added 2026-10-04: the Me tab at 390x844, the clock
+- `tools/test_me.js` — (since 2026-10-09 it also covers the Dark/Light theme: the toggle and its persistence, the pre-paint script, no colour literal outside the variable sets, 4.5:1 text contrast on every main tab, Me sub-tab and sheet in both themes, the light-tile fall-back to dark, the palette's distinctness, nothing overflowing at 390 px; and the translated interface: see "The interface is translated", 32 more checks) added 2026-10-04: the Me tab at 390x844, the clock
   at 2026-10-04 12:00 Berlin time. Fails if the four tabs do not fit the
   bottom bar (one wider than its slot, wrapped or off screen); if adding,
   editing or deleting a membership or a ticket goes wrong; if "Renewal due
@@ -2524,6 +2524,60 @@ stays English** and **the Romanian is unchecked until he says otherwise**.
   interface text and without sideways scroll at 390 px. A scratch scan for
   English function words found only data-file text. `SHELL_VERSION` is `v18`.
 
+**Colours live in CSS variables, and the light map falls back to dark,
+2026-10-09.** Done on Alexandru's instruction.
+- **Theme.** Settings (the button at the top of the Me tab) has a **Theme**
+  group, **Dark** (the default, the look the app always had) and **Light**,
+  kept on this device only under `football-planner-theme` (`light` or `dark`;
+  anything else is dark; no `mf_*` key is read). A tiny inline script in
+  `<head>`, before the stylesheet, sets `<html data-theme>` and the
+  `theme-color` meta before first paint, so there is no flash of the wrong
+  theme. Labels go through `t(key)` (`set.theme`, `set.theme.dark`,
+  `set.theme.light`, `set.themeNote`, `map.lightUnavail`), `en` and `ro`, the
+  Romanian **unchecked by the user**; `docs/ro-review.md` has the five new rows.
+- **Every colour in `index.html` is a variable**: a dark set in `:root` and a
+  light set in `:root[data-theme="light"]`. Nothing else in the file holds a
+  hex, `rgb()` or `hsl()` literal (`tools/test_me.js` fails if one appears)
+  **except**: the two copies of the dark and light `theme-color` in the
+  pre-paint script and the meta tag (a script that must run before the CSS
+  cannot read it). Not themed on purpose, defined once in `:root`: the photo
+  viewer (always black: `--media-*`, `--scrim`) and the line-up pitch (always
+  grass: `--pitch-*`). Map markers need real colour values, so
+  `syncPalette()` reads `--t1`...`--t8`, `--route`, `--pin-ink` and the two ink
+  colours from the CSS at start-up and on every theme change; HTML uses
+  `var(--tN)` through `tv()` and `tierStyle()`. **A new colour goes in as a
+  variable in both sets, never as a literal.**
+- **The pre-paint script also sets the root `color-scheme`** (inline), so the canvas before the stylesheet loads, scrollbars and the browser's own controls follow the theme; in dark that is the one visible difference from before (they were left light).
+- **Dark was kept except two values, both for contrast (4.5:1)**: `--faint`
+  `#6b7681` to `#808b97` (3.7:1 on the panel before) and `--accent`
+  `#d9483b` to `#ea6a5a` (the calendar's today number, 4.3:1 on its cell), and
+  placeholders now use `--faint` (the browser default was 4.1:1).
+- **The light map is Stadia's Alidade Smooth**
+  (`tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png`, the light
+  sibling of the dark style already used), the same domain authentication, no
+  key, nothing cached, one credit per tile as before. The style name and URL
+  shape were confirmed only from search results: the Stadia docs page was not
+  opened (the sandbox cannot reach Stadia). **If four light tiles fail in a row
+  while the phone is online, the page uses the dark tiles for the rest of the
+  session and shows a short note ("The light map is unavailable...");** the
+  stored choice stays Light, a reload tries the light tiles again, and a late
+  failure of a tile asked for under the old style is ignored. Offline, or
+  when the dark tiles fail too, the existing "needs a connection" card is the
+  only message.
+- **Light palette.** Tier colours are deeper in light so they stand out from
+  pale tiles and keep 4.5:1 as tag text (`--t1` `#c9301d`, `--t2` `#9c5c00`,
+  `--t3` `#1769c2`, `--t4` `#0f7f69`, `--t5` `#237a2e`, `--t6` `#7440c0`,
+  `--t7` `#cc3a78`, `--t8` `#6a4726`; route `#0a3fbf`); the marker outline and
+  the shared-ground ring switch to dark ink on light tiles. Checked in
+  `test_me.js` on both themes: the eight tiers and the route pairwise at least
+  10 apart in CIE76 colour difference (the dark route `#58a6ff` against tier 3
+  `#3fa0e8` is the closest pair, 11), and every colour or its outline 3:1 against
+  the map background. **There are no Near me markers on the map** (the list
+  has none); the route's A and B pins use `--route`.
+- **Not seen on a real phone or against Stadia**: the tiles are stubbed, so
+  what the light map looks like under the markers was not looked at.
+  `SHELL_VERSION` is `v19`.
+
 **The Me tab: memberships and tickets held, on the device only,
 2026-10-04.** Built on Alexandru's instruction. A fourth tab in the bottom
 bar (its four labels fit 390 px, one line each - `test_me.js` checks it).
@@ -2738,7 +2792,7 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16` → `v17` → `v18`; it has been `v18` since 2026-10-09, when the whole interface was translated (it was `v17` from the same day, when the imported matches, supporter buttons and media shipped); it was `v16` from the same day, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
+  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16` → `v17` → `v18` → `v19`; it has been `v19` since 2026-10-09, when the Light theme shipped; it was `v18` the same day, when the whole interface was translated (it was `v17` from the same day, when the imported matches, supporter buttons and media shipped); it was `v16` from the same day, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
   2026-10-08, when the 160-entry bucket batch and Group order shipped, `v8` before that, from 2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,

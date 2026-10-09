@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Texts that come from the data files are not here: they stay in English. `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1121 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1126 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -1087,6 +1087,11 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `set.note` | The language of the app's own words. Text that comes from the data files stays in English. Kept on this device only. | Limba cuvintelor proprii ale aplicației. Textul care vine din fișierele de date rămâne în engleză. Se păstrează doar pe acest dispozitiv. |
 | `set.roNote` | The Romanian text was written by an assistant and has not been checked by you yet. | Textul în română a fost scris de un asistent și nu a fost încă verificat de tine. |
 | `set.btn` | Settings | Setări |
+| `set.theme` | Theme | Temă |
+| `set.theme.dark` | Dark | Întunecată |
+| `set.theme.light` | Light | Luminoasă |
+| `set.themeNote` | The colours of the app. Dark is the default. Kept on this device only. | Culorile aplicației. Implicit este cea întunecată. Se păstrează doar pe acest dispozitiv. |
+| `map.lightUnavail` | The light map is unavailable, so the dark map is shown for this visit. | Harta luminoasă nu este disponibilă, așa că se afișează harta întunecată pe durata acestei vizite. |
 | `nav.map` | Map | Hartă |
 | `nav.bucket` | Bucket list | Dorințe |
 | `nav.tickets` | Ticket info | Info bilete |

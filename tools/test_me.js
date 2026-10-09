@@ -55,6 +55,11 @@
 //    Me tab, the choice stored under football-planner-lang and kept over a reload, the fourth sub-tab renamed Tickets/Memberships in both languages;
 //    in Romanian every main tab, the four Me sub-tabs, the panels and the sheets are free of English interface text (data-content areas excepted)
 //    and fit at 390 px; a change of language redraws an open sheet and keeps a form being filled in;
+//  - since 2026-10-09 the Dark/Light theme: the Settings toggle stored under football-planner-theme and kept over a reload (dark by default, an invalid
+//    value ignored, blocked storage tolerated, no mf_ key); the theme applied before first paint; no colour literal in index.html outside the two
+//    variable sets; text at least 4.5:1 on every main tab, the Me sub-tabs and the sheets in both themes, with no near-black-on-dark or white-on-white
+//    pair in light; Stadia's light tiles in light mode with a fall-back to the dark tiles and a note when they keep failing; the palette distinct;
+//    nothing overflows at 390 px in either theme;
 //  - no script error.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -1288,6 +1293,244 @@ function alarmAt(ev, al){
   check('A form being filled in keeps what was typed when the language changes', await pL.inputValue('form.meform input[name=club]') === 'Typed ' + TAG, '');
   await pL.evaluate(() => setLang('en'));
   await ctxL.close();
+  }
+
+
+  // ---- Theme (Dark / Light), 2026-10-09: the toggle in Settings, applied before first paint, kept under football-planner-theme;
+  //      every colour a CSS variable; readable text in both themes; light tiles with a fall-back to dark; nothing overflows at 390 px.
+  {
+  const THEME_KEY = 'football-planner-theme';
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  const hi = html.indexOf('<script>(function(){var t="dark"');
+  check('The pre-paint script is a tiny inline script in <head>, before the stylesheet and the body, reading only football-planner-theme',
+    hi > html.indexOf('<head>') && hi < html.indexOf('<style>') && hi < html.indexOf('<body') && html.slice(hi, html.indexOf('</script>', hi)).includes(THEME_KEY)
+    && html.indexOf('</script>', hi) - hi < 700 && !/mf_/.test(html.slice(hi, html.indexOf('</script>', hi))), '');
+  const scanContrast = function scanContrast(rootSel){
+  const parse = s => { const m = String(s).match(/rgba?\(([^)]+)\)/); if(!m) return null;
+    const p = m[1].split(/[ ,\/]+/).filter(Boolean).map(Number); return {r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1}; };
+  const lum = c => { const f = v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }; return .2126 * f(c.r) + .7152 * f(c.g) + .0722 * f(c.b); };
+  const over = (top, bot) => { const a = top.a + bot.a * (1 - top.a);
+    return a === 0 ? {r: 0, g: 0, b: 0, a: 0} : {r: (top.r * top.a + bot.r * bot.a * (1 - top.a)) / a, g: (top.g * top.a + bot.g * bot.a * (1 - top.a)) / a, b: (top.b * top.a + bot.b * bot.a * (1 - top.a)) / a, a}; };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+  const page = parse(getComputedStyle(document.documentElement).backgroundColor);
+  const base = page && page.a ? page : {r: 255, g: 255, b: 255, a: 1};
+  const backdrop = el => {            // the colour behind el's content, or null when it is an image / gradient / faded
+    const layers = []; let open = true;
+    for(let e = el; e; e = e.parentElement){
+      const cs = getComputedStyle(e);
+      if(+cs.opacity < 1) return null;
+      if(open){
+        if(cs.backgroundImage !== 'none') return null;
+        const c = parse(cs.backgroundColor);
+        if(c && c.a > 0){ layers.push(c); if(c.a === 1) open = false; }
+      }
+    }
+    let acc = base; for(let i = layers.length - 1; i >= 0; i--) acc = over(layers[i], acc);
+    return acc;
+  };
+  const root = document.querySelector(rootSel);
+  const out = {checked: 0, skipped: 0, fails: [], pairs: []};
+  if(!root) return {error: 'no ' + rootSel};
+  const light = document.documentElement.getAttribute('data-theme') === 'light';
+  const seen = new Set();
+  const test = (el, fgStr, label) => {
+    const bg = backdrop(el); if(!bg){ out.skipped++; return; }
+    let fg = parse(fgStr); if(!fg){ out.skipped++; return; }
+    if(fg.a < 1) fg = over(fg, bg);
+    out.checked++;
+    const r = ratio(fg, bg), cls = typeof el.className === 'string' ? el.className.trim().split(/\s+/)[0] : '';
+    const id = `${el.tagName.toLowerCase()}${el.id ? '#' + el.id : cls ? '.' + cls : ''} "${label.slice(0, 28)}"`;
+    if(r < 4.5) out.fails.push(`${id} ${r.toFixed(2)} fg ${fgStr} on ${Math.round(bg.r)},${Math.round(bg.g)},${Math.round(bg.b)}`);
+    if(light){
+      const lf = lum(fg), lb = lum(bg);
+      if((lf <= .05 && lb <= .1) || (lf >= .8 && lb >= .8)) out.pairs.push(`${id} text ${Math.round(fg.r)},${Math.round(fg.g)},${Math.round(fg.b)} on ${Math.round(bg.r)},${Math.round(bg.g)},${Math.round(bg.b)}`);
+    }
+  };
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for(let n; (n = w.nextNode());){
+    const el = n.parentElement; const txt = n.nodeValue.trim();
+    if(!txt || seen.has(el) || el.closest('svg,script,style,[hidden],option')) continue;
+    seen.add(el);
+    if(!el.getClientRects().length || getComputedStyle(el).visibility === 'hidden' || el.closest('[disabled]')) continue;
+    test(el, getComputedStyle(el).color, txt);
+  }
+  for(const el of root.querySelectorAll('input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]),textarea,select')){
+    if(!el.getClientRects().length || el.disabled || el.closest('[hidden]')) continue;
+    if(el.tagName === 'SELECT' || el.value) test(el, getComputedStyle(el).color, el.value || 'select');
+    else if(el.placeholder) test(el, getComputedStyle(el, '::placeholder').color, el.placeholder);
+  }
+  return out;
+};
+  const track = ctx => ctx.addInitScript(() => {
+    window.__keys = []; const g = Storage.prototype.getItem, s = Storage.prototype.setItem;
+    Storage.prototype.getItem = function(k){ window.__keys.push('r:' + k); return g.call(this, k); };
+    Storage.prototype.setItem = function(k, v){ window.__keys.push('w:' + k); return s.call(this, k, v); };
+  });
+  const openPage = async (ctx, tiles) => {
+    const p = await ctx.newPage(); p.on('pageerror', e => errors.push(e.message));
+    if(tiles) p.on('request', r => { if(r.url().includes('tiles.stadiamaps.com')) tiles.push(r.url()); });
+    await p.goto(BASE);
+    await p.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    await p.waitForFunction(() => document.querySelector('#bucketBody details.bucket'), null, {timeout: 15000});
+    return p;
+  };
+  const themeOf = p => p.evaluate(() => ({attr: document.documentElement.getAttribute('data-theme'), stored: localStorage.getItem('football-planner-theme'),
+    meta: document.querySelector('meta[name="theme-color"]').content, bg: getComputedStyle(document.body).backgroundColor,
+    pressed: [...document.querySelectorAll('#ssheet button[data-theme]')].map(b => b.textContent + ':' + b.getAttribute('aria-pressed')).join()}));
+
+  // Default, toggle, persistence, languages.
+  const ctxT = await newCtx(); await track(ctxT);
+  const tilesT = [];
+  const pT = await openPage(ctxT, tilesT);
+  const d0 = await themeOf(pT);
+  check('First visit: dark, theme-color #0d1117, the body as it always was, and loading writes nothing under the theme key',
+    d0.attr === 'dark' && d0.meta === '#0d1117' && d0.bg === 'rgb(13, 17, 23)' && d0.stored === null, JSON.stringify(d0));
+  check('Dark mode keeps the existing look: the original variables are unchanged',
+    JSON.stringify(await pT.evaluate(() => ['--bg', '--panel', '--line', '--ink', '--dim', '--t1', '--t2', '--t3', '--t4', '--t5', '--t6', '--t7', '--t8', '--ok', '--warn', '--bad', '--surf', '--surf2', '--field']
+      .map(n => getComputedStyle(document.documentElement).getPropertyValue(n).trim()))) ===
+    JSON.stringify(['#0d1117', '#161b22', '#26303b', '#e6edf3', '#8b949e', '#e8543f', '#e8a33f', '#3fa0e8', '#2aab8e', '#4caf50', '#9b6bd6', '#e8629f', '#825e35', '#3fb950', '#d29922', '#f85149', '#1b2230', '#11161d', '#0d1117']), '');
+  check('Dark tiles are asked for first, and no request carries a key', tilesT.length > 0 && tilesT.every(u => u.includes('/alidade_smooth_dark/') && !/api_key|key=/.test(u)), tilesT[0]);
+  await pT.click('nav button[data-pane=me]'); await pT.click('#settingsBtn');
+  check('Settings has a Theme group, Dark pressed, Light not', (await themeOf(pT)).pressed === 'Dark:true,Light:false', (await themeOf(pT)).pressed);
+  const n0 = tilesT.length;
+  await pT.click('#ssheet button[data-theme=light]');
+  const d1 = await themeOf(pT);
+  check('Choosing Light: stored under football-planner-theme, data-theme and theme-color follow, the body is light, the button is pressed',
+    d1.attr === 'light' && d1.stored === 'light' && d1.meta === '#f6f8fa' && d1.bg === 'rgb(246, 248, 250)' && d1.pressed === 'Dark:false,Light:true', JSON.stringify(d1));
+  check('The language buttons are not disturbed by the theme buttons', await pT.evaluate(() => [...document.querySelectorAll('#ssheet button[data-lang]')].map(b => b.getAttribute('aria-pressed')).join()) === 'true,false', '');
+  await pT.click('#ssheetClose'); await pT.click('nav button[data-pane=map]');
+  await pT.waitForTimeout(800);
+  const newTiles = tilesT.slice(n0);
+  check('In light mode the light tiles (alidade_smooth) are asked for, with no key', newTiles.some(u => /\/alidade_smooth\/\d/.test(u)) && newTiles.every(u => !/api_key|key=/.test(u)), newTiles.slice(0, 2).join(' '));
+  check('Map markers follow the theme: the tier and route colours in the page are the light variables',
+    await pT.evaluate(() => { const v = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+      return [1, 2, 3, 4, 5, 6, 7, 8].every(k => TIER_COLOUR[k] === v('--t' + k)) && ROUTE_COLOUR === v('--route') && TIER_COLOUR[1] === '#c9301d'; }), '');
+  await pT.reload(); await pT.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  check('Light is kept over a reload', (await themeOf(pT)).attr === 'light' && (await themeOf(pT)).meta === '#f6f8fa', JSON.stringify(await themeOf(pT)));
+  await pT.click('nav button[data-pane=me]'); await pT.click('#settingsBtn');
+  await pT.evaluate(() => setLang('ro'));
+  check('Romanian: the Theme group, Dark and Light and the note are translated',
+    await pT.evaluate(() => { const s = document.getElementById('ssheet'); return [...s.querySelectorAll('h4')].map(h => h.textContent).includes('Temă') &&
+      [...s.querySelectorAll('button[data-theme]')].map(b => b.textContent).join() === 'Întunecată,Luminoasă' && /Culorile aplicației/.test(s.textContent); }), '');
+  await pT.evaluate(() => setLang('en'));
+  await pT.click('#ssheet button[data-theme=dark]');
+  const d2 = await themeOf(pT);
+  check('Choosing Dark again: stored dark, theme-color back to #0d1117', d2.attr === 'dark' && d2.stored === 'dark' && d2.meta === '#0d1117' && d2.pressed === 'Dark:true,Light:false', JSON.stringify(d2));
+  const keys = await pT.evaluate(() => window.__keys);
+  check('The theme reads and writes only football-planner-theme (and the language key); no mf_ key', keys.some(k => k === 'w:' + THEME_KEY) && !keys.some(k => k.includes('mf_')), [...new Set(keys)].join(','));
+  await ctxT.close();
+
+  // A stored value that is not light or dark is ignored; blocked storage still works for the visit.
+  const ctxB = await newCtx(); await ctxB.addInitScript(() => { try{ localStorage.setItem('football-planner-theme', 'blue'); }catch(e){} });
+  const pB = await openPage(ctxB);
+  check('A stored value other than light or dark is ignored: dark', (await themeOf(pB)).attr === 'dark', '');
+  await ctxB.close();
+  const ctxK = await newCtx({blockStorage: true});
+  const pK = await openPage(ctxK);
+  await pK.click('nav button[data-pane=me]'); await pK.click('#settingsBtn'); await pK.click('#ssheet button[data-theme=light]');
+  check('With storage blocked the page opens dark and the toggle still works for the visit', await pK.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'light', '');
+  await ctxK.close();
+
+  // Applied before first paint: the attribute is set before the browser's first paint, and the body is already light then.
+  const ctxP = await newCtx();
+  await ctxP.addInitScript(() => {
+    try{ localStorage.setItem('football-planner-theme', 'light'); }catch(e){}
+    window.__t = {order: [], bg: null};
+    // The order the parser reaches things: the theme attribute must come before the first stylesheet and the body exist, so nothing can paint in the wrong theme.
+    new MutationObserver(recs => { for(const r of recs){
+      if(r.type === 'attributes') window.__t.order.push('theme=' + document.documentElement.getAttribute('data-theme'));
+      for(const n of r.addedNodes) if(['STYLE', 'LINK', 'BODY'].includes(n.nodeName)) window.__t.order.push(n.nodeName); } })
+      .observe(document, {attributes: true, childList: true, subtree: true, attributeFilter: ['data-theme']});
+    document.addEventListener('DOMContentLoaded', () => { window.__t.bg = getComputedStyle(document.body).backgroundColor + '|' + document.documentElement.getAttribute('data-theme'); });
+  });
+  const pP = await openPage(ctxP);
+  const tm = await pP.evaluate(() => Object.assign({}, window.__t, {scheme: document.documentElement.style.colorScheme}));
+  check('Applied before first paint: data-theme is set before the first stylesheet and the body exist (parser order), the canvas colour scheme with it, and the body is light at DOMContentLoaded',
+    tm.order[0] === 'theme=light' && tm.order.length > 1 && tm.order.indexOf('BODY') > 0 && tm.scheme === 'light' && tm.bg === 'rgb(246, 248, 250)|light', JSON.stringify(tm));
+  await ctxP.close();
+
+  // Light tiles failing: back to the dark tiles for the session, with a short note; the stored choice is untouched.
+  const ctxF = await newCtx(); await ctxF.addInitScript(() => { try{ localStorage.setItem('football-planner-theme', 'light'); }catch(e){} });
+  await ctxF.route('https://tiles.stadiamaps.com/tiles/alidade_smooth/**', r => r.fulfill({status: 503, headers: {'Access-Control-Allow-Origin': '*'}, body: ''}));
+  const tilesF = [];
+  const pF = await openPage(ctxF, tilesF);
+  await pF.waitForFunction(() => !document.getElementById('mapNote').hidden, null, {timeout: 15000}).catch(() => {});
+  await pF.waitForTimeout(800);
+  const f1 = await pF.evaluate(() => ({note: document.getElementById('mapNote').hidden ? null : document.getElementById('mapNote').textContent, card: !document.getElementById('mapOffline').hidden,
+    theme: document.documentElement.getAttribute('data-theme'), stored: localStorage.getItem('football-planner-theme')}));
+  check('Light tiles failing repeatedly: the dark tiles are used, a short note says the light map is unavailable, and no "needs a connection" card',
+    /light map is unavailable/.test(f1.note || '') && !f1.card && tilesF.some(u => /\/alidade_smooth_dark\//.test(u)) && f1.theme === 'light' && f1.stored === 'light', JSON.stringify(f1) + ' ' + tilesF.length);
+  const nF = tilesF.length; await pF.evaluate(() => MAP.panBy([300, 0], {animate: false})); await pF.waitForTimeout(600);
+  check('After the fall-back no more light tiles are asked for in this session, and no key is used', tilesF.slice(nF).every(u => u.includes('/alidade_smooth_dark/') && !/api_key|key=/.test(u)), tilesF.slice(nF).slice(0, 2).join(' '));
+  await pF.click('nav button[data-pane=me]'); await pF.click('#settingsBtn'); await pF.evaluate(() => setLang('ro'));
+  check('The note is translated', /Harta luminoasă nu este disponibilă/.test(await pF.textContent('#mapNote')), '');
+  await ctxF.close();
+
+  // Colours: nothing hard-coded outside the two variable sets, the pre-paint script and the theme-color meta.
+  const css = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+  const rootEnd = css.indexOf(':root[data-theme="light"]'); const lightEnd = css.indexOf('}', rootEnd);
+  const outside = (css.slice(0, css.indexOf(':root{')) + css.slice(lightEnd) + html.slice(html.indexOf('</style>'))).split('\n')
+    .filter(l => /#[0-9a-fA-F]{3,8}\b|rgba?\(\s*\d|hsla?\(/.test(l) && !/theme-color|data-theme|getPropertyValue|setAttribute\("content"/.test(l));
+  check('Every colour in index.html is a CSS variable: no hex, rgb() or hsl() literal outside the two variable sets', !outside.length, outside.slice(0, 4).map(l => l.trim().slice(0, 80)).join(' | '));
+
+  // Contrast, both themes: every main tab, the Me sub-tabs and the sheets; 4.5:1 for all text; light mode no near-black-on-dark / white-on-white pair.
+  for(const th of ['dark', 'light']){
+    const ctxC = await newCtx(); await ctxC.addInitScript(t => { try{ localStorage.setItem('football-planner-theme', t); }catch(e){} }, th);
+    const pC = await openPage(ctxC);
+    const sections = [];
+    const run = async (name, sel) => { const o = await pC.evaluate(scanContrast, sel); sections.push(name);
+      check(`${th}: ${name} - text is at least 4.5:1 against its background (${o.checked} checked, ${o.skipped} skipped: gradient or faded)`, !o.error && o.checked > 0 && !o.fails.length, o.error || [...new Set(o.fails)].slice(0, 6).join(' | '));
+      if(th === 'light') check(`light: ${name} - no near-black text on a dark background and no white on white`, !o.error && !o.pairs.length, (o.pairs || []).slice(0, 4).join(' | ')); };
+    const hideAll = () => pC.evaluate(() => { for(const id of ['routePanel', 'nearPanel', 'coveragePanel', 'filterPanel', 'ssheet', 'asheet', 'sheet']) document.getElementById(id).hidden = true; });
+    await pC.click('#legendToggle'); await run('map and legend', '#pane-map');
+    await pC.click('#zoomChip'); await pC.waitForTimeout(300); await run('coverage panel', '#coveragePanel'); await hideAll();
+    await pC.click('#nearChip'); await pC.waitForTimeout(500); await run('Near me panel', '#nearPanel'); await hideAll();
+    await pC.click('#routeChip'); await pC.waitForTimeout(300); await run('route panel', '#routePanel'); await hideAll();
+    await pC.evaluate(() => openSheet(CLUBS.find(c => c.id === 'Q4512'))); await pC.waitForTimeout(400); await run('club sheet (VfB Stuttgart)', '#sheet'); await hideAll();
+    await pC.click('nav button[data-pane=bucket]'); await run('Bucket list', '#pane-bucket');
+    await pC.click('#bfChip'); await pC.waitForTimeout(300); await run('filter panel', '#filterPanel'); await hideAll();
+    await pC.click('#tabCal'); await run('Bucket calendar', '#pane-bucket');
+    await pC.click('nav button[data-pane=tickets]'); await pC.waitForTimeout(300);
+    await pC.evaluate(() => document.querySelectorAll('#ticketBody details').forEach((d, i) => { if(i < 4) d.open = true; })); await run('Ticket info', '#pane-tickets');
+    await pC.click('nav button[data-pane=competitions]'); await pC.waitForTimeout(400); await run('Competitions', '#pane-competitions');
+    await pC.click('nav button[data-pane=me]');
+    for(const [id, name] of [['Stats', 'Me - Stats'], ['Matches', 'Me - Matches'], ['Events', 'Me - Events'], ['Tix', 'Me - Tickets/Memberships']]){
+      await pC.click('#meTab' + id); await pC.waitForTimeout(500); await run(name, '#pane-me'); }
+    await pC.click('#meTabMatches'); await pC.click('#meMatches .acard'); await pC.waitForTimeout(500); await run('a match sheet', '#asheet'); await hideAll();
+    await pC.click('#meTabTix'); await pC.click('[data-act=add][data-kind=membership]'); await run('Me form open', '#pane-me');
+    await pC.click('#settingsBtn'); await run('Settings', '#ssheet'); await hideAll();
+
+    // Nothing overflows at 390 px in this theme.
+    const over = [];
+    for(const [pane, sub] of [['map'], ['bucket'], ['tickets'], ['competitions'], ['me', 'Stats'], ['me', 'Matches'], ['me', 'Events'], ['me', 'Tix']]){
+      await pC.click(`nav button[data-pane=${pane}]`); if(sub) await pC.click('#meTab' + sub); await pC.waitForTimeout(200);
+      const o = await pC.evaluate(p => { const el = document.getElementById('pane-' + p);
+        return {doc: document.documentElement.scrollWidth, pane: el.scrollWidth - el.clientWidth, bad: [...el.querySelectorAll('*')].filter(x => { const r = x.getBoundingClientRect(); return r.width > 0 && (r.right > innerWidth + 1 || r.left < -1) && !x.closest('.leaflet-container,svg,[hidden],.sheet'); }).slice(0, 3).map(x => x.tagName + '.' + x.className)}; }, pane);
+      if(o.doc > W || o.pane > 0 || o.bad.length) over.push(`${pane}${sub || ''} ${JSON.stringify(o)}`);
+    }
+    check(`${th}: every main tab and Me sub-tab fits 390 px, nothing overflows`, !over.length, over.join(' | '));
+
+    // The palette: tier colours, markers and the route line stay distinct from each other and from the map, on this theme's tiles.
+    const pal = await pC.evaluate(() => { const v = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+      return {tiers: [1, 2, 3, 4, 5, 6, 7, 8].map(k => v('--t' + k)), route: v('--route'), map: v('--map-bg'), ink: v('--pin-ink'), grass: v('--pitch-grass'), pink: v('--pitch-ink'), disc: v('--pitch-disc')}; });
+    const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+    const lumH = h => { const [r, g, b] = rgb(h).map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * r + .7152 * g + .0722 * b; };
+    const cr = (a, b) => { const x = lumH(a), y = lumH(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+    const lab = h => { const f = v => { v /= 255; return v <= .04045 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
+      const [r, g, b] = rgb(h).map(f); const X = (r * .4124 + g * .3576 + b * .1805) / .95047, Y = r * .2126 + g * .7152 + b * .0722, Z = (r * .0193 + g * .1192 + b * .9505) / 1.08883;
+      const q = t => t > .008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116; return [116 * q(Y) - 16, 500 * (q(X) - q(Y)), 200 * (q(Y) - q(Z))]; };
+    const dE = (a, b) => Math.hypot(...lab(a).map((v, i) => v - lab(b)[i]));
+    const all = [...pal.tiers.map((c, i) => ['tier ' + (i + 1), c]), ['route', pal.route]];
+    const close = [], weak = [];
+    for(let i = 0; i < all.length; i++){
+      for(let j = i + 1; j < all.length; j++) if(dE(all[i][1], all[j][1]) < 10) close.push(`${all[i][0]}/${all[j][0]} dE ${dE(all[i][1], all[j][1]).toFixed(1)}`);
+      if(cr(all[i][1], pal.map) < 3 && cr(pal.ink, pal.map) < 3) weak.push(`${all[i][0]} ${cr(all[i][1], pal.map).toFixed(1)}`);
+    }
+    check(`${th}: the eight tier colours and the route colour are pairwise distinct (colour difference at least 10)`, !close.length, close.join(', '));
+    check(`${th}: every tier and route colour, or else the marker outline, stands out from the map background by 3:1`, !weak.length, weak.join(', ') + ' outline ' + cr(pal.ink, pal.map).toFixed(1));
+    check(`${th}: the line-up pitch text is at least 4.5:1 on the grass and on the number discs`, cr(pal.pink, pal.grass) >= 4.5 && cr(pal.pink, pal.disc) >= 4.5, cr(pal.pink, pal.grass).toFixed(1));
+    await ctxC.close();
+  }
   }
 
   // A failed load says so.
