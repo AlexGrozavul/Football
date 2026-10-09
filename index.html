@@ -513,6 +513,32 @@
   #asheet .apers [aria-invalid="true"]{border-color:var(--bad)}
   #asheet .perr{color:var(--bad);font-size:12.5px;margin-top:3px}
   #asheet .perr:empty{display:none}
+  /* Device-only additions of 2026-10-09: imported matches, the supporter choice, the record, photos and videos. */
+  .att .aimp,#asheet .aimp{display:inline-block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--t3);
+    border:1px solid var(--t3);border-radius:999px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+  .att .awdl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .att .aadd{background:#11161d;border:1px solid var(--line);border-radius:10px;padding:0 12px;margin-bottom:10px}
+  .att .aadd summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:14px}
+  .att .aadd textarea{display:block;width:100%;min-height:120px;box-sizing:border-box;background:#0d1117;border:1px solid var(--line);
+    border-radius:8px;color:var(--ink);font:inherit;font-size:16px;padding:9px 10px;resize:vertical}
+  .att button.ab,#asheet button.ab,#asheet label.ab{display:inline-flex;align-items:center;justify-content:center;min-height:44px;background:#1b2230;
+    border:1px solid var(--line);border-radius:9px;color:var(--ink);font:inherit;font-size:13.5px;padding:0 13px;cursor:pointer;margin:8px 6px 8px 0;box-sizing:border-box}
+  .att button.ab.go,#asheet button.ab.go{background:var(--t3);border-color:var(--t3);color:#0d1117;font-weight:600}
+  #asheet button.ab.del{color:var(--bad);border-color:#5a2222}
+  .att .amsg,#asheet .amsg{font-size:13px;line-height:1.5;margin:6px 0 10px;overflow-wrap:anywhere}
+  .att .amsg.bad,#asheet .amsg.bad{color:var(--bad)}
+  .att .amsg.ok,#asheet .amsg.ok{color:var(--t3)}
+  #asheet .amgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:6px 0 10px}
+  #asheet .amcell{position:relative;padding:0;aspect-ratio:1/1;overflow:hidden;background:#0d1117;border:1px solid var(--line);border-radius:8px;cursor:pointer;min-height:44px}
+  #asheet .amcell img,#asheet .amcell video{width:100%;height:100%;object-fit:cover;display:block}
+  #asheet .amcell .tagv{position:absolute;left:4px;bottom:4px;background:rgba(0,0,0,.68);color:#fff;font-size:10px;letter-spacing:.06em;padding:1px 5px;border-radius:4px}
+  #asheet .amfile{position:absolute;width:1px;height:1px;opacity:0}
+  #amover{position:fixed;inset:0;z-index:1200;background:#000;display:flex;flex-direction:column}
+  #amover .mtop{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px}
+  #amover .mtop button{min-height:44px;min-width:44px;background:#1b2230;border:1px solid var(--line);border-radius:9px;color:#fff;font:inherit;font-size:14px;padding:0 14px}
+  #amover .mbody{flex:1;display:flex;align-items:center;justify-content:center;padding:6px;min-height:0}
+  #amover img,#amover video{max-width:100%;max-height:100%;object-fit:contain}
+  #amover .mcap{color:#b9bdc6;font-size:12px;padding:8px 12px 14px;text-align:center;overflow-wrap:anywhere}
 
   /* The Me tab: memberships and tickets held, kept on this device only. */
   .me .mebanner{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#3a2a06;color:#f2d38a;
@@ -4576,7 +4602,11 @@ function showBucketTab(tab){
 
 const ME_KEY = 'football-planner-me', ME_UNSAVED_KEY = 'football-planner-me-unsaved',
   ME_EXPORTED_KEY = 'football-planner-me-exported';
-const ME_FORMAT = 'football-planner-me', ME_VERSION = 1;
+const ME_FORMAT = 'football-planner-me', ME_VERSION = 1;          // ME_VERSION is the stored record's; the FILE's version is separate
+/* The export file. Version 2 (2026-10-09) adds the personal fields and supporter choices of the attended
+   matches and events, and the matches imported by pasting JSON. Version 1 files still import and leave
+   those alone. Photos and videos are never in the file. The old Meciuri app's export is not read. */
+const ME_FILE_VERSION = 2, ME_FILE_READS = [1, 2];
 const TICKET_STATUS = ['requested', 'won', 'bought', 'transferred'];
 const FREQUENCIES = ['yearly', 'per season', 'half-yearly', 'quarterly', 'monthly', 'one-off', 'other'];
 const ME_DEFAULTS = {renewWindowDays: 30, renewalAlertDays: 14, matchAlertDays: 1};
@@ -4941,27 +4971,45 @@ function icsFor(kind, rec){
    this device, after saying what it holds and what it would replace. */
 function meExport(){
   const M = meLoad();
-  const data = {format: ME_FORMAT, version: ME_VERSION, exportedAt: new Date().toISOString(),
+  persLoad(); impLoad();
+  const personal = {};
+  for(const k of Object.keys(PERS)){
+    const v = PERS[k], rec = {};
+    if(!isObj(v)) continue;
+    for(const f of PERS_STORED) if(typeof v[f] === 'string') rec[f] = v[f];
+    if(Object.keys(rec).length) personal[k] = rec;
+  }
+  const data = {format: ME_FORMAT, version: ME_FILE_VERSION, exportedAt: new Date().toISOString(),
     memberships: M.memberships, tickets: M.tickets, favorites: [...favs()],
-    settings: {renewWindowDays: M.settings.renewWindowDays}};
+    settings: {renewWindowDays: M.settings.renewWindowDays},
+    personal, importedMatches: IMP,
+    notIncluded: 'Photos and videos stay in this browser only; they are not in this file.'};
   const name = `football-planner-me-${todayISO()}.json`;
   meDownload(name, JSON.stringify(data, null, 1), 'application/json');
   meBackedUp();
-  MEUI.msg = `Exported ${counts(M.memberships.length, M.tickets.length, data.favorites.length)} to ${name}.`;
+  MEUI.msg = `Exported ${counts(M.memberships.length, M.tickets.length, data.favorites.length)} to ${name}, with ` +
+    `${attDeviceText(Object.keys(personal).length, IMP.length)}. Photos and videos are not included.`;
   MEUI.msgKind = 'ok';
   renderMe();
+}
+function attDeviceText(p, i){
+  return `${p} attended-match record${p === 1 ? '' : 's'} (notes and supporter choices) and ${i} imported match${i === 1 ? '' : 'es'}`;
 }
 function counts(m, t, f){
   const n = (k, w) => `${k} ${w}${k === 1 ? '' : 's'}`;
   return `${n(m, 'membership')}, ${n(t, 'ticket')} and ${n(f, 'favorite')}`;
 }
-function meCheckFile(data){
+function meCheckFile(data, fileIds){
   const errs = [];
   if(!data || typeof data !== 'object' || data.format !== ME_FORMAT) return {errs: ['it is not a Me-tab export from this app']};
   if(typeof data.version !== 'number') return {errs: ['it has no version number']};
-  if(data.version > ME_VERSION) return {errs: [`it was made by a newer version of this app (version ${data.version}; this page reads ${ME_VERSION})`]};
-  if(data.version !== ME_VERSION) return {errs: [`version ${data.version} is not one this page reads`]};
+  if(data.version > ME_FILE_VERSION) return {errs: [`it was made by a newer version of this app (version ${data.version}; this page reads ${ME_FILE_READS.join(' and ')})`]};
+  if(!ME_FILE_READS.includes(data.version)) return {errs: [`version ${data.version} is not one this page reads`]};
   for(const k of ['memberships', 'tickets', 'favorites']) if(!Array.isArray(data[k])) errs.push(`it has no ${k} list`);
+  if(data.version >= 2){
+    if(!isObj(data.personal)) errs.push('it has no personal object');
+    if(!Array.isArray(data.importedMatches)) errs.push('it has no importedMatches list');
+  }
   if(errs.length) return {errs};
   const out = {memberships: [], tickets: [], favorites: [], dropped: [], unlinked: 0};
   const ids = new Set();
@@ -4983,6 +5031,36 @@ function meCheckFile(data){
     else if(live.has(f)){ if(!out.favorites.includes(f)) out.favorites.push(f); }
     else out.dropped.push(f);
   });
+  if(data.version >= 2){
+    out.imported = []; out.personal = {};
+    const seen = new Set();
+    if(data.importedMatches.length && !fileIds) errs.push('the imported matches could not be checked against data/attended.json, which did not load');
+    data.importedMatches.forEach((r, i) => {
+      const c = attCheckMatch(r), id = isObj(r) && typeof r.id === 'string' ? r.id : '';
+      const who = `imported match ${i + 1}${id ? ` ("${id.slice(0, 40)}")` : ''}`;
+      if(c.errs) errs.push(`${who}: ${c.errs.slice(0, 3).join('; ')}`);
+      else if(seen.has(id)) errs.push(`${who}: the same id twice`);
+      else if(fileIds && fileIds.has(id)) errs.push(`${who}: ${t('imp.clashFile', {id})}`);
+      else{ seen.add(id); out.imported.push(c.rec); }
+    });
+    if(out.imported.length > IMP_MAX_TOTAL) errs.push(`more than ${IMP_MAX_TOTAL} imported matches`);
+    const keys = Object.keys(data.personal);
+    if(keys.length > 1000) errs.push('more than 1000 attended-match records');
+    for(const k of keys.slice(0, 1000)){
+      const v = data.personal[k], w = `notes and choices for "${k.slice(0, 40)}"`;
+      if(k.length > 100 || !isObj(v)){ errs.push(`${w}: not a record`); continue; }
+      const rec = {};
+      for(const f of Object.keys(v)){
+        const x = v[f];
+        if(!PERS_STORED.includes(f)) errs.push(`${w}: unknown field "${f}"`);
+        else if(typeof x !== 'string' || x.length > ME_TEXT_MAX) errs.push(`${w}: "${f}" must be text of at most ${ME_TEXT_MAX} characters`);
+        else if(f === 'supported' && x !== '' && !SUPPORT_VALUES.includes(x)) errs.push(`${w}: "supported" must be home, neutral, away or empty`);
+        else if(PERS_CARD_CHECKED.includes(f) && cardLike(x)) errs.push(`${w}: "${f}" looks like it holds a payment card number, which is never stored here`);
+        else rec[f] = x;
+      }
+      out.personal[k] = rec;
+    }
+  }
   const w = data.settings?.renewWindowDays;
   out.renewWindowDays = ME_DEFAULTS.renewWindowDays;
   if(w != null){
@@ -4996,7 +5074,12 @@ async function meImportFile(file){
   MEUI.pending = null;
   try{ data = JSON.parse(await file.text()); }
   catch(err){ MEUI.msg = `Not imported: ${file.name} is not a JSON file. Nothing on this device was changed.`; MEUI.msgKind = 'bad'; return renderMe(); }
-  const c = meCheckFile(data);
+  let fileIds = null;                           // the imported matches' ids are checked against the file's
+  if(isObj(data) && data.version >= 2 && Array.isArray(data.importedMatches) && data.importedMatches.length){
+    const r = await loadAttended();
+    if(r.ok){ ATT.data = ATT.data || r.v; fileIds = new Set(r.v.matches.map(m => m.id)); }
+  }
+  const c = meCheckFile(data, fileIds);
   if(c.errs){
     MEUI.msg = `Not imported: ${file.name} - ${c.errs.slice(0, 6).join('; ')}${c.errs.length > 6 ? `; and ${c.errs.length - 6} more` : ''}. Nothing on this device was changed.`;
     MEUI.msgKind = 'bad';
@@ -5016,12 +5099,19 @@ function meImportConfirm(){
   meSave();
   meWrite(FAV_KEY, JSON.stringify(P.data.favorites));
   FAVS = new Set(P.data.favorites);
+  let attNote = ' This file is from the first version of the export: it holds no attended-match records or imported matches, so those on this device were left as they are.';
+  if(P.data.personal){
+    try{ localStorage.setItem(PERS_KEY, JSON.stringify(P.data.personal)); }catch(e){ MEUI.blocked = true; }
+    if(!impSave(P.data.imported)) MEUI.blocked = true;
+    persLoad(); impLoad();
+    attNote = ` The attended-match records and imported matches on this device were replaced by the file's ${attDeviceText(Object.keys(P.data.personal).length, P.data.imported.length)}.`;
+  }
   meBackedUp();
   MEUI.pending = null;
   MEUI.msg = `Imported ${counts(P.data.memberships.length, P.data.tickets.length, P.data.favorites.length)} from ${P.name}, ` +
     `replacing ${before} that were on this device.` +
     (P.data.dropped.length ? ` ${P.data.dropped.length} favorite${P.data.dropped.length === 1 ? '' : 's'} named an entry no longer in the bucket list and ${P.data.dropped.length === 1 ? 'was' : 'were'} left out (${P.data.dropped.join(', ')}).` : '') +
-    (P.data.unlinked ? ` ${P.data.unlinked} ticket${P.data.unlinked === 1 ? ' links' : 's link'} to an entry no longer in the bucket list; the link is kept and shown as such.` : '');
+    (P.data.unlinked ? ` ${P.data.unlinked} ticket${P.data.unlinked === 1 ? ' links' : 's link'} to an entry no longer in the bucket list; the link is kept and shown as such.` : '') + attNote;
   MEUI.msgKind = 'ok';
   meChanged(false);
 }
@@ -5090,13 +5180,16 @@ function renderMe(){
       `A renewal, or a match with no kick-off, is a whole-day event and its alert goes off at 09:00.</p>` +
 
     `<h2>Back up</h2>` +
-    `<p class="note" style="margin-top:0">One file with your memberships, tickets held and bucket list favorites. ` +
+    `<p class="note" style="margin-top:0">One file with your memberships, tickets held and bucket list favorites, and ` +
+      `(since version 2) the notes, supporter choices and imported matches of My attended matches. ` +
+      `<b>Photos and videos are not in the file</b>: they stay in this browser only. ` +
       `Importing a file replaces what is on this device with what the file holds. ` +
       (exported ? `Last export from this device: ${esc(fmtSaved(exported))}.` : 'Nothing exported from this device yet.') + `</p>` +
     `<div class="acts"><button type="button" class="b" data-act="export" id="meExport">Export</button>` +
       `<button type="button" class="b" data-act="import" id="meImport">Import</button>` +
       `<input type="file" id="meFile" accept="application/json,.json" hidden></div>` +
-    (P ? `<div class="mewarn" id="meConfirm" role="alert">${esc(P.name)} holds ${counts(P.data.memberships.length, P.data.tickets.length, P.data.favorites.length)}. ` +
+    (P ? `<div class="mewarn" id="meConfirm" role="alert">${esc(P.name)} holds ${counts(P.data.memberships.length, P.data.tickets.length, P.data.favorites.length)}` +
+      (P.data.personal ? `, plus ${attDeviceText(Object.keys(P.data.personal).length, P.data.imported.length)}` : '') + `. ` +
       `Importing it replaces the ${counts(M.memberships.length, M.tickets.length, favs().size)} on this device.` +
       `<div class="acts"><button type="button" class="b go" data-act="import-yes">Replace</button>` +
       `<button type="button" class="b" data-act="import-no">Cancel</button></div></div>` : '') +
@@ -5232,8 +5325,13 @@ async function renderTickets(rules){
    first like every other data file. The detail sheet's personal fields
    (notes, ticket, seat, block, companions) are kept on this device only,
    under football-attended-personal; the old app's mf_* keys are never
-   read, and no photos or videos are kept yet (step 3). The chosen
-   language is the only other thing kept. */
+   read. Since 2026-10-09 three more things are kept on this device only,
+   none ever committed and none ever written into data/attended.json:
+   the supporter choice (field "supported" beside the personal fields),
+   matches the user adds by pasting JSON (football-attended-imported)
+   and photos and videos (IndexedDB football-attended-media). Nothing is
+   migrated from the old app. The chosen language is the only other thing
+   kept. */
 
 const LANG_KEY = 'football-planner-lang';
 const I18N = {
@@ -5269,7 +5367,43 @@ const I18N = {
     'pf.withWho': 'Who I went with',
     'pf.hint': 'Saved automatically, on this device only.',
     'pf.card': 'Not saved: this looks like a payment card number, and card numbers are never stored.',
-    'pf.blocked': 'This browser blocks storage, so what you type lasts only until the page is closed.'
+    'pf.blocked': 'This browser blocks storage, so what you type lasts only until the page is closed.',
+    'sup.title': 'Who I supported', 'sup.neutral': 'Neutral',
+    'sup.hint': 'Saved on this device only. Tap the chosen button again to clear it.',
+    'st.record': 'Record with the team you supported', 'st.w': 'W', 'st.d': 'D', 'st.l': 'L',
+    'st.recordCounted': '{n} of {total} matches counted',
+    'st.recordHint': 'Only matches where you chose the home or away team count; Neutral and no choice are left out.',
+    'st.pickSupport': 'Choose a supported team on a match sheet (Matches tab) to see the record.',
+    'imp.tag': 'Imported on this device', 'imp.title': 'Add a match',
+    'imp.hint': 'Paste one match as JSON, or a list of them. Required: id (letters, digits, . _ -), date (YYYY-MM-DD), home.name, away.name and score ("2-1"). Everything else is optional. Kept on this device only; data/attended.json is never changed.',
+    'imp.placeholder': '{ … }', 'imp.add': 'Add',
+    'imp.empty': 'Nothing pasted.',
+    'imp.tooBig': 'Too much text: at most {max} characters at a time.',
+    'imp.notJson': 'Not added: this is not valid JSON.',
+    'imp.none': 'Not added: the list is empty.',
+    'imp.tooMany': 'Not added: at most {max} matches at a time.',
+    'imp.tooManyTotal': 'Not added: this device can hold at most {max} imported matches.',
+    'imp.rejected': 'Not added, nothing was stored: {reasons}',
+    'imp.clashFile': 'the id "{id}" is already used by a match in data/attended.json',
+    'imp.clashDevice': 'the id "{id}" is already imported on this device',
+    'imp.clashTwice': 'the id "{id}" appears twice in what you pasted',
+    'imp.added': 'Added {n} imported match(es). They are marked "Imported on this device".',
+    'imp.saveFailed': 'Not added: this browser refused to store them (storage is blocked or full).',
+    'imp.skipped': '{n} stored imported match(es) could not be read and were left out.',
+    'imp.remove': 'Remove this imported match', 'imp.removeAsk': 'Remove this imported match from this device? Its notes and its photos and videos here are deleted too.',
+    'imp.blocked': 'This browser blocks storage, so imported matches last only until the page is closed.',
+    'md.title': 'Photos and videos', 'md.add': 'Add from gallery', 'md.none': 'No photos or videos yet.',
+    'md.count': '{n} files · {mb} MB', 'md.quota': '{used} of {quota} used on this device',
+    'md.hint': 'Files stay on this device only, inside the browser. They are not uploaded, not in the repo, and not in the Me tab export. Clearing the site data deletes them.',
+    'md.persist': 'Storage is protected: the browser will not delete these files by itself when the device fills up.',
+    'md.noPersist': 'Storage is not protected: if the device runs out of space, the browser may delete these files.',
+    'md.full': 'There is no room left on this device for {name}.',
+    'md.blocked': 'This browser refuses to store photos and videos here (storage is blocked or unavailable), so nothing was added.',
+    'md.failed': '{name} could not be added.', 'md.notMedia': '{name} is not a photo or a video.',
+    'md.added': 'Added {n}.', 'md.loadFailed': 'The photos and videos could not be read from this browser.',
+    'md.deleteFailed': 'The file could not be deleted.',
+    'md.close': 'Close', 'md.delete': 'Delete', 'md.deleteAsk': 'Delete this file from this device?', 'md.deleted': 'Deleted.',
+    'md.video': 'VIDEO'
   },
   /* RO unchecked by the user: written by the assistant, not yet read by Alexandru. */
   ro: {
@@ -5304,7 +5438,43 @@ const I18N = {
     'pf.withWho': 'Cu cine am fost',
     'pf.hint': 'Se salvează automat, doar pe acest dispozitiv.',
     'pf.card': 'Nesalvat: seamănă cu un număr de card bancar, iar numerele de card nu se păstrează niciodată.',
-    'pf.blocked': 'Acest browser blochează stocarea, deci ce scrii rămâne doar până închizi pagina.'
+    'pf.blocked': 'Acest browser blochează stocarea, deci ce scrii rămâne doar până închizi pagina.',
+    'sup.title': 'Cu cine am ținut', 'sup.neutral': 'Neutru',
+    'sup.hint': 'Se salvează doar pe acest dispozitiv. Apasă din nou butonul ales ca să-l ștergi.',
+    'st.record': 'Bilanț cu echipa susținută', 'st.w': 'V', 'st.d': 'E', 'st.l': 'Î',
+    'st.recordCounted': '{n} din {total} meciuri numărate',
+    'st.recordHint': 'Se numără doar meciurile la care ai ales echipa gazdă sau oaspete; Neutru și fără alegere nu intră.',
+    'st.pickSupport': 'Alege o echipă susținută în fișa unui meci (tabul Meciuri) ca să apară bilanțul.',
+    'imp.tag': 'Importat pe acest dispozitiv', 'imp.title': 'Adaugă un meci',
+    'imp.hint': 'Lipește un meci ca JSON sau o listă de meciuri. Obligatoriu: id (litere, cifre, . _ -), date (AAAA-LL-ZZ), home.name, away.name și score ("2-1"). Restul e opțional. Se păstrează doar pe acest dispozitiv; data/attended.json nu se modifică niciodată.',
+    'imp.placeholder': '{ … }', 'imp.add': 'Adaugă',
+    'imp.empty': 'Nu ai lipit nimic.',
+    'imp.tooBig': 'Prea mult text: cel mult {max} de caractere odată.',
+    'imp.notJson': 'Neadăugat: nu este JSON valid.',
+    'imp.none': 'Neadăugat: lista este goală.',
+    'imp.tooMany': 'Neadăugat: cel mult {max} de meciuri odată.',
+    'imp.tooManyTotal': 'Neadăugat: acest dispozitiv poate păstra cel mult {max} de meciuri importate.',
+    'imp.rejected': 'Neadăugat, nu s-a salvat nimic: {reasons}',
+    'imp.clashFile': 'id-ul "{id}" este deja folosit de un meci din data/attended.json',
+    'imp.clashDevice': 'id-ul "{id}" este deja importat pe acest dispozitiv',
+    'imp.clashTwice': 'id-ul "{id}" apare de două ori în ce ai lipit',
+    'imp.added': 'Am adăugat {n} meci(uri) importate. Sunt marcate „Importat pe acest dispozitiv”.',
+    'imp.saveFailed': 'Neadăugat: acest browser a refuzat să le păstreze (stocarea este blocată sau plină).',
+    'imp.skipped': '{n} meci(uri) importate păstrate nu au putut fi citite și au fost lăsate deoparte.',
+    'imp.remove': 'Șterge acest meci importat', 'imp.removeAsk': 'Ștergi acest meci importat de pe acest dispozitiv? Se șterg și notițele lui și pozele și filmările de aici.',
+    'imp.blocked': 'Acest browser blochează stocarea, deci meciurile importate rămân doar până închizi pagina.',
+    'md.title': 'Poze și filmări', 'md.add': 'Adaugă din galerie', 'md.none': 'Nicio poză sau filmare încă.',
+    'md.count': '{n} fișiere · {mb} MB', 'md.quota': '{used} din {quota} folosiți pe acest dispozitiv',
+    'md.hint': 'Fișierele rămân doar pe acest dispozitiv, în browser. Nu se încarcă nicăieri, nu sunt în repo și nu intră în exportul din tabul Eu. Ștergerea datelor site-ului le șterge.',
+    'md.persist': 'Spațiu protejat: browserul nu va șterge singur fișierele când se umple dispozitivul.',
+    'md.noPersist': 'Spațiu neprotejat: dacă dispozitivul rămâne fără loc, browserul poate șterge fișierele.',
+    'md.full': 'Nu mai e loc pe acest dispozitiv pentru {name}.',
+    'md.blocked': 'Acest browser refuză să păstreze poze și filmări aici (stocarea este blocată sau indisponibilă), deci nu s-a adăugat nimic.',
+    'md.failed': '{name} nu a putut fi adăugat.', 'md.notMedia': '{name} nu este o poză sau o filmare.',
+    'md.added': 'Am adăugat {n}.', 'md.loadFailed': 'Pozele și filmările nu au putut fi citite din acest browser.',
+    'md.deleteFailed': 'Fișierul nu a putut fi șters.',
+    'md.close': 'Închide', 'md.delete': 'Șterge', 'md.deleteAsk': 'Ștergi acest fișier de pe acest dispozitiv?', 'md.deleted': 'Șters.',
+    'md.video': 'VIDEO'
   }
 };
 
@@ -5361,7 +5531,7 @@ function loadAttended(){
 
 function attStats(d){
   const ms = d.matches, S = {n: ms.length, goals: 0, pens: 0, yellow: 0, red: 0, cardsOk: 0, luOk: 0,
-    stad: {}, city: {}, ctry: {}, comp: {}, team: {}, plr: {}, big: null, small: null};
+    stad: {}, city: {}, ctry: {}, comp: {}, team: {}, plr: {}, big: null, small: null, rec: {n: 0, w: 0, d: 0, l: 0}};
   const inc = (o, k) => { if(k) o[k] = (o[k] || 0) + 1; };
   ms.forEach(m => {
     S.goals += (m.goals || []).length;
@@ -5369,6 +5539,13 @@ function attStats(d){
     if(m.cardsComplete){
       S.cardsOk++;
       (m.cards || []).forEach(c => { c.type === 'yellow' ? S.yellow++ : S.red++; });
+    }
+    // The record counts a match only where the supported team is the home or the away side (Neutral and no choice are left out).
+    const sup = persGet(attKey(m), 'supported'), sc = /^(\d+)-(\d+)$/.exec(m.score || '');
+    if((sup === 'home' || sup === 'away') && sc){
+      const h = +sc[1], a = +sc[2];
+      S.rec.n++;
+      if(h === a) S.rec.d++; else if((h > a) === (sup === 'home')) S.rec.w++; else S.rec.l++;
     }
     inc(S.stad, m.stadium); inc(S.city, attL(m.city)); inc(S.ctry, attL(m.country));
     inc(S.comp, attL(m.competitionKey || m.competition));
@@ -5416,6 +5593,12 @@ function renderAttStats(d){
     `${tile(S.pens, t('st.pens'))}${tile(Object.keys(S.stad).length, t('st.stadiums'))}</div>` +
     sec('st.cards', partial(S.cardsOk, S.n) +
       `<div class="agrid">${tile(S.yellow, t('st.yellow'), avg(S.yellow, S.cardsOk))}${tile(S.red, t('st.red'), avg(S.red, S.cardsOk))}</div>`) +
+    sec('st.record', `<p class="anote" id="aRecCount">${esc(t('st.recordCounted', {n: S.rec.n, total: S.n}))}</p>` +
+      (S.rec.n ? `<div class="awdl" id="aRecord"><div class="astat"><b>${attNum(S.rec.w)}</b><span>${esc(t('st.w'))}</span></div>` +
+        `<div class="astat"><b>${attNum(S.rec.d)}</b><span>${esc(t('st.d'))}</span></div>` +
+        `<div class="astat"><b>${attNum(S.rec.l)}</b><span>${esc(t('st.l'))}</span></div></div>`
+        : `<p class="anote">${esc(t('st.pickSupport'))}</p>`) +
+      `<p class="anote">${esc(t('st.recordHint'))}</p>`) +
     sec('st.mostTeam', topRows(top(S.team))) +
     sec('st.mostPlayer', tp ? topRows(tp) + partial(S.luOk, S.n) : `<p class="anote">${esc(t('st.noPlayers'))}</p>`);
   if(S.big) h += sec('st.biggest', crowd(S.big));
@@ -5427,12 +5610,23 @@ function renderAttStats(d){
 
 function renderAttMatches(d){
   const ms = attMatches(d);
-  if(!ms.length) return `<p class="anote">${esc(t('att.noMatches'))}</p>`;
-  return ms.map((m, i) =>
-    `<button type="button" class="acard" data-att="match" data-id="${esc(m.id)}"><span class="an">${i + 1}</span>` +
+  if(!ms.length) return renderAttAdd() + `<p class="anote">${esc(t('att.noMatches'))}</p>`;
+  return renderAttAdd() + ms.map((m, i) =>
+    `<button type="button" class="acard" data-att="match" data-id="${esc(attKey(m))}"><span class="an">${i + 1}</span>` +
     `<span class="at"><span class="tm">${esc(attTeam(m.home))}</span><b>${esc(m.score ?? t('att.na'))}</b><span class="tm">${esc(attTeam(m.away))}</span></span>` +
     `<div class="am">${esc(attJoin([attL(m.competition), attL(m.stage)]))}</div>` +
-    `<div class="am">${esc(attJoin([attJoin([m.stadium, attL(m.city)], ', '), attDate(m.date)]))}</div></button>`).join('');
+    `<div class="am">${esc(attJoin([attJoin([m.stadium, attL(m.city)], ', '), attDate(m.date)]))}${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join('');
+}
+/* The paste box above the list. The message lives in ATT.impMsg so it
+   survives the redraw after a successful add. */
+function renderAttAdd(){
+  const M = ATT.impMsg;
+  return `<details class="aadd" id="aAdd"${ATT.impOpen ? ' open' : ''}><summary>${esc(t('imp.title'))}</summary>` +
+    `<p class="anote">${esc(t('imp.hint'))}${IMP_BLOCKED ? ' ' + esc(t('imp.blocked')) : ''}</p>` +
+    `<textarea id="aImpBox" spellcheck="false" aria-label="${esc(t('imp.title'))}" placeholder="${esc(t('imp.placeholder'))}"></textarea>` +
+    `<button type="button" class="ab go" id="aImpBtn">${esc(t('imp.add'))}</button>` +
+    `<div class="amsg${M ? ' ' + M.kind : ''}" id="aImpMsg" role="status">${M ? esc(M.text) : ''}</div></details>` +
+    (IMP_SKIPPED ? `<p class="anote" id="aImpSkipped">${esc(t('imp.skipped', {n: IMP_SKIPPED}))}</p>` : '');
 }
 function renderAttEvents(d){
   const es = attEvents(d);
@@ -5459,11 +5653,14 @@ async function renderAtt(){
     ATT.data = r.v;
     if(ATT.sub !== sub) return;
   }
-  box.innerHTML = sub === 'stats' ? renderAttStats(ATT.data) : sub === 'matches' ? renderAttMatches(ATT.data) : renderAttEvents(ATT.data);
+  persLoad(); impLoad();               // the device's own data: supporter choices and imported matches
+  const d = attMerged();
+  box.innerHTML = sub === 'stats' ? renderAttStats(d) : sub === 'matches' ? renderAttMatches(d) : renderAttEvents(d);
 }
 
 function showMeSub(sub){
   ATT.sub = sub;
+  if(sub !== 'matches'){ ATT.impMsg = null; ATT.impOpen = false; }
   const panel = {stats: 'meStats', matches: 'meMatches', events: 'meEvents', tix: 'meBody'};
   document.querySelectorAll('#meSubs button').forEach(b => b.setAttribute('aria-selected', b.dataset.sub === sub));
   for(const k in panel) document.getElementById(panel[k]).hidden = k !== sub;
@@ -5476,7 +5673,7 @@ function showMeSub(sub){
    are the old app's, in its order: line-ups (with the pitch), timeline,
    stats, factual note, then the personal fields. A pane the file has
    nothing for is absent. */
-function closeASheet(){ document.getElementById('asheet').hidden = true; }
+function closeASheet(){ document.getElementById('asheet').hidden = true; mediaCleanup(); }
 
 /* Personal fields: this device only, never committed. Same names and
    shape as the old app's mf_personal ({id: {note, ticket, seat, block,
@@ -5484,6 +5681,14 @@ function closeASheet(){ document.getElementById('asheet').hidden = true; }
 const PERS_KEY = 'football-attended-personal';
 const PERS_FIELDS = ['note', 'ticket', 'seat', 'block', 'withWho'];
 const PERS_CARD_CHECKED = ['ticket', 'seat', 'block', 'withWho'];
+const PERS_STORED = [...PERS_FIELDS, 'supported'];           // supported: '', 'home', 'neutral' or 'away'
+const SUPPORT_VALUES = ['home', 'neutral', 'away'];
+const IMP_KEY = 'football-attended-imported';
+const IMP_MAX_TEXT = 200000, IMP_MAX_BATCH = 50, IMP_MAX_TOTAL = 300;
+/* The key an entry's personal fields, supporter choice and media are kept
+   under. An imported match is "imp:" + its id, so its ids can never meet
+   the file's, even if the file later gains a match with the same id. */
+const attKey = m => m._imp ? 'imp:' + m.id : m.id;
 let PERS = {}, PERS_BLOCKED = false;
 function persLoad(){
   PERS = {}; PERS_BLOCKED = false;
@@ -5492,11 +5697,191 @@ function persLoad(){
     if(v && typeof v === 'object' && !Array.isArray(v)) PERS = v;
   }catch(e){ PERS_BLOCKED = true; }
 }
+/* A change to the device's own attended data puts up the Me tab's backup banner, once. */
+function attTouched(){ if(!meUnsaved()) meTouched(); }
+function persDelete(id){
+  persLoad();
+  delete PERS[id];
+  try{ localStorage.setItem(PERS_KEY, JSON.stringify(PERS)); }catch(e){ PERS_BLOCKED = true; }
+}
+function persSetSupport(id, v){
+  persSet(id, 'supported', v);
+  attTouched();
+}
 function persGet(id, k){ const p = PERS[id]; return p && typeof p[k] === 'string' ? p[k] : ''; }
 function persSet(id, k, v){
   PERS[id] = PERS[id] && typeof PERS[id] === 'object' ? PERS[id] : {};
   PERS[id][k] = v;
   try{ localStorage.setItem(PERS_KEY, JSON.stringify(PERS)); }catch(e){ PERS_BLOCKED = true; }
+}
+
+
+/* ---- Imported matches: pasted JSON, the old app's format (one match object
+   or a list). Validated whole; anything that fails is refused and nothing is
+   stored. Kept only under football-attended-imported, never in
+   data/attended.json, and every one is marked as imported. */
+let IMP = [], IMP_SKIPPED = 0, IMP_BLOCKED = false;
+function impLoad(){
+  IMP = []; IMP_SKIPPED = 0; IMP_BLOCKED = false;
+  let raw = null;
+  try{ raw = localStorage.getItem(IMP_KEY); }catch(e){ IMP_BLOCKED = true; return; }
+  if(raw == null) return;
+  let v = null;
+  try{ v = JSON.parse(raw); }catch(e){ IMP_SKIPPED = 1; return; }
+  const list = v && Array.isArray(v.matches) ? v.matches : null;
+  if(!list){ IMP_SKIPPED = 1; return; }
+  const seen = new Set();
+  for(const r of list){
+    const c = attCheckMatch(r);
+    if(c.rec && !seen.has(c.rec.id)){ seen.add(c.rec.id); IMP.push(c.rec); } else IMP_SKIPPED++;
+  }
+}
+function impSave(list){
+  try{ localStorage.setItem(IMP_KEY, JSON.stringify({version: 1, matches: list})); return true; }
+  catch(e){ IMP_BLOCKED = true; return false; }
+}
+
+const isStr = (v, max) => typeof v === 'string' && v.length <= max;
+const isInt = (v, lo, hi) => Number.isInteger(v) && v >= lo && v <= hi;
+const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
+const isLoc = (v, max) => isStr(v, max) || (isObj(v) && Object.keys(v).length > 0 && Object.keys(v).every(k => (k === 'ro' || k === 'en') && isStr(v[k], max)));
+const SCORE_RE = /^\d{1,2}-\d{1,2}$/;
+const IMP_MATCH_KEYS = ['id', 'date', 'competition', 'competitionKey', 'stage', 'home', 'away', 'score', 'scoreHT', 'after90',
+  'stadium', 'city', 'country', 'attendance', 'referee', 'goals', 'cards', 'cardsComplete', 'stats', 'statsSource', 'lineups', 'note'];
+
+/* One match as the old app's data format has it. Returns {rec} (a clean copy)
+   or {errs}. Unknown fields are refused, so a typo is not silently dropped. */
+function attCheckMatch(r){
+  const errs = [], bad = m => { if(errs.length < 8) errs.push(m); };
+  if(!isObj(r)) return {errs: ['it is not a match object']};
+  const only = (o, keys, what) => Object.keys(o).forEach(k => { if(!keys.includes(k)) bad(`${what} has an unknown field "${k}"`); });
+  only(r, IMP_MATCH_KEYS, 'the match');
+  if(typeof r.id !== 'string' || !/^[A-Za-z0-9._-]{1,80}$/.test(r.id)) bad('"id" must be 1-80 letters, digits, . _ or -');
+  if(!realDay(r.date)) bad('"date" must be a real day written YYYY-MM-DD');
+  if(typeof r.score !== 'string' || !SCORE_RE.test(r.score)) bad('"score" must look like "2-1"');
+  for(const k of ['scoreHT', 'after90']) if(r[k] != null && !(typeof r[k] === 'string' && SCORE_RE.test(r[k]))) bad(`"${k}" must look like "1-1"`);
+  for(const k of ['home', 'away']){
+    const tm = r[k];
+    if(!isObj(tm)){ bad(`"${k}" must be an object with a name`); continue; }
+    only(tm, ['name', 'nameEn', 'short'], `"${k}"`);
+    if(!isStr(tm.name, 80) || !tm.name.trim()) bad(`"${k}.name" must be text`);
+    for(const f of ['nameEn', 'short']) if(tm[f] != null && !isStr(tm[f], 80)) bad(`"${k}.${f}" must be text`);
+  }
+  for(const k of ['competition', 'competitionKey', 'stage', 'city', 'country']) if(r[k] != null && !isLoc(r[k], 300)) bad(`"${k}" must be text or {"ro": …, "en": …}`);
+  if(r.note != null && !isLoc(r.note, 2000)) bad('"note" must be text or {"ro": …, "en": …}');
+  for(const k of ['stadium', 'referee', 'statsSource']) if(r[k] != null && !isStr(r[k], 120)) bad(`"${k}" must be text`);
+  if(r.cardsComplete != null && typeof r.cardsComplete !== 'boolean') bad('"cardsComplete" must be true or false');
+  if(r.attendance != null){
+    const a = r.attendance;
+    if(!isObj(a)) bad('"attendance" must be an object');
+    else{
+      only(a, ['value', 'approx', 'soldOut', 'fullHouse', 'note'], '"attendance"');
+      if(a.value != null && !isInt(a.value, 0, 500000)) bad('"attendance.value" must be a whole number');
+      for(const f of ['approx', 'soldOut', 'fullHouse']) if(a[f] != null && typeof a[f] !== 'boolean') bad(`"attendance.${f}" must be true or false`);
+      if(a.note != null && !isLoc(a.note, 300)) bad('"attendance.note" must be text');
+    }
+  }
+  const arr = (k, max, fn) => {
+    if(r[k] == null) return;
+    if(!Array.isArray(r[k]) || r[k].length > max){ bad(`"${k}" must be a list of at most ${max}`); return; }
+    r[k].forEach((x, i) => { if(!isObj(x)) bad(`"${k}" item ${i + 1} must be an object`); else fn(x, `"${k}" item ${i + 1}`); });
+  };
+  const side = v => v === 'home' || v === 'away';
+  arr('goals', 40, (g, w) => {
+    only(g, ['team', 'player', 'minute', 'added', 'pen', 'assist'], w);
+    if(!side(g.team)) bad(`${w}: "team" must be "home" or "away"`);
+    if(!isStr(g.player, 80) || !g.player) bad(`${w}: "player" must be text`);
+    if(!isInt(g.minute, 0, 150)) bad(`${w}: "minute" must be a whole number`);
+    if(g.added != null && !isInt(g.added, 0, 30)) bad(`${w}: "added" must be a whole number`);
+    if(g.pen != null && typeof g.pen !== 'boolean') bad(`${w}: "pen" must be true or false`);
+    if(g.assist != null && !isStr(g.assist, 80)) bad(`${w}: "assist" must be text`);
+  });
+  arr('cards', 40, (c, w) => {
+    only(c, ['team', 'player', 'minute', 'added', 'type'], w);
+    if(!side(c.team)) bad(`${w}: "team" must be "home" or "away"`);
+    if(!['yellow', 'red', 'second-yellow'].includes(c.type)) bad(`${w}: "type" must be yellow, red or second-yellow`);
+    if(c.player != null && !isStr(c.player, 80)) bad(`${w}: "player" must be text`);
+    if(c.minute != null && !isInt(c.minute, 0, 150)) bad(`${w}: "minute" must be a whole number`);
+    if(c.added != null && !isInt(c.added, 0, 30)) bad(`${w}: "added" must be a whole number`);
+  });
+  if(r.stats != null){
+    if(!isObj(r.stats)) bad('"stats" must be an object');
+    else{
+      only(r.stats, ATT_STATS, '"stats"');
+      for(const k of ATT_STATS){
+        const v = r.stats[k];
+        if(v != null && !(Array.isArray(v) && v.length === 2 && v.every(n => typeof n === 'number' && n >= 0 && n <= 1000))) bad(`"stats.${k}" must be two numbers`);
+      }
+    }
+  }
+  if(r.lineups != null){
+    if(!isObj(r.lineups)) bad('"lineups" must be an object');
+    else{
+      only(r.lineups, ['home', 'away'], '"lineups"');
+      for(const sd of ['home', 'away']){
+        const lu = r.lineups[sd];
+        if(lu == null) continue;
+        const w = `"lineups.${sd}"`;
+        if(!isObj(lu)){ bad(`${w} must be an object`); continue; }
+        only(lu, ['formation', 'coach', 'captain', 'xi', 'subs', 'bench'], w);
+        if(lu.formation != null && !(typeof lu.formation === 'string' && /^\d(-\d){1,5}$/.test(lu.formation))) bad(`${w}: "formation" must look like "4-3-3"`);
+        for(const f of ['coach', 'captain']) if(lu[f] != null && !isStr(lu[f], 80)) bad(`${w}: "${f}" must be text`);
+        const plist = (k, max, keys, fn) => {
+          if(lu[k] == null) return;
+          if(!Array.isArray(lu[k]) || lu[k].length > max){ bad(`${w}: "${k}" must be a list of at most ${max}`); return; }
+          lu[k].forEach((p, i) => {
+            const pw = `${w} ${k} ${i + 1}`;
+            if(!isObj(p)){ bad(`${pw} must be an object`); return; }
+            only(p, keys, pw); fn(p, pw);
+          });
+        };
+        const pl = (p, pw) => { if(!isStr(p.name, 80) || !p.name) bad(`${pw}: "name" must be text`); if(p.no != null && !isInt(p.no, 0, 999)) bad(`${pw}: "no" must be a whole number`); };
+        plist('xi', 11, ['no', 'name'], pl);
+        plist('bench', 30, ['no', 'name'], pl);
+        plist('subs', 15, ['minute', 'added', 'on', 'onNo', 'off', 'uncertain'], (p, pw) => {
+          if(!isInt(p.minute, 0, 150)) bad(`${pw}: "minute" must be a whole number`);
+          if(p.added != null && !isInt(p.added, 0, 30)) bad(`${pw}: "added" must be a whole number`);
+          for(const f of ['on', 'off']) if(!isStr(p[f], 80) || !p[f]) bad(`${pw}: "${f}" must be text`);
+          if(p.onNo != null && !isInt(p.onNo, 0, 999)) bad(`${pw}: "onNo" must be a whole number`);
+          if(p.uncertain != null && typeof p.uncertain !== 'boolean') bad(`${pw}: "uncertain" must be true or false`);
+        });
+      }
+    }
+  }
+  return errs.length ? {errs} : {rec: JSON.parse(JSON.stringify(r))};
+}
+
+/* The pasted text, checked whole. {added: [records]} or {error: text}. */
+function impCheckText(raw){
+  if(!raw.trim()) return {error: t('imp.empty')};
+  if(raw.length > IMP_MAX_TEXT) return {error: t('imp.tooBig', {max: attNum(IMP_MAX_TEXT)})};
+  let obj;
+  try{ obj = JSON.parse(raw); }catch(e){ return {error: t('imp.notJson')}; }
+  const arr = Array.isArray(obj) ? obj : [obj];
+  if(!arr.length) return {error: t('imp.none')};
+  if(arr.length > IMP_MAX_BATCH) return {error: t('imp.tooMany', {max: IMP_MAX_BATCH})};
+  const fileIds = new Set((ATT.data?.matches || []).map(m => m.id)), onDevice = new Set(IMP.map(m => m.id)), pasted = new Set();
+  const problems = [], added = [];
+  arr.forEach((r, i) => {
+    const c = attCheckMatch(r), id = isObj(r) && typeof r.id === 'string' ? r.id : '';
+    const who = `match ${i + 1}${id ? ` ("${id.slice(0, 40)}")` : ''}`;
+    if(c.errs){ problems.push(`${who}: ${c.errs.slice(0, 3).join('; ')}`); return; }
+    if(fileIds.has(id)) problems.push(`${who}: ${t('imp.clashFile', {id})}`);
+    else if(onDevice.has(id)) problems.push(`${who}: ${t('imp.clashDevice', {id})}`);
+    else if(pasted.has(id)) problems.push(`${who}: ${t('imp.clashTwice', {id})}`);
+    else{ pasted.add(id); added.push(c.rec); }
+  });
+  if(problems.length) return {error: t('imp.rejected', {reasons: problems.slice(0, 5).join(' | ') + (problems.length > 5 ? ` | +${problems.length - 5}` : '')})};
+  if(IMP.length + added.length > IMP_MAX_TOTAL) return {error: t('imp.tooManyTotal', {max: IMP_MAX_TOTAL})};
+  return {added};
+}
+
+/* The file's matches and events with the device's imported matches after
+   them. An imported match carries _imp, which attKey() turns into its own
+   id space. */
+function attMerged(){
+  const f = ATT.data;
+  return {matches: f.matches.concat(IMP.map(m => Object.assign({}, m, {_imp: true}))), events: f.events};
 }
 
 const ATT_STATS = ['possession', 'shots', 'onTarget', 'fouls', 'corners', 'offsides'];
@@ -5636,6 +6021,122 @@ function attPersonal(id, withTicket){
     `<p class="anote">${esc(t('pf.hint'))}${PERS_BLOCKED ? ' ' + esc(t('pf.blocked')) : ''}</p></div>`;
 }
 
+
+/* ---- Photos and videos: this device only, in the IndexedDB football-attended-media,
+   one record per file keyed by the entry's key (the match or event id; "imp:" + id for
+   an imported match). The old app's behaviour: pick several from the gallery, a grid of
+   thumbnails, tap to view full screen, delete from the viewer after asking. Like the old
+   app there is no size limit of our own, only the browser's quota. Nothing is committed,
+   exported or sent; the old app's mf_media database is never opened. */
+const MEDIA_DB = 'football-attended-media', MEDIA_STORE = 'items';
+let MEDIA_P = null, MEDIA_URLS = [], MEDIA_TOK = 0;
+
+function mediaOpen(){
+  if(MEDIA_P) return MEDIA_P;
+  MEDIA_P = new Promise((res, rej) => {
+    let rq;
+    try{ rq = indexedDB.open(MEDIA_DB, 1); }catch(e){ rej(e); return; }
+    rq.onupgradeneeded = () => {
+      const db = rq.result;
+      if(!db.objectStoreNames.contains(MEDIA_STORE)){
+        db.createObjectStore(MEDIA_STORE, {keyPath: 'key', autoIncrement: true}).createIndex('entryId', 'entryId', {unique: false});
+      }
+    };
+    rq.onsuccess = () => res(rq.result);
+    rq.onerror = () => rej(rq.error || new Error('open failed'));
+    rq.onblocked = () => rej(new Error('blocked'));
+  }).catch(e => { MEDIA_P = null; throw e; });
+  return MEDIA_P;
+}
+const mediaTx = (mode, fn) => mediaOpen().then(db => new Promise((res, rej) => {
+  const tx = db.transaction(MEDIA_STORE, mode);
+  let out;
+  try{ out = fn(tx.objectStore(MEDIA_STORE)); }catch(e){ rej(e); return; }
+  tx.oncomplete = () => res(out && 'result' in out ? out.result : undefined);
+  tx.onabort = () => rej(tx.error || new Error('aborted'));
+}));
+const mediaList = entry => mediaTx('readonly', st => st.index('entryId').getAll(IDBKeyRange.only(entry)))
+  .then(items => items.sort((a, b) => (a.added || 0) - (b.added || 0) || a.key - b.key));
+const mediaAdd = (entry, file) => mediaTx('readwrite', st => st.add({entryId: entry, name: file.name || '', mime: file.type || '',
+  size: file.size || 0, kind: (file.type || '').startsWith('video/') ? 'video' : 'image', added: Date.now(), blob: file}));
+const mediaDelete = key => mediaTx('readwrite', st => { st.delete(key); });
+const mediaDeleteEntry = entry => mediaTx('readwrite', st => {
+  const rq = st.index('entryId').openKeyCursor(IDBKeyRange.only(entry));
+  rq.onsuccess = () => { const c = rq.result; if(c){ st.delete(c.primaryKey); c.continue(); } };
+});
+
+function mediaRevoke(){ MEDIA_URLS.forEach(u => { try{ URL.revokeObjectURL(u); }catch(e){} }); MEDIA_URLS = []; }
+function mediaUrl(blob){ const u = URL.createObjectURL(blob); MEDIA_URLS.push(u); return u; }
+function mediaCloseViewer(){ const v = document.getElementById('amover'); if(v) v.remove(); }
+function mediaCleanup(){ MEDIA_TOK++; mediaCloseViewer(); mediaRevoke(); }
+const fmtBytes = b => b >= 1073741824 ? (b / 1073741824).toFixed(1) + ' GB' : b >= 1048576 ? (b / 1048576).toFixed(0) + ' MB' : (b / 1024).toFixed(0) + ' KB';
+function mediaSay(entry, kind, text){
+  const el = document.getElementById('aMmsg'), open = document.getElementById('asheetBody').dataset.open || '';
+  if(!el || open.split(/:(.*)/)[1] !== entry) return;
+  el.className = 'amsg ' + kind; el.textContent = text;
+}
+
+function attMediaPane(){
+  return `<h4>${esc(t('md.title'))}</h4><div id="aMedia">` +
+    `<div><label class="ab" for="aMfile">${esc(t('md.add'))}</label>` +
+    `<input id="aMfile" class="amfile" type="file" accept="image/*,video/*" multiple><span class="anote" id="aMcount"></span></div>` +
+    `<div class="amsg" id="aMmsg" role="status"></div><div class="amgrid" id="aMgrid"></div>` +
+    `<p class="anote" id="aMquota"></p><p class="anote">${esc(t('md.hint'))}</p><p class="anote" id="aMpersist"></p></div>`;
+}
+function mediaRender(entry){
+  const grid = document.getElementById('aMgrid'); if(!grid) return;
+  const tok = ++MEDIA_TOK;
+  mediaRevoke();
+  if(navigator.storage?.estimate) navigator.storage.estimate().then(est => {
+    const el = document.getElementById('aMquota');
+    if(el && est && est.quota) el.textContent = t('md.quota', {used: fmtBytes(est.usage || 0), quota: fmtBytes(est.quota)});
+  }).catch(() => {});
+  if(navigator.storage?.persisted) navigator.storage.persisted().then(ok => {
+    const el = document.getElementById('aMpersist'); if(el) el.textContent = t(ok ? 'md.persist' : 'md.noPersist');
+  }).catch(() => {});
+  mediaList(entry).then(items => {
+    if(tok !== MEDIA_TOK || !document.getElementById('aMgrid')) return;
+    const cnt = document.getElementById('aMcount');
+    if(cnt) cnt.textContent = items.length ? ' ' + t('md.count', {n: items.length, mb: (items.reduce((a, b) => a + (b.size || 0), 0) / 1048576).toFixed(1)}) : '';
+    grid.innerHTML = items.length ? items.map(it => {
+      const u = mediaUrl(it.blob);
+      return `<button type="button" class="amcell" data-mopen="${esc(it.key)}" aria-label="${esc(it.name || it.kind)}">` +
+        (it.kind === 'video' ? `<video src="${u}" muted playsinline preload="metadata"></video><span class="tagv">${esc(t('md.video'))}</span>` : `<img src="${u}" alt="">`) + `</button>`;
+    }).join('') : `<p class="anote" style="grid-column:1/-1">${esc(t('md.none'))}</p>`;
+  }).catch(() => {
+    if(tok !== MEDIA_TOK) return;
+    // an open that failed has no database to read; anything later is a failed read
+    grid.innerHTML = `<p class="amsg bad" style="grid-column:1/-1">${esc(t(MEDIA_P ? 'md.loadFailed' : 'md.blocked'))}</p>`;
+  });
+}
+async function mediaAddFiles(entry, files){
+  try{ await mediaOpen(); }catch(e){ mediaSay(entry, 'bad', t('md.blocked')); return; }
+  let ok = 0; const bad = [];
+  for(const f of files){
+    if(f.type && !/^(image|video)\//.test(f.type)){ bad.push(t('md.notMedia', {name: f.name})); continue; }
+    try{ await mediaAdd(entry, f); ok++; }
+    catch(e){ bad.push(t(e && e.name === 'QuotaExceededError' ? 'md.full' : 'md.failed', {name: f.name})); }
+  }
+  if(ok){ try{ navigator.storage?.persist?.(); }catch(e){} }
+  mediaSay(entry, bad.length ? 'bad' : 'ok', [ok ? t('md.added', {n: ok}) : '', ...bad].filter(Boolean).join(' '));
+  mediaRender(entry);
+}
+function mediaViewer(entry, key){
+  mediaList(entry).then(items => {
+    const it = items.find(x => String(x.key) === String(key)); if(!it) return;
+    mediaCloseViewer();
+    const u = mediaUrl(it.blob), ov = document.createElement('div');
+    ov.id = 'amover'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
+    ov.dataset.entry = entry; ov.dataset.key = it.key;
+    ov.innerHTML = `<div class="mtop"><button type="button" data-mclose="1">${esc(t('md.close'))}</button>` +
+      `<button type="button" data-mdel="1">${esc(t('md.delete'))}</button></div>` +
+      `<div class="mbody">${it.kind === 'video' ? `<video src="${u}" controls playsinline></video>` : `<img src="${u}" alt="">`}</div>` +
+      `<div class="mcap">${esc(it.name || '')}</div>`;
+    document.body.appendChild(ov);
+    ov.querySelector('button').focus();
+  }).catch(() => mediaSay(entry, 'bad', t('md.loadFailed')));
+}
+
 function openASheet(kind, id){
   if(!ATT.data) return;
   const row = (k, v) => `<div class="arow"><span class="k">${esc(t(k))}</span><span class="v">${esc(v || t('att.na'))}</span></div>`;
@@ -5643,32 +6144,44 @@ function openASheet(kind, id){
   let head, body;
   persLoad();
   if(kind === 'match'){
-    const m = ATT.data.matches.find(x => x.id === id); if(!m) return;
+    impLoad();
+    const m = attMerged().matches.find(x => attKey(x) === id); if(!m) return;
     const a = m.attendance || {}, tags = [];
     if(a.soldOut) tags.push(t('att.soldOut'));
     if(a.fullHouse) tags.push(t('att.fullHouse'));
     if(a.approx) tags.push(t('att.approx'));
     const att = a.value ? attNum(a.value) + (tags.length ? ' (' + tags.join(', ') + ')' : '') : tags.join(', ');
     head = `<h3>${esc(attTeam(m.home))} ${esc(m.score ?? '')} ${esc(attTeam(m.away))}</h3>` +
-      `<div class="meta"><span class="tag">${esc(attL(m.competition) || t('att.na'))}</span></div>`;
+      `<div class="meta"><span class="tag">${esc(attL(m.competition) || t('att.na'))}</span>${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div>`;
     ATT.side = 'home';
     body = row('att.date', attDate(m.date)) + row('att.score', m.score) + opt('att.after90', m.after90) + row('att.competition', attL(m.competition)) +
       row('att.stage', attL(m.stage)) + row('att.stadium', m.stadium) + row('att.city', attL(m.city)) + row('att.country', attL(m.country)) +
-      opt('att.attendance', att) + opt('att.referee', m.referee) +
-      attLineups(m) + attTimeline(m) + attStatsPane(m) + attNotePane(m) + attPersonal(m.id, true);
+      opt('att.attendance', att) + opt('att.referee', m.referee) + attSupport(m) +
+      attLineups(m) + attTimeline(m) + attStatsPane(m) + attNotePane(m) + attPersonal(id, true) + attMediaPane() +
+      (m._imp ? `<button type="button" class="ab del" id="aImpRemove">${esc(t('imp.remove'))}</button>` : '');
   }else{
     const e = ATT.data.events.find(x => x.id === id); if(!e) return;
     head = `<h3>${esc(attL(e.title) || t('att.na'))}</h3><div class="meta"><span class="tag">${esc(t('att.event'))}</span></div>`;
     const sec = (k, v) => v ? `<h4>${esc(t(k))}</h4>${attUnverified()}<div class="afact">${esc(v)}</div>` : '';
     body = row('att.date', attDate(e.date)) + row('att.place', attL(e.place)) +
       (typeof e.atStadium === 'boolean' ? row('att.atStadium', t(e.atStadium ? 'att.yes' : 'att.no')) : '') +
-      sec('ev.what', attL(e.what)) + sec('ev.why', attL(e.why)) + attPersonal(e.id, e.atStadium === true);
+      sec('ev.what', attL(e.what)) + sec('ev.why', attL(e.why)) + attPersonal(e.id, e.atStadium === true) + attMediaPane();
   }
   closeBSheet(); closeCSheet(); closeFilter();
   document.getElementById('asheetHead').innerHTML = head;
   const b = document.getElementById('asheetBody');
   b.innerHTML = body; b.dataset.open = kind + ':' + id; b.scrollTop = 0;
   document.getElementById('asheet').hidden = false;
+  mediaRender(id);
+}
+
+/* Who I supported: three buttons, as the old app had them on a match. Nothing
+   is chosen by default; tapping the chosen one again clears it. */
+function attSupport(m){
+  const key = attKey(m), cur = persGet(key, 'supported');
+  const b = (val, label) => `<button type="button" data-sup="${val}" aria-pressed="${cur === val}">${esc(label)}</button>`;
+  return `<h4>${esc(t('sup.title'))}</h4><div class="asw" id="aSupport">${b('home', attTeam(m.home))}${b('neutral', t('sup.neutral'))}${b('away', attTeam(m.away))}</div>` +
+    `<p class="anote">${esc(t('sup.hint'))}</p>`;
 }
 
 (function wireAttended(){
@@ -5680,13 +6193,63 @@ function openASheet(kind, id){
   document.getElementById('meMatches').addEventListener('click', open);
   document.getElementById('meEvents').addEventListener('click', open);
   document.getElementById('asheetClose').addEventListener('click', closeASheet);
-  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeASheet(); });
+  document.addEventListener('keydown', e => {
+    if(e.key !== 'Escape') return;
+    if(document.getElementById('amover')) mediaCloseViewer(); else closeASheet();
+  });
   dragToClose(document.getElementById('asheet'), closeASheet);
   const body = document.getElementById('asheetBody');
+  const openKey = () => (body.dataset.open || '').split(/:(.*)/)[1] || '';
+  document.getElementById('meMatches').addEventListener('click', e => {        // the paste box: checked whole, then stored on this device only
+    if(!e.target.closest('#aImpBtn')) return;
+    impLoad();
+    const show = (kind, text) => { const m = document.getElementById('aImpMsg'); m.className = 'amsg ' + kind; m.textContent = text; };
+    const c = impCheckText(document.getElementById('aImpBox').value);
+    if(c.error) return show('bad', c.error);
+    if(!impSave(IMP.concat(c.added))) return show('bad', t('imp.saveFailed'));
+    attTouched();
+    ATT.impMsg = {kind: 'ok', text: t('imp.added', {n: c.added.length})}; ATT.impOpen = true;
+    renderAtt();
+  });
+  body.addEventListener('click', e => {
+    const sb = e.target.closest('button[data-sup]');                              // the supporter buttons: pressing the chosen one clears it
+    if(sb){
+      const key = openKey(), nv = persGet(key, 'supported') === sb.dataset.sup ? '' : sb.dataset.sup;
+      persSetSupport(key, nv);
+      body.querySelectorAll('#aSupport button').forEach(x => x.setAttribute('aria-pressed', x.dataset.sup === nv));
+      return;
+    }
+    const mo = e.target.closest('button[data-mopen]');
+    if(mo){ mediaViewer(openKey(), mo.dataset.mopen); return; }
+    if(e.target.closest('#aImpRemove')){
+      const key = openKey();
+      if(!key.startsWith('imp:') || !confirm(t('imp.removeAsk'))) return;
+      impLoad();
+      if(!impSave(IMP.filter(m => m.id !== key.slice(4)))) return;
+      persDelete(key); attTouched();
+      mediaDeleteEntry(key).catch(() => {});
+      closeASheet(); renderAtt();
+    }
+  });
+  body.addEventListener('change', e => {
+    const inp = e.target.closest('#aMfile'); if(!inp || !inp.files.length) return;
+    const files = [...inp.files], key = openKey();
+    inp.value = '';
+    mediaAddFiles(key, files);
+  });
+  document.addEventListener('click', e => {                                    // the full-screen viewer sits outside the sheet
+    const b = e.target.closest('#amover button'); if(!b) return;
+    const ov = document.getElementById('amover');
+    if(b.dataset.mclose){ mediaCloseViewer(); return; }
+    if(!confirm(t('md.deleteAsk'))) return;
+    const entry = ov.dataset.entry;
+    mediaDelete(Number(ov.dataset.key)).then(() => { mediaCloseViewer(); mediaRender(entry); mediaSay(entry, 'ok', t('md.deleted')); })
+      .catch(() => mediaSay(entry, 'bad', t('md.deleteFailed')));
+  });
   body.addEventListener('click', e => {         // the line-up switch: home side first, then away
     const b = e.target.closest('button[data-side]'); if(!b) return;
     const [kind, id] = (body.dataset.open || '').split(/:(.*)/);
-    const m = kind === 'match' && ATT.data && ATT.data.matches.find(x => x.id === id);
+    const m = kind === 'match' && ATT.data && attMerged().matches.find(x => attKey(x) === id);
     if(!m || !m.lineups || !m.lineups[b.dataset.side]) return;
     ATT.side = b.dataset.side;
     body.querySelectorAll('button[data-side]').forEach(x => x.setAttribute('aria-pressed', x === b));
@@ -5703,6 +6266,7 @@ function openASheet(kind, id){
     f.removeAttribute('aria-invalid');
     if(err) err.textContent = '';
     persSet(f.dataset.id, f.dataset.pf, f.value);
+    attTouched();
   });
   applyLang();
 })();

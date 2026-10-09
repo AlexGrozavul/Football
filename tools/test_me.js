@@ -38,6 +38,18 @@
 //    (only where the formation adds up; never inferred), timeline in minute order, stats only with a stats block, the factual note labelled
 //    unverified, no empty pane; the personal fields (note, ticket, seat, block, who I went with) are kept only under football-attended-personal,
 //    card numbers are refused on four of them, no storage read or write is an mf_ key, mf_media is untouched; nothing overflows at 390 px;
+//  - since 2026-10-09 (device-only additions, none ever committed, nothing migrated from the old app; every storage read and write and every
+//    IndexedDB open is recorded and none is an mf_ name): the supporter choice on a match sheet (nothing chosen by default; the chosen button pressed;
+//    pressing it again clears it; kept under football-attended-personal as {id: {supported}}), and the win/draw/loss record on My stats worked out
+//    here from the file's scores, with "n of total matches counted" (Neutral and no choice left out); a box on My attended matches that accepts
+//    the old format (all 23 file matches re-pasted with new ids are accepted), refuses anything invalid or clashing with nothing stored, stores
+//    valid matches only under football-attended-imported, marks them "Imported on this device" in the list and the sheet, and counts them in the
+//    stats, with their own id space ("imp:" + id); photos and videos on match, imported-match and event sheets in the IndexedDB
+//    football-attended-media (added, thumbnailed, viewed, deleted, kept over a reload, a non-media file refused, storage refused and quota
+//    exceeded said clearly, none in localStorage or the export); the Me export at version 2 holding the personal fields, the supporter choices and the
+//    imported matches and saying photos and videos are not included, its round trip, its refusals (a card number, a clash with the file's ids, a
+//    newer version, the old app's export shape), and a version 1 file still importing and leaving those alone; nothing overflows at 390 px in English
+//    and Romanian;
 //  - no script error.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -356,7 +368,7 @@ function alarmAt(ev, al){
   await page.click('nav button[data-pane=me]'); await page.click('#meTabTix');
   let exp = await download(page, () => page.click('#meExport'));
   const file = JSON.parse(exp.text);
-  check('Export: one JSON file with a format and a version number', file.format === 'football-planner-me' && file.version === 1 && /\.json$/.test(exp.name), exp.name);
+  check('Export: one JSON file with a format and a version number', file.format === 'football-planner-me' && file.version === 2 && /\.json$/.test(exp.name), exp.name);
   check('Export: it holds the memberships, tickets and favorites', file.memberships.length === 2 && file.tickets.length === 2 &&
     JSON.stringify(file.favorites) === '["el-final-2027"]', JSON.stringify({m: file.memberships.length, t: file.tickets.length, f: file.favorites}));
   check('The backup banner goes after an export', await page.$eval('#meBackup', e => e.hidden), '');
@@ -396,7 +408,7 @@ function alarmAt(ev, al){
   const broken = [
     ['not JSON', '{"format": "football-planner-me", '],
     ['another app\'s file (a saved-routes export)', JSON.stringify({format: 'football-planner-saved-routes', version: 1, routes: []})],
-    ['a newer version', JSON.stringify(Object.assign({}, good, {version: 2}))],
+    ['a newer version', JSON.stringify(Object.assign({}, good, {version: 3}))],
     ['a ticket with no status', JSON.stringify(Object.assign({}, good, {tickets: [Object.assign({}, good.tickets[0], {status: undefined})]}))],
     ['a card number in a membership note', JSON.stringify(Object.assign({}, good, {memberships: [Object.assign({}, good.memberships[0], {notes: 'pay 4111111111111111'})]}))],
     ['the same id twice', JSON.stringify(Object.assign({}, good, {tickets: [good.tickets[0], good.tickets[0]]}))],
@@ -543,7 +555,10 @@ function alarmAt(ev, al){
     ecards[i].text.includes(String(new Date(e.date + 'T12:00:00').getFullYear()))), '');
   noSideways('Events: no sideways scroll at 390 px', await sideways(p3));
   check('The file was requested once for all three sub-tabs', attReqs() === 1, String(attReqs()));
-  check('The three sub-tabs read nothing from browser storage', (await p3.evaluate(() => window.__reads)).length === 0, JSON.stringify(await p3.evaluate(() => window.__reads)));
+  // Since 2026-10-09 the stats read the supporter choices and the matches imported on this device: exactly these two keys, nothing else.
+  const readsSub = await p3.evaluate(() => window.__reads);
+  check('The three sub-tabs read only football-attended-personal and football-attended-imported from browser storage (no mf_ key)',
+    readsSub.length > 0 && readsSub.every(k => ['football-attended-personal', 'football-attended-imported'].includes(k)), JSON.stringify([...new Set(readsSub)]));
 
   // Every entry opens the header sheet.
   const sheetBad = [];
@@ -789,6 +804,365 @@ function alarmAt(ev, al){
   check('The chosen language survives a reload', await p3.evaluate(() => LANG) === 'ro', '');
   await p3.evaluate(() => setLang('en'));
   await ctx3.close();
+
+  {
+  // ---- 2026-10-09: supporter choice and record, matches added by pasting JSON, photos and videos, the export at version 2.
+  const SUPK = 'football-attended-personal', IMPK = 'football-attended-imported';
+  const IMPID = 'imp-' + TAG, IMPKEY = 'imp:' + IMPID;
+  const rec5 = {reads: [], writes: [], idb: []};
+  const OLD_SEED = {personal: JSON.stringify({'*': {note: 'OLDAPPNOTE', supported: 'home'}}), imported: JSON.stringify([{id: 'OLDIMP' + TAG, date: '2020-01-01', home: {name: 'Old A'}, away: {name: 'Old B'}, score: '1-0'}])};
+  const recordInit = seed => {                   // every localStorage read and write and every IndexedDB open, kept for the whole run
+    window.__reads = []; window.__writes = []; window.__idb = [];
+    const g = Storage.prototype.getItem, w = Storage.prototype.setItem, r = Storage.prototype.removeItem;
+    Storage.prototype.getItem = function(k){ window.__reads.push(k); return g.call(this, k); };
+    Storage.prototype.setItem = function(k, v){ window.__writes.push(k); return w.call(this, k, v); };
+    Storage.prototype.removeItem = function(k){ window.__writes.push(k); return r.call(this, k); };
+    const o = IDBFactory.prototype.open;
+    IDBFactory.prototype.open = function(n){ window.__idb.push(n); return o.apply(this, arguments); };
+    try{ if(g.call(localStorage, 'mf_personal') === null){ w.call(localStorage, 'mf_personal', seed.personal); w.call(localStorage, 'mf_imported', seed.imported); } }catch(e){}   // the old app's keys: never read
+  };
+  const ctx5 = await newCtx();
+  await ctx5.addInitScript(recordInit, OLD_SEED);
+  const p5 = await ctx5.newPage();
+  p5.on('pageerror', e => errors.push(e.message));
+  p5.on('dialog', d => d.accept());
+  const harvest = async () => {
+    const r = await p5.evaluate(() => { const o = {r: window.__reads.slice(), w: window.__writes.slice(), i: window.__idb.slice()}; window.__reads.length = 0; window.__writes.length = 0; window.__idb.length = 0; return o; });
+    rec5.reads.push(...r.r); rec5.writes.push(...r.w); rec5.idb.push(...r.i);
+  };
+  const open5 = async () => {
+    await p5.goto(BASE);
+    await p5.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    await p5.click('nav button[data-pane=me]');
+    await p5.waitForSelector('#meStats .astat');
+  };
+  const sub5 = async (id, panel) => { await p5.click(id); await p5.waitForFunction(sel => !document.querySelector(sel).hidden && !/Loading/.test(document.querySelector(sel).textContent), panel); };
+  const lsGet = k => p5.evaluate(k => localStorage.getItem(k), k);
+  const tiles = () => p5.evaluate(() => [...document.querySelectorAll('#meStats .agrid')[0].querySelectorAll('.astat b')].map(b => +b.textContent.replace(/[^\d]/g, '')));
+  const recordNow = () => p5.evaluate(() => ({label: document.getElementById('aRecCount').textContent,
+    wdl: [...document.querySelectorAll('#aRecord .astat b')].map(b => +b.textContent)}));
+  const openCard = async (panelTab, panel, key) => {
+    await sub5(panelTab, panel);
+    await p5.click(`${panel} .acard[data-id="${key}"]`);
+    await p5.waitForSelector('#asheet:not([hidden])'); await p5.waitForTimeout(350);
+  };
+  const closeSheet5 = async () => { await p5.click('#asheetClose'); };
+  const over5 = () => p5.evaluate(() => {
+    const sh = document.getElementById('asheet'), root = sh.hidden ? document.getElementById('pane-me') : sh, bad = [];
+    root.querySelectorAll('*').forEach(x => { const r = x.getBoundingClientRect(); if(r.width > 0 && (r.right > innerWidth + 1 || r.left < -1)) bad.push(x.tagName + '.' + x.className); });
+    const b = document.getElementById('asheetBody');
+    return {bad: bad.slice(0, 4), doc: document.documentElement.scrollWidth, sb: sh.hidden ? 0 : b.scrollWidth - b.clientWidth};
+  });
+  const noOver5 = async name => { const o = await over5(); check(name, !o.bad.length && o.doc <= W && o.sb <= 1, JSON.stringify(o)); };
+  const sheetText5 = () => p5.$eval('#asheet', s => s.textContent.replace(/\s+/g, ' '));
+  const outcome = (m, sup) => { const [h, a] = m.score.split('-').map(Number); return h === a ? 'd' : ((h > a) === (sup === 'home')) ? 'w' : 'l'; };
+
+  await open5();
+  // ---- Supporter buttons and the record
+  const expRec = {w: 0, d: 0, l: 0, n: 0};
+  check('Record: nothing is chosen by default, so it says "0 of N matches counted", shows no W/D/L and no supporter is stored',
+    (await recordNow()).label === `0 of ${fx.n} matches counted` && !(await p5.$('#aRecord')) && !/supported/.test(await lsGet(SUPK) || ''), JSON.stringify(await recordNow()));
+  // One win, one draw, one loss and one Neutral, chosen from the file's own scores so every part of the record is exercised.
+  const dec = attOrder.filter(m => { const [h, a] = m.score.split('-').map(Number); return h !== a; }), drawn = attOrder.find(m => { const [h, a] = m.score.split('-').map(Number); return h === a; });
+  const winSide = m => { const [h, a] = m.score.split('-').map(Number); return h > a ? 'home' : 'away'; };
+  const picks = [[dec[0], winSide(dec[0])], [drawn, 'home'], [dec[1], winSide(dec[1]) === 'home' ? 'away' : 'home'], [dec[2], 'neutral']];
+  check('The test has a win, a draw and a loss to choose from in the file', !!drawn && dec.length >= 3, `${dec.length} decisive`);
+  let pickBad = [];
+  for(const [m, sup] of picks){
+    await openCard('#meTabMatches', '#meMatches', m.id);
+    const before = await p5.$$eval('#aSupport button', bs => bs.map(b => [b.dataset.sup, b.getAttribute('aria-pressed'), b.textContent.trim(), b.getBoundingClientRect().height]));
+    if(JSON.stringify(before.map(b => b[0])) !== '["home","neutral","away"]' || before.some(b => b[1] !== 'false')) pickBad.push(m.id + ' initial ' + JSON.stringify(before));
+    if(before[0][2] !== (m.home.nameEn || m.home.name) || before[2][2] !== (m.away.nameEn || m.away.name) || before[1][2] !== 'Neutral' || before.some(b => b[3] < 44)) pickBad.push(m.id + ' labels/size ' + JSON.stringify(before));
+    await p5.click(`#aSupport button[data-sup=${sup}]`);
+    const after = await p5.$$eval('#aSupport button', bs => bs.map(b => b.getAttribute('aria-pressed')));
+    if(JSON.stringify(after) !== JSON.stringify(['home', 'neutral', 'away'].map(v => String(v === sup)))) pickBad.push(m.id + ' pressed ' + after);
+    if(sup !== 'neutral'){ expRec.n++; expRec[outcome(m, sup)]++; }
+    await closeSheet5();
+  }
+  check('Supporter buttons: home, Neutral, away (the team names from the file), 44 px tall, none pressed at first, the chosen one pressed', !pickBad.length, pickBad.join(' | '));
+  const sp = JSON.parse(await lsGet(SUPK));
+  check('The choice is kept under football-attended-personal as {entry id: {supported: "home"|"neutral"|"away"}}, the old app\'s field name and shape',
+    picks.every(([m, sup]) => sp[m.id] && sp[m.id].supported === sup && Object.keys(sp[m.id]).join() === 'supported'), JSON.stringify(sp));
+  await openCard('#meTabMatches', '#meMatches', picks[0][0].id);
+  await p5.click('#aSupport button[data-sup=home]');
+  check('Pressing the chosen button again clears it (stored as an empty string, none pressed)',
+    JSON.parse(await lsGet(SUPK))[picks[0][0].id].supported === '' && (await p5.$$eval('#aSupport button', bs => bs.every(b => b.getAttribute('aria-pressed') === 'false'))), '');
+  await p5.click('#aSupport button[data-sup=home]'); await closeSheet5();
+  await sub5('#meTabStats', '#meStats');
+  let rn = await recordNow();
+  check(`Record on My stats equals the file's scores (W-D-L ${expRec.w}-${expRec.d}-${expRec.l}, each non-zero), and the label reads "${expRec.n} of ${fx.n} matches counted"`,
+    expRec.w > 0 && expRec.d > 0 && expRec.l > 0 && rn.label === `${expRec.n} of ${fx.n} matches counted` && JSON.stringify(rn.wdl) === JSON.stringify([expRec.w, expRec.d, expRec.l]), JSON.stringify(rn));
+  check('...and says Neutral and no choice are left out', /Neutral and no choice are left out/.test(await p5.textContent('#meStats')), '');
+  check('The backup banner is raised by a supporter choice (Tickets sub-tab)', await (async () => { await p5.click('#meTabTix'); return !(await p5.$eval('#meBackup', e => e.hidden)); })(), '');
+  await sub5('#meTabStats', '#meStats');
+  await harvest(); await p5.reload(); await p5.waitForSelector('#meStats .astat').catch(() => {});
+  await open5();
+  rn = await recordNow();
+  check('After a reload the choices and the record are still there', rn.label === `${expRec.n} of ${fx.n} matches counted` && JSON.stringify(rn.wdl) === JSON.stringify([expRec.w, expRec.d, expRec.l]), JSON.stringify(rn));
+
+  // ---- The paste box
+  const mk = (id, extra) => Object.assign({id, date: '2025-05-01', competition: {ro: 'Cupa ' + TAG, en: 'Cup ' + TAG}, stage: {ro: 'Finala', en: 'Final'},
+    home: {name: 'Imp Casa ' + TAG, nameEn: 'Imp Home ' + TAG, short: 'IMH'}, away: {name: 'Imp Oaspeți ' + TAG, nameEn: 'Imp Away ' + TAG, short: 'IMA'},
+    score: '3-1', stadium: 'Imp Ground ' + TAG, city: {ro: 'Orașul', en: 'Town'}, country: {ro: 'Țara', en: 'Land'},
+    attendance: {value: fx.big + 1, approx: false, soldOut: false, fullHouse: false},
+    goals: [{team: 'home', player: 'P One', minute: 10}, {team: 'home', player: 'P Two', minute: 20, pen: true}, {team: 'home', player: 'P Three', minute: 30}, {team: 'away', player: 'Q One', minute: 40}],
+    cards: [], cardsComplete: true}, extra || {});
+  await sub5('#meTabMatches', '#meMatches');
+  await p5.click('#aAdd summary');
+  const paste = async text => { await p5.fill('#aImpBox', typeof text === 'string' ? text : JSON.stringify(text)); await p5.click('#aImpBtn'); return (await p5.textContent('#aImpMsg')).trim(); };
+  const bads = [
+    ['text that is not JSON', '{"id": ', /not valid JSON/],
+    ['an empty list', '[]', /list is empty/],
+    ['a match with no score', mk('bad1' + TAG, {score: undefined}), /"score" must look like/],
+    ['a score that is not a score', mk('bad2' + TAG, {score: 'big win'}), /"score"/],
+    ['an unknown field', mk('bad3' + TAG, {bonus: 1}), /unknown field "bonus"/],
+    ['an impossible date', mk('bad4' + TAG, {date: '2025-02-30'}), /"date"/],
+    ['an id with a space', mk('has space', {}), /"id"/],
+    ['a goal with a text minute', mk('bad5' + TAG, {goals: [{team: 'home', player: 'X', minute: 'ten'}]}), /"minute"/],
+    ['a team with no name', mk('bad6' + TAG, {home: {short: 'X'}}), /home\.name/],
+    ['an id the file already uses', mk(ATTF.matches[0].id), /already used by a match in data\/attended\.json/],
+    ['the same id twice in one paste', [mk('dup' + TAG), mk('dup' + TAG)], /appears twice/],
+    ['a list with one good and one bad match', [mk('ok' + TAG), mk('bad7' + TAG, {score: 'x'})], /match 2/],
+  ];
+  const badRes = [];
+  for(const [what, text, re] of bads){
+    const m = await paste(text);
+    if(!/^Not added|nothing was stored|Not added/.test(m) || !re.test(m)) badRes.push(`${what}: ${m.slice(0, 160)}`);
+  }
+  check('Invalid pastes are rejected, each with a reason that names the problem', !badRes.length, badRes.join(' | '));
+  check('...and nothing was stored: no football-attended-imported key, the list still has the file\'s matches only',
+    await lsGet(IMPK) === null && (await p5.$$('#meMatches .acard')).length === fx.n, String(await lsGet(IMPK)));
+  const okMsg = await paste(mk(IMPID));
+  check('A valid match is accepted with a message', /^Added 1 imported match/.test(okMsg), okMsg);
+  const impStored = JSON.parse(await lsGet(IMPK));
+  check('...stored only under football-attended-imported ({version, matches}), with the id as pasted', impStored.version === 1 && impStored.matches.length === 1 && impStored.matches[0].id === IMPID &&
+    impStored.matches[0].home.name === 'Imp Casa ' + TAG, JSON.stringify(impStored).slice(0, 120));
+  const cards5 = await p5.$$eval('#meMatches .acard', cs => cs.map(c => ({id: c.dataset.id, text: c.textContent.replace(/\s+/g, ' ')})));
+  check('The list has one more card; only the imported one is marked "Imported on this device"; its own id space is "imp:" + id',
+    cards5.length === fx.n + 1 && cards5.filter(c => /Imported on this device/.test(c.text)).map(c => c.id).join() === IMPKEY && cards5.every(c => c.id === IMPKEY || attOrder.some(m => m.id === c.id)), cards5.map(c => c.id).slice(-2).join());
+  check('The imported match is sorted by its date (oldest first) and numbered with the others', cards5.findIndex(c => c.id === IMPKEY) === attOrder.filter(m => m.date <= '2025-05-01').length &&
+    cards5.every((c, i) => c.text.startsWith(String(i + 1))), String(cards5.findIndex(c => c.id === IMPKEY)));
+  check('Pasting the same id again is rejected as already imported on this device, and the stored list is unchanged',
+    /already imported on this device/.test(await paste(mk(IMPID))) && (await lsGet(IMPK)) === JSON.stringify(impStored), '');
+  await noOver5('Matches tab with the add box open and a message: nothing overflows at 390 px');
+  await sub5('#meTabStats', '#meStats');
+  const tl = await tiles();
+  check('The imported match is in the stats: matches, goals and stadiums include it', tl[0] === fx.n + 1 && tl[1] === fx.goals + 4 && tl[2] === fx.pens + 1 && tl[3] === fx.stadiums + 1, JSON.stringify(tl) + ` vs ${fx.n + 1},${fx.goals + 4},${fx.pens + 1},${fx.stadiums + 1}`);
+  check('...and its crowd is the biggest crowd', /Imp Home .* – Imp Away/.test(await p5.$eval('#meStats', e => e.textContent).then(t => { const i = t.indexOf('Biggest crowd'); return i < 0 ? '' : t.slice(i, i + 160); })), '');
+  await openCard('#meTabMatches', '#meMatches', IMPKEY);
+  const impSheet = await sheetText5();
+  check('The imported match\'s sheet says "Imported on this device", has supporter buttons and a remove control',
+    /Imported on this device/.test(impSheet) && !!(await p5.$('#aSupport')) && !!(await p5.$('#aImpRemove')), impSheet.slice(0, 160));
+  check('A file match\'s sheet has no "Imported" label and no remove control', await (async () => {
+    await closeSheet5(); await openCard('#meTabMatches', '#meMatches', attOrder[5].id); const t = await sheetText5(); const no = !/Imported on this device/.test(t) && !(await p5.$('#aImpRemove')); await closeSheet5(); return no; })(), '');
+  await openCard('#meTabMatches', '#meMatches', IMPKEY);
+  await p5.click('#aSupport button[data-sup=home]');
+  const sp2 = JSON.parse(await lsGet(SUPK));
+  check('A supporter choice on the imported match is kept under its own key, beside the file matches\' (ids kept separate)', sp2[IMPKEY] && sp2[IMPKEY].supported === 'home' && !(IMPID in sp2), Object.keys(sp2).join());
+  expRec.n++; expRec.w++;
+  await closeSheet5(); await sub5('#meTabStats', '#meStats');
+  rn = await recordNow();
+  check('...and the record counts it: "n of total" grows with the imported match', rn.label === `${expRec.n} of ${fx.n + 1} matches counted` && JSON.stringify(rn.wdl) === JSON.stringify([expRec.w, expRec.d, expRec.l]), JSON.stringify(rn));
+  await noOver5('Stats tab with the record: nothing overflows at 390 px');
+
+  // ---- Photos and videos (on the imported match's sheet)
+  await openCard('#meTabMatches', '#meMatches', IMPKEY);
+  await p5.setInputFiles('#aMfile', [{name: 'a.png', mimeType: 'image/png', buffer: PNG}, {name: 'b.png', mimeType: 'image/png', buffer: PNG},
+    {name: 'clip.mp4', mimeType: 'video/mp4', buffer: Buffer.from('not really a video')}, {name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from('x')}]);
+  await p5.waitForFunction(() => document.querySelectorAll('#aMgrid .amcell').length === 3, null, {timeout: 10000}).catch(() => {});
+  const mm = await p5.evaluate(() => ({cells: [...document.querySelectorAll('#aMgrid .amcell')].map(c => c.querySelector('video') ? 'video' : c.querySelector('img') ? 'image' : '?'),
+    msg: document.getElementById('aMmsg').textContent, count: document.getElementById('aMcount').textContent, hint: document.getElementById('aMedia').innerText}));
+  check('Media: two photos and a video are added, shown as thumbnails; a text file is refused by name', JSON.stringify(mm.cells.sort()) === '["image","image","video"]' && /Added 3/.test(mm.msg) && /notes\.txt is not a photo or a video/.test(mm.msg), JSON.stringify(mm));
+  check('...with a count, and a note that files stay on this device only and are not in the export', /3 files/.test(mm.count) && /device only/.test(mm.hint) && /not in the Me tab export/.test(mm.hint), mm.count);
+  const idbItems = () => p5.evaluate(() => new Promise((res, rej) => {
+    const rq = indexedDB.open('football-attended-media');
+    rq.onsuccess = () => { const db = rq.result, g = db.transaction('items').objectStore('items').getAll(); g.onsuccess = () => { db.close(); res(g.result.map(x => ({entryId: x.entryId, name: x.name, kind: x.kind, size: x.size, blob: x.blob instanceof Blob}))); }; };
+    rq.onerror = () => rej(rq.error);
+  }));
+  let items5 = await idbItems();
+  check('Stored in the IndexedDB football-attended-media, keyed by the entry id (imp:…), as blobs, with name, kind and size',
+    items5.length === 3 && items5.every(i => i.entryId === IMPKEY && i.blob && i.size > 0) && items5.filter(i => i.kind === 'video').map(i => i.name).join() === 'clip.mp4', JSON.stringify(items5));
+  check('Nothing of the media is in localStorage', !(await p5.evaluate(() => JSON.stringify(Object.assign({}, localStorage)))).match(/a\.png|clip\.mp4|blob:/), '');
+  await noOver5('Imported match sheet with media: nothing overflows at 390 px');
+  await p5.click('#aMgrid .amcell >> nth=0');
+  await p5.waitForSelector('#amover');
+  const vw = await p5.evaluate(() => { const o = document.getElementById('amover'), r = o.getBoundingClientRect(), im = o.querySelector('img, video'), ir = im.getBoundingClientRect();
+    return {w: r.width, h: r.height, imgIn: ir.left >= -1 && ir.right <= innerWidth + 1 && ir.bottom <= innerHeight + 1, btns: [...o.querySelectorAll('button')].map(b => b.getBoundingClientRect().height), z: +getComputedStyle(o).zIndex}; });
+  check('Tapping a thumbnail opens a full-screen viewer above the sheet with Close and Delete (44 px), the picture inside the screen', vw.w === W && vw.h === H && vw.imgIn && vw.btns.length === 2 && vw.btns.every(h => h >= 44) && vw.z > 1001, JSON.stringify(vw));
+  await p5.keyboard.press('Escape');
+  check('Escape closes the viewer first and leaves the sheet open', !(await p5.$('#amover')) && !(await p5.$eval('#asheet', s => s.hidden)), '');
+  await p5.click('#aMgrid .amcell >> nth=0'); await p5.waitForSelector('#amover');
+  await p5.click('#amover [data-mdel]');
+  await p5.waitForFunction(() => document.querySelectorAll('#aMgrid .amcell').length === 2 && !document.getElementById('amover'), null, {timeout: 10000}).catch(() => {});
+  items5 = await idbItems();
+  check('Delete (asks first) removes that one file from the grid and from the database', items5.length === 2 && (await p5.$$('#aMgrid .amcell')).length === 2 && /Deleted/.test(await p5.textContent('#aMmsg')), JSON.stringify(items5.map(i => i.name)));
+  await closeSheet5();
+  await harvest(); await p5.reload(); await open5();
+  await openCard('#meTabMatches', '#meMatches', IMPKEY);
+  await p5.waitForFunction(() => document.querySelectorAll('#aMgrid .amcell').length === 2, null, {timeout: 10000}).catch(() => {});
+  check('After a reload the two remaining files are still on the sheet, and the imported match is still in the list', (await p5.$$('#aMgrid .amcell')).length === 2 && !(await p5.$eval('#asheet', s => s.hidden)), '');
+  await closeSheet5();
+  const ev0 = ATTF.events[0];
+  await openCard('#meTabEvents', '#meEvents', ev0.id);
+  await p5.setInputFiles('#aMfile', [{name: 'ev.png', mimeType: 'image/png', buffer: PNG}]);
+  await p5.waitForFunction(() => document.querySelectorAll('#aMgrid .amcell').length === 1, null, {timeout: 10000}).catch(() => {});
+  items5 = await idbItems();
+  check('An event\'s sheet takes photos too, kept under the event\'s id and separate from the match\'s', items5.filter(i => i.entryId === ev0.id).length === 1 && items5.filter(i => i.entryId === IMPKEY).length === 2, JSON.stringify(items5.map(i => i.entryId)));
+  await closeSheet5();
+
+  // ---- The Me export at version 2
+  await sub5('#meTabTix', '#meBody');
+  check('The backup banner is up before the export (the attended data changed)', !(await p5.$eval('#meBackup', e => e.hidden)), '');
+  const exp5 = await download(p5, () => p5.click('#meExport'));
+  const f5 = JSON.parse(exp5.text);
+  check('Export: version 2 with the personal fields, the supporter choices and the imported matches',
+    f5.version === 2 && f5.format === 'football-planner-me' && JSON.stringify(f5.personal) === await lsGet(SUPK) && f5.importedMatches.length === 1 && f5.importedMatches[0].id === IMPID &&
+    picks.every(([m, sup]) => f5.personal[m.id].supported === sup) && f5.personal[IMPKEY].supported === 'home', Object.keys(f5).join());
+  check('Export: says photos and videos are not included, and holds none (no media name, no blob)', /not in this file/.test(f5.notIncluded || '') && !/a\.png|clip\.mp4|ev\.png|blob:/.test(exp5.text) &&
+    /Photos and videos are not included/.test(await p5.textContent('#meMsg')) && /Photos and videos are not in the file/.test(await p5.textContent('#meBody')), f5.notIncluded);
+  check('The banner goes after the export', await p5.$eval('#meBackup', e => e.hidden), '');
+  const exportFile5 = path.join(require('os').tmpdir(), `me-export5-${TAG}.json`);
+  const importFile = async (obj, name) => {
+    const fp = path.join(require('os').tmpdir(), `me-${name}-${TAG}.json`);
+    fs.writeFileSync(fp, typeof obj === 'string' ? obj : JSON.stringify(obj));
+    await p5.setInputFiles('#meFile', []); await p5.setInputFiles('#meFile', fp);
+    await p5.waitForFunction(() => document.getElementById('meConfirm') || /Not imported/.test(document.getElementById('meMsg')?.textContent || ''), null, {timeout: 8000}).catch(() => {});
+    const r = {confirm: (await p5.$('#meConfirm')) ? await p5.textContent('#meConfirm') : '', msg: (await p5.$('#meMsg')) ? await p5.textContent('#meMsg') : ''};
+    fs.unlinkSync(fp); return r;
+  };
+  const dev = async () => JSON.stringify([await lsGet(SUPK), await lsGet(IMPK)]);
+  const devBefore = await dev();
+  const refusals = [
+    ['a card number in a ticket field', Object.assign({}, f5, {personal: Object.assign({}, f5.personal, {[picks[0][0].id]: {ticket: '4111 1111 1111 1111'}})}), /payment card number/],
+    ['a card number in "who I went with"', Object.assign({}, f5, {personal: Object.assign({}, f5.personal, {[picks[0][0].id]: {withWho: '4111-1111-1111-1111'}})}), /payment card number/],
+    ['an imported match whose id the file already uses', Object.assign({}, f5, {importedMatches: [Object.assign({}, f5.importedMatches[0], {id: ATTF.matches[0].id})]}), /already used by a match in data\/attended\.json/],
+    ['an invalid imported match', Object.assign({}, f5, {importedMatches: [Object.assign({}, f5.importedMatches[0], {score: 'x'})]}), /"score"/],
+    ['a supporter choice that is not home, neutral or away', Object.assign({}, f5, {personal: {[picks[0][0].id]: {supported: 'both'}}}), /"supported" must be/],
+    ['an unknown personal field', Object.assign({}, f5, {personal: {[picks[0][0].id]: {password: 'x'}}}), /unknown field "password"/],
+    ['no personal object in a version 2 file', Object.assign({}, f5, {personal: undefined}), /no personal object/],
+    ['a newer version', Object.assign({}, f5, {version: 3}), /newer version/],
+    ['the old app\'s own export shape (no format, personal + imported)', {personal: {'2021-06-23-por-fra': {supported: 'home'}}, imported: []}, /not a Me-tab export/],
+  ];
+  const refBad = [];
+  for(const [what, obj, re] of refusals){
+    const r = await importFile(obj, 'bad');
+    if(!/Not imported/.test(r.msg) || !re.test(r.msg) || !/Nothing on this device was changed/.test(r.msg) || r.confirm || await dev() !== devBefore) refBad.push(`${what}: ${r.msg.slice(0, 150)}`);
+  }
+  check('Import refuses (device unchanged): a card number, a clash with the file\'s ids, an invalid match, a bad choice, an unknown field, a missing object, a newer version, the old app\'s export', !refBad.length, refBad.join(' | '));
+  await p5.evaluate(([a, b]) => { localStorage.removeItem(a); localStorage.removeItem(b); }, [SUPK, IMPK]);
+  await harvest(); await p5.reload(); await open5(); await sub5('#meTabMatches', '#meMatches');
+  check('With the attended data deleted from the device the list is the file\'s alone and the record is empty', (await p5.$$('#meMatches .acard')).length === fx.n, '');
+  await p5.click('#meTabTix'); await p5.waitForSelector('#meFile', {state: 'attached'});
+  const imp5 = await importFile(f5, 'good');
+  check('Import first says what the file holds, including the attended records and imported matches', /holds 0 memberships, 0 tickets and \d+ favorites?, plus \d+ attended-match records? \(notes and supporter choices\) and 1 imported match/.test(imp5.confirm), imp5.confirm);
+  await p5.click('[data-act=import-yes]');
+  const msg5 = await p5.textContent('#meMsg');
+  check('Round trip: the personal fields, supporter choices and imported matches are exactly as exported, and the message says they were replaced',
+    await lsGet(SUPK) === JSON.stringify(f5.personal) && JSON.stringify(JSON.parse(await lsGet(IMPK)).matches) === JSON.stringify(f5.importedMatches) && /replaced by the file's/.test(msg5), msg5.slice(-160));
+  check('...the banner is down after the import', await p5.$eval('#meBackup', e => e.hidden), '');
+  await sub5('#meTabMatches', '#meMatches');
+  check('...and the imported match is back in the list, marked', (await p5.$$('#meMatches .acard')).length === fx.n + 1 && /Imported on this device/.test(await p5.$eval(`#meMatches .acard[data-id="${IMPKEY}"]`, c => c.textContent)), '');
+  await sub5('#meTabStats', '#meStats');
+  rn = await recordNow();
+  check('...and the record is what it was', rn.label === `${expRec.n} of ${fx.n + 1} matches counted` && JSON.stringify(rn.wdl) === JSON.stringify([expRec.w, expRec.d, expRec.l]), JSON.stringify(rn));
+  const dev2 = await dev();
+  await p5.click('#meTabTix'); await p5.waitForSelector('#meFile', {state: 'attached'});
+  const v1 = await importFile({format: 'football-planner-me', version: 1, memberships: [], tickets: [], favorites: [], settings: {renewWindowDays: 30}}, 'v1');
+  await p5.click('[data-act=import-yes]');
+  check('A version 1 file still imports and leaves the attended records and imported matches alone (and says so)', !v1.msg.includes('Not imported') && await dev() === dev2 &&
+    /left as they are/.test(await p5.textContent('#meMsg')), (await p5.textContent('#meMsg')).slice(-120));
+
+  // ---- Removing an imported match
+  await openCard('#meTabMatches', '#meMatches', IMPKEY);
+  await p5.click('#aImpRemove');
+  await p5.waitForFunction(() => document.getElementById('asheet').hidden, null, {timeout: 5000}).catch(() => {});
+  await p5.waitForTimeout(300);
+  check('Removing an imported match (asks first) takes it off the list, out of storage, with its notes, its supporter choice and its photos and videos',
+    (await p5.$$('#meMatches .acard')).length === fx.n && JSON.parse(await lsGet(IMPK)).matches.length === 0 && !(IMPKEY in JSON.parse(await lsGet(SUPK))) && !(await idbItems()).some(i => i.entryId === IMPKEY), '');
+
+  // ---- Romanian: the new strings fit at 390 px
+  await p5.evaluate(() => setLang('ro'));
+  await sub5('#meTabMatches', '#meMatches');
+  if(!(await p5.$eval('#aAdd', d => d.open))) await p5.click('#aAdd summary');
+  await p5.fill('#aImpBox', '{"id": ');
+  await p5.click('#aImpBtn');
+  check('Romanian: the add box, its hint and its message are in Romanian', /Adaugă un meci/.test(await p5.textContent('#aAdd summary')) && /nu este JSON valid/.test(await p5.textContent('#aImpMsg')), '');
+  await noOver5('Romanian: the Matches tab with the add box open does not overflow at 390 px');
+  await openCard('#meTabMatches', '#meMatches', attOrder[0].id);
+  check('Romanian: the supporter buttons, the media section and the hint', /Cu cine am ținut/.test(await sheetText5()) && /Poze și filmări/.test(await sheetText5()) && /Adaugă din galerie/.test(await sheetText5()), '');
+  await noOver5('Romanian: a match sheet does not overflow at 390 px');
+  await closeSheet5();
+  await sub5('#meTabStats', '#meStats');
+  check('Romanian: the record section', /Bilanț cu echipa susținută/.test(await p5.textContent('#meStats')) && /meciuri numărate/.test(await p5.textContent('#aRecCount')), '');
+  await noOver5('Romanian: My stats does not overflow at 390 px');
+  await p5.evaluate(() => setLang('en'));
+
+  // ---- Every storage read and write, and every IndexedDB open
+  await harvest();
+  const uniq = a => [...new Set(a)].sort().join(',');
+  check('Every storage read made by the page was recorded; none is an mf_ key; both new keys were read', rec5.reads.length > 20 && !rec5.reads.some(k => String(k).startsWith('mf_')) && rec5.reads.includes(SUPK) && rec5.reads.includes(IMPK), uniq(rec5.reads));
+  check('Every storage write was recorded; none is an mf_ key; the new keys were written', !rec5.writes.some(k => String(k).startsWith('mf_')) && rec5.writes.includes(SUPK) && rec5.writes.includes(IMPK), uniq(rec5.writes));
+  check('Every IndexedDB open was recorded; none is mf_media or any mf_ name; football-attended-media was opened', !rec5.idb.some(n => String(n).startsWith('mf_')) && rec5.idb.includes('football-attended-media'), uniq(rec5.idb));
+  check('The old app\'s seeded keys are untouched and not shown (mf_personal, mf_imported), and there is no mf_media database',
+    await lsGet('mf_personal') === OLD_SEED.personal && await lsGet('mf_imported') === OLD_SEED.imported && !(await p5.evaluate(() => indexedDB.databases().then(d => d.map(x => x.name)))).includes('mf_media') &&
+    !/OLDIMP|OLDAPPNOTE/.test(await p5.evaluate(() => document.body.innerText)), '');
+  check('The page wrote nothing to the repository: no request other than GET reached the server', !nonGet.length, nonGet.join(', '));
+
+  // ---- Every match of the file, pasted again with a new id, is accepted: the validator reads the real format
+  const rawRound = JSON.parse(JSON.stringify(ATTF.matches)).map(m => Object.assign(m, {id: 'copy-' + m.id}));
+  await sub5('#meTabMatches', '#meMatches');
+  if(!(await p5.$eval('#aAdd', d => d.open))) await p5.click('#aAdd summary');
+  await p5.fill('#aImpBox', JSON.stringify(rawRound));
+  await p5.click('#aImpBtn');
+  const bigMsg = (await p5.textContent('#aImpMsg')).trim();
+  check(`All ${fx.n} matches of data/attended.json, pasted as a list with new ids (line-ups, stats, notes and all), are accepted`, new RegExp(`^Added ${fx.n} imported match`).test(bigMsg) && (await p5.$$('#meMatches .acard')).length === 2 * fx.n, bigMsg.slice(0, 200));
+  const sheetsBad = [];
+  for(const m of ATTF.matches.filter(m => m.lineups).slice(0, 3)){
+    await openCard('#meTabMatches', '#meMatches', 'imp:copy-' + m.id);
+    const st = await sheetState(p5);
+    if(!st.h4.includes('Line-ups') || !st.h4.includes('Who I supported') || !st.h4.includes('Photos and videos') || (st.empty && st.empty.length)) sheetsBad.push(m.id + ' ' + JSON.stringify(st.h4));
+    const o = await over5(); if(o.bad.length || o.sb > 1) sheetsBad.push(m.id + ' overflow ' + JSON.stringify(o));
+    await closeSheet5();
+  }
+  check('...and an imported copy opens the full sheet (line-ups, pitch, supporter buttons, media) with no empty pane and no overflow at 390 px', !sheetsBad.length, sheetsBad.join(' | '));
+  await ctx5.close();
+
+  // ---- Refused storage: the page says so and does not fail
+  const ctx6 = await newCtx({blockStorage: true});
+  await ctx6.addInitScript(() => { IDBFactory.prototype.open = function(){ throw new DOMException('denied', 'SecurityError'); }; });
+  const p6 = await ctx6.newPage();
+  p6.on('pageerror', e => errors.push(e.message));
+  await p6.goto(BASE);
+  await p6.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await p6.click('nav button[data-pane=me]');
+  await p6.waitForSelector('#meStats .astat');
+  await p6.click('#meTabMatches'); await p6.waitForSelector('#meMatches .acard');
+  await p6.click('#aAdd summary');
+  check('With storage blocked the add box says imported matches would last only until the page is closed', /last only until the page is closed/.test(await p6.textContent('#aAdd')), '');
+  await p6.fill('#aImpBox', JSON.stringify(mk('blocked' + TAG)));
+  await p6.click('#aImpBtn');
+  check('...and a valid paste is refused with the reason (the browser refused to store it)', /refused to store them/.test(await p6.textContent('#aImpMsg')) && (await p6.$$('#meMatches .acard')).length === fx.n, await p6.textContent('#aImpMsg'));
+  await p6.click(`#meMatches .acard[data-id="${attOrder[0].id}"]`); await p6.waitForTimeout(350);
+  await p6.setInputFiles('#aMfile', [{name: 'a.png', mimeType: 'image/png', buffer: PNG}]);
+  await p6.waitForFunction(() => /refuses to store photos and videos/.test(document.getElementById('aMmsg').textContent), null, {timeout: 8000}).catch(() => {});
+  check('When the browser refuses to store media, the sheet says so clearly and adds nothing', /refuses to store photos and videos here/.test(await p6.textContent('#aMmsg')) && /refuses to store photos and videos here/.test(await p6.textContent('#aMgrid')) && !(await p6.$('#aMgrid .amcell')), await p6.textContent('#aMmsg'));
+  await p6.click('#aSupport button[data-sup=home]');
+  check('A supporter tap with storage blocked still works for the visit (no error)', (await p6.getAttribute('#aSupport button[data-sup=home]', 'aria-pressed')) === 'true', '');
+  await ctx6.close();
+  const ctx7 = await newCtx();
+  await ctx7.addInitScript(() => { IDBObjectStore.prototype.add = function(){ throw new DOMException('full', 'QuotaExceededError'); }; });
+  const p7 = await ctx7.newPage();
+  p7.on('pageerror', e => errors.push(e.message));
+  await p7.goto(BASE);
+  await p7.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await p7.click('nav button[data-pane=me]'); await p7.click('#meTabMatches'); await p7.waitForSelector('#meMatches .acard');
+  await p7.click(`#meMatches .acard[data-id="${attOrder[0].id}"]`); await p7.waitForTimeout(350);
+  await p7.setInputFiles('#aMfile', [{name: 'big.png', mimeType: 'image/png', buffer: PNG}]);
+  await p7.waitForFunction(() => /no room left/.test(document.getElementById('aMmsg').textContent), null, {timeout: 8000}).catch(() => {});
+  check('When the browser\'s quota is exceeded the sheet says there is no room left, naming the file', /There is no room left on this device for big\.png/.test(await p7.textContent('#aMmsg')), await p7.textContent('#aMmsg'));
+  await ctx7.close();
+
+  }
 
   // A failed load says so.
   const ctx4 = await newCtx();
