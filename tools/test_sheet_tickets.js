@@ -277,8 +277,27 @@ const server = http.createServer((req, res) => {
   const ORDER = ['derby', 'european', 'cup', 'big-occasion', 'regular-home', 'other'];
   const fxRows = atmCsv.split('\n').slice(1).filter(Boolean).map(l => l.split(','));
   const wantGroups = ORDER.map(k => [k, fxRows.filter(r => r[1] === k)]).filter(([, g]) => g.length);
-  check('atmosphere: section directly below Rivalries, with its note',
-    A.h4.indexOf('When the atmosphere is best') === A.h4.indexOf('Rivalries') + 1 && A.h4.indexOf('Rivalries') >= 0 && A.note === 'Opinions of the cited sources, not measured.', A.h4.join(' | '));
+  // Section order on the real files: the sections that exist for a club are Rivalries, Fan friendships, atmosphere,
+  // each directly after the previous one that exists. Clubs are picked from the data: one with all three, one with
+  // only some (preferring one that lacks the middle section), one with none. No name or count is written here.
+  const realFri = csv('data/club-friendships.csv');
+  const SECTIONS = [['Rivalries', riv], ['Fan friendships', realFri], ['When the atmosphere is best', realAtm]];
+  const has = (q, rows) => rows.some(r => r.clubQ === q);
+  const present = q => SECTIONS.filter(([, rows]) => has(q, rows)).map(([h]) => h);
+  const fileClubs = [...new Set([...riv, ...realFri, ...realAtm].map(r => r.clubQ))].filter(q => onMap.includes(q));
+  const allThree = fileClubs.find(q => present(q).length === 3);
+  const someOnly = fileClubs.find(q => present(q).length === 2 && !present(q).includes('Fan friendships')) || fileClubs.find(q => present(q).length > 0 && present(q).length < 3);
+  const noneAt = onMap.find(q => present(q).length === 0);
+  for(const [kind, q] of [['all three sections', allThree], ['only some sections', someOnly], ['no sections', noneAt]]){
+    if(!q){ check(`section order: a club with ${kind} exists in the data`, false, 'none found'); continue; }
+    const S = await atmSheet(page, q), want = present(q);
+    const got = S.h4.filter(h => SECTIONS.some(([s]) => s === h));
+    const idx = want.map(h => S.h4.indexOf(h));
+    const consecutive = idx.every((x, i) => x >= 0 && (i === 0 || x === idx[i - 1] + 1));
+    check(`section order, club with ${kind} (${q}): exactly [${want.join(', ') || 'none'}], each directly after the previous that exists`,
+      JSON.stringify(got) === JSON.stringify(want) && consecutive, S.h4.join(' | '));
+    if(want.includes('When the atmosphere is best')) check(`section order (${q}): the atmosphere section carries its note`, S.note === 'Opinions of the cited sources, not measured.', S.note);
+  }
   check('atmosphere: groups in the fixed order, each heading carries its row count',
     JSON.stringify(A.groups.map(g => g.sit)) === JSON.stringify(wantGroups.map(([k]) => k)) &&
     A.groups.every((g, i) => g.head.endsWith(`(${wantGroups[i][1].length})`) && g.rows.length === wantGroups[i][1].length), A.groups.map(g => g.head).join(' | '));
