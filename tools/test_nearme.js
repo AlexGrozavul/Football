@@ -141,7 +141,7 @@ const sorted = rows => rows.every((r, i) => !i || rows[i-1].km <= r.km);
   }));
   check('each row has its tier\'s colour dot', await page.evaluate(() => [...document.querySelectorAll('#nearList .rclub')].every(b => {
     const c = CLUBS.find(x => x.id === b.dataset.id), probe = document.createElement('i');
-    probe.style.background = TIER_COLOUR[c.tier]; return b.querySelector('i').style.background === probe.style.background;
+    probe.style.background = 'var(--t' + c.tier + ')'; return b.querySelector('i').style.background === probe.style.background;
   })));
   const exactDist = rows.every(r => { const c = fileById.get(r.id);
     return r.km === Math.round(hav(HOME.lat, HOME.lon, c.lat, c.lon) * MULT); });
