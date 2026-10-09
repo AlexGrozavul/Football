@@ -132,7 +132,9 @@ const server = http.createServer((req, res) => {
     await page.waitForTimeout(500);              // the sheet slides up for 0.22 s
     const top = await page.evaluate(() => {
       const s = document.getElementById('sheet').getBoundingClientRect();
-      const el = document.elementFromPoint(s.left + s.width / 2, s.top + 20);
+      /* A point inside the part of the sheet that is on screen: Playwright's tap may have scrolled the panes container a little while the Near me
+         panel was still sliding up, which moves the whole map pane (the sheet with it) and is the harness's doing, not the page's. */
+      const el = document.elementFromPoint(s.left + s.width / 2, Math.max(s.top, 0) + 20);
       return document.getElementById('sheet').contains(el) || (el ? el.id || el.className : 'nothing');
     });
     check('a club sheet opened from a derby sits on top of the panel', top === true, String(top));

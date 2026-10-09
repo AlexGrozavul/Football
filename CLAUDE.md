@@ -674,7 +674,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   a month's render time at 4x CPU. With estimates also put on a day cell
   and each holiday block's last day dropped, in a scratch copy, it failed
   49 of 195 checks.
-- `tools/test_me.js` — added 2026-10-04: the Me tab at 390x844, the clock
+- `tools/test_me.js` — (since 2026-10-09 it also covers the translated interface: see "The interface is translated", 32 more checks) added 2026-10-04: the Me tab at 390x844, the clock
   at 2026-10-04 12:00 Berlin time. Fails if the four tabs do not fit the
   bottom bar (one wider than its slot, wrapped or off screen); if adding,
   editing or deleting a membership or a ticket goes wrong; if "Renewal due
@@ -2352,9 +2352,10 @@ four sub-tabs, in this order: **Stats**, **Matches**, **Events**, **Tickets**
   dictionary, with the same keys in `en` and `ro` (checked by
   `tools/test_me.js`). The `ro` block is marked **"RO unchecked by the user"**:
   the assistant wrote it. English is the default; the choice (`setLang()`) is
-  kept on the device under `football-planner-lang`. **There is no visible
-  toggle yet.** The strings that were already on the Tickets sub-tab are
-  English only and were not moved into the dictionary.
+  kept on the device under `football-planner-lang`. *(Since later the same
+  day the toggle is in Settings and every string of the interface is in the
+  dictionary, the Tickets sub-tab's included: see "The interface is
+  translated".)*
 - **Step 2 and the device.** *(Since the additions below the sub-tabs also
   read `football-attended-imported` and the supporter choices; the sentence
   that follows described the state before them.)* The new sub-tabs read
@@ -2456,7 +2457,8 @@ empty on a device.
   an import and a removal. `ME_VERSION` (the stored record's) stays 1; the
   file's is `ME_FILE_VERSION` 2.
 - **Language.** New strings are in `I18N` in both languages; the `ro` ones
-  are the assistant's, **"RO unchecked by the user"**. No toggle yet.
+  are the assistant's, **"RO unchecked by the user"**. *(The toggle, in Settings at the top
+  of the Me tab, was added later the same day: see "The interface is translated".)*
 - **Tested** in `tools/test_me.js` (no new file), all read from the data: the
   supporter choice and the record with "n of total"; every invalid paste
   refused with nothing stored and a valid one stored under the new key and
@@ -2465,6 +2467,62 @@ empty on a device.
   deleted, kept over a reload, refused storage and quota said clearly; no
   `mf_` key or database touched; nothing overflows at 390 px in English and
   Romanian. `SHELL_VERSION` is `v17`.
+
+**The interface is translated, 2026-10-09.** Done on Alexandru's instruction.
+The interface speaks English or Romanian; **text that comes from a data file
+stays English** and **the Romanian is unchecked until he says otherwise**.
+- **What is translated: every word the interface itself writes** - map
+  (search, chips, legend, coverage, route and cost sheet, Near me, club sheet
+  labels), Bucket list (filter, sort, group headings, labels, calendar),
+  Ticket info, Competitions, Me (all four sub-tabs and sheets), empty states,
+  error messages, the offline banner. All of it is in `I18N` (`en` and `ro`,
+  identical key sets, checked by `tools/test_me.js`) and used through `t(key,
+  vars)`, `tn(key, n)` (key.one / key.other) and `vocab(prefix, word)` (a data
+  word the interface can say, otherwise shown as the file wrote it). Dates use
+  `toLocaleDateString(LOC())` and numbers `nf()` / `nfg()`, so Romanian shows
+  month and weekday names and a decimal comma; `<html lang>` follows.
+  **Not translated, on purpose:** everything a data file holds (rule texts,
+  notes, `why` texts, titles, names, derby names, source titles, league names,
+  the values of closed vocabularies a tag shows that the interface has no word
+  for), the English month names the code READS in data texts (`MONTH_NAMES`),
+  the `.ics` property names, and the export file's `notIncluded` sentence.
+  Areas written from data carry `data-content` (the test skips them).
+  `NOTE_LABEL` translates the field names of `football-rules.json` entries
+  the files use today; a new field name shows as its English fallback.
+- **The toggle is in Settings**, a small button at the top of the Me tab (no
+  new tab) that opens a sheet with English and Română. The choice is kept on
+  the device only under `football-planner-lang`, default English, and no
+  `mf_*` key is read. **It applies at once to what is open**: map chips and
+  legend, the open club sheet, route, Near me, coverage and filter panels, the
+  Bucket list and calendar and their sheet, Ticket info, Competitions and its
+  sheet, the Me sub-tabs and an open match sheet, the offline banner.
+  **Not redrawn at once:** a Me form being filled in (typed text is never
+  thrown away; its labels change when it is closed and opened again), a
+  message already shown (a Me import or export message, the Near me location
+  message, the attended paste box message) which stays in the language it was
+  written in until the next one, and names stored when made (a saved route's
+  default name). Ticket info closes the cards that were open.
+- **Romanian: unchecked.** Written by the assistant, kept under the comment
+  "RO unchecked by the user" in the dictionary. `docs/ro-review.md` is the
+  whole dictionary as a table of key, English and Romanian, in dictionary
+  order, for reading on a phone; regenerate it after any dictionary change.
+  Plurals have two forms only (one / other), so a Romanian count of 20 or more
+  lacks the "de" ("20 de cluburi"); nobody has checked the wording of any row.
+  The sub-tab "Tickets" became **"Tickets/Memberships"** (Romanian
+  "Bilete/Abonamente"); the four sub-tabs fit at 390 px in both languages
+  by sizing each tab to its label (`flex: 1 1 auto`, 13 px): all four sit on
+  one line at 390 and 360 px, in English and Romanian, and on a narrower
+  screen a label wraps at the slash instead of overflowing. The bottom bar's
+  Romanian "Lista de dorințe" would have run into its neighbour, so its
+  label there is "Dorințe" (a test checks all five fit their slot). The tab has no heading of its own
+  beyond its two section headings ("Memberships - N", "Tickets held - N"),
+  which were left as they were.
+- **Tested** in `tools/test_me.js`: identical key sets, no `ro` value equal to
+  its `en` value except a short whitelist of names and units, every
+  `{placeholder}` kept, the choice kept over a reload, and in Romanian every
+  main tab, the four Me sub-tabs, the panels and the sheets free of English
+  interface text and without sideways scroll at 390 px. A scratch scan for
+  English function words found only data-file text. `SHELL_VERSION` is `v18`.
 
 **The Me tab: memberships and tickets held, on the device only,
 2026-10-04.** Built on Alexandru's instruction. A fourth tab in the bottom
@@ -2680,7 +2738,7 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16` → `v17`; it has been `v17` since 2026-10-09, when the imported matches, supporter buttons and media shipped; it was `v16` from the same day, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
+  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16` → `v17` → `v18`; it has been `v18` since 2026-10-09, when the whole interface was translated (it was `v17` from the same day, when the imported matches, supporter buttons and media shipped); it was `v16` from the same day, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
   2026-10-08, when the 160-entry bucket batch and Group order shipped, `v8` before that, from 2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,
