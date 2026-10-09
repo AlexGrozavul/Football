@@ -884,10 +884,10 @@ function alarmAt(ev, al){
   check('The choice is kept under football-attended-personal as {entry id: {supported: "home"|"neutral"|"away"}}, the old app\'s field name and shape',
     picks.every(([m, sup]) => sp[m.id] && sp[m.id].supported === sup && Object.keys(sp[m.id]).join() === 'supported'), JSON.stringify(sp));
   await openCard('#meTabMatches', '#meMatches', picks[0][0].id);
-  await p5.click('#aSupport button[data-sup=home]');
+  await p5.click(`#aSupport button[data-sup=${picks[0][1]}]`);
   check('Pressing the chosen button again clears it (stored as an empty string, none pressed)',
     JSON.parse(await lsGet(SUPK))[picks[0][0].id].supported === '' && (await p5.$$eval('#aSupport button', bs => bs.every(b => b.getAttribute('aria-pressed') === 'false'))), '');
-  await p5.click('#aSupport button[data-sup=home]'); await closeSheet5();
+  await p5.click(`#aSupport button[data-sup=${picks[0][1]}]`); await closeSheet5();
   await sub5('#meTabStats', '#meStats');
   let rn = await recordNow();
   check(`Record on My stats equals the file's scores (W-D-L ${expRec.w}-${expRec.d}-${expRec.l}, each non-zero), and the label reads "${expRec.n} of ${fx.n} matches counted"`,
