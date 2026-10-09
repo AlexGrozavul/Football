@@ -89,8 +89,9 @@ on:
       - "data/competition-sources.csv"
       - "tools/check_competitions.py"
       - "data/club-rivalries.csv"
-      - "data/rivalry-sources.csv"
-      - "tools/check_rivalries.py"
+      - "data/club-atmosphere.csv"
+      - "data/club-culture-sources.csv"
+      - "tools/check_club_culture.py"
       - "data/football-rules.json"
       - ".github/workflows/test-pages.yml"
   pull_request:
@@ -114,8 +115,9 @@ on:
       - "data/competition-sources.csv"
       - "tools/check_competitions.py"
       - "data/club-rivalries.csv"
-      - "data/rivalry-sources.csv"
-      - "tools/check_rivalries.py"
+      - "data/club-atmosphere.csv"
+      - "data/club-culture-sources.csv"
+      - "tools/check_club_culture.py"
       - "data/football-rules.json"
       - ".github/workflows/test-pages.yml"
   workflow_dispatch:
@@ -267,18 +269,18 @@ jobs:
           set -o pipefail
           python3 tools/check_tickets.py 2>&1 | tee /tmp/test_check_tickets.log
 
-      # The club sheet's Rivalries section reads these files; their checker must pass too.
-      - name: Rivalry files read back (check_rivalries.py exits 0)
+      # The club sheet's Rivalries and atmosphere sections read these files; their checker must pass too.
+      - name: Club culture files read back (check_club_culture.py exits 0)
         if: always()
         run: |
           set -o pipefail
-          python3 tools/check_rivalries.py 2>&1 | tee /tmp/test_check_rivalries.log
+          python3 tools/check_club_culture.py 2>&1 | tee /tmp/test_check_club_culture.log
 
       - name: Write the run summary
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets competitions check_tickets check_holidays check_competitions check_rivalries; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets competitions check_tickets check_holidays check_competitions check_club_culture; do
               echo "## test_$t.js"
               echo
               echo '```'
