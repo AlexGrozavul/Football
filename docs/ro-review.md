@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Texts that come from the data files are not here: they stay in English. `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1126 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1137 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -214,6 +214,17 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `atm.note` | Opinions of the cited sources, not measured. | Opiniile surselor citate, nu măsurători. |
 | `atm.anyOpp` | any opponent | orice adversar |
 | `atm.according` | According to | Potrivit |
+| `fri.title` | Fan friendships | Prietenii între suporteri |
+| `fri.short` | Fan friendships | Prietenii între suporteri |
+| `fri.loadFail` | The fan friendship information could not be loaded. | Informațiile despre prietenii nu au putut fi încărcate. |
+| `fri.note` | As stated by the cited source. Fan friendships change and can end. | Așa cum le arată sursa citată. Prieteniile dintre suporteri se pot schimba și pot lua sfârșit. |
+| `fri.groups` | Groups: {text} | Grupuri: {text} |
+| `fris.fan-groups` | Between fan groups | Între grupurile de suporteri |
+| `fris.clubs` | Between clubs | Între cluburi |
+| `fris.unclear` | Not specified | Nespecificat |
+| `frst.active` | Active | Activă |
+| `frst.ended` | Ended | Încheiată |
+| `frst.unclear` | Not clear | Neclară |
 | `sheet.tierLow` | tier {n} | nivelul {n} |
 | `fx.dateNotSet` | date not set | data nestabilită |
 | `fx.timeNotSet` | time not set | ora nestabilită |

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 check_club_culture.py -- read-back and checks for data/club-rivalries.csv,
-data/club-atmosphere.csv and data/club-culture-sources.csv.
+data/club-atmosphere.csv, data/club-friendships.csv and data/club-culture-sources.csv.
 
-All three are hand-written and nothing writes to them. This tool reads them,
+All four are hand-written and nothing writes to them. This tool reads them,
 prints every accepted row as understood and exits 1 on a problem.
 
 club-rivalries.csv: clubQ, rivalQ (blank when the rival is not on the map),
@@ -12,13 +12,20 @@ only from the wording of the source. There is no row limit and no target.
 club-atmosphere.csv: clubQ, situation, opponentQ, opponentName, where,
 whenText, what, attribution, basis, sourceId, checkedOn. Every row is an
 attributed claim, never our own statement.
+club-friendships.csv: clubQ, friendQ (blank when the friend is not on the map),
+friendName, scope (fan-groups, clubs, unclear), status (active, ended, unclear),
+groupsText (the fan groups the source names, blank if it names none), sourceId,
+checkedOn. Scope and status come only from the wording of the source; nothing is
+inferred from rivalries or shared enemies.
 
 EXITS 1 on: a clubQ, rivalQ or opponentQ on no data/clubs/*.json, a sourceId
 not in club-culture-sources.csv, a class, situation, basis or source kind
 outside its list, a duplicate row, a missing rivalName / what / attribution,
 a day-level date in the future in a text cell, a row with more values than
-the header has columns.
-WARNS (exit stays 0) on a missing or malformed checkedOn, a club with more
+the header has columns; in club-friendships.csv also an unknown friendQ, a scope
+or status outside its list, a club listed as its own friend, a duplicate row.
+WARNS (exit stays 0) on a missing or malformed checkedOn, a club pair that is in
+both the friendships file and the rivalries file (they should not contradict), a club with more
 than 12 rows in either file (so they can be reviewed for padding), a `what`
 that uses "best", "loudest" or "most intense" outside quotation marks, and a
 source no row uses.
@@ -33,6 +40,9 @@ D = os.path.join(ROOT, 'data')
 CLASSES = ('main', 'local', 'other')
 SITUATIONS = ('derby', 'european', 'cup', 'big-occasion', 'regular-home', 'other')
 BASES = ('documented', 'reported')
+SCOPES = ('fan-groups', 'clubs', 'unclear')
+STATUSES = ('active', 'ended', 'unclear')
+ORDER_SHOWN = ('active', 'unclear', 'ended')   # the order the club sheet draws them
 KINDS = ('wikipedia', 'club', 'press', 'fan-media')
 REVIEW_OVER = 12
 MONTHS = 'january|february|march|april|may|june|july|august|september|october|november|december'
@@ -136,7 +146,7 @@ def common(at, r, ok):
     return ok
 
 
-riv, atm = {}, {}
+riv, atm, fri = {}, {}, {}
 seen = set()
 for line, r in read('club-rivalries.csv', ['clubQ', 'rivalQ', 'rivalName', 'class', 'sourceId', 'checkedOn']):
     at = f'club-rivalries.csv line {line}'
@@ -183,7 +193,42 @@ for line, r in read('club-atmosphere.csv', ['clubQ', 'situation', 'opponentQ', '
     seen.add(key)
     if ok: atm.setdefault(r['clubQ'], []).append(r)
 
-for label, d in (('club-rivalries.csv', riv), ('club-atmosphere.csv', atm)):
+for line, r in read('club-friendships.csv', ['clubQ', 'friendQ', 'friendName', 'scope', 'status', 'groupsText', 'sourceId', 'checkedOn']):
+    at = f'club-friendships.csv line {line}'
+    ok = common(at, r, True)
+    if r['friendQ'] and r['friendQ'] not in clubs:
+        problems.append(f'{at}: friendQ "{r["friendQ"]}" is on no club file (leave it blank if the friend is not on the map)'); ok = False
+    if r['friendQ'] and r['friendQ'] == r['clubQ']:
+        problems.append(f'{at}: a club cannot be its own friend'); ok = False
+    if not r['friendName']:
+        problems.append(f'{at}: friendName is empty'); ok = False
+    if r['scope'] not in SCOPES:
+        problems.append(f'{at}: scope "{r["scope"]}" is not one of {", ".join(SCOPES)}'); ok = False
+    if r['status'] not in STATUSES:
+        problems.append(f'{at}: status "{r["status"]}" is not one of {", ".join(STATUSES)}'); ok = False
+    for col in ('friendName', 'groupsText'):
+        if future_days(r[col]):
+            problems.append(f'{at}: {col} holds a future day-level date'); ok = False
+    key = ('fri', r['clubQ'], r['friendQ'] or r['friendName'].casefold())
+    if key in seen:
+        problems.append(f'{at}: {clubs.get(r["clubQ"], r["clubQ"])} / {r["friendName"]} is entered twice'); ok = False
+    seen.add(key)
+    if ok: fri.setdefault(r['clubQ'], []).append(r)
+
+# A friendship and a rivalry for the same two clubs should not both be on file: warn, keep both.
+rival_pairs = {}
+for q, rs in riv.items():
+    for r in rs:
+        rival_pairs[(q, r['rivalQ'] or r['rivalName'].casefold())] = r
+        if r['rivalQ']:
+            rival_pairs[(r['rivalQ'], q)] = r
+for q, rs in fri.items():
+    for r in rs:
+        hit = rival_pairs.get((q, r['friendQ'] or r['friendName'].casefold()))
+        if hit:
+            warnings.append(f'{clubs[q]} / {r["friendName"]} is in club-friendships.csv ({r["status"]}) and in club-rivalries.csv ({hit["class"]}); the two should not contradict, check both sources')
+
+for label, d in (('club-rivalries.csv', riv), ('club-atmosphere.csv', atm), ('club-friendships.csv', fri)):
     for q, rs in d.items():
         if len(rs) > REVIEW_OVER:
             warnings.append(f'{label}: {clubs[q]} ({q}) has {len(rs)} rows; review them for padding')
@@ -203,6 +248,11 @@ for q in sorted(atm, key=lambda q: clubs[q]):
     print(f'  {clubs[q]} ({q})')
     for r in atm[q]:
         print(f'    {r["situation"]:12} {r["basis"]:10} vs {r["opponentName"] or "any opponent"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
+print(f'club-friendships.csv: {sum(len(v) for v in fri.values())} accepted rows, {len(fri)} clubs')
+for q in sorted(fri, key=lambda q: clubs[q]):
+    print(f'  {clubs[q]} ({q})')
+    for r in sorted(fri[q], key=lambda r: (ORDER_SHOWN.index(r['status']), r['friendName'])):
+        print(f'    {r["status"]:7} {r["scope"]:10} {r["friendName"]}  {r["friendQ"] or "(not on the map)"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
 print('  rows by situation: ' + ', '.join(f'{s} {sum(1 for v in atm.values() for r in v if r["situation"] == s)}' for s in SITUATIONS))
 print('  rows by basis: ' + ', '.join(f'{b} {sum(1 for v in atm.values() for r in v if r["basis"] == b)}' for b in BASES))
 for w in warnings: print('WARNING:', w)

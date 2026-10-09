@@ -317,6 +317,100 @@ const server = http.createServer((req, res) => {
   check(`atmosphere: the real file's ${realClubs.length} clubs show exactly their rows and fit`, realOk, realBad.join(' '));
   await pg3.close();
   await pg2.close();
+
+  // ---- "Fan friendships": temporary rows injected here only (the real file is header-only and stays so).
+  // A German club and a non-German one, the order, the labels, "Show all", a tap on a friend on the map,
+  // a club without rows, and 390 px in English and Romanian.
+  const nonDE = await page.evaluate(m => { const c = CLUBS.find(c => c.country && c.country !== 'DE' && c.id !== m); return c && c.id; }, many);
+  const friendOnMap = await page.evaluate(([a, b]) => { const c = CLUBS.find(c => c.id !== a && c.id !== b); return {id: c.id, name: c.name}; }, [many, nonDE]);
+  const q = v => /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+  const FH = 'clubQ,friendQ,friendName,scope,status,groupsText,sourceId,checkedOn';
+  const LONG = 'Averyveryverylongfangroupnamewithoutanybreakshere' + 'x'.repeat(120);
+  const frRows = [
+    {clubQ: many, friendQ: '', friendName: 'Zulu Test', scope: 'clubs', status: 'ended', groupsText: ''},
+    {clubQ: many, friendQ: '', friendName: 'Alpha Test', scope: 'fan-groups', status: 'active', groupsText: 'Group One, Group Two'},
+    {clubQ: many, friendQ: '', friendName: 'Mike Test', scope: 'unclear', status: 'unclear', groupsText: ''},
+    {clubQ: many, friendQ: '', friendName: 'Bravo Test', scope: 'clubs', status: 'active', groupsText: ''},
+    {clubQ: many, friendQ: '', friendName: 'Echo Test', scope: 'fan-groups', status: 'ended', groupsText: LONG},
+    {clubQ: many, friendQ: '', friendName: 'Delta Test', scope: 'clubs', status: 'unclear', groupsText: ''},
+    {clubQ: many, friendQ: friendOnMap.id, friendName: friendOnMap.name, scope: 'fan-groups', status: 'unclear', groupsText: ''},
+    {clubQ: nonDE, friendQ: '', friendName: 'Foreign Beta', scope: 'clubs', status: 'ended', groupsText: ''},
+    {clubQ: nonDE, friendQ: '', friendName: 'Foreign Alpha', scope: 'fan-groups', status: 'active', groupsText: 'Some Fans'},
+  ].map(r => ({...r, sourceId: srcId, checkedOn: '2026-10-03'}));
+  const frCsv = FH + '\n' + frRows.map(r => FH.split(',').map(k => q(r[k])).join(',')).join('\n') + '\n';
+  const atmExtra = [nonDE, 'cup', '', '', '', 'early season', 'Fixture sentence for a foreign cup row.', 'Fixture Press F', 'reported', srcId, '2026-10-03'].join(',');
+  const rivExtra = `${nonDE},,Test Rival,main,${srcId},2026-10-03`;
+  const FRI_RANK = {active: 0, unclear: 1, ended: 2};
+  const wantFri = id => frRows.filter(r => r.clubQ === id).sort((a, b) => FRI_RANK[a.status] - FRI_RANK[b.status] || a.friendName.localeCompare(b.friendName));
+  const friPage = async lang => {
+    const pg = await ctx.newPage();
+    if(lang) await pg.addInitScript(l => { try { localStorage.setItem('football-planner-lang', l); } catch(e){} }, lang);
+    await pg.route('**/data/club-friendships.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: frCsv}));
+    await pg.route('**/data/club-atmosphere.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: atmCsv + atmExtra + '\n'}));
+    await pg.route('**/data/club-rivalries.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: mixed + rivExtra + '\n'}));
+    pg.on('pageerror', e => errors.push(e.message));
+    await pg.goto(BASE);
+    await pg.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    return pg;
+  };
+  const friSheet = async (pg, qid) => {
+    await pg.evaluate(c => openSheet(CLUBS.find(x => x.id === c)), qid);
+    await pg.waitForFunction(() => !/Loading/.test(document.getElementById('sheetTix').textContent), null, {timeout: 10000});
+    await pg.waitForTimeout(250);
+    return pg.evaluate(() => {
+      const b = document.getElementById('sheetBody'), sb = document.querySelector('#sheet .sbody');
+      return {h4: [...b.querySelectorAll('h4')].map(h => h.textContent),
+        note: b.querySelector('.frnote')?.textContent || '',
+        rows: [...b.querySelectorAll('.fri')].map(r => ({name: r.querySelector('.frname').textContent, tap: r.querySelector('.frname').tagName === 'BUTTON',
+          fid: r.querySelector('.frname').dataset.id || '', scope: r.querySelector('.frscope').textContent, status: r.querySelector('.frstatus').textContent,
+          groups: r.querySelector('.frgroups')?.textContent || '', href: r.querySelector('.frsrc a')?.href || '', src: r.querySelector('.frsrc').textContent,
+          shown: !r.hidden, wide: r.scrollWidth > r.clientWidth + 1})),
+        more: b.querySelector('.frmore')?.textContent || '', sections: b.querySelectorAll('.fris').length,
+        rivs: b.querySelectorAll('.riv').length, atm: b.querySelectorAll('details.atm').length,
+        sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
+    });
+  };
+  const SC = {'fan-groups': 'Between fan groups', clubs: 'Between clubs', unclear: 'Not specified'}, ST = {active: 'Active', ended: 'Ended', unclear: 'Not clear'};
+  const pg4 = await friPage(null);
+  const F = await friSheet(pg4, many), fw = wantFri(many);
+  check('friendships: "Fan friendships" sits directly below Rivalries and above the atmosphere section, with its note',
+    F.h4.indexOf('Fan friendships') === F.h4.indexOf('Rivalries') + 1 && F.h4.indexOf('When the atmosphere is best') === F.h4.indexOf('Fan friendships') + 1 &&
+    F.note === 'As stated by the cited source. Fan friendships change and can end.', F.h4.join(' | '));
+  check('friendships: active, then not clear, then ended, alphabetical within each',
+    JSON.stringify(F.rows.map(r => r.name)) === JSON.stringify(fw.map(r => r.friendName)) && F.rows.length === fw.length, F.rows.map(r => r.name).join(' | '));
+  check('friendships: every row has its scope label, status label, groups (only when the source names them) and a source with "Checked on"',
+    F.rows.every((r, i) => r.scope === SC[fw[i].scope] && r.status === ST[fw[i].status] &&
+      (fw[i].groupsText ? r.groups === `Groups: ${fw[i].groupsText}` : r.groups === '') &&
+      r.href === srcRow.url && /Checked on /.test(r.src) && r.src.includes(srcRow.title)), JSON.stringify(F.rows.map(r => [r.scope, r.status, r.groups.slice(0, 30)])));
+  check(`friendships: ${fw.length} rows give 5 shown and "Show all (${fw.length})"`, F.rows.filter(r => r.shown).length === 5 && F.more === `Show all (${fw.length})`, `${F.rows.filter(r => r.shown).length} shown, "${F.more}"`);
+  await pg4.click('#sheetBody .frmore');
+  const FO = await pg4.evaluate(() => ({shown: [...document.querySelectorAll('#sheetBody .fri')].filter(r => !r.hidden).length,
+    exp: document.querySelector('#sheetBody .frmore').getAttribute('aria-expanded'), label: document.querySelector('#sheetBody .frmore').textContent,
+    wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
+    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+  check('friendships: "Show all" reveals every row and fits 390 px (long group name included)', FO.shown === fw.length && FO.exp === 'true' && FO.label === 'Show fewer' && !FO.wide && !FO.sideways, JSON.stringify(FO));
+  const tapRow = F.rows.find(r => r.tap);
+  check('friendships: only the friend on the map is a tap target', F.rows.filter(r => r.tap).length === 1 && tapRow && tapRow.fid === friendOnMap.id);
+  await pg4.click(`#sheetBody .fris .frname[data-id="${friendOnMap.id}"]`);
+  await pg4.waitForFunction(id => SHEET_FOR === id, friendOnMap.id, {timeout: 8000}).catch(() => {});
+  check('friendships: tapping a friend on the map opens its own sheet', await pg4.evaluate(() => SHEET_FOR) === friendOnMap.id);
+  const NF = await friSheet(pg4, (await pg4.evaluate(([a, b, c]) => CLUBS.find(x => ![a, b, c].includes(x.id)).id, [many, nonDE, friendOnMap.id])));
+  check('friendships: a club without rows shows no Fan friendships section', !NF.h4.includes('Fan friendships') && !NF.sections && !NF.rows.length && !NF.note);
+  const FD = await friSheet(pg4, nonDE), fd = wantFri(nonDE);
+  check(`friendships: a non-German club (${nonDE}) shows Rivalries, Fan friendships and the atmosphere section, in that order`,
+    FD.h4.indexOf('Fan friendships') === FD.h4.indexOf('Rivalries') + 1 && FD.h4.indexOf('When the atmosphere is best') === FD.h4.indexOf('Fan friendships') + 1 &&
+    FD.rivs === 1 && FD.atm === 1 && JSON.stringify(FD.rows.map(r => r.name)) === JSON.stringify(fd.map(r => r.friendName)) && !FD.sideways, FD.h4.join(' | '));
+  const pg5 = await friPage('ro');
+  const RO = await friSheet(pg5, many);
+  const SCro = {'fan-groups': 'Între grupurile de suporteri', clubs: 'Între cluburi', unclear: 'Nespecificat'}, STro = {active: 'Activă', ended: 'Încheiată', unclear: 'Neclară'};
+  check('friendships (Romanian): heading, note, labels and "Arată tot" are Romanian and the order is the same',
+    RO.h4.includes('Prietenii între suporteri') && RO.note.startsWith('Așa cum le arată sursa citată') && RO.more === `Arată tot (${fw.length})` &&
+    RO.rows.every((r, i) => r.scope === SCro[fw[i].scope] && r.status === STro[fw[i].status] && r.name === fw[i].friendName), RO.h4.join(' | '));
+  await pg5.click('#sheetBody .frmore');
+  const ROo = await pg5.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
+    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+  check('friendships (Romanian): nothing overflows at 390 px with every row open', !ROo.wide && !ROo.sideways && !RO.sideways, JSON.stringify(ROo));
+  await pg4.close(); await pg5.close();
   function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
 
   check('no script error', !errors.length, errors.join(' | '));
