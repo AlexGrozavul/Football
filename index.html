@@ -231,6 +231,14 @@
     min-height:36px;max-width:100%}
   .sheet button.rvbucket{display:block;margin-top:6px;color:var(--t3);font-size:12.5px}
   .sheet .riv .sub{overflow-wrap:anywhere}
+  .sheet .riv[hidden]{display:none}
+  .sheet button.rvmore{margin-top:8px;background:#1b2230;border:1px solid var(--line);border-radius:7px;
+    padding:8px 12px;color:var(--ink);font:inherit;font-size:13.5px;min-height:44px;cursor:pointer}
+  .sheet details.atm{border-top:1px solid var(--line);padding:2px 0}
+  .sheet details.atm>summary{font-size:14px;color:var(--ink);padding:10px 0;min-height:44px;box-sizing:border-box;cursor:pointer}
+  .sheet .atmrow{padding:7px 0 9px;min-width:0;overflow-wrap:anywhere}
+  .sheet .atmrow .sub{margin-top:3px}
+  .sheet .atmwhat{font-size:14px;margin-top:3px}
   /* Ticket info: the two sources, each labelled. No sale date. */
   .sheet h5.srch{font-size:13px;font-weight:600;margin:16px 0 4px;color:var(--ink);
     border-bottom:1px solid var(--line);padding-bottom:3px}
@@ -1232,6 +1240,7 @@ function openSheet(club, mates){
       `</div>` : '') +
     `<h4>Fixtures</h4><div id="sheetFix"><p class="unavail">Loading…</p></div>` +
     `<div id="sheetRiv"></div>` +
+    `<div id="sheetAtm"></div>` +
     `<h4>Ticket info</h4><div id="sheetTix"><p class="unavail">Loading…</p></div>` +
     /* The club's Wikidata item: where its name, ground, capacity and position
        come from, and the id a hand correction in clubs-manual.csv uses. */
@@ -1258,30 +1267,46 @@ function openSheet(club, mates){
   competitionHtml(club).then(h => fill('sheetComp', h));
   fixturesHtml(club).then(h => fill('sheetFix', h));
   rivalriesHtml(club).then(h => fill('sheetRiv', h));
+  atmosphereHtml(club).then(h => fill('sheetAtm', h));
   ticketsHtml(club).then(h => fill('sheetTix', h));
 }
 
-/* ---- rivalries. data/club-rivalries.csv is hand-written, one row per club
-   per rival, each with its own class (main, local, other) taken only from
-   the wording of its source (data/rivalry-sources.csv). The section is
-   drawn only for a club that has rows; the biggest rivalry is last, so
-   the order is other, then local, then main, alphabetical within a class.
-   Nothing here ranks a rivalry: a class is what the source said. */
-const RIV_ORDER = {other: 0, local: 1, main: 2};
+/* ---- rivalries and atmosphere. Both files are hand-written (data/club-rivalries.csv,
+   data/club-atmosphere.csv) and both cite data/club-culture-sources.csv. A rivalry's
+   class (main, local, other) is taken only from the wording of its source. An
+   atmosphere row is an attributed claim, never a fact of ours, and nothing here
+   ranks anything. A section is drawn only for a club that has rows. Main rivals
+   first, then local, then other; alphabetical within a class. */
+const RIV_ORDER = {main: 0, local: 1, other: 2};
 const RIV_LABEL = {main: 'Main rival', local: 'Local rival', other: 'Other rivalry'};
+const RIV_SHOWN = 5;
+const ATM_ORDER = ['derby', 'european', 'cup', 'big-occasion', 'regular-home', 'other'];
+const ATM_LABEL = {derby: 'Derby', european: 'European nights', cup: 'Cup', 'big-occasion': 'Big occasions',
+  'regular-home': 'Regular home games', other: 'Other'};
+const ATM_BASIS = {documented: 'Documented', reported: 'Reported'};
 const rivDate = d => /^\d{4}-\d{2}-\d{2}$/.test(d)
   ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'})
   : '';
 
+async function cultureFiles(names){
+  const all = await Promise.all([...names, 'data/club-culture-sources.csv'].map(csvFile));
+  const bad = all.findIndex(x => !x.ok);
+  if(bad >= 0) return {err: [...names, 'data/club-culture-sources.csv'][bad], why: all[bad].err};
+  const S = all[all.length - 1];
+  return {files: all.slice(0, -1).map(x => x.v), src: new Map(S.v.map(r => [r.sourceId, r]))};
+}
+const sourceLine = (s, checkedOn) => {
+  const d = rivDate(checkedOn);
+  return `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title || s.url)}</a> · ` +
+    `Checked on ${d ? esc(d) : 'a date not recorded'}`;
+};
+
 async function rivalriesHtml(club){
-  const [R, S] = await Promise.all([csvFile('data/club-rivalries.csv'), csvFile('data/rivalry-sources.csv')]);
-  if(!R.ok || !S.ok){
-    const miss = R.ok ? 'rivalry-sources.csv' : 'club-rivalries.csv';
-    return `<h4>Rivalries</h4>` + unavailable('Rivalries', 'The rivalry information could not be loaded.') +
-      why(`data/${miss} could not be loaded (${esc((R.ok ? S : R).err)}).`);
-  }
-  const src = new Map(S.v.map(r => [r.sourceId, r]));
-  const rows = R.v.filter(r => r.clubQ === club.id && !r._over && RIV_ORDER[r.class] !== undefined && src.has(r.sourceId))
+  const C = await cultureFiles(['data/club-rivalries.csv']);
+  if(C.err) return `<h4>Rivalries</h4>` + unavailable('Rivalries', 'The rivalry information could not be loaded.') +
+    why(`${esc(C.err)} could not be loaded (${esc(C.why)}).`);
+  const src = C.src;
+  const rows = C.files[0].filter(r => r.clubQ === club.id && !r._over && RIV_ORDER[r.class] !== undefined && src.has(r.sourceId))
     .sort((a, b) => RIV_ORDER[a.class] - RIV_ORDER[b.class] || a.rivalName.localeCompare(b.rivalName));
   if(!rows.length) return '';
   const B = await bucketLinks();
@@ -1295,22 +1320,50 @@ async function rivalriesHtml(club){
     }
     return out;
   };
-  return `<h4>Rivalries</h4><div class="rivs">` + rows.map(r => {
+  const rowHtml = (r, i) => {
     const rival = r.rivalQ ? mapClub(r.rivalQ) : null;
     const name = rival
       ? `<button class="rvname" data-id="${esc(rival.id)}">${esc(r.rivalName)}</button>`
       : `<span class="rvname">${esc(r.rivalName)}</span>`;
-    const s = src.get(r.sourceId), d = rivDate(r.checkedOn);
     const links = bucketFor(r.rivalQ).map(id =>
       `<button class="rvbucket" data-bucket="${esc(id)}">Bucket list: ${esc(entries.get(id).title || id)}</button>`).join('');
-    return `<div class="riv" data-class="${esc(r.class)}">` +
+    return `<div class="riv" data-class="${esc(r.class)}"${i >= RIV_SHOWN ? ' hidden data-extra="1"' : ''}>` +
       `<div class="rvtop">${name}<span class="tag rvclass">${RIV_LABEL[r.class]}</span></div>` +
-      `<div class="sub"><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title || s.url)}</a> · ` +
-      `Checked on ${d ? esc(d) : 'a date not recorded'}</div>${links}</div>`;
-  }).join('') + `</div>`;
+      `<div class="sub">${sourceLine(src.get(r.sourceId), r.checkedOn)}</div>${links}</div>`;
+  };
+  return `<h4>Rivalries</h4><div class="rivs">` + rows.map(rowHtml).join('') +
+    (rows.length > RIV_SHOWN ? `<button class="rvmore" aria-expanded="false">Show all (${rows.length})</button>` : '') + `</div>`;
+}
+
+async function atmosphereHtml(club){
+  const C = await cultureFiles(['data/club-atmosphere.csv']);
+  if(C.err) return `<h4>When the atmosphere is best</h4>` + unavailable('Atmosphere', 'The atmosphere information could not be loaded.') +
+    why(`${esc(C.err)} could not be loaded (${esc(C.why)}).`);
+  const rows = C.files[0].filter(r => r.clubQ === club.id && !r._over && ATM_ORDER.includes(r.situation) && ATM_BASIS[r.basis] && C.src.has(r.sourceId));
+  if(!rows.length) return '';
+  const groups = ATM_ORDER.map(k => [k, rows.filter(r => r.situation === k)]).filter(([, g]) => g.length);
+  return `<h4>When the atmosphere is best</h4><p class="sub atmnote">Opinions of the cited sources, not measured.</p>` +
+    groups.map(([k, g], i) => `<details class="atm" data-situation="${esc(k)}"${i === 0 ? ' open' : ''}>` +
+      `<summary>${ATM_LABEL[k]} (${g.length})</summary>` +
+      g.map(r => {
+        const opp = r.opponentName ? esc(r.opponentName) : 'any opponent';
+        return `<div class="atmrow">` +
+          `<div class="atmopp"><b>${opp}</b>${r.where ? ` · ${esc(r.where)}` : ''}${r.whenText ? ` · ${esc(r.whenText)}` : ''}</div>` +
+          `<div class="atmwhat">${esc(r.what)}</div>` +
+          `<div class="sub atmby">According to ${esc(r.attribution)} <span class="tag atmbasis">${ATM_BASIS[r.basis]}</span></div>` +
+          `<div class="sub atmsrc">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div></div>`;
+      }).join('') + `</details>`).join('');
 }
 
 document.getElementById('sheetBody').addEventListener('click', e => {
+  const m = e.target.closest('.rivs .rvmore');
+  if(m){
+    const open = m.getAttribute('aria-expanded') !== 'true';
+    m.closest('.rivs').querySelectorAll('.riv[data-extra]').forEach(x => { x.hidden = !open; });
+    m.setAttribute('aria-expanded', String(open));
+    m.textContent = open ? 'Show fewer' : `Show all (${m.closest('.rivs').querySelectorAll('.riv').length})`;
+    return;
+  }
   const n = e.target.closest('.rivs .rvname[data-id]');
   if(n){ const c = mapClub(n.dataset.id); if(c) goToClub(c); return; }
   const b = e.target.closest('.rivs .rvbucket');

@@ -142,9 +142,9 @@ const server = http.createServer((req, res) => {
 
 
   // ---- Rivalries section: read from the data files, no club name or count written here.
-  const riv = csv('data/club-rivalries.csv'), rivSrc = csv('data/rivalry-sources.csv');
+  const riv = csv('data/club-rivalries.csv'), rivSrc = csv('data/club-culture-sources.csv');
   const bucketLines = csv('data/bucket-links-manual.csv').filter(r => !r.ticketEventId);
-  const RANK = {other: 0, local: 1, main: 2}, LABEL = {main: 'Main rival', local: 'Local rival', other: 'Other rivalry'};
+  const RANK = {main: 0, local: 1, other: 2}, LABEL = {main: 'Main rival', local: 'Local rival', other: 'Other rivalry'};
   const expectOrder = rows => [...rows].sort((a, b) => RANK[a.class] - RANK[b.class] || a.rivalName.localeCompare(b.rivalName));
   const rivalSheet = async (pg, qid) => {
     await pg.evaluate(q => openSheet(CLUBS.find(c => c.id === q)), qid);
@@ -157,7 +157,8 @@ const server = http.createServer((req, res) => {
           cls: r.querySelector('.rvclass').textContent, tap: r.querySelector('.rvname').tagName === 'BUTTON',
           rivalId: r.querySelector('.rvname').dataset.id || '', href: r.querySelector('a')?.href || '',
           sub: r.querySelector('.sub').textContent, bucket: [...r.querySelectorAll('.rvbucket')].map(x => x.dataset.bucket),
-          wide: r.scrollWidth > r.clientWidth + 1})),
+          wide: r.scrollWidth > r.clientWidth + 1, shown: !r.hidden})),
+        more: b.querySelector('.rvmore')?.textContent || '',
         sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
     });
   };
@@ -172,7 +173,7 @@ const server = http.createServer((req, res) => {
     if(R.h4.filter(h => h === 'Rivalries').length !== 1) { sectionOk = false; bad.push(`${name}: section`); }
     if(JSON.stringify(R.rows.map(r => r.name)) !== JSON.stringify(want.map(r => r.rivalName)) ||
        JSON.stringify(R.rows.map(r => r.cls)) !== JSON.stringify(want.map(r => LABEL[r.class]))){ orderOk = false; bad.push(`${name}: order`); }
-    if(R.rows.length && RANK[want[want.length - 1].class] !== Math.max(...want.map(r => RANK[r.class]))){ orderOk = false; bad.push(`${name}: biggest not last`); }
+    if(R.rows.length && RANK[want[0].class] !== Math.min(...want.map(r => RANK[r.class]))){ orderOk = false; bad.push(`${name}: biggest not first`); }
     R.rows.forEach((r, i) => {
       const src = rivalSrc(want[i].sourceId), d = want[i].checkedOn;
       if(!src || r.href !== src.url || !/Checked on /.test(r.sub) || !r.sub.includes(src.title)) { linkOk = false; bad.push(`${name}: source of ${r.name}`); }
@@ -183,11 +184,11 @@ const server = http.createServer((req, res) => {
       if(r.wide) { widthOk = false; bad.push(`${name}: ${r.name} wider than the sheet`); }
     });
     if(R.sideways) { widthOk = false; bad.push(`${name}: sideways scroll`); }
-    if(R.rows.length > 5) { sectionOk = false; bad.push(`${name}: more than 5`); }
+    if(R.rows.filter(r => r.shown).length > 5 || (R.rows.length > 5) !== /^Show all \(\d+\)$/.test(R.more)) { sectionOk = false; bad.push(`${name}: show-all control`); }
   }
   function rivalSrc(id){ return rivSrc.find(r => r.sourceId === id); }
   check('every club with rows shows one Rivalries section', sectionOk, bad.join(' | '));
-  check('rivals in class order, other then local then main, alphabetical within a class, biggest last', orderOk, bad.join(' | '));
+  check('rivals in class order, main then local then other, alphabetical within a class, biggest first', orderOk, bad.join(' | '));
   check('each row has its class label, a source link and "Checked on", and taps only when the rival is on the map', linkOk, bad.join(' | '));
   check('a bucket link shows exactly when a bucket entry names both clubs by Wikidata id', bucketOk, bad.join(' | '));
   check('the Rivalries section fits 390 px, no sideways scroll', widthOk, bad.join(' | '));
@@ -212,7 +213,10 @@ const server = http.createServer((req, res) => {
   const classes = ['main', 'other', 'local', 'main', 'other'];
   const lines = fs.readFileSync(path.join(ROOT, 'data/club-rivalries.csv'), 'utf8').split('\n');
   let k = 0;
-  const mixed = lines.map((l, i) => i && l.startsWith(many + ',') ? l.replace(/,(main|local|other),/, `,${classes[k++ % 5]},`) : l).join('\n');
+  const srcId = rivSrc[0].sourceId;
+  const extra = ['Zeta Test', 'Yankee Test', 'Xray Test'].map((n, i) => `${many},,${n},${['local', 'main', 'other'][i]},${srcId},2026-10-03`);
+  const mixed = lines.map((l, i) => i && l.startsWith(many + ',') ? l.replace(/,(main|local|other),/, `,${classes[k++ % 5]},`) : l)
+    .filter(Boolean).concat(extra).join('\n') + '\n';
   const pg2 = await ctx.newPage();
   await pg2.route('**/data/club-rivalries.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: mixed}));
   pg2.on('pageerror', e => errors.push(e.message));
@@ -221,10 +225,97 @@ const server = http.createServer((req, res) => {
   const M = await rivalSheet(pg2, many);
   const mrows = csvText(mixed).filter(r => r.clubQ === many);
   const mwant = expectOrder(mrows);
-  check('mixed classes: other first, then local, then main last, alphabetical within a class',
+  check('mixed classes: main first, then local, then other, alphabetical within a class',
     new Set(mrows.map(r => r.class)).size > 1 && JSON.stringify(M.rows.map(r => r.name)) === JSON.stringify(mwant.map(r => r.rivalName)) &&
-    JSON.stringify(M.rows.map(r => r.cls)) === JSON.stringify(mwant.map(r => LABEL[r.class])) && M.rows[M.rows.length - 1].cls === LABEL[mwant[mwant.length - 1].class],
+    JSON.stringify(M.rows.map(r => r.cls)) === JSON.stringify(mwant.map(r => LABEL[r.class])) && M.rows[0].cls === LABEL[mwant[0].class],
     M.rows.map(r => `${r.name}:${r.cls}`).join(' | '));
+  // More than 5 rows: the first 5 show, the rest wait behind "Show all (n)".
+  check(`more than 5 rows (${mrows.length}): 5 shown, "Show all (${mrows.length})" present`,
+    mrows.length > 5 && M.rows.filter(r => r.shown).length === 5 && M.more === `Show all (${mrows.length})`, `${M.rows.filter(r => r.shown).length} shown, "${M.more}"`);
+  await pg2.click('#sheetBody .rvmore');
+  const opened = await pg2.evaluate(() => ({shown: [...document.querySelectorAll('#sheetBody .riv')].filter(r => !r.hidden).length,
+    expanded: document.querySelector('#sheetBody .rvmore').getAttribute('aria-expanded'),
+    sideways: document.getElementById('sheetBody').scrollWidth > document.getElementById('sheetBody').clientWidth + 1}));
+  check('"Show all" reveals every row, no sideways scroll', opened.shown === mrows.length && opened.expanded === 'true' && !opened.sideways, JSON.stringify(opened));
+
+  // ---- "When the atmosphere is best": served fixture rows (the real file may hold none), the club and
+  // counts read from the data; a club with no rows must show no section.
+  const realAtm = csv('data/club-atmosphere.csv');
+  const rival1 = mrows.find(r => r.rivalQ && onMap.includes(r.rivalQ));
+  const oppName = rival1 ? rival1.rivalName : 'Test Opponent';
+  const H = 'clubQ,situation,opponentQ,opponentName,where,whenText,what,attribution,basis,sourceId,checkedOn';
+  const fx = [
+    [many, 'cup', '', '', '', 'early season', 'Fixture sentence for a cup row.', 'Fixture Press A', 'reported'],
+    [many, 'european', '', '', 'home end', 'autumn', 'Fixture sentence for a European row.', 'Fixture Club B', 'documented'],
+    [many, 'derby', rival1 ? rival1.rivalQ : '', oppName, 'the main stand', 'spring', 'Fixture sentence for a derby row.', 'Fixture Fans C', 'reported'],
+    [many, 'derby', '', '', '', '', 'Fixture sentence for a second derby row.', 'Fixture Press D', 'documented'],
+    [many, 'other', '', '', '', 'whole season', 'Fixture sentence for an other row.', 'Fixture Press E', 'reported'],
+  ].map(a => a.concat(srcId, '2026-10-03').join(',')).join('\n');
+  const atmCsv = H + '\n' + fx + '\n';
+  const pg3 = await ctx.newPage();
+  await pg3.route('**/data/club-atmosphere.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: atmCsv}));
+  pg3.on('pageerror', e => errors.push(e.message));
+  await pg3.goto(BASE);
+  await pg3.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  const atmSheet = async (pg, qid) => {
+    await pg.evaluate(q => openSheet(CLUBS.find(c => c.id === q)), qid);
+    await pg.waitForFunction(() => !/Loading/.test(document.getElementById('sheetTix').textContent), null, {timeout: 10000});
+    await pg.waitForTimeout(200);
+    return pg.evaluate(() => {
+      const b = document.getElementById('sheetBody'), sb = document.querySelector('#sheet .sbody');
+      return {h4: [...b.querySelectorAll('h4')].map(h => h.textContent),
+        note: b.querySelector('.atmnote')?.textContent || '',
+        groups: [...b.querySelectorAll('details.atm')].map(d => ({sit: d.dataset.situation, head: d.querySelector('summary').textContent, open: d.open,
+          sumH: d.querySelector('summary').getBoundingClientRect().height,
+          rows: [...d.querySelectorAll('.atmrow')].map(r => ({opp: r.querySelector('.atmopp').textContent, what: r.querySelector('.atmwhat').textContent,
+            by: r.querySelector('.atmby').textContent, label: r.querySelector('.atmbasis').textContent, href: r.querySelector('.atmsrc a')?.href || '',
+            src: r.querySelector('.atmsrc').textContent, wide: r.scrollWidth > r.clientWidth + 1}))})),
+        sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
+    });
+  };
+  const A = await atmSheet(pg3, many);
+  const ORDER = ['derby', 'european', 'cup', 'big-occasion', 'regular-home', 'other'];
+  const fxRows = atmCsv.split('\n').slice(1).filter(Boolean).map(l => l.split(','));
+  const wantGroups = ORDER.map(k => [k, fxRows.filter(r => r[1] === k)]).filter(([, g]) => g.length);
+  check('atmosphere: section directly below Rivalries, with its note',
+    A.h4.indexOf('When the atmosphere is best') === A.h4.indexOf('Rivalries') + 1 && A.h4.indexOf('Rivalries') >= 0 && A.note === 'Opinions of the cited sources, not measured.', A.h4.join(' | '));
+  check('atmosphere: groups in the fixed order, each heading carries its row count',
+    JSON.stringify(A.groups.map(g => g.sit)) === JSON.stringify(wantGroups.map(([k]) => k)) &&
+    A.groups.every((g, i) => g.head.endsWith(`(${wantGroups[i][1].length})`) && g.rows.length === wantGroups[i][1].length), A.groups.map(g => g.head).join(' | '));
+  check('atmosphere: only the first group starts open', A.groups.length > 1 && A.groups.map(g => g.open).join() === A.groups.map((g, i) => i === 0).join(), A.groups.map(g => g.open).join());
+  const srcRow = rivSrc.find(r => r.sourceId === srcId);
+  let rowsOk = true, rbad = [];
+  A.groups.forEach((g, gi) => g.rows.forEach((r, ri) => {
+    const f = wantGroups[gi][1][ri];
+    if(!r.by.startsWith(`According to ${f[7]}`)) { rowsOk = false; rbad.push(`by ${f[7]}`); }
+    if(r.label !== (f[8] === 'documented' ? 'Documented' : 'Reported')) { rowsOk = false; rbad.push(`label ${f[7]}`); }
+    if(r.what !== f[6]) { rowsOk = false; rbad.push(`what ${f[7]}`); }
+    if(r.href !== srcRow.url || !/Checked on /.test(r.src)) { rowsOk = false; rbad.push(`source ${f[7]}`); }
+    if(!r.opp.startsWith(f[3] || 'any opponent')) { rowsOk = false; rbad.push(`opponent ${f[7]}`); }
+    if(f[4] && !r.opp.includes(f[4])) { rowsOk = false; rbad.push(`where ${f[7]}`); }
+    if(f[5] && !r.opp.includes(f[5])) { rowsOk = false; rbad.push(`when ${f[7]}`); }
+    if(r.wide) { rowsOk = false; rbad.push(`wide ${f[7]}`); }
+  }));
+  check('atmosphere: every row shows opponent (or "any opponent"), where, when, its sentence, "According to", the label and a source with "Checked on"', rowsOk, rbad.join(' | '));
+  check('atmosphere: no sideways scroll at 390 px', !A.sideways && A.groups.every(g => g.sumH >= 44), `sideways ${A.sideways}`);
+  await pg3.click('#sheetBody details.atm:not([open]) summary');
+  const toggled = await pg3.evaluate(() => [...document.querySelectorAll('#sheetBody details.atm')].map(d => d.open));
+  await pg3.click('#sheetBody details.atm[open] summary');
+  const toggled2 = await pg3.evaluate(() => [...document.querySelectorAll('#sheetBody details.atm')].map(d => d.open));
+  check('atmosphere: groups open and close by tap', toggled.filter(Boolean).length === 2 && toggled2.filter(Boolean).length === 1, `${toggled} -> ${toggled2}`);
+  const noAtm = await pg3.evaluate(q => CLUBS.find(c => c.id !== q).id, many);
+  const N = await atmSheet(pg3, noAtm);
+  check('atmosphere: a club without rows shows no section', !N.h4.includes('When the atmosphere is best') && !N.groups.length && !N.note);
+  // The real file, whatever it holds: each club with rows shows exactly its rows, nothing overflows.
+  const realClubs = [...new Set(realAtm.map(r => r.clubQ))].filter(q => onMap.includes(q));
+  let realOk = true, realBad = [];
+  for(const q of realClubs){
+    const R = await atmSheet(page, q);
+    const n = R.groups.reduce((a, g) => a + g.rows.length, 0);
+    if(n !== realAtm.filter(r => r.clubQ === q).length || R.sideways || R.groups.some(g => g.rows.some(r => r.wide))) { realOk = false; realBad.push(q); }
+  }
+  check(`atmosphere: the real file's ${realClubs.length} clubs show exactly their rows and fit`, realOk, realBad.join(' '));
+  await pg3.close();
   await pg2.close();
   function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
 
