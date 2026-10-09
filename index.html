@@ -277,6 +277,16 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   .sheet .riv[hidden]{display:none}
   .sheet button.rvmore{margin-top:8px;background:var(--surf);border:1px solid var(--line);border-radius:7px;
     padding:8px 12px;color:var(--ink);font:inherit;font-size:13.5px;min-height:44px;cursor:pointer}
+  .sheet .fri{padding:7px 0;border-top:1px solid var(--line);min-width:0}
+  .sheet .fri:first-child{border-top:0}
+  .sheet .frtop{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .sheet .frname{font-size:14px;color:var(--ink);overflow-wrap:anywhere;min-width:0}
+  .sheet button.frname{background:var(--surf);border:1px solid var(--line);border-radius:7px;padding:6px 9px;
+    font:inherit;font-size:13.5px;cursor:pointer;text-align:left;min-height:36px;max-width:100%}
+  .sheet .fri .sub{overflow-wrap:anywhere}
+  .sheet .fri[hidden]{display:none}
+  .sheet button.frmore{margin-top:8px;background:var(--surf);border:1px solid var(--line);border-radius:7px;
+    padding:8px 12px;color:var(--ink);font:inherit;font-size:13.5px;min-height:44px;cursor:pointer}
   .sheet details.atm{border-top:1px solid var(--line);padding:2px 0}
   .sheet details.atm>summary{font-size:14px;color:var(--ink);padding:10px 0;min-height:44px;box-sizing:border-box;cursor:pointer}
   .sheet .atmrow{padding:7px 0 9px;min-width:0;overflow-wrap:anywhere}
@@ -988,6 +998,17 @@ const I18N = {
     "atm.note": "Opinions of the cited sources, not measured.",
     "atm.anyOpp": "any opponent",
     "atm.according": "According to",
+    "fri.title": "Fan friendships",
+    "fri.short": "Fan friendships",
+    "fri.loadFail": "The fan friendship information could not be loaded.",
+    "fri.note": "As stated by the cited source. Fan friendships change and can end.",
+    "fri.groups": "Groups: {text}",
+    "fris.fan-groups": "Between fan groups",
+    "fris.clubs": "Between clubs",
+    "fris.unclear": "Not specified",
+    "frst.active": "Active",
+    "frst.ended": "Ended",
+    "frst.unclear": "Not clear",
     "sheet.tierLow": "tier {n}",
     "fx.dateNotSet": "date not set",
     "fx.timeNotSet": "time not set",
@@ -2056,6 +2077,17 @@ const I18N = {
     "atm.note": "Opiniile surselor citate, nu măsurători.",
     "atm.anyOpp": "orice adversar",
     "atm.according": "Potrivit",
+    "fri.title": "Prietenii între suporteri",
+    "fri.short": "Prietenii între suporteri",
+    "fri.loadFail": "Informațiile despre prietenii nu au putut fi încărcate.",
+    "fri.note": "Așa cum le arată sursa citată. Prieteniile dintre suporteri se pot schimba și pot lua sfârșit.",
+    "fri.groups": "Grupuri: {text}",
+    "fris.fan-groups": "Între grupurile de suporteri",
+    "fris.clubs": "Între cluburi",
+    "fris.unclear": "Nespecificat",
+    "frst.active": "Activă",
+    "frst.ended": "Încheiată",
+    "frst.unclear": "Neclară",
     "sheet.tierLow": "nivelul {n}",
     "fx.dateNotSet": "data nestabilită",
     "fx.timeNotSet": "ora nestabilită",
@@ -3713,6 +3745,7 @@ function openSheet(club, mates, keep = false){
       `</div>` : '') +
     `<h4>${esc(t('sheet.fixtures'))}</h4><div id="sheetFix"><p class="unavail">${esc(t('att.loading'))}</p></div>` +
     `<div id="sheetRiv"></div>` +
+    `<div id="sheetFri"></div>` +
     `<div id="sheetAtm"></div>` +
     `<h4>${esc(t('sheet.ticketInfo'))}</h4><div id="sheetTix"><p class="unavail">${esc(t('att.loading'))}</p></div>` +
     /* The club's Wikidata item: where its name, ground, capacity and position
@@ -3742,6 +3775,7 @@ function openSheet(club, mates, keep = false){
   competitionHtml(club).then(h => fill('sheetComp', h));
   fixturesHtml(club).then(h => fill('sheetFix', h));
   rivalriesHtml(club).then(h => fill('sheetRiv', h));
+  friendshipsHtml(club).then(h => fill('sheetFri', h));
   atmosphereHtml(club).then(h => fill('sheetAtm', h));
   ticketsHtml(club).then(h => fill('sheetTix', h));
 }
@@ -3809,6 +3843,38 @@ async function rivalriesHtml(club){
     (rows.length > RIV_SHOWN ? `<button class="rvmore" aria-expanded="false">${esc(t('gen.showAll', {n: rows.length}))}</button>` : '') + `</div>`;
 }
 
+/* Fan friendships: data/club-friendships.csv, hand-written, cites club-culture-sources.csv.
+   Scope and status come only from the wording of the source; nothing is inferred from
+   rivalries or shared enemies. Active first, then not clear, then ended; alphabetical
+   within each. A section is drawn only for a club that has rows, whatever its country. */
+const FRI_ORDER = {active: 0, unclear: 1, ended: 2};
+const FRI_SCOPE = labelsOf('fris.', ['fan-groups', 'clubs', 'unclear']);
+const FRI_STATUS = labelsOf('frst.', ['active', 'ended', 'unclear']);
+const FRI_SHOWN = 5;
+
+async function friendshipsHtml(club){
+  const C = await cultureFiles(['data/club-friendships.csv']);
+  if(C.err) return `<h4>${esc(t('fri.title'))}</h4>` + unavailable(t('fri.short'), esc(t('fri.loadFail'))) +
+    why(esc(t('gen.fileFail', {file: C.err, err: C.why})));
+  const rows = C.files[0].filter(r => r.clubQ === club.id && !r._over && r.friendName && r.friendQ !== club.id &&
+      FRI_ORDER[r.status] !== undefined && FRI_SCOPE[r.scope] && C.src.has(r.sourceId))
+    .sort((a, b) => FRI_ORDER[a.status] - FRI_ORDER[b.status] || a.friendName.localeCompare(b.friendName));
+  if(!rows.length) return '';
+  const rowHtml = (r, i) => {
+    const friend = r.friendQ ? mapClub(r.friendQ) : null;
+    const name = friend
+      ? `<button class="frname" data-id="${esc(friend.id)}">${esc(r.friendName)}</button>`
+      : `<span class="frname">${esc(r.friendName)}</span>`;
+    return `<div class="fri" data-status="${esc(r.status)}" data-scope="${esc(r.scope)}"${i >= FRI_SHOWN ? ' hidden data-extra="1"' : ''}>` +
+      `<div class="frtop">${name}<span class="tag frscope">${FRI_SCOPE[r.scope]}</span><span class="tag frstatus">${FRI_STATUS[r.status]}</span></div>` +
+      (r.groupsText ? `<div class="sub frgroups" data-content>${esc(t('fri.groups', {text: r.groupsText}))}</div>` : '') +
+      `<div class="sub frsrc">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div></div>`;
+  };
+  return `<h4>${esc(t('fri.title'))}</h4><div class="fris">` + rows.map(rowHtml).join('') +
+    (rows.length > FRI_SHOWN ? `<button class="frmore" aria-expanded="false">${esc(t('gen.showAll', {n: rows.length}))}</button>` : '') +
+    `</div><p class="sub frnote">${esc(t('fri.note'))}</p>`;
+}
+
 async function atmosphereHtml(club){
   const C = await cultureFiles(['data/club-atmosphere.csv']);
   if(C.err) return `<h4>${esc(t('atm.title'))}</h4>` + unavailable(t('atm.short'), esc(t('atm.loadFail'))) +
@@ -3838,6 +3904,16 @@ document.getElementById('sheetBody').addEventListener('click', e => {
     m.textContent = open ? t('gen.showFewer') : t('gen.showAll', {n: m.closest('.rivs').querySelectorAll('.riv').length});
     return;
   }
+  const fm = e.target.closest('.fris .frmore');
+  if(fm){
+    const open = fm.getAttribute('aria-expanded') !== 'true';
+    fm.closest('.fris').querySelectorAll('.fri[data-extra]').forEach(x => { x.hidden = !open; });
+    fm.setAttribute('aria-expanded', String(open));
+    fm.textContent = open ? t('gen.showFewer') : t('gen.showAll', {n: fm.closest('.fris').querySelectorAll('.fri').length});
+    return;
+  }
+  const fn = e.target.closest('.fris .frname[data-id]');
+  if(fn){ const c = mapClub(fn.dataset.id); if(c) goToClub(c); return; }
   const n = e.target.closest('.rivs .rvname[data-id]');
   if(n){ const c = mapClub(n.dataset.id); if(c) goToClub(c); return; }
   const b = e.target.closest('.rivs .rvbucket');
