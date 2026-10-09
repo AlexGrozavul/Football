@@ -479,6 +479,41 @@
   #asheet .arow .k{color:var(--dim);flex-shrink:0}
   #asheet .arow .v{min-width:0;overflow-wrap:anywhere;text-align:right}
 
+  /* The attended-entry detail sheet: panes of the old app, in the club sheet's style. */
+  #asheet .aeyes{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin:12px 0 4px}
+  #asheet .alist{border-top:1px solid var(--line)}
+  #asheet .asw{display:flex;gap:6px;margin-bottom:8px}
+  #asheet .asw button{flex:1;min-width:0;min-height:44px;background:#1b2230;border:1px solid var(--line);border-radius:9px;color:var(--ink);
+    font:inherit;font-size:13px;padding:6px 8px;overflow-wrap:anywhere;cursor:pointer}
+  #asheet .asw button[aria-pressed="true"]{background:var(--t3);border-color:var(--t3);color:#0d1117;font-weight:600}
+  #asheet .apitch{display:block;width:100%;height:auto;border-radius:8px;overflow:hidden}
+  #asheet .aform{text-align:center;font-weight:700;font-size:15px;margin:6px 0 2px}
+  #asheet .acoach{text-align:center;color:var(--dim);font-size:12.5px;margin-bottom:6px}
+  #asheet .aev{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  #asheet .aev .m{flex:0 0 46px;font-weight:700;color:var(--dim)}
+  #asheet .aev .ic{flex:0 0 18px;text-align:center}
+  #asheet .aev .tx{flex:1;min-width:0;overflow-wrap:anywhere}
+  #asheet .aev .tx em{font-style:normal;color:var(--dim);font-size:12.5px}
+  #asheet .aev.away{flex-direction:row-reverse;text-align:right}
+  #asheet .aev.away .tx{text-align:right}
+  #asheet .abar{margin-bottom:12px}
+  #asheet .abar .lb{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px}
+  #asheet .abar .lb span{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;text-align:center}
+  #asheet .abar .tr{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--line);margin-top:3px}
+  #asheet .abar .tr i{display:block;height:100%}
+  #asheet .abar .tr i:first-child{background:var(--dim)}
+  #asheet .abar .tr i:last-child{background:var(--accent)}
+  #asheet .aunv{color:var(--warn);font-size:12px;margin:2px 0 6px}
+  #asheet .afact{background:#11161d;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.55;overflow-wrap:anywhere}
+  #asheet .anote{color:var(--faint);font-size:12.5px;line-height:1.5;margin:8px 0}
+  #asheet .apers label{display:block;font-size:12px;letter-spacing:.04em;color:var(--dim);margin-top:9px}
+  #asheet .apers input,#asheet .apers textarea{display:block;width:100%;margin-top:3px;background:#0d1117;border:1px solid var(--line);
+    border-radius:8px;color:var(--ink);font:inherit;font-size:16px;padding:9px 10px;min-height:44px;box-sizing:border-box}
+  #asheet .apers textarea{min-height:110px;resize:vertical;line-height:1.5}
+  #asheet .apers [aria-invalid="true"]{border-color:var(--bad)}
+  #asheet .perr{color:var(--bad);font-size:12.5px;margin-top:3px}
+  #asheet .perr:empty{display:none}
+
   /* The Me tab: memberships and tickets held, kept on this device only. */
   .me .mebanner{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#3a2a06;color:#f2d38a;
     border:1px solid #6b4f12;border-radius:10px;padding:9px 12px;margin:0 0 10px;font-size:13.5px}
@@ -656,7 +691,7 @@
         <button class="x" id="bsheetClose" aria-label="Close">Close</button></div>
       <div class="sbody tix" id="bsheetBody"></div>
     </div>
-    <!-- An attended match or event tapped on the Me tab: the same shape, header fields only. -->
+    <!-- An attended match or event tapped on the Me tab: the same shape; the full detail sheet. -->
     <div class="sheet" id="asheet" hidden role="dialog" aria-label="Attended match or event">
       <div class="grip"><i></i></div>
       <div class="shead"><div style="flex:1;min-width:0" id="asheetHead"></div>
@@ -5194,9 +5229,11 @@ async function renderTickets(rules){
    the old Meciuri app's data.js unchanged. Its factual notes were written
    by an assistant from memory and are unverified. The file is loaded only
    when one of these sub-tabs is opened, and by getJSON(), so it is network
-   first like every other data file. Nothing here reads or writes the
-   device: no notes, photos, videos, tickets or companions (step 2).
-   The only thing kept on the device is the chosen language. */
+   first like every other data file. The detail sheet's personal fields
+   (notes, ticket, seat, block, companions) are kept on this device only,
+   under football-attended-personal; the old app's mf_* keys are never
+   read, and no photos or videos are kept yet (step 3). The chosen
+   language is the only other thing kept. */
 
 const LANG_KEY = 'football-planner-lang';
 const I18N = {
@@ -5218,7 +5255,21 @@ const I18N = {
     'st.noPlayers': 'Calculated from line-ups; none are recorded.',
     'st.biggest': 'Biggest crowd', 'st.smallest': 'Smallest crowd', 'st.unofficial': '* unofficial figure',
     'st.stadiums': 'Stadiums', 'st.cities': 'Cities', 'st.countries': 'Countries', 'st.comps': 'Competitions',
-    'st.noData': 'No data.'
+    'st.noData': 'No data.',
+    'att.attendance': 'Attendance', 'att.referee': 'Referee', 'att.after90': 'After 90 minutes', 'att.atStadium': 'At the stadium',
+    'att.yes': 'yes', 'att.no': 'no', 'att.soldOut': 'sold out', 'att.fullHouse': 'full house', 'att.approx': 'approximate',
+    'lu.title': 'Line-ups', 'lu.coach': 'Coach', 'lu.bench': 'Unused substitutes', 'lu.subs': 'Substitutions',
+    'lu.xi': 'Starting eleven', 'lu.uncertain': 'pairing unconfirmed', 'lu.pitch': 'Pitch: {team}, {formation}',
+    'tl.title': 'Timeline', 'tl.pen': 'pen.', 'tl.secondYellow': 'second yellow',
+    'sx.title': 'Stats', 'sx.possession': 'Possession', 'sx.shots': 'Shots', 'sx.onTarget': 'Shots on target',
+    'sx.fouls': 'Fouls', 'sx.corners': 'Corners', 'sx.offsides': 'Offsides', 'sx.source': 'Source',
+    'nt.title': 'Factual note', 'nt.unverified': 'Written by an assistant from memory, not yet verified',
+    'ev.what': 'What it was', 'ev.why': 'Why it mattered',
+    'pf.title': 'My notes and details', 'pf.note': 'My notes', 'pf.ticket': 'Ticket', 'pf.seat': 'Seat', 'pf.block': 'Block',
+    'pf.withWho': 'Who I went with',
+    'pf.hint': 'Saved automatically, on this device only.',
+    'pf.card': 'Not saved: this looks like a payment card number, and card numbers are never stored.',
+    'pf.blocked': 'This browser blocks storage, so what you type lasts only until the page is closed.'
   },
   /* RO unchecked by the user: written by the assistant, not yet read by Alexandru. */
   ro: {
@@ -5239,7 +5290,21 @@ const I18N = {
     'st.noPlayers': 'Se calculează din formații; nu este înregistrată niciuna.',
     'st.biggest': 'Cea mai mare asistență', 'st.smallest': 'Cea mai mică asistență', 'st.unofficial': '* cifră neoficială',
     'st.stadiums': 'Stadioane', 'st.cities': 'Orașe', 'st.countries': 'Țări', 'st.comps': 'Competiții',
-    'st.noData': 'Fără date.'
+    'st.noData': 'Fără date.',
+    'att.attendance': 'Asistență', 'att.referee': 'Arbitru', 'att.after90': 'După 90 de minute', 'att.atStadium': 'La stadion',
+    'att.yes': 'da', 'att.no': 'nu', 'att.soldOut': 'sold-out', 'att.fullHouse': 'tribune pline', 'att.approx': 'aproximativ',
+    'lu.title': 'Formații', 'lu.coach': 'Antrenor', 'lu.bench': 'Rezerve neutilizate', 'lu.subs': 'Schimbări',
+    'lu.xi': 'Primul unsprezece', 'lu.uncertain': 'pereche neconfirmată', 'lu.pitch': 'Teren: {team}, {formation}',
+    'tl.title': 'Cronologie', 'tl.pen': 'pen.', 'tl.secondYellow': 'al doilea galben',
+    'sx.title': 'Statistici', 'sx.possession': 'Posesie', 'sx.shots': 'Șuturi', 'sx.onTarget': 'Șuturi pe poartă',
+    'sx.fouls': 'Faulturi', 'sx.corners': 'Cornere', 'sx.offsides': 'Ofsaiduri', 'sx.source': 'Sursa',
+    'nt.title': 'Notă factuală', 'nt.unverified': 'Scrisă de un asistent din memorie, încă neverificată',
+    'ev.what': 'Ce a fost', 'ev.why': 'De ce a contat',
+    'pf.title': 'Notițele și datele mele', 'pf.note': 'Notițele mele', 'pf.ticket': 'Bilet', 'pf.seat': 'Loc', 'pf.block': 'Bloc',
+    'pf.withWho': 'Cu cine am fost',
+    'pf.hint': 'Se salvează automat, doar pe acest dispozitiv.',
+    'pf.card': 'Nesalvat: seamănă cu un număr de card bancar, iar numerele de card nu se păstrează niciodată.',
+    'pf.blocked': 'Acest browser blochează stocarea, deci ce scrii rămâne doar până închizi pagina.'
   }
 };
 
@@ -5268,7 +5333,7 @@ function applyLang(){
   if(ATT.sub !== 'tix' && document.getElementById('pane-me').classList.contains('on')) renderAtt();
 }
 
-const ATT = {sub: 'stats', data: null};
+const ATT = {sub: 'stats', data: null, side: 'home'};
 
 /* A value of the file as the page's language shows it. A name pair has
    nameEn; a text pair is {ro, en}. Nothing is filled in when absent. */
@@ -5407,22 +5472,197 @@ function showMeSub(sub){
   document.getElementById('pane-me').scrollTop = 0;
 }
 
-/* The tapped entry's basic header fields, in the club sheet's shape. */
+/* The tapped entry's detail sheet, in the club sheet's shape. The panes
+   are the old app's, in its order: line-ups (with the pitch), timeline,
+   stats, factual note, then the personal fields. A pane the file has
+   nothing for is absent. */
 function closeASheet(){ document.getElementById('asheet').hidden = true; }
+
+/* Personal fields: this device only, never committed. Same names and
+   shape as the old app's mf_personal ({id: {note, ticket, seat, block,
+   withWho}}) but under this app's own key. The old keys are never read. */
+const PERS_KEY = 'football-attended-personal';
+const PERS_FIELDS = ['note', 'ticket', 'seat', 'block', 'withWho'];
+const PERS_CARD_CHECKED = ['ticket', 'seat', 'block', 'withWho'];
+let PERS = {}, PERS_BLOCKED = false;
+function persLoad(){
+  PERS = {}; PERS_BLOCKED = false;
+  try{
+    const v = JSON.parse(localStorage.getItem(PERS_KEY) || '{}');
+    if(v && typeof v === 'object' && !Array.isArray(v)) PERS = v;
+  }catch(e){ PERS_BLOCKED = true; }
+}
+function persGet(id, k){ const p = PERS[id]; return p && typeof p[k] === 'string' ? p[k] : ''; }
+function persSet(id, k, v){
+  PERS[id] = PERS[id] && typeof PERS[id] === 'object' ? PERS[id] : {};
+  PERS[id][k] = v;
+  try{ localStorage.setItem(PERS_KEY, JSON.stringify(PERS)); }catch(e){ PERS_BLOCKED = true; }
+}
+
+const ATT_STATS = ['possession', 'shots', 'onTarget', 'fouls', 'corners', 'offsides'];
+const attSurname = n => { const p = String(n).trim().split(/\s+/); return p.length > 1 ? p[p.length - 1] : p[0]; };
+const attMin = e => e.minute + (e.added ? '+' + e.added : '') + "'";
+
+/* The formation as the pitch needs it, or null. Never inferred: a missing
+   or inconsistent formation (rows not adding up to the ten outfield
+   players listed) gives no pitch. */
+function attRows(lu){
+  if(!lu || typeof lu.formation !== 'string' || !Array.isArray(lu.xi) || lu.xi.length !== 11) return null;
+  const rows = lu.formation.split('-').map(Number);
+  if(!rows.length || rows.some(n => !Number.isInteger(n) || n < 1) || rows.reduce((a, b) => a + b, 0) !== 10) return null;
+  return rows;
+}
+
+/* The goals, cards and substitutions beside one player's name on the pitch. */
+function attBadges(m, name, lu){
+  const out = [];
+  const goals = (m.goals || []).filter(g => g.player === name).length;
+  if(goals) out.push({k: 'g', n: goals});
+  (m.cards || []).forEach(c => { if(c.player != null && c.player === name) out.push({k: c.type === 'yellow' ? 'y' : 'r'}); });
+  if((lu.subs || []).some(x => x.off === name)) out.push({k: 'o'});
+  return out.slice(0, 3);
+}
+const BADGE_SLOT = [[10, -13], [-16, -13], [10, 3]];
+
+function attPitch(m, lu, side){
+  const rows = attRows(lu); if(!rows) return '';
+  const pos = [{x: 50, y: 91, p: lu.xi[0]}];
+  let idx = 1;
+  rows.forEach((n, r) => {
+    const y = rows.length > 1 ? 74 - r * (60 / (rows.length - 1)) : 44;
+    for(let i = 0; i < n; i++){ pos.push({x: (i + 1) / (n + 1) * 100, y, p: lu.xi[idx++]}); }
+  });
+  const line = 'fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.5"';
+  let g = `<rect x="1.5" y="1.5" width="297" height="397" ${line}/><line x1="0" y1="200" x2="300" y2="200" ${line}/>` +
+    `<circle cx="150" cy="200" r="38" ${line}/><rect x="66" y="348" width="168" height="52" ${line}/><rect x="111" y="378" width="78" height="22" ${line}/>`;
+  pos.forEach(o => {
+    const cx = (o.x * 3).toFixed(1), cy = (o.y * 4).toFixed(1);
+    const nm = attSurname(o.p.name) + (lu.captain === o.p.name ? ' (C)' : '');
+    const fs = Math.min(8.5, 54 / (nm.length * 0.56));
+    g += `<g class="aplr" data-name="${esc(o.p.name)}"><circle cx="${cx}" cy="${cy}" r="11" fill="#0d1117" stroke="#fff" stroke-width="1.5"/>` +
+      `<text class="no" x="${cx}" y="${(+cy + 4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${o.p.no == null ? '?' : esc(o.p.no)}</text>` +
+      `<text class="nm" x="${cx}" y="${(+cy + 23).toFixed(1)}" text-anchor="middle" font-size="${fs.toFixed(2)}" fill="#fff" stroke="#0b2a16" stroke-width="2.2" paint-order="stroke">${esc(nm)}</text>`;
+    attBadges(m, o.p.name, lu).forEach((b, i) => {
+      const bx = +cx + BADGE_SLOT[i][0], by = +cy + BADGE_SLOT[i][1];
+      if(b.k === 'g') g += `<text x="${bx}" y="${by + 9}" font-size="10">⚽${b.n > 1 ? `<tspan font-size="7" fill="#fff">${b.n}</tspan>` : ''}</text>`;
+      else if(b.k === 'o') g += `<circle cx="${bx + 4}" cy="${by + 5}" r="5.5" fill="#D2372F"/><text x="${bx + 4}" y="${by + 8.5}" text-anchor="middle" font-size="9" fill="#fff">↓</text>`;
+      else g += `<rect x="${bx + 1}" y="${by}" width="7" height="10" rx="1" fill="${b.k === 'y' ? '#E8C23B' : '#D2372F'}"/>`;
+    });
+    g += '</g>';
+  });
+  const label = t('lu.pitch', {team: attTeam(m[side]), formation: lu.formation});
+  return `<svg class="apitch" viewBox="0 0 300 400" role="img" aria-label="${esc(label)}"><rect width="300" height="400" fill="#1d5a33"/>${g}</svg>` +
+    `<div class="aform">${esc(lu.formation)}</div>`;
+}
+
+function attLineupSide(m, side){
+  const lu = m.lineups[side]; if(!lu) return '';
+  let h = attRows(lu) ? attPitch(m, lu, side)
+    : `<div class="aeyes">${esc(t('lu.xi'))}</div><div class="alist">${(lu.xi || []).map(p =>
+        `<div class="arow"><span class="k">${esc(p.name)}${lu.captain === p.name ? ' (C)' : ''}</span><span class="v">${p.no == null ? '?' : esc(p.no)}</span></div>`).join('')}</div>`;
+  h += `<div class="acoach">${esc(t('lu.coach'))}: ${esc(lu.coach || t('att.na'))}</div>`;
+  if(lu.subs && lu.subs.length){
+    h += `<div class="aeyes">${esc(t('lu.subs'))}</div><div class="alist">` + lu.subs.map(s =>
+      `<div class="aev"><div class="m">${esc(s.minute)}'</div><div class="tx"><div>↑ ${esc(s.on)}</div><em>↓ ${esc(s.off)}${s.uncertain ? ' · ' + esc(t('lu.uncertain')) : ''}</em></div></div>`).join('') + '</div>';
+  }
+  if(lu.bench && lu.bench.length){
+    h += `<div class="aeyes">${esc(t('lu.bench'))}</div><div class="alist">` + lu.bench.map(b =>
+      `<div class="arow"><span class="k">${esc(b.name)}${lu.captain === b.name ? ' (C)' : ''}</span><span class="v">${b.no == null ? '?' : esc(b.no)}</span></div>`).join('') + '</div>';
+  }
+  return h;
+}
+
+/* The line-up pane: both teams, the home side first and selected, a switch
+   between them. Only the sides the file has are offered. */
+function attLineups(m){
+  if(!m.lineups) return '';
+  const sides = ['home', 'away'].filter(s => m.lineups[s]);
+  if(!sides.length) return '';
+  const side = sides.includes(ATT.side) ? ATT.side : sides[0];
+  ATT.side = side;
+  const sw = sides.length > 1
+    ? `<div class="asw">${sides.map(s => `<button type="button" data-side="${s}" aria-pressed="${s === side}">${esc(attTeam(m[s]))}</button>`).join('')}</div>`
+    : `<div class="aeyes">${esc(attTeam(m[sides[0]]))}</div>`;
+  return `<h4>${esc(t('lu.title'))}</h4><div id="aluPane">${sw}<div id="aluSide">${attLineupSide(m, side)}</div></div>`;
+}
+
+/* Goals, cards and substitutions by minute, stoppage time after the
+   minute it was added to (45+2 after 45); a card with no minute first. */
+function attTimeline(m){
+  const ev = [];
+  (m.goals || []).forEach(g => ev.push({t: g.team, m: g.minute, a: g.added || 0, ic: '⚽',
+    tx: esc(g.player) + (g.pen ? ' (' + esc(t('tl.pen')) + ')' : ''), sub: g.assist ? '↳ ' + esc(g.assist) : ''}));
+  (m.cards || []).forEach(c => ev.push({t: c.team, m: c.minute == null ? -1 : c.minute, a: c.added || 0,
+    ic: c.type === 'yellow' ? '🟨' : '🟥', tx: c.player == null ? '—' : esc(c.player),
+    sub: c.type === 'second-yellow' ? esc(t('tl.secondYellow')) : ''}));
+  if(m.lineups) ['home', 'away'].forEach(sd => {
+    const lu = m.lineups[sd]; if(!lu || !lu.subs) return;
+    lu.subs.forEach(s => ev.push({t: sd, m: s.minute, a: 0, ic: '⇄', tx: '↑ ' + esc(s.on), sub: '↓ ' + esc(s.off)}));
+  });
+  if(!ev.length) return '';
+  ev.sort((x, y) => (x.m - y.m) || (x.a - y.a));
+  return `<h4>${esc(t('tl.title'))}</h4><div class="alist" id="aTimeline">` + ev.map(e =>
+    `<div class="aev${e.t === 'away' ? ' away' : ''}"><div class="m">${e.m < 0 ? '—' : e.m + (e.a ? '+' + e.a : '') + "'"}</div>` +
+    `<div class="ic">${e.ic}</div><div class="tx">${e.tx}${e.sub ? `<br><em>${e.sub}</em>` : ''}</div></div>`).join('') + '</div>';
+}
+
+function attStatsPane(m){
+  if(!m.stats) return '';
+  let h = '';
+  ATT_STATS.forEach(k => {
+    const v = m.stats[k]; if(!Array.isArray(v) || v.length < 2) return;
+    const a = v[0], b = v[1], tot = (a + b) || 1;
+    h += `<div class="abar"><div class="lb"><b>${esc(a)}</b><span>${esc(t('sx.' + k))}</span><b>${esc(b)}</b></div>` +
+      `<div class="tr"><i style="width:${(a / tot * 100).toFixed(1)}%"></i><i style="width:${(b / tot * 100).toFixed(1)}%"></i></div></div>`;
+  });
+  if(!h) return '';
+  if(m.statsSource) h += `<p class="anote">${esc(t('sx.source'))}: ${esc(m.statsSource)}</p>`;
+  return `<h4>${esc(t('sx.title'))}</h4><div id="aStats">${h}</div>`;
+}
+
+const attUnverified = () => `<p class="aunv">${esc(t('nt.unverified'))}</p>`;
+function attNotePane(m){
+  const n = attL(m.note); if(!n) return '';
+  return `<h4>${esc(t('nt.title'))}</h4>${attUnverified()}<div class="afact">${esc(n)}</div>`;
+}
+
+/* My notes, ticket, seat, block, who I went with: this device only. */
+function attPersonal(id, withTicket){
+  const field = k => `<label>${esc(t('pf.' + k))}<input type="text" data-pf="${k}" data-id="${esc(id)}" value="${esc(persGet(id, k))}" autocomplete="off"></label>` +
+    `<div class="perr" data-err="${k}" role="alert"></div>`;
+  return `<h4>${esc(t('pf.title'))}</h4><div class="apers">` +
+    `<label>${esc(t('pf.note'))}<textarea data-pf="note" data-id="${esc(id)}">${esc(persGet(id, 'note'))}</textarea></label>` +
+    (withTicket ? field('ticket') + field('seat') + field('block') : '') + field('withWho') +
+    `<p class="anote">${esc(t('pf.hint'))}${PERS_BLOCKED ? ' ' + esc(t('pf.blocked')) : ''}</p></div>`;
+}
+
 function openASheet(kind, id){
   if(!ATT.data) return;
   const row = (k, v) => `<div class="arow"><span class="k">${esc(t(k))}</span><span class="v">${esc(v || t('att.na'))}</span></div>`;
+  const opt = (k, v) => v ? row(k, v) : '';
   let head, body;
+  persLoad();
   if(kind === 'match'){
     const m = ATT.data.matches.find(x => x.id === id); if(!m) return;
+    const a = m.attendance || {}, tags = [];
+    if(a.soldOut) tags.push(t('att.soldOut'));
+    if(a.fullHouse) tags.push(t('att.fullHouse'));
+    if(a.approx) tags.push(t('att.approx'));
+    const att = a.value ? attNum(a.value) + (tags.length ? ' (' + tags.join(', ') + ')' : '') : tags.join(', ');
     head = `<h3>${esc(attTeam(m.home))} ${esc(m.score ?? '')} ${esc(attTeam(m.away))}</h3>` +
       `<div class="meta"><span class="tag">${esc(attL(m.competition) || t('att.na'))}</span></div>`;
-    body = row('att.date', attDate(m.date)) + row('att.score', m.score) + row('att.competition', attL(m.competition)) +
-      row('att.stage', attL(m.stage)) + row('att.stadium', m.stadium) + row('att.city', attL(m.city)) + row('att.country', attL(m.country));
+    ATT.side = 'home';
+    body = row('att.date', attDate(m.date)) + row('att.score', m.score) + opt('att.after90', m.after90) + row('att.competition', attL(m.competition)) +
+      row('att.stage', attL(m.stage)) + row('att.stadium', m.stadium) + row('att.city', attL(m.city)) + row('att.country', attL(m.country)) +
+      opt('att.attendance', att) + opt('att.referee', m.referee) +
+      attLineups(m) + attTimeline(m) + attStatsPane(m) + attNotePane(m) + attPersonal(m.id, true);
   }else{
     const e = ATT.data.events.find(x => x.id === id); if(!e) return;
     head = `<h3>${esc(attL(e.title) || t('att.na'))}</h3><div class="meta"><span class="tag">${esc(t('att.event'))}</span></div>`;
-    body = row('att.date', attDate(e.date)) + row('att.place', attL(e.place));
+    const sec = (k, v) => v ? `<h4>${esc(t(k))}</h4>${attUnverified()}<div class="afact">${esc(v)}</div>` : '';
+    body = row('att.date', attDate(e.date)) + row('att.place', attL(e.place)) +
+      (typeof e.atStadium === 'boolean' ? row('att.atStadium', t(e.atStadium ? 'att.yes' : 'att.no')) : '') +
+      sec('ev.what', attL(e.what)) + sec('ev.why', attL(e.why)) + attPersonal(e.id, e.atStadium === true);
   }
   closeBSheet(); closeCSheet(); closeFilter();
   document.getElementById('asheetHead').innerHTML = head;
@@ -5442,6 +5682,28 @@ function openASheet(kind, id){
   document.getElementById('asheetClose').addEventListener('click', closeASheet);
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeASheet(); });
   dragToClose(document.getElementById('asheet'), closeASheet);
+  const body = document.getElementById('asheetBody');
+  body.addEventListener('click', e => {         // the line-up switch: home side first, then away
+    const b = e.target.closest('button[data-side]'); if(!b) return;
+    const [kind, id] = (body.dataset.open || '').split(/:(.*)/);
+    const m = kind === 'match' && ATT.data && ATT.data.matches.find(x => x.id === id);
+    if(!m || !m.lineups || !m.lineups[b.dataset.side]) return;
+    ATT.side = b.dataset.side;
+    body.querySelectorAll('button[data-side]').forEach(x => x.setAttribute('aria-pressed', x === b));
+    document.getElementById('aluSide').innerHTML = attLineupSide(m, ATT.side);
+  });
+  body.addEventListener('input', e => {         // saved as typed; a card number is refused, not saved
+    const f = e.target.closest('[data-pf]'); if(!f || !PERS_FIELDS.includes(f.dataset.pf)) return;
+    const err = body.querySelector(`[data-err="${f.dataset.pf}"]`);
+    if(PERS_CARD_CHECKED.includes(f.dataset.pf) && cardLike(f.value)){
+      f.setAttribute('aria-invalid', 'true');
+      if(err) err.textContent = t('pf.card');
+      return;
+    }
+    f.removeAttribute('aria-invalid');
+    if(err) err.textContent = '';
+    persSet(f.dataset.id, f.dataset.pf, f.value);
+  });
   applyLang();
 })();
 

@@ -34,6 +34,10 @@
 //    file is not requested before one of them is opened and only once after; the stats and the list counts equal counts made
 //    here from the file itself; every match and event is listed in the old app's order and opens the header sheet; en and ro
 //    have identical key sets and every key the page uses exists; the page reads no browser storage on them; a failed load says so;
+//  - since 2026-10-09 the tapped match or event opens the full detail sheet: line-ups (home side first, with a switch), the pitch as inline SVG
+//    (only where the formation adds up; never inferred), timeline in minute order, stats only with a stats block, the factual note labelled
+//    unverified, no empty pane; the personal fields (note, ticket, seat, block, who I went with) are kept only under football-attended-personal,
+//    card numbers are refused on four of them, no storage read or write is an mf_ key, mf_media is untouched; nothing overflows at 390 px;
 //  - no script error.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -463,9 +467,11 @@ function alarmAt(ev, al){
   const reqs3 = [];
   const ctx3 = await newCtx();
   await ctx3.addInitScript(() => {            // every localStorage read, to show the new sub-tabs read none
-    window.__reads = [];
-    const g = Storage.prototype.getItem;
+    window.__reads = []; window.__writes = [];
+    const g = Storage.prototype.getItem, w = Storage.prototype.setItem;
     Storage.prototype.getItem = function(k){ window.__reads.push(k); return g.call(this, k); };
+    Storage.prototype.setItem = function(k, v){ window.__writes.push(k); return w.call(this, k, v); };
+    try{ w.call(localStorage, 'mf_personal', JSON.stringify({'*': {note: 'OLDAPPNOTE'}})); }catch(e){}   // the old app's key: must never be read
   });
   const p3 = await ctx3.newPage();
   p3.on('pageerror', e => errors.push(e.message));
@@ -564,6 +570,197 @@ function alarmAt(ev, al){
   check('Leaving the Me tab shuts the sheet', await p3.$eval('#asheet', s => s.hidden), '');
   await p3.click('nav button[data-pane=me]');
   check('The Me tab reopens on the sub-tab that was open', await p3.$eval('#meTabMatches', b => b.getAttribute('aria-selected')) === 'true', '');
+  await p3.click('#meTabMatches');
+
+
+  // ---- The full detail sheet (2026-10-09): line-ups with the pitch, timeline, stats, factual note, personal fields.
+  const hasSide = (m, s) => !!(m.lineups && m.lineups[s]);
+  const pitchOk = lu => !!(lu && typeof lu.formation === 'string' && Array.isArray(lu.xi) && lu.xi.length === 11 &&
+    lu.formation.split('-').map(Number).every(n => Number.isInteger(n) && n > 0) && lu.formation.split('-').map(Number).reduce((a, b) => a + b, 0) === 10);
+  const nm = tm => tm.nameEn || tm.name;
+  const STAT_KEYS = ['possession', 'shots', 'onTarget', 'fouls', 'corners', 'offsides'];
+  const expectedTimeline = m => {
+    const ev = [];
+    m.goals.forEach(g => ev.push([g.minute, g.added || 0, `${g.minute}${g.added ? '+' + g.added : ''}'`]));
+    m.cards.forEach(c => ev.push([c.minute == null ? -1 : c.minute, c.added || 0, c.minute == null ? '—' : `${c.minute}${c.added ? '+' + c.added : ''}'`]));
+    if(m.lineups) ['home', 'away'].forEach(sd => { if(m.lineups[sd]) (m.lineups[sd].subs || []).forEach(x => ev.push([x.minute, 0, `${x.minute}'`])); });
+    return ev.sort((a, b) => (a[0] - b[0]) || (a[1] - b[1])).map(e => e[2]);
+  };
+  const sheetState = pg => pg.evaluate(() => {
+    const b = document.getElementById('asheetBody'), sh = document.getElementById('asheet'), rc = sh.getBoundingClientRect(), nav = document.querySelector('nav').getBoundingClientRect();
+    const svg = b.querySelector('svg.apitch'), sr = svg && svg.getBoundingClientRect();
+    const texts = svg ? [...svg.querySelectorAll('text')].map(x => x.getBBox()) : [];
+    const names = svg ? [...svg.querySelectorAll('text.nm')].map(x => x.getBBox()) : [];
+    let overlap = 0;
+    for(let i = 0; i < names.length; i++) for(let j = i + 1; j < names.length; j++){
+      const a = names[i], c = names[j];
+      if(a.x < c.x + c.width - .5 && c.x < a.x + a.width - .5 && a.y < c.y + c.height - .5 && c.y < a.y + a.height - .5) overlap++;
+    }
+    const empty = [...b.querySelectorAll('h4')].filter(h => { const n = h.nextElementSibling; return !n || n.tagName === 'H4' || !n.textContent.trim(); }).map(h => h.textContent);
+    return {hidden: sh.hidden, h4: [...b.querySelectorAll('h4')].map(h => h.textContent),
+      fits: b.scrollWidth <= b.clientWidth + 1 && rc.right <= innerWidth + 1 && rc.left >= -1 && rc.bottom <= nav.top + 1 && document.documentElement.scrollWidth <= innerWidth + 1,
+      svgIn: !svg || (sr.left >= -0.5 && sr.right <= innerWidth + .5 && sr.width <= b.clientWidth + 1),
+      svgTextOut: texts.filter(x => x.x < 0 || x.y < 0 || x.x + x.width > 300 || x.y + x.height > 400).length, overlap, empty,
+      pitchNames: svg ? [...svg.querySelectorAll('g.aplr')].map(g => g.dataset.name) : [],
+      listNames: [...b.querySelectorAll('#aluSide .alist:not(:has(.aev)) .arow .k')].map(x => x.textContent.replace(' (C)', '')),
+      switchBtns: [...b.querySelectorAll('button[data-side]')].map(x => [x.textContent, x.getAttribute('aria-pressed')]),
+      coach: (b.querySelector('.acoach') || {}).textContent || '',
+      tlMin: [...b.querySelectorAll('#aTimeline .aev .m')].map(x => x.textContent),
+      tlAway: [...b.querySelectorAll('#aTimeline .aev')].map(x => x.classList.contains('away')),
+      statRows: b.querySelectorAll('#aStats .abar').length, statsPane: !!b.querySelector('#aStats'),
+      note: (b.querySelector('.afact') || {}).textContent || '', unv: [...b.querySelectorAll('.aunv')].map(x => x.textContent),
+      text: b.innerText.replace(/\s+/g, ' '), pf: [...b.querySelectorAll('[data-pf]')].map(x => x.dataset.pf)};
+  });
+  const openEntry = async (pg, sub, tab, id) => {
+    await pg.click(tab); await pg.click(`#${sub} .acard[data-id="${id}"]`); await pg.waitForTimeout(350);
+  };
+  const detailBad = [], detailNote = [];
+  let nPitch = 0;
+  for(const m of ATTF.matches){
+    await openEntry(p3, 'meMatches', '#meTabMatches', m.id);
+    const st = await sheetState(p3);
+    const bad = x => detailBad.push(m.id + ': ' + x);
+    const sides = ['home', 'away'].filter(sd => hasSide(m, sd));
+    if(st.hidden) bad('sheet did not open');
+    if(!st.fits) bad('overflows 390 px or the bottom bar');
+    if(!st.svgIn || st.svgTextOut || st.overlap) bad(`pitch: inside=${st.svgIn} textOut=${st.svgTextOut} overlap=${st.overlap}`);
+    if(st.empty.length) bad('empty pane ' + st.empty.join(','));
+    if(st.h4.includes('Line-ups') !== (sides.length > 0)) bad('line-ups pane presence');
+    if(st.h4.includes('Timeline') !== (expectedTimeline(m).length > 0)) bad('timeline pane presence');
+    if(st.h4.includes('Stats') !== !!m.stats || st.statsPane !== !!m.stats) bad('stats pane presence');
+    if(m.stats && st.statRows !== STAT_KEYS.filter(k => m.stats[k]).length) bad('stat rows ' + st.statRows);
+    if(st.h4.includes('Factual note') !== !!m.note) bad('note pane presence');
+    if(m.note && (!st.unv.includes('Written by an assistant from memory, not yet verified') || st.note !== m.note.en)) bad('note text or label');
+    if(JSON.stringify(st.tlMin) !== JSON.stringify(expectedTimeline(m))) bad('timeline order ' + st.tlMin.join(' ') + ' vs ' + expectedTimeline(m).join(' '));
+    if(!st.pf.includes('note') || !st.pf.includes('ticket') || !st.pf.includes('seat') || !st.pf.includes('block') || !st.pf.includes('withWho')) bad('personal fields ' + st.pf);
+    if(sides.length === 2){
+      if(JSON.stringify(st.switchBtns) !== JSON.stringify([[nm(m.home), 'true'], [nm(m.away), 'false']])) bad('switch ' + JSON.stringify(st.switchBtns));
+    }else if(st.switchBtns.length) bad('a switch with one side');
+    for(const sd of sides){
+      if(sides.length === 2 && sd === 'away'){ await p3.click('button[data-side="away"]'); }
+      const s2 = await sheetState(p3), lu = m.lineups[sd];
+      const names = lu.xi.map(p => p.name);
+      if(sides.length === 2 && s2.switchBtns[sd === 'home' ? 0 : 1][1] !== 'true') bad(sd + ' button not pressed');
+      if(!s2.coach.includes(lu.coach || 'not recorded')) bad(sd + ' coach');
+      if(pitchOk(lu)){
+        nPitch++;
+        if(JSON.stringify(s2.pitchNames) !== JSON.stringify(names)) bad(sd + ' pitch players');
+        if(!s2.text.includes(lu.formation)) bad(sd + ' formation label');
+      }else if(s2.pitchNames.length || JSON.stringify(s2.listNames.slice(0, 11)) !== JSON.stringify(names)) bad(sd + ' list without pitch');
+      for(const p of (lu.bench || [])) if(!s2.text.includes(p.name)) bad(sd + ' bench ' + p.name);
+      for(const x of (lu.subs || [])) if(!s2.text.includes(x.on) || !s2.text.includes(x.off)) bad(sd + ' sub ' + x.on);
+      if(!s2.fits || !s2.svgIn || s2.svgTextOut || s2.overlap) bad(sd + ' side overflows: ' + JSON.stringify({f: s2.fits, i: s2.svgIn, o: s2.svgTextOut, v: s2.overlap}));
+    }
+    if(sides.length === 2){ await p3.click('button[data-side="home"]'); const s3 = await sheetState(p3); if(s3.switchBtns[0][1] !== 'true') bad('switch back to home'); }
+    await p3.click('#asheetClose');
+  }
+  const nLU = ATTF.matches.filter(m => hasSide(m, 'home') || hasSide(m, 'away')).length;
+  const nFormations = ATTF.matches.reduce((n, m) => n + ['home', 'away'].filter(sd => m.lineups && m.lineups[sd] && m.lineups[sd].formation).length, 0);
+  console.log(`   (file: ${ATTF.matches.length} matches, ${nLU} with line-ups, ${nFormations} team formations, ${ATTF.matches.filter(m => m.stats).length} with stats, ${nPitch} pitches drawn)`);
+  check(`Every one of the ${ATTF.matches.length} match sheets: line-ups only where the file has them, home side first and selected with a working switch, coach/bench/substitutions listed, pitch players equal the starting eleven`,
+    !detailBad.length, detailBad.slice(0, 3).join(' | '));
+  check('Match sheets: the timeline lists goals, cards and substitutions in minute order (stoppage time after its minute, a card with no minute first), as worked out from the file',
+    !detailBad.some(x => /timeline/.test(x)), '');
+  check('Match sheets: the stats pane appears only for matches with a stats block; no pane is ever empty; the factual note carries the "Written by an assistant from memory, not yet verified" label',
+    !detailBad.some(x => /stats|empty|note/.test(x)), '');
+  const noLUm = ATTF.matches.find(m => !m.lineups && !m.stats);
+  if(noLUm){
+    await openEntry(p3, 'meMatches', '#meTabMatches', noLUm.id);
+    const st = await sheetState(p3);
+    check('A match with no line-ups shows no line-ups pane, no switch and no empty heading', !st.h4.includes('Line-ups') && !st.switchBtns.length && !st.empty.length && !/Line-ups/.test(st.text), JSON.stringify(st.h4));
+    await p3.click('#asheetClose');
+  }else detailNote.push('no match without line-ups and stats');
+  check('Every sheet drew pitches (one per team with a consistent formation), none with text outside the pitch, none with overlapping names, nothing wider than 390 px', nPitch > 0 && !detailBad.some(x => /pitch|overflow/.test(x)), String(nPitch));
+
+  // Events: title, place, what, why, atStadium, personal fields.
+  const evBad = [];
+  for(const e of ATTF.events){
+    await openEntry(p3, 'meEvents', '#meTabEvents', e.id);
+    const st = await sheetState(p3);
+    const head = await p3.$eval('#asheetHead', h => h.textContent);
+    if(!head.includes(e.title.en)) evBad.push(e.id + ' title');
+    const need = [e.place.en, e.what.en, 'What it was'].concat(e.why ? [e.why.en, 'Why it mattered'] : []);
+    if(st.hidden || need.some(x => !st.text.toLowerCase().includes(x.toLowerCase()))) evBad.push(e.id + ' content ' + need.filter(x => !st.text.toLowerCase().includes(x.toLowerCase())).join('/'));
+    if(!new RegExp('At the stadium ' + (e.atStadium ? 'yes' : 'no'), 'i').test(st.text)) evBad.push(e.id + ' atStadium flag');
+    const want = e.atStadium ? ['note', 'ticket', 'seat', 'block', 'withWho'] : ['note', 'withWho'];
+    if(JSON.stringify(st.pf) !== JSON.stringify(want)) evBad.push(e.id + ' personal fields ' + st.pf);
+    if(!st.fits || st.empty.length) evBad.push(e.id + ' fit/empty');
+    if(st.unv.length !== 1 + (e.why ? 1 : 0)) evBad.push(e.id + ' unverified labels');
+    await p3.click('#asheetClose');
+  }
+  check(`All ${ATTF.events.length} events open their sheet: title, place, what, why, the atStadium flag, ticket/seat/block only where atStadium, and the unverified label`, !evBad.length, evBad.slice(0, 3).join(' | '));
+
+  // Personal fields: this device only, under football-attended-personal, never an mf_ key.
+  const PK = 'football-attended-personal';
+  const pm = ATTF.matches[0], pe = ATTF.events.find(e => e.atStadium);
+  await openEntry(p3, 'meMatches', '#meTabMatches', pm.id);
+  check('The old app\'s mf_personal key is not read: a seeded note there is not shown', !(await sheetState(p3)).text.includes('OLDAPPNOTE'), '');
+  const vals = {note: 'Cold night ' + TAG, ticket: 'T-' + TAG, seat: 'Row 7 ' + TAG, block: 'Block 12 ' + TAG, withWho: 'Ana and Radu ' + TAG};
+  for(const k of Object.keys(vals)) await p3.fill(`#asheetBody [data-pf="${k}"]`, vals[k]);
+  const persStored = async () => JSON.parse(await p3.evaluate(k => localStorage.getItem(k), PK) || 'null');
+  check('Editing the personal fields saves under football-attended-personal, keyed by entry id, with the old shape (note, ticket, seat, block, withWho)',
+    JSON.stringify((await persStored())[pm.id]) === JSON.stringify(vals), JSON.stringify(await persStored()));
+  await openEntry(p3, 'meEvents', '#meTabEvents', pe.id);
+  await p3.fill('#asheetBody [data-pf="withWho"]', 'Friends ' + TAG); await p3.fill('#asheetBody [data-pf="ticket"]', 'E-' + TAG);
+  await p3.click('#asheetClose');
+  check('An event\'s personal fields are kept under its own id beside the match\'s', (await persStored())[pe.id].withWho === 'Friends ' + TAG && (await persStored())[pm.id].note === vals.note, JSON.stringify(Object.keys(await persStored())));
+  await p3.reload();
+  await p3.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await p3.click('nav button[data-pane=me]'); await p3.waitForSelector('#meStats .astat');
+  await openEntry(p3, 'meMatches', '#meTabMatches', pm.id);
+  const persBack = await p3.evaluate(() => Object.fromEntries([...document.querySelectorAll('#asheetBody [data-pf]')].map(x => [x.dataset.pf, x.value])));
+  check('The personal fields are still there after a reload', JSON.stringify(persBack) === JSON.stringify(vals), JSON.stringify(persBack));
+  // Card numbers are refused on ticket, seat, block and who I went with; digits failing Luhn are kept.
+  const cardBad = [];
+  for(const k of ['ticket', 'seat', 'block', 'withWho']){
+    const before = (await persStored())[pm.id][k];
+    await p3.fill(`#asheetBody [data-pf="${k}"]`, 'card 4111 1111 1111 1111 ok');
+    const r = await p3.evaluate(kk => ({err: document.querySelector(`#asheetBody [data-err="${kk}"]`).textContent, inv: document.querySelector(`#asheetBody [data-pf="${kk}"]`).getAttribute('aria-invalid')}), k);
+    if(!/payment card number/.test(r.err) || r.inv !== 'true' || (await persStored())[pm.id][k] !== before) cardBad.push(k + ' ' + JSON.stringify(r));
+    await p3.fill(`#asheetBody [data-pf="${k}"]`, 'ref 4111 1111 1111 1112');
+    if((await persStored())[pm.id][k] !== 'ref 4111 1111 1111 1112' || await p3.$eval(`#asheetBody [data-err="${k}"]`, x => x.textContent)) cardBad.push(k + ' non-card refused');
+  }
+  check('A payment card number (Luhn) is refused on Ticket, Seat, Block and Who I went with, nothing saved, reason shown; digits failing Luhn are kept', !cardBad.length, cardBad.join(' | '));
+  const stReads = await p3.evaluate(() => window.__reads), stWrites = await p3.evaluate(() => window.__writes);
+  check('Every storage read the page made is recorded, and none is an mf_ key; football-attended-personal was read',
+    stReads.length > 0 && !stReads.some(k => String(k).startsWith("mf_")) && stReads.includes(PK), [...new Set(stReads)].join(','));
+  check('Every storage write is recorded, and none is an mf_ key (only football-attended-personal and the language on these sheets)',
+    !stWrites.some(k => String(k).startsWith("mf_")) && stWrites.includes(PK), [...new Set(stWrites)].join(','));
+  const idb = await p3.evaluate(async () => indexedDB.databases ? (await indexedDB.databases()).map(d => d.name) : []);
+  check('IndexedDB mf_media is not touched or created', !idb.includes('mf_media'), idb.join(','));
+  const lsKeys = await p3.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('mf_')));
+  check('The only mf_ key in storage is the one this test seeded, unchanged', JSON.stringify(lsKeys) === '["mf_personal"]' && await p3.evaluate(() => localStorage.getItem('mf_personal')) === JSON.stringify({'*': {note: 'OLDAPPNOTE'}}), lsKeys.join(','));
+  check('Nothing typed is in a cookie or sessionStorage', await p3.evaluate(tag => !document.cookie.includes(tag) && !JSON.stringify(Object.assign({}, sessionStorage)).includes(tag), TAG), '');
+  await p3.click('#asheetClose');
+  const dictKeys = await p3.evaluate(ks => ks.filter(k => !I18N.en[k] || !I18N.ro[k]), STAT_KEYS.map(k => 'sx.' + k).concat(['pf.note', 'pf.ticket', 'pf.seat', 'pf.block', 'pf.withWho']));
+  check('The new strings exist in both en and ro (statistics labels, personal field labels)', !dictKeys.length, dictKeys.join(','));
+  await p3.click('#meTabMatches');
+
+  // A team with no formation (or one that does not add up) gets the line-up list and no pitch; a formation is never inferred.
+  const ctx5 = await newCtx();
+  const both2 = ATTF.matches.filter(m => hasSide(m, 'home') && hasSide(m, 'away') && pitchOk(m.lineups.home) && pitchOk(m.lineups.away));
+  const mNo = both2[0], mOdd = both2[1];
+  const mod = JSON.parse(JSON.stringify(ATTF));
+  delete mod.matches.find(m => m.id === mNo.id).lineups.home.formation;
+  mod.matches.find(m => m.id === mOdd.id).lineups.home.formation = '4-4-4';
+  await ctx5.route('**/data/attended.json', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(mod)}));
+  const p5 = await ctx5.newPage();
+  p5.on('pageerror', e => errors.push(e.message));
+  await p5.goto(BASE);
+  await p5.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await p5.click('nav button[data-pane=me]'); await p5.waitForSelector('#meStats .astat');
+  const noPitchBad = [];
+  for(const [mm, why] of [[mNo, 'no formation'], [mOdd, 'formation not adding up']]){
+    await openEntry(p5, 'meMatches', '#meTabMatches', mm.id);
+    const st = await sheetState(p5);
+    if(st.pitchNames.length || JSON.stringify(st.listNames.slice(0, 11)) !== JSON.stringify(mm.lineups.home.xi.map(p => p.name)) || !st.fits) noPitchBad.push(why + ' ' + JSON.stringify([st.pitchNames.length, st.listNames.length, st.fits]));
+    await p5.click('button[data-side="away"]');
+    const s2 = await sheetState(p5);
+    if(s2.pitchNames.length !== 11) noPitchBad.push(why + ': the away pitch should still be drawn');
+    await p5.click('#asheetClose');
+  }
+  check('A team with no formation, or one that does not add up to ten outfield players, shows the line-up list and no pitch; the other team\'s pitch is unaffected', !noPitchBad.length, noPitchBad.join(' | '));
+  await ctx5.close();
   await p3.click('#meTabMatches');
 
   // Languages.
