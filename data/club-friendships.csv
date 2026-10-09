@@ -1,1 +1,36 @@
 clubQ,friendQ,friendName,scope,status,groupsText,sourceId,checkedOn
+Q41420,Q155218,Rot-Weiss Essen,fan-groups,unclear,,C1,2026-10-09
+Q41420,,Celtic Glasgow,unclear,active,,C1,2026-10-09
+Q41420,Q51974,Hamburger SV,fan-groups,ended,,C1,2026-10-09
+Q41420,Q104770,1. FC Köln,fan-groups,active,Desperados Dortmund; Boyz Köln,C1,2026-10-09
+Q41420,Q106394,SC Freiburg,unclear,unclear,,C1,2026-10-09
+Q41420,Q105853,Karlsruher SC,unclear,unclear,,C1,2026-10-09
+Q41420,Q157463,1. FC Saarbrücken,unclear,unclear,,C1,2026-10-09
+Q41420,Q131603,TSV 1860 München,unclear,unclear,,C1,2026-10-09
+Q41420,Q219926,Aris Thessaloniki,fan-groups,active,The Unity,C1,2026-10-09
+Q41420,,Brøndby IF,fan-groups,active,The Unity,C1,2026-10-09
+Q41420,Q161034,Wacker Burghausen,fan-groups,active,The Unity,C1,2026-10-09
+Q15789,Q102720,Hertha BSC,fan-groups,unclear,,C3,2026-10-09
+Q15789,Q105861,VfL Bochum,fan-groups,active,Schickeria München,C3,2026-10-09
+Q15789,Q6463,FC St. Pauli,fan-groups,active,Schickeria München,C3,2026-10-09
+Q15789,Q155186,FC Carl Zeiss Jena,fan-groups,active,Schickeria München,C3,2026-10-09
+Q15789,,Bordeaux,fan-groups,active,Schickeria München,C3,2026-10-09
+Q15789,Q6703,Empoli,fan-groups,active,Schickeria München,C3,2026-10-09
+Q15789,,Sambenedettese,fan-groups,active,Schickeria München,C3,2026-10-09
+Q141971,Q32494,FC Schalke 04,fan-groups,active,,C4,2026-10-09
+Q141971,Q102720,Hertha BSC,fan-groups,unclear,,C4,2026-10-09
+Q141971,Q6463,FC St. Pauli,unclear,active,,C4,2026-10-09
+Q141971,Q101959,Borussia Mönchengladbach,unclear,active,,C4,2026-10-09
+Q51974,Q41420,Borussia Dortmund,fan-groups,unclear,,C5,2026-10-09
+Q51974,Q15786,1. FC Nürnberg,fan-groups,ended,Rothosen; Seerose,C5,2026-10-09
+Q51974,Q105844,Arminia Bielefeld,fan-groups,active,,C5,2026-10-09
+Q51974,,Rangers,unclear,active,,C5,2026-10-09
+Q51974,,FC København,fan-groups,active,,C5,2026-10-09
+Q51974,Q665920,VfB Lübeck,fan-groups,active,,C5,2026-10-09
+Q126334,Q105853,Karlsruher SC,unclear,active,,C7,2026-10-09
+Q126334,,Berlin BSC,unclear,active,,C7,2026-10-09
+Q245162,Q4654417,Politehnica Timișoara,fan-groups,active,,C8,2026-10-09
+Q4654417,Q245162,Rapid București,fan-groups,active,Sud Timișoara; Nord Rapid; t2 Rapid; Sud Rapid,C9,2026-10-09
+Q4654417,Q101959,Borussia Mönchengladbach,fan-groups,active,Peluza Sud Timișoara; Nordkurve Mönchengladbach,C9,2026-10-09
+Q4654417,,Aridaias (Gate 4),fan-groups,unclear,,C9,2026-10-09
+Q4654417,,Peluza Sud '97 Craiova,fan-groups,ended,,C9,2026-10-09
