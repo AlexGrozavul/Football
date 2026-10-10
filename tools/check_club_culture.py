@@ -1,37 +1,29 @@
 #!/usr/bin/env python3
 """
 check_club_culture.py -- read-back and checks for data/club-rivalries.csv,
-data/club-atmosphere.csv, data/club-friendships.csv and data/club-culture-sources.csv.
+data/club-friendships.csv and data/club-culture-sources.csv.
 
-All four are hand-written and nothing writes to them. This tool reads them,
+All three are hand-written and nothing writes to them. This tool reads them,
 prints every accepted row as understood and exits 1 on a problem.
 
 club-rivalries.csv: clubQ, rivalQ (blank when the rival is not on the map),
 rivalName, class (main, local, other), sourceId, checkedOn. The class comes
 only from the wording of the source. There is no row limit and no target.
-club-atmosphere.csv: clubQ, situation (derby, european, cup, other),
-opponentQ, opponentName, where, whenText, recurrence (annual, if-same-league,
-if-qualified, irregular), what, attribution, basis, sourceId, checkedOn. Every
-row is an attributed claim, never our own statement, about a recurring fixture
-or occasion a person can attend; the attribution is the source's name only,
-because the sheet writes "According to" itself.
 club-friendships.csv: clubQ, friendQ (blank when the friend is not on the map),
 friendName, scope (fan-groups, clubs, unclear), status (active, ended, unclear),
 groupsText (the fan groups the source names, blank if it names none), sourceId,
 checkedOn. Scope and status come only from the wording of the source; nothing is
 inferred from rivalries or shared enemies.
 
-EXITS 1 on: a clubQ, rivalQ or opponentQ on no data/clubs/*.json, a sourceId
-not in club-culture-sources.csv, a class, situation, recurrence, basis or source kind
-outside its list, a duplicate row, a missing rivalName / what / attribution, an attribution that starts with
-"According to" or "Laut",
+EXITS 1 on: a clubQ or rivalQ on no data/clubs/*.json, a sourceId
+not in club-culture-sources.csv, a class or source kind
+outside its list, a duplicate row, a missing rivalName,
 a day-level date in the future in a text cell, a row with more values than
 the header has columns; in club-friendships.csv also an unknown friendQ, a scope
 or status outside its list, a club listed as its own friend, a duplicate row.
 WARNS (exit stays 0) on a missing or malformed checkedOn, a club pair that is in
 both the friendships file and the rivalries file (they should not contradict), a club with more
-than 12 rows in either file (so they can be reviewed for padding), a `what`
-that uses "best", "loudest" or "most intense" outside quotation marks, and a
+than 12 rows in either file (so they can be reviewed for padding), and a
 source no row uses.
 
 Usage:  python3 tools/check_club_culture.py
@@ -42,10 +34,6 @@ from datetime import date
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 D = os.path.join(ROOT, 'data')
 CLASSES = ('main', 'local', 'other')
-SITUATIONS = ('derby', 'european', 'cup', 'other')
-RECURRENCES = ('annual', 'if-same-league', 'if-qualified', 'irregular')
-LEAD_IN = re.compile(r'^\s*(according to|laut)\b', re.I)   # the sheet adds "According to " itself
-BASES = ('documented', 'reported')
 SCOPES = ('fan-groups', 'clubs', 'unclear')
 STATUSES = ('active', 'ended', 'unclear')
 ORDER_SHOWN = ('active', 'unclear', 'ended')   # the order the club sheet draws them
@@ -55,7 +43,6 @@ MONTHS = 'january|february|march|april|may|june|july|august|september|october|no
 ISO_DAY = re.compile(r'\b(\d{4})-(\d{2})-(\d{2})\b')
 DMY = re.compile(r'\b(\d{1,2})\.?\s+(' + MONTHS + r')\s+(\d{4})\b', re.I)
 MDY = re.compile(r'\b(' + MONTHS + r')\s+(\d{1,2}),?\s+(\d{4})\b', re.I)
-SUPERLATIVE = re.compile(r'\b(best|loudest|most intense)\b', re.I)
 
 problems, warnings = [], []
 today = date.today()
@@ -110,10 +97,6 @@ def future_days(text):
     return [x for x in found if x > today]
 
 
-def outside_quotes(text):
-    return re.sub(r'"[^"]*"|“[^”]*”|‘[^’]*’', '', text)
-
-
 clubs = {}
 for p in glob.glob(os.path.join(D, 'clubs', '??.json')):
     for c in json.load(open(p, encoding='utf-8')).get('clubs', []):
@@ -152,7 +135,7 @@ def common(at, r, ok):
     return ok
 
 
-riv, atm, fri = {}, {}, {}
+riv, fri = {}, {}
 seen = set()
 for line, r in read('club-rivalries.csv', ['clubQ', 'rivalQ', 'rivalName', 'class', 'sourceId', 'checkedOn']):
     at = f'club-rivalries.csv line {line}'
@@ -173,35 +156,6 @@ for line, r in read('club-rivalries.csv', ['clubQ', 'rivalQ', 'rivalName', 'clas
         problems.append(f'{at}: {clubs.get(r["clubQ"], r["clubQ"])} / {r["rivalName"]} is entered twice'); ok = False
     seen.add(key)
     if ok: riv.setdefault(r['clubQ'], []).append(r)
-
-for line, r in read('club-atmosphere.csv', ['clubQ', 'situation', 'opponentQ', 'opponentName', 'where', 'whenText', 'recurrence',
-                                            'what', 'attribution', 'basis', 'sourceId', 'checkedOn']):
-    at = f'club-atmosphere.csv line {line}'
-    ok = common(at, r, True)
-    if r['situation'] not in SITUATIONS:
-        problems.append(f'{at}: situation "{r["situation"]}" is not one of {", ".join(SITUATIONS)}'); ok = False
-    if r['basis'] not in BASES:
-        problems.append(f'{at}: basis "{r["basis"]}" is not one of {", ".join(BASES)}'); ok = False
-    if r['recurrence'] not in RECURRENCES:
-        problems.append(f'{at}: recurrence "{r["recurrence"]}" is not one of {", ".join(RECURRENCES)}'); ok = False
-    if LEAD_IN.match(r['attribution']):
-        problems.append(f'{at}: attribution starts with "According to" / "Laut"; give the source\'s name only, the sheet adds the words'); ok = False
-    if r['opponentQ'] and r['opponentQ'] not in clubs:
-        problems.append(f'{at}: opponentQ "{r["opponentQ"]}" is on no club file (leave it blank if the opponent is not on the map)'); ok = False
-    for col in ('what', 'attribution'):
-        if not r[col]:
-            problems.append(f'{at}: {col} is empty'); ok = False
-    for col in ('where', 'whenText', 'what', 'attribution', 'opponentName'):
-        if future_days(r[col]):
-            problems.append(f'{at}: {col} holds a future day-level date'); ok = False
-    if SUPERLATIVE.search(outside_quotes(r['what'])):
-        warnings.append(f'{at}: "what" uses best / loudest / most intense outside quotation marks; that must be the source\'s word, not ours')
-    key = ('atm', r['clubQ'], r['situation'], r['opponentQ'] or r['opponentName'].casefold(), r['where'].casefold(),
-           r['whenText'].casefold(), r['sourceId'], r['what'].casefold())
-    if key in seen:
-        problems.append(f'{at}: the same row is entered twice'); ok = False
-    seen.add(key)
-    if ok: atm.setdefault(r['clubQ'], []).append(r)
 
 for line, r in read('club-friendships.csv', ['clubQ', 'friendQ', 'friendName', 'scope', 'status', 'groupsText', 'sourceId', 'checkedOn']):
     at = f'club-friendships.csv line {line}'
@@ -238,7 +192,7 @@ for q, rs in fri.items():
         if hit:
             warnings.append(f'{clubs[q]} / {r["friendName"]} is in club-friendships.csv ({r["status"]}) and in club-rivalries.csv ({hit["class"]}); the two should not contradict, check both sources')
 
-for label, d in (('club-rivalries.csv', riv), ('club-atmosphere.csv', atm), ('club-friendships.csv', fri)):
+for label, d in (('club-rivalries.csv', riv), ('club-friendships.csv', fri)):
     for q, rs in d.items():
         if len(rs) > REVIEW_OVER:
             warnings.append(f'{label}: {clubs[q]} ({q}) has {len(rs)} rows; review them for padding')
@@ -253,19 +207,11 @@ for q in sorted(riv, key=lambda q: clubs[q]):
     for r in sorted(riv[q], key=lambda r: (CLASSES.index(r['class']), r['rivalName'])):
         print(f'    {r["class"]:5}  {r["rivalName"]}  {r["rivalQ"] or "(not on the map)"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
 print('  rows by class: ' + ', '.join(f'{c} {sum(1 for v in riv.values() for r in v if r["class"] == c)}' for c in CLASSES))
-print(f'club-atmosphere.csv: {sum(len(v) for v in atm.values())} accepted rows, {len(atm)} clubs')
-for q in sorted(atm, key=lambda q: clubs[q]):
-    print(f'  {clubs[q]} ({q})')
-    for r in atm[q]:
-        print(f'    {r["situation"]:12} {r["basis"]:10} vs {r["opponentName"] or "any opponent"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
 print(f'club-friendships.csv: {sum(len(v) for v in fri.values())} accepted rows, {len(fri)} clubs')
 for q in sorted(fri, key=lambda q: clubs[q]):
     print(f'  {clubs[q]} ({q})')
     for r in sorted(fri[q], key=lambda r: (ORDER_SHOWN.index(r['status']), r['friendName'])):
         print(f'    {r["status"]:7} {r["scope"]:10} {r["friendName"]}  {r["friendQ"] or "(not on the map)"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
-print('  rows by situation: ' + ', '.join(f'{s} {sum(1 for v in atm.values() for r in v if r["situation"] == s)}' for s in SITUATIONS))
-print('  rows by recurrence: ' + ', '.join(f'{x} {sum(1 for v in atm.values() for r in v if r["recurrence"] == x)}' for x in RECURRENCES))
-print('  rows by basis: ' + ', '.join(f'{b} {sum(1 for v in atm.values() for r in v if r["basis"] == b)}' for b in BASES))
 for w in warnings: print('WARNING:', w)
 for p in problems: print('PROBLEM:', p)
 if problems:
