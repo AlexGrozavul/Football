@@ -243,13 +243,13 @@ const server = http.createServer((req, res) => {
   const realAtm = csv('data/club-atmosphere.csv');
   const rival1 = mrows.find(r => r.rivalQ && onMap.includes(r.rivalQ));
   const oppName = rival1 ? rival1.rivalName : 'Test Opponent';
-  const H = 'clubQ,situation,opponentQ,opponentName,where,whenText,what,attribution,basis,sourceId,checkedOn';
+  const H = 'clubQ,situation,opponentQ,opponentName,where,whenText,recurrence,what,attribution,basis,sourceId,checkedOn';
   const fx = [
-    [many, 'cup', '', '', '', 'early season', 'Fixture sentence for a cup row.', 'Fixture Press A', 'reported'],
-    [many, 'european', '', '', 'home end', 'autumn', 'Fixture sentence for a European row.', 'Fixture Club B', 'documented'],
-    [many, 'derby', rival1 ? rival1.rivalQ : '', oppName, 'the main stand', 'spring', 'Fixture sentence for a derby row.', 'Fixture Fans C', 'reported'],
-    [many, 'derby', '', '', '', '', 'Fixture sentence for a second derby row.', 'Fixture Press D', 'documented'],
-    [many, 'other', '', '', '', 'whole season', 'Fixture sentence for an other row.', 'Fixture Press E', 'reported'],
+    [many, 'cup', '', '', '', 'early season', 'annual', 'Fixture sentence for a cup row.', 'Fixture Press A', 'reported'],
+    [many, 'european', '', '', 'home end', 'autumn', 'if-qualified', 'Fixture sentence for a European row.', 'Fixture Club B', 'documented'],
+    [many, 'derby', rival1 ? rival1.rivalQ : '', oppName, 'the main stand', 'spring', 'if-same-league', 'Fixture sentence for a derby row.', 'Fixture Fans C', 'reported'],
+    [many, 'derby', '', '', '', '', 'irregular', 'Fixture sentence for a second derby row.', 'Fixture Press D', 'documented'],
+    [many, 'other', '', '', '', 'whole season', 'annual', 'Fixture sentence for an other row.', 'Fixture Press E', 'reported'],
   ].map(a => a.concat(srcId, '2026-10-03').join(',')).join('\n');
   const atmCsv = H + '\n' + fx + '\n';
   const pg3 = await ctx.newPage();
@@ -267,14 +267,18 @@ const server = http.createServer((req, res) => {
         note: b.querySelector('.atmnote')?.textContent || '',
         groups: [...b.querySelectorAll('details.atm')].map(d => ({sit: d.dataset.situation, head: d.querySelector('summary').textContent, open: d.open,
           sumH: d.querySelector('summary').getBoundingClientRect().height,
-          rows: [...d.querySelectorAll('.atmrow')].map(r => ({opp: r.querySelector('.atmopp').textContent, what: r.querySelector('.atmwhat').textContent,
+          rows: [...d.querySelectorAll('.atmrow')].map(r => ({opp: r.querySelector('.atmopp').textContent, rec: r.querySelector('.atmrec')?.textContent || '', what: r.querySelector('.atmwhat').textContent,
             by: r.querySelector('.atmby').textContent, label: r.querySelector('.atmbasis').textContent, href: r.querySelector('.atmsrc a')?.href || '',
             src: r.querySelector('.atmsrc').textContent, wide: r.scrollWidth > r.clientWidth + 1}))})),
         sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
     });
   };
   const A = await atmSheet(pg3, many);
-  const ORDER = ['derby', 'european', 'cup', 'big-occasion', 'regular-home', 'other'];
+  const ORDER = ['derby', 'european', 'cup', 'other'];
+  const REC_EN = {annual: 'Every season', 'if-same-league': 'Only when both clubs are in the same league', 'if-qualified': 'Only when the club qualifies', irregular: 'Irregular'};
+  const REC_RO = {annual: 'În fiecare sezon', 'if-same-league': 'Doar când ambele cluburi sunt în aceeași ligă', 'if-qualified': 'Doar când clubul se califică', irregular: 'Neregulat'};
+  const GROUPS_EN = {derby: 'Derbies and rivals', european: 'European nights', cup: 'Cup games', other: 'Other occasions'};
+  const GROUPS_RO = {derby: 'Derby-uri și rivale', european: 'Seri europene', cup: 'Meciuri de cupă', other: 'Alte ocazii'};
   const fxRows = atmCsv.split('\n').slice(1).filter(Boolean).map(l => l.split(','));
   const wantGroups = ORDER.map(k => [k, fxRows.filter(r => r[1] === k)]).filter(([, g]) => g.length);
   // Section order on the real files: the sections that exist for a club are Rivalries, Fan friendships, atmosphere,
@@ -306,16 +310,21 @@ const server = http.createServer((req, res) => {
   let rowsOk = true, rbad = [];
   A.groups.forEach((g, gi) => g.rows.forEach((r, ri) => {
     const f = wantGroups[gi][1][ri];
-    if(!r.by.startsWith(`According to ${f[7]}`)) { rowsOk = false; rbad.push(`by ${f[7]}`); }
-    if(r.label !== (f[8] === 'documented' ? 'Documented' : 'Reported')) { rowsOk = false; rbad.push(`label ${f[7]}`); }
-    if(r.what !== f[6]) { rowsOk = false; rbad.push(`what ${f[7]}`); }
-    if(r.href !== srcRow.url || !/Checked on /.test(r.src)) { rowsOk = false; rbad.push(`source ${f[7]}`); }
-    if(!r.opp.startsWith(f[3] || 'any opponent')) { rowsOk = false; rbad.push(`opponent ${f[7]}`); }
-    if(f[4] && !r.opp.includes(f[4])) { rowsOk = false; rbad.push(`where ${f[7]}`); }
-    if(f[5] && !r.opp.includes(f[5])) { rowsOk = false; rbad.push(`when ${f[7]}`); }
-    if(r.wide) { rowsOk = false; rbad.push(`wide ${f[7]}`); }
+    if(!r.by.startsWith(`According to ${f[8]}`) || r.by.split('According to').length !== 2) { rowsOk = false; rbad.push(`by ${f[8]}`); }
+    if(r.rec !== `When it happens: ${REC_EN[f[6]]}`) { rowsOk = false; rbad.push(`recurrence ${f[8]}: ${r.rec}`); }
+    if(r.label !== (f[9] === 'documented' ? 'Documented' : 'Reported')) { rowsOk = false; rbad.push(`label ${f[8]}`); }
+    if(r.what !== f[7]) { rowsOk = false; rbad.push(`what ${f[8]}`); }
+    if(r.href !== srcRow.url || !/Checked on /.test(r.src)) { rowsOk = false; rbad.push(`source ${f[8]}`); }
+    if(!r.opp.startsWith(f[3] || 'any opponent')) { rowsOk = false; rbad.push(`opponent ${f[8]}`); }
+    if(f[4] && !r.opp.includes(f[4])) { rowsOk = false; rbad.push(`where ${f[8]}`); }
+    if(f[5] && !r.opp.includes(f[5])) { rowsOk = false; rbad.push(`when ${f[8]}`); }
+    if(r.wide) { rowsOk = false; rbad.push(`wide ${f[8]}`); }
   }));
-  check('atmosphere: every row shows opponent (or "any opponent"), where, when, its sentence, "According to", the label and a source with "Checked on"', rowsOk, rbad.join(' | '));
+  check('atmosphere: every row shows opponent (or "any opponent"), where, when, "When it happens" with its recurrence, its sentence, "According to" once, the label and a source with "Checked on"', rowsOk, rbad.join(' | '));
+  check('atmosphere: the groups are Derbies and rivals / European nights / Cup games / Other occasions, with no Regular home games group',
+    A.groups.every(g => g.head.startsWith(GROUPS_EN[g.sit] + ' (')) && !A.groups.some(g => /Regular home/.test(g.head)), A.groups.map(g => g.head).join(' | '));
+  check('atmosphere: no attribution in the real file starts with "According to" or "Laut"', realAtm.every(r => !/^\s*(according to|laut)\b/i.test(r.attribution || '')), realAtm.map(r => r.attribution).join(' | '));
+  check('atmosphere: every row of the real file has a valid recurrence', realAtm.every(r => REC_EN[r.recurrence]), realAtm.map(r => r.recurrence).join(','));
   check('atmosphere: no sideways scroll at 390 px', !A.sideways && A.groups.every(g => g.sumH >= 44), `sideways ${A.sideways}`);
   await pg3.click('#sheetBody details.atm:not([open]) summary');
   const toggled = await pg3.evaluate(() => [...document.querySelectorAll('#sheetBody details.atm')].map(d => d.open));
@@ -357,7 +366,7 @@ const server = http.createServer((req, res) => {
     {clubQ: nonDE, friendQ: '', friendName: 'Foreign Alpha', scope: 'fan-groups', status: 'active', groupsText: 'Some Fans'},
   ].map(r => ({...r, sourceId: srcId, checkedOn: '2026-10-03'}));
   const frCsv = FH + '\n' + frRows.map(r => FH.split(',').map(k => q(r[k])).join(',')).join('\n') + '\n';
-  const atmExtra = [nonDE, 'cup', '', '', '', 'early season', 'Fixture sentence for a foreign cup row.', 'Fixture Press F', 'reported', srcId, '2026-10-03'].join(',');
+  const atmExtra = [nonDE, 'cup', '', '', '', 'early season', 'annual', 'Fixture sentence for a foreign cup row.', 'Fixture Press F', 'reported', srcId, '2026-10-03'].join(',');
   const rivExtra = `${nonDE},,Test Rival,main,${srcId},2026-10-03`;
   const FRI_RANK = {active: 0, unclear: 1, ended: 2};
   const wantFri = id => frRows.filter(r => r.clubQ === id).sort((a, b) => FRI_RANK[a.status] - FRI_RANK[b.status] || a.friendName.localeCompare(b.friendName));
@@ -429,6 +438,14 @@ const server = http.createServer((req, res) => {
   const ROo = await pg5.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
     sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
   check('friendships (Romanian): nothing overflows at 390 px with every row open', !ROo.wide && !ROo.sideways && !RO.sideways, JSON.stringify(ROo));
+  const AR = await atmSheet(pg5, many);
+  check('atmosphere (Romanian): groups, "Când are loc" with the recurrence and "Potrivit" once, all in Romanian',
+    AR.groups.length === A.groups.length && AR.groups.every(g => g.head.startsWith(GROUPS_RO[g.sit] + ' (')) &&
+    AR.groups.every((g, gi) => g.rows.every((r, ri) => r.rec === `Când are loc: ${REC_RO[wantGroups[gi][1][ri][6]]}` && r.by.startsWith('Potrivit ') && r.by.split('Potrivit').length === 2)), AR.groups.map(g => g.head).join(' | '));
+  await pg5.evaluate(() => document.querySelectorAll('#sheetBody details.atm').forEach(d => { d.open = true; }));
+  const ARo = await pg5.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .atmrow')].some(r => r.scrollWidth > r.clientWidth + 1),
+    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+  check('atmosphere (Romanian): nothing overflows at 390 px with every group open', !ARo.wide && !ARo.sideways, JSON.stringify(ARo));
   await pg4.close(); await pg5.close();
   function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
 
