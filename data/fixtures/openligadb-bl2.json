@@ -1953,7 +1953,7 @@
   {
    "id": 83609,
    "utcDate": "2026-10-09T16:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -1968,9 +1968,20 @@
     "shortName": "Kaiserslautern",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1978,7 +1989,7 @@
   {
    "id": 83620,
    "utcDate": "2026-10-09T16:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -1993,9 +2004,20 @@
     "shortName": "Kiel",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2018,9 +2040,20 @@
     "shortName": "Cottbus",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

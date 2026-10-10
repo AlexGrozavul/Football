@@ -2529,7 +2529,7 @@
   {
    "id": 84815,
    "utcDate": "2026-10-09T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2544,9 +2544,20 @@
     "shortName": "Rot-Weiss Essen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Rot-Weiss_Essen.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
