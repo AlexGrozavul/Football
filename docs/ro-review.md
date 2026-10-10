@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Texts that come from the data files are not here: they stay in English. `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1124 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1126 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -36,6 +36,8 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `st.red` | red cards | cartonașe roșii |
 | `st.cards` | Yellow / red cards | Cartonașe galbene / roșii |
 | `st.perMatch` | per match | pe meci |
+| `st.second` | second yellows | al doilea galben |
+| `st.goalsShort` | Includes {n} goals from {m} matches without a full goals list | Include {n} goluri din {m} meciuri fără o listă completă a golurilor |
 | `st.partial` | Complete data currently exists for {a} of {b} matches. The figures below count only the completed ones. | Datele complete există momentan pentru {a} din {b} meciuri. Cifrele de mai jos numără doar meciurile completate. |
 | `st.mostTeam` | Most-seen team | Echipa văzută cel mai des |
 | `st.mostPlayer` | Most-seen player | Jucătorul văzut cel mai des |

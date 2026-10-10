@@ -861,6 +861,8 @@ const I18N = {
     'st.matches': 'matches', 'st.goals': 'goals seen', 'st.pens': 'penalties scored',
     'st.yellow': 'yellow cards', 'st.red': 'red cards', 'st.cards': 'Yellow / red cards',
     'st.perMatch': 'per match',
+    'st.second': 'second yellows',
+    'st.goalsShort': 'Includes {n} goals from {m} matches without a full goals list',
     'st.partial': 'Complete data currently exists for {a} of {b} matches. The figures below count only the completed ones.',
     'st.mostTeam': 'Most-seen team', 'st.mostPlayer': 'Most-seen player',
     'st.noPlayers': 'Calculated from line-ups; none are recorded.',
@@ -1927,6 +1929,8 @@ const I18N = {
     'st.matches': 'meciuri', 'st.goals': 'goluri văzute', 'st.pens': 'penalty-uri transformate',
     'st.yellow': 'cartonașe galbene', 'st.red': 'cartonașe roșii', 'st.cards': 'Cartonașe galbene / roșii',
     'st.perMatch': 'pe meci',
+    'st.second': 'al doilea galben',
+    'st.goalsShort': 'Include {n} goluri din {m} meciuri fără o listă completă a golurilor',
     'st.partial': 'Datele complete există momentan pentru {a} din {b} meciuri. Cifrele de mai jos numără doar meciurile completate.',
     'st.mostTeam': 'Echipa văzută cel mai des', 'st.mostPlayer': 'Jucătorul văzut cel mai des',
     'st.noPlayers': 'Se calculează din formații; nu este înregistrată niciuna.',
@@ -7688,15 +7692,21 @@ function loadAttended(){
 }
 
 function attStats(d){
-  const ms = d.matches, S = {n: ms.length, goals: 0, pens: 0, yellow: 0, red: 0, cardsOk: 0, luOk: 0,
+  const ms = d.matches, S = {n: ms.length, goals: 0, goalsShort: 0, goalsShortN: 0, pens: 0, yellow: 0, red: 0, second: 0, cardsOk: 0, luOk: 0,
     stad: {}, city: {}, ctry: {}, comp: {}, team: {}, plr: {}, big: null, small: null, rec: {n: 0, w: 0, d: 0, l: 0}};
   const inc = (o, k) => { if(k) o[k] = (o[k] || 0) + 1; };
   ms.forEach(m => {
-    S.goals += (m.goals || []).length;
+    // Goals are the two numbers of the score; the goals list only feeds the penalty count and the scorer lists.
+    const gs = /^(\d+)-(\d+)$/.exec(m.score || '');
+    if(gs){
+      const tot = +gs[1] + +gs[2];
+      S.goals += tot;
+      if((m.goals || []).length < tot){ S.goalsShort += tot; S.goalsShortN++; }
+    }
     (m.goals || []).forEach(g => { if(g.pen) S.pens++; });
     if(m.cardsComplete){
       S.cardsOk++;
-      (m.cards || []).forEach(c => { c.type === 'yellow' ? S.yellow++ : S.red++; });
+      (m.cards || []).forEach(c => { if(c.type === 'yellow') S.yellow++; else if(c.type === 'red') S.red++; else if(c.type === 'second-yellow') S.second++; });
     }
     // The record counts a match only where the supported team is the home or the away side (Neutral and no choice are left out).
     const sup = persGet(attKey(m), 'supported'), sc = /^(\d+)-(\d+)$/.exec(m.score || '');
@@ -7749,8 +7759,9 @@ function renderAttStats(d){
   const tp = top(S.plr);
   let h = `<div class="agrid">${tile(S.n, t('st.matches'))}${tile(S.goals, t('st.goals'), avg(S.goals, S.n))}` +
     `${tile(S.pens, t('st.pens'))}${tile(Object.keys(S.stad).length, t('st.stadiums'))}</div>` +
+    (S.goalsShortN ? `<p class="anote" id="aGoalsNote">${esc(t('st.goalsShort', {n: S.goalsShort, m: S.goalsShortN}))}</p>` : '') +
     sec('st.cards', partial(S.cardsOk, S.n) +
-      `<div class="agrid">${tile(S.yellow, t('st.yellow'), avg(S.yellow, S.cardsOk))}${tile(S.red, t('st.red'), avg(S.red, S.cardsOk))}</div>`) +
+      `<div class="agrid">${tile(S.yellow, t('st.yellow'), avg(S.yellow, S.cardsOk))}${tile(S.red, t('st.red'), avg(S.red, S.cardsOk))}${tile(S.second, t('st.second'), avg(S.second, S.cardsOk))}</div>`) +
     sec('st.record', `<p class="anote" id="aRecCount">${esc(t('st.recordCounted', {n: S.rec.n, total: S.n}))}</p>` +
       (S.rec.n ? `<div class="awdl" id="aRecord"><div class="astat"><b>${attNum(S.rec.w)}</b><span>${esc(t('st.w'))}</span></div>` +
         `<div class="astat"><b>${attNum(S.rec.d)}</b><span>${esc(t('st.d'))}</span></div>` +

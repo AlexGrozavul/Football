@@ -473,11 +473,15 @@ function alarmAt(ev, al){
   const ATTF = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/attended.json'), 'utf8'));
   const fx = {
     n: ATTF.matches.length, ne: ATTF.events.length,
-    goals: ATTF.matches.reduce((n, m) => n + m.goals.length, 0),
+    // Goals are the sum of both score numbers; a match whose goals list is shorter than its score is footnoted.
+    goals: ATTF.matches.reduce((n, m) => { const s = /^(\d+)-(\d+)$/.exec(m.score); return n + (s ? +s[1] + +s[2] : 0); }, 0),
+    goalsShort: ATTF.matches.filter(m => { const s = /^(\d+)-(\d+)$/.exec(m.score); return s && m.goals.length < +s[1] + +s[2]; })
+      .map(m => { const s = /^(\d+)-(\d+)$/.exec(m.score); return +s[1] + +s[2]; }),
     pens: ATTF.matches.reduce((n, m) => n + m.goals.filter(g => g.pen).length, 0),
     stadiums: new Set(ATTF.matches.map(m => m.stadium)).size,
     yellow: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'yellow').length, 0),
-    red: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type !== 'yellow').length, 0),
+    red: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'red').length, 0),
+    second: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'second-yellow').length, 0),
     cities: new Set(ATTF.matches.map(m => m.city.en)).size,
     countries: new Set(ATTF.matches.map(m => m.country.en)).size,
     comps: new Set(ATTF.matches.map(m => (m.competitionKey || m.competition).en)).size,
@@ -520,8 +524,14 @@ function alarmAt(ev, al){
 
   const tiles = await p3.$$eval('#meStats .astat', ts => ts.map(t => [t.querySelector('b').textContent.replace(/[^\d]/g, ''), t.querySelector('span').textContent]));
   const tv = tiles.map(t => +t[0]);
-  check('Stats: matches, goals, penalties, stadiums, yellow and red cards equal the counts in the file',
-    JSON.stringify(tv) === JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red]), JSON.stringify(tv) + ' file ' + JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red]));
+  check('Stats: matches, goals, penalties, stadiums, yellow cards, red cards (type red only) and second yellows equal the counts in the file',
+    JSON.stringify(tv) === JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red, fx.second]), JSON.stringify(tv) + ' file ' + JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red, fx.second]));
+  const goalsAvg = (fx.goals / fx.n).toFixed(2) + ' per match';
+  check('Stats: "goals seen" shows the sum of the scores per match', tiles[1][1] === 'goals seen' && await p3.$eval('#meStats .astat:nth-child(2) i', e => e.textContent) === goalsAvg, goalsAvg);
+  check('Stats: "second yellows" has its own tile, and "red cards" is not that tile', tiles[5][1] === 'red cards' && tiles[6][1] === 'second yellows', JSON.stringify(tiles.slice(4)));
+  const gnote = await p3.$eval('#aGoalsNote', e => e.textContent).catch(() => null);
+  check('Stats: the footnote counts goals and matches whose goals list is shorter than the score',
+    fx.goalsShort.length ? gnote === `Includes ${fx.goalsShort.reduce((a, b) => a + b, 0)} goals from ${fx.goalsShort.length} matches without a full goals list` : gnote === null, String(gnote));
   const lists = await p3.evaluate(() => {
     const out = {};
     document.querySelectorAll('#meStats .aeye').forEach(h => {
