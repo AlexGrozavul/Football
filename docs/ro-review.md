@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Texts that come from the data files are not here: they stay in English. `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1137 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1140 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -192,12 +192,15 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `riv.main` | Main rival | Rival principal |
 | `riv.local` | Local rival | Rival local |
 | `riv.other` | Other rivalry | Altă rivalitate |
-| `atm.derby` | Derby | Derby |
+| `atm.derby` | Derbies and rivals | Derby-uri și rivale |
 | `atm.european` | European nights | Seri europene |
-| `atm.cup` | Cup | Cupă |
-| `atm.big-occasion` | Big occasions | Ocazii mari |
-| `atm.regular-home` | Regular home games | Meciuri obișnuite acasă |
-| `atm.other` | Other | Altele |
+| `atm.cup` | Cup games | Meciuri de cupă |
+| `atm.other` | Other occasions | Alte ocazii |
+| `atm.when` | When it happens | Când are loc |
+| `atmr.annual` | Every season | În fiecare sezon |
+| `atmr.if-same-league` | Only when both clubs are in the same league | Doar când ambele cluburi sunt în aceeași ligă |
+| `atmr.if-qualified` | Only when the club qualifies | Doar când clubul se califică |
+| `atmr.irregular` | Irregular | Neregulat |
 | `atmb.documented` | Documented | Documentat |
 | `atmb.reported` | Reported | Relatat |
 | `gen.checkedOn` | Checked on {date} | Verificat la {date} |

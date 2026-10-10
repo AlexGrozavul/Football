@@ -976,12 +976,15 @@ const I18N = {
     "riv.main": "Main rival",
     "riv.local": "Local rival",
     "riv.other": "Other rivalry",
-    "atm.derby": "Derby",
+    "atm.derby": "Derbies and rivals",
     "atm.european": "European nights",
-    "atm.cup": "Cup",
-    "atm.big-occasion": "Big occasions",
-    "atm.regular-home": "Regular home games",
-    "atm.other": "Other",
+    "atm.cup": "Cup games",
+    "atm.other": "Other occasions",
+    "atm.when": "When it happens",
+    "atmr.annual": "Every season",
+    "atmr.if-same-league": "Only when both clubs are in the same league",
+    "atmr.if-qualified": "Only when the club qualifies",
+    "atmr.irregular": "Irregular",
     "atmb.documented": "Documented",
     "atmb.reported": "Reported",
     "gen.checkedOn": "Checked on {date}",
@@ -2055,12 +2058,15 @@ const I18N = {
     "riv.main": "Rival principal",
     "riv.local": "Rival local",
     "riv.other": "Altă rivalitate",
-    "atm.derby": "Derby",
+    "atm.derby": "Derby-uri și rivale",
     "atm.european": "Seri europene",
-    "atm.cup": "Cupă",
-    "atm.big-occasion": "Ocazii mari",
-    "atm.regular-home": "Meciuri obișnuite acasă",
-    "atm.other": "Altele",
+    "atm.cup": "Meciuri de cupă",
+    "atm.other": "Alte ocazii",
+    "atm.when": "Când are loc",
+    "atmr.annual": "În fiecare sezon",
+    "atmr.if-same-league": "Doar când ambele cluburi sunt în aceeași ligă",
+    "atmr.if-qualified": "Doar când clubul se califică",
+    "atmr.irregular": "Neregulat",
     "atmb.documented": "Documentat",
     "atmb.reported": "Relatat",
     "gen.checkedOn": "Verificat la {date}",
@@ -3789,9 +3795,10 @@ function openSheet(club, mates, keep = false){
 const RIV_ORDER = {main: 0, local: 1, other: 2};
 const RIV_LABEL = labelsOf('riv.', ['main', 'local', 'other']);
 const RIV_SHOWN = 5;
-const ATM_ORDER = ['derby', 'european', 'cup', 'big-occasion', 'regular-home', 'other'];
+const ATM_ORDER = ['derby', 'european', 'cup', 'other'];
 const ATM_LABEL = labelsOf('atm.', ATM_ORDER);
 const ATM_BASIS = labelsOf('atmb.', ['documented', 'reported']);
+const ATM_REC = labelsOf('atmr.', ['annual', 'if-same-league', 'if-qualified', 'irregular']);
 const rivDate = d => /^\d{4}-\d{2}-\d{2}$/.test(d)
   ? new Date(d + 'T12:00:00Z').toLocaleDateString(LOC(), {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'})
   : '';
@@ -3879,7 +3886,7 @@ async function atmosphereHtml(club){
   const C = await cultureFiles(['data/club-atmosphere.csv']);
   if(C.err) return `<h4>${esc(t('atm.title'))}</h4>` + unavailable(t('atm.short'), esc(t('atm.loadFail'))) +
     why(esc(t('gen.fileFail', {file: C.err, err: C.why})));
-  const rows = C.files[0].filter(r => r.clubQ === club.id && !r._over && ATM_ORDER.includes(r.situation) && ATM_BASIS[r.basis] && C.src.has(r.sourceId));
+  const rows = C.files[0].filter(r => r.clubQ === club.id && !r._over && ATM_ORDER.includes(r.situation) && ATM_BASIS[r.basis] && ATM_REC[r.recurrence] && C.src.has(r.sourceId));
   if(!rows.length) return '';
   const groups = ATM_ORDER.map(k => [k, rows.filter(r => r.situation === k)]).filter(([, g]) => g.length);
   return `<h4>${esc(t('atm.title'))}</h4><p class="sub atmnote">${esc(t('atm.note'))}</p>` +
@@ -3889,6 +3896,7 @@ async function atmosphereHtml(club){
         const opp = r.opponentName ? esc(r.opponentName) : esc(t('atm.anyOpp'));
         return `<div class="atmrow">` +
           `<div class="atmopp"><b>${opp}</b>${r.where ? ` · ${esc(r.where)}` : ''}${r.whenText ? ` · ${esc(r.whenText)}` : ''}</div>` +
+          `<div class="sub atmrec">${esc(t('atm.when'))}: ${ATM_REC[r.recurrence]}</div>` +
           `<div class="atmwhat" data-content>${esc(r.what)}</div>` +
           `<div class="sub atmby">${esc(t('atm.according'))} ${esc(r.attribution)} <span class="tag atmbasis">${ATM_BASIS[r.basis]}</span></div>` +
           `<div class="sub atmsrc">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div></div>`;

@@ -9,9 +9,12 @@ prints every accepted row as understood and exits 1 on a problem.
 club-rivalries.csv: clubQ, rivalQ (blank when the rival is not on the map),
 rivalName, class (main, local, other), sourceId, checkedOn. The class comes
 only from the wording of the source. There is no row limit and no target.
-club-atmosphere.csv: clubQ, situation, opponentQ, opponentName, where,
-whenText, what, attribution, basis, sourceId, checkedOn. Every row is an
-attributed claim, never our own statement.
+club-atmosphere.csv: clubQ, situation (derby, european, cup, other),
+opponentQ, opponentName, where, whenText, recurrence (annual, if-same-league,
+if-qualified, irregular), what, attribution, basis, sourceId, checkedOn. Every
+row is an attributed claim, never our own statement, about a recurring fixture
+or occasion a person can attend; the attribution is the source's name only,
+because the sheet writes "According to" itself.
 club-friendships.csv: clubQ, friendQ (blank when the friend is not on the map),
 friendName, scope (fan-groups, clubs, unclear), status (active, ended, unclear),
 groupsText (the fan groups the source names, blank if it names none), sourceId,
@@ -19,8 +22,9 @@ checkedOn. Scope and status come only from the wording of the source; nothing is
 inferred from rivalries or shared enemies.
 
 EXITS 1 on: a clubQ, rivalQ or opponentQ on no data/clubs/*.json, a sourceId
-not in club-culture-sources.csv, a class, situation, basis or source kind
-outside its list, a duplicate row, a missing rivalName / what / attribution,
+not in club-culture-sources.csv, a class, situation, recurrence, basis or source kind
+outside its list, a duplicate row, a missing rivalName / what / attribution, an attribution that starts with
+"According to" or "Laut",
 a day-level date in the future in a text cell, a row with more values than
 the header has columns; in club-friendships.csv also an unknown friendQ, a scope
 or status outside its list, a club listed as its own friend, a duplicate row.
@@ -38,7 +42,9 @@ from datetime import date
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 D = os.path.join(ROOT, 'data')
 CLASSES = ('main', 'local', 'other')
-SITUATIONS = ('derby', 'european', 'cup', 'big-occasion', 'regular-home', 'other')
+SITUATIONS = ('derby', 'european', 'cup', 'other')
+RECURRENCES = ('annual', 'if-same-league', 'if-qualified', 'irregular')
+LEAD_IN = re.compile(r'^\s*(according to|laut)\b', re.I)   # the sheet adds "According to " itself
 BASES = ('documented', 'reported')
 SCOPES = ('fan-groups', 'clubs', 'unclear')
 STATUSES = ('active', 'ended', 'unclear')
@@ -168,7 +174,7 @@ for line, r in read('club-rivalries.csv', ['clubQ', 'rivalQ', 'rivalName', 'clas
     seen.add(key)
     if ok: riv.setdefault(r['clubQ'], []).append(r)
 
-for line, r in read('club-atmosphere.csv', ['clubQ', 'situation', 'opponentQ', 'opponentName', 'where', 'whenText',
+for line, r in read('club-atmosphere.csv', ['clubQ', 'situation', 'opponentQ', 'opponentName', 'where', 'whenText', 'recurrence',
                                             'what', 'attribution', 'basis', 'sourceId', 'checkedOn']):
     at = f'club-atmosphere.csv line {line}'
     ok = common(at, r, True)
@@ -176,6 +182,10 @@ for line, r in read('club-atmosphere.csv', ['clubQ', 'situation', 'opponentQ', '
         problems.append(f'{at}: situation "{r["situation"]}" is not one of {", ".join(SITUATIONS)}'); ok = False
     if r['basis'] not in BASES:
         problems.append(f'{at}: basis "{r["basis"]}" is not one of {", ".join(BASES)}'); ok = False
+    if r['recurrence'] not in RECURRENCES:
+        problems.append(f'{at}: recurrence "{r["recurrence"]}" is not one of {", ".join(RECURRENCES)}'); ok = False
+    if LEAD_IN.match(r['attribution']):
+        problems.append(f'{at}: attribution starts with "According to" / "Laut"; give the source\'s name only, the sheet adds the words'); ok = False
     if r['opponentQ'] and r['opponentQ'] not in clubs:
         problems.append(f'{at}: opponentQ "{r["opponentQ"]}" is on no club file (leave it blank if the opponent is not on the map)'); ok = False
     for col in ('what', 'attribution'):
@@ -254,6 +264,7 @@ for q in sorted(fri, key=lambda q: clubs[q]):
     for r in sorted(fri[q], key=lambda r: (ORDER_SHOWN.index(r['status']), r['friendName'])):
         print(f'    {r["status"]:7} {r["scope"]:10} {r["friendName"]}  {r["friendQ"] or "(not on the map)"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
 print('  rows by situation: ' + ', '.join(f'{s} {sum(1 for v in atm.values() for r in v if r["situation"] == s)}' for s in SITUATIONS))
+print('  rows by recurrence: ' + ', '.join(f'{x} {sum(1 for v in atm.values() for r in v if r["recurrence"] == x)}' for x in RECURRENCES))
 print('  rows by basis: ' + ', '.join(f'{b} {sum(1 for v in atm.values() for r in v if r["basis"] == b)}' for b in BASES))
 for w in warnings: print('WARNING:', w)
 for p in problems: print('PROBLEM:', p)
