@@ -32,11 +32,17 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **atletico-nacional-v-independiente-medellin-clasico-paisa** - Atlético Nacional v Independiente Medellín (Clásico Paisa)
   - no date of any kind
+- **badischer-verbandspokal-final** - Badischer Verbandspokal final
+  - no date of any kind
 - **barcelona-v-espanyol-derbi-barceloni** - Barcelona v Espanyol (Derbi barceloní)
   - no date of any kind
 - **barcelona-v-real-madrid-el-clasico** - Barcelona v Real Madrid (El Clásico)
   - no date of any kind
 - **basel-v-young-boys** - Basel v Young Boys
+  - no date of any kind
+- **bavarian-toto-pokal-final** - Bavarian Toto-Pokal final
+  - no date of any kind
+- **bayern-munchen-v-tsv-1860-munchen-munchner-stadtderby** - Bayern München v TSV 1860 München (Münchner Stadtderby)
   - no date of any kind
 - **benfica-v-porto-o-classico** - Benfica v Porto (O Clássico)
   - no date of any kind
@@ -47,6 +53,8 @@ deliberate exclusion or a field you still need to fill in.
 - **boca-juniors-v-river-plate-superclasico** - Boca Juniors v River Plate (Superclásico)
   - no date of any kind
 - **bochum-v-schalke** - Bochum v Schalke
+  - no date of any kind
+- **borussia-monchengladbach-v-fortuna-dusseldorf** - Borussia Mönchengladbach v Fortuna Düsseldorf
   - no date of any kind
 - **braga-v-vitoria-guimaraes-minho-derby** - Braga v Vitória Guimarães (Minho derby)
   - no date of any kind
@@ -59,6 +67,10 @@ deliberate exclusion or a field you still need to fill in.
 - **celta-vigo-v-deportivo-la-coruna-galician-derby** - Celta Vigo v Deportivo La Coruña (Galician derby)
   - no date of any kind
 - **cfr-cluj-v-universitatea-cluj** - CFR Cluj v Universitatea Cluj
+  - no date of any kind
+- **chemnitzer-fc-v-dynamo-dresden** - Chemnitzer FC v Dynamo Dresden
+  - no date of any kind
+- **chemnitzer-fc-v-fsv-zwickau** - Chemnitzer FC v FSV Zwickau
   - no date of any kind
 - **colo-colo-v-universidad-de-chile-superclasico** - Colo-Colo v Universidad de Chile (Superclásico)
   - no date of any kind
@@ -76,6 +88,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **cupa-romaniei-final** - Cupa României final
   - no date of any kind
+- **darmstadt-98-v-kickers-offenbach** - Darmstadt 98 v Kickers Offenbach
+  - no date of any kind
 - **derby-du-nord** - Derby du Nord - Lens v Lille
   - no date of any kind
 - **derby-eternal-enemies** - Derby of the Eternal Enemies - Olympiacos v Panathinaikos
@@ -88,13 +102,19 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **dynamo-dresden-v-erzgebirge-aue** - Dynamo Dresden v Erzgebirge Aue
   - no date of any kind
+- **dynamo-dresden-v-rb-leipzig** - Dynamo Dresden v RB Leipzig
+  - no date of any kind
 - **efl-cup-final** - EFL Cup final
+  - no date of any kind
+- **eintracht-braunschweig-v-vfl-wolfsburg** - Eintracht Braunschweig v VfL Wolfsburg
   - no date of any kind
 - **eintracht-frankfurt-v-darmstadt-98** - Eintracht Frankfurt v Darmstadt 98
   - no date of any kind
 - **eintracht-frankfurt-v-kickers-offenbach** - Eintracht Frankfurt v Kickers Offenbach
   - no date of any kind
 - **eintracht-frankfurt-v-mainz-rhein-main-derby** - Eintracht Frankfurt v Mainz (Rhein-Main-Derby)
+  - no date of any kind
+- **energie-cottbus-v-dynamo-dresden** - Energie Cottbus v Dynamo Dresden
   - no date of any kind
 - **england-v-scotland** - England v Scotland
   - no date of any kind
@@ -103,6 +123,12 @@ deliberate exclusion or a field you still need to fill in.
 - **fa-community-shield** - FA Community Shield
   - no date of any kind
 - **fa-cup-final** - FA Cup final
+  - no date of any kind
+- **fc-basel-v-fc-zurich** - FC Basel v FC Zürich
+  - no date of any kind
+- **fc-heidenheim-v-ssv-ulm-1846** - FC Heidenheim v SSV Ulm 1846
+  - no date of any kind
+- **fc-heidenheim-v-vfr-aalen** - FC Heidenheim v VfR Aalen
   - no date of any kind
 - **fc-kobenhavn-v-brondby** - FC København v Brøndby
   - no date of any kind
@@ -114,6 +140,16 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **fc-magdeburg-v-hallescher-fc** - FC Magdeburg v Hallescher FC
   - no date of any kind
+- **fc-saarbrucken-v-1-fc-kaiserslautern** - FC Saarbrücken v 1. FC Kaiserslautern
+  - no date of any kind
+- **fc-saarbrucken-v-fc-08-homburg** - FC Saarbrücken v FC 08 Homburg
+  - no date of any kind
+- **fc-st-gallen-v-fc-basel** - FC St. Gallen v FC Basel
+  - no date of any kind
+- **fc-st-pauli-v-hansa-rostock** - FC St. Pauli v Hansa Rostock
+  - no date of any kind
+- **fc-zurich-v-fc-winterthur** - FC Zürich v FC Winterthur
+  - no date of any kind
 - **fc-zurich-v-grasshoppers-zurich-derby** - FC Zürich v Grasshoppers (Zürich derby)
   - no date of any kind
 - **fcb-pokal-r2** - DFB-Pokal second round request window
@@ -123,6 +159,8 @@ deliberate exclusion or a field you still need to fill in.
 - **ferencvaros-v-ujpest-orokrangado** - Ferencváros v Újpest (Örökrangadó)
   - no date of any kind
 - **fifa-world-cup-2030** - FIFA World Cup 2030
+  - no date of any kind
+- **finaltag-der-amateure** - Finaltag der Amateure
   - no date of any kind
 - **fiorentina-v-bologna-derby-dell-appennino** - Fiorentina v Bologna (Derby dell'Appennino)
   - no date of any kind
@@ -142,7 +180,11 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **hajduk-split-v-rijeka** - Hajduk Split v Rijeka
   - no date of any kind
+- **hamburger-sv-v-hansa-rostock** - Hamburger SV v Hansa Rostock
+  - no date of any kind
 - **hannover-96-v-eintracht-braunschweig** - Hannover 96 v Eintracht Braunschweig
+  - no date of any kind
+- **hannover-96-v-vfl-wolfsburg** - Hannover 96 v VfL Wolfsburg
   - no date of any kind
 - **hearts-v-hibs-edinburgh-derby** - Hearts v Hibs (Edinburgh derby)
   - no date of any kind
@@ -165,6 +207,10 @@ deliberate exclusion or a field you still need to fill in.
 - **kaizer-chiefs-v-orlando-pirates-soweto-derby** - Kaizer Chiefs v Orlando Pirates (Soweto derby)
   - no date of any kind
 - **karlsruher-sc-v-freiburg** - Karlsruher SC v Freiburg
+  - no date of any kind
+- **karlsruher-sc-v-sv-sandhausen** - Karlsruher SC v SV Sandhausen
+  - no date of any kind
+- **karlsruher-sc-v-waldhof-mannheim** - Karlsruher SC v Waldhof Mannheim
   - no date of any kind
 - **klassiker-away** - Der Klassiker - Borussia Dortmund v Bayern, away end
   - no date of any kind
@@ -194,6 +240,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **lyon-v-saint-etienne-derby-du-rhone** - Lyon v Saint-Étienne (Derby du Rhône)
   - no date of any kind
+- **mainz-05-v-1-fc-kaiserslautern** - Mainz 05 v 1. FC Kaiserslautern
+  - no date of any kind
 - **manchester-city-v-manchester-united** - Manchester City v Manchester United
   - no date of any kind
 - **men-s-olympic-football-2028-los-angeles** - Men's Olympic football 2028 (Los Angeles)
@@ -204,6 +252,10 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **mls-cup** - MLS Cup
   - no date of any kind
+- **msv-duisburg-v-fortuna-dusseldorf** - MSV Duisburg v Fortuna Düsseldorf
+  - no date of any kind
+- **msv-duisburg-v-rot-weiss-oberhausen** - MSV Duisburg v Rot-Weiß Oberhausen
+  - no date of any kind
 - **nantes-v-rennes** - Nantes v Rennes
   - no date of any kind
 - **napoli-v-roma-derby-del-sole** - Napoli v Roma (Derby del Sole)
@@ -211,6 +263,10 @@ deliberate exclusion or a field you still need to fill in.
 - **newcastle-v-sunderland-tyne-wear-derby** - Newcastle v Sunderland (Tyne-Wear derby)
   - no date of any kind
 - **nice-v-monaco** - Nice v Monaco
+  - no date of any kind
+- **niederrheinpokal-final** - Niederrheinpokal final
+  - no date of any kind
+- **niedersachsenpokal-final** - Niedersachsenpokal final
   - no date of any kind
 - **norwich-v-ipswich-old-farm-derby** - Norwich v Ipswich (Old Farm derby)
   - no date of any kind
@@ -256,6 +312,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **rayo-vallecano-v-atletico-madrid** - Rayo Vallecano v Atlético Madrid
   - no date of any kind
+- **rc-strasbourg-v-fc-mulhouse** - RC Strasbourg v FC Mulhouse
+  - no date of any kind
 - **rcsa-resale** - Strasbourg official resale opens
   - recurring per fixture - needs the fixture list, which does not exist until step 3
 - **regionalliga-aufstiegsspiele** - Aufstiegsspiele zur 3. Liga (Regionalliga champions' play-off)
@@ -272,13 +330,25 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **rot-weiss-essen-v-msv-duisburg** - Rot-Weiss Essen v MSV Duisburg
   - no date of any kind
+- **rot-weiss-essen-v-rot-weiss-oberhausen** - Rot-Weiss Essen v Rot-Weiß Oberhausen
+  - no date of any kind
 - **saarbrucken-v-sv-elversberg** - Saarbrücken v SV Elversberg
+  - no date of any kind
+- **saarlandpokal-final** - Saarlandpokal final
+  - no date of any kind
+- **sachsenpokal-final** - Sachsenpokal final
   - no date of any kind
 - **salzburg-v-rapid-wien** - Salzburg v Rapid Wien
   - no date of any kind
 - **sarajevo-v-zeljeznicar** - Sarajevo v Željezničar
   - no date of any kind
+- **schalke-04-v-msv-duisburg** - Schalke 04 v MSV Duisburg
+  - no date of any kind
+- **schalke-04-v-rot-weiss-essen** - Schalke 04 v Rot-Weiss Essen
+  - no date of any kind
 - **scottish-cup-final** - Scottish Cup final
+  - no date of any kind
+- **scr-altach-v-sc-austria-lustenau-vorarlberg-derby** - SCR Altach v SC Austria Lustenau (Vorarlberg derby)
   - no date of any kind
 - **seattle-sounders-v-portland-timbers-cascadia-derby** - Seattle Sounders v Portland Timbers (Cascadia derby)
   - no date of any kind
@@ -292,6 +362,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **southampton-v-portsmouth-south-coast-derby** - Southampton v Portsmouth (South Coast derby)
   - no date of any kind
+- **spvgg-unterhaching-v-tsv-1860-munchen** - SpVgg Unterhaching v TSV 1860 München
+  - no date of any kind
 - **stockholm-derbies-hammarby-djurgarden-aik** - Stockholm derbies (Hammarby, Djurgården, AIK)
   - no date of any kind
 - **strasbourg-v-metz** - Strasbourg v Metz
@@ -302,6 +374,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **superliga-relegation-baraj** - Superliga relegation play-off against Liga 2
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
+- **sv-meppen-v-vfl-osnabruck** - SV Meppen v VfL Osnabrück
+  - no date of any kind
 - **taca-de-portugal-final** - Taça de Portugal final
   - no date of any kind
 - **uefa-champions-league-final** - UEFA Champions League final
@@ -326,17 +400,39 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **valencia-v-levante-valencian-derby** - Valencia v Levante (Valencian derby)
   - no date of any kind
+- **vfb-lubeck-v-holstein-kiel** - VfB Lübeck v Holstein Kiel
+  - no date of any kind
+- **vfb-stuttgart-ii-v-stuttgarter-kickers** - VfB Stuttgart II v Stuttgarter Kickers
+  - no date of any kind
+- **vfb-stuttgart-v-1-fc-heidenheim** - VfB Stuttgart v 1. FC Heidenheim
+  - no date of any kind
 - **vfb-stuttgart-v-freiburg** - VfB Stuttgart v Freiburg
+  - no date of any kind
+- **vfb-stuttgart-v-karlsruher-sc** - VfB Stuttgart v Karlsruher SC
   - no date of any kind
 - **vfb-stuttgart-v-stuttgarter-kickers** - VfB Stuttgart v Stuttgarter Kickers
   - no date of any kind
+- **vfl-bochum-v-borussia-dortmund** - VfL Bochum v Borussia Dortmund
+  - no date of any kind
+- **vfl-bochum-v-rot-weiss-essen** - VfL Bochum v Rot-Weiss Essen
+  - no date of any kind
+- **viktoria-koln-v-fortuna-koln** - Viktoria Köln v Fortuna Köln
+  - no date of any kind
 - **waldhof-mannheim-v-1-fc-kaiserslautern** - Waldhof Mannheim v 1. FC Kaiserslautern
+  - no date of any kind
+- **waldhof-mannheim-v-sv-sandhausen** - Waldhof Mannheim v SV Sandhausen
   - no date of any kind
 - **werder-bremen-v-hsv-nordderby** - Werder Bremen v HSV (Nordderby)
   - no date of any kind
 - **west-brom-v-wolves-black-country-derby** - West Brom v Wolves (Black Country derby)
   - no date of any kind
+- **westfalenpokal-final** - Westfalenpokal final
+  - no date of any kind
 - **wisla-krakow-v-cracovia-holy-war** - Wisła Kraków v Cracovia (Holy War)
+  - no date of any kind
+- **wurttemberg-cup-final-wfv-pokal** - Württemberg cup final (WFV-Pokal)
+  - no date of any kind
+- **wurzburger-kickers-v-1-fc-schweinfurt-05** - Würzburger Kickers v 1. FC Schweinfurt 05
   - no date of any kind
 - **zweite-liga-relegation** - 2. Bundesliga relegation play-off against the 3. Liga
   - trigger only, no date - belongs in the bucket-list tab, not a calendar
