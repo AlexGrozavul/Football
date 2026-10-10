@@ -1584,7 +1584,7 @@
   {
    "id": 558881,
    "utcDate": "2026-10-09T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1602,9 +1602,9 @@
     "tla": "HEE",
     "crest": "https://crests.football-data.org/673.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558880,

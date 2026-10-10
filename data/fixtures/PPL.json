@@ -1559,7 +1559,7 @@
   {
    "id": 567327,
    "utcDate": "2026-10-09T17:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1577,14 +1577,14 @@
     "tla": "GIL",
     "crest": "https://crests.football-data.org/5533.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 567326,
    "utcDate": "2026-10-09T19:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1602,34 +1602,9 @@
     "tla": "SPO",
     "crest": "https://crests.football-data.org/498.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567321,
-   "utcDate": "2026-10-10T14:30:00Z",
-   "status": "TIMED",
-   "matchday": 8,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 6618,
-    "name": "Casa Pia AC",
-    "shortName": "Casa Pia",
-    "tla": "CAS",
-    "crest": "https://crests.football-data.org/6618.png"
-   },
-   "away": {
-    "id": 5530,
-    "name": "CD Santa Clara",
-    "shortName": "Santa Clara",
-    "tla": "CD ",
-    "crest": "https://crests.football-data.org/5530.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 567323,
@@ -1651,6 +1626,31 @@
     "shortName": "Porto",
     "tla": "FCP",
     "crest": "https://crests.football-data.org/503.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567321,
+   "utcDate": "2026-10-10T19:30:00Z",
+   "status": "TIMED",
+   "matchday": 8,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 6618,
+    "name": "Casa Pia AC",
+    "shortName": "Casa Pia",
+    "tla": "CAS",
+    "crest": "https://crests.football-data.org/6618.png"
+   },
+   "away": {
+    "id": 5530,
+    "name": "CD Santa Clara",
+    "shortName": "Santa Clara",
+    "tla": "CD ",
+    "crest": "https://crests.football-data.org/5530.png"
    },
    "homeGoals": null,
    "awayGoals": null,

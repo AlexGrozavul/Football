@@ -1134,7 +1134,7 @@
   {
    "id": 559669,
    "utcDate": "2026-10-09T18:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 6,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1152,9 +1152,9 @@
     "tla": "LYO",
     "crest": "https://crests.football-data.org/523.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559674,
