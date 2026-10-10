@@ -287,11 +287,6 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   .sheet .fri[hidden]{display:none}
   .sheet button.frmore{margin-top:8px;background:var(--surf);border:1px solid var(--line);border-radius:7px;
     padding:8px 12px;color:var(--ink);font:inherit;font-size:13.5px;min-height:44px;cursor:pointer}
-  .sheet details.atm{border-top:1px solid var(--line);padding:2px 0}
-  .sheet details.atm>summary{font-size:14px;color:var(--ink);padding:10px 0;min-height:44px;box-sizing:border-box;cursor:pointer}
-  .sheet .atmrow{padding:7px 0 9px;min-width:0;overflow-wrap:anywhere}
-  .sheet .atmrow .sub{margin-top:3px}
-  .sheet .atmwhat{font-size:14px;margin-top:3px}
   /* Ticket info: the two sources, each labelled. No sale date. */
   .sheet h5.srch{font-size:13px;font-weight:600;margin:16px 0 4px;color:var(--ink);
     border-bottom:1px solid var(--line);padding-bottom:3px}
@@ -976,17 +971,6 @@ const I18N = {
     "riv.main": "Main rival",
     "riv.local": "Local rival",
     "riv.other": "Other rivalry",
-    "atm.derby": "Derbies and rivals",
-    "atm.european": "European nights",
-    "atm.cup": "Cup games",
-    "atm.other": "Other occasions",
-    "atm.when": "When it happens",
-    "atmr.annual": "Every season",
-    "atmr.if-same-league": "Only when both clubs are in the same league",
-    "atmr.if-qualified": "Only when the club qualifies",
-    "atmr.irregular": "Irregular",
-    "atmb.documented": "Documented",
-    "atmb.reported": "Reported",
     "gen.checkedOn": "Checked on {date}",
     "gen.dateNotRecorded": "a date not recorded",
     "riv.title": "Rivalries",
@@ -995,12 +979,6 @@ const I18N = {
     "riv.bucket": "Bucket list",
     "gen.showAll": "Show all ({n})",
     "gen.showFewer": "Show fewer",
-    "atm.title": "When the atmosphere is best",
-    "atm.short": "Atmosphere",
-    "atm.loadFail": "The atmosphere information could not be loaded.",
-    "atm.note": "Opinions of the cited sources, not measured.",
-    "atm.anyOpp": "any opponent",
-    "atm.according": "According to",
     "fri.title": "Fan friendships",
     "fri.short": "Fan friendships",
     "fri.loadFail": "The fan friendship information could not be loaded.",
@@ -2058,17 +2036,6 @@ const I18N = {
     "riv.main": "Rival principal",
     "riv.local": "Rival local",
     "riv.other": "Altă rivalitate",
-    "atm.derby": "Derby-uri și rivale",
-    "atm.european": "Seri europene",
-    "atm.cup": "Meciuri de cupă",
-    "atm.other": "Alte ocazii",
-    "atm.when": "Când are loc",
-    "atmr.annual": "În fiecare sezon",
-    "atmr.if-same-league": "Doar când ambele cluburi sunt în aceeași ligă",
-    "atmr.if-qualified": "Doar când clubul se califică",
-    "atmr.irregular": "Neregulat",
-    "atmb.documented": "Documentat",
-    "atmb.reported": "Relatat",
     "gen.checkedOn": "Verificat la {date}",
     "gen.dateNotRecorded": "o dată neînregistrată",
     "riv.title": "Rivalități",
@@ -2077,12 +2044,6 @@ const I18N = {
     "riv.bucket": "Lista de dorințe",
     "gen.showAll": "Arată tot ({n})",
     "gen.showFewer": "Arată mai puține",
-    "atm.title": "Când e atmosfera cea mai bună",
-    "atm.short": "Atmosfera",
-    "atm.loadFail": "Informațiile despre atmosferă nu au putut fi încărcate.",
-    "atm.note": "Opiniile surselor citate, nu măsurători.",
-    "atm.anyOpp": "orice adversar",
-    "atm.according": "Potrivit",
     "fri.title": "Prietenii între suporteri",
     "fri.short": "Prietenii între suporteri",
     "fri.loadFail": "Informațiile despre prietenii nu au putut fi încărcate.",
@@ -3752,7 +3713,6 @@ function openSheet(club, mates, keep = false){
     `<h4>${esc(t('sheet.fixtures'))}</h4><div id="sheetFix"><p class="unavail">${esc(t('att.loading'))}</p></div>` +
     `<div id="sheetRiv"></div>` +
     `<div id="sheetFri"></div>` +
-    `<div id="sheetAtm"></div>` +
     `<h4>${esc(t('sheet.ticketInfo'))}</h4><div id="sheetTix"><p class="unavail">${esc(t('att.loading'))}</p></div>` +
     /* The club's Wikidata item: where its name, ground, capacity and position
        come from, and the id a hand correction in clubs-manual.csv uses. */
@@ -3782,23 +3742,17 @@ function openSheet(club, mates, keep = false){
   fixturesHtml(club).then(h => fill('sheetFix', h));
   rivalriesHtml(club).then(h => fill('sheetRiv', h));
   friendshipsHtml(club).then(h => fill('sheetFri', h));
-  atmosphereHtml(club).then(h => fill('sheetAtm', h));
   ticketsHtml(club).then(h => fill('sheetTix', h));
 }
 
-/* ---- rivalries and atmosphere. Both files are hand-written (data/club-rivalries.csv,
-   data/club-atmosphere.csv) and both cite data/club-culture-sources.csv. A rivalry's
-   class (main, local, other) is taken only from the wording of its source. An
-   atmosphere row is an attributed claim, never a fact of ours, and nothing here
-   ranks anything. A section is drawn only for a club that has rows. Main rivals
+/* ---- rivalries and fan friendships. Both files are hand-written (data/club-rivalries.csv,
+   data/club-friendships.csv) and both cite data/club-culture-sources.csv. A rivalry's
+   class (main, local, other) is taken only from the wording of its source, and nothing
+   here ranks anything. A section is drawn only for a club that has rows. Main rivals
    first, then local, then other; alphabetical within a class. */
 const RIV_ORDER = {main: 0, local: 1, other: 2};
 const RIV_LABEL = labelsOf('riv.', ['main', 'local', 'other']);
 const RIV_SHOWN = 5;
-const ATM_ORDER = ['derby', 'european', 'cup', 'other'];
-const ATM_LABEL = labelsOf('atm.', ATM_ORDER);
-const ATM_BASIS = labelsOf('atmb.', ['documented', 'reported']);
-const ATM_REC = labelsOf('atmr.', ['annual', 'if-same-league', 'if-qualified', 'irregular']);
 const rivDate = d => /^\d{4}-\d{2}-\d{2}$/.test(d)
   ? new Date(d + 'T12:00:00Z').toLocaleDateString(LOC(), {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'})
   : '';
@@ -3880,27 +3834,6 @@ async function friendshipsHtml(club){
   return `<h4>${esc(t('fri.title'))}</h4><div class="fris">` + rows.map(rowHtml).join('') +
     (rows.length > FRI_SHOWN ? `<button class="frmore" aria-expanded="false">${esc(t('gen.showAll', {n: rows.length}))}</button>` : '') +
     `</div><p class="sub frnote">${esc(t('fri.note'))}</p>`;
-}
-
-async function atmosphereHtml(club){
-  const C = await cultureFiles(['data/club-atmosphere.csv']);
-  if(C.err) return `<h4>${esc(t('atm.title'))}</h4>` + unavailable(t('atm.short'), esc(t('atm.loadFail'))) +
-    why(esc(t('gen.fileFail', {file: C.err, err: C.why})));
-  const rows = C.files[0].filter(r => r.clubQ === club.id && !r._over && ATM_ORDER.includes(r.situation) && ATM_BASIS[r.basis] && ATM_REC[r.recurrence] && C.src.has(r.sourceId));
-  if(!rows.length) return '';
-  const groups = ATM_ORDER.map(k => [k, rows.filter(r => r.situation === k)]).filter(([, g]) => g.length);
-  return `<h4>${esc(t('atm.title'))}</h4><p class="sub atmnote">${esc(t('atm.note'))}</p>` +
-    groups.map(([k, g], i) => `<details class="atm" data-situation="${esc(k)}"${i === 0 ? ' open' : ''}>` +
-      `<summary>${ATM_LABEL[k]} (${g.length})</summary>` +
-      g.map(r => {
-        const opp = r.opponentName ? esc(r.opponentName) : esc(t('atm.anyOpp'));
-        return `<div class="atmrow">` +
-          `<div class="atmopp"><b>${opp}</b>${r.where ? ` · ${esc(r.where)}` : ''}${r.whenText ? ` · ${esc(r.whenText)}` : ''}</div>` +
-          `<div class="sub atmrec">${esc(t('atm.when'))}: ${ATM_REC[r.recurrence]}</div>` +
-          `<div class="atmwhat" data-content>${esc(r.what)}</div>` +
-          `<div class="sub atmby">${esc(t('atm.according'))} ${esc(r.attribution)} <span class="tag atmbasis">${ATM_BASIS[r.basis]}</span></div>` +
-          `<div class="sub atmsrc">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div></div>`;
-      }).join('') + `</details>`).join('');
 }
 
 document.getElementById('sheetBody').addEventListener('click', e => {

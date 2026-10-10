@@ -89,7 +89,6 @@ on:
       - "data/competition-sources.csv"
       - "tools/check_competitions.py"
       - "data/club-rivalries.csv"
-      - "data/club-atmosphere.csv"
       - "data/club-friendships.csv"
       - "data/club-culture-sources.csv"
       - "tools/check_club_culture.py"
@@ -116,7 +115,6 @@ on:
       - "data/competition-sources.csv"
       - "tools/check_competitions.py"
       - "data/club-rivalries.csv"
-      - "data/club-atmosphere.csv"
       - "data/club-friendships.csv"
       - "data/club-culture-sources.csv"
       - "tools/check_club_culture.py"
@@ -271,7 +269,7 @@ jobs:
           set -o pipefail
           python3 tools/check_tickets.py 2>&1 | tee /tmp/test_check_tickets.log
 
-      # The club sheet's Rivalries and atmosphere sections read these files; their checker must pass too.
+      # The club sheet's Rivalries and Fan friendships sections read these files; their checker must pass too.
       - name: Club culture files read back (check_club_culture.py exits 0)
         if: always()
         run: |

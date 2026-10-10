@@ -1178,7 +1178,7 @@ function alarmAt(ev, al){
   {
   // ---- 2026-10-09: the whole interface in two languages. The dictionary, the Settings sheet, the choice kept on the device, every
   //      main tab and the four Me sub-tabs in Romanian at 390 px, no English left outside the data's own text, and a live change.
-  const NAMES_SAME = new Set(['tl.pen', 'imp.placeholder', 'md.video', 'sheet.club', 'atm.derby', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',
+  const NAMES_SAME = new Set(['tl.pen', 'imp.placeholder', 'md.video', 'sheet.club', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',
     'cov.club.one', 'cnm.Austria', 'cnm.Argentina', 'cnm.Serbia', 'cnm.Bulgaria', 'cnm.Chile', 'cnm.Slovenia', 'cnm.Uruguay', 'iso.AR', 'iso.AT', 'iso.BG', 'iso.CL',
     'iso.RS', 'iso.SI', 'iso.UY', 'kind.derby', 'ctopic.format', 'me.cost', 'me.plus', 'bk.tabCal', 'nl.context', 'nl.bonus', 'nl.realism']);       // names, units and abbreviations that are the same word in Romanian
   const ctxL = await newCtx();

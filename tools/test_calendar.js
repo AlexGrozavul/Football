@@ -196,9 +196,62 @@ const server = http.createServer((req, res) => {
     playB.slice(2).every(b => b.whyStatus === 'unverified' && Array.isArray(b.whySources) && b.whySources.length >= 2 && b.whySources.every(u => /^https?:\/\//.test(u)) &&
       !('ticketRoute' in b) && !('ticketRoutes' in b) && !('ticketNote' in b) && !('capacity' in b) && !('leadTimeDays' in b)));
   const firstIn = g => keyed.filter(b => b.group === g).map(b => b.id);
-  check('Group order: the Pokal and the three German play-off entries open the Germany group, liga2-playoff (moved there 2026-10-08) and the two Romanian ones open the Romania group, before any derby',
-    firstIn('Club fixtures, Germany').slice(0, 4).join() === PLAY.slice(0, 4).join() && firstIn('Club fixtures, Romania').slice(0, 3).join() === ['liga2-playoff', ...PLAY.slice(4)].join(),
+  check('Group order: the Pokal and the three German play-off entries come before any derby in the Germany group (the nine cup entries sit between the Pokal and the play-offs), liga2-playoff (moved there 2026-10-08) and the two Romanian ones open the Romania group, before any derby',
+    firstIn('Club fixtures, Germany').filter(id => PLAY.slice(0, 4).includes(id)).join() === PLAY.slice(0, 4).join() && firstIn('Club fixtures, Romania').slice(0, 3).join() === ['liga2-playoff', ...PLAY.slice(4)].join(),
     firstIn('Club fixtures, Germany').slice(0, 5).join());
+  // ---- The 48 entries added 2026-10-10 (39 derbies, 8 regional cup finals, the Finaltag der Amateure). Their why texts were
+  // written from memory and stay unverified. Counts are taken from the id lists below and from the files, not typed.
+  const NEW_CUPS = ["finaltag-der-amateure", "wurttemberg-cup-final-wfv-pokal", "bavarian-toto-pokal-final", "westfalenpokal-final", "niederrheinpokal-final", "sachsenpokal-final", "niedersachsenpokal-final", "badischer-verbandspokal-final", "saarlandpokal-final"];
+  const NEW_IDS = ["bayern-munchen-v-tsv-1860-munchen-munchner-stadtderby", "spvgg-unterhaching-v-tsv-1860-munchen", "wurzburger-kickers-v-1-fc-schweinfurt-05", "vfb-stuttgart-v-karlsruher-sc", "vfb-stuttgart-v-1-fc-heidenheim", "fc-heidenheim-v-ssv-ulm-1846", "karlsruher-sc-v-waldhof-mannheim", "waldhof-mannheim-v-sv-sandhausen", "vfb-stuttgart-ii-v-stuttgarter-kickers", "fc-heidenheim-v-vfr-aalen", "karlsruher-sc-v-sv-sandhausen", "mainz-05-v-1-fc-kaiserslautern", "fc-saarbrucken-v-1-fc-kaiserslautern", "fc-saarbrucken-v-fc-08-homburg", "darmstadt-98-v-kickers-offenbach", "schalke-04-v-msv-duisburg", "schalke-04-v-rot-weiss-essen", "vfl-bochum-v-rot-weiss-essen", "vfl-bochum-v-borussia-dortmund", "msv-duisburg-v-rot-weiss-oberhausen", "msv-duisburg-v-fortuna-dusseldorf", "borussia-monchengladbach-v-fortuna-dusseldorf", "viktoria-koln-v-fortuna-koln", "rot-weiss-essen-v-rot-weiss-oberhausen", "eintracht-braunschweig-v-vfl-wolfsburg", "hannover-96-v-vfl-wolfsburg", "hamburger-sv-v-hansa-rostock", "fc-st-pauli-v-hansa-rostock", "vfb-lubeck-v-holstein-kiel", "sv-meppen-v-vfl-osnabruck", "dynamo-dresden-v-rb-leipzig", "chemnitzer-fc-v-dynamo-dresden", "chemnitzer-fc-v-fsv-zwickau", "energie-cottbus-v-dynamo-dresden", "finaltag-der-amateure", "wurttemberg-cup-final-wfv-pokal", "bavarian-toto-pokal-final", "westfalenpokal-final", "niederrheinpokal-final", "sachsenpokal-final", "niedersachsenpokal-final", "badischer-verbandspokal-final", "saarlandpokal-final", "fc-basel-v-fc-zurich", "fc-zurich-v-fc-winterthur", "fc-st-gallen-v-fc-basel", "scr-altach-v-sc-austria-lustenau-vorarlberg-derby", "rc-strasbourg-v-fc-mulhouse"];
+  const nb = NEW_IDS.map(id => rules.bucketList.find(b => b.id === id));
+  const present = nb.every(Boolean) && new Set(NEW_IDS).size === NEW_IDS.length;
+  check(`${NEW_IDS.length} new entries exist once each with group, country name, ISO-2 countryCode, sortKey, why, whyStatus "unverified", listOnly and a kind`,
+    present && nb.every(b => b.group && b.country && /^[A-Z]{2}$/.test(b.countryCode) && Number.isInteger(b.sortKey) && b.why && b.why.length > 10 &&
+      b.whyStatus === 'unverified' && b.listOnly === true && ['derby', 'final', 'event'].includes(b.kind)), NEW_IDS.filter(id => !rules.bucketList.some(b => b.id === id)).join(','));
+  const NOT_ALLOWED = ['date', 'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'capacity', 'ticketRoute', 'ticketRoutes', 'ticketNote', 'leadTimeDays', 'trigger', 'clubs', 'venue', 'whySources'];
+  check('No new entry has a date, capacity, ticket rule or sale window field', present && nb.every(b => NOT_ALLOWED.every(k => !(k in b))), nb.filter(b => NOT_ALLOWED.some(k => k in b)).map(b => b.id).join(','));
+  check('New entries: the nine cup entries are final, except the Finaltag der Amateure (event); every other new entry is a derby; leagueCheck is on every derby and on no cup entry',
+    present && nb.every(b => NEW_CUPS.includes(b.id) ? (b.kind === (b.id === 'finaltag-der-amateure' ? 'event' : 'final') && !b.leagueCheck) : (b.kind === 'derby' && b.leagueCheck === true)),
+    nb.filter(b => !(NEW_CUPS.includes(b.id) ? !b.leagueCheck : b.leagueCheck === true)).map(b => b.id).join(','));
+  check('New entries: German ones are in "Club fixtures, Germany", the others in "Club fixtures, other countries", and the country name agrees with the country code',
+    present && nb.every(b => b.countryCode === 'DE' ? (b.group === 'Club fixtures, Germany' && b.country === 'Germany') : b.group === 'Club fixtures, other countries') &&
+    nb.filter(b => b.countryCode !== 'DE').every(b => ({CH: 'Switzerland', AT: 'Austria', FR: 'France'})[b.countryCode] === b.country));
+  const pokalAt = keyed.findIndex(b => b.id === 'pokal-first-round');
+  check(`Order: the ${NEW_CUPS.length} cup entries sit directly after the DFB-Pokal first-round entry, in the listed order (Finaltag first)`,
+    keyed.slice(pokalAt + 1, pokalAt + 1 + NEW_CUPS.length).map(b => b.id).join() === NEW_CUPS.join() && keyed[pokalAt + 1 + NEW_CUPS.length].id === 'relegation',
+    keyed.slice(pokalAt, pokalAt + 4).map(b => b.id).join());
+  const nrm = t => t.normalize('NFKD').replace(/ß/g, 'ss').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s*\([^)]*\)\s*/g, '').replace(/^(1\. fc |fc )/, '').trim();
+  const orderBad = [];
+  for(const [grp, cc] of [['Club fixtures, Germany', 'DE'], ['Club fixtures, other countries', 'AT'], ['Club fixtures, other countries', 'FR'], ['Club fixtures, other countries', 'CH']]){
+    const seq = keyed.filter(b => b.group === grp && b.countryCode === cc && NEW_IDS.includes(b.id) && b.kind === 'derby').map(b => nrm(b.title));
+    for(let i = 1; i < seq.length; i++) if(seq[i - 1] > seq[i]) orderBad.push(`${cc}: ${seq[i - 1]} > ${seq[i]}`);
+  }
+  check('Order: the new derbies of each country are in alphabetical order by title among themselves, merged into their group (Germany) or country block (AT, FR, CH)', orderBad.length === 0, orderBad.join(' | '));
+  const otherBlock = keyed.filter(b => b.group === 'Club fixtures, other countries').map(b => b.countryCode);
+  const runs = otherBlock.filter((cc, i) => cc !== otherBlock[i - 1]);
+  check('Order: each non-German country with new entries stays one contiguous block inside "other countries"', ['AT', 'FR', 'CH'].every(cc => runs.filter(x => x === cc).length === 1), runs.join(','));
+  const new48Cards = groupDom.filter(x => x.id && NEW_IDS.includes(x.id));
+  check(`All ${NEW_IDS.length} new entries are List cards under their own group heading, undated ("Date not set"), labelled "Not yet verified", showing their why`,
+    new48Cards.length === NEW_IDS.length && new48Cards.every(x => { const b = rules.bucketList.find(y => y.id === x.id); let h = null;
+      for(const g of groupDom){ if(g.head && g.head.startsWith('group:')) h = g.head.slice(6); if(g.id === x.id) break; }
+      return h === b.group && x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why === b.why; }), new48Cards.filter(x => x.when !== 'Date not set').map(x => x.id).join(','));
+  // bucket-links-manual.csv: a club is linked only by an exact name match in data/clubs/<country>.json; the host stays empty;
+  // a derby with no matched club has no line; nothing else (cups) has one.
+  {
+    const links = csv('data/bucket-links-manual.csv');
+    const clubFiles = {}; for(const cc of ['DE', 'CH', 'AT', 'FR']) clubFiles[cc] = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/clubs', cc + '.json'), 'utf8')).clubs;
+    const bad = [];
+    for(const b of nb){
+      const lines = links.filter(r => r.bucketId === b.id);
+      if(b.kind !== 'derby'){ if(lines.length) bad.push(b.id + ' has a line'); continue; }
+      const names = b.title.replace(/\s*\([^)]*\)\s*$/, '').split(' v ');
+      const want = names.map(n => clubFiles[b.countryCode].filter(c => (c.name || '').normalize('NFC').toLowerCase() === n.normalize('NFC').toLowerCase()).map(c => c.id))
+        .filter(m => m.length === 1).map(m => m[0]);
+      if(!want.length){ if(lines.length) bad.push(b.id + ' linked without a match'); continue; }
+      if(lines.length !== 1 || lines[0].hostQid !== '' || lines[0].ticketEventId !== '' || lines[0].otherQids !== want.join(';')) bad.push(b.id);
+    }
+    check('New derbies: club links in bucket-links-manual.csv are exactly the exact-name matches in the country\'s club file, host empty, no line where nothing matched, none for a cup entry', bad.length === 0, bad.join(' | '));
+  }
   const LCT = 'Needs a league check: both clubs must share a league or cup in that season';
   const lcWant = new Set(rules.bucketList.filter(b => b.leagueCheck).map(b => b.id));
   check(`The league-check label is on exactly the ${lcWant.size} entries flagged leagueCheck`,

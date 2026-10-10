@@ -238,111 +238,56 @@ const server = http.createServer((req, res) => {
     sideways: document.getElementById('sheetBody').scrollWidth > document.getElementById('sheetBody').clientWidth + 1}));
   check('"Show all" reveals every row, no sideways scroll', opened.shown === mrows.length && opened.expanded === 'true' && !opened.sideways, JSON.stringify(opened));
 
-  // ---- "When the atmosphere is best": served fixture rows (the real file may hold none), the club and
-  // counts read from the data; a club with no rows must show no section.
-  const realAtm = csv('data/club-atmosphere.csv');
-  const rival1 = mrows.find(r => r.rivalQ && onMap.includes(r.rivalQ));
-  const oppName = rival1 ? rival1.rivalName : 'Test Opponent';
-  const H = 'clubQ,situation,opponentQ,opponentName,where,whenText,recurrence,what,attribution,basis,sourceId,checkedOn';
-  const fx = [
-    [many, 'cup', '', '', '', 'early season', 'annual', 'Fixture sentence for a cup row.', 'Fixture Press A', 'reported'],
-    [many, 'european', '', '', 'home end', 'autumn', 'if-qualified', 'Fixture sentence for a European row.', 'Fixture Club B', 'documented'],
-    [many, 'derby', rival1 ? rival1.rivalQ : '', oppName, 'the main stand', 'spring', 'if-same-league', 'Fixture sentence for a derby row.', 'Fixture Fans C', 'reported'],
-    [many, 'derby', '', '', '', '', 'irregular', 'Fixture sentence for a second derby row.', 'Fixture Press D', 'documented'],
-    [many, 'other', '', '', '', 'whole season', 'annual', 'Fixture sentence for an other row.', 'Fixture Press E', 'reported'],
-  ].map(a => a.concat(srcId, '2026-10-03').join(',')).join('\n');
-  const atmCsv = H + '\n' + fx + '\n';
+  // ---- The "When the atmosphere is best" section was removed (2026-10-10): the sheet has Rivalries and Fan
+  // friendships only. The page must not ask for the old file or draw any atmosphere element, on the two clubs
+  // that used to have rows (Borussia Dortmund and 1. FC Union Berlin) or on any other.
   const pg3 = await ctx.newPage();
-  await pg3.route('**/data/club-atmosphere.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: atmCsv}));
+  const atmRequests = [];
+  pg3.on('request', rq => { if(/club-atmosphere/.test(rq.url())) atmRequests.push(rq.url()); });
   pg3.on('pageerror', e => errors.push(e.message));
   await pg3.goto(BASE);
   await pg3.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
-  const atmSheet = async (pg, qid) => {
+  const sheetOf = async (pg, qid) => {
     await pg.evaluate(q => openSheet(CLUBS.find(c => c.id === q)), qid);
     await pg.waitForFunction(() => !/Loading/.test(document.getElementById('sheetTix').textContent), null, {timeout: 10000});
     await pg.waitForTimeout(200);
     return pg.evaluate(() => {
       const b = document.getElementById('sheetBody'), sb = document.querySelector('#sheet .sbody');
       return {h4: [...b.querySelectorAll('h4')].map(h => h.textContent),
-        note: b.querySelector('.atmnote')?.textContent || '',
-        groups: [...b.querySelectorAll('details.atm')].map(d => ({sit: d.dataset.situation, head: d.querySelector('summary').textContent, open: d.open,
-          sumH: d.querySelector('summary').getBoundingClientRect().height,
-          rows: [...d.querySelectorAll('.atmrow')].map(r => ({opp: r.querySelector('.atmopp').textContent, rec: r.querySelector('.atmrec')?.textContent || '', what: r.querySelector('.atmwhat').textContent,
-            by: r.querySelector('.atmby').textContent, label: r.querySelector('.atmbasis').textContent, href: r.querySelector('.atmsrc a')?.href || '',
-            src: r.querySelector('.atmsrc').textContent, wide: r.scrollWidth > r.clientWidth + 1}))})),
+        atmElements: b.querySelectorAll('details.atm, .atmrow, .atmnote, #sheetAtm').length,
         sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
     });
   };
-  const A = await atmSheet(pg3, many);
-  const ORDER = ['derby', 'european', 'cup', 'other'];
-  const REC_EN = {annual: 'Every season', 'if-same-league': 'Only when both clubs are in the same league', 'if-qualified': 'Only when the club qualifies', irregular: 'Irregular'};
-  const REC_RO = {annual: 'În fiecare sezon', 'if-same-league': 'Doar când ambele cluburi sunt în aceeași ligă', 'if-qualified': 'Doar când clubul se califică', irregular: 'Neregulat'};
-  const GROUPS_EN = {derby: 'Derbies and rivals', european: 'European nights', cup: 'Cup games', other: 'Other occasions'};
-  const GROUPS_RO = {derby: 'Derby-uri și rivale', european: 'Seri europene', cup: 'Meciuri de cupă', other: 'Alte ocazii'};
-  const fxRows = atmCsv.split('\n').slice(1).filter(Boolean).map(l => l.split(','));
-  const wantGroups = ORDER.map(k => [k, fxRows.filter(r => r[1] === k)]).filter(([, g]) => g.length);
-  // Section order on the real files: the sections that exist for a club are Rivalries, Fan friendships, atmosphere,
-  // each directly after the previous one that exists. Clubs are picked from the data: one with all three, one with
-  // only some (preferring one that lacks the middle section), one with none. No name or count is written here.
   const realFri = csv('data/club-friendships.csv');
-  const SECTIONS = [['Rivalries', riv], ['Fan friendships', realFri], ['When the atmosphere is best', realAtm]];
+  // The sections that exist for a club are Rivalries and Fan friendships, Fan friendships directly after Rivalries
+  // when both exist. Clubs are picked from the data: one with both, one with only one, one with none.
+  const SECTIONS = [['Rivalries', riv], ['Fan friendships', realFri]];
   const has = (q, rows) => rows.some(r => r.clubQ === q);
   const present = q => SECTIONS.filter(([, rows]) => has(q, rows)).map(([h]) => h);
-  const fileClubs = [...new Set([...riv, ...realFri, ...realAtm].map(r => r.clubQ))].filter(q => onMap.includes(q));
-  const allThree = fileClubs.find(q => present(q).length === 3);
-  const someOnly = fileClubs.find(q => present(q).length === 2 && !present(q).includes('Fan friendships')) || fileClubs.find(q => present(q).length > 0 && present(q).length < 3);
+  const fileClubs = [...new Set([...riv, ...realFri].map(r => r.clubQ))].filter(q => onMap.includes(q));
+  const bothAt = fileClubs.find(q => present(q).length === 2);
+  const oneOnly = fileClubs.find(q => present(q).length === 1);
   const noneAt = onMap.find(q => present(q).length === 0);
-  for(const [kind, q] of [['all three sections', allThree], ['only some sections', someOnly], ['no sections', noneAt]]){
+  for(const [kind, q] of [['both sections', bothAt], ['only one section', oneOnly], ['no sections', noneAt]]){
     if(!q){ check(`section order: a club with ${kind} exists in the data`, false, 'none found'); continue; }
-    const S = await atmSheet(page, q), want = present(q);
+    const S = await sheetOf(page, q), want = present(q);
     const got = S.h4.filter(h => SECTIONS.some(([s]) => s === h));
     const idx = want.map(h => S.h4.indexOf(h));
     const consecutive = idx.every((x, i) => x >= 0 && (i === 0 || x === idx[i - 1] + 1));
     check(`section order, club with ${kind} (${q}): exactly [${want.join(', ') || 'none'}], each directly after the previous that exists`,
       JSON.stringify(got) === JSON.stringify(want) && consecutive, S.h4.join(' | '));
-    if(want.includes('When the atmosphere is best')) check(`section order (${q}): the atmosphere section carries its note`, S.note === 'Opinions of the cited sources, not measured.', S.note);
+    check(`atmosphere removed (${q}): no atmosphere heading or element on the sheet`, !S.h4.includes('When the atmosphere is best') && !S.atmElements, S.h4.join(' | '));
   }
-  check('atmosphere: groups in the fixed order, each heading carries its row count',
-    JSON.stringify(A.groups.map(g => g.sit)) === JSON.stringify(wantGroups.map(([k]) => k)) &&
-    A.groups.every((g, i) => g.head.endsWith(`(${wantGroups[i][1].length})`) && g.rows.length === wantGroups[i][1].length), A.groups.map(g => g.head).join(' | '));
-  check('atmosphere: only the first group starts open', A.groups.length > 1 && A.groups.map(g => g.open).join() === A.groups.map((g, i) => i === 0).join(), A.groups.map(g => g.open).join());
+  // The two clubs that used to have atmosphere rows still show whatever Rivalries / Fan friendships rows they have.
+  for(const q of ['Q41420', 'Q141971']){
+    if(!onMap.includes(q)){ check(`atmosphere removed: ${q} is on the map`, false, 'not on the map'); continue; }
+    const S = await sheetOf(pg3, q), want = present(q);
+    check(`atmosphere removed (${q}, a club that used to have rows): no atmosphere section, and exactly [${want.join(', ') || 'none'}] still show`,
+      !S.h4.includes('When the atmosphere is best') && !S.atmElements && JSON.stringify(S.h4.filter(h => SECTIONS.some(([s]) => s === h))) === JSON.stringify(want) &&
+      !S.sideways, S.h4.join(' | '));
+  }
+  check('atmosphere removed: the page never asked for data/club-atmosphere.csv', !atmRequests.length, atmRequests.join(' '));
   const srcRow = rivSrc.find(r => r.sourceId === srcId);
-  let rowsOk = true, rbad = [];
-  A.groups.forEach((g, gi) => g.rows.forEach((r, ri) => {
-    const f = wantGroups[gi][1][ri];
-    if(!r.by.startsWith(`According to ${f[8]}`) || r.by.split('According to').length !== 2) { rowsOk = false; rbad.push(`by ${f[8]}`); }
-    if(r.rec !== `When it happens: ${REC_EN[f[6]]}`) { rowsOk = false; rbad.push(`recurrence ${f[8]}: ${r.rec}`); }
-    if(r.label !== (f[9] === 'documented' ? 'Documented' : 'Reported')) { rowsOk = false; rbad.push(`label ${f[8]}`); }
-    if(r.what !== f[7]) { rowsOk = false; rbad.push(`what ${f[8]}`); }
-    if(r.href !== srcRow.url || !/Checked on /.test(r.src)) { rowsOk = false; rbad.push(`source ${f[8]}`); }
-    if(!r.opp.startsWith(f[3] || 'any opponent')) { rowsOk = false; rbad.push(`opponent ${f[8]}`); }
-    if(f[4] && !r.opp.includes(f[4])) { rowsOk = false; rbad.push(`where ${f[8]}`); }
-    if(f[5] && !r.opp.includes(f[5])) { rowsOk = false; rbad.push(`when ${f[8]}`); }
-    if(r.wide) { rowsOk = false; rbad.push(`wide ${f[8]}`); }
-  }));
-  check('atmosphere: every row shows opponent (or "any opponent"), where, when, "When it happens" with its recurrence, its sentence, "According to" once, the label and a source with "Checked on"', rowsOk, rbad.join(' | '));
-  check('atmosphere: the groups are Derbies and rivals / European nights / Cup games / Other occasions, with no Regular home games group',
-    A.groups.every(g => g.head.startsWith(GROUPS_EN[g.sit] + ' (')) && !A.groups.some(g => /Regular home/.test(g.head)), A.groups.map(g => g.head).join(' | '));
-  check('atmosphere: no attribution in the real file starts with "According to" or "Laut"', realAtm.every(r => !/^\s*(according to|laut)\b/i.test(r.attribution || '')), realAtm.map(r => r.attribution).join(' | '));
-  check('atmosphere: every row of the real file has a valid recurrence', realAtm.every(r => REC_EN[r.recurrence]), realAtm.map(r => r.recurrence).join(','));
-  check('atmosphere: no sideways scroll at 390 px', !A.sideways && A.groups.every(g => g.sumH >= 44), `sideways ${A.sideways}`);
-  await pg3.click('#sheetBody details.atm:not([open]) summary');
-  const toggled = await pg3.evaluate(() => [...document.querySelectorAll('#sheetBody details.atm')].map(d => d.open));
-  await pg3.click('#sheetBody details.atm[open] summary');
-  const toggled2 = await pg3.evaluate(() => [...document.querySelectorAll('#sheetBody details.atm')].map(d => d.open));
-  check('atmosphere: groups open and close by tap', toggled.filter(Boolean).length === 2 && toggled2.filter(Boolean).length === 1, `${toggled} -> ${toggled2}`);
-  const noAtm = await pg3.evaluate(q => CLUBS.find(c => c.id !== q).id, many);
-  const N = await atmSheet(pg3, noAtm);
-  check('atmosphere: a club without rows shows no section', !N.h4.includes('When the atmosphere is best') && !N.groups.length && !N.note);
-  // The real file, whatever it holds: each club with rows shows exactly its rows, nothing overflows.
-  const realClubs = [...new Set(realAtm.map(r => r.clubQ))].filter(q => onMap.includes(q));
-  let realOk = true, realBad = [];
-  for(const q of realClubs){
-    const R = await atmSheet(page, q);
-    const n = R.groups.reduce((a, g) => a + g.rows.length, 0);
-    if(n !== realAtm.filter(r => r.clubQ === q).length || R.sideways || R.groups.some(g => g.rows.some(r => r.wide))) { realOk = false; realBad.push(q); }
-  }
-  check(`atmosphere: the real file's ${realClubs.length} clubs show exactly their rows and fit`, realOk, realBad.join(' '));
   await pg3.close();
   await pg2.close();
 
@@ -366,7 +311,6 @@ const server = http.createServer((req, res) => {
     {clubQ: nonDE, friendQ: '', friendName: 'Foreign Alpha', scope: 'fan-groups', status: 'active', groupsText: 'Some Fans'},
   ].map(r => ({...r, sourceId: srcId, checkedOn: '2026-10-03'}));
   const frCsv = FH + '\n' + frRows.map(r => FH.split(',').map(k => q(r[k])).join(',')).join('\n') + '\n';
-  const atmExtra = [nonDE, 'cup', '', '', '', 'early season', 'annual', 'Fixture sentence for a foreign cup row.', 'Fixture Press F', 'reported', srcId, '2026-10-03'].join(',');
   const rivExtra = `${nonDE},,Test Rival,main,${srcId},2026-10-03`;
   const FRI_RANK = {active: 0, unclear: 1, ended: 2};
   const wantFri = id => frRows.filter(r => r.clubQ === id).sort((a, b) => FRI_RANK[a.status] - FRI_RANK[b.status] || a.friendName.localeCompare(b.friendName));
@@ -374,7 +318,6 @@ const server = http.createServer((req, res) => {
     const pg = await ctx.newPage();
     if(lang) await pg.addInitScript(l => { try { localStorage.setItem('football-planner-lang', l); } catch(e){} }, lang);
     await pg.route('**/data/club-friendships.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: frCsv}));
-    await pg.route('**/data/club-atmosphere.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: atmCsv + atmExtra + '\n'}));
     await pg.route('**/data/club-rivalries.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: mixed + rivExtra + '\n'}));
     pg.on('pageerror', e => errors.push(e.message));
     await pg.goto(BASE);
@@ -394,15 +337,15 @@ const server = http.createServer((req, res) => {
           groups: r.querySelector('.frgroups')?.textContent || '', href: r.querySelector('.frsrc a')?.href || '', src: r.querySelector('.frsrc').textContent,
           shown: !r.hidden, wide: r.scrollWidth > r.clientWidth + 1})),
         more: b.querySelector('.frmore')?.textContent || '', sections: b.querySelectorAll('.fris').length,
-        rivs: b.querySelectorAll('.riv').length, atm: b.querySelectorAll('details.atm').length,
+        rivs: b.querySelectorAll('.riv').length, atm: b.querySelectorAll('details.atm, .atmrow, .atmnote, #sheetAtm').length,
         sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
     });
   };
   const SC = {'fan-groups': 'Between fan groups', clubs: 'Between clubs', unclear: 'Not specified'}, ST = {active: 'Active', ended: 'Ended', unclear: 'Not clear'};
   const pg4 = await friPage(null);
   const F = await friSheet(pg4, many), fw = wantFri(many);
-  check('friendships: "Fan friendships" sits directly below Rivalries and above the atmosphere section, with its note',
-    F.h4.indexOf('Fan friendships') === F.h4.indexOf('Rivalries') + 1 && F.h4.indexOf('When the atmosphere is best') === F.h4.indexOf('Fan friendships') + 1 &&
+  check('friendships: "Fan friendships" sits directly below Rivalries, with its note, and no atmosphere section follows',
+    F.h4.indexOf('Fan friendships') === F.h4.indexOf('Rivalries') + 1 && !F.h4.includes('When the atmosphere is best') && !F.atm &&
     F.note === 'As stated by the cited source. Fan friendships change and can end.', F.h4.join(' | '));
   check('friendships: active, then not clear, then ended, alphabetical within each',
     JSON.stringify(F.rows.map(r => r.name)) === JSON.stringify(fw.map(r => r.friendName)) && F.rows.length === fw.length, F.rows.map(r => r.name).join(' | '));
@@ -425,9 +368,9 @@ const server = http.createServer((req, res) => {
   const NF = await friSheet(pg4, (await pg4.evaluate(([a, b, c]) => CLUBS.find(x => ![a, b, c].includes(x.id)).id, [many, nonDE, friendOnMap.id])));
   check('friendships: a club without rows shows no Fan friendships section', !NF.h4.includes('Fan friendships') && !NF.sections && !NF.rows.length && !NF.note);
   const FD = await friSheet(pg4, nonDE), fd = wantFri(nonDE);
-  check(`friendships: a non-German club (${nonDE}) shows Rivalries, Fan friendships and the atmosphere section, in that order`,
-    FD.h4.indexOf('Fan friendships') === FD.h4.indexOf('Rivalries') + 1 && FD.h4.indexOf('When the atmosphere is best') === FD.h4.indexOf('Fan friendships') + 1 &&
-    FD.rivs === 1 && FD.atm === 1 && JSON.stringify(FD.rows.map(r => r.name)) === JSON.stringify(fd.map(r => r.friendName)) && !FD.sideways, FD.h4.join(' | '));
+  check(`friendships: a non-German club (${nonDE}) shows Rivalries and Fan friendships, in that order, and no atmosphere section`,
+    FD.h4.indexOf('Fan friendships') === FD.h4.indexOf('Rivalries') + 1 && !FD.h4.includes('When the atmosphere is best') &&
+    FD.rivs === 1 && FD.atm === 0 && JSON.stringify(FD.rows.map(r => r.name)) === JSON.stringify(fd.map(r => r.friendName)) && !FD.sideways, FD.h4.join(' | '));
   const pg5 = await friPage('ro');
   const RO = await friSheet(pg5, many);
   const SCro = {'fan-groups': 'Între grupurile de suporteri', clubs: 'Între cluburi', unclear: 'Nespecificat'}, STro = {active: 'Activă', ended: 'Încheiată', unclear: 'Neclară'};
@@ -438,14 +381,6 @@ const server = http.createServer((req, res) => {
   const ROo = await pg5.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
     sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
   check('friendships (Romanian): nothing overflows at 390 px with every row open', !ROo.wide && !ROo.sideways && !RO.sideways, JSON.stringify(ROo));
-  const AR = await atmSheet(pg5, many);
-  check('atmosphere (Romanian): groups, "Când are loc" with the recurrence and "Potrivit" once, all in Romanian',
-    AR.groups.length === A.groups.length && AR.groups.every(g => g.head.startsWith(GROUPS_RO[g.sit] + ' (')) &&
-    AR.groups.every((g, gi) => g.rows.every((r, ri) => r.rec === `Când are loc: ${REC_RO[wantGroups[gi][1][ri][6]]}` && r.by.startsWith('Potrivit ') && r.by.split('Potrivit').length === 2)), AR.groups.map(g => g.head).join(' | '));
-  await pg5.evaluate(() => document.querySelectorAll('#sheetBody details.atm').forEach(d => { d.open = true; }));
-  const ARo = await pg5.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .atmrow')].some(r => r.scrollWidth > r.clientWidth + 1),
-    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
-  check('atmosphere (Romanian): nothing overflows at 390 px with every group open', !ARo.wide && !ARo.sideways, JSON.stringify(ARo));
   await pg4.close(); await pg5.close();
   function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
 
