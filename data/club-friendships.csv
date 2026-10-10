@@ -1,36 +1,71 @@
-clubQ,friendQ,friendName,scope,status,groupsText,sourceId,checkedOn
-Q41420,Q155218,Rot-Weiss Essen,fan-groups,unclear,,C1,2026-10-09
-Q41420,,Celtic Glasgow,unclear,active,,C1,2026-10-09
-Q41420,Q51974,Hamburger SV,fan-groups,ended,,C1,2026-10-09
-Q41420,Q104770,1. FC Köln,fan-groups,active,Desperados Dortmund; Boyz Köln,C1,2026-10-09
-Q41420,Q106394,SC Freiburg,unclear,unclear,,C1,2026-10-09
-Q41420,Q105853,Karlsruher SC,unclear,unclear,,C1,2026-10-09
-Q41420,Q157463,1. FC Saarbrücken,unclear,unclear,,C1,2026-10-09
-Q41420,Q131603,TSV 1860 München,unclear,unclear,,C1,2026-10-09
-Q41420,Q219926,Aris Thessaloniki,fan-groups,active,The Unity,C1,2026-10-09
-Q41420,,Brøndby IF,fan-groups,active,The Unity,C1,2026-10-09
-Q41420,Q161034,Wacker Burghausen,fan-groups,active,The Unity,C1,2026-10-09
-Q15789,Q102720,Hertha BSC,fan-groups,unclear,,C3,2026-10-09
-Q15789,Q105861,VfL Bochum,fan-groups,active,Schickeria München,C3,2026-10-09
-Q15789,Q6463,FC St. Pauli,fan-groups,active,Schickeria München,C3,2026-10-09
-Q15789,Q155186,FC Carl Zeiss Jena,fan-groups,active,Schickeria München,C3,2026-10-09
-Q15789,,Bordeaux,fan-groups,active,Schickeria München,C3,2026-10-09
-Q15789,Q6703,Empoli,fan-groups,active,Schickeria München,C3,2026-10-09
-Q15789,,Sambenedettese,fan-groups,active,Schickeria München,C3,2026-10-09
-Q141971,Q32494,FC Schalke 04,fan-groups,active,,C4,2026-10-09
-Q141971,Q102720,Hertha BSC,fan-groups,unclear,,C4,2026-10-09
-Q141971,Q6463,FC St. Pauli,unclear,active,,C4,2026-10-09
-Q141971,Q101959,Borussia Mönchengladbach,unclear,active,,C4,2026-10-09
-Q51974,Q41420,Borussia Dortmund,fan-groups,unclear,,C5,2026-10-09
-Q51974,Q15786,1. FC Nürnberg,fan-groups,ended,Rothosen; Seerose,C5,2026-10-09
-Q51974,Q105844,Arminia Bielefeld,fan-groups,active,,C5,2026-10-09
-Q51974,,Rangers,clubs,active,,C5,2026-10-09
-Q51974,,FC København,fan-groups,active,,C5,2026-10-09
-Q51974,Q665920,VfB Lübeck,fan-groups,active,,C5,2026-10-09
-Q126334,Q105853,Karlsruher SC,unclear,active,,C7,2026-10-09
-Q126334,,Berlin BSC,unclear,active,,C7,2026-10-09
-Q245162,Q4654417,Politehnica Timișoara,fan-groups,active,,C8,2026-10-09
-Q4654417,Q245162,Rapid București,fan-groups,active,Sud Timișoara; Nord Rapid; t2 Rapid; Sud Rapid,C9,2026-10-09
-Q4654417,Q101959,Borussia Mönchengladbach,fan-groups,active,Peluza Sud Timișoara; Nordkurve Mönchengladbach,C9,2026-10-09
-Q4654417,,Aridaias (Gate 4),fan-groups,unclear,,C9,2026-10-09
-Q4654417,,Peluza Sud '97 Craiova,fan-groups,ended,,C9,2026-10-09
+clubQ,friendQ,friendName,scope,status,groupsText,sourceId,checkedOn,quote
+Q41420,Q155218,Rot-Weiss Essen,fan-groups,unclear,,C1,2026-10-10,Schon nach einigen Jahren endete der intensive Teil der Freundschaft
+Q41420,,Celtic Glasgow,unclear,active,,C1,2026-10-10,Unterstützt wird diese Fanfreundschaft durch Kontakte zwischen Anhängern der deutschen und der schottischen Fußballnationalmannschaft
+Q41420,Q51974,Hamburger SV,fan-groups,ended,,C1,2026-10-10,In der Vergangenheit gab es darüber hinaus eine Fanfreundschaft mit dem Hamburger SV
+Q41420,Q104770,1. FC Köln,fan-groups,active,Desperados Dortmund; Boyz Köln,C1,2026-10-10,gilt das Verhältnis zwischen Dortmunder und Kölner Anhängern als freundschaftlich
+Q41420,Q106394,SC Freiburg,unclear,unclear,,C1,2026-10-10,In den 1990er Jahren gab es einige lose Fanfreundschaften
+Q41420,Q105853,Karlsruher SC,unclear,unclear,,C1,2026-10-10,In den 1990er Jahren gab es einige lose Fanfreundschaften
+Q41420,Q157463,1. FC Saarbrücken,unclear,unclear,,C1,2026-10-10,In den 1990er Jahren gab es einige lose Fanfreundschaften
+Q41420,Q131603,TSV 1860 München,unclear,unclear,,C1,2026-10-10,In den 1990er Jahren gab es einige lose Fanfreundschaften
+Q15789,Q102720,Hertha BSC,fan-groups,unclear,,C3,2026-10-10,Ab den späten 1960er Jahren bestand eine Freundschaft mit den Fans von Hertha BSC
+Q15789,Q105861,VfL Bochum,fan-groups,active,Schickeria München,C3,2026-10-10,Auf Ultraebene gibt es Freundschaften der „Schickeria München“ mit entsprechenden Gruppierungen
+Q15789,Q6463,FC St. Pauli,fan-groups,active,Schickeria München,C3,2026-10-10,Auf Ultraebene gibt es Freundschaften der „Schickeria München“ mit entsprechenden Gruppierungen
+Q15789,Q155186,FC Carl Zeiss Jena,fan-groups,active,Schickeria München,C3,2026-10-10,Auf Ultraebene gibt es Freundschaften der „Schickeria München“ mit entsprechenden Gruppierungen
+Q15789,,Bordeaux,fan-groups,active,Schickeria München,C3,2026-10-10,Auf Ultraebene gibt es Freundschaften der „Schickeria München“ mit entsprechenden Gruppierungen
+Q15789,Q6703,Empoli,fan-groups,active,Schickeria München,C3,2026-10-10,Auf Ultraebene gibt es Freundschaften der „Schickeria München“ mit entsprechenden Gruppierungen
+Q15789,,Sambenedettese,fan-groups,active,Schickeria München,C3,2026-10-10,Auf Ultraebene gibt es Freundschaften der „Schickeria München“ mit entsprechenden Gruppierungen
+Q141971,Q32494,FC Schalke 04,fan-groups,active,,C4,2026-10-10,mit den Fans des FC Schalke 04 seit dem DFB-Pokalfinale 2001 eine Freundschaft
+Q141971,Q102720,Hertha BSC,fan-groups,ended,,C4,2026-10-10,Zu Zeiten der deutschen Teilung dagegen gab es zwischen Union und Hertha eine Fanfreundschaft
+Q51974,Q41420,Borussia Dortmund,fan-groups,unclear,,C5,2026-10-10,"Dennoch wird diese Fanfreundschaft auch noch heute, vor allem von älteren Fans, akzeptiert"
+Q51974,Q15786,1. FC Nürnberg,fan-groups,ended,Rothosen; Seerose,C5,2026-10-10,zunehmend intensiven Kontakte der Nürnbergern mit dem BVB-Erzrivalen FC Schalke 04 in die Brüche
+Q51974,Q105844,Arminia Bielefeld,fan-groups,active,,C5,2026-10-10,Aktuell besteht eine Fanfreundschaften vor allem zu den Fans von Arminia Bielefeld
+Q51974,,FC København,fan-groups,active,,C5,2026-10-10,besteht seitens der aktiven Fanszene eine jahrelange Freundschaft zu den Ultras vom FC Kopenhagen
+Q51974,Q665920,VfB Lübeck,fan-groups,active,,C5,2026-10-10,Ebenso besteht eine Fanfreundschaft zum VfB Lübeck
+Q126334,Q105853,Karlsruher SC,unclear,active,,C7,2026-10-10,une amitié avec ceux du Karlsruher SC ainsi que du Hertha Berlin SC
+Q126334,Q102720,Hertha BSC,unclear,active,,C7,2026-10-10,une amitié avec ceux du Karlsruher SC ainsi que du Hertha Berlin SC
+Q4654417,Q245162,Rapid București,fan-groups,active,Sud Timișoara; Nord Rapid; t2 Rapid; Sud Rapid,C9,2026-10-10,Suporterii din Sud Timișoara au o legătură strânsă de prietenie cu suporteri rapidiști
+Q4654417,Q101959,Borussia Mönchengladbach,fan-groups,active,Peluza Sud Timișoara; Nordkurve Mönchengladbach,C9,2026-10-10,Peluza Sud Timișoara are o relație de înfrățire cu suporteri ultrași din Nordkurve Mönchengladbach
+Q4654417,,Aridaias (Gate 4),fan-groups,unclear,,C9,2026-10-10,legând o legătură de prietenie cu grupul Aridaias (Gate 4)
+Q4654417,,Peluza Sud '97 Craiova,fan-groups,ended,,C9,2026-10-10,relație de prietenie care s-a stins este cea cu Peluza Sud '97 Craiova
+Q104770,,FC Liverpool,fan-groups,unclear,,C13,2026-10-10,entstanden freundschaftliche Beziehungen zu den Fans des englischen Gegners
+Q104770,Q6463,FC St. Pauli,fan-groups,unclear,,C13,2026-10-10,Seit den 2000er Jahren hat diese Freundschaft jedoch stark an Bedeutung eingebüßt
+Q104770,Q41420,Borussia Dortmund,unclear,active,Boyz Köln; Desperados Dortmund,C13,2026-10-10,besteht zwischen den beiden Vereinen aus Sicht einiger Fans ein freundschaftliches Verhältnis
+Q104770,,Paris Saint-Germain,fan-groups,active,Supras Auteuil; Authentiks Paris; Grinta; Wilde Horde; Coloniacs,C13,2026-10-10,Auf Ultra-Ebene gibt es zudem noch eine gewachsene Freundschaft zu den ehemaligen Gruppen
+Q105254,Q101959,Borussia Mönchengladbach,fan-groups,ended,,C14,2026-10-10,kündigten die Gladbacher diese Freundschaft kurzerhand auf
+Q105254,Q154293,MSV Duisburg,fan-groups,active,,C14,2026-10-10,Gegenwärtig führt die aktive Fanszene eine enge Freundschaft zu der aktiven Fanszene aus Duisburg
+Q105254,Q155186,FC Carl Zeiss Jena,fan-groups,unclear,,C14,2026-10-10,Einzelne freundschaftliche Kontakte bestanden auch zur aktiven Fanszene des FC Carl Zeiss Jena
+Q104761,Q159936,Kickers Offenbach,fan-groups,active,,C15,2026-10-10,Eine Fanfreundschaft gibt es mit den Anhängern von Kickers Offenbach
+Q101959,Q105254,1. FSV Mainz 05,fan-groups,unclear,,C16,2026-10-10,inzwischen nur noch von wenigen Anhängern gepflegt wird
+Q101959,,FC Liverpool,fan-groups,active,,C16,2026-10-10,hat die lange Freundschaft zum FC Liverpool nach wie vor Bestand
+Q38245,Q4512,VfB Stuttgart,fan-groups,ended,,C17,2026-10-10,"1. FC Nürnberg und FC Schalke 04, die jedoch alle sehr kurzlebig waren"
+Q38245,Q51974,Hamburger SV,fan-groups,ended,,C17,2026-10-10,"1. FC Nürnberg und FC Schalke 04, die jedoch alle sehr kurzlebig waren"
+Q38245,Q15786,1. FC Nürnberg,fan-groups,ended,,C17,2026-10-10,"1. FC Nürnberg und FC Schalke 04, die jedoch alle sehr kurzlebig waren"
+Q38245,Q32494,FC Schalke 04,fan-groups,ended,,C17,2026-10-10,"1. FC Nürnberg und FC Schalke 04, die jedoch alle sehr kurzlebig waren"
+Q38245,Q153535,Alemannia Aachen,fan-groups,unclear,,C17,2026-10-10,Auch von einer kurzzeitigen Freundschaft eines Teils der Fanszene zu Alemannia Aachen wird berichtet
+Q38245,Q154293,MSV Duisburg,fan-groups,active,,C17,2026-10-10,"Zu dieser Fan-Freundschaft gibt es verschiedene Freundschaftsschals, die Fans beider Klubs gerne präsentieren"
+Q38245,Q1921747,BSG Chemie Leipzig,unclear,active,,C17,2026-10-10,Weitere Freundschaften gibt es derzeit zur BSG Chemie Leipzig (seit 2004)
+Q38245,Q170134,SV Waldhof Mannheim,fan-groups,active,,C17,2026-10-10,gibt es derzeit zur BSG Chemie Leipzig (seit 2004) und zum SV Waldhof Mannheim
+Q38245,Q261813,FC Wacker Innsbruck,unclear,active,,C17,2026-10-10,Im Ausland bestehen langjährige Freundschaften zum FC Wacker Innsbruck und Atalanta Bergamo
+Q38245,,Atalanta Bergamo,unclear,active,,C17,2026-10-10,Im Ausland bestehen langjährige Freundschaften zum FC Wacker Innsbruck und Atalanta Bergamo
+Q97905916,Q535785,Würzburger Kickers,fan-groups,active,,C18,2026-10-10,Einige Fangruppen des FCA pflegen eine Freundschaft zu den Anhängern der Würzburger Kickers
+Q97905916,Q696507,SC Austria Lustenau,fan-groups,active,,C18,2026-10-10,gibt es freundschaftliche Beziehungen zu der Anhängerschaft des SC Austria Lustenau
+Q32494,Q15786,1. FC Nürnberg,fan-groups,active,,C19,2026-10-10,Fans des S04 unterhalten seit Anfang der 1980er Jahre eine innige Fanfreundschaft
+Q32494,,FC Twente Enschede,fan-groups,active,,C19,2026-10-10,gibt es eine Freundschaft mit den Fans des FC Twente Enschede
+Q32494,,Vardar Skopje,fan-groups,active,,C19,2026-10-10,besteht eine Freundschaft zwischen den beiden Fanlagern
+Q32494,,US Salernitana,fan-groups,active,,C19,2026-10-10,Seit 2016 existiert eine Fanfreundschaft mit US Salernitana
+Q32494,Q170157,Wuppertaler SV,fan-groups,ended,,C19,2026-10-10,Eine heute nicht mehr existente Freundschaft ist die zum Wuppertaler SV
+Q22707,Q137499,FC 08 Homburg,fan-groups,active,Young Boyz 07; Crew 424 Homburg,C24,2026-10-10,"eine Fanfreundschaft mit der Crew 424 Homburg, einer Fangruppe des FC 08 Homburg"
+Q106394,Q97927380,SV Babelsberg 03,fan-groups,active,Corrillo,C21,2026-10-10,Die Fanfreundschaft zwischen den Ultras des SC Freiburg und des SV Babelsberg 03
+Q106394,Q41420,Borussia Dortmund,fan-groups,ended,,C21,2026-10-10,"gab es eine Fanfreundschaft zwischen SC- und BVB-Fans, die jedoch nicht länger gepflegt wurde"
+Q106394,Q153535,Alemannia Aachen,fan-groups,unclear,Aachen Ultras; Wilde Jungs Freiburg,C21,2026-10-10,bestand Anfang der 2010er Jahre eine Freundschaft zwischen den Fanclubs Aachen Ultras
+Q106394,,Sydney FC,fan-groups,active,The Cove,C21,2026-10-10,International gibt es Fanfreundschaften zu The Cove (Sydney FC)
+Q4512,,SSV Reutlingen 05,fan-groups,active,,C25,2026-10-10,freundschaftliche Kontakte zu den Fanszenen vom SSV Reutlingen 05 und zum 1. FC Kaiserslautern
+Q4512,Q8466,1. FC Kaiserslautern,fan-groups,active,,C25,2026-10-10,Die Fanfreundschaft zum FCK wird mittlerweile auch von einer breiteren Fanbasis gelebt
+Q4512,,AC Cesena,fan-groups,active,,C25,2026-10-10,"zum 1. FC Kaiserslautern, sowie international zum AC Cesena und zur AS Saint-Étienne"
+Q4512,Q19521,AS Saint-Étienne,fan-groups,active,,C25,2026-10-10,"zum 1. FC Kaiserslautern, sowie international zum AC Cesena und zur AS Saint-Étienne"
+Q51976,Q124007617,SK Sturm Graz,fan-groups,active,,C26,2026-10-10,pflegen seit einigen Jahren eine immer größer werdende Freundschaft zum österreichischen Verein
+Q51976,Q6463,FC St. Pauli,fan-groups,active,Infamous Youth; Ultra Sankt Pauli,C26,2026-10-10,eine seit 2019 offizielle Freundschaft der Ultragruppen Infamous Youth und Ultra Sankt Pauli
+Q51976,Q155218,Rot-Weiss Essen,fan-groups,unclear,,C26,2026-10-10,welche heute jedoch nur noch aus Einzelkontakten besteht
+Q51976,Q8466,1. FC Kaiserslautern,fan-groups,unclear,,C26,2026-10-10,Lange Jahre existierte eine Fanfreundschaft zum 1. FC Kaiserslautern
+Q51976,,Hapoel Katamon Jerusalem,unclear,active,,C26,2026-10-10,Seit einigen Jahren existiert eine Freundschaft mit dem israelischen Verein Hapoel Katamon Jerusalem
+Q51976,,Maccabi Haifa,fan-groups,active,Ultra‘ Boys,C26,2026-10-10,Die Ultra‘ Boys pflegen eine Freundschaft zum israelischen Verein Maccabi Haifa
