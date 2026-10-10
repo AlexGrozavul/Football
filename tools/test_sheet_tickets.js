@@ -297,20 +297,21 @@ const server = http.createServer((req, res) => {
   const nonDE = await page.evaluate(m => { const c = CLUBS.find(c => c.country && c.country !== 'DE' && c.id !== m); return c && c.id; }, many);
   const friendOnMap = await page.evaluate(([a, b]) => { const c = CLUBS.find(c => c.id !== a && c.id !== b); return {id: c.id, name: c.name}; }, [many, nonDE]);
   const q = v => /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
-  const FH = 'clubQ,friendQ,friendName,scope,status,groupsText,sourceId,checkedOn';
+  const FH = 'clubQ,friendQ,friendName,scope,status,groupsText,sourceId,checkedOn,quote';
+  const LONGQ = 'Averyverylongquotewithoutanybreakshere' + 'y'.repeat(120);
   const LONG = 'Averyveryverylongfangroupnamewithoutanybreakshere' + 'x'.repeat(120);
   const frRows = [
-    {clubQ: many, friendQ: '', friendName: 'Zulu Test', scope: 'clubs', status: 'ended', groupsText: ''},
-    {clubQ: many, friendQ: '', friendName: 'Alpha Test', scope: 'fan-groups', status: 'active', groupsText: 'Group One, Group Two'},
+    {clubQ: many, friendQ: '', friendName: 'Zulu Test', scope: 'clubs', status: 'ended', groupsText: '', quote: 'Zu Zeiten der Teilung gab es eine Fanfreundschaft'},
+    {clubQ: many, friendQ: '', friendName: 'Alpha Test', scope: 'fan-groups', status: 'active', groupsText: 'Group One, Group Two', quote: 'Une amitié, « très forte », entre „supporters“'},
     {clubQ: many, friendQ: '', friendName: 'Mike Test', scope: 'unclear', status: 'unclear', groupsText: ''},
-    {clubQ: many, friendQ: '', friendName: 'Bravo Test', scope: 'clubs', status: 'active', groupsText: ''},
-    {clubQ: many, friendQ: '', friendName: 'Echo Test', scope: 'fan-groups', status: 'ended', groupsText: LONG},
+    {clubQ: many, friendQ: '', friendName: 'Bravo Test', scope: 'clubs', status: 'active', groupsText: '', quote: 'Suporterii au o legătură strânsă de prietenie'},
+    {clubQ: many, friendQ: '', friendName: 'Echo Test', scope: 'fan-groups', status: 'ended', groupsText: LONG, quote: LONGQ},
     {clubQ: many, friendQ: '', friendName: 'Delta Test', scope: 'clubs', status: 'unclear', groupsText: ''},
-    {clubQ: many, friendQ: friendOnMap.id, friendName: friendOnMap.name, scope: 'fan-groups', status: 'unclear', groupsText: ''},
+    {clubQ: many, friendQ: friendOnMap.id, friendName: friendOnMap.name, scope: 'fan-groups', status: 'unclear', groupsText: '', quote: 'ein freundschaftliches Verhältnis'},
     {clubQ: nonDE, friendQ: '', friendName: 'Foreign Beta', scope: 'clubs', status: 'ended', groupsText: ''},
     {clubQ: nonDE, friendQ: '', friendName: 'Foreign Alpha', scope: 'fan-groups', status: 'active', groupsText: 'Some Fans'},
   ].map(r => ({...r, sourceId: srcId, checkedOn: '2026-10-03'}));
-  const frCsv = FH + '\n' + frRows.map(r => FH.split(',').map(k => q(r[k])).join(',')).join('\n') + '\n';
+  const frCsv = FH + '\n' + frRows.map(r => FH.split(',').map(k => q(r[k] || '')).join(',')).join('\n') + '\n';
   const rivExtra = `${nonDE},,Test Rival,main,${srcId},2026-10-03`;
   const FRI_RANK = {active: 0, unclear: 1, ended: 2};
   const wantFri = id => frRows.filter(r => r.clubQ === id).sort((a, b) => FRI_RANK[a.status] - FRI_RANK[b.status] || a.friendName.localeCompare(b.friendName));
@@ -334,7 +335,8 @@ const server = http.createServer((req, res) => {
         note: b.querySelector('.frnote')?.textContent || '',
         rows: [...b.querySelectorAll('.fri')].map(r => ({name: r.querySelector('.frname').textContent, tap: r.querySelector('.frname').tagName === 'BUTTON',
           fid: r.querySelector('.frname').dataset.id || '', scope: r.querySelector('.frscope').textContent, status: r.querySelector('.frstatus').textContent,
-          groups: r.querySelector('.frgroups')?.textContent || '', href: r.querySelector('.frsrc a')?.href || '', src: r.querySelector('.frsrc').textContent,
+          groups: r.querySelector('.frgroups')?.textContent || '', quote: r.querySelector('.frquote')?.textContent || '',
+          quoteLabel: r.querySelector('.frquote > span:first-child')?.textContent || '', quoteIsData: r.querySelector('.frquote > span[data-content]')?.textContent || '', href: r.querySelector('.frsrc a')?.href || '', src: r.querySelector('.frsrc').textContent,
           shown: !r.hidden, wide: r.scrollWidth > r.clientWidth + 1})),
         more: b.querySelector('.frmore')?.textContent || '', sections: b.querySelectorAll('.fris').length,
         rivs: b.querySelectorAll('.riv').length, atm: b.querySelectorAll('details.atm, .atmrow, .atmnote, #sheetAtm').length,
@@ -353,6 +355,13 @@ const server = http.createServer((req, res) => {
     F.rows.every((r, i) => r.scope === SC[fw[i].scope] && r.status === ST[fw[i].status] &&
       (fw[i].groupsText ? r.groups === `Groups: ${fw[i].groupsText}` : r.groups === '') &&
       r.href === srcRow.url && /Checked on /.test(r.src) && r.src.includes(srcRow.title)), JSON.stringify(F.rows.map(r => [r.scope, r.status, r.groups.slice(0, 30)])));
+  check('friendships: a row with a quote shows "Source says: «…»" in the original wording (the quote itself marked as data, not translated); a row without one shows no quote line',
+    F.rows.every((r, i) => fw[i].quote ? r.quote === `Source says: «${fw[i].quote}»` && r.quoteLabel === 'Source says:' && r.quoteIsData === `«${fw[i].quote}»` : r.quote === ''),
+    JSON.stringify(F.rows.map(r => r.quote.slice(0, 40))));
+  const stRank = {Active: 0, 'Not clear': 1, Ended: 2};
+  check('friendships: an ended row sorts last (every Ended row comes after every other row), and the last row shown is an ended one',
+    F.rows.length > 1 && F.rows[F.rows.length - 1].status === 'Ended' && F.rows.every((r, i) => i === 0 || stRank[r.status] >= stRank[F.rows[i - 1].status]),
+    F.rows.map(r => r.status).join(', '));
   check(`friendships: ${fw.length} rows give 5 shown and "Show all (${fw.length})"`, F.rows.filter(r => r.shown).length === 5 && F.more === `Show all (${fw.length})`, `${F.rows.filter(r => r.shown).length} shown, "${F.more}"`);
   await pg4.click('#sheetBody .frmore');
   const FO = await pg4.evaluate(() => ({shown: [...document.querySelectorAll('#sheetBody .fri')].filter(r => !r.hidden).length,
@@ -377,11 +386,97 @@ const server = http.createServer((req, res) => {
   check('friendships (Romanian): heading, note, labels and "Arată tot" are Romanian and the order is the same',
     RO.h4.includes('Prietenii între suporteri') && RO.note.startsWith('Așa cum le arată sursa citată') && RO.more === `Arată tot (${fw.length})` &&
     RO.rows.every((r, i) => r.scope === SCro[fw[i].scope] && r.status === STro[fw[i].status] && r.name === fw[i].friendName), RO.h4.join(' | '));
+  check('friendships (Romanian): the label reads "Sursa spune:" and the quote stays in its original language',
+    RO.rows.every((r, i) => fw[i].quote ? r.quote === `Sursa spune: «${fw[i].quote}»` && r.quoteLabel === 'Sursa spune:' && r.quoteIsData === `«${fw[i].quote}»` : r.quote === ''),
+    JSON.stringify(RO.rows.map(r => r.quote.slice(0, 40))));
   await pg5.click('#sheetBody .frmore');
   const ROo = await pg5.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
     sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
   check('friendships (Romanian): nothing overflows at 390 px with every row open', !ROo.wide && !ROo.sideways && !RO.sideways, JSON.stringify(ROo));
   await pg4.close(); await pg5.close();
+
+  // ---- Real data: every row of data/club-friendships.csv shows its quote on its club's sheet, and the sheet
+  // lists the active rows first and the ended ones last; nothing overflows at 390 px in English or Romanian.
+  const realByClub = {};
+  for(const r of realFri) (realByClub[r.clubQ] = realByClub[r.clubQ] || []).push(r);
+  const realClubs = Object.keys(realByClub).filter(c => onMap.includes(c));
+  check('real data: every club with friendship rows is on the map', realClubs.length === Object.keys(realByClub).length && realClubs.length > 0,
+    Object.keys(realByClub).filter(c => !onMap.includes(c)).join(', '));
+  const realPage = async lang => {
+    const pg = await ctx.newPage();
+    if(lang) await pg.addInitScript(l => { try { localStorage.setItem('football-planner-lang', l); } catch(e){} }, lang);
+    pg.on('pageerror', e => errors.push(e.message));
+    await pg.goto(BASE);
+    await pg.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    return pg;
+  };
+  const pgR = await realPage('en');   // pinned: the Romanian page above left its language in the shared localStorage
+  const lacking = [], badOrder = [], overflowR = [];
+  for(const c of realClubs){
+    const S = await friSheet(pgR, c);
+    if(S.rows.length !== realByClub[c].length) lacking.push(`${c}: ${S.rows.length} rows shown, ${realByClub[c].length} in the file`);
+    for(const r of realByClub[c]){
+      const row = S.rows.find(x => x.name === r.friendName);
+      if(!row) lacking.push(`${c}/${r.friendName}: row missing`);
+      else if(r.quote ? row.quote !== `Source says: «${r.quote}»` : row.quote !== '') lacking.push(`${c}/${r.friendName}: quote`);
+    }
+    if(!S.rows.every((r, i) => i === 0 || stRank[r.status] >= stRank[S.rows[i - 1].status])) badOrder.push(c);
+    const lastNonEnded = S.rows.map(r => r.status).lastIndexOf('Active');
+    if(S.rows.some(r => r.status === 'Ended') && S.rows.findIndex(r => r.status === 'Ended') <= Math.max(lastNonEnded, S.rows.map(r => r.status).lastIndexOf('Not clear'))) badOrder.push(c + ' (ended not last)');
+    await pgR.click('#sheetBody .frmore').catch(() => {});
+    const w = await pgR.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
+      sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+    if(w.wide || w.sideways) overflowR.push(c);
+  }
+  check(`real data: all ${realFri.length} rows of ${realClubs.length} clubs are on their sheets, each with its quote as "Source says: «…»" (none where the file has none)`, !lacking.length, lacking.slice(0, 5).join(' | '));
+  check('real data: active rows first, then not clear, then ended, on every sheet', !badOrder.length, badOrder.join(', '));
+  check('real data (English): nothing overflows at 390 px with every row open', !overflowR.length, overflowR.join(', '));
+  const bigClub = [...realClubs].sort((a, b) => realByClub[b].length - realByClub[a].length)[0];
+  const pgRo = await realPage('ro');
+  const SRo = await friSheet(pgRo, bigClub);
+  await pgRo.click('#sheetBody .frmore').catch(() => {});
+  const wRo = await pgRo.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
+    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+  check(`real data (Romanian, ${bigClub}, ${realByClub[bigClub].length} rows): label "Sursa spune:", quote unchanged, nothing overflows at 390 px`,
+    SRo.rows.length === realByClub[bigClub].length && realByClub[bigClub].every(r => { const row = SRo.rows.find(x => x.name === r.friendName); return row && (r.quote ? row.quote === `Sursa spune: «${r.quote}»` : row.quote === ''); }) &&
+    !wRo.wide && !wRo.sideways, JSON.stringify(wRo));
+  await pgR.close(); await pgRo.close();
+
+  // ---- The checker (tools/check_club_culture.py) on a scratch copy of the data: a pair in both the friendships
+  // and the rivalries file exits 1 unless the friendship has ended; a quote over 15 words exits 1; no quote warns.
+  const cp = require('child_process'), os = require('os');
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'culture-'));
+  fs.mkdirSync(path.join(scratch, 'tools')); fs.mkdirSync(path.join(scratch, 'data', 'clubs'), {recursive: true});
+  fs.copyFileSync(path.join(ROOT, 'tools/check_club_culture.py'), path.join(scratch, 'tools/check_club_culture.py'));
+  for(const f of fs.readdirSync(path.join(ROOT, 'data/clubs'))) if(/^[A-Z]{2}\.json$/.test(f)) fs.copyFileSync(path.join(ROOT, 'data/clubs', f), path.join(scratch, 'data/clubs', f));
+  for(const f of ['club-rivalries.csv', 'club-friendships.csv', 'club-culture-sources.csv']) fs.copyFileSync(path.join(ROOT, 'data', f), path.join(scratch, 'data', f));
+  const runChecker = () => cp.spawnSync('python3', [path.join(scratch, 'tools/check_club_culture.py')], {encoding: 'utf8'});
+  const friFile = path.join(scratch, 'data/club-friendships.csv'), baseFri = fs.readFileSync(friFile, 'utf8').replace(/\n?$/, '\n');
+  const withRow = row => { fs.writeFileSync(friFile, baseFri + FH.split(',').map(k => q(row[k] || '')).join(',') + '\n'); return runChecker(); };
+  const B0 = runChecker();
+  check('checker: the real data passes (exit 0) and prints each quote', B0.status === 0 && /quote: «/.test(B0.stdout) && !/PROBLEM/.test(B0.stdout), (B0.stdout + B0.stderr).slice(-300));
+  const pairRiv = riv.find(r => r.rivalQ && !realFri.some(f => (f.clubQ === r.clubQ && f.friendQ === r.rivalQ) || (f.clubQ === r.rivalQ && f.friendQ === r.clubQ)));
+  const base = {scope: 'fan-groups', groupsText: '', sourceId: realFri[0].sourceId, checkedOn: realFri[0].checkedOn, quote: 'a short quote'};
+  const rowOf = st => ({...base, clubQ: pairRiv.clubQ, friendQ: pairRiv.rivalQ, friendName: pairRiv.rivalName, status: st});
+  const PAIR = /a pair may be in both only when the friendship has ended/;
+  for(const st of ['active', 'unclear']){
+    const R = withRow(rowOf(st));
+    check(`checker: a pair that is in both files (${pairRiv.clubQ} / ${pairRiv.rivalQ}) with status ${st} exits 1`, R.status === 1 && PAIR.test(R.stdout), (R.stdout + R.stderr).slice(-300));
+  }
+  const clubName = await page.evaluate(id => CLUBS.find(c => c.id === id).name, pairRiv.clubQ);
+  const Rrev = withRow({...rowOf('active'), clubQ: pairRiv.rivalQ, friendQ: pairRiv.clubQ, friendName: clubName});
+  check('checker: the same pair entered the other way round, active, exits 1', Rrev.status === 1 && PAIR.test(Rrev.stdout), (Rrev.stdout + Rrev.stderr).slice(-300));
+  const nameOnly = riv.find(r => !r.rivalQ);
+  const Rnm = nameOnly ? withRow({...base, clubQ: nameOnly.clubQ, friendQ: '', friendName: nameOnly.rivalName, status: 'active'}) : null;
+  check('checker: a pair joined by name only (the rival is not on the map), active, exits 1', !!Rnm && Rnm.status === 1 && PAIR.test(Rnm.stdout), Rnm ? (Rnm.stdout + Rnm.stderr).slice(-300) : 'no rivalry row without a Q-id');
+  const Rend = withRow(rowOf('ended'));
+  check('checker: the same pair with status ended is allowed (exit 0)', Rend.status === 0 && !/PROBLEM/.test(Rend.stdout), (Rend.stdout + Rend.stderr).slice(-300));
+  const other = {...base, clubQ: pairRiv.clubQ, friendQ: '', friendName: 'Scratch Friend FC', status: 'active'};
+  const words = n => Array.from({length: n}, (_, i) => 'w' + i).join(' ');
+  const R15 = withRow({...other, quote: words(15)}), R16 = withRow({...other, quote: words(16)}), R0 = withRow({...other, quote: ''});
+  check('checker: a quote of 15 words passes, of 16 words exits 1', R15.status === 0 && R16.status === 1 && /16 words; 15 at most/.test(R16.stdout), (R16.stdout + R16.stderr).slice(-200));
+  check('checker: a row with no quote only warns (exit 0)', R0.status === 0 && /has no quote/.test(R0.stdout), (R0.stdout + R0.stderr).slice(-200));
+  fs.rmSync(scratch, {recursive: true, force: true});
   function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
 
   check('no script error', !errors.length, errors.join(' | '));

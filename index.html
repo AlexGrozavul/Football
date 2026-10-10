@@ -984,6 +984,7 @@ const I18N = {
     "fri.loadFail": "The fan friendship information could not be loaded.",
     "fri.note": "As stated by the cited source. Fan friendships change and can end.",
     "fri.groups": "Groups: {text}",
+    "fri.quote": "Source says:",
     "fris.fan-groups": "Between fan groups",
     "fris.clubs": "Between clubs",
     "fris.unclear": "Not specified",
@@ -2049,6 +2050,7 @@ const I18N = {
     "fri.loadFail": "Informațiile despre prietenii nu au putut fi încărcate.",
     "fri.note": "Așa cum le arată sursa citată. Prieteniile dintre suporteri se pot schimba și pot lua sfârșit.",
     "fri.groups": "Grupuri: {text}",
+    "fri.quote": "Sursa spune:",
     "fris.fan-groups": "Între grupurile de suporteri",
     "fris.clubs": "Între cluburi",
     "fris.unclear": "Nespecificat",
@@ -3829,6 +3831,7 @@ async function friendshipsHtml(club){
     return `<div class="fri" data-status="${esc(r.status)}" data-scope="${esc(r.scope)}"${i >= FRI_SHOWN ? ' hidden data-extra="1"' : ''}>` +
       `<div class="frtop">${name}<span class="tag frscope">${FRI_SCOPE[r.scope]}</span><span class="tag frstatus">${FRI_STATUS[r.status]}</span></div>` +
       (r.groupsText ? `<div class="sub frgroups" data-content>${esc(t('fri.groups', {text: r.groupsText}))}</div>` : '') +
+      (r.quote ? `<div class="sub frquote"><span>${esc(t('fri.quote'))}</span> <span data-content>«${esc(r.quote)}»</span></div>` : '') +
       `<div class="sub frsrc">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div></div>`;
   };
   return `<h4>${esc(t('fri.title'))}</h4><div class="fris">` + rows.map(rowHtml).join('') +

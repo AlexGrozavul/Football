@@ -12,17 +12,21 @@ only from the wording of the source. There is no row limit and no target.
 club-friendships.csv: clubQ, friendQ (blank when the friend is not on the map),
 friendName, scope (fan-groups, clubs, unclear), status (active, ended, unclear),
 groupsText (the fan groups the source names, blank if it names none), sourceId,
-checkedOn. Scope and status come only from the wording of the source; nothing is
-inferred from rivalries or shared enemies.
+checkedOn, quote (the source's own words behind the status, in the original language,
+15 words at most, one cell). Scope and status come only from the wording of the source;
+nothing is inferred from rivalries or shared enemies. Status active needs present-tense
+wording and ended needs wording that says so; the quote is what lets a person check both.
 
 EXITS 1 on: a clubQ or rivalQ on no data/clubs/*.json, a sourceId
 not in club-culture-sources.csv, a class or source kind
 outside its list, a duplicate row, a missing rivalName,
 a day-level date in the future in a text cell, a row with more values than
 the header has columns; in club-friendships.csv also an unknown friendQ, a scope
-or status outside its list, a club listed as its own friend, a duplicate row.
-WARNS (exit stays 0) on a missing or malformed checkedOn, a club pair that is in
-both the friendships file and the rivalries file (they should not contradict), a club with more
+or status outside its list, a club listed as its own friend, a duplicate row, a quote
+of more than 15 words, and a pair of clubs that is in both the friendships file and the
+rivalries file unless the friendship's status is ended.
+WARNS (exit stays 0) on a missing or malformed checkedOn, a friendship row with no
+quote, a club with more
 than 12 rows in either file (so they can be reviewed for padding), and a
 source no row uses.
 
@@ -39,6 +43,7 @@ STATUSES = ('active', 'ended', 'unclear')
 ORDER_SHOWN = ('active', 'unclear', 'ended')   # the order the club sheet draws them
 KINDS = ('wikipedia', 'club', 'press', 'fan-media')
 REVIEW_OVER = 12
+QUOTE_MAX_WORDS = 15
 MONTHS = 'january|february|march|april|may|june|july|august|september|october|november|december'
 ISO_DAY = re.compile(r'\b(\d{4})-(\d{2})-(\d{2})\b')
 DMY = re.compile(r'\b(\d{1,2})\.?\s+(' + MONTHS + r')\s+(\d{4})\b', re.I)
@@ -157,7 +162,7 @@ for line, r in read('club-rivalries.csv', ['clubQ', 'rivalQ', 'rivalName', 'clas
     seen.add(key)
     if ok: riv.setdefault(r['clubQ'], []).append(r)
 
-for line, r in read('club-friendships.csv', ['clubQ', 'friendQ', 'friendName', 'scope', 'status', 'groupsText', 'sourceId', 'checkedOn']):
+for line, r in read('club-friendships.csv', ['clubQ', 'friendQ', 'friendName', 'scope', 'status', 'groupsText', 'sourceId', 'checkedOn', 'quote']):
     at = f'club-friendships.csv line {line}'
     ok = common(at, r, True)
     if r['friendQ'] and r['friendQ'] not in clubs:
@@ -170,27 +175,35 @@ for line, r in read('club-friendships.csv', ['clubQ', 'friendQ', 'friendName', '
         problems.append(f'{at}: scope "{r["scope"]}" is not one of {", ".join(SCOPES)}'); ok = False
     if r['status'] not in STATUSES:
         problems.append(f'{at}: status "{r["status"]}" is not one of {", ".join(STATUSES)}'); ok = False
-    for col in ('friendName', 'groupsText'):
+    for col in ('friendName', 'groupsText', 'quote'):
         if future_days(r[col]):
             problems.append(f'{at}: {col} holds a future day-level date'); ok = False
+    if not r['quote']:
+        warnings.append(f'{at}: {clubs.get(r["clubQ"], r["clubQ"])} / {r["friendName"]} has no quote (the source\'s own words behind the status)')
+    elif len(r['quote'].split()) > QUOTE_MAX_WORDS:
+        problems.append(f'{at}: the quote is {len(r["quote"].split())} words; {QUOTE_MAX_WORDS} at most'); ok = False
     key = ('fri', r['clubQ'], r['friendQ'] or r['friendName'].casefold())
     if key in seen:
         problems.append(f'{at}: {clubs.get(r["clubQ"], r["clubQ"])} / {r["friendName"]} is entered twice'); ok = False
     seen.add(key)
     if ok: fri.setdefault(r['clubQ'], []).append(r)
 
-# A friendship and a rivalry for the same two clubs should not both be on file: warn, keep both.
+# A pair of clubs may be in both the friendships and the rivalries file only when the friendship
+# has ended: an undated or current friendship cannot be shown next to a rivalry. Exits 1 otherwise.
 rival_pairs = {}
 for q, rs in riv.items():
     for r in rs:
-        rival_pairs[(q, r['rivalQ'] or r['rivalName'].casefold())] = r
+        rival_pairs[(q, r['rivalName'].casefold())] = r
         if r['rivalQ']:
+            rival_pairs[(q, r['rivalQ'])] = r
             rival_pairs[(r['rivalQ'], q)] = r
+            rival_pairs[(q, clubs[r['rivalQ']].casefold())] = r
 for q, rs in fri.items():
     for r in rs:
-        hit = rival_pairs.get((q, r['friendQ'] or r['friendName'].casefold()))
-        if hit:
-            warnings.append(f'{clubs[q]} / {r["friendName"]} is in club-friendships.csv ({r["status"]}) and in club-rivalries.csv ({hit["class"]}); the two should not contradict, check both sources')
+        keys = {r['friendQ'], r['friendName'].casefold(), clubs.get(r['friendQ'], '').casefold()} - {''}
+        hit = next((rival_pairs[(q, k)] for k in sorted(keys) if (q, k) in rival_pairs), None)
+        if hit and r['status'] != 'ended':
+            problems.append(f'{clubs[q]} / {r["friendName"]} is in club-friendships.csv ({r["status"]}) and in club-rivalries.csv ({hit["class"]}); a pair may be in both only when the friendship has ended')
 
 for label, d in (('club-rivalries.csv', riv), ('club-friendships.csv', fri)):
     for q, rs in d.items():
@@ -212,6 +225,7 @@ for q in sorted(fri, key=lambda q: clubs[q]):
     print(f'  {clubs[q]} ({q})')
     for r in sorted(fri[q], key=lambda r: (ORDER_SHOWN.index(r['status']), r['friendName'])):
         print(f'    {r["status"]:7} {r["scope"]:10} {r["friendName"]}  {r["friendQ"] or "(not on the map)"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
+        if r['quote']: print(f'             quote: «{r["quote"]}»')
 for w in warnings: print('WARNING:', w)
 for p in problems: print('PROBLEM:', p)
 if problems:
