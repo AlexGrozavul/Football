@@ -2565,7 +2565,7 @@
   {
    "id": 84819,
    "utcDate": "2026-10-10T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2580,9 +2580,20 @@
     "shortName": null,
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 5,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 5,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2590,7 +2601,7 @@
   {
    "id": 84820,
    "utcDate": "2026-10-10T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2605,9 +2616,20 @@
     "shortName": "Saarbrücken",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/f/ff/1._FC_Saarbr%C3%BCcken.svg/960px-1._FC_Saarbr%C3%BCcken.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2615,7 +2637,7 @@
   {
    "id": 84821,
    "utcDate": "2026-10-10T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2630,9 +2652,20 @@
     "shortName": "Stuttgart II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/VfB_Stuttgart_1893_Logo.svg/960px-VfB_Stuttgart_1893_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2640,7 +2673,7 @@
   {
    "id": 84822,
    "utcDate": "2026-10-10T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2655,9 +2688,20 @@
     "shortName": "Mannheim",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Svwaldhof.svg/960px-Svwaldhof.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 5,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 5
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2665,7 +2709,7 @@
   {
    "id": 84823,
    "utcDate": "2026-10-10T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2680,9 +2724,20 @@
     "shortName": "Rostock",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/F.C._Hansa_Rostock_Logo.svg/960px-F.C._Hansa_Rostock_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2690,7 +2745,7 @@
   {
    "id": 84816,
    "utcDate": "2026-10-10T14:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2705,9 +2760,20 @@
     "shortName": "TSG 1899 Hoffenheim II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

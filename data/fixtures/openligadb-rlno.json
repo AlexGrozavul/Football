@@ -3573,7 +3573,7 @@
   {
    "id": 86309,
    "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3588,9 +3588,20 @@
     "shortName": "1. FC Magdeburg II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3623,7 +3634,7 @@
   {
    "id": 86311,
    "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3638,9 +3649,20 @@
     "shortName": "BFC Dynamo",
     "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2024/fussball/vereine/xxl/72_20230728382.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3648,7 +3670,7 @@
   {
    "id": 86312,
    "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3663,9 +3685,20 @@
     "shortName": "Hertha II",
     "crest": "https://storage.fussballdaten.de/source/1/vereinhaupt/279/originale/hertha-bsc_2.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3723,7 +3756,7 @@
   {
    "id": 86315,
    "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3738,9 +3771,20 @@
     "shortName": "Tasmania",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Tasmania_Berlin_Logo.svg/250px-Tasmania_Berlin_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3773,7 +3817,7 @@
   {
    "id": 86317,
    "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3788,9 +3832,20 @@
     "shortName": "Luckenwalde",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/FSV_63_Luckenwalde_Logo.svg/250px-FSV_63_Luckenwalde_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

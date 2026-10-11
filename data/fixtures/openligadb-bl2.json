@@ -2025,7 +2025,7 @@
   {
    "id": 83611,
    "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -2040,17 +2040,17 @@
     "shortName": "Cottbus",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
    },
-   "homeGoals": 0,
+   "homeGoals": 3,
    "awayGoals": 1,
    "results": [
     {
      "name": "Halbzeit",
-     "home": 0,
-     "away": 0
+     "home": 1,
+     "away": 1
     },
     {
      "name": "Endergebnis",
-     "home": 0,
+     "home": 3,
      "away": 1
     }
    ],
@@ -2061,7 +2061,7 @@
   {
    "id": 83617,
    "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -2076,9 +2076,20 @@
     "shortName": "Hannover",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2086,7 +2097,7 @@
   {
    "id": 83622,
    "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -2101,9 +2112,20 @@
     "shortName": "Dresden",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2111,7 +2133,7 @@
   {
    "id": 83615,
    "utcDate": "2026-10-10T18:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -2126,9 +2148,20 @@
     "shortName": "Wolfsburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/VfL_Wolfsburg_logo_2026.svg/960px-VfL_Wolfsburg_logo_2026.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 4,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 4
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
