@@ -1609,7 +1609,7 @@
   {
    "id": 558880,
    "utcDate": "2026-10-10T14:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1627,14 +1627,14 @@
     "tla": "SPA",
     "crest": "https://crests.football-data.org/6806.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 3,
+   "winner": "DRAW"
   },
   {
    "id": 558879,
    "utcDate": "2026-10-10T16:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1652,14 +1652,14 @@
     "tla": "AZ",
     "crest": "https://crests.football-data.org/682.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558877,
    "utcDate": "2026-10-10T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1677,14 +1677,14 @@
     "tla": "TWE",
     "crest": "https://crests.football-data.org/666.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 558878,
    "utcDate": "2026-10-10T19:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1702,14 +1702,14 @@
     "tla": "NEC",
     "crest": "https://crests.football-data.org/1915.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 558876,
    "utcDate": "2026-10-11T10:15:00Z",
-   "status": "TIMED",
+   "status": "IN_PLAY",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,

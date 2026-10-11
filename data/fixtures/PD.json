@@ -1759,7 +1759,7 @@
   {
    "id": 564698,
    "utcDate": "2026-10-10T12:00:00Z",
-   "status": "TIMED",
+   "status": "CANCELLED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1784,7 +1784,7 @@
   {
    "id": 564699,
    "utcDate": "2026-10-10T14:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1802,14 +1802,14 @@
     "tla": "ATL",
     "crest": "https://crests.football-data.org/78.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 564700,
    "utcDate": "2026-10-10T16:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1827,14 +1827,14 @@
     "tla": "GET",
     "crest": "https://crests.football-data.org/82.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 564702,
    "utcDate": "2026-10-10T19:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1852,9 +1852,9 @@
     "tla": "VIL",
     "crest": "https://crests.football-data.org/94.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 564703,

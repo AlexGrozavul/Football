@@ -7259,7 +7259,7 @@
   {
    "id": 555039,
    "utcDate": "2026-10-10T21:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 30,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7277,14 +7277,14 @@
     "tla": "CRE",
     "crest": "https://crests.football-data.org/4287.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "winner": "DRAW"
   },
   {
    "id": 555038,
    "utcDate": "2026-10-11T00:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 30,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7302,9 +7302,9 @@
     "tla": "VIT",
     "crest": "https://crests.football-data.org/1782.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555030,
