@@ -146,6 +146,15 @@ const server = http.createServer((req, res) => {
   const both = await page.evaluate(() => [document.getElementById('nearPanel').hidden, document.getElementById('routePanel').hidden]);
   check('opening Route closes the Near me panel', both[0] === true && both[1] === false, JSON.stringify(both));
 
+  // ---- 6. the fixture files the meetings are read from: an unplayed match carries no score
+  const fxDir = path.join(ROOT, 'data', 'fixtures'), scored = [];
+  for(const fn of fs.readdirSync(fxDir).filter(n => n.endsWith('.json') && n !== 'index.json' && !n.startsWith('openligadb'))){
+    for(const m of (JSON.parse(fs.readFileSync(path.join(fxDir, fn), 'utf8')).matches || [])){
+      if((m.status === 'SCHEDULED' || m.status === 'TIMED') && (typeof m.homeGoals === 'number' || typeof m.awayGoals === 'number' || m.winner != null)) scored.push(`${fn}#${m.id}`);
+    }
+  }
+  check('no SCHEDULED or TIMED fixture row has a numeric score or a winner', scored.length === 0, scored.join(', '));
+
   check('no script error', !errors.length, errors.join(' | '));
   await page.screenshot({path: path.join(process.env.SHOT_DIR || '/tmp', 'derbies-phone.png')});
   await browser.close(); server.close();

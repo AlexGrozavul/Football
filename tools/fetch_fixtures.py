@@ -120,9 +120,18 @@ def team_fields(raw):
     }
 
 
+# Statuses whose score is a result. football-data.org can send a 0-0 fullTime
+# (and a winner of DRAW) for a match still SCHEDULED or TIMED, which then reads
+# as a real draw; everything else stores no score at all.
+SCORED_STATUSES = ("FINISHED", "AWARDED")
+
+
 def match_fields(raw):
     score = raw.get("score") or {}
     full = score.get("fullTime") or {}
+    if raw.get("status") not in SCORED_STATUSES:
+        full = {}
+        score = {}
     return {
         "id": raw.get("id"),
         "utcDate": raw.get("utcDate"),

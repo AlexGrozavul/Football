@@ -470,11 +470,14 @@
    "why": "Two European giants sharing one stadium, both curve building tifos facing each other. New ground, and closer than Turin - the Allianz Stadium is already attended.",
    "fixtures": [
     {
-     "date": "2026-11-01",
+     "date": "2026-10-31",
      "home": "milan",
      "matchday": 10,
      "saleRoute": "Cuore Rossonero phase then free sale. Card needed well in advance.",
-     "dateSource": "confirmed"
+     "dateSource": "confirmed",
+     "checkedOn": "2026-10-11",
+     "source": "https://www.inter.it/it/notizie/serie-a-2026-27-calendario-anticipi-posticipi-inter-6-12-giornata",
+     "note": "Page read by the user's chat assistant on 2026-10-11, not opened by Code; it states «sabato 31 ottobre alle 20:45 (Milan-Inter)». SA.json has the same slot."
     },
     {
      "date": "2027-02-14",
@@ -3520,7 +3523,7 @@
    "club": "milan",
    "title": "Milan home derby sale phases open",
    "dateEstimate": "2026-10-01",
-   "derivation": "Approx one month before the 1 Nov fixture.",
+   "derivation": "Approx one month before the 31 Oct fixture.",
    "action": "Cuore Rossonero card must already be active. Check acmilan.com.",
    "leadTimeDays": 30,
    "feed": "italy",
