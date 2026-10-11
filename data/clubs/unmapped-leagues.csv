@@ -75,13 +75,13 @@ Q52936055,,BAFA Division One,GB,22
 Q9086321,,Primera Catalana,ES,22
 Q2990902,,Highland Football League,GB,21
 Q3066961,,Galician trainera league,ES,21
-Q316340,,Fußball-Hessenliga,DE,21
 Q322918,,Fußball-Oberliga Niederrhein,DE,21
 Q3957606,,Serie B,IT,21
 Q1126104,,Liga ACB,ES,20
 Q1132191,,All-Ireland League,GB,20
 Q2398542,,Vijfde Klasse,NL,20
 Q316113,,Oberliga Westfalen,DE,20
+Q316340,,Fußball-Hessenliga,DE,20
 Q821097,,Berlin-Liga,DE,20
 Q1610234,,Serie A (calcio a 5),IT,19
 Q2529928,,Essex Senior Football League,GB,19
@@ -159,6 +159,7 @@ Q1645341,,Landesliga Württemberg,DE,12
 Q24008224,,Nationalliga A,CH,12
 Q266043,,Dameneishockey-Bundesliga,AT,12
 Q3066936,,Men's League San Miguel,ES,12
+Q3325446,,División de Honor B de Rugby,ES,12
 Q5070107,,League 1,GB,12
 Q667660,,Swiss League,CH,12
 Q688866,,National League A,CH,12
@@ -169,7 +170,6 @@ Q2269559,,Basketball League Belgium,BE,11
 Q247040,,Fußball-Westfalenliga,DE,11
 Q2494381,,Floorball-Bundesliga,DE,11
 Q25920664,,,ES,11
-Q3325446,,División de Honor B de Rugby,ES,11
 Q3654481,,Scottish Basketball Championship Men,GB,11
 Q44151,,Bezirksliga,DE,11
 Q4825491,,Fußball-Regionalliga Ost,AT,11
@@ -182,6 +182,7 @@ Q875706,,Fußball-Verbandsliga Mecklenburg-Vorpommern,DE,11
 Q1249149,,championnat de France féminin de basket-ball,FR,10
 Q1473324,,Scottish Football League Second Division,GB,10
 Q2331632,,championnat de Polynésie française de football,FR,10
+Q25762,,Promotion League,CH,10
 Q322171,,ProA,DE,10
 Q324154,,Fußball-Oberliga Schleswig-Holstein,DE,10
 Q324698,,Mittelrheinliga,DE,10
@@ -191,12 +192,10 @@ Q979217,,Champ Rugby,GB,10
 Q12874858,,Greek C Men's Basketball League,GR,9
 Q1467826,,Rugby-Union-Europameisterschaft,DE,9
 Q20028073,,Bayernliga Nord,DE,9
-Q25762,,Promotion League,CH,9
 Q2950239,,Scottish Premiership Division Two,GB,9
 Q3950976,,Northern Premier League Division One South,GB,9
 Q4858459,,Northern Premier League Premier Division,GB,9
 Q5284601,,Divisiones Regionales de Fútbol in Canary Islands,ES,9
-Q5511145,,Landesliga Mitte (1963-2012),DE,9
 Q600302,,division d'Honneur,FR,9
 Q6135822,,Supercopa de España femenina de baloncesto,ES,9
 Q641369,,Fußball-Verbandsliga Württemberg,DE,9
@@ -219,6 +218,7 @@ Q4825490,,Fußball-Regionalliga Mitte,AT,8
 Q48803639,,The Hundred,GB,8
 Q492245,,Schweizer Fussballmeisterschaft der Frauen,CH,8
 Q5284652,,Liga Națională,RO,8
+Q5511145,,Landesliga Mitte (1963-2012),DE,8
 Q6123735,,Tercera Asturfútbol,ES,8
 Q687207,,ÖFB Frauen Bundesliga,AT,8
 Q993765,,Fußball-Verbandsliga Baden,DE,8
@@ -227,7 +227,6 @@ Q19601853,,EUHL,AT,7
 Q2135626,,Wearside Football League,GB,7
 Q2261131,,Scottish Premiership,GB,7
 Q2620916,,Bonaire League,NL,7
-Q280002,,Greek A2 Men's Basketball League,GR,7
 Q2951606,,Greek A Women's Football League,GR,7
 Q3712183,,Liga I,RO,7
 Q3718114,,Eccellenza Lombardia,IT,7
@@ -253,6 +252,7 @@ Q18547858,,Liga a IV-a Sibiu,RO,6
 Q20103017,,,ES,6
 Q20798387,,Central European Hockey League,BE;DE;NL,6
 Q2504807,,Liga Femenina de Baloncesto,ES,6
+Q280002,,Greek A2 Men's Basketball League,GR,6
 Q2949046,,National League 1,GB,6
 Q2949826,,Women's Premier League,GB,6
 Q2952038,,Liga I Feminin,RO,6
@@ -516,6 +516,7 @@ Q125740050,,Greek Pre League Men's Volleyball,GR,1
 Q126924470,,Handball-Regionalliga Baden-Württemberg,DE,1
 Q12732217,,Liga a IV-a Covasna,RO,1
 Q12732219,,Liga a IV-a Giurgiu,RO,1
+Q12732221,,Liga a IV-a Iași,RO,1
 Q12732228,,Liga a IV-a Mehedinți,RO,1
 Q1275336,,Endesa,ES,1
 Q12756709,,Kikinda - Novi Becej Municipal League,RS,1

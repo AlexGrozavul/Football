@@ -376,20 +376,6 @@
    "competition": "Liga a II-a"
   },
   {
-   "id": "Q16850839",
-   "name": "CS Știința Miroslava",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Comunal",
-   "capacity": null,
-   "lat": 47.160806,
-   "lon": 27.484972,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q1689705",
    "name": "Jiul Petroșani",
    "leagues": [
@@ -1046,13 +1032,16 @@
    "leagues": [
     "Q1707697"
    ],
-   "tier": 3,
+   "tier": 2,
    "venue": "Stadionul Daniel Prodan",
    "capacity": 18000,
    "lat": 47.799611,
    "lon": 22.891028,
    "city": null,
-   "competition": "Liga a III-a"
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II",
+   "note": "TIER CORRECTED 3 to 2, 2026-10-10 (roster check line 494). Wikidata's only truthy P118 is Liga III, so the club arrived at tier 3. The English 2026-27 Liga II article lists it (stadium and league tables; Other changes: spared from relegation after two clubs withdrew) and the 2026-27 Liga III article lists it in none of its series tables - its Team changes mention it only as spared relegation from Liga II. Same shape as FC Wil: two complete division articles, one list. Not touched: Q629277 Olimpia MCMXXI Satu Mare, a different item that Liga III lists as relegated to Liga IV. To undo, empty the tier cell or delete this row",
+   "manual": true,
+   "competition": "Liga a II-a"
   }
  ]
 }
