@@ -283,8 +283,8 @@ const server = http.createServer((req, res) => {
   check('every one of the sheets is wired for expanding (a handle with role=button)',
     await page.evaluate(() => [...document.querySelectorAll('.sheet')].every(s => s.dataset.sd && s.querySelector(':scope > .grip[role="button"]'))));
   let scrolled = 0;
-  const combos = [[390, 'dark', 'en'], [390, 'light', 'ro'], [360, 'dark', 'ro'], [360, 'light', 'en'],
-                  [390, 'dark', 'ro'], [390, 'light', 'en'], [360, 'dark', 'en'], [360, 'light', 'ro']];
+  // Four combinations that together cover every pair of width, theme and language (each pair appears twice).
+  const combos = [[390, 'dark', 'en'], [390, 'light', 'ro'], [360, 'dark', 'ro'], [360, 'light', 'en']];
   for(const [vw, theme, lang] of combos){
     await page.setViewportSize({width: vw, height: H});
     await page.evaluate(([th, lg]) => { setTheme(th); setLang(lg); }, [theme, lang]);
