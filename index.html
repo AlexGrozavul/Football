@@ -221,7 +221,10 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   .sheet[hidden]{display:flex;transform:translateY(105%);visibility:hidden;
     transition:transform .22s ease,visibility 0s .22s}
   .sheet .grip{padding:7px 0 2px;display:flex;justify-content:center;cursor:grab;
-    touch-action:none}
+    touch-action:none;position:relative;user-select:none;-webkit-user-select:none}
+  /* A taller target than the 13 px strip, reaching up over the sheet's edge only: below it is the title row's Close button. */
+  .sheet .grip::before{content:'';position:absolute;left:0;right:0;top:-11px;height:11px}
+  .sheet .grip:focus-visible{outline:2px solid var(--t3);outline-offset:-2px;border-radius:8px}
   .sheet .grip i{width:38px;height:4px;border-radius:3px;background:var(--line);display:block}
   .sheet .shead{display:flex;align-items:flex-start;gap:10px;padding:2px 14px 10px;
     border-bottom:1px solid var(--line);touch-action:none}
@@ -340,6 +343,9 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
      the route panel, and the tap-the-map bar above both. */
   .sheet.route{z-index:1000;max-height:62%}
   #sheet{z-index:1001}
+  /* Full size (see sheetDrag): from the top safe-area inset down to the bottom bar. The sheets sit in
+     #panes, which ends where the bar begins, so 100% is already dvh minus the bar. */
+  .sheet[data-size="full"]{max-height:none;height:calc(100% - env(safe-area-inset-top))}
   .route .pt{margin-top:10px}
   .route .pt label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
     color:var(--dim);margin-bottom:4px}
@@ -964,6 +970,8 @@ const I18N = {
     "sheet.ground": "Ground",
     "sheet.capacity": "Capacity",
     "sheet.competition": "Competition",
+    "sheet.expand": "Expand",
+    "sheet.collapse": "Collapse",
     "sheet.distance": "Distance",
     "sheet.byRoad": "≈ {km} km by road (estimate) from {home}",
     "sheet.straight": "Straight line × {m}. Not a travel time.",
@@ -2034,6 +2042,9 @@ const I18N = {
     "sheet.ground": "Stadion",
     "sheet.capacity": "Capacitate",
     "sheet.competition": "Competiție",
+    /* RO unchecked by the user */
+    "sheet.expand": "Extinde",
+    "sheet.collapse": "Restrânge",
     "sheet.distance": "Distanță",
     "sheet.byRoad": "≈ {km} km pe drum (estimare) de la {home}",
     "sheet.straight": "Linie dreaptă × {m}. Nu este un timp de călătorie.",
@@ -3042,6 +3053,7 @@ function applyLang(){
   document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
   document.querySelectorAll('[data-i18n-ph]').forEach(el => el.setAttribute('placeholder', t(el.dataset.i18nPh)));
   document.documentElement.lang = LANG;
+  refreshSheetLabels();
   document.getElementById('asheet').setAttribute('aria-label', t('att.sheet.aria'));
   document.querySelectorAll('#ssheet button[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
   /* The few words the page writes itself into the markup. */
@@ -4392,30 +4404,143 @@ async function ticketsHtml(club){
   document.getElementById('sheetClose').addEventListener('click', closeSheet);
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSheet(); });
 
-  dragToClose(sheet, closeSheet);
+  sheetDrag(sheet, closeSheet);
 })();
 
-/* Drag a sheet's handle or title down to close it. Used by the club
-   sheet and the bucket entry sheet. */
-function dragToClose(sheet, close){
-  let y0 = null;
-  const grab = sheet.querySelectorAll('.grip, .shead');
-  grab.forEach(el => el.addEventListener('pointerdown', e => {
-    if(e.target.closest('button')) return;
-    y0 = e.clientY; sheet.style.transition = 'none';
-    el.setPointerCapture(e.pointerId);
-  }));
-  grab.forEach(el => el.addEventListener('pointermove', e => {
-    if(y0 === null) return;
-    sheet.style.transform = `translateY(${Math.max(0, e.clientY - y0)}px)`;
-  }));
-  const drop = e => {
-    if(y0 === null) return;
-    const dy = e.clientY - y0; y0 = null;
-    sheet.style.transition = ''; sheet.style.transform = '';
-    if(dy > 70) close();
+/* Every sheet and panel (anything with class "sheet") shares this one mechanism.
+   Two sizes: half (the CSS size, unchanged) and full (data-size="full": the
+   top safe-area inset down to the bottom bar). Dragging the handle or the
+   title row up past a third of the travel, or flicking up, snaps to full;
+   dragging down from full snaps back to half; tapping the handle toggles.
+   From half, a drag down still closes when the sheet has a close function
+   (as it always did). A sheet reopens at half. The body scrolls on its own
+   and never resizes the sheet. A NEW SHEET MUST CALL sheetDrag(); the boot
+   code also calls it for every .sheet that has not been wired. */
+const SHEET_FLICK = 0.5;                         // px per ms
+function sheetSafeTop(){
+  let p = document.getElementById('sdProbe');
+  if(!p){
+    p = document.createElement('div'); p.id = 'sdProbe';
+    p.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;height:0;padding-top:env(safe-area-inset-top)';
+    document.body.appendChild(p);
+  }
+  return parseFloat(getComputedStyle(p).paddingTop) || 0;
+}
+function refreshSheetLabels(){
+  document.querySelectorAll('.sheet > .grip[role="button"]').forEach(g =>
+    g.setAttribute('aria-label', t(g.parentElement.dataset.size === 'full' ? 'sheet.collapse' : 'sheet.expand')));
+}
+function sheetDrag(sheet, close){
+  if(sheet.dataset.sd) return;
+  sheet.dataset.sd = '1'; sheet.dataset.size = 'half';
+  let grip = sheet.querySelector(':scope > .grip');
+  if(!grip){
+    grip = document.createElement('div'); grip.className = 'grip'; grip.innerHTML = '<i></i>';
+    sheet.insertBefore(grip, sheet.firstChild);
+  }
+  grip.setAttribute('role', 'button'); grip.tabIndex = 0;
+  const head = sheet.querySelector(':scope > .shead');
+  const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clearInline = () => { sheet.style.height = ''; sheet.style.maxHeight = ''; sheet.style.transition = ''; sheet.style.transform = ''; };
+  const setSize = size => { sheet.dataset.size = size; clearInline(); refreshSheetLabels(); };
+  const fullPx = () => Math.max(0, sheet.offsetParent.clientHeight - sheetSafeTop());
+  const halfPx = () => {                        // the CSS size, measured with the full rule and inline sizes lifted
+    if(sheet.dataset.size !== 'full') return sheet.offsetHeight;
+    const h = sheet.style.height, m = sheet.style.maxHeight;
+    sheet.dataset.size = 'half'; sheet.style.height = ''; sheet.style.maxHeight = '';
+    const px = sheet.offsetHeight;
+    sheet.dataset.size = 'full'; sheet.style.height = h; sheet.style.maxHeight = m;
+    return px;
   };
-  grab.forEach(el => { el.addEventListener('pointerup', drop); el.addEventListener('pointercancel', drop); });
+  /* Animate from the height now on screen to the target size, then hand the size back to the CSS. */
+  const snap = (target, to) => {
+    const done = () => setSize(target);
+    sheet.style.maxHeight = 'none'; sheet.style.transform = '';
+    if(reduced() || Math.abs(sheet.offsetHeight - to) < 1){ done(); return; }
+    sheet.style.transition = 'height .22s ease';
+    sheet.style.height = to + 'px';
+    let over = false;
+    const end = () => { if(over) return; over = true; sheet.removeEventListener('transitionend', onEnd); done(); };
+    const onEnd = e => { if(e.target === sheet && e.propertyName === 'height') end(); };
+    sheet.addEventListener('transitionend', onEnd);
+    setTimeout(end, 320);
+  };
+  const toggle = () => {
+    const F = fullPx(), H = halfPx(), full = sheet.dataset.size === 'full';
+    if(!full && F - H < 8) return;              // nothing to gain: the sheet already fills the space
+    sheet.style.transition = 'none'; sheet.style.maxHeight = 'none';
+    sheet.style.height = (full ? F : H) + 'px'; sheet.offsetHeight;
+    snap(full ? 'half' : 'full', full ? H : F);
+  };
+
+  let d = null, dragEnded = -1e9, lastTap = -1e9;
+  const down = e => {
+    if(d || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    if(e.target.closest('button, a, input, select, textarea, summary, label')) return;
+    const full = sheet.dataset.size === 'full';
+    d = {el: e.currentTarget, id: e.pointerId, y0: e.clientY, full, F: fullPx(), H: halfPx(), moved: false,
+         pts: [[e.timeStamp, e.clientY]]};
+    d.el.setPointerCapture(e.pointerId);
+  };
+  const move = e => {
+    if(!d || e.pointerId !== d.id) return;
+    const dy = e.clientY - d.y0;
+    if(!d.moved){
+      if(Math.abs(dy) < 4) return;
+      d.moved = true; sheet.style.transition = 'none'; sheet.style.maxHeight = 'none';
+    }
+    d.pts.push([e.timeStamp, e.clientY]); if(d.pts.length > 6) d.pts.shift();
+    if(d.full){                                  // shrinking from full, not below the half size
+      sheet.style.transform = '';
+      sheet.style.height = Math.min(d.F, Math.max(d.H, d.F - Math.max(0, dy))) + 'px';
+    } else if(dy < 0 && d.F - d.H >= 8){         // growing from half, not past full
+      sheet.style.transform = '';
+      sheet.style.height = Math.min(d.F, d.H - dy) + 'px';
+    } else {                                     // pulling a half sheet down: as before, it follows the finger and closes
+      sheet.style.height = d.H + 'px';
+      sheet.style.transform = close ? `translateY(${Math.max(0, dy)}px)` : '';
+    }
+  };
+  const up = e => {
+    if(!d || e.pointerId !== d.id) return;
+    const s = d; d = null;
+    if(!s.moved){                                // a tap on the handle toggles here; the click that follows is ignored
+      if(s.el === grip && e.type === 'pointerup'){ lastTap = performance.now(); toggle(); }
+      return;
+    }
+    dragEnded = performance.now();
+    const dy = e.clientY - s.y0, a = s.pts[0], b = s.pts[s.pts.length - 1];
+    const v = b[0] > a[0] ? (b[1] - a[1]) / (b[0] - a[0]) : 0;    // px per ms, negative is up
+    const travel = s.F - s.H;
+    if(s.full){
+      snap(dy > travel / 3 || (v > SHEET_FLICK && dy > 8) ? 'half' : 'full', dy > travel / 3 || (v > SHEET_FLICK && dy > 8) ? s.H : s.F);
+    } else if(dy < 0 && travel >= 8){
+      const go = -dy > travel / 3 || (v < -SHEET_FLICK && dy < -8);
+      snap(go ? 'full' : 'half', go ? s.F : s.H);
+    } else if(close && dy > 70){
+      clearInline(); close();
+    } else {
+      snap('half', s.H);
+    }
+  };
+  [grip, head].forEach(el => {
+    if(!el) return;
+    el.addEventListener('pointerdown', down);
+    el.addEventListener('pointermove', move);
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+  });
+  grip.addEventListener('click', () => { const n = performance.now(); if(n - dragEnded > 60 && n - lastTap > 500) toggle(); });   // keyboard and assistive tech click without pointer events
+  grip.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
+
+  /* A sheet reopens at half. Looked at once per batch of changes, so a close and reopen in the same
+     step (a redraw of the open sheet) keeps its size. */
+  let wasHidden = sheet.hidden;
+  new MutationObserver(() => {
+    if(sheet.hidden){ wasHidden = true; return; }
+    if(wasHidden){ wasHidden = false; setSize('half'); }
+  }).observe(sheet, {attributes: true, attributeFilter: ['hidden']});
+  refreshSheetLabels();
 }
 
 /* ------------------------------------------------------------- route */
@@ -6844,7 +6969,7 @@ function openCSheet(id){
   document.getElementById('compSearch').addEventListener('input', e => { COMP.q = e.target.value; renderCompList(); updatePanelCount(); });
   document.getElementById('csheetClose').addEventListener('click', closeCSheet);
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeCSheet(); });
-  dragToClose(document.getElementById('csheet'), closeCSheet);
+  sheetDrag(document.getElementById('csheet'), closeCSheet);
 })();
 
 /* ---------------------------------------------- the bucket entry sheet */
@@ -6935,7 +7060,7 @@ function showBucketTab(tab){
   const sheet = document.getElementById('bsheet');
   document.getElementById('bsheetClose').addEventListener('click', closeBSheet);
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeBSheet(); });
-  dragToClose(sheet, closeBSheet);
+  sheetDrag(sheet, closeBSheet);
 })();
 
 /* -------------------------------------------------------------- Me tab
@@ -8375,7 +8500,7 @@ function attSupport(m){
     if(e.key !== 'Escape') return;
     if(document.getElementById('amover')) mediaCloseViewer(); else closeASheet();
   });
-  dragToClose(document.getElementById('asheet'), closeASheet);
+  sheetDrag(document.getElementById('asheet'), closeASheet);
   const body = document.getElementById('asheetBody');
   const openKey = () => (body.dataset.open || '').split(/:(.*)/)[1] || '';
   document.getElementById('meMatches').addEventListener('click', e => {        // the paste box: checked whole, then stored on this device only
@@ -8467,9 +8592,12 @@ function attSupport(m){
     if(th) setTheme(th.dataset.theme);
   });
   document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
-  dragToClose(sheet, close);
+  sheetDrag(sheet, close);
   window.closeSSheet = close;
 })();
+
+/* Every sheet and panel gets the shared expand-to-full mechanism (the ones with a close function were wired above). */
+document.querySelectorAll('.sheet').forEach(el => sheetDrag(el));
 
 /* -------------------------------------------------------------- boot */
 

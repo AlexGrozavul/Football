@@ -21,6 +21,11 @@
 //     "No upcoming window recorded" when what is recorded is all past, and never "none ahead".
 //  6. For every club with any ticket information, the sheet, with every section opened, is no
 //     wider than the screen.
+//  7. (since 2026-10-11) Every sheet and panel - found by looking for class "sheet" in the page, then
+//     opened with its real trigger - expands to full by dragging its handle up (real touch events),
+//     returns to half by tapping the handle or dragging down, scrolls its content in full, closes from
+//     full and reopens at half; the map does not move during a drag; nothing overflows sideways. At
+//     390 and 360 px wide, in both themes and both languages. A sheet with no trigger below fails.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
@@ -234,6 +239,179 @@ const server = http.createServer((req, res) => {
       withNext.push(qid);
   }
   check(`no sheet shows a Next window line or a "Typically opens" line (${onMap.length} checked)`, !withNext.length, withNext.join(','));
+
+  // ---- 7. Every sheet and panel expands to full by dragging, and comes back
+  const cdp = await ctx.newCDPSession(page);
+  const touch = (type, x, y) => cdp.send('Input.dispatchTouchEvent', {type, touchPoints: type === 'touchEnd' ? [] : [{x, y}]});
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const dragBy = async (x, y0, y1, {steps = 8, gap = 16, mid = null} = {}) => {
+    await touch('touchStart', x, y0);
+    for(let i = 1; i <= steps; i++){
+      await touch('touchMove', x, y0 + (y1 - y0) * i / steps);
+      if(gap) await sleep(gap);
+      if(mid && i === Math.floor(steps / 2)) await mid();
+    }
+    await touch('touchEnd');
+  };
+  const mapState = () => page.evaluate(() => { const c = MAP.getCenter(); return [c.lat, c.lng, MAP.getZoom()]; });
+  const mapStill = async () => {                     // wait until a fly-to has ended
+    let a = await mapState();
+    for(let i = 0; i < 20; i++){ await sleep(250); const b = await mapState(); if(JSON.stringify(a) === JSON.stringify(b)) return b; a = b; }
+    return a;
+  };
+  const goPane = async pane => { await page.click(`nav button[data-pane=${pane}]`); await page.waitForTimeout(250); };
+  // How each sheet is really opened. A sheet found in the page with no entry here fails the test.
+  const TRIGGER = {
+    sheet: async () => { await goPane('map'); await page.fill('#searchInput', 'Bayern'); await page.click('#searchHits button'); },
+    routePanel: async () => { await goPane('map'); await page.click('#routeChip'); },
+    nearPanel: async () => { await goPane('map'); await page.click('#nearChip'); },
+    coveragePanel: async () => { await goPane('map'); await page.click('#zoomChip'); },
+    bsheet: async () => {
+      await goPane('bucket'); await page.click('#tabCal');
+      for(let i = 0; i < 16 && !(await page.$('#calBody .calitem')); i++){ await page.click('#calBody [data-cal=next]'); await page.waitForTimeout(120); }
+      await page.click('#calBody .calitem');
+    },
+    asheet: async () => { await goPane('me'); await page.click('#meTabMatches'); await page.waitForSelector('#meMatches .acard'); await page.click('#meMatches .acard'); },
+    csheet: async () => { await goPane('competitions'); await page.waitForSelector('#compBody .comprow'); await page.click('#compBody .comprow'); },
+    filterPanel: async () => { await goPane('bucket'); await page.click('#bfChip'); },
+    ssheet: async () => { await goPane('me'); await page.click('#settingsBtn'); },
+  };
+  const LABEL = {en: ['Expand', 'Collapse'], ro: ['Extinde', 'Restrânge']};
+  const sheetIds = await page.evaluate(() => [...document.querySelectorAll('.sheet')].map(e => e.id));
+  console.log('    sheets and panels found (class "sheet"): ' + sheetIds.join(', '));
+  check('every sheet and panel has a trigger in this test', sheetIds.every(id => TRIGGER[id]), sheetIds.filter(id => !TRIGGER[id]).join(','));
+  check('every one of the sheets is wired for expanding (a handle with role=button)',
+    await page.evaluate(() => [...document.querySelectorAll('.sheet')].every(s => s.dataset.sd && s.querySelector(':scope > .grip[role="button"]'))));
+  let scrolled = 0;
+  const combos = [[390, 'dark', 'en'], [390, 'light', 'ro'], [360, 'dark', 'ro'], [360, 'light', 'en'],
+                  [390, 'dark', 'ro'], [390, 'light', 'en'], [360, 'dark', 'en'], [360, 'light', 'ro']];
+  for(const [vw, theme, lang] of combos){
+    await page.setViewportSize({width: vw, height: H});
+    await page.evaluate(([th, lg]) => { setTheme(th); setLang(lg); }, [theme, lang]);
+    await page.waitForTimeout(300);
+    for(const id of sheetIds.filter(i => TRIGGER[i])){
+      const tag = `${vw}px ${theme} ${lang} #${id}`;
+      const geo = () => page.evaluate(id => {
+        const s = document.getElementById(id), r = s.getBoundingClientRect(), g = s.querySelector(':scope > .grip');
+        return {hidden: s.hidden, size: s.dataset.size, h: r.height, top: r.top, bottom: r.bottom, left: r.left, right: r.right,
+          navTop: document.querySelector('nav').getBoundingClientRect().top, navH: document.querySelector('nav').getBoundingClientRect().height,
+          label: g && g.getAttribute('aria-label'), docW: document.documentElement.scrollWidth, vh: innerHeight, vw: innerWidth};
+      }, id);
+      const box = sel => page.locator(sel).first().boundingBox();
+      const open = async () => {
+        await TRIGGER[id]();
+        await page.waitForFunction(id => { const s = document.getElementById(id); return !s.hidden && !/Loading|Se încarcă/.test(s.innerText); }, id, {timeout: 30000});
+        await page.waitForTimeout(400);
+        if(['sheet', 'routePanel', 'nearPanel', 'coveragePanel'].includes(id)) await mapStill();
+      };
+      const isFull = g => Math.abs(g.h - (g.vh - g.navH)) <= 1.5 && Math.abs(g.bottom - g.navTop) <= 1.5 && g.top <= 1.5;
+      const grip = async () => { const b = await box(`#${id} > .grip`); return [b.x + b.width / 2, b.y + b.height / 2]; };
+      await open();
+      const g0 = await geo();
+      check(`${tag}: opens at half, handle labelled "${LABEL[lang][0]}"`, g0.size === 'half' && g0.label === LABEL[lang][0] && !isFull(g0), JSON.stringify(g0));
+      const travel = (g0.vh - g0.navH) - g0.h;
+      check(`${tag}: there is room to expand (${Math.round(travel)} px)`, travel > 30, String(travel));
+      const m0 = await mapState();
+      // Dragging the handle up, partway: the sheet follows the finger, the map stays put, release past a third snaps to full.
+      let [gx, gy] = await grip();
+      let midH = 0, midMap = null;
+      await dragBy(gx, gy, gy - travel * 0.55, {mid: async () => { midH = (await geo()).h; midMap = await mapState(); }});
+      await page.waitForTimeout(380);
+      let g1 = await geo();
+      check(`${tag}: the sheet followed the finger during the drag`, midH > g0.h + 5 && midH < g1.h + 1, `${g0.h} -> ${midH} -> ${g1.h}`);
+      check(`${tag}: dragging the handle up reaches full (${Math.round(g1.h)} of ${g1.vh - g1.navH}, bottom bar visible)`, g1.size === 'full' && isFull(g1), JSON.stringify(g1));
+      check(`${tag}: handle now labelled "${LABEL[lang][1]}"`, g1.label === LABEL[lang][1], String(g1.label));
+      check(`${tag}: the map centre and zoom did not change during or after the drag`,
+        JSON.stringify(midMap) === JSON.stringify(m0) && JSON.stringify(await mapState()) === JSON.stringify(m0), `${m0} / ${midMap}`);
+      check(`${tag}: the bottom bar is still visible and tappable in full`, await page.evaluate(() => {
+        const b = document.querySelector('nav button[data-pane=bucket]').getBoundingClientRect();
+        const el = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
+        return !!el && !!el.closest('nav'); }));
+      const over = await overflowing('#' + id);
+      check(`${tag}: in full, nothing overflows sideways`, g1.docW <= g1.vw + 1 && g1.left >= -1 && g1.right <= g1.vw + 1 && !over.length, over.slice(0, 3).join(' | '));
+      // Content still scrolls in full, by touch, and a scroll does not resize the sheet.
+      const bd = await page.evaluate(id => { const b = [...document.getElementById(id).querySelectorAll(':scope > .sbody')].find(x => !x.hidden);
+        const r = b.getBoundingClientRect(); return {sel: '#' + id + ' > .sbody:not([hidden])', can: b.scrollHeight > b.clientHeight + 6, x: r.x + r.width / 2, y: r.y + r.height * 0.75, h: r.height, ob: getComputedStyle(b).overscrollBehaviorY}; }, id);
+      check(`${tag}: the content area has overscroll-behavior: contain`, bd.ob === 'contain', bd.ob);
+      if(bd.can){
+        scrolled++;
+        await dragBy(bd.x, bd.y, bd.y - Math.min(140, bd.h * 0.6), {steps: 8, gap: 16});
+        await page.waitForTimeout(250);
+        const sc = await page.evaluate(sel => document.querySelector(sel).scrollTop, bd.sel);
+        const g2 = await geo();
+        check(`${tag}: content scrolls in full, and the sheet keeps its size`, sc > 0 && g2.size === 'full' && Math.abs(g2.h - g1.h) <= 1, `scrollTop ${sc}, height ${g1.h} -> ${g2.h}`);
+        await page.evaluate(sel => { document.querySelector(sel).scrollTop = 0; }, bd.sel);
+      }
+      // Title row stays at the top in full.
+      const hd = await page.evaluate(id => { const h = document.getElementById(id).querySelector(':scope > .shead').getBoundingClientRect(); return {top: h.top, bottom: h.bottom}; }, id);
+      const sc0 = await geo();
+      check(`${tag}: in full the title row is at the top of the sheet`, hd.top >= sc0.top - 0.5 && hd.top - sc0.top < 40, `${hd.top} vs ${sc0.top}`);
+      // Tap the handle: back to half.
+      [gx, gy] = await grip();
+      await page.touchscreen.tap(gx, gy);
+      await page.waitForTimeout(380);
+      let g3 = await geo();
+      check(`${tag}: tapping the handle returns to half (${Math.round(g3.h)} against ${Math.round(g0.h)})`, g3.size === 'half' && Math.abs(g3.h - g0.h) <= 1.5 && g3.label === LABEL[lang][0], JSON.stringify(g3));
+      // Tap again to expand, then drag the title row down.
+      [gx, gy] = await grip();
+      await page.touchscreen.tap(gx, gy);
+      await page.waitForTimeout(380);
+      g1 = await geo();
+      check(`${tag}: tapping the handle at half goes to full`, g1.size === 'full' && isFull(g1), JSON.stringify(g1));
+      const hb = await box(`#${id} > .shead`);
+      await dragBy(hb.x + 20, hb.y + hb.height / 2, hb.y + hb.height / 2 + travel * 0.6);
+      await page.waitForTimeout(380);
+      g3 = await geo();
+      check(`${tag}: dragging the title row down from full returns to half, not closed`, g3.size === 'half' && !g3.hidden && Math.abs(g3.h - g0.h) <= 1.5, JSON.stringify(g3));
+      // A short, fast flick up goes to full; a short slow drag does not.
+      [gx, gy] = await grip();
+      await dragBy(gx, gy, gy - 14, {steps: 4, gap: 0});
+      await page.waitForTimeout(380);
+      g3 = await geo();
+      check(`${tag}: a short slow drag (14 px) does not expand`, g3.size === 'half' && Math.abs(g3.h - g0.h) <= 1.5, JSON.stringify(g3));
+      await dragBy(gx, gy, gy - 60, {steps: 3, gap: 2});
+      await page.waitForTimeout(380);
+      g3 = await geo();
+      check(`${tag}: a flick up goes to full`, g3.size === 'full' && isFull(g3), JSON.stringify(g3));
+      // Dragging down from full a small way springs back to full.
+      [gx, gy] = await grip();
+      await dragBy(gx, gy, gy + 10, {steps: 4, gap: 16});
+      await page.waitForTimeout(380);
+      g3 = await geo();
+      check(`${tag}: a small drag down from full springs back to full`, g3.size === 'full' && isFull(g3), JSON.stringify(g3));
+      // Close from full, reopen: half.
+      await page.click(`#${id} .shead .x`, {timeout: 4000}).catch(() => {});
+      await page.waitForTimeout(350);
+      check(`${tag}: Close works from full`, (await geo()).hidden);
+      await open();
+      const g4 = await geo();
+      check(`${tag}: reopens at half, never at full`, g4.size === 'half' && !isFull(g4) && Math.abs(g4.h - g0.h) <= 1.5, JSON.stringify(g4));
+      // A drag that starts in the content never resizes the sheet.
+      const bd2 = await page.evaluate(id => { const b = [...document.getElementById(id).querySelectorAll(':scope > .sbody')].find(x => !x.hidden); const r = b.getBoundingClientRect();
+        return {x: r.x + r.width / 2, y: r.y + r.height * 0.8, h: r.height}; }, id);
+      await dragBy(bd2.x, bd2.y, bd2.y - Math.min(120, bd2.h * 0.7));
+      await page.waitForTimeout(300);
+      const g5 = await geo();
+      check(`${tag}: dragging in the content area does not resize the sheet`, g5.size === 'half' && Math.abs(g5.h - g0.h) <= 1.5, JSON.stringify(g5));
+      // Reduced motion: the size changes at once, with no animation.
+      if(vw === 390 && theme === 'dark' && lang === 'en'){
+        await page.emulateMedia({reducedMotion: 'reduce'});
+        const rm = await page.evaluate(id => { const s = document.getElementById(id); s.querySelector(':scope > .grip').click();
+          const a = [s.dataset.size, s.style.transition, s.style.height]; s.querySelector(':scope > .grip').click(); return [...a, s.dataset.size]; }, id);
+        await page.emulateMedia({reducedMotion: 'no-preference'});
+        check(`${tag}: with reduced motion the size changes at once, without a transition`, rm[0] === 'full' && rm[1] === '' && rm[2] === '' && rm[3] === 'half', rm.join('|'));
+      }
+      // Keyboard: Enter on the handle toggles.
+      await page.evaluate(id => document.getElementById(id).querySelector(':scope > .grip')
+        .dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', bubbles: true, cancelable: true})), id);
+      await page.waitForTimeout(380);
+      check(`${tag}: Enter on the handle expands`, (await geo()).size === 'full');
+      await page.click(`#${id} .shead .x`, {timeout: 4000}).catch(() => {});
+      await page.waitForTimeout(350);
+    }
+  }
+  check('content was scrolled in full on at least three sheets (the others fit in full)', scrolled >= 3, String(scrolled));
+  await page.setViewportSize({width: W, height: H});
 
   check('no script error', !errors.length, errors.join(' | '));
   await browser.close(); server.close();

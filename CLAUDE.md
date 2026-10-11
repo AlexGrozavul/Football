@@ -603,6 +603,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   on the sheet as written, the Next window line naming only that club's
   own entries, never a disputed one, always labelled, and never an
   estimate to the day.
+- **All sheets and panels share one expand-to-full mechanism (`sheetDrag()` in `index.html`, 2026-10-11): drag the handle or title row up for full size, tap the handle to toggle, a sheet reopens at half. New sheets must use it (any `.sheet` is wired at boot); `tools/test_layout.js` section 7 finds every `.sheet` and fails one with no trigger.**
 - `tools/test_layout.js` — added 2026-10-03: the phone-layout problems
   Alexandru saw on a real phone, at 390x844 with the real data. Fails if
   the Ticket info or Bucket list tab scrolls sideways or any card or tag
