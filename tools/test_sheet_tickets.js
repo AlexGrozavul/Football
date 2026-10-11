@@ -27,7 +27,9 @@ const check = (name, ok, detail='') => { results.push(ok); console.log((ok ? 'PA
 
 const CLUBS = [['VfB Stuttgart', 'Q4512'], ['Karlsruher SC', 'Q105853'], ['1. FC Kaiserslautern', 'Q8466'],
   ['Stuttgarter Kickers', 'Q170105'], ['Poli Timișoara', 'Q4654417'], ['UTA Arad', 'Q680770'],
-  ['FC Bayern München', 'Q15789'], ['1. FC Nürnberg', 'Q15786'], ['Inter', 'Q631']];
+  ['FC Bayern München', 'Q15789'], ['1. FC Nürnberg', 'Q15786'], ['Inter', 'Q631'], ['Eintracht Frankfurt', 'Q38245']];
+// Clubs whose every researched row is checked on the sheet, text against the files (2026-10-11).
+const FULL_ROWS = ['Q38245'];
 
 // A small CSV reader for the checks: quoted cells, doubled quotes.
 function csv(file){
@@ -49,6 +51,7 @@ const links = csv('data/football-rules-links.csv');
 const tickets = csv('data/club-tickets.csv');
 const windows = csv('data/club-ticket-windows.csv');
 const countryRules = csv('data/country-ticket-rules.csv');
+const clubRules = csv('data/club-ticket-rules.csv'), phases = csv('data/club-ticket-phases.csv'), demand = csv('data/club-ticket-demand.csv');
 const leaves = obj => Object.entries(obj).flatMap(([k, v]) => k === 'id' || k === 'name' ? [] :
   v && typeof v === 'object' && !Array.isArray(v) ? leaves(v) : Array.isArray(v) ? v.filter(x => typeof x === 'string') :
   typeof v === 'string' ? [v] : []);
@@ -121,6 +124,18 @@ const server = http.createServer((req, res) => {
       const flat = norm(S.text);
       const missing = entries.flatMap(leaves).filter(v => !flat.includes(norm(v)));
       check(`${label}: every text field of the football-rules.json entry is on the sheet, as written`, !missing.length, missing.join(' | '));
+    }
+    if(FULL_ROWS.includes(qid)){
+      const flat = norm(S.text), mine = r => r.clubQid === qid && (r.team || 'men') === 'men';
+      const miss = [...clubRules.filter(mine).filter(r => !flat.includes(norm(r.rule))).map(r => `rule ${r.topic}`),
+        ...windows.filter(mine).filter(r => !flat.includes(norm(r.label))).map(r => `window ${r.window}`),
+        ...phases.filter(mine).filter(r => !flat.includes(norm(r.buyers))).map(r => `phase ${r.window}/${r.phase}`)];
+      check(`${label}: every rule, window label and phase in the files is on the sheet`, !miss.length, miss.join(' | '));
+      const nd = await page.evaluate(() => { const d = [...document.querySelectorAll('#sheetTix details')]
+        .find(x => x.querySelector(':scope > summary')?.textContent.startsWith('Sell-out record'));
+        return d ? d.querySelectorAll(':scope > .item').length : -1; });
+      const want = demand.filter(mine).length;
+      check(`${label}: Sell-out record holds all ${want} rows of the file`, want ? nd === want : nd === -1, `shown ${nd}`);
     }
     // Sale dates are shown only on the Bucket list: no Next window line, no window date line.
     check(`${label}: no sale date on the sheet - no Next window line, no "Typically opens"`,

@@ -2004,6 +2004,32 @@ and "Your notes" show under one club. Written in the shape of the KSC rows:
   therefore `varied-by-fixture` (a new value) with the fixtures in its
   `timing` and note. Alexandru's call (Known open problems).
 
+**Eintracht Frankfurt, 2026-10-11 - mostly unverified, because no club
+page could be opened.** Researched for an outside buyer (a member of no
+club, in Germany but not Frankfurt, two tickets together), Bundesliga home
+games only: the 2026-27 season article lists no European competition.
+`Q38245`, the only Frankfurt item on the map; **no `clubs` entry in
+`football-rules.json` and no link line**, so the sheet has no "Your notes".
+1 club row, 1 window, 3 phases, 14 rules (5 of them gaps), 2 demand rows,
+no price rows, 8 sources (`F1`-`F8`), no country row.
+- **Access.** eintracht.de, wochenblatt-reporter.de, hessenschau.de,
+  journal-frankfurt.de, diefalsche9.de and goal.com did not resolve from the
+  session (DNS failure through the sandbox proxy); web.archive.org was
+  refused by the fetch tool. Only Wikipedia opened. So every sale fact rests
+  on press the coordinator read and Code did not open (`F1`-`F5`, labelled
+  so), and is `unverified`: F1-F3 are one outlet, one source.
+- **What it says.** Summer 2026: home games sold in batches, a 24-hour
+  members' sale (members from 7, first come first served, mobile only,
+  account linked in the app's wallet), then a free sale only if tickets
+  remained; up to 4 (Bremen) or 2 (Schalke, Bayern) per member; Bayern
+  (matchday 17) sold in August before its kickoff was fixed. Ticketbörse at
+  face value (2023 and undated reports). Membership fee, waiting period,
+  prices, risk classification and personalisation: **not read**, written as
+  gap rows. `not-stated` was added to the demand outcomes (2025-26: no
+  source says sold out).
+- **Capacity**: 60,100 from 2026-27 (German Wikipedia; the sold-out Freiburg
+  game), 53,800 international; the map holds 59,500.
+
 **Ticket info and the Bucket list, 2026-10-04: rules on one tab, dated
 reminders on the other.** Built on Alexandru's instruction.
 - **One renderer for a club's ticket information**, `clubTicketsHtml()`
