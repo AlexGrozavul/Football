@@ -1210,7 +1210,7 @@ function alarmAt(ev, al){
   // ---- 2026-10-09: the whole interface in two languages. The dictionary, the Settings sheet, the choice kept on the device, every
   //      main tab and the four Me sub-tabs in Romanian at 390 px, no English left outside the data's own text, and a live change.
   const NAMES_SAME = new Set(['tl.pen', 'imp.placeholder', 'md.video', 'sheet.club', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',
-    'cov.club.one', 'cnm.Austria', 'cnm.Argentina', 'cnm.Serbia', 'cnm.Bulgaria', 'cnm.Chile', 'cnm.Slovenia', 'cnm.Uruguay', 'iso.AR', 'iso.AT', 'iso.BG', 'iso.CL',
+    'oc.sold-out', 'cov.club.one', 'cnm.Austria', 'cnm.Argentina', 'cnm.Serbia', 'cnm.Bulgaria', 'cnm.Chile', 'cnm.Slovenia', 'cnm.Uruguay', 'iso.AR', 'iso.AT', 'iso.BG', 'iso.CL',
     'iso.RS', 'iso.SI', 'iso.UY', 'kind.derby', 'ctopic.format', 'me.cost', 'me.plus', 'bk.tabCal', 'nl.context', 'nl.bonus', 'nl.realism']);       // names, units and abbreviations that are the same word in Romanian
   const ctxL = await newCtx();
   const pL = await ctxL.newPage();
@@ -1324,6 +1324,192 @@ function alarmAt(ev, al){
   check('A form being filled in keeps what was typed when the language changes', await pL.inputValue('form.meform input[name=club]') === 'Typed ' + TAG, '');
   await pL.evaluate(() => setLang('en'));
   await ctxL.close();
+  }
+
+  {
+  // ---- 2026-10-11: Romanian translations of data-file texts (data/ro/<source>.json), the original-English switch, the note on
+  //      sheets, and the codes of the ticket files said in words. English stays the original and is checked unchanged.
+  const roFile = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/ro/football-rules.json'), 'utf8'));
+  const pilot = Object.keys(roFile).filter(k => /^bucketList:.+#why$/.test(k)).map(k => k.slice('bucketList:'.length, -'#why'.length));
+  const stale0 = pilot[0], withAssistant = pilot.find(id => rules.bucketList.find(b => b.id === id).whyAssistant), plain = pilot[1];
+  const untranslated = rules.bucketList.find(b => b.why && !pilot.includes(b.id)).id;
+  const whyOf = id => rules.bucketList.find(b => b.id === id).why;
+  const roOf = id => roFile['bucketList:' + id + '#why'].ro;
+  const TN_RO = 'Traducere automată, originalul este în engleză.';
+  const reqN = () => requests.filter(r => /\/data\/ro\//.test(r.url)).length;
+  const openCard = async (page, id) => {
+    await page.evaluate(i => { const d = document.querySelector(`#bucketBody details.bucket[data-id="${i}"]`); d.scrollIntoView(); d.open = true; }, id);
+    await page.waitForFunction(i => document.querySelector(`#bucketBody details.bucket[data-id="${i}"] .tix .bwhy:not(.bwhyc)`), id, {timeout: 15000});
+  };
+  const detailWhy = (page, id) => page.evaluate(i => { const e = document.querySelector(`#bucketBody details.bucket[data-id="${i}"] .tix p.bwhy:not([data-why])`);
+    return e ? {text: e.textContent, lang: e.getAttribute('lang'), tx: e.getAttribute('data-tx')} : null; }, id);
+  const ready = async page => { await page.goto(BASE); await page.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    await page.waitForFunction(() => document.querySelector('#bucketBody details.bucket'), null, {timeout: 15000}); };
+
+  // The fingerprint: the page and the checker agree on the fixture, including accented text, an NBSP edge and an astral character.
+  const fixture = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/translation-fingerprints.json'), 'utf8'));
+  check('The fingerprint fixture has accented, padded and astral strings', fixture.length >= 10 && fixture.some(c => /[ăîșț]/.test(c.text)) && fixture.some(c => /^\s|\s$/.test(c.text)) && fixture.some(c => /\u{1F3DF}/u.test(c.text)), String(fixture.length));
+  let regJson = null;
+  try{ regJson = JSON.parse(execSync('python3 tools/check_translations.py --root . --registry', {cwd: ROOT, encoding: 'utf8'})); }catch(e){ regJson = null; }
+  check('tools/check_translations.py --registry lists the translated fields of every source', !!regJson && Object.keys(regJson).length === 9 && regJson['football-rules'].length > 300, regJson ? Object.keys(regJson).join() : 'did not run');
+
+  // ---- English: unchanged, and not a single data/ro request.
+  const ctxE = await newCtx();
+  const pE = await ctxE.newPage();
+  pE.on('pageerror', e => errors.push(e.message));
+  const reqBefore = reqN();
+  await ready(pE);
+  const fxBad = await pE.evaluate(fx => fx.filter(c => fnv1a(c.text) !== c.fp).map(c => c.text), fixture);
+  check('The page\'s fnv1a() reproduces every fingerprint of the fixture (the same function as the checker\'s)', !fxBad.length, JSON.stringify(fxBad));
+  const srcs = await pE.evaluate(() => RO_SOURCES.slice().sort());
+  check('The page lists exactly the sources that have a data/ro file, and the checker registers the same', JSON.stringify(srcs) === JSON.stringify(fs.readdirSync(path.join(ROOT, 'data/ro')).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5)).sort()) &&
+    regJson && JSON.stringify(Object.keys(regJson).sort()) === JSON.stringify(srcs), JSON.stringify(srcs));
+  // The page's list of translated football-rules.json paths equals the checker's, leaf by leaf.
+  const reg = new Set((regJson ? regJson['football-rules'] : []).map(r => r.row + '#' + r.field));
+  const leaves = [];
+  const walk = (o, p, kind, row) => { if(o && typeof o === 'object'){ for(const [k, v] of Object.entries(o)) walk(v, Array.isArray(o) ? `${p}[${k}]` : (p ? p + '.' : '') + k, kind, row); }
+    else if(typeof o === 'string' && o.trim()) leaves.push({kind, row, p, str: true}); };
+  for(const b of rules.bucketList) walk(b, '', 'bucketList', 'bucketList:' + b.id);
+  for(const c of rules.clubs) walk(c, '', 'clubs', 'clubs:' + c.id);
+  const pageSays = await pE.evaluate(ls => ls.map(l => txPathOk(l.kind, l.p)), leaves);
+  const disagree = leaves.filter((l, i) => pageSays[i] !== reg.has(l.row + '#' + l.p));
+  check(`The page and the checker translate the same ${reg.size} string leaves of football-rules.json (and no other of ${leaves.length})`, !disagree.length && reg.size > 300, JSON.stringify(disagree.slice(0, 4)));
+  await openCard(pE, pilot[0]);
+  const eW = await detailWhy(pE, pilot[0]);
+  check('English: a pilot entry shows the English why exactly, with no lang attribute, no marker and no note anywhere', eW && eW.text === whyOf(pilot[0]) && eW.lang === null && eW.tx === null &&
+    !(await pE.$('#bucketBody [data-tx], #bucketBody [lang], .txnote')), JSON.stringify(eW));
+  check('English: no data/ro file is requested', reqN() === reqBefore, String(reqN() - reqBefore));
+  // English codes are the codes: the view is the one it always was.
+  await pE.click('nav button[data-pane=tickets]'); await pE.waitForSelector('#ticketBody details.tclub');
+  const expandAll = async page => {
+    await page.evaluate(() => document.querySelectorAll('#ticketBody details.tclub, #ticketBody details.tcountry').forEach(d => { d.open = true; }));
+    await page.waitForFunction(() => { const open = [...document.querySelectorAll('#ticketBody details.card[open] > .tix')];
+      return open.length > 5 && open.every(x => x.querySelector('h5.tix-country, .crule, .err, .tix-nonat')); }, null, {timeout: 30000});
+    await page.evaluate(() => document.querySelectorAll('#ticketBody .tix details').forEach(d => { d.open = true; })); await page.waitForTimeout(400); };
+  await expandAll(pE);
+  const eCodes = await pE.evaluate(() => [...document.querySelectorAll('#ticketBody .tix b')].map(b => b.textContent));
+  check('English: topic codes are shown as written (sales-channel, risk-classification), nothing re-worded', eCodes.includes('sales-channel') && eCodes.includes('risk-classification'), eCodes.slice(0, 6).join(','));
+  const eOver = await pE.evaluate(() => document.documentElement.scrollWidth);
+  check('English: Ticket info with every card open does not scroll sideways at 390 px', eOver <= W, String(eOver));
+  await pE.click('nav button[data-pane=me]'); await pE.click('#settingsBtn');
+  check('Settings has "Show original English for data texts", off by default, nothing stored', await pE.evaluate(() => { const b = document.getElementById('txOrigBtn');
+    return b && b.getAttribute('aria-pressed') === 'false' && /Show original English for data texts/.test(b.textContent) && localStorage.getItem('football-planner-tx-original') === null; }), '');
+  const swFit = await pE.evaluate(() => { const r = document.getElementById('txOrigBtn').getBoundingClientRect(), s = document.getElementById('ssheetBody');
+    return {right: r.right, left: r.left, h: r.height, sw: s.scrollWidth, cw: s.clientWidth, doc: document.documentElement.scrollWidth}; });
+  check('Settings: the new switch is at least 44 px tall and inside the sheet at 390 px, no sideways scroll', swFit.h >= 44 && swFit.right <= W && swFit.left >= 0 && swFit.sw <= swFit.cw && swFit.doc <= W, JSON.stringify(swFit));
+  await ctxE.close();
+
+  // ---- Romanian: the pilot entries, the order they were picked in, stale entries, the note, the switch.
+  const ctxR = await newCtx();
+  await ctxR.addInitScript(() => { try{ if(!localStorage.getItem('football-planner-lang')) localStorage.setItem('football-planner-lang', 'ro'); }catch(e){} });
+  const pR = await ctxR.newPage();
+  pR.on('pageerror', e => errors.push(e.message));
+  const reqB2 = reqN();
+  await ready(pR);
+  check('Romanian: all nine data/ro files are requested (and only now)', reqN() - reqB2 === 9, String(reqN() - reqB2));
+  const order = await pR.evaluate(() => [...document.querySelectorAll('#bucketBody details.bucket')].map(d => d.dataset.id));
+  const firstWithWhy = order.filter(id => rules.bucketList.find(b => b.id === id).why).slice(0, 25);
+  check('The pilot is the first 25 entries with a why in the List\'s own order (Group order), and the file holds exactly those', pilot.length === 25 && JSON.stringify(firstWithWhy) === JSON.stringify(pilot), JSON.stringify(firstWithWhy.filter((x, i) => x !== pilot[i])));
+  await openCard(pR, pilot[0]); await openCard(pR, withAssistant); await openCard(pR, untranslated);
+  const rW = await detailWhy(pR, pilot[0]);
+  check('Romanian: a translated entry renders in Romanian, marked lang="ro" and data-tx', rW && rW.text === roOf(pilot[0]) && rW.lang === 'ro' && rW.tx === 'ro', JSON.stringify(rW));
+  const rA = await pR.evaluate(id => { const e = document.querySelector(`#bucketBody details.bucket[data-id="${id}"] .tix [data-why=added] [data-content]`);
+    return e ? {lang: e.getAttribute('lang'), tx: e.getAttribute('data-tx')} : null; }, withAssistant);
+  check('Romanian: the assistant\'s note of the same entry has no translation, so it stays English and says so (lang="en")', rA && rA.lang === 'en' && rA.tx === null, JSON.stringify(rA));
+  const rU = await detailWhy(pR, untranslated);
+  check('Romanian: an entry with no translation shows the English, lang="en"', rU && rU.text === whyOf(untranslated) && rU.lang === 'en' && rU.tx === null, JSON.stringify(rU));
+  const card = await pR.evaluate(id => { const e = document.querySelector(`#bucketBody details.bucket[data-id="${id}"] summary p.bwhyc`); return e ? {text: e.textContent, lang: e.getAttribute('lang')} : null; }, plain);
+  check('Romanian: the collapsed card shows the Romanian why too', card && card.text === roOf(plain) && card.lang === 'ro', JSON.stringify(card));
+  const note = await pR.evaluate(() => { const n = document.querySelector('#bucketBody .txnote'); return n ? n.textContent : null; });
+  check('Romanian: the tab holding translated text carries "Automatic translation, English is the original." (in Romanian)', note === TN_RO, String(note));
+  await pR.evaluate(id => openBSheet('entry', id), pilot[2]);
+  await pR.waitForFunction(() => document.querySelector('#bsheetBody .bwhy'), null, {timeout: 10000});
+  check('Romanian: a sheet holding translated text carries the note, and a sheet without any does not', await pR.evaluate(() => document.querySelector('#bsheetBody .txnote')?.textContent) === TN_RO &&
+    await pR.evaluate(id => { openBSheet('entry', id); return new Promise(r => setTimeout(() => r(!document.querySelector('#bsheetBody [data-tx]') && !document.querySelector('#bsheetBody .txnote')), 2500)); }, untranslated), '');
+  const ov = await pR.evaluate(() => ({doc: document.documentElement.scrollWidth, tab: document.getElementById('bucketBody').scrollWidth, tabC: document.getElementById('bucketBody').clientWidth,
+    sheet: document.getElementById('bsheetBody').scrollWidth, sheetC: document.getElementById('bsheetBody').clientWidth}));
+  check('Romanian: the List and the sheet with translated text do not scroll sideways at 390 px', ov.doc <= W && ov.tab <= ov.tabC && ov.sheet <= ov.sheetC, JSON.stringify(ov));
+  await pR.evaluate(() => closeBSheet());
+
+  // The switch: English everywhere for data texts, the interface stays Romanian, kept over a reload; off again restores Romanian.
+  await pR.click('nav button[data-pane=me]'); await pR.click('#settingsBtn');
+  const swRo = await pR.evaluate(() => ({text: document.getElementById('txOrigBtn').textContent, h4: document.querySelector('#ssheetBody [data-i18n="set.tx"]').textContent}));
+  check('Romanian: the switch is labelled in Romanian', swRo.text === 'Arată originalul în engleză pentru textele din date', JSON.stringify(swRo));
+  await pR.click('#txOrigBtn');
+  await pR.click('#ssheetClose'); await pR.click('nav button[data-pane=bucket]');
+  await pR.waitForFunction(i => document.querySelector(`#bucketBody details.bucket[data-id="${i}"] .tix p.bwhy:not([data-why])`)?.getAttribute('lang') === 'en', pilot[0], {timeout: 15000}).catch(() => {});
+  const swOn = await pR.evaluate(i => { const e = document.querySelector(`#bucketBody details.bucket[data-id="${i}"] .tix p.bwhy:not([data-why])`);
+    return {stored: localStorage.getItem('football-planner-tx-original'), pressed: document.getElementById('txOrigBtn').getAttribute('aria-pressed'), LANG, text: e && e.textContent,
+      lang: e && e.getAttribute('lang'), tx: !!document.querySelector('#bucketBody [data-tx]'), note: !!document.querySelector('#bucketBody .txnote'), nav: document.querySelector('nav button[data-pane=map] span').textContent}; }, pilot[0]);
+  check('Switch on: the data text is the English original (lang="en"), no translated marker or note, the interface stays Romanian, the choice is stored',
+    swOn.stored === '1' && swOn.pressed === 'true' && swOn.LANG === 'ro' && swOn.text === whyOf(pilot[0]) && swOn.lang === 'en' && !swOn.tx && !swOn.note && swOn.nav === 'Hartă', JSON.stringify(swOn));
+  await pR.reload(); await ready(pR);
+  check('Switch on is kept over a reload', await pR.evaluate(() => TX_ORIG === true), '');
+  await pR.click('nav button[data-pane=me]'); await pR.click('#settingsBtn'); await pR.click('#txOrigBtn'); await pR.click('#ssheetClose'); await pR.click('nav button[data-pane=bucket]');
+  await openCard(pR, pilot[0]); await pR.waitForFunction(i => document.querySelector(`#bucketBody details.bucket[data-id="${i}"] .tix p.bwhy:not([data-why])`)?.getAttribute('lang') === 'ro', pilot[0], {timeout: 15000}).catch(() => {});
+  check('Switch off again: the Romanian is back', (await detailWhy(pR, pilot[0])).text === roOf(pilot[0]) && await pR.evaluate(() => localStorage.getItem('football-planner-tx-original')) === '0', '');
+
+  // Codes of the ticket files in words: no raw code on Ticket info (every club open, every list open) or in the derby and Frankenderby entries.
+  const csvCol = (file, col, sep) => { const rows = fs.readFileSync(path.join(ROOT, 'data', file), 'utf8').split('\n'); const head = rows[0].split(','), i = head.indexOf(col);
+    const out = new Set(); for(const r of rows.slice(1)){ const cells = r.match(/("([^"]|"")*"|[^,]*)(,|$)/g) || []; const v = (cells[i] || '').replace(/,$/, '').replace(/^"|"$/g, ''); (sep ? v.split(';') : [v]).forEach(x => x.trim() && out.add(x.trim())); } return out; };
+  const RAW = new Set();
+  for(const [f, cols] of [['club-ticket-rules.csv', ['topic', 'scope']], ['country-ticket-rules.csv', ['topic', 'authorityKind']], ['club-ticket-prices.csv', ['competition', 'stage', 'opponentTier', 'priceClass', 'kind', 'priceBasis']],
+    ['club-ticket-demand.csv', ['outcome']], ['club-tickets.csv', ['access', 'salesModel', 'requestTypes', 'closesEarly', 'demand', 'resale', 'updateTracking', 'minorEligibility']], ['club-ticket-windows.csv', ['basis']]])
+    for(const c of cols) for(const v of csvCol(f, c, true)) RAW.add(v);
+  for(const v of ['yes', 'general', 'sold-out']) RAW.delete(v);       // 'sold-out' is the Romanian word too (oc.sold-out)
+  const rawIn = (page, root) => page.evaluate(([root, raw]) => { const set = new Set(raw), bad = [], w = document.createTreeWalker(document.querySelector(root), NodeFilter.SHOW_TEXT);
+    for(let n; (n = w.nextNode());){ const el = n.parentElement; if(!el || el.closest('[data-content],[lang=en],.src a,script,style')) continue;     // data texts, left in English on purpose, and source titles
+      for(const piece of n.textContent.split(/\s·\s|,\s|:\s|\s\(|\)/)) if(set.has(piece.trim())) bad.push(piece.trim()); }
+    return [...new Set(bad)]; }, [root, [...RAW]]);
+  await pR.click('nav button[data-pane=tickets]'); await pR.waitForSelector('#ticketBody details.tclub');
+  await expandAll(pR);
+  const rawT = await rawIn(pR, '#ticketBody');
+  const roLabels = await pR.evaluate(() => [...document.querySelectorAll('#ticketBody .tix b')].map(b => b.textContent));
+  check(`Romanian Ticket info (every club and list open): none of the ${RAW.size} codes of the ticket files appears raw, and the Romanian labels do`, !rawT.length && roLabels.includes('canal de vânzare') && roLabels.includes('clasificarea riscului'), JSON.stringify(rawT.slice(0, 8)));
+  const tover = await pR.evaluate(() => document.documentElement.scrollWidth);
+  check('Romanian Ticket info with every card open does not scroll sideways at 390 px', tover <= W, String(tover));
+  await pR.click('nav button[data-pane=bucket]');
+  for(const id of ['frankenderby', 'derby-madonnina']){
+    await openCard(pR, id).catch(() => {}); await pR.waitForTimeout(1500);
+    await pR.evaluate(i => document.querySelectorAll(`#bucketBody details.bucket[data-id="${i}"] .tix details`).forEach(d => { d.open = true; }), id);
+  }
+  const rawB = await rawIn(pR, '#bucketBody');
+  check('Romanian Bucket list (Frankenderby, Milan derby, every list open): no raw code of the ticket files appears', !rawB.length, JSON.stringify(rawB.slice(0, 8)));
+  await ctxR.close();
+
+  // ---- A stale entry: the English changed after it was translated, so the English is shown (the file is edited in flight, not on disk).
+  const ctxS = await newCtx();
+  await ctxS.addInitScript(() => { try{ localStorage.setItem('football-planner-lang', 'ro'); }catch(e){} });
+  await ctxS.route('**/data/ro/football-rules.json', async r => {
+    const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/ro/football-rules.json'), 'utf8'));
+    j['bucketList:' + stale0 + '#why'].en = '00000000';
+    r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(j)});
+  });
+  const pS = await ctxS.newPage();
+  pS.on('pageerror', e => errors.push(e.message));
+  await ready(pS);
+  await openCard(pS, stale0); await openCard(pS, pilot[1]);
+  const sA = await detailWhy(pS, stale0), sB = await detailWhy(pS, pilot[1]);
+  check('A stale fingerprint renders the English (lang="en") while the next, matching entry stays Romanian',
+    sA && sA.text === whyOf(stale0) && sA.lang === 'en' && sA.tx === null && sB && sB.text === roOf(pilot[1]) && sB.lang === 'ro', JSON.stringify({sA, sB}));
+  await ctxS.close();
+
+  // ---- A data/ro file that cannot be loaded: English, no error.
+  const ctxF = await newCtx();
+  await ctxF.addInitScript(() => { try{ localStorage.setItem('football-planner-lang', 'ro'); }catch(e){} });
+  await ctxF.route('**/data/ro/derbies.json', r => r.fulfill({status: 404, body: 'nf'}));
+  const pF = await ctxF.newPage();
+  pF.on('pageerror', e => errors.push(e.message));
+  await ready(pF);
+  await openCard(pF, pilot[0]);
+  const fW = await detailWhy(pF, pilot[0]);
+  check('One missing data/ro file leaves its texts in English, the page works, no script error (the others still translate)', fW && fW.text === whyOf(pilot[0]) && fW.lang === 'en', JSON.stringify(fW));
+  await ctxF.close();
+
+  // ---- The dictionary doc is regenerated.
+  const docRows = fs.readFileSync(path.join(ROOT, 'docs/ro-review.md'), 'utf8').split('\n## Texts from data files')[0].split('\n').filter(l => /^\| `/.test(l)).length;
+  const keyN = await (async () => { const c = await newCtx(), p = await c.newPage(); await ready(p); const n = await p.evaluate(() => Object.keys(I18N.en).length); await c.close(); return n; })();
+  check('docs/ro-review.md has one row for every key of the dictionary', docRows === keyN, `${docRows} rows, ${keyN} keys`);
   }
 
 

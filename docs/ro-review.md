@@ -2,9 +2,9 @@
 
 **RO unchecked by the user.** Every Romanian string below was written by an assistant and has not been read by you yet. Do not treat it as checked.
 
-How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Texts that come from the data files are not here: they stay in English. `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
+How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1134 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1254 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -1092,7 +1092,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `bk.sheetAria` | Bucket list entry | Intrare din lista de dorințe |
 | `set.title` | Settings | Setări |
 | `set.lang` | Language | Limba |
-| `set.note` | The language of the app's own words. Text that comes from the data files stays in English. Kept on this device only. | Limba cuvintelor proprii ale aplicației. Textul care vine din fișierele de date rămâne în engleză. Se păstrează doar pe acest dispozitiv. |
+| `set.note` | The language of the app's own words. Kept on this device only. | Limba cuvintelor proprii ale aplicației. Se păstrează doar pe acest dispozitiv. |
 | `set.roNote` | The Romanian text was written by an assistant and has not been checked by you yet. | Textul în română a fost scris de un asistent și nu a fost încă verificat de tine. |
 | `set.btn` | Settings | Setări |
 | `set.theme` | Theme | Temă |
@@ -1142,3 +1142,155 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `nl.relatedNear` | Related near | Legat, în apropiere |
 | `nl.alternative` | Alternative | Alternativă |
 | `nl.related` | Related | Legat |
+| `set.tx` | Texts from the data files | Texte din fișierele de date |
+| `set.txOrig` | Show original English for data texts | Arată originalul în engleză pentru textele din date |
+| `set.txNote` | In Romanian, some texts from the data files have an automatic translation; the rest stays in English. Turn this on to see the English original everywhere. Kept on this device only. | În română, unele texte din fișierele de date au o traducere automată; restul rămâne în engleză. Activează ca să vezi originalul în engleză peste tot. Se păstrează doar pe acest dispozitiv. |
+| `tx.note` | Automatic translation, English is the original. | Traducere automată, originalul este în engleză. |
+| `tp.sales-channel` | sales-channel | canal de vânzare |
+| `tp.membership` | membership | calitatea de membru |
+| `tp.presale-rights` | presale-rights | drepturi de prevânzare |
+| `tp.fees` | fees | taxe |
+| `tp.update-tracking` | update-tracking | urmărirea noutăților |
+| `tp.queue` | queue | coadă |
+| `tp.sector-separation` | sector-separation | separarea sectoarelor |
+| `tp.personalisation` | personalisation | personalizare |
+| `tp.ticket-format` | ticket-format | formatul biletului |
+| `tp.away-end` | away-end | sectorul oaspeților |
+| `tp.capacity` | capacity | capacitate |
+| `tp.box-office` | box-office | casa de bilete |
+| `tp.price-category` | price-category | categoria de preț |
+| `tp.free-sale-reached` | free-sale-reached | ajuns la vânzare liberă |
+| `tp.sales-mechanism` | sales-mechanism | mecanismul de vânzare |
+| `tp.resale-platform` | resale-platform | platformă de revânzare |
+| `tp.resale-price-cap` | resale-price-cap | plafon de preț la revânzare |
+| `tp.resale-prices` | resale-prices | prețuri de revânzare |
+| `tp.access` | access | acces |
+| `tp.ticket-types` | ticket-types | tipuri de bilete |
+| `tp.transfer` | transfer | transferul biletului |
+| `tp.fidelity-card` | fidelity-card | card de fidelitate |
+| `tp.presale-eligibility` | presale-eligibility | eligibilitate pentru prevânzare |
+| `tp.residency-limits` | residency-limits | limite de reședință |
+| `tp.fidelity-card-foreign` | fidelity-card-foreign | card de fidelitate pentru străini |
+| `tp.card-cutoff` | card-cutoff | termen limită pentru card |
+| `tp.purchase-limit` | purchase-limit | limită de achiziție |
+| `tp.second-ticket-card` | second-ticket-card | al doilea card pentru bilet |
+| `tp.minors` | minors | minori |
+| `tp.sector-rules` | sector-rules | reguli pe sectoare |
+| `tp.away-allocation` | away-allocation | alocarea pentru oaspeți |
+| `tp.price-list` | price-list | listă de prețuri |
+| `tp.unofficial-resale` | unofficial-resale | revânzare neoficială |
+| `tp.entrances` | entrances | intrări |
+| `tp.source-caveat` | source-caveat | rezervă privind sursa |
+| `tp.risk-classification` | risk-classification | clasificarea riscului |
+| `tp.legal-framework` | legal-framework | cadrul legal |
+| `scp.general` | general | în general |
+| `scp.derby-home` | derby-home | derby acasă |
+| `scp.derby-away` | derby-away | derby în deplasare |
+| `cmp.bundesliga` | bundesliga | Bundesliga |
+| `cmp.dfb-pokal` | dfb-pokal | DFB-Pokal |
+| `cmp.ucl` | ucl | Liga Campionilor |
+| `cmp.2-bundesliga` | 2-bundesliga | 2. Bundesliga |
+| `cmp.serie-a` | serie-a | Serie A |
+| `stg.regular` | regular | sezon regulat |
+| `stg.early-rounds` | early-rounds | rundele timpurii |
+| `stg.league-phase` | league-phase | faza ligii |
+| `stg.season-ticket` | season-ticket | abonament |
+| `ot.top-opponent` | top-opponent | adversar de top |
+| `ot.standard-opponent` | standard-opponent | adversar obișnuit |
+| `ot.category-a` | category-a | categoria A |
+| `ot.category-b` | category-b | categoria B |
+| `pcl.normal` | normal | preț normal |
+| `pcl.member` | member | membru |
+| `pcl.reduced` | reduced | redus |
+| `pcl.child` | child | copil |
+| `pk.face-value` | face-value | valoare nominală |
+| `pk.resale-observed` | resale-observed | revânzare observată |
+| `pb.excl-vat-fees` | excl-vat-fees | fără TVA și taxe |
+| `pb.incl-vat-fees` | incl-vat-fees | cu TVA și taxe |
+| `pb.incl-vat-excl-fees` | incl-vat-excl-fees | cu TVA, fără taxe |
+| `pb.unknown` | unknown | necunoscut |
+| `oc.seats-left` | seats-left | au rămas locuri |
+| `oc.nearly-sold-out` | nearly-sold-out | aproape sold-out |
+| `oc.sold-out` | sold-out | sold-out |
+| `oc.sold-out-before-open-sale` | sold-out-before-open-sale | sold-out înainte de vânzarea liberă |
+| `oc.varied-by-fixture` | varied-by-fixture | diferit de la un meci la altul |
+| `ac.members-only` | members-only | doar membri |
+| `ac.open-with-member-presale` | open-with-member-presale | deschis, cu prevânzare pentru membri |
+| `ac.open-with-account` | open-with-account | deschis, cu cont |
+| `ac.members-first-leftovers-free-sale` | members-first-leftovers-free-sale | mai întâi membrii, restul în vânzare liberă |
+| `sm.request-then-lottery` | request-then-lottery | cerere, apoi tragere la sorți |
+| `sm.phased-sale` | phased-sale | vânzare în faze |
+| `sm.open-sale` | open-sale | vânzare liberă |
+| `rq.home` | home | acasă |
+| `rq.away` | away | deplasare |
+| `rq.ucl` | ucl | Liga Campionilor |
+| `rq.pokal` | pokal | Pokal |
+| `ce.yes-when-overbooked` | yes-when-overbooked | da, când cererea depășește locurile |
+| `dm.overbooked-usually` | overbooked-usually | de obicei cerere peste locuri |
+| `rs.official-members-only` | official-members-only | oficială, doar pentru membri |
+| `rs.official-face-value-only` | official-face-value-only | oficială, doar la valoarea nominală |
+| `rs.official-season-ticket-resale` | official-season-ticket-resale | oficială, revânzare de abonamente |
+| `ut.newsletter` | newsletter | buletin informativ |
+| `ut.per-match-article` | per-match-article | articol pentru fiecare meci |
+| `ut.notify-button` | notify-button | buton de notificare |
+| `ut.news-section` | news-section | secțiunea de știri |
+| `ut.ticket-shop-calendar` | ticket-shop-calendar | calendarul magazinului de bilete |
+| `ut.email` | email | e-mail |
+| `mn.unknown` | unknown | necunoscut |
+| `mn.via-guardian-account` | via-guardian-account | prin contul unui tutore |
+| `ak.government` | government | guvern |
+| `ak.national-observatory` | national-observatory | observator național |
+| `ak.police` | police | poliție |
+| `ak.federation` | federation | federație |
+| `ak.league` | league | ligă |
+| `uc.suspect` | suspect | dubioasă |
+| `uc.domain-only` | domain-only | doar domeniul |
+| `uc.truncated-in-pdf` | truncated-in-pdf | trunchiată în PDF |
+| `wb.observed-past-cycle` | observed-past-cycle | observat într-un ciclu trecut |
+| `wb.published` | published | publicat |
+| `wb.user-supplied` | user-supplied | oferit de utilizator |
+| `wb.unknown` | unknown | necunoscut |
+| `wn.season-ticket-renewal` | season-ticket-renewal | reînnoirea abonamentului |
+| `wn.bundesliga-single-match` | bundesliga-single-match | vânzare pe meci, Bundesliga |
+| `wn.bundesliga-away-block` | bundesliga-away-block | sectorul oaspeților, Bundesliga |
+| `wn.away-season-ticket` | away-season-ticket | abonament de deplasare |
+| `wn.ucl-league-phase` | ucl-league-phase | faza ligii, Liga Campionilor |
+| `wn.home-single-match` | home-single-match | vânzare pe meci, acasă |
+| `wn.derby-home` | derby-home | derby acasă |
+| `wn.rueckrunde-half-season-ticket` | rueckrunde-half-season-ticket | abonament pentru returul sezonului |
+| `wn.season-ticket-resale` | season-ticket-resale | revânzare de abonamente |
+| `wn.season-ticket` | season-ticket | abonament |
+| `wn.away-single-match` | away-single-match | vânzare pe meci, deplasare |
+| `wn.derby-away` | derby-away | derby în deplasare |
+
+## Texts from data files
+
+**RO unchecked by the user.** Automatic translations of data-file text (`data/ro/<source>.json`), status `machine-unchecked`. The English data file is the original; edit the English and an entry becomes stale and the page shows the English again. Give the key to change a row. Today: the pilot, the first 25 Bucket list entries that have a why.
+
+| key | English (the original) | Română |
+|---|---|---|
+| `bucketList:afc-asian-cup-2027-saudi-arabia#why` | 24 teams in Asia's national-team championship, hosted by a country investing heavily in stadiums. Dates unverified. | 24 de echipe la campionatul echipelor naționale din Asia, găzduit de o țară care investește masiv în stadioane. Datele sunt neverificate. |
+| `bucketList:africa-cup-of-nations-2027-kenya-tanzania-uganda#why` | The first AFCON in East Africa, with 24 teams and three co-hosts. Dates unverified. | Prima ediție AFCON din Africa de Est, cu 24 de echipe și trei țări co-gazde. Datele sunt neverificate. |
+| `bucketList:uefa-nations-league-finals-2027#why` | Four national teams play semi-finals, a third-place match and a final in one host country, in June. Host unverified. | Patru echipe naționale joacă semifinalele, un meci pentru locul trei și o finală într-o singură țară gazdă, în iunie. Gazda este neverificată. |
+| `bucketList:men-s-olympic-football-2028-los-angeles#why` | Under-23 tournament with a few older players per squad, held in a World Cup 2026 host region. Venues unverified. | Turneu sub 23 de ani, cu câțiva jucători mai în vârstă în fiecare lot, desfășurat într-o regiune gazdă a Cupei Mondiale 2026. Locurile de desfășurare sunt neverificate. |
+| `bucketList:uefa-euro-2028-uk-and-ireland#why` | 24 teams in nine stadiums across England, Scotland, Wales and Ireland, with the final at Wembley. Casement Park in Belfast has had construction problems. | 24 de echipe pe nouă stadioane din Anglia, Scoția, Țara Galilor și Irlanda, cu finala pe Wembley. Casement Park din Belfast a avut probleme de construcție. |
+| `bucketList:fifa-world-cup-2030#why` | 48 teams in Spain, Portugal and Morocco, with opening matches in Uruguay, Argentina and Paraguay. First World Cup on three continents. Final venue unconfirmed. | 48 de echipe în Spania, Portugalia și Maroc, cu meciuri de deschidere în Uruguay, Argentina și Paraguay. Prima Cupă Mondială pe trei continente. Locul finalei este neconfirmat. |
+| `bucketList:uefa-euro-2032-italy-and-turkey#why` | Matches in Italian and Turkish stadiums, awarded in October 2023. | Meciuri pe stadioane din Italia și Turcia, atribuite în octombrie 2023. |
+| `bucketList:uefa-champions-league-final#why` | One match in late May or early June at a neutral venue set years ahead. The finalists get most tickets, with a small public allocation (route unverified). | Un singur meci la sfârșitul lui mai sau începutul lui iunie, pe un stadion neutru stabilit cu ani înainte. Finaliștii primesc cea mai mare parte a biletelor, cu o mică alocare pentru public (calea de obținere neverificată). |
+| `bucketList:el-final-2027#why` | First genuine final above national-cup level. Two hours away, inside the Whitsun holidays (18-29 May 2027). The cheapest European final he will ever have access to. | Prima finală autentică peste nivelul cupelor naționale. La două ore distanță, în vacanța de Rusalii (18-29 mai 2027). Cea mai ieftină finală europeană la care va avea vreodată acces. |
+| `bucketList:uefa-conference-league-final#why` | One match in May at a rotating venue, with the lowest prices of the three UEFA finals and a loud travelling crowd. | Un singur meci în mai, pe un stadion ales prin rotație, cu cele mai mici prețuri dintre cele trei finale UEFA și cu suporteri zgomotoși veniți în deplasare. |
+| `bucketList:uefa-super-cup#why` | Champions League winner against Europa League winner in August at a rotating venue. Easier to get into than the finals. | Câștigătoarea Ligii Campionilor împotriva câștigătoarei Europa League în august, pe un stadion ales prin rotație. Mai ușor să intri decât la finale. |
+| `bucketList:copa-libertadores-final#why` | One match with the venue chosen each year, South America's top club final, with an ultras atmosphere. | Un singur meci, cu stadionul ales în fiecare an, cea mai importantă finală de cluburi din America de Sud, cu atmosferă de ultrași. |
+| `bucketList:mls-cup#why` | Hosted by the finalist with the better record, in December, with a US stadium and fan culture. | Găzduită de finalista cu bilanțul mai bun, în decembrie, cu un stadion și o cultură a suporterilor specifice SUA. |
+| `bucketList:dfb-pokal-final#why` | Played at the Olympiastadion Berlin each year, with both fan groups travelling. Underdogs reach it: third-division Bielefeld played VfB in 2025. | Se joacă în fiecare an pe Olympiastadion din Berlin, cu ambele grupuri de suporteri venind în deplasare. Outsiderii ajung aici: Bielefeld, din divizia a treia, a jucat cu VfB în 2025. |
+| `bucketList:dfl-supercup#why` | Bundesliga champion against DFB-Pokal winner before the season, an early look at the top two German teams. Host stadium varies. | Campioana din Bundesliga împotriva câștigătoarei DFB-Pokal înainte de sezon, o primă privire asupra celor mai bune două echipe germane. Stadionul gazdă variază. |
+| `bucketList:cupa-romaniei-final#why` | The national cup decider, usually between two clubs that bring large supporter groups. Venue chosen each year. | Meciul decisiv al cupei naționale, de obicei între două cluburi care aduc grupuri mari de suporteri. Stadionul este ales în fiecare an. |
+| `bucketList:efl-cup-final#why` | Wembley in February or March, the first major trophy of the English season. | Wembley în februarie sau martie, primul trofeu important al sezonului englez. |
+| `bucketList:fa-cup-final#why` | Wembley in May, with a deep ritual around the day and fans of both finalists filling the stadium. | Wembley în mai, cu un ritual adânc înrădăcinat în jurul zilei și cu suporteri ai ambelor finaliste care umplu stadionul. |
+| `bucketList:fa-community-shield#why` | League champions against FA Cup winners at Wembley in August, a season opener with usually cheaper tickets than cup finals. | Campioana ligii împotriva câștigătoarei FA Cup pe Wembley în august, un meci de deschidere a sezonului, cu bilete de obicei mai ieftine decât la finalele de cupă. |
+| `bucketList:coupe-de-france-final#why` | Stade de France in May. Amateur clubs can reach it. | Stade de France în mai. Cluburile amatoare pot ajunge aici. |
+| `bucketList:coppa-italia-final#why` | Usually the Stadio Olimpico in Rome, with an Italian ultras final in the city's biggest stadium. | De obicei Stadio Olimpico din Roma, cu o finală a ultrașilor italieni pe cel mai mare stadion al orașului. |
+| `bucketList:knvb-beker-final#why` | Usually at De Kuip in Rotterdam, a cup final in a stadium Feyenoord plan to leave. | De obicei pe De Kuip din Rotterdam, o finală de cupă pe un stadion pe care Feyenoord plănuiește să-l părăsească. |
+| `bucketList:taca-de-portugal-final#why` | Estádio Nacional in Jamor, a fixed national occasion at a traditional ground with a day-out feel. | Estádio Nacional din Jamor, o ocazie națională fixă pe un teren tradițional, cu aer de ieșire de o zi. |
+| `bucketList:scottish-cup-final#why` | Hampden Park in May, one of Europe's oldest big stadiums. | Hampden Park în mai, unul dintre cele mai vechi stadioane mari din Europa. |
+| `bucketList:copa-del-rey-final#why` | One match in spring, with the venue chosen each year, often Barcelona or Madrid against a Basque or other regional crowd. | Un singur meci primăvara, cu stadionul ales în fiecare an, adesea Barcelona sau Madrid, față în față cu un public basc sau din altă regiune. |
