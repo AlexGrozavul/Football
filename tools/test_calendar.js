@@ -238,19 +238,28 @@ const server = http.createServer((req, res) => {
   // bucket-links-manual.csv: a club is linked only by an exact name match in data/clubs/<country>.json; the host stays empty;
   // a derby with no matched club has no line; nothing else (cups) has one.
   {
+    const E2_IDS = ['nice-v-monaco', 'napoli-v-roma-derby-del-sole', 'roma-v-lazio-derby-della-capitale', 'valencia-v-levante-valencian-derby', 'fc-heidenheim-v-ssv-ulm-1846',
+      'karlsruher-sc-v-waldhof-mannheim', 'waldhof-mannheim-v-sv-sandhausen', 'fc-heidenheim-v-vfr-aalen', 'fc-saarbrucken-v-fc-08-homburg', 'darmstadt-98-v-kickers-offenbach', 'viktoria-koln-v-fortuna-koln'];
     const links = csv('data/bucket-links-manual.csv');
-    const clubFiles = {}; for(const cc of ['DE', 'CH', 'AT', 'FR']) clubFiles[cc] = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/clubs', cc + '.json'), 'utf8')).clubs;
+    const clubFiles = {}; for(const cc of ['DE', 'CH', 'AT', 'FR', 'IT', 'ES']) clubFiles[cc] = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/clubs', cc + '.json'), 'utf8')).clubs;
     const bad = [];
     for(const b of nb){
       const lines = links.filter(r => r.bucketId === b.id);
       if(b.kind !== 'derby'){ if(lines.length) bad.push(b.id + ' has a line'); continue; }
       const names = b.title.replace(/\s*\([^)]*\)\s*$/, '').split(' v ');
-      const want = names.map(n => clubFiles[b.countryCode].filter(c => (c.name || '').normalize('NFC').toLowerCase() === n.normalize('NFC').toLowerCase()).map(c => c.id))
+      // The 11 entries of stress-test finding E2 (2026-10-11) are linked by a looser rule, on Alexandru's instruction: a club counts when
+      // exactly one club in the country's file has a name containing the title's club name as a whole word ("Nice" -> "OGC Nice").
+      // Every other entry keeps the exact-name rule. The order of the Q-ids in a line is not checked for the E2 entries.
+      const tok = x => x.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ');
+      const hasWord = (n, c) => { const a = tok(n), z = tok(c); for(let i = 0; i + a.length <= z.length; i++) if(a.every((w, j) => z[i + j] === w)) return true; return false; };
+      const e2 = E2_IDS.includes(b.id);
+      const want = names.map(n => clubFiles[b.countryCode].filter(c => e2 ? hasWord(n, c.name || '') : (c.name || '').normalize('NFC').toLowerCase() === n.normalize('NFC').toLowerCase()).map(c => c.id))
         .filter(m => m.length === 1).map(m => m[0]);
       if(!want.length){ if(lines.length) bad.push(b.id + ' linked without a match'); continue; }
-      if(lines.length !== 1 || lines[0].hostQid !== '' || lines[0].ticketEventId !== '' || lines[0].otherQids !== want.join(';')) bad.push(b.id);
+      const sameIds = (a, w) => e2 ? a.split(';').sort().join(';') === w.slice().sort().join(';') : a === w.join(';');
+      if(lines.length !== 1 || lines[0].hostQid !== '' || lines[0].ticketEventId !== '' || !sameIds(lines[0].otherQids, want)) bad.push(b.id);
     }
-    check('New derbies: club links in bucket-links-manual.csv are exactly the exact-name matches in the country\'s club file, host empty, no line where nothing matched, none for a cup entry', bad.length === 0, bad.join(' | '));
+    check('New derbies: club links in bucket-links-manual.csv are exactly the exact-name matches (whole-word matches for the 11 E2 entries) in the country\'s club file, host empty, no line where nothing matched, none for a cup entry', bad.length === 0, bad.join(' | '));
   }
   const LCT = 'Needs a league check: both clubs must share a league or cup in that season';
   const lcWant = new Set(rules.bucketList.filter(b => b.leagueCheck).map(b => b.id));
@@ -264,9 +273,11 @@ const server = http.createServer((req, res) => {
   const lcEntry = rules.bucketList.find(b => b.id === lcId);
   check('An opened added entry shows its why text', opened.includes(lcEntry.why), lcId);
   // Existing entries kept their dates: the snapshot below is HEAD's, from before the 160 were added.
-  const SNAP = {"klassiker-away":{},"poli-uta":{},"el-final-2027":{"date":"2027-05-26","kickoff":"21:00","dateSource":"confirmed"},"frankenderby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-30/2027-02-01","derivation":"Inferred from the mirrored fixture list - matchday 20 is Bielefeld away on 6 Feb 2027. Verify against the DFL schedule.","missed":"First leg at the Ronhof, 15 Aug 2026.","dateSource":"inferred"}},"sudwest-derby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-29/2027-01-31","missed":"First leg on the Betzenberg, 15 Aug 2026.","dateSource":"inferred"}},"derby-madonnina":{"fixtures":[{"date":"2026-11-01","home":"milan","matchday":10,"saleRoute":"Cuore Rossonero phase then free sale. Card needed well in advance.","dateSource":"confirmed"},{"date":"2027-02-14","home":"inter","matchday":24,"saleRoute":"Phase 1, open worldwide, primo anello rosso/arancio.","dateSource":"confirmed"}]},"revierderby":{},"pokal-first-round":{},"liga2-playoff":{},"relegation":{},"eternal-derby-belgrade":{},"intercontinental-derby":{},"old-firm":{},"derby-eternal-enemies":{},"fcsb-dinamo":{},"derby-du-nord":{},"ostderby":{},"prague-derby":{}};
+  const SNAP = {"klassiker-away":{},"poli-uta":{},"el-final-2027":{"date":"2027-05-26","kickoff":"21:00","dateSource":"confirmed"},"frankenderby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-30/2027-02-01","derivation":"Inferred from the mirrored fixture list - matchday 20 is Bielefeld away on 6 Feb 2027. Verify against the DFL schedule.","missed":"First leg at the Ronhof, 15 Aug 2026.","dateSource":"inferred"}},"sudwest-derby":{"nextFixture":{"matchday":19,"dateEstimate":"2027-01-29/2027-01-31","missed":"First leg on the Betzenberg, 15 Aug 2026.","dateSource":"inferred"}},"derby-madonnina":{"fixtures":[{"date":"2027-02-14","home":"inter","matchday":24,"saleRoute":"Phase 1, open worldwide, primo anello rosso/arancio.","dateSource":"confirmed"}]},"revierderby":{},"pokal-first-round":{},"liga2-playoff":{},"relegation":{},"eternal-derby-belgrade":{},"intercontinental-derby":{},"old-firm":{},"derby-eternal-enemies":{},"fcsb-dinamo":{},"derby-du-nord":{},"ostderby":{},"prague-derby":{}};
   const drift = Object.keys(SNAP).filter(id => { const b = rules.bucketList.find(x => x.id === id);
-    return !b || ['date', 'kickoff', 'dateSource', 'nextFixture', 'fixtures'].some(k => JSON.stringify(b[k]) !== JSON.stringify(SNAP[id][k])); });
+    // The Milan-home fixture of derby-madonnina was corrected on purpose (2026-10-11) and is read from the file elsewhere; only the Inter-home one stays pinned.
+    const cur = (b, k) => id === 'derby-madonnina' && k === 'fixtures' && b.fixtures ? b.fixtures.filter(f => f.home === 'inter') : b[k];
+    return !b || ['date', 'kickoff', 'dateSource', 'nextFixture', 'fixtures'].some(k => JSON.stringify(cur(b, k)) !== JSON.stringify(SNAP[id][k])); });
   check(`The ${Object.keys(SNAP).length} entries that existed before kept their dates, kickoffs, dateSources, nextFixtures and fixtures`, drift.length === 0, drift.join(', '));
   // None of the added entries is on the calendar, in any month the calendar can show.
   await page.click('#tabCal');
@@ -480,14 +491,16 @@ const server = http.createServer((req, res) => {
     });
   };
   const mad = 'derby-madonnina';
-  let S = await sheetOpen('2026-11', 'entry:' + mad);
-  check('Tapping 1 Nov 2026, then the Milan derby, opens a sheet against the bottom bar',
+  // The Milan-home day is read from football-rules.json, so a corrected date moves the test with it.
+  const madDay = rules.bucketList.find(b => b.id === mad).fixtures.find(f => f.home === 'milan').date, madYM = madDay.slice(0, 7);
+  let S = await sheetOpen(madYM, 'entry:' + mad);
+  check(`Tapping ${madDay} (the Milan-home day in the file), then the Milan derby, opens a sheet against the bottom bar`,
     Math.abs(S.bottom - S.navTop) <= 1 && /Derby della Madonnina|Madonnina/i.test(S.head), `sheet bottom ${S.bottom}, nav top ${S.navTop}`);
   check('The sheet scrolls inside itself', S.scrolls);
   await page.click('#bsheetClose');
   let L = await listText(`details.bucket[data-id="${mad}"]`);
   check("The sheet holds the same text as the List's opened entry (Milan derby)", norm(S.text) === L, `${norm(S.text).length} against ${L.length} characters`);
-  check('The Milan derby says nothing about a school holiday (1 Nov and 14 Feb are in no block)', !/School holiday:/.test(S.text));
+  check('The Milan derby says nothing about a school holiday (its Milan-home day and 14 Feb are in no block)', !/School holiday:/.test(S.text));
   const elf = 'el-final-2027';
   S = await sheetOpen('2027-05', 'entry:' + elf);
   await page.click('#bsheetClose');
@@ -515,7 +528,7 @@ const server = http.createServer((req, res) => {
   L = await listText(`details.bucket[data-id="${mad}"]`);
   check('List: an opened entry has no "Ticket windows (reminders)" block', !/Ticket windows \(reminders\)|No ticket window is linked/.test(L));
   // Leaving the tab closes the sheet.
-  await sheetOpen('2026-11', 'entry:' + mad);
+  await sheetOpen(madYM, 'entry:' + mad);
   await page.click('nav button[data-pane=map]');
   check('Switching to the map closes the sheet', await page.$eval('#bsheet', e => e.hidden));
   await ctx.close();

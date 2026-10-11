@@ -862,7 +862,9 @@ const I18N = {
     'st.yellow': 'yellow cards', 'st.red': 'red cards', 'st.cards': 'Yellow / red cards',
     'st.perMatch': 'per match',
     'st.second': 'second yellows',
-    'st.goalsShort': 'Includes {n} goals from {m} matches without a full goals list',
+    'st.goalsShort': 'Includes {goals} from {matches} without a full goals list',
+    'st.nGoals.one': '{n} goal', 'st.nGoals.other': '{n} goals', 'st.nGoals.many': '{n} goals',   // English has one plural form; .many only keeps the key sets equal
+    'st.nMatches.one': '{n} match', 'st.nMatches.other': '{n} matches', 'st.nMatches.many': '{n} matches',
     'st.partial': 'Complete data currently exists for {a} of {b} matches. The figures below count only the completed ones.',
     'st.mostTeam': 'Most-seen team', 'st.mostPlayer': 'Most-seen player',
     'st.noPlayers': 'Calculated from line-ups; none are recorded.',
@@ -1930,7 +1932,9 @@ const I18N = {
     'st.yellow': 'cartonașe galbene', 'st.red': 'cartonașe roșii', 'st.cards': 'Cartonașe galbene / roșii',
     'st.perMatch': 'pe meci',
     'st.second': 'al doilea galben',
-    'st.goalsShort': 'Include {n} goluri din {m} meciuri fără o listă completă a golurilor',
+    'st.goalsShort': 'Include {goals} din {matches} fără o listă completă a golurilor',
+    'st.nGoals.one': '{n} gol', 'st.nGoals.other': '{n} goluri', 'st.nGoals.many': '{n} de goluri',
+    'st.nMatches.one': '{n} meci', 'st.nMatches.other': '{n} meciuri', 'st.nMatches.many': '{n} de meciuri',
     'st.partial': 'Datele complete există momentan pentru {a} din {b} meciuri. Cifrele de mai jos numără doar meciurile completate.',
     'st.mostTeam': 'Echipa văzută cel mai des', 'st.mostPlayer': 'Jucătorul văzut cel mai des',
     'st.noPlayers': 'Se calculează din formații; nu este înregistrată niciuna.',
@@ -3085,8 +3089,12 @@ const nf = (n, d = 0) => Number(n).toLocaleString(LOC(), {minimumFractionDigits:
 const nfg = n => Number(n).toLocaleString(LOC());
 /* A number as written, no thousands separator, any decimals it has (distances and euro amounts). */
 const nn = n => Number(n).toLocaleString(LOC(), {useGrouping: false, maximumFractionDigits: 6});
-/* A count with its noun: key.one for exactly one, key.other for the rest. */
-const tn = (key, n, vars) => t(key + (n === 1 ? '.one' : '.other'), {n, ...vars});
+/* A count with its noun: key.one for exactly one, key.other for the rest.
+   Romanian puts "de" between a count of 20 or more (21 is "21 de", but 101 and 119 are
+   not: the last two digits decide) and the noun: a key may then have a third form,
+   key.many, used only in Romanian for such a count. A key without one uses key.other. */
+const roDe = n => n >= 20 && (n % 100 === 0 || n % 100 >= 20);
+const tn = (key, n, vars) => t(key + (n === 1 ? '.one' : (LANG === 'ro' && roDe(n) && hasKey(key + '.many') ? '.many' : '.other')), {n, ...vars});
 /* A word from a data file that the interface also knows how to say: the
    known ones are translated, any other is shown as the file wrote it. */
 const hasKey = k => Object.prototype.hasOwnProperty.call(I18N.en, k);
@@ -7759,7 +7767,7 @@ function renderAttStats(d){
   const tp = top(S.plr);
   let h = `<div class="agrid">${tile(S.n, t('st.matches'))}${tile(S.goals, t('st.goals'), avg(S.goals, S.n))}` +
     `${tile(S.pens, t('st.pens'))}${tile(Object.keys(S.stad).length, t('st.stadiums'))}</div>` +
-    (S.goalsShortN ? `<p class="anote" id="aGoalsNote">${esc(t('st.goalsShort', {n: S.goalsShort, m: S.goalsShortN}))}</p>` : '') +
+    (S.goalsShortN ? `<p class="anote" id="aGoalsNote">${esc(t('st.goalsShort', {goals: tn('st.nGoals', S.goalsShort, {n: attNum(S.goalsShort)}), matches: tn('st.nMatches', S.goalsShortN, {n: attNum(S.goalsShortN)})}))}</p>` : '') +
     sec('st.cards', partial(S.cardsOk, S.n) +
       `<div class="agrid">${tile(S.yellow, t('st.yellow'), avg(S.yellow, S.cardsOk))}${tile(S.red, t('st.red'), avg(S.red, S.cardsOk))}${tile(S.second, t('st.second'), avg(S.second, S.cardsOk))}</div>`) +
     sec('st.record', `<p class="anote" id="aRecCount">${esc(t('st.recordCounted', {n: S.rec.n, total: S.n}))}</p>` +

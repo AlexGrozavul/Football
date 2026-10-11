@@ -2070,8 +2070,9 @@ reminders on the other.** Built on Alexandru's instruction.
 - **What it said on 2026-10-04**: Reminders - Poli v Rapid (September
   2026, past), the Pokal second round and Strasbourg's resale (undated).
   The Milan derby's Next meeting reads **Sat 31 Oct 2026, 20:45** from
-  the Serie A file, while your notes give Sun 1 Nov 2026, confirmed -
-  both are on the card (Known open problems). The Frankenderby's is Sun
+  the Serie A file, while your notes then gave Sun 1 Nov 2026 - both were
+  on the card; since 2026-10-11 your notes say 31 Oct too (Known open
+  problems). The Frankenderby's is Sun
   31 Jan 2027, 13:30, "day and time may be provisional".
 
 **The Bucket list: List, Calendar, favorites, 2026-10-04.** Built on
@@ -2129,7 +2130,7 @@ Alexandru's instruction. Two sub-tabs at the top of the Bucket list tab.
   before). Tested under Europe/Berlin and UTC at 23:30 UTC on 25 Oct
   2026, when the two days differ.
 - **What it said on 2026-10-04** (today 2026-10-04): 2 entries with an
-  upcoming day-level date (Derby della Madonnina, 1 Nov 2026; Europa
+  upcoming day-level date (Derby della Madonnina, 31 Oct 2026 since 2026-10-11, 1 Nov 2026 on the day; Europa
   League final, 26 May 2027), 2 month-level (Frankenderby, January or
   February 2027; KSC v FCK, January 2027), 17 undated, none past. No
   ticket window is day-level (every one is inferred or disputed), so
@@ -2513,8 +2514,12 @@ stays English** and **the Romanian is unchecked until he says otherwise**.
   "RO unchecked by the user" in the dictionary. `docs/ro-review.md` is the
   whole dictionary as a table of key, English and Romanian, in dictionary
   order, for reading on a phone; regenerate it after any dictionary change.
-  Plurals have two forms only (one / other), so a Romanian count of 20 or more
-  lacks the "de" ("20 de cluburi"); nobody has checked the wording of any row.
+  Plurals have two forms (one / other); since 2026-10-11 a key may have a third,
+  `key.many`, used only in Romanian for a count of 20 or more whose last two
+  digits are 00 or 20-99 ("20 de meciuri", "101 meciuri"), and a key without it
+  keeps using `.other`. Only the stats footnote (`st.nGoals`, `st.nMatches`) has it
+  so far, so other Romanian counts of 20 or more still lack the "de" ("20 de
+  cluburi"); nobody has checked the wording of any row.
   The sub-tab "Tickets" became **"Tickets/Memberships"** (Romanian
   "Bilete/Abonamente"); the four sub-tabs fit at 390 px in both languages
   by sizing each tab to its label (`flex: 1 1 auto`, 13 px): all four sit on
@@ -3647,18 +3652,33 @@ how each rests on them, is in Conventions, "The installable app" and
     other two. (a) and (c) together would deal with everything above;
     none is built.
 
-- **The Milan derby's first leg: your notes and the fixture file
-  disagree by a day - found 2026-10-04, not changed: Alexandru decides.**
-  `football-rules.json`'s `derby-madonnina` gives the first leg as
-  **Sun 1 Nov 2026**, matchday 10, `dateSource` `confirmed`;
-  football-data.org's Serie A file has AC Milan v Inter, matchday 10, at
-  **2026-10-31T19:45Z, status TIMED** - Sat 31 Oct, 20:45 German time, a
-  set kick-off, not a placeholder. The bucket card shows both, each
-  labelled. Rule 3 says the hand-written date wins wherever it is used
-  (a calendar built from it says 1 Nov), and no tool may write to that
-  file, so the fix, if the fixture file is right, is his edit.
-  `milan-derby-sale-nov`'s derivation ("one month before the 1 Nov
-  fixture") rests on the same date.
+- **The Milan derby's first leg is 31 Oct 2026 in your notes since
+  2026-10-11 - was a one-day disagreement, found 2026-10-04.**
+  `football-rules.json`'s `derby-madonnina` gave the first leg as Sun 1
+  Nov 2026, matchday 10; football-data.org's Serie A file has AC Milan v
+  Inter, matchday 10, at 2026-10-31T19:45Z, status TIMED - Sat 31 Oct,
+  20:45 German time, a set kick-off. Per Alexandru, 1 Nov was the June
+  draw date, before the slot was assigned. On 2026-10-10 the entry was
+  set `disputed` (the Inter page could not be opened). On 2026-10-11, on
+  his instruction, the Milan-home fixture became `2026-10-31`,
+  `dateSource` `confirmed`, `checkedOn` 2026-10-11, `source` the inter.it
+  calendar page, with a `note` saying the page was read by his chat
+  assistant and **not opened by Code** and quoting «sabato 31 ottobre
+  alle 20:45 (Milan-Inter)». A fixture item has no `kickoff` field the
+  page reads (the entry-level one belongs to the entry's `date`), so 20:45
+  is in the note only. The 14 Feb 2027 fixture is unchanged.
+  `milan-derby-sale-nov`'s derivation changed from "Approx one month
+  before the 1 Nov fixture." to "Approx one month before the 31 Oct
+  fixture." - the words only; its `dateEstimate` (2026-10-01), lead time
+  and action are as they were, and the estimate is not recomputed (rule
+  1). `bucket-links-manual.csv` line 17's note names 31 Oct now.
+  The same day, on his instruction, eleven two-club entries of the stress
+  test's finding E2 (not `ostderby`) got their missing club in
+  `bucket-links-manual.csv`, by a looser rule than the exact-name one:
+  exactly one club in the country's file has a name containing the title's
+  club name as a whole word ("Nice" gives OGC Nice). Every one had exactly
+  one candidate per side, so none was skipped; the host stays empty. A line
+  is an identity claim; each says in its note how it was matched.
 
 - **The Inter card on the Ticket info tab states "phase 1 (open
   worldwide)" flatly, and the researched rules contradict it - reported
@@ -5984,10 +6004,10 @@ how each rests on them, is in Conventions, "The installable app" and
 - **Where `football-rules.json`'s Inter and Italy figures come from,
   read 2026-10-03 and not changed.** The Italy-related content is the
   `inter` and `milan` club entries, the `derby-madonnina` bucket item
-  (two confirmed fixture dates, 1 Nov 2026 at Milan and 14 Feb 2027 at
-  Inter, each with a `saleRoute`), and two ticket events, `milan-derby-
-  sale-nov` (inferred, 2026-10-01, "approx one month before the 1 Nov
-  fixture") and `inter-derby-phase1` (disputed: its own warning says the
+  (two confirmed fixture dates, 31 Oct 2026 at Milan (1 Nov until
+  2026-10-11) and 14 Feb 2027 at Inter, each with a `saleRoute`), and two
+  ticket events, `milan-derby-sale-nov` (inferred, 2026-10-01, "approx one
+  month before the 31 Oct fixture") and `inter-derby-phase1` (disputed: its own warning says the
   source gave 13/21/24 August with no year, matching 2026 and 2015). **The
   file names no source for any single Inter figure** - not the four
   phases, not "up to 4 tickets", not "EUR 70-75" or "up to EUR 230".

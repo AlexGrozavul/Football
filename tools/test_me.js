@@ -76,9 +76,17 @@ const check = (name, ok, detail='') => { results.push(ok); console.log((ok ? 'PA
 // Unique to this run, so finding it anywhere it should not be cannot be a coincidence.
 const TAG = 'Zq' + Math.random().toString(36).slice(2, 8);
 const rules = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/football-rules.json'), 'utf8'));
-const LINK_ID = 'derby-madonnina';          // first leg 1 Nov 2026, confirmed in your notes
+const LINK_ID = 'derby-madonnina';
 const linked = rules.bucketList.find(b => b.id === LINK_ID);
+// The Milan-home fixture's day is read from football-rules.json, never written here; the ticket the test adds is for that day.
+const DERBY_DATE = linked.fixtures.find(f => f.home === 'milan').date;
+const DERBY_D = new Date(DERBY_DATE + 'T00:00:00Z');
+const DERBY_WORDS = `${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][DERBY_D.getUTCDay()]},? ${DERBY_D.getUTCDate()} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][DERBY_D.getUTCMonth()]} ${DERBY_D.getUTCFullYear()}`;
+const DERBY_DAY_BEFORE = new Date(DERBY_D.getTime() - 864e5).toISOString().slice(0, 10);
+const TODAY_YM = '2026-10';                // the test clock's month
+const DERBY_MONTHS_AHEAD = (+DERBY_DATE.slice(0, 4) - +TODAY_YM.slice(0, 4)) * 12 + (+DERBY_DATE.slice(5, 7) - +TODAY_YM.slice(5));
 
+const plEn = (n, one, other) => `${n} ${n === 1 ? one : other}`;   // English: "1 match", "n matches"
 const nonGet = [];
 const server = http.createServer((req, res) => {
   if(req.method !== 'GET' && req.method !== 'HEAD') nonGet.push(`${req.method} ${req.url}`);
@@ -291,13 +299,13 @@ function alarmAt(ev, al){
     document.querySelector('form.meform [data-act=cancel]').click(); return o; });
   check('"Link to bucket event" lists every bucket entry by id, plus none', opts[0] === '' &&
     JSON.stringify(opts.slice(1)) === JSON.stringify(rules.bucketList.map(b => b.id)), `${opts.length - 1} options`);
-  await add(page, 'ticket', {match: `AC Milan v Inter ${TAG}`, date: '2026-11-01', kickoff: '20:45', venue: 'San Siro', block: '332',
+  await add(page, 'ticket', {match: `AC Milan v Inter ${TAG}`, date: DERBY_DATE, kickoff: '20:45', venue: 'San Siro', block: '332',
     seats: '12, 13', whoFor: 'Alexandru, Ana', priceAmount: '75', priceCurrency: 'EUR', boughtFrom: 'Inter ticket office',
     status: 'bought', bucketId: LINK_ID});
   await add(page, 'ticket', {match: 'VfB v KSC', date: '2027-01-30', venue: 'MHPArena', status: 'requested'});
   await add(page, 'ticket', {match: 'Old cup tie', date: '2026-09-01', status: 'bought'});
   let milan = await cardText(page, 'ticket', 'AC Milan'), vfbk = await cardText(page, 'ticket', 'VfB v KSC');
-  check('A ticket is added with its fields', /Sun,? 1 Nov 2026 · 20:45/.test(milan) && /332/.test(milan) && /12, 13/.test(milan) &&
+  check('A ticket is added with its fields', new RegExp(DERBY_WORDS + ' · 20:45').test(milan) && /332/.test(milan) && /12, 13/.test(milan) &&
     /75\.00 EUR/.test(milan) && /bought/.test(milan) && milan.includes(`${linked.title} (${LINK_ID})`), milan);
   check('A ticket with no kick-off says "time not set"', /Sat,? 30 Jan 2027\s*time not set/.test(vfbk), vfbk);
   check('A past ticket goes in a collapsed Past section', await page.$eval('#meTickets details.past', d => !d.open && /Old cup tie/.test(d.textContent)), '');
@@ -320,8 +328,8 @@ function alarmAt(ev, al){
   let f = await download(page, () => page.click('.mecard[data-kind=ticket]:has(h3:text("AC Milan")) [data-act=ics]'));
   let P = parseIcs(f.text);
   check('Match .ics: a valid one-event file with an alarm', !P.problems.length && /\.ics$/.test(f.name), P.problems.join('; ') || f.name);
-  check('Match .ics: kick-off as typed, 1 Nov 2026 20:45, no time zone', P.ev.DTSTART.value === '20261101T204500' && !P.ev.DTSTART.params, JSON.stringify(P.ev.DTSTART));
-  check('Match .ics: the alarm goes off 1 day before kick-off (the default)', alarmAt(P.ev, P.al) === '2026-10-31T20:45' && P.al.ACTION.value === 'DISPLAY', alarmAt(P.ev, P.al));
+  check('Match .ics: kick-off as typed, the derby day 20:45, no time zone', P.ev.DTSTART.value === DERBY_DATE.replace(/-/g, '') + 'T204500' && !P.ev.DTSTART.params, JSON.stringify(P.ev.DTSTART));
+  check('Match .ics: the alarm goes off 1 day before kick-off (the default)', alarmAt(P.ev, P.al) === DERBY_DAY_BEFORE + 'T20:45' && P.al.ACTION.value === 'DISPLAY', alarmAt(P.ev, P.al));
   check('Match .ics: a comma in a text value is escaped (seats "12, 13")', P.ev.DESCRIPTION.value.includes('Seats: 12\\, 13'), P.ev.DESCRIPTION.value);
   check('Match .ics: summary and venue as typed', P.ev.SUMMARY.value === `AC Milan v Inter ${TAG}` && P.ev.LOCATION.value === 'San Siro', P.ev.SUMMARY.value);
   f = await download(page, () => page.click('.mecard[data-kind=ticket]:has(h3:text("VfB v KSC")) [data-act=ics]'));
@@ -346,12 +354,12 @@ function alarmAt(ev, al){
   const det = await page.$eval(`#bucketBody details.bucket[data-id="${LINK_ID}"] .tix`, e => e.querySelector('.heldbox')?.innerText || '');
   check('List: the opened entry lists the ticket held', /You hold tickets/i.test(det) && det.includes(`AC Milan v Inter ${TAG}`) && /bought/.test(det), det.replace(/\s+/g, ' '));
   await page.click('#tabCal');
-  await page.click('[data-cal=next]');
-  const cell = await page.$eval('.cday[data-date="2026-11-01"]', c => ({mark: !!c.querySelector('.mheld'), label: c.getAttribute('aria-label')}));
+  for(let i = 0; i < DERBY_MONTHS_AHEAD; i++) await page.click('[data-cal=next]');
+  const cell = await page.$eval(`.cday[data-date="${DERBY_DATE}"]`, c => ({mark: !!c.querySelector('.mheld'), label: c.getAttribute('aria-label')}));
   check('Calendar: the day cell is marked, and its label says you hold tickets', cell.mark && /you hold tickets/.test(cell.label), cell.label);
   const otherMarks = await page.$$eval('.cday .mheld', ms => ms.map(m => m.closest('.cday').dataset.date));
-  check('...and no other day in November is', JSON.stringify(otherMarks) === '["2026-11-01"]', otherMarks.join(','));
-  await page.click('.cday[data-date="2026-11-01"]');
+  check('...and no other day in that month is', JSON.stringify(otherMarks) === JSON.stringify([DERBY_DATE]), otherMarks.join(','));
+  await page.click(`.cday[data-date="${DERBY_DATE}"]`);
   const item = await page.$eval(`#calDay .calitem[data-open="entry:${LINK_ID}"]`, b => b.textContent);
   check('Calendar: the entry\'s item says "You hold tickets"', /You hold tickets/.test(item), item);
   await page.click(`#calDay .calitem[data-open="entry:${LINK_ID}"]`);
@@ -463,7 +471,7 @@ function alarmAt(ev, al){
   check('Storage blocked: the tab says what you add lasts only for this visit', /lasts only until the page is closed/.test(await page2.textContent('#meBody')), '');
   await add(page2, 'membership', {club: `Blocked club ${TAG}`, renewal: '2026-10-10'});
   check('Storage blocked: a membership can still be added for the visit', /Renewal due in 6 days/.test(await cardText(page2, 'membership', 'Blocked club') || ''), '');
-  await add(page2, 'ticket', {match: 'Blocked match', date: '2026-11-01', status: 'won', bucketId: LINK_ID});
+  await add(page2, 'ticket', {match: 'Blocked match', date: DERBY_DATE, status: 'won', bucketId: LINK_ID});
   await page2.click('nav button[data-pane=bucket]');
   check('Storage blocked: the bucket list still shows "You hold tickets"', /You hold tickets/.test(await page2.$eval(`#bucketBody details.bucket[data-id="${LINK_ID}"] summary`, s => s.textContent)), '');
   await ctx2.close();
@@ -531,7 +539,7 @@ function alarmAt(ev, al){
   check('Stats: "second yellows" has its own tile, and "red cards" is not that tile', tiles[5][1] === 'red cards' && tiles[6][1] === 'second yellows', JSON.stringify(tiles.slice(4)));
   const gnote = await p3.$eval('#aGoalsNote', e => e.textContent).catch(() => null);
   check('Stats: the footnote counts goals and matches whose goals list is shorter than the score',
-    fx.goalsShort.length ? gnote === `Includes ${fx.goalsShort.reduce((a, b) => a + b, 0)} goals from ${fx.goalsShort.length} matches without a full goals list` : gnote === null, String(gnote));
+    fx.goalsShort.length ? gnote === `Includes ${plEn(fx.goalsShort.reduce((a, b) => a + b, 0), 'goal', 'goals')} from ${plEn(fx.goalsShort.length, 'match', 'matches')} without a full goals list` : gnote === null, String(gnote));
   const lists = await p3.evaluate(() => {
     const out = {};
     document.querySelectorAll('#meStats .aeye').forEach(h => {
@@ -822,6 +830,19 @@ function alarmAt(ev, al){
   await p3.reload();
   await p3.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
   check('The chosen language survives a reload', await p3.evaluate(() => LANG) === 'ro', '');
+  await p3.evaluate(() => setLang('en'));
+  // Plurals of the stats footnote: English "1 match" / "n matches"; Romanian "1 meci" / "n meciuri", with "de" from 20 (last two digits 00 or 20-99).
+  const NS = [0, 1, 2, 19, 20, 21, 99, 100, 101, 119, 120, 1000];
+  const pluralsEn = await p3.evaluate(ns => ns.map(n => [tn('st.nMatches', n, {n}), tn('st.nGoals', n, {n})]), NS);
+  check('Plurals (English): "1 match" / "1 goal" and "n matches" / "n goals" for every n tried',
+    pluralsEn.every(([m, g], i) => m === plEn(NS[i], 'match', 'matches') && g === plEn(NS[i], 'goal', 'goals')), JSON.stringify(pluralsEn.slice(0, 3)));
+  await p3.evaluate(() => setLang('ro'));
+  const pluralsRo = await p3.evaluate(ns => ns.map(n => [tn('st.nMatches', n, {n}), tn('st.nGoals', n, {n})]), NS);
+  const roWant = n => `${n} ${n === 1 ? '' : (n >= 20 && (n % 100 === 0 || n % 100 >= 20)) ? 'de ' : ''}`;
+  check('Plurals (Romanian): "1 meci" / "1 gol", "n meciuri" / "n goluri", and "de" from 20 ("20 de meciuri", "21 de goluri", "101 meciuri", "120 de meciuri")',
+    pluralsRo.every(([m, g], i) => m === roWant(NS[i]) + (NS[i] === 1 ? 'meci' : 'meciuri') && g === roWant(NS[i]) + (NS[i] === 1 ? 'gol' : 'goluri')) &&
+    pluralsRo[4][0] === '20 de meciuri' && pluralsRo[5][1] === '21 de goluri' && pluralsRo[8][0] === '101 meciuri' && pluralsRo[9][1] === '119 goluri' && pluralsRo[10][0] === '120 de meciuri',
+    JSON.stringify(pluralsRo));
   await p3.evaluate(() => setLang('en'));
   await ctx3.close();
 
