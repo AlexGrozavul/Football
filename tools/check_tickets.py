@@ -476,7 +476,10 @@ KNOWN = {
                                # VfB Stuttgart 2025-26 (2026-10-07): one
                                # general row per season holds games that
                                # sold out and games that reached free sale.
-                               "varied-by-fixture"],
+                               "varied-by-fixture",
+                               # Eintracht Frankfurt 2025-26 (2026-10-11):
+                               # attendances read, no source says sold out.
+                               "not-stated"],
     (SOURCES_FILE, "publisherKind"): ["club", "league", "press", "fan-site",
                                       "government", "other-club",
                                       # 2026-10-06: the DFB, and Wikipedia
