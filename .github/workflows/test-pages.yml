@@ -93,6 +93,11 @@ on:
       - "data/club-culture-sources.csv"
       - "tools/check_club_culture.py"
       - "data/football-rules.json"
+      - "data/derbies.csv"
+      - "data/ro/**"
+      - "data/ro-glossary.csv"
+      - "tools/check_translations.py"
+      - "tools/translation-fingerprints.json"
       - ".github/workflows/test-pages.yml"
   pull_request:
     paths:
@@ -119,6 +124,11 @@ on:
       - "data/club-culture-sources.csv"
       - "tools/check_club_culture.py"
       - "data/football-rules.json"
+      - "data/derbies.csv"
+      - "data/ro/**"
+      - "data/ro-glossary.csv"
+      - "tools/check_translations.py"
+      - "tools/translation-fingerprints.json"
       - ".github/workflows/test-pages.yml"
   workflow_dispatch:
 
@@ -276,11 +286,20 @@ jobs:
           set -o pipefail
           python3 tools/check_club_culture.py 2>&1 | tee /tmp/test_check_club_culture.log
 
+      # The page shows data/ro/*.json instead of the English only while its fingerprint still matches; the checker
+      # must exit 0: a malformed or duplicate entry, an empty Romanian, an unknown row, or a Romanian that lacks a
+      # number, date or URL of its English fails it; stale entries and glossary misses only warn.
+      - name: Romanian translations of data texts read back (check_translations.py exits 0)
+        if: always()
+        run: |
+          set -o pipefail
+          python3 tools/check_translations.py 2>&1 | tee /tmp/test_check_translations.log
+
       - name: Write the run summary
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets competitions check_tickets check_holidays check_competitions check_club_culture; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets competitions check_tickets check_holidays check_competitions check_club_culture check_translations; do
               echo "## test_$t.js"
               echo
               echo '```'

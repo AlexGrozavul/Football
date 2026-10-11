@@ -818,7 +818,7 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
           <button type="button" data-lang="en" aria-pressed="true">English</button>
           <button type="button" data-lang="ro" aria-pressed="false">Română</button>
         </div>
-        <p class="sub" data-i18n="set.note">The language of the app's own words. Text that comes from the data files stays in English. Kept on this device only.</p>
+        <p class="sub" data-i18n="set.note">The language of the app's own words. Kept on this device only.</p>
         <p class="sub" data-i18n="set.roNote">The Romanian text was written by an assistant and has not been checked by you yet.</p>
         <h4 data-i18n="set.theme">Theme</h4>
         <div class="lsw" role="group" aria-label="Theme" data-i18n-aria="set.theme">
@@ -826,6 +826,11 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
           <button type="button" data-theme="light" aria-pressed="false" data-i18n="set.theme.light">Light</button>
         </div>
         <p class="sub" data-i18n="set.themeNote">The colours of the app. Dark is the default. Kept on this device only.</p>
+        <h4 data-i18n="set.tx">Texts from the data files</h4>
+        <div class="lsw" role="group" aria-label="Texts from the data files" data-i18n-aria="set.tx">
+          <button type="button" id="txOrigBtn" aria-pressed="false" data-i18n="set.txOrig">Show original English for data texts</button>
+        </div>
+        <p class="sub" data-i18n="set.txNote">In Romanian, some texts from the data files have an automatic translation; the rest stays in English. Turn this on to see the English original everywhere. Kept on this device only.</p>
       </div>
     </div>
   </div>
@@ -1873,7 +1878,7 @@ const I18N = {
     "bk.sheetAria": "Bucket list entry",
     "set.title": "Settings",
     "set.lang": "Language",
-    "set.note": "The language of the app's own words. Text that comes from the data files stays in English. Kept on this device only.",
+    "set.note": "The language of the app's own words. Kept on this device only.",
     "set.roNote": "The Romanian text was written by an assistant and has not been checked by you yet.",
     "set.btn": "Settings",
     "set.theme": "Theme",
@@ -1923,6 +1928,127 @@ const I18N = {
     "nl.relatedNear": "Related near",
     "nl.alternative": "Alternative",
     "nl.related": "Related",
+    "set.tx": "Texts from the data files",
+    "set.txOrig": "Show original English for data texts",
+    "set.txNote": "In Romanian, some texts from the data files have an automatic translation; the rest stays in English. Turn this on to see the English original everywhere. Kept on this device only.",
+    "tx.note": "Automatic translation, English is the original.",
+    /* Codes from the ticket and competition files, as the interface says them. English is the code as the file wrote it, so the English view is unchanged; a code with no key here is shown as written. */
+    "tp.sales-channel": "sales-channel",
+    "tp.membership": "membership",
+    "tp.presale-rights": "presale-rights",
+    "tp.fees": "fees",
+    "tp.update-tracking": "update-tracking",
+    "tp.queue": "queue",
+    "tp.sector-separation": "sector-separation",
+    "tp.personalisation": "personalisation",
+    "tp.ticket-format": "ticket-format",
+    "tp.away-end": "away-end",
+    "tp.capacity": "capacity",
+    "tp.box-office": "box-office",
+    "tp.price-category": "price-category",
+    "tp.free-sale-reached": "free-sale-reached",
+    "tp.sales-mechanism": "sales-mechanism",
+    "tp.resale-platform": "resale-platform",
+    "tp.resale-price-cap": "resale-price-cap",
+    "tp.resale-prices": "resale-prices",
+    "tp.access": "access",
+    "tp.ticket-types": "ticket-types",
+    "tp.transfer": "transfer",
+    "tp.fidelity-card": "fidelity-card",
+    "tp.presale-eligibility": "presale-eligibility",
+    "tp.residency-limits": "residency-limits",
+    "tp.fidelity-card-foreign": "fidelity-card-foreign",
+    "tp.card-cutoff": "card-cutoff",
+    "tp.purchase-limit": "purchase-limit",
+    "tp.second-ticket-card": "second-ticket-card",
+    "tp.minors": "minors",
+    "tp.sector-rules": "sector-rules",
+    "tp.away-allocation": "away-allocation",
+    "tp.price-list": "price-list",
+    "tp.unofficial-resale": "unofficial-resale",
+    "tp.entrances": "entrances",
+    "tp.source-caveat": "source-caveat",
+    "tp.risk-classification": "risk-classification",
+    "tp.legal-framework": "legal-framework",
+    "scp.general": "general",
+    "scp.derby-home": "derby-home",
+    "scp.derby-away": "derby-away",
+    "cmp.bundesliga": "bundesliga",
+    "cmp.dfb-pokal": "dfb-pokal",
+    "cmp.ucl": "ucl",
+    "cmp.2-bundesliga": "2-bundesliga",
+    "cmp.serie-a": "serie-a",
+    "stg.regular": "regular",
+    "stg.early-rounds": "early-rounds",
+    "stg.league-phase": "league-phase",
+    "stg.season-ticket": "season-ticket",
+    "ot.top-opponent": "top-opponent",
+    "ot.standard-opponent": "standard-opponent",
+    "ot.category-a": "category-a",
+    "ot.category-b": "category-b",
+    "pcl.normal": "normal",
+    "pcl.member": "member",
+    "pcl.reduced": "reduced",
+    "pcl.child": "child",
+    "pk.face-value": "face-value",
+    "pk.resale-observed": "resale-observed",
+    "pb.excl-vat-fees": "excl-vat-fees",
+    "pb.incl-vat-fees": "incl-vat-fees",
+    "pb.incl-vat-excl-fees": "incl-vat-excl-fees",
+    "pb.unknown": "unknown",
+    "oc.seats-left": "seats-left",
+    "oc.nearly-sold-out": "nearly-sold-out",
+    "oc.sold-out": "sold-out",
+    "oc.sold-out-before-open-sale": "sold-out-before-open-sale",
+    "oc.varied-by-fixture": "varied-by-fixture",
+    "ac.members-only": "members-only",
+    "ac.open-with-member-presale": "open-with-member-presale",
+    "ac.open-with-account": "open-with-account",
+    "ac.members-first-leftovers-free-sale": "members-first-leftovers-free-sale",
+    "sm.request-then-lottery": "request-then-lottery",
+    "sm.phased-sale": "phased-sale",
+    "sm.open-sale": "open-sale",
+    "rq.home": "home",
+    "rq.away": "away",
+    "rq.ucl": "ucl",
+    "rq.pokal": "pokal",
+    "ce.yes-when-overbooked": "yes-when-overbooked",
+    "dm.overbooked-usually": "overbooked-usually",
+    "rs.official-members-only": "official-members-only",
+    "rs.official-face-value-only": "official-face-value-only",
+    "rs.official-season-ticket-resale": "official-season-ticket-resale",
+    "ut.newsletter": "newsletter",
+    "ut.per-match-article": "per-match-article",
+    "ut.notify-button": "notify-button",
+    "ut.news-section": "news-section",
+    "ut.ticket-shop-calendar": "ticket-shop-calendar",
+    "ut.email": "email",
+    "mn.unknown": "unknown",
+    "mn.via-guardian-account": "via-guardian-account",
+    "ak.government": "government",
+    "ak.national-observatory": "national-observatory",
+    "ak.police": "police",
+    "ak.federation": "federation",
+    "ak.league": "league",
+    "uc.suspect": "suspect",
+    "uc.domain-only": "domain-only",
+    "uc.truncated-in-pdf": "truncated-in-pdf",
+    "wb.observed-past-cycle": "observed-past-cycle",
+    "wb.published": "published",
+    "wb.user-supplied": "user-supplied",
+    "wb.unknown": "unknown",
+    "wn.season-ticket-renewal": "season-ticket-renewal",
+    "wn.bundesliga-single-match": "bundesliga-single-match",
+    "wn.bundesliga-away-block": "bundesliga-away-block",
+    "wn.away-season-ticket": "away-season-ticket",
+    "wn.ucl-league-phase": "ucl-league-phase",
+    "wn.home-single-match": "home-single-match",
+    "wn.derby-home": "derby-home",
+    "wn.rueckrunde-half-season-ticket": "rueckrunde-half-season-ticket",
+    "wn.season-ticket-resale": "season-ticket-resale",
+    "wn.season-ticket": "season-ticket",
+    "wn.away-single-match": "away-single-match",
+    "wn.derby-away": "derby-away",
     /* ui:end en */
   },
   /* RO unchecked by the user: written by the assistant, not yet read by Alexandru. */
@@ -2946,7 +3072,7 @@ const I18N = {
     "bk.sheetAria": "Intrare din lista de dorințe",
     "set.title": "Setări",
     "set.lang": "Limba",
-    "set.note": "Limba cuvintelor proprii ale aplicației. Textul care vine din fișierele de date rămâne în engleză. Se păstrează doar pe acest dispozitiv.",
+    "set.note": "Limba cuvintelor proprii ale aplicației. Se păstrează doar pe acest dispozitiv.",
     "set.roNote": "Textul în română a fost scris de un asistent și nu a fost încă verificat de tine.",
     "set.btn": "Setări",
     "set.theme": "Temă",
@@ -2996,6 +3122,127 @@ const I18N = {
     "nl.relatedNear": "Legat, în apropiere",
     "nl.alternative": "Alternativă",
     "nl.related": "Legat",
+    "set.tx": "Texte din fișierele de date",
+    "set.txOrig": "Arată originalul în engleză pentru textele din date",
+    "set.txNote": "În română, unele texte din fișierele de date au o traducere automată; restul rămâne în engleză. Activează ca să vezi originalul în engleză peste tot. Se păstrează doar pe acest dispozitiv.",
+    "tx.note": "Traducere automată, originalul este în engleză.",
+    /* RO unchecked by the user: labels for the codes of the ticket files. */
+    "tp.sales-channel": "canal de vânzare",
+    "tp.membership": "calitatea de membru",
+    "tp.presale-rights": "drepturi de prevânzare",
+    "tp.fees": "taxe",
+    "tp.update-tracking": "urmărirea noutăților",
+    "tp.queue": "coadă",
+    "tp.sector-separation": "separarea sectoarelor",
+    "tp.personalisation": "personalizare",
+    "tp.ticket-format": "formatul biletului",
+    "tp.away-end": "sectorul oaspeților",
+    "tp.capacity": "capacitate",
+    "tp.box-office": "casa de bilete",
+    "tp.price-category": "categoria de preț",
+    "tp.free-sale-reached": "ajuns la vânzare liberă",
+    "tp.sales-mechanism": "mecanismul de vânzare",
+    "tp.resale-platform": "platformă de revânzare",
+    "tp.resale-price-cap": "plafon de preț la revânzare",
+    "tp.resale-prices": "prețuri de revânzare",
+    "tp.access": "acces",
+    "tp.ticket-types": "tipuri de bilete",
+    "tp.transfer": "transferul biletului",
+    "tp.fidelity-card": "card de fidelitate",
+    "tp.presale-eligibility": "eligibilitate pentru prevânzare",
+    "tp.residency-limits": "limite de reședință",
+    "tp.fidelity-card-foreign": "card de fidelitate pentru străini",
+    "tp.card-cutoff": "termen limită pentru card",
+    "tp.purchase-limit": "limită de achiziție",
+    "tp.second-ticket-card": "al doilea card pentru bilet",
+    "tp.minors": "minori",
+    "tp.sector-rules": "reguli pe sectoare",
+    "tp.away-allocation": "alocarea pentru oaspeți",
+    "tp.price-list": "listă de prețuri",
+    "tp.unofficial-resale": "revânzare neoficială",
+    "tp.entrances": "intrări",
+    "tp.source-caveat": "rezervă privind sursa",
+    "tp.risk-classification": "clasificarea riscului",
+    "tp.legal-framework": "cadrul legal",
+    "scp.general": "în general",
+    "scp.derby-home": "derby acasă",
+    "scp.derby-away": "derby în deplasare",
+    "cmp.bundesliga": "Bundesliga",
+    "cmp.dfb-pokal": "DFB-Pokal",
+    "cmp.ucl": "Liga Campionilor",
+    "cmp.2-bundesliga": "2. Bundesliga",
+    "cmp.serie-a": "Serie A",
+    "stg.regular": "sezon regulat",
+    "stg.early-rounds": "rundele timpurii",
+    "stg.league-phase": "faza ligii",
+    "stg.season-ticket": "abonament",
+    "ot.top-opponent": "adversar de top",
+    "ot.standard-opponent": "adversar obișnuit",
+    "ot.category-a": "categoria A",
+    "ot.category-b": "categoria B",
+    "pcl.normal": "preț normal",
+    "pcl.member": "membru",
+    "pcl.reduced": "redus",
+    "pcl.child": "copil",
+    "pk.face-value": "valoare nominală",
+    "pk.resale-observed": "revânzare observată",
+    "pb.excl-vat-fees": "fără TVA și taxe",
+    "pb.incl-vat-fees": "cu TVA și taxe",
+    "pb.incl-vat-excl-fees": "cu TVA, fără taxe",
+    "pb.unknown": "necunoscut",
+    "oc.seats-left": "au rămas locuri",
+    "oc.nearly-sold-out": "aproape sold-out",
+    "oc.sold-out": "sold-out",
+    "oc.sold-out-before-open-sale": "sold-out înainte de vânzarea liberă",
+    "oc.varied-by-fixture": "diferit de la un meci la altul",
+    "ac.members-only": "doar membri",
+    "ac.open-with-member-presale": "deschis, cu prevânzare pentru membri",
+    "ac.open-with-account": "deschis, cu cont",
+    "ac.members-first-leftovers-free-sale": "mai întâi membrii, restul în vânzare liberă",
+    "sm.request-then-lottery": "cerere, apoi tragere la sorți",
+    "sm.phased-sale": "vânzare în faze",
+    "sm.open-sale": "vânzare liberă",
+    "rq.home": "acasă",
+    "rq.away": "deplasare",
+    "rq.ucl": "Liga Campionilor",
+    "rq.pokal": "Pokal",
+    "ce.yes-when-overbooked": "da, când cererea depășește locurile",
+    "dm.overbooked-usually": "de obicei cerere peste locuri",
+    "rs.official-members-only": "oficială, doar pentru membri",
+    "rs.official-face-value-only": "oficială, doar la valoarea nominală",
+    "rs.official-season-ticket-resale": "oficială, revânzare de abonamente",
+    "ut.newsletter": "buletin informativ",
+    "ut.per-match-article": "articol pentru fiecare meci",
+    "ut.notify-button": "buton de notificare",
+    "ut.news-section": "secțiunea de știri",
+    "ut.ticket-shop-calendar": "calendarul magazinului de bilete",
+    "ut.email": "e-mail",
+    "mn.unknown": "necunoscut",
+    "mn.via-guardian-account": "prin contul unui tutore",
+    "ak.government": "guvern",
+    "ak.national-observatory": "observator național",
+    "ak.police": "poliție",
+    "ak.federation": "federație",
+    "ak.league": "ligă",
+    "uc.suspect": "dubioasă",
+    "uc.domain-only": "doar domeniul",
+    "uc.truncated-in-pdf": "trunchiată în PDF",
+    "wb.observed-past-cycle": "observat într-un ciclu trecut",
+    "wb.published": "publicat",
+    "wb.user-supplied": "oferit de utilizator",
+    "wb.unknown": "necunoscut",
+    "wn.season-ticket-renewal": "reînnoirea abonamentului",
+    "wn.bundesliga-single-match": "vânzare pe meci, Bundesliga",
+    "wn.bundesliga-away-block": "sectorul oaspeților, Bundesliga",
+    "wn.away-season-ticket": "abonament de deplasare",
+    "wn.ucl-league-phase": "faza ligii, Liga Campionilor",
+    "wn.home-single-match": "vânzare pe meci, acasă",
+    "wn.derby-home": "derby acasă",
+    "wn.rueckrunde-half-season-ticket": "abonament pentru returul sezonului",
+    "wn.season-ticket-resale": "revânzare de abonamente",
+    "wn.season-ticket": "abonament",
+    "wn.away-single-match": "vânzare pe meci, deplasare",
+    "wn.derby-away": "derby în deplasare",
     /* ui:end ro */
   }
 };
@@ -3020,6 +3267,7 @@ let MAP_THEME = null;     // the map's tile swap, set by initMap
 function syncSettingsButtons(){
   document.querySelectorAll('#ssheet button[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
   document.querySelectorAll('#ssheet button[data-theme]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.theme === THEME)));
+  document.getElementById('txOrigBtn')?.setAttribute('aria-pressed', String(TX_ORIG));
 }
 function setTheme(th){
   if(th !== 'light' && th !== 'dark') return;
@@ -3043,6 +3291,8 @@ function setLang(l){
   LANG = l;
   try{ localStorage.setItem(LANG_KEY, l); }catch(e){}
   applyLang();
+  /* The Romanian of the data texts is fetched the first time it is wanted; what is open is drawn again when it arrives. */
+  if(l === 'ro' && !RO_TX) loadRoTexts().then(() => { if(LANG === 'ro') applyLang(); });
 }
 /* Apply the chosen language: the words written in the markup, then every
    view that is open or built already. Views that cannot be redrawn without
@@ -3056,6 +3306,7 @@ function applyLang(){
   refreshSheetLabels();
   document.getElementById('asheet').setAttribute('aria-label', t('att.sheet.aria'));
   document.querySelectorAll('#ssheet button[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
+  document.getElementById('txOrigBtn')?.setAttribute('aria-pressed', String(TX_ORIG));
   /* The few words the page writes itself into the markup. */
   if(!HOME) document.getElementById('homeChip').textContent = t('map.homeNotSet');
   if(!document.getElementById('offlineBanner').hidden) showOfflineBanner();
@@ -3111,6 +3362,64 @@ const tn = (key, n, vars) => t(key + (n === 1 ? '.one' : (LANG === 'ro' && roDe(
    known ones are translated, any other is shown as the file wrote it. */
 const hasKey = k => Object.prototype.hasOwnProperty.call(I18N.en, k);
 const vocab = (prefix, v) => hasKey(prefix + v) ? t(prefix + v) : v;
+
+/* ---------------------------------------------- Romanian text from data files
+   The English data files are the original and are never touched. When the
+   language is Romanian, text a data file wrote is looked up in
+   data/ro/<source>.json, keyed "<rowKey>#<field>". An entry holds a
+   fingerprint of the English it was made from; if the English has changed
+   since, the entry is stale and the English is shown. Written by an
+   assistant, unchecked (CLAUDE.md, "Romanian translations of data texts").
+   tools/check_translations.py has the same fingerprint and the rows. */
+const TX_ORIG_KEY = 'football-planner-tx-original';
+let TX_ORIG = false;                       // "Show original English for data texts"
+try{ TX_ORIG = localStorage.getItem(TX_ORIG_KEY) === '1'; }catch(e){ /* blocked: off */ }
+const RO_SOURCES = ['football-rules', 'derbies', 'club-ticket-windows', 'club-ticket-phases', 'club-ticket-rules',
+  'club-ticket-demand', 'country-ticket-rules', 'event-ticket-rules', 'competition-info'];
+let RO_TX = null, RO_LOADING = null;
+/* 32-bit FNV-1a over the UTF-8 bytes of the text, trimmed of " \t\n\r\f\v " (tools/translation-fingerprints.json). */
+function fnv1a(text){
+  const b = new TextEncoder().encode(String(text).replace(/^[ \t\n\r\f\v ]+|[ \t\n\r\f\v ]+$/g, ''));
+  let h = 0x811c9dc5;
+  for(let i = 0; i < b.length; i++){ h ^= b[i]; h = Math.imul(h, 0x01000193); }
+  return (h >>> 0).toString(16).padStart(8, '0');
+}
+/* Loaded only in Romanian, network first like every data file. A file that
+   cannot be loaded just leaves its texts in English; the next call retries. */
+function loadRoTexts(){
+  if(RO_TX) return Promise.resolve(RO_TX);
+  if(!RO_LOADING) RO_LOADING = Promise.all(RO_SOURCES.map(s =>
+      getJSON('data/ro/' + s + '.json').then(j => [s, j && typeof j === 'object' ? j : null], () => [s, null])))
+    .then(list => {
+      const all = Object.fromEntries(list);
+      if(list.every(([, j]) => j)) RO_TX = all; else RO_LOADING = null;
+      return all;
+    });
+  return RO_LOADING.then(all => RO_TX || all);
+}
+/* [text, language of the text]: Romanian only when the language is Romanian, the switch is off, an entry
+   exists and its fingerprint matches the English now in the data file. The language is '' in English. */
+function txr(source, row, field, en){
+  if(en == null || en === '') return [en, ''];
+  if(LANG === 'ro' && !TX_ORIG){
+    const e = RO_TX && RO_TX[source] && RO_TX[source][row + '#' + field];
+    if(e && e.ro && e.en === fnv1a(en)) return [e.ro, 'ro'];
+  }
+  return [en, LANG === 'ro' ? 'en' : ''];
+}
+const tx = (source, row, field, en) => txr(source, row, field, en)[0];
+/* The text and the attributes for its element: lang="ro" data-tx="ro" or lang="en" (nothing at all in English). */
+function txh(source, row, field, en){
+  const [s, l] = txr(source, row, field, en);
+  return {s, a: l === 'ro' ? ' lang="ro" data-tx="ro"' : l === 'en' ? ' lang="en"' : ''};
+}
+/* Escaped text, in a span carrying its language when it is one tx() translated or left in English on purpose. */
+const txSpan = X => X.a ? `<span${X.a}>${esc(X.s)}</span>` : esc(X.s);
+function setTxOriginal(on){
+  TX_ORIG = !!on;
+  try{ localStorage.setItem(TX_ORIG_KEY, on ? '1' : '0'); }catch(e){ /* blocked: this visit only */ }
+  applyLang();
+}
 
 /* Tier colours, the route colour and the two ink colours are read from the
    CSS variables of the chosen theme (syncPalette, below), so the map
@@ -3181,10 +3490,10 @@ function roadEstimate(lat, lon, from = HOME){
   return Math.round(haversine(from.lat, from.lon, lat, lon) * MULTIPLIER);
 }
 
-function field(label, value, fromData = false){
+function field(label, value, fromData = false, attrs = ''){
   const v = (value === null || value === undefined || value === '')
     ? `<span class="blank">${esc(t('gen.notRecorded'))}</span>` : esc(value);
-  return `<div class="row"><span>${esc(label)}</span><span${fromData ? ' data-content' : ''}>${v}</span></div>`;   // fromData: the value is text a data file wrote
+  return `<div class="row"><span>${esc(label)}</span><span${fromData ? ' data-content' : ''}${attrs}>${v}</span></div>`;   // fromData: the value is text a data file wrote
 }
 
 function sourceTag(src){
@@ -4037,7 +4346,11 @@ async function fixturesHtml(club){
 
 /* ---- ticket info */
 
-const words = v => (v || '').split(';').map(x => x.trim()).filter(Boolean).join(', ');
+/* A ';'-list of codes from a ticket file as words. With a prefix each code goes through vocab(): the interface's word for it,
+   else the code as the file wrote it (CLAUDE.md, "Romanian translations of data texts"). */
+const words = (v, prefix = '') => (v || '').split(';').map(x => x.trim()).filter(Boolean).map(x => prefix ? vocab(prefix, x) : x).join(', ');
+/* A row's key in a data/ro file: its key columns joined with '|' (tools/check_translations.py). */
+const rowKey = (r, cols) => cols.map(c => r[c] || '').join('|');
 
 /* ONE renderer for a club's ticket information - clubTicketsHtml() -
    used in three places: the club sheet, the Ticket info tab's club rows,
@@ -4067,7 +4380,7 @@ function confTag(v){
 function scopeTag(r, names){
   if(!r.scope || r.scope === 'general') return '';
   const opp = r.opponentQid ? (names[r.opponentQid] || r.opponentQid) : '';
-  return `<span class="tag">${esc(r.scope)}${opp ? ' v ' + esc(opp) : ''}</span>`;
+  return `<span class="tag">${esc(vocab('scp.', r.scope))}${opp ? ' v ' + esc(opp) : ''}</span>`;
 }
 
 /* A row's citations, from data/ticket-sources.csv by its sourceRefs, or
@@ -4082,7 +4395,7 @@ function sourcesLine(r, sources){
     const url = (s.url || '').split(/;(?=\s*https?:\/\/)/)[0].trim();
     const text = esc(s.publisher || id) + (s.title ? ': ' + esc(s.title) : '');
     return (/^https?:\/\//.test(url) ? `<a href="${esc(url)}" target="_blank" rel="noopener">${text}</a>` : text) +
-      (s.urlComplete && s.urlComplete !== 'yes' ? ` <span class="tag warn">${esc(t('tk.link'))} ${esc(s.urlComplete)}</span>` : '');
+      (s.urlComplete && s.urlComplete !== 'yes' ? ` <span class="tag warn">${esc(t('tk.link'))} ${esc(vocab('uc.', s.urlComplete))}</span>` : '');
   });
   if(!bits.length) (r.source || '').split(/;(?=\s*https?:\/\/)/).map(u => u.trim()).filter(Boolean).forEach(u => {
     let host = u; try{ host = new URL(u).hostname.replace(/^www\./, ''); }catch(e){}
@@ -4118,11 +4431,12 @@ async function countryRules(country){
 }
 
 function countryRuleItem(r, C){
-  return `<div class="item crule"><b>${esc(r.topic)}</b> · ${esc(r.authority)}` +
-    `<div data-content>${esc(r.rule)}</div>` +
+  const R = txh('country-ticket-rules', rowKey(r, ['country', 'topic', 'appliesTo', 'condition']), 'rule', r.rule);
+  return `<div class="item crule"><b>${esc(vocab('tp.', r.topic))}</b> · ${esc(r.authority)}` +
+    `<div data-content${R.a}>${esc(R.s)}</div>` +
     field(t('tk.appliesTo'), appliesWords(r.appliesTo, C.leagues)) +
     field(t('tk.onlyWhen'), (r.condition || '').split(';').map(c => CONDITION_WORDS[c.trim()] || c.trim()).filter(Boolean).join('; ')) +
-    field(t('tk.authority'), `${r.authority}${r.authorityKind ? ' (' + words(r.authorityKind) + ')' : ''}`) +
+    field(t('tk.authority'), `${r.authority}${r.authorityKind ? ' (' + words(r.authorityKind, 'ak.') + ')' : ''}`) +
     field(t('tk.room'), LATITUDE_WORDS[r.clubLatitude] || r.clubLatitude) +
     `<div class="meta">${confTag(r.confidence)}${r.season ? `<span class="tag">${esc(r.season)}</span>` : ''}</div>` +
     sourcesLine(r, C.sources) + `</div>`;
@@ -4138,6 +4452,10 @@ async function countryRulesHtml(country){
     `${esc(t('tk.natNote2'))}</div>` +
     why(esc(t('tk.natSrc')), t('gen.source'));
 }
+
+/* The key columns of each translated ticket file (tools/check_translations.py has the same lists). */
+const WIN_KEY = ['clubQid', 'team', 'window'], PH_KEY = ['clubQid', 'team', 'window', 'phase'];
+const RULE_KEY = ['clubQid', 'team', 'scope', 'opponentQid', 'topic', 'season'], DEM_KEY = ['clubQid', 'team', 'scope', 'opponentQid', 'season'];
 
 /* "Researched rules": the club-tickets files, joined by clubQid. Returns
    the row (or why there is none), the rendered section, and the club's
@@ -4165,16 +4483,16 @@ async function researchedFor(club, dates){
 
   let h =
     (row.ticketUrl ? `<div class="row"><span>${esc(t('tk.ticketPage'))}</span><span><a href="${esc(row.ticketUrl)}" target="_blank" rel="noopener">${esc(row.ticketUrl)}</a></span></div>` : field(t('tk.ticketPage'), null)) +
-    field(t('tk.whoBuys'), words(row.access)) +
-    field(t('tk.howSells'), words(row.salesModel)) +
-    (row.requestTypes ? field(t('tk.requestsFor'), words(row.requestTypes)) : '') +
+    field(t('tk.whoBuys'), words(row.access, 'ac.')) +
+    field(t('tk.howSells'), words(row.salesModel, 'sm.')) +
+    (row.requestTypes ? field(t('tk.requestsFor'), words(row.requestTypes, 'rq.')) : '') +
     field(t('tk.deadline'), {stated:t('tk.dl.stated'), none:t('tk.dl.none'),
                        unknown:t('tk.dl.unknown')}[row.cutoff] || row.cutoff) +
-    field(t('tk.closesEarly'), words(row.closesEarly)) +
-    field(t('tk.demand'), words(row.demand)) +
-    field(t('tk.resale'), words(row.resale)) +
-    field(t('tk.track'), words(row.updateTracking)) +
-    field(t('tk.under18'), words(row.minorEligibility)) +
+    field(t('tk.closesEarly'), words(row.closesEarly, 'ce.')) +
+    field(t('tk.demand'), words(row.demand, 'dm.')) +
+    field(t('tk.resale'), words(row.resale, 'rs.')) +
+    field(t('tk.track'), words(row.updateTracking, 'ut.')) +
+    field(t('tk.under18'), words(row.minorEligibility, 'mn.')) +
     field(t('tk.checked'), row.checked) +
     warn.map(w => `<p class="err">${esc(w)}</p>`).join('');
 
@@ -4191,24 +4509,25 @@ async function researchedFor(club, dates){
      forecast - and is labelled so. */
   const windows = mine(win);
   h += section(t('tk.sec.windows'), windows, r =>
-    `<div class="item"><b>${esc(r.label || r.window)}</b>` +
-    (dates ? `<div class="row" data-ds="${esc(r.dateSource)}"><span>${esc(t('tk.typOpens'))}</span><span>${esc(r.opensEstimate)}` +
+    `<div class="item"><b>${r.label ? txSpan(txh('club-ticket-windows', rowKey(r, WIN_KEY), 'label', r.label)) : esc(vocab('wn.', r.window))}</b>` +
+    (dates ? `<div class="row" data-ds="${esc(r.dateSource)}"><span>${esc(t('tk.typOpens'))}</span><span>${txSpan(txh('club-ticket-windows', rowKey(r, WIN_KEY), 'opensEstimate', r.opensEstimate))}`+
       `${r.estimateFor ? ' (' + esc(t('tk.for', {x: r.estimateFor})) + ')' : ''}</span></div>` : '') +
-    `<div class="meta">${sourceTag(r.dateSource)}${r.basis ? `<span class="tag">${esc(r.basis)}</span>` : ''}${scopeTag(r, names)}</div>` +
-    (dates && r.pastCycle ? `<div class="sub">${esc(t('tk.pastCycle'))} ${esc(r.pastCycle)}</div>` : '') +
+    `<div class="meta">${sourceTag(r.dateSource)}${r.basis ? `<span class="tag">${esc(vocab('wb.', r.basis))}</span>` : ''}${scopeTag(r, names)}</div>` +
+    (dates && r.pastCycle ? `<div class="sub">${esc(t('tk.pastCycle'))} ${txSpan(txh('club-ticket-windows', rowKey(r, WIN_KEY), 'pastCycle', r.pastCycle))}</div>` : '') +
     /* The window's phases from club-ticket-phases.csv, in order. */
     (phases.ok ? phases.v.filter(p => p.clubQid === club.id && (p.team || 'men') === 'men' && p.window === r.window)
       .sort((a, b) => Number(a.phase) - Number(b.phase)).map(p =>
-        `<div class="nest"><b>${esc(t('tk.phase', {n: p.phase}))}</b>: ${esc(p.buyers)}` +
-        (p.opensRelative ? ` — ${esc(t('tk.opens'))} ${esc(p.opensRelative)}` : '') +
+        `<div class="nest"><b>${esc(t('tk.phase', {n: p.phase}))}</b>: ${txSpan(txh('club-ticket-phases', rowKey(p, PH_KEY), 'buyers', p.buyers))}` +
+        (p.opensRelative ? ` — ${esc(t('tk.opens'))} ${txSpan(txh('club-ticket-phases', rowKey(p, PH_KEY), 'opensRelative', p.opensRelative))}` : '') +
         (p.maxTickets ? ` · ${esc(t('tk.max'))} ${esc(p.maxTickets)}` : '') +
-        (p.pastCycle ? `<div class="sub">${esc(t('tk.pastCycleLow'))}${p.pastCycleFor ? ' ' + esc(p.pastCycleFor) : ''} (${esc(t('tk.notForecast'))}): ${esc(p.pastCycle)}</div>` : '') +
+        (p.pastCycle ? `<div class="sub">${esc(t('tk.pastCycleLow'))}${p.pastCycleFor ? ' ' + esc(p.pastCycleFor) : ''} (${esc(t('tk.notForecast'))}): ${txSpan(txh('club-ticket-phases', rowKey(p, PH_KEY), 'pastCycle', p.pastCycle))}</div>` : '') +
         `<div class="meta">${confTag(p.confidence)}</div>${sourcesLine(p, sources)}</div>`).join('')
       : `<p class="err">${esc(t('tk.phasesFail'))}</p>`) + sourcesLine(r, sources) + `</div>`,
     t('tk.noWindows'));
 
-  const ruleItem = r => `<div class="item"><b>${esc(r.topic)}</b>${r.season ? ' · ' + esc(r.season) : ''}` +
-    `<div data-content>${esc(r.rule)}</div><div class="meta">${confTag(r.confidence)}${scopeTag(r, names)}</div>${sourcesLine(r, sources)}</div>`;
+  const ruleItem = r => { const R = txh('club-ticket-rules', rowKey(r, RULE_KEY), 'rule', r.rule);
+    return `<div class="item"><b>${esc(vocab('tp.', r.topic))}</b>${r.season ? ' · ' + esc(r.season) : ''}` +
+    `<div data-content${R.a}>${esc(R.s)}</div><div class="meta">${confTag(r.confidence)}${scopeTag(r, names)}</div>${sourcesLine(r, sources)}</div>`; };
   const rulesMine = mine(rules);
   h += section(t('tk.sec.general'), rulesMine && rulesMine.filter(r => !(r.scope || '').startsWith('derby-')), ruleItem);
   h += section(t('tk.sec.derby'), rulesMine && rulesMine.filter(r => (r.scope || '').startsWith('derby-')), ruleItem);
@@ -4218,16 +4537,16 @@ async function researchedFor(club, dates){
      here, so it says so rather than converting with an invented one. */
   h += section(t('tk.sec.prices'), mine(prices), r => {
     const amount = `${esc(r.price)}${r.priceMax ? '–' + esc(r.priceMax) : ''} ${esc(r.currency)}`;
-    return `<div class="item">${esc(r.season)} · ${esc(r.competition)}${r.stage ? ' · ' + esc(r.stage) : ''}` +
-    ` · ${esc(r.category)}${r.opponentTier ? ' · ' + esc(r.opponentTier) : ''}${r.priceClass ? ' · ' + esc(r.priceClass) : ''}: ` +
+    return `<div class="item">${esc(r.season)} · ${esc(vocab('cmp.', r.competition))}${r.stage ? ' · ' + esc(vocab('stg.', r.stage)) : ''}` +
+    ` · ${esc(r.category)}${r.opponentTier ? ' · ' + esc(vocab('ot.', r.opponentTier)) : ''}${r.priceClass ? ' · ' + esc(vocab('pcl.', r.priceClass)) : ''}: ` +
     `<b>${amount}</b>${r.currency && r.currency !== 'EUR' ? ' (' + esc(t('tk.noEuro')) + ')' : ''}` +
-    `<div class="meta"><span class="tag${r.kind === 'resale-observed' ? ' warn' : ''}">${esc(r.kind)}</span>` +
-    `${r.priceBasis ? `<span class="tag">${esc(r.priceBasis)}</span>` : ''}${confTag(r.confidence)}${scopeTag(r, names)}</div></div>`;
+    `<div class="meta"><span class="tag${r.kind === 'resale-observed' ? ' warn' : ''}">${esc(vocab('pk.', r.kind))}</span>` +
+    `${r.priceBasis ? `<span class="tag">${esc(vocab('pb.', r.priceBasis))}</span>` : ''}${confTag(r.confidence)}${scopeTag(r, names)}</div></div>`;
   });
 
   h += section(t('tk.sec.demand'), mine(demand), r =>
-    `<div class="item"><b>${esc(r.season)}</b> ${scopeTag(r, names)} ${esc(r.outcome)}` +
-    (r.timing ? ` — ${esc(r.timing)}` : '') + (r.attendance ? ` · ${esc(r.attendance)}` : '') +
+    `<div class="item"><b>${esc(r.season)}</b> ${scopeTag(r, names)} ${esc(vocab('oc.', r.outcome))}` +
+    (r.timing ? ` — ${txSpan(txh('club-ticket-demand', rowKey(r, DEM_KEY), 'timing', r.timing))}` : '') + (r.attendance ? ` · ${esc(r.attendance)}` : '') +
     `<div class="meta">${confTag(r.confidence)}</div>${sourcesLine(r, sources)}</div>`);
 
   h += `<div class="sub">${esc(t('tk.handWritten'))}</div>` + why(esc(t('tk.handWrittenSrc')), t('gen.source'));
@@ -4272,15 +4591,34 @@ const UNVERIFIED_TAG = {toString: () => `<span class="tag bad">${esc(t('conf.unv
 
 /* Every field of the entry as written, nested ones indented: nothing is
    picked out, merged or tidied, so what the file says is what shows. */
-function noteRows(obj, top = true){
+/* Which string leaves of football-rules.json are translated (data/ro/football-rules.json): the normalised path
+   (list indices as []), per section. tools/check_translations.py has the same lists; test_me.js compares the two. */
+const TX_BUCKET_PATHS = new Set(['why', 'whyAssistant', 'warning', 'blockedReason', 'unblockCondition', 'deferReason', 'alternative',
+  'fallback', 'conflict', 'note', 'practical', 'related', 'relatedNear', 'target', 'ticketNote', 'ticketRoutes.awayEnd', 'trigger.action',
+  'trigger.playedMonth', 'trigger.playedMonthStatus', 'trigger.playedPeriod', 'trigger.drawMonth', 'trigger.anchor',
+  'nextFixture.derivation', 'nextFixture.missed', 'fixtures[].saleRoute']);
+const TX_CLUB_PATHS = new Set(['ageRules.accountHolder', 'ageRules.idAtGate', 'ageRules.note', 'ageRules.standingRestriction', 'bonus',
+  'caveat', 'context', 'demandNote', 'memberStatus', 'openQuestion', 'realism', 'role', 'stadiumNote', 'travel', 'travelNote', 'warning']);
+function txPathOk(kind, path){
+  const n = String(path).replace(/\[\d+\]/g, '[]');
+  return kind === 'bucketList' ? TX_BUCKET_PATHS.has(n) : kind === 'clubs' ? TX_CLUB_PATHS.has(n) || n.startsWith('procedure.') : false;
+}
+/* The text of a football-rules.json leaf and its attributes: translated when the page translates that path. */
+function ruleTx(ctx, path, v){
+  return ctx && typeof v === 'string' && txPathOk(ctx.kind, path) ? txh('football-rules', ctx.row, path, v) : {s: v, a: ''};
+}
+function noteRows(obj, top = true, ctx = null, path = ''){
   return Object.entries(obj).filter(([k]) => !(top && (k === 'id' || k === 'name'))).map(([k, v]) => {
+    const p = path ? path + '.' + k : k;
     if(v && typeof v === 'object' && !Array.isArray(v))
-      return `<div class="nest"><div class="nk">${esc(noteKey(k))}${v.verified === false ? ' ' + UNVERIFIED_TAG : ''}</div>${noteRows(v, false)}</div>`;
+      return `<div class="nest"><div class="nk">${esc(noteKey(k))}${v.verified === false ? ' ' + UNVERIFIED_TAG : ''}</div>${noteRows(v, false, ctx, p)}</div>`;
     if(Array.isArray(v))
       return `<div class="row"><span>${esc(noteKey(k))}</span><span data-content>${v.length
-        ? v.map(x => esc(typeof x === 'object' ? JSON.stringify(x) : x)).join('<br>')
+        ? v.map((x, i) => { if(typeof x === 'object') return esc(JSON.stringify(x));
+            return txSpan(ruleTx(ctx, `${p}[${i}]`, x)); }).join('<br>')
         : `<span class="blank">${esc(t('gen.notRecorded'))}</span>`}</span></div>`;
-    return field(noteKey(k), typeof v === 'boolean' ? t(v ? 'att.yes' : 'att.no') : v, typeof v !== 'boolean');
+    const X = ruleTx(ctx, p, v);
+    return field(noteKey(k), typeof v === 'boolean' ? t(v ? 'att.yes' : 'att.no') : X.s, typeof v !== 'boolean', X.a);
   }).join('');
 }
 
@@ -4293,7 +4631,7 @@ function notesHtml(notes){
     return (notes.entries.length > 1 ? `<div class="nk">${esc(n.entry.name || n.id)}</div>` : '') +
       (unv.length ? `<div class="meta unv">${UNVERIFIED_TAG}<span class="tag bad">${esc(t('nt.marked'))} ` +
         `${esc(unv.join('; '))}</span></div>` : '') +
-      noteRows(n.entry) +
+      noteRows(n.entry, true, {kind: 'clubs', row: 'clubs:' + n.id}) +
       (n.bucket.length ? `<div class="sub">${esc(t('nt.onBucket', {list: n.bucket.map(b => b.title || b.id).join('; ')}))}</div>` : '');
   }).join('') +
     `<div class="sub">${esc(t('nt.own'))}</div>` +
@@ -5695,7 +6033,8 @@ async function openDerby(d, max){
     `<h4>${esc(t('dv.next'))}</h4><div id="derbyNext"><p class="unavail">${esc(t('att.loading'))}</p></div>` +
     (d.div.v === 'different' ? `<p class="unavail"><b>${esc(t('dv.probNot'))}</b> ${esc(t('dv.diffDivs', {why: d.div.why}))}</p>` :
      d.div.v === 'unknown' ? `<div class="sub">${esc(t('dv.division', {why: d.div.why}))}</div>` : '') +
-    (d.row.note ? `<h4>${esc(t('dv.noteH'))}</h4><div class="sub" style="font-size:13px;color:var(--dim)" data-content>${esc(d.row.note)}</div>` : '') +
+    (d.row.note ? (() => { const N = txh('derbies', rowKey(d.row, ['clubA', 'clubB']), 'note', d.row.note);
+      return `<h4>${esc(t('dv.noteH'))}</h4><div class="sub" style="font-size:13px;color:var(--dim)" data-content${N.a}>${esc(N.s)}</div>`; })() : '') +
     `<h4>${esc(t('gen.source'))}</h4>` + urls.map(u => `<div class="sub"><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></div>`).join('');
 
   body.querySelector('#derbyBack').addEventListener('click', renderDerbies);
@@ -6158,19 +6497,19 @@ function dateLine(label, raw, ds, extra = ''){
 /* Every hand-written date on an entry: its date, its nextFixture, its
    fixtures (each leg's home club through football-rules-links.csv). */
 async function handDates(item){
-  const out = [];
+  const out = [], hctx = {kind: 'bucketList', row: 'bucketList:' + item.id};
   if(item.date) out.push(dateLine(t('att.date'), item.date, item.dateSource, item.kickoff || ''));
   if(item.nextFixture){
     const n = item.nextFixture;
     out.push(dateLine(t('bk.nextFixture') + (n.matchday ? ' (' + t('bk.matchday', {n: n.matchday}) + ')' : ''), n.dateEstimate || n.date, n.dateSource) +
-      (n.derivation ? `<div class="sub">${esc(t('bk.derived'))} ${esc(n.derivation)}</div>` : '') +
-      (n.missed ? `<div class="sub">${esc(t('bk.missed'))} ${esc(n.missed)}</div>` : ''));
+      (n.derivation ? `<div class="sub">${esc(t('bk.derived'))} ${txSpan(ruleTx(hctx, 'nextFixture.derivation', n.derivation))}</div>` : '') +
+      (n.missed ? `<div class="sub">${esc(t('bk.missed'))} ${txSpan(ruleTx(hctx, 'nextFixture.missed', n.missed))}</div>` : ''));
   }
   for(const [i, f] of (item.fixtures || []).entries()){
     const q = f.home ? await rulesClubQid(f.home) : null;
     out.push(dateLine(t('bk.fixtureN', {n: i + 1}) + (f.matchday ? ' (' + t('bk.matchday', {n: f.matchday}) + ')' : ''), f.date, f.dateSource) +
       (f.home ? `<div class="sub">${esc(t('bk.home'))} ${esc(q ? clubName(q) : f.home)}</div>` : '') +
-      (f.saleRoute ? `<div class="sub">${esc(t('bk.saleRoute'))} ${esc(f.saleRoute)}</div>` : ''));
+      (f.saleRoute ? `<div class="sub">${esc(t('bk.saleRoute'))} ${txSpan(ruleTx(hctx, `fixtures[${i}].saleRoute`, f.saleRoute))}</div>` : ''));
   }
   return out;
 }
@@ -6227,9 +6566,11 @@ async function bucketDetailHtml(item){
   const dist = item.distanceKm ?? km;
   const rest = Object.fromEntries(Object.entries(item).filter(([k]) => !BUCKET_SHOWN.has(k)));
   const unv = unverifiedParts(item);
+  const bctx = {kind: 'bucketList', row: 'bucketList:' + item.id};
+  const W = ruleTx(bctx, 'why', item.why), WA = ruleTx(bctx, 'whyAssistant', item.whyAssistant), WW = ruleTx(bctx, 'warning', item.warning);
   let h = heldDetailHtml(item.id) +
-    (item.why ? `<p class="bwhy">${esc(item.why)}</p>` : '') +
-    (item.whyAssistant ? `<p class="bwhy" data-why="added">${esc(t('bk.addedNote'))}${item.whyStatus === 'unverified' ? esc(', ' + t('bk.notVerified')) : ''}: <span data-content>${esc(item.whyAssistant)}</span></p>` : '') +
+    (item.why ? `<p class="bwhy"${W.a}>${esc(W.s)}</p>` : '') +
+    (item.whyAssistant ? `<p class="bwhy" data-why="added">${esc(t('bk.addedNote'))}${item.whyStatus === 'unverified' ? esc(', ' + t('bk.notVerified')) : ''}: <span data-content${WA.a}>${esc(WA.s)}</span></p>` : '') +
     (Array.isArray(item.whySources) && item.whySources.length ? `<p class="bwhy" data-why="sources">${esc(t('bk.sourcesNote'))} ` +
       item.whySources.filter(u => /^https?:\/\//.test(u)).map(u => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a>`).join(' · ') + `</p>` : '') +
     (unv.length ? `<div class="meta">${UNVERIFIED_TAG}<span class="tag bad">${esc(t('nt.marked'))} ${esc(unv.join('; '))}</span></div>` : '') +
@@ -6239,8 +6580,8 @@ async function bucketDetailHtml(item){
     holidayLines(entryDates(item).filter(d => d.ds !== 'disputed')) +
     (!item.date && !item.nextFixture && !(item.fixtures || []).length ? field(t('att.date'), null) : '') +
     field(t('sheet.distance'), dist != null ? '≈ ' + nn(dist) + ' km' : null) +
-    (item.warning ? `<div class="meta"><span class="tag bad">${esc(item.warning)}</span></div>` : '') +
-    (Object.keys(rest).length ? `<div class="nest"><div class="nk">${esc(t('bk.more'))}</div>${noteRows(rest, false)}</div>` : '');
+    (item.warning ? `<div class="meta"><span class="tag bad"${WW.a}>${esc(WW.s)}</span></div>` : '') +
+    (Object.keys(rest).length ? `<div class="nest"><div class="nk">${esc(t('bk.more'))}</div>${noteRows(rest, false, {kind: 'bucketList', row: 'bucketList:' + item.id})}</div>` : '');
 
   /* Host and leg, for an entry whose link lines name clubs. */
   if(rows.length){
@@ -6279,8 +6620,8 @@ async function bucketDetailHtml(item){
   const mine = ER.ok ? ER.v.filter(r => r.bucketId === item.id) : [];
   const sources = await ticketSources();
   h += `<h5 class="srch">${esc(t('bk.eventRules'))}</h5>` + (!ER.ok ? `<p class="err">${esc(t('bk.eventFail'))}</p>` + why(esc(ER.err))
-    : mine.length ? mine.map(r => `<div class="item"><b>${esc(r.topic)}</b>${r.season ? ' · ' + esc(r.season) : ''}` +
-        `<div>${esc(r.rule)}</div><div class="meta">${confTag(r.confidence)}${r.scope && r.scope !== 'general' ? `<span class="tag">${esc(r.scope)}</span>` : ''}</div>` +
+    : mine.length ? mine.map(r => `<div class="item"><b>${esc(vocab('tp.', r.topic))}</b>${r.season ? ' · ' + esc(r.season) : ''}` +
+        `<div>${txSpan(txh('event-ticket-rules', rowKey(r, ['bucketId', 'scope', 'opponentQid', 'topic', 'season']), 'rule', r.rule))}</div><div class="meta">${confTag(r.confidence)}${r.scope && r.scope !== 'general' ? `<span class="tag">${esc(vocab('scp.', r.scope))}</span>` : ''}</div>` +
         sourcesLine(r, sources) + `</div>`).join('')
     : `<p class="unavail">${esc(t('bk.eventNone'))}</p>`);
 
@@ -6440,7 +6781,10 @@ function bucketCard(item, when){
   return `<details class="card bucket" data-id="${esc(item.id)}"><summary>` +
     `<h3 data-content>${esc(item.title || item.id)}</h3>` +
     `<div class="bwhen" data-ds="${esc(when.ds)}" data-group="${when.group}">${esc(when.text)}</div>` +
-    (item.sortKey != null && (item.why || item.whyAssistant) ? `<p class="bwhy bwhyc" data-content>${esc(item.whyAssistant || item.why)}</p>` : '') +
+    (item.sortKey != null && (item.why || item.whyAssistant) ? (() => {
+      const bc = {kind: 'bucketList', row: 'bucketList:' + item.id};
+      const X = item.whyAssistant ? ruleTx(bc, 'whyAssistant', item.whyAssistant) : ruleTx(bc, 'why', item.why);
+      return `<p class="bwhy bwhyc" data-content${X.a}>${esc(X.s)}</p>`; })() : '') +
     `<div class="meta">${bucketTags(item)}<span class="more"></span></div>${starButton(item)}</summary>` +
     `<div class="tix bdetail"><p class="unavail">${esc(t('att.loading'))}</p></div></details>`;
 }
@@ -6938,9 +7282,13 @@ function compDetailHtml(c){
     if(!here.length){ h += `<p class="unavail" data-topic="${topic}">${esc(t('comp.notResearched'))}</p>`; continue; }
     for(const r of here){
       const st = COMP_STATUS[r.status] || t('cstatus.unverified');
+      /* A text the page shortens to its month is shown in English: the shortened text is not what was translated. */
+      const ck = rowKey(r, ['competitionId', 'topic', 'sourceId']);
+      const txMo = (field, v) => { const m = monthOnly(v); return m === v ? txh('competition-info', ck, field, v) : {s: m, a: LANG === 'ro' ? ' lang="en"' : ''}; };
+      const CT = txMo('text', r.text), CB = r.basis ? txMo('basis', r.basis) : null;
       h += `<div data-topic="${topic}" data-status="${esc(r.status)}"><div class="meta"><span class="tag ${r.status === 'confirmed' ? 'ok' : 'warn'}">${esc(st)}</span></div>` +
-        `<p class="cpara" data-content>${esc(monthOnly(r.text))}</p>` +
-        (r.basis ? `<div class="sub" data-f="basis">${esc(t('comp.basis'))} <span data-content>${esc(monthOnly(r.basis))}</span></div>` : '') +
+        `<p class="cpara" data-content${CT.a}>${esc(CT.s)}</p>` +
+        (r.basis ? `<div class="sub" data-f="basis">${esc(t('comp.basis'))} <span data-content${CB.a}>${esc(CB.s)}</span></div>` : '') +
         compSourcesHtml(r.sourceId) +
         `<div class="sub" data-f="checked">${r.checkedOn ? esc(t('gen.checkedOn', {date: checkedWords(r.checkedOn)})) : esc(t('comp.noCheck'))}</div></div>`;
     }
@@ -8590,10 +8938,28 @@ function attSupport(m){
     if(b) setLang(b.dataset.lang);
     const th = e.target.closest('button[data-theme]');
     if(th) setTheme(th.dataset.theme);
+    if(e.target.closest('#txOrigBtn')) setTxOriginal(!TX_ORIG);
   });
   document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
   sheetDrag(sheet, close);
   window.closeSSheet = close;
+})();
+
+/* "Automatic translation, English is the original." - a small note at the foot of every sheet, panel and tab that
+   holds text which tx() turned into Romanian (an element marked data-tx="ro"). Added and removed as the content changes. */
+(function wireTxNote(){
+  const sync = el => {
+    const has = !!el.querySelector('[data-tx="ro"]'), cur = el.querySelector(':scope > .txnote');
+    if(has && !cur){
+      const p = document.createElement('p');
+      p.className = 'sub txnote'; p.dataset.i18n = 'tx.note'; p.textContent = t('tx.note');
+      el.appendChild(p);
+    }else if(!has && cur) cur.remove();
+  };
+  ['sheetBody', 'bsheetBody', 'derbyBody', 'csheetBody', 'ticketBody', 'bucketBody'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) new MutationObserver(() => sync(el)).observe(el, {childList: true, subtree: true});
+  });
 })();
 
 /* Every sheet and panel gets the shared expand-to-full mechanism (the ones with a close function were wired above). */
@@ -8648,6 +9014,7 @@ if('serviceWorker' in navigator){
     HOME = HOME_FALLBACK;
   }
 
+  if(LANG === 'ro') await loadRoTexts();     // the Romanian of the data texts, before anything that uses it is drawn
   renderMe();
   await initMap();
   if(rules){ renderBucket(rules); renderTickets(rules); }
