@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Texts that come from the data files are not here: they stay in English. `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1132 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1134 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -189,6 +189,8 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `sheet.ground` | Ground | Stadion |
 | `sheet.capacity` | Capacity | Capacitate |
 | `sheet.competition` | Competition | Competiție |
+| `sheet.expand` | Expand | Extinde |
+| `sheet.collapse` | Collapse | Restrânge |
 | `sheet.distance` | Distance | Distanță |
 | `sheet.byRoad` | ≈ {km} km by road (estimate) from {home} | ≈ {km} km pe drum (estimare) de la {home} |
 | `sheet.straight` | Straight line × {m}. Not a travel time. | Linie dreaptă × {m}. Nu este un timp de călătorie. |
