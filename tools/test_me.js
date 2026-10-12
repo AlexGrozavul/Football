@@ -49,7 +49,8 @@
 //    exceeded said clearly, none in localStorage or the export); the Me export at version 2 holding the personal fields, the supporter choices and the
 //    imported matches and saying photos and videos are not included, its round trip, its refusals (a card number, a clash with the file's ids, a
 //    newer version, the old app's export shape), and a version 1 file still importing and leaving those alone; nothing overflows at 390 px in English
-//    and Romanian;
+//    and Romanian; since 2026-10-12, the kick-off: every kickoff in the file is HH:MM with a kickoffSource, shown as "Kick-off HH:MM (local time)"
+//    on its card and in its sheet header and absent from the others, and an imported kickoff accepted (no source) or refused when malformed;
 //  - since 2026-10-09 the whole interface is translated (English and Romanian, the Romanian written by the assistant and unchecked): the dictionary's
 //    key sets, no ro value equal to its en value outside a short whitelist of names, every {placeholder} kept; Settings reached from the top of the
 //    Me tab, the choice stored under football-planner-lang and kept over a reload, the fourth sub-tab renamed Tickets/Memberships in both languages;
@@ -573,6 +574,14 @@ function alarmAt(ev, al){
     if(!c || need.some(x => !c.text.includes(x))) missingText.push(m.id);
   });
   check('Matches: every card shows teams, score, competition, stage, stadium, city and the date', !missingText.length, missingText.join(', '));
+  // Kick-off (2026-10-12): the local time at the ground, as stored, only where the file has one.
+  const KO_RE = /^([01]\d|2[0-3]):[0-5]\d$/, koText = m => `Kick-off ${m.kickoff} (local time)`;
+  const koBadData = ATTF.matches.filter(m => ('kickoff' in m || 'kickoffSource' in m) &&
+    !(typeof m.kickoff === 'string' && KO_RE.test(m.kickoff) && typeof m.kickoffSource === 'string' && (m.kickoffSource === 'user-supplied' || /^https:\/\/\S+$/.test(m.kickoffSource)))).map(m => m.id);
+  check('Data: every kickoff in data/attended.json is HH:MM and has a kickoffSource (a URL or "user-supplied"); no source without a time; no event has either',
+    !koBadData.length && ATTF.events.every(e => !('kickoff' in e) && !('kickoffSource' in e)), koBadData.join(', '));
+  const koCardBad = ATTF.matches.filter(m => { const c = mcards.find(x => x.id === m.id); return !c || (m.kickoff ? !c.text.includes(koText(m)) : /Kick-off/.test(c.text)); }).map(m => m.id);
+  check(`Matches: the ${ATTF.matches.filter(m => m.kickoff).length} cards with a kickoff show "Kick-off HH:MM (local time)" beside the date; the others show no kick-off text`, !koCardBad.length, koCardBad.join(', '));
   noSideways('Matches: no sideways scroll at 390 px', await sideways(p3));
 
   await p3.click('#meTabEvents');
@@ -608,6 +617,15 @@ function alarmAt(ev, al){
   await tapAll('meMatches', '#meTabMatches', ATTF.matches, m => [m.home.nameEn || m.home.name, m.away.nameEn || m.away.name, m.score, m.competition.en, m.stage.en, m.stadium, m.city.en, m.country.en]);
   await tapAll('meEvents', '#meTabEvents', ATTF.events, e => [e.title.en, e.place.en]);
   check(`Tapping any of the ${fx.n} matches and ${fx.ne} events opens the header sheet above the bottom bar, inside 390 px, and Close shuts it`, !sheetBad.length, sheetBad.slice(0, 2).join(' | '));
+  const koSheetBad = [];
+  await p3.click('#meTabMatches');
+  for(const m of ATTF.matches){
+    await p3.click(`#meMatches .acard[data-id="${m.id}"]`); await p3.waitForTimeout(350);
+    const head = await p3.$eval('#asheetHead', h => h.innerText.replace(/\s+/g, ' ')), all = await p3.$eval('#asheet', s => s.innerText.replace(/\s+/g, ' '));
+    if(m.kickoff ? !head.includes(koText(m)) : /Kick-off/.test(all)) koSheetBad.push(m.id + ': ' + head.slice(0, 120));
+    await p3.click('#asheetClose');
+  }
+  check('Sheets: a match with a kickoff shows it in the sheet header; a match without one shows no kick-off text anywhere in its sheet', !koSheetBad.length, koSheetBad.slice(0, 3).join(' | '));
   await p3.click('#meTabMatches'); await p3.click('#meMatches .acard');
   await p3.click('nav button[data-pane=bucket]');
   check('Leaving the Me tab shuts the sheet', await p3.$eval('#asheet', s => s.hidden), '');
@@ -964,6 +982,9 @@ function alarmAt(ev, al){
     ['an id the file already uses', mk(ATTF.matches[0].id), /already used by a match in data\/attended\.json/],
     ['the same id twice in one paste', [mk('dup' + TAG), mk('dup' + TAG)], /appears twice/],
     ['a list with one good and one bad match', [mk('ok' + TAG), mk('bad7' + TAG, {score: 'x'})], /match 2/],
+    ['a kickoff that is not HH:MM', mk('bad8' + TAG, {kickoff: '8pm'}), /"kickoff" must be a time like "20:45"/],
+    ['a kickoff hour past 23', mk('bad9' + TAG, {kickoff: '24:00'}), /"kickoff"/],
+    ['a kickoff given as a number', mk('bad10' + TAG, {kickoff: 2045}), /"kickoff"/],
   ];
   const badRes = [];
   for(const [what, text, re] of bads){
@@ -973,7 +994,7 @@ function alarmAt(ev, al){
   check('Invalid pastes are rejected, each with a reason that names the problem', !badRes.length, badRes.join(' | '));
   check('...and nothing was stored: no football-attended-imported key, the list still has the file\'s matches only',
     await lsGet(IMPK) === null && (await p5.$$('#meMatches .acard')).length === fx.n, String(await lsGet(IMPK)));
-  const okMsg = await paste(mk(IMPID));
+  const okMsg = await paste(mk(IMPID, {kickoff: '19:30'}));    // an optional kickoff, no source needed
   check('A valid match is accepted with a message', /^Added 1 imported match/.test(okMsg), okMsg);
   const impStored = JSON.parse(await lsGet(IMPK));
   check('...stored only under football-attended-imported ({version, matches}), with the id as pasted', impStored.version === 1 && impStored.matches.length === 1 && impStored.matches[0].id === IMPID &&
@@ -992,6 +1013,8 @@ function alarmAt(ev, al){
   check('...and its crowd is the biggest crowd', /Imp Home .* – Imp Away/.test(await p5.$eval('#meStats', e => e.textContent).then(t => { const i = t.indexOf('Biggest crowd'); return i < 0 ? '' : t.slice(i, i + 160); })), '');
   await openCard('#meTabMatches', '#meMatches', IMPKEY);
   const impSheet = await sheetText5();
+  check('An imported match with a kickoff (no source) shows "Kick-off 19:30 (local time)" on its card and in its sheet header', impStored.matches[0].kickoff === '19:30' &&
+    cards5.find(c => c.id === IMPKEY).text.includes('Kick-off 19:30 (local time)') && (await p5.$eval('#asheetHead', h => h.innerText)).includes('Kick-off 19:30 (local time)'), '');
   check('The imported match\'s sheet says "Imported on this device", has supporter buttons and a remove control',
     /Imported on this device/.test(impSheet) && !!(await p5.$('#aSupport')) && !!(await p5.$('#aImpRemove')), impSheet.slice(0, 160));
   check('A file match\'s sheet has no "Imported" label and no remove control', await (async () => {
