@@ -128,6 +128,8 @@
   {
    "id": "2021-06-23-por-fra",
    "date": "2021-06-23",
+   "kickoff": "21:00",
+   "kickoffSource": "https://en.wikipedia.org/wiki/UEFA_Euro_2020_Group_F",
    "competition": {
     "ro": "Campionatul European 2020",
     "en": "UEFA Euro 2020"
@@ -816,6 +818,8 @@
   {
    "id": "2022-07-09-cfr-sep",
    "date": "2022-07-09",
+   "kickoff": "20:30",
+   "kickoffSource": "https://ro.wikipedia.org/wiki/Supercupa_Rom%C3%A2niei_2022",
    "competition": {
     "ro": "Supercupa României 2022",
     "en": "Supercupa României 2022"
@@ -1096,6 +1100,8 @@
   {
    "id": "2023-02-19-bvb-bsc",
    "date": "2023-02-19",
+   "kickoff": "17:30",
+   "kickoffSource": "https://en.wikipedia.org/wiki/2022%E2%80%9323_Borussia_Dortmund_season",
    "competition": {
     "ro": "Bundesliga 2022/23",
     "en": "Bundesliga 2022/23"
@@ -1392,6 +1398,8 @@
   {
    "id": "2024-07-02-rou-ned",
    "date": "2024-07-02",
+   "kickoff": "18:00",
+   "kickoffSource": "https://en.wikipedia.org/wiki/UEFA_Euro_2024_knockout_stage",
    "competition": {
     "ro": "Campionatul European 2024",
     "en": "UEFA Euro 2024"
@@ -1756,6 +1764,8 @@
   {
    "id": "2024-07-05-esp-ger",
    "date": "2024-07-05",
+   "kickoff": "18:00",
+   "kickoffSource": "https://en.wikipedia.org/wiki/UEFA_Euro_2024_knockout_stage",
    "competition": {
     "ro": "Campionatul European 2024",
     "en": "UEFA Euro 2024"
@@ -2198,6 +2208,8 @@
   {
    "id": "2024-07-09-esp-fra",
    "date": "2024-07-09",
+   "kickoff": "21:00",
+   "kickoffSource": "https://en.wikipedia.org/wiki/UEFA_Euro_2024_knockout_stage",
    "competition": {
     "ro": "Campionatul European 2024",
     "en": "UEFA Euro 2024"
@@ -2552,6 +2564,8 @@
   {
    "id": "2024-07-10-ned-eng",
    "date": "2024-07-10",
+   "kickoff": "21:00",
+   "kickoffSource": "https://en.wikipedia.org/wiki/UEFA_Euro_2024_knockout_stage",
    "competition": {
     "ro": "Campionatul European 2024",
     "en": "UEFA Euro 2024"
@@ -2938,6 +2952,8 @@
   {
    "id": "2024-10-14-ger-ned",
    "date": "2024-10-14",
+   "kickoff": "20:45",
+   "kickoffSource": "https://en.wikipedia.org/wiki/2024%E2%80%9325_UEFA_Nations_League_A",
    "competition": {
     "ro": "Liga Națiunilor UEFA 2024/25",
     "en": "UEFA Nations League 2024/25"
@@ -3813,6 +3829,8 @@
   {
    "id": "2026-04-19-fcb-vfb",
    "date": "2026-04-19",
+   "kickoff": "17:30",
+   "kickoffSource": "https://en.wikipedia.org/wiki/2025%E2%80%9326_FC_Bayern_Munich_season",
    "competition": {
     "ro": "Bundesliga 2025/26",
     "en": "Bundesliga 2025/26"
@@ -4124,6 +4142,8 @@
   {
    "id": "2026-07-25-svww-fcb",
    "date": "2026-07-25",
+   "kickoff": "15:30",
+   "kickoffSource": "https://en.wikipedia.org/wiki/2026%E2%80%9327_FC_Bayern_Munich_season",
    "competition": {
     "ro": "Meci amical",
     "en": "Friendly"
@@ -4465,6 +4485,8 @@
   {
    "id": "2026-08-20-ucv-ara",
    "date": "2026-08-20",
+   "kickoff": "20:00",
+   "kickoffSource": "https://en.wikipedia.org/wiki/2026%E2%80%9327_UEFA_Europa_League_qualifying_phase_and_play-off_round",
    "competition": {
     "ro": "Liga Europa 2026/27",
     "en": "UEFA Europa League 2026/27"
@@ -5132,6 +5154,8 @@
   {
    "id": "2026-08-29-cor-din",
    "date": "2026-08-29",
+   "kickoff": "21:30",
+   "kickoffSource": "https://en.wikipedia.org/wiki/2026%E2%80%9327_FC_Dinamo_Bucure%C8%99ti_season",
    "competition": {
     "ro": "Superliga 2026/27",
     "en": "Superliga 2026/27"
@@ -6115,6 +6139,8 @@
   {
    "id": "2026-09-27-ger-gre",
    "date": "2026-09-27",
+   "kickoff": "20:45",
+   "kickoffSource": "https://en.wikipedia.org/wiki/2026%E2%80%9327_UEFA_Nations_League_A",
    "competition": {
     "ro": "Liga Națiunilor UEFA 2026/27",
     "en": "UEFA Nations League 2026/27"
@@ -6458,6 +6484,8 @@
   {
    "id": "2026-10-01-ger-srb",
    "date": "2026-10-01",
+   "kickoff": "20:45",
+   "kickoffSource": "https://en.wikipedia.org/wiki/2026%E2%80%9327_UEFA_Nations_League_A",
    "competition": {
     "ro": "Liga Națiunilor UEFA 2026/27",
     "en": "UEFA Nations League 2026/27"

@@ -558,6 +558,7 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   #asheet .abar .tr i:first-child{background:var(--dim)}
   #asheet .abar .tr i:last-child{background:var(--accent)}
   #asheet .aunv{color:var(--warn);font-size:12px;margin:2px 0 6px}
+  #asheet .ako{display:block;color:var(--dim);font-size:12.5px;margin-top:4px}
   #asheet .afact{background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.55;overflow-wrap:anywhere}
   #asheet .anote{color:var(--faint);font-size:12.5px;line-height:1.5;margin:8px 0}
   #asheet .apers label{display:block;font-size:12px;letter-spacing:.04em;color:var(--dim);margin-top:9px}
@@ -882,6 +883,7 @@ const I18N = {
     'st.biggest': 'Biggest crowd', 'st.smallest': 'Smallest crowd', 'st.unofficial': '* unofficial figure',
     'st.stadiums': 'Stadiums', 'st.cities': 'Cities', 'st.countries': 'Countries', 'st.comps': 'Competitions',
     'st.noData': 'No data.',
+    'att.kickoff': 'Kick-off {time} (local time)',
     'att.attendance': 'Attendance', 'att.referee': 'Referee', 'att.after90': 'After 90 minutes', 'att.atStadium': 'At the stadium',
     'att.yes': 'yes', 'att.no': 'no', 'att.soldOut': 'sold out', 'att.fullHouse': 'full house', 'att.approx': 'approximate',
     'lu.title': 'Line-ups', 'lu.coach': 'Coach', 'lu.bench': 'Unused substitutes', 'lu.subs': 'Substitutions',
@@ -903,7 +905,7 @@ const I18N = {
     'st.recordHint': 'Only matches where you chose the home or away team count; Neutral and no choice are left out.',
     'st.pickSupport': 'Choose a supported team on a match sheet (Matches tab) to see the record.',
     'imp.tag': 'Imported on this device', 'imp.title': 'Add a match',
-    'imp.hint': 'Paste one match as JSON, or a list of them. Required: id (letters, digits, . _ -), date (YYYY-MM-DD), home.name, away.name and score ("2-1"). Everything else is optional. Kept on this device only; data/attended.json is never changed.',
+    'imp.hint': 'Paste one match as JSON, or a list of them. Required: id (letters, digits, . _ -), date (YYYY-MM-DD), home.name, away.name and score ("2-1"). Everything else is optional, kickoff included (the local time at the ground, HH:MM). Kept on this device only; data/attended.json is never changed.',
     'imp.placeholder': '{ … }', 'imp.add': 'Add',
     'imp.empty': 'Nothing pasted.',
     'imp.tooBig': 'Too much text: at most {max} characters at a time.',
@@ -1831,6 +1833,7 @@ const I18N = {
     "v.id": "\"id\" must be 1-80 letters, digits, . _ or -",
     "v.date": "\"date\" must be a real day written YYYY-MM-DD",
     "v.score": "\"score\" must look like \"2-1\"",
+    "v.kickoff": "\"kickoff\" must be a time like \"20:45\" (HH:MM)",
     "v.lookLike": "\"{k}\" must look like \"1-1\"",
     "v.objName": "\"{k}\" must be an object with a name",
     "v.text": "\"{k}\" must be text",
@@ -2075,6 +2078,7 @@ const I18N = {
     'st.biggest': 'Cea mai mare asistență', 'st.smallest': 'Cea mai mică asistență', 'st.unofficial': '* cifră neoficială',
     'st.stadiums': 'Stadioane', 'st.cities': 'Orașe', 'st.countries': 'Țări', 'st.comps': 'Competiții',
     'st.noData': 'Fără date.',
+    'att.kickoff': 'Ora de start {time} (ora locală)',
     'att.attendance': 'Asistență', 'att.referee': 'Arbitru', 'att.after90': 'După 90 de minute', 'att.atStadium': 'La stadion',
     'att.yes': 'da', 'att.no': 'nu', 'att.soldOut': 'sold-out', 'att.fullHouse': 'tribune pline', 'att.approx': 'aproximativ',
     'lu.title': 'Formații', 'lu.coach': 'Antrenor', 'lu.bench': 'Rezerve neutilizate', 'lu.subs': 'Schimbări',
@@ -2096,7 +2100,7 @@ const I18N = {
     'st.recordHint': 'Se numără doar meciurile la care ai ales echipa gazdă sau oaspete; Neutru și fără alegere nu intră.',
     'st.pickSupport': 'Alege o echipă susținută în fișa unui meci (tabul Meciuri) ca să apară bilanțul.',
     'imp.tag': 'Importat pe acest dispozitiv', 'imp.title': 'Adaugă un meci',
-    'imp.hint': 'Lipește un meci ca JSON sau o listă de meciuri. Obligatoriu: id (litere, cifre, . _ -), date (AAAA-LL-ZZ), home.name, away.name și score ("2-1"). Restul e opțional. Se păstrează doar pe acest dispozitiv; data/attended.json nu se modifică niciodată.',
+    'imp.hint': 'Lipește un meci ca JSON sau o listă de meciuri. Obligatoriu: id (litere, cifre, . _ -), date (AAAA-LL-ZZ), home.name, away.name și score ("2-1"). Restul e opțional, inclusiv kickoff (ora locală la stadion, HH:MM). Se păstrează doar pe acest dispozitiv; data/attended.json nu se modifică niciodată.',
     'imp.placeholder': '{ … }', 'imp.add': 'Adaugă',
     'imp.empty': 'Nu ai lipit nimic.',
     'imp.tooBig': 'Prea mult text: cel mult {max} de caractere odată.',
@@ -3025,6 +3029,7 @@ const I18N = {
     "v.id": "„id” trebuie să aibă 1-80 de litere, cifre, . _ sau -",
     "v.date": "„date” trebuie să fie o zi reală scrisă AAAA-LL-ZZ",
     "v.score": "„score” trebuie să arate ca „2-1”",
+    "v.kickoff": "„kickoff” trebuie să fie o oră precum „20:45” (HH:MM)",
     "v.lookLike": "„{k}” trebuie să arate ca „1-1”",
     "v.objName": "„{k}” trebuie să fie un obiect cu un nume",
     "v.text": "„{k}” trebuie să fie text",
@@ -8158,6 +8163,10 @@ function attDate(iso){
   return iso && !isNaN(d) ? d.toLocaleDateString(LANG === 'en' ? 'en-GB' : 'ro-RO', {day: 'numeric', month: 'long', year: 'numeric'}) : '';
 }
 const attJoin = (parts, sep = ' · ') => parts.filter(p => p).join(sep);
+/* The local kick-off time at the ground, exactly as stored (HH:MM, no time-zone
+   conversion), or '' when the match has none: then nothing is drawn. */
+const KICKOFF_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+const attKickoff = m => typeof m.kickoff === 'string' && KICKOFF_RE.test(m.kickoff) ? t('att.kickoff', {time: m.kickoff}) : '';
 
 /* Matches by date, oldest first; the same date keeps the file's order.
    Events in the file's order. Both as the old app listed them. */
@@ -8265,7 +8274,8 @@ function renderAttMatches(d){
     `<button type="button" class="acard" data-att="match" data-id="${esc(attKey(m))}"><span class="an">${i + 1}</span>` +
     `<span class="at"><span class="tm">${esc(attTeam(m.home))}</span><b>${esc(m.score ?? t('att.na'))}</b><span class="tm">${esc(attTeam(m.away))}</span></span>` +
     `<div class="am">${esc(attJoin([attL(m.competition), attL(m.stage)]))}</div>` +
-    `<div class="am">${esc(attJoin([attJoin([m.stadium, attL(m.city)], ', '), attDate(m.date)]))}${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join('');
+    `<div class="am">${esc(attJoin([attJoin([m.stadium, attL(m.city)], ', '), attDate(m.date)]))}` +
+    `${attKickoff(m) ? ` · <span class="ako">${esc(attKickoff(m))}</span>` : ''}${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join('');
 }
 /* The paste box above the list. The message lives in ATT.impMsg so it
    survives the redraw after a successful add. */
@@ -8396,7 +8406,7 @@ const isInt = (v, lo, hi) => Number.isInteger(v) && v >= lo && v <= hi;
 const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
 const isLoc = (v, max) => isStr(v, max) || (isObj(v) && Object.keys(v).length > 0 && Object.keys(v).every(k => (k === 'ro' || k === 'en') && isStr(v[k], max)));
 const SCORE_RE = /^\d{1,2}-\d{1,2}$/;
-const IMP_MATCH_KEYS = ['id', 'date', 'competition', 'competitionKey', 'stage', 'home', 'away', 'score', 'scoreHT', 'after90',
+const IMP_MATCH_KEYS = ['id', 'date', 'kickoff', 'kickoffSource', 'competition', 'competitionKey', 'stage', 'home', 'away', 'score', 'scoreHT', 'after90',
   'stadium', 'city', 'country', 'attendance', 'referee', 'goals', 'cards', 'cardsComplete', 'stats', 'statsSource', 'lineups', 'note'];
 
 /* One match as the old app's data format has it. Returns {rec} (a clean copy)
@@ -8410,6 +8420,7 @@ function attCheckMatch(r){
   if(typeof r.id !== 'string' || !/^[A-Za-z0-9._-]{1,80}$/.test(r.id)) bad(V('id'));
   if(!realDay(r.date)) bad(V('date'));
   if(typeof r.score !== 'string' || !SCORE_RE.test(r.score)) bad(V('score'));
+  if(r.kickoff != null && !(typeof r.kickoff === 'string' && KICKOFF_RE.test(r.kickoff))) bad(V('kickoff'));
   for(const k of ['scoreHT', 'after90']) if(r[k] != null && !(typeof r[k] === 'string' && SCORE_RE.test(r[k]))) bad(V('lookLike', {k}));
   for(const k of ['home', 'away']){
     const tm = r[k];
@@ -8420,6 +8431,7 @@ function attCheckMatch(r){
   }
   for(const k of ['competition', 'competitionKey', 'stage', 'city', 'country']) if(r[k] != null && !isLoc(r[k], 300)) bad(V('locText', {k}));
   if(r.note != null && !isLoc(r.note, 2000)) bad(V('locText', {k: 'note'}));
+  if(r.kickoffSource != null && !isStr(r.kickoffSource, 300)) bad(V('text', {k: 'kickoffSource'}));
   for(const k of ['stadium', 'referee', 'statsSource']) if(r[k] != null && !isStr(r[k], 120)) bad(V('text', {k}));
   if(r.cardsComplete != null && typeof r.cardsComplete !== 'boolean') bad(V('bool', {k: 'cardsComplete'}));
   if(r.attendance != null){
@@ -8803,7 +8815,8 @@ function openASheet(kind, id){
     if(a.approx) tags.push(t('att.approx'));
     const att = a.value ? attNum(a.value) + (tags.length ? ' (' + tags.join(', ') + ')' : '') : tags.join(', ');
     head = `<h3>${esc(attTeam(m.home))} ${esc(m.score ?? '')} ${esc(attTeam(m.away))}</h3>` +
-      `<div class="meta"><span class="tag">${esc(attL(m.competition) || t('att.na'))}</span>${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div>`;
+      `<div class="meta"><span class="tag">${esc(attL(m.competition) || t('att.na'))}</span>${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div>` +
+      (attKickoff(m) ? `<span class="ako">${esc(attKickoff(m))}</span>` : '');
     ATT.side = 'home';
     body = row('att.date', attDate(m.date)) + row('att.score', m.score) + opt('att.after90', m.after90) + row('att.competition', attL(m.competition)) +
       row('att.stage', attL(m.stage)) + row('att.stadium', m.stadium) + row('att.city', attL(m.city)) + row('att.country', attL(m.country)) +

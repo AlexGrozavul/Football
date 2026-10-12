@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1254 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1256 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -56,6 +56,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `st.countries` | Countries | Țări |
 | `st.comps` | Competitions | Competiții |
 | `st.noData` | No data. | Fără date. |
+| `att.kickoff` | Kick-off {time} (local time) | Ora de start {time} (ora locală) |
 | `att.attendance` | Attendance | Asistență |
 | `att.referee` | Referee | Arbitru |
 | `att.after90` | After 90 minutes | După 90 de minute |
@@ -108,7 +109,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `st.pickSupport` | Choose a supported team on a match sheet (Matches tab) to see the record. | Alege o echipă susținută în fișa unui meci (tabul Meciuri) ca să apară bilanțul. |
 | `imp.tag` | Imported on this device | Importat pe acest dispozitiv |
 | `imp.title` | Add a match | Adaugă un meci |
-| `imp.hint` | Paste one match as JSON, or a list of them. Required: id (letters, digits, . _ -), date (YYYY-MM-DD), home.name, away.name and score ("2-1"). Everything else is optional. Kept on this device only; data/attended.json is never changed. | Lipește un meci ca JSON sau o listă de meciuri. Obligatoriu: id (litere, cifre, . _ -), date (AAAA-LL-ZZ), home.name, away.name și score ("2-1"). Restul e opțional. Se păstrează doar pe acest dispozitiv; data/attended.json nu se modifică niciodată. |
+| `imp.hint` | Paste one match as JSON, or a list of them. Required: id (letters, digits, . _ -), date (YYYY-MM-DD), home.name, away.name and score ("2-1"). Everything else is optional, kickoff included (the local time at the ground, HH:MM). Kept on this device only; data/attended.json is never changed. | Lipește un meci ca JSON sau o listă de meciuri. Obligatoriu: id (litere, cifre, . _ -), date (AAAA-LL-ZZ), home.name, away.name și score ("2-1"). Restul e opțional, inclusiv kickoff (ora locală la stadion, HH:MM). Se păstrează doar pe acest dispozitiv; data/attended.json nu se modifică niciodată. |
 | `imp.placeholder` | { … } | { … } |
 | `imp.add` | Add | Adaugă |
 | `imp.empty` | Nothing pasted. | Nu ai lipit nimic. |
@@ -1045,6 +1046,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `v.id` | "id" must be 1-80 letters, digits, . _ or - | „id” trebuie să aibă 1-80 de litere, cifre, . _ sau - |
 | `v.date` | "date" must be a real day written YYYY-MM-DD | „date” trebuie să fie o zi reală scrisă AAAA-LL-ZZ |
 | `v.score` | "score" must look like "2-1" | „score” trebuie să arate ca „2-1” |
+| `v.kickoff` | "kickoff" must be a time like "20:45" (HH:MM) | „kickoff” trebuie să fie o oră precum „20:45” (HH:MM) |
 | `v.lookLike` | "{k}" must look like "1-1" | „{k}” trebuie să arate ca „1-1” |
 | `v.objName` | "{k}" must be an object with a name | „{k}” trebuie să fie un obiect cu un nume |
 | `v.text` | "{k}" must be text | „{k}” trebuie să fie text |
