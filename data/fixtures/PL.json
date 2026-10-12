@@ -1409,7 +1409,7 @@
   {
    "id": 560594,
    "utcDate": "2026-10-11T13:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 6,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1427,14 +1427,14 @@
     "tla": "EVE",
     "crest": "https://crests.football-data.org/62.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "winner": "DRAW"
   },
   {
    "id": 560596,
    "utcDate": "2026-10-11T13:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 6,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1452,14 +1452,14 @@
     "tla": "NOT",
     "crest": "https://crests.football-data.org/351.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560598,
    "utcDate": "2026-10-11T15:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 6,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1477,9 +1477,9 @@
     "tla": "MCI",
     "crest": "https://crests.football-data.org/65.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 560597,
