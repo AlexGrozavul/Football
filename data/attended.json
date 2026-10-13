@@ -3265,6 +3265,8 @@
   {
    "id": "2024-11-26-fcb-psg",
    "date": "2024-11-26",
+   "kickoff": "21:00",
+   "kickoffSource": "user-supplied",
    "competition": {
     "ro": "Liga Campionilor 2024/25",
     "en": "UEFA Champions League 2024/25"
@@ -3584,6 +3586,8 @@
   {
    "id": "2024-12-12-hof-fcsb",
    "date": "2024-12-12",
+   "kickoff": "18:45",
+   "kickoffSource": "user-supplied",
    "competition": {
     "ro": "Liga Europa 2024/25",
     "en": "UEFA Europa League 2024/25"
@@ -4828,6 +4832,8 @@
   {
    "id": "2026-08-29-ucd-scm",
    "date": "2026-08-29",
+   "kickoff": "11:00",
+   "kickoffSource": "user-supplied",
    "competition": {
     "ro": "Liga 2 2026/27",
     "en": "Liga 2 2026/27"
@@ -5442,6 +5448,8 @@
   {
    "id": "2026-08-30-poli-asa",
    "date": "2026-08-30",
+   "kickoff": "11:00",
+   "kickoffSource": "user-supplied",
    "competition": {
     "ro": "Liga 2 2026/27",
     "en": "Liga 2 2026/27"
@@ -5959,6 +5967,8 @@
   {
    "id": "2026-09-25-vfb-fch",
    "date": "2026-09-25",
+   "kickoff": "16:30",
+   "kickoffSource": "user-supplied",
    "competition": {
     "ro": "Meci amical",
     "en": "Friendly"
