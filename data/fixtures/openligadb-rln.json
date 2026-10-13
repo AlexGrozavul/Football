@@ -3785,84 +3785,9 @@
    "viewers": null
   },
   {
-   "id": 87141,
-   "utcDate": "2026-10-11T13:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
-   "home": {
-    "id": 6326,
-    "name": "1. FC Phönix Lübeck",
-    "shortName": "Phönix Lübeck",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9b/1._FC_Phoenix_Luebeck_Logo.svg"
-   },
-   "away": {
-    "id": 4342,
-    "name": "Eintracht Norderstedt",
-    "shortName": null,
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/EintrachtNorderstedtWappen.gif"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 87142,
-   "utcDate": "2026-10-11T13:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
-   "home": {
-    "id": 2727,
-    "name": "Bremer SV",
-    "shortName": "Bremer SV",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/3/35/Bremer_SV_logo.svg"
-   },
-   "away": {
-    "id": 4341,
-    "name": "SpVgg Drochtersen/Assel",
-    "shortName": "SV Drochtersen/Assel",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/c/ca/SV_Drochtersen-Assel.png/120px-SV_Drochtersen-Assel.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 87143,
-   "utcDate": "2026-10-11T13:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
-   "home": {
-    "id": 8802,
-    "name": "FSV Schöningen",
-    "shortName": "FSV Schöningen",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d7/FSV_Sch%C3%B6ningen_2011.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
-   },
-   "away": {
-    "id": 1761,
-    "name": "Hamburger SV II",
-    "shortName": "Hamburger SV II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 87144,
-   "utcDate": "2026-10-11T13:00:00Z",
-   "finished": false,
+   "utcDate": "2026-10-09T17:00:00Z",
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -3877,17 +3802,64 @@
     "shortName": "SV Atlas Delmenhorst",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Atlas-DEL.jpg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 87143,
+   "utcDate": "2026-10-10T12:00:00Z",
+   "finished": true,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 8802,
+    "name": "FSV Schöningen",
+    "shortName": "FSV Schöningen",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d7/FSV_Sch%C3%B6ningen_2011.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+   },
+   "away": {
+    "id": 1761,
+    "name": "Hamburger SV II",
+    "shortName": "Hamburger SV II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg"
+   },
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
   },
   {
    "id": 87145,
-   "utcDate": "2026-10-11T13:00:00Z",
-   "finished": false,
+   "utcDate": "2026-10-10T12:00:00Z",
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -3902,16 +3874,207 @@
     "shortName": "Hannover 96 II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 2
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 87141,
+   "utcDate": "2026-10-11T12:00:00Z",
+   "finished": true,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 6326,
+    "name": "1. FC Phönix Lübeck",
+    "shortName": "Phönix Lübeck",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9b/1._FC_Phoenix_Luebeck_Logo.svg"
+   },
+   "away": {
+    "id": 4342,
+    "name": "Eintracht Norderstedt",
+    "shortName": null,
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/EintrachtNorderstedtWappen.gif"
+   },
+   "homeGoals": 4,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 1
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 87147,
+   "utcDate": "2026-10-11T12:00:00Z",
+   "finished": true,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 5213,
+    "name": "SV Todesfelde",
+    "shortName": "SVT",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/1/1d/SVTodesfelde_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+   },
+   "away": {
+    "id": 2393,
+    "name": "SC Weiche Flensburg 08",
+    "shortName": "Weiche Flensburg 08",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/57/SC_Weiche_Flensburg_08.svg"
+   },
+   "homeGoals": 0,
+   "awayGoals": 4,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 4
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 87149,
+   "utcDate": "2026-10-11T12:00:00Z",
+   "finished": true,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 1765,
+    "name": "FC St. Pauli II",
+    "shortName": "FC St. Pauli II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
+   },
+   "away": {
+    "id": 8804,
+    "name": "HSC Hannover",
+    "shortName": "HSC Hannover",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Hannoverscher_SC_Logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+   },
+   "homeGoals": 3,
+   "awayGoals": 4,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 4
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 87142,
+   "utcDate": "2026-10-11T13:00:00Z",
+   "finished": true,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 2727,
+    "name": "Bremer SV",
+    "shortName": "Bremer SV",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/3/35/Bremer_SV_logo.svg"
+   },
+   "away": {
+    "id": 4341,
+    "name": "SpVgg Drochtersen/Assel",
+    "shortName": "SV Drochtersen/Assel",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/c/ca/SV_Drochtersen-Assel.png/120px-SV_Drochtersen-Assel.png"
+   },
+   "homeGoals": 0,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 3
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 87148,
+   "utcDate": "2026-10-11T13:00:00Z",
+   "finished": true,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 600,
+    "name": "VfB Oldenburg",
+    "shortName": "VfB Oldenburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/b/bc/VfB_Oldenburg.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+   },
+   "away": {
+    "id": 180,
+    "name": "Kickers Emden",
+    "shortName": "Kickers Emden",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/2/24/Kickers_Emden_Logo_07-26.svg?utm_source=de.wikipedia.org&utm_campaign=index&utm_content=original"
+   },
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
   },
   {
    "id": 87146,
-   "utcDate": "2026-10-11T13:00:00Z",
+   "utcDate": "2026-10-12T17:00:00Z",
    "finished": false,
    "round": "13. Spieltag",
    "roundOrder": 13,
@@ -3935,108 +4098,8 @@
    "viewers": null
   },
   {
-   "id": 87147,
-   "utcDate": "2026-10-11T13:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
-   "home": {
-    "id": 5213,
-    "name": "SV Todesfelde",
-    "shortName": "SVT",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/1/1d/SVTodesfelde_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
-   },
-   "away": {
-    "id": 2393,
-    "name": "SC Weiche Flensburg 08",
-    "shortName": "Weiche Flensburg 08",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/57/SC_Weiche_Flensburg_08.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 87148,
-   "utcDate": "2026-10-11T13:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
-   "home": {
-    "id": 600,
-    "name": "VfB Oldenburg",
-    "shortName": "VfB Oldenburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/b/bc/VfB_Oldenburg.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
-   },
-   "away": {
-    "id": 180,
-    "name": "Kickers Emden",
-    "shortName": "Kickers Emden",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/2/24/Kickers_Emden_Logo_07-26.svg?utm_source=de.wikipedia.org&utm_campaign=index&utm_content=original"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 87149,
-   "utcDate": "2026-10-11T13:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
-   "home": {
-    "id": 1765,
-    "name": "FC St. Pauli II",
-    "shortName": "FC St. Pauli II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
-   },
-   "away": {
-    "id": 8804,
-    "name": "HSC Hannover",
-    "shortName": "HSC Hannover",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Hannoverscher_SC_Logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 87150,
-   "utcDate": "2026-10-18T13:00:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 2393,
-    "name": "SC Weiche Flensburg 08",
-    "shortName": "Weiche Flensburg 08",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/57/SC_Weiche_Flensburg_08.svg"
-   },
-   "away": {
-    "id": 4341,
-    "name": "SpVgg Drochtersen/Assel",
-    "shortName": "SV Drochtersen/Assel",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/c/ca/SV_Drochtersen-Assel.png/120px-SV_Drochtersen-Assel.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 87151,
-   "utcDate": "2026-10-18T13:00:00Z",
+   "utcDate": "2026-10-16T17:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4060,22 +4123,22 @@
    "viewers": null
   },
   {
-   "id": 87152,
-   "utcDate": "2026-10-18T13:00:00Z",
+   "id": 87150,
+   "utcDate": "2026-10-16T17:30:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
-    "id": 4762,
-    "name": "SSV Jeddeloh II",
-    "shortName": "SSV Jeddeloh",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Logo_SSV_Jeddeloh.svg"
+    "id": 2393,
+    "name": "SC Weiche Flensburg 08",
+    "shortName": "Weiche Flensburg 08",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/57/SC_Weiche_Flensburg_08.svg"
    },
    "away": {
-    "id": 135,
-    "name": "Werder Bremen II",
-    "shortName": "Bremen II",
-    "crest": "https://www.openligadb.de/images/teamicons/Werder_Bremen.gif"
+    "id": 4341,
+    "name": "SpVgg Drochtersen/Assel",
+    "shortName": "SV Drochtersen/Assel",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/c/ca/SV_Drochtersen-Assel.png/120px-SV_Drochtersen-Assel.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4086,7 +4149,7 @@
   },
   {
    "id": 87153,
-   "utcDate": "2026-10-18T13:00:00Z",
+   "utcDate": "2026-10-17T12:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4110,8 +4173,83 @@
    "viewers": null
   },
   {
+   "id": 87158,
+   "utcDate": "2026-10-17T12:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 532,
+    "name": "VfB Lübeck",
+    "shortName": "VfB Lübeck",
+    "crest": "http://upload.wikimedia.org/wikipedia/de/8/86/VfB_L%C3%BCbeck.svg"
+   },
+   "away": {
+    "id": 1765,
+    "name": "FC St. Pauli II",
+    "shortName": "FC St. Pauli II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 87152,
+   "utcDate": "2026-10-17T13:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 4762,
+    "name": "SSV Jeddeloh II",
+    "shortName": "SSV Jeddeloh",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Logo_SSV_Jeddeloh.svg"
+   },
+   "away": {
+    "id": 135,
+    "name": "Werder Bremen II",
+    "shortName": "Bremen II",
+    "crest": "https://www.openligadb.de/images/teamicons/Werder_Bremen.gif"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 87156,
+   "utcDate": "2026-10-17T16:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 180,
+    "name": "Kickers Emden",
+    "shortName": "Kickers Emden",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/2/24/Kickers_Emden_Logo_07-26.svg?utm_source=de.wikipedia.org&utm_campaign=index&utm_content=original"
+   },
+   "away": {
+    "id": 6326,
+    "name": "1. FC Phönix Lübeck",
+    "shortName": "Phönix Lübeck",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9b/1._FC_Phoenix_Luebeck_Logo.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 87154,
-   "utcDate": "2026-10-18T13:00:00Z",
+   "utcDate": "2026-10-18T12:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4136,7 +4274,7 @@
   },
   {
    "id": 87155,
-   "utcDate": "2026-10-18T13:00:00Z",
+   "utcDate": "2026-10-18T12:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4160,33 +4298,8 @@
    "viewers": null
   },
   {
-   "id": 87156,
-   "utcDate": "2026-10-18T13:00:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 180,
-    "name": "Kickers Emden",
-    "shortName": "Kickers Emden",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/2/24/Kickers_Emden_Logo_07-26.svg?utm_source=de.wikipedia.org&utm_campaign=index&utm_content=original"
-   },
-   "away": {
-    "id": 6326,
-    "name": "1. FC Phönix Lübeck",
-    "shortName": "Phönix Lübeck",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9b/1._FC_Phoenix_Luebeck_Logo.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 87157,
-   "utcDate": "2026-10-18T13:00:00Z",
+   "utcDate": "2026-10-18T12:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4201,31 +4314,6 @@
     "name": "SV Todesfelde",
     "shortName": "SVT",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/1/1d/SVTodesfelde_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 87158,
-   "utcDate": "2026-10-18T13:00:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 532,
-    "name": "VfB Lübeck",
-    "shortName": "VfB Lübeck",
-    "crest": "http://upload.wikimedia.org/wikipedia/de/8/86/VfB_L%C3%BCbeck.svg"
-   },
-   "away": {
-    "id": 1765,
-    "name": "FC St. Pauli II",
-    "shortName": "FC St. Pauli II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
    },
    "homeGoals": null,
    "awayGoals": null,

@@ -3571,69 +3571,8 @@
    "viewers": null
   },
   {
-   "id": 86309,
-   "utcDate": "2026-10-10T11:00:00Z",
-   "finished": true,
-   "round": "12. Spieltag",
-   "roundOrder": 12,
-   "home": {
-    "id": 69,
-    "name": "FC Carl Zeiss Jena",
-    "shortName": "Jena",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Logo_FC_Carl_Zeiss_Jena.svg"
-   },
-   "away": {
-    "id": 7332,
-    "name": "1. FC Magdeburg II",
-    "shortName": "1. FC Magdeburg II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
-   },
-   "homeGoals": 2,
-   "awayGoals": 1,
-   "results": [
-    {
-     "name": "Halbzeit",
-     "home": 0,
-     "away": 0
-    },
-    {
-     "name": "Endergebnis",
-     "home": 2,
-     "away": 1
-    }
-   ],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 86310,
-   "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
-   "round": "12. Spieltag",
-   "roundOrder": 12,
-   "home": {
-    "id": 5389,
-    "name": "Greifswalder FC",
-    "shortName": "Greifswald",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Greifswalder_FC_Logo.svg"
-   },
-   "away": {
-    "id": 66,
-    "name": "Erzgebirge Aue",
-    "shortName": "Aue",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/1/13/Fc_erzgebirge_aue.svg/960px-Fc_erzgebirge_aue.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 86311,
-   "utcDate": "2026-10-10T11:00:00Z",
+   "utcDate": "2026-10-09T17:00:00Z",
    "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
@@ -3668,94 +3607,8 @@
    "viewers": null
   },
   {
-   "id": 86312,
-   "utcDate": "2026-10-10T11:00:00Z",
-   "finished": true,
-   "round": "12. Spieltag",
-   "roundOrder": 12,
-   "home": {
-    "id": 4344,
-    "name": "BFC Preussen",
-    "shortName": "BFC Preussen",
-    "crest": "https://storage.fussballdaten.de/source/1/vereinhaupt/5295/originale/bfc-preussen-berlin.png"
-   },
-   "away": {
-    "id": 1763,
-    "name": "Hertha BSC II",
-    "shortName": "Hertha II",
-    "crest": "https://storage.fussballdaten.de/source/1/vereinhaupt/279/originale/hertha-bsc_2.png"
-   },
-   "homeGoals": 1,
-   "awayGoals": 1,
-   "results": [
-    {
-     "name": "Halbzeit",
-     "home": 0,
-     "away": 0
-    },
-    {
-     "name": "Endergebnis",
-     "home": 1,
-     "away": 1
-    }
-   ],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 86313,
-   "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
-   "round": "12. Spieltag",
-   "roundOrder": 12,
-   "home": {
-    "id": 208,
-    "name": "Hallescher FC",
-    "shortName": "Halle",
-    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/4440_20170721710.png"
-   },
-   "away": {
-    "id": 6904,
-    "name": "RSV Eintracht 1949",
-    "shortName": "Eintracht",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/c/cf/RSV_Eintracht_1949.png/250px-RSV_Eintracht_1949.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 86314,
-   "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
-   "round": "12. Spieltag",
-   "roundOrder": 12,
-   "home": {
-    "id": 117,
-    "name": "SV Babelsberg 03",
-    "shortName": "Babelsberg",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/e/ee/SV_Babelsberg_03.svg/250px-SV_Babelsberg_03.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
-   },
-   "away": {
-    "id": 1584,
-    "name": "1. FC Lok Leipzig",
-    "shortName": "Lok Leipzig",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_1._FC_Lokomotive_Leipzig.svg/250px-Logo_1._FC_Lokomotive_Leipzig.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 86315,
-   "utcDate": "2026-10-10T11:00:00Z",
+   "utcDate": "2026-10-09T17:00:00Z",
    "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
@@ -3790,33 +3643,8 @@
    "viewers": null
   },
   {
-   "id": 86316,
-   "utcDate": "2026-10-10T11:00:00Z",
-   "finished": false,
-   "round": "12. Spieltag",
-   "roundOrder": 12,
-   "home": {
-    "id": 202,
-    "name": "Chemnitzer FC",
-    "shortName": "Chemnitz",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chemnitzer_FC_Logo.svg/120px-Chemnitzer_FC_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
-   },
-   "away": {
-    "id": 2111,
-    "name": "Rot-Weiß Erfurt",
-    "shortName": "Erfurt",
-    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/61_20170721536.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 86317,
-   "utcDate": "2026-10-10T11:00:00Z",
+   "utcDate": "2026-10-09T17:00:00Z",
    "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
@@ -3851,36 +3679,47 @@
    "viewers": null
   },
   {
-   "id": 86318,
-   "utcDate": "2026-10-17T11:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
+   "id": 86309,
+   "utcDate": "2026-10-10T12:00:00Z",
+   "finished": true,
+   "round": "12. Spieltag",
+   "roundOrder": 12,
    "home": {
-    "id": 1584,
-    "name": "1. FC Lok Leipzig",
-    "shortName": "Lok Leipzig",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_1._FC_Lokomotive_Leipzig.svg/250px-Logo_1._FC_Lokomotive_Leipzig.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+    "id": 69,
+    "name": "FC Carl Zeiss Jena",
+    "shortName": "Jena",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Logo_FC_Carl_Zeiss_Jena.svg"
    },
    "away": {
-    "id": 4599,
-    "name": "BSG Chemie Leipzig",
-    "shortName": "Chemie Leipzig",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/0/0b/BSG_Chemie_Leipzig_1997.png"
+    "id": 7332,
+    "name": "1. FC Magdeburg II",
+    "shortName": "1. FC Magdeburg II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
   },
   {
-   "id": 86319,
-   "utcDate": "2026-10-17T11:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
+   "id": 86312,
+   "utcDate": "2026-10-10T12:00:00Z",
+   "finished": true,
+   "round": "12. Spieltag",
+   "roundOrder": 12,
    "home": {
     "id": 4344,
     "name": "BFC Preussen",
@@ -3888,96 +3727,176 @@
     "crest": "https://storage.fussballdaten.de/source/1/vereinhaupt/5295/originale/bfc-preussen-berlin.png"
    },
    "away": {
-    "id": 4600,
-    "name": "VSG Altglienicke Berlin",
-    "shortName": "Altglienicke",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e8/VSG_Altglienicke.svg"
+    "id": 1763,
+    "name": "Hertha BSC II",
+    "shortName": "Hertha II",
+    "crest": "https://storage.fussballdaten.de/source/1/vereinhaupt/279/originale/hertha-bsc_2.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
   },
   {
-   "id": 86320,
-   "utcDate": "2026-10-17T11:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
+   "id": 86310,
+   "utcDate": "2026-10-11T12:00:00Z",
+   "finished": true,
+   "round": "12. Spieltag",
+   "roundOrder": 12,
    "home": {
-    "id": 66,
-    "name": "Erzgebirge Aue",
-    "shortName": "Aue",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/1/13/Fc_erzgebirge_aue.svg/960px-Fc_erzgebirge_aue.svg.png"
-   },
-   "away": {
-    "id": 208,
-    "name": "Hallescher FC",
-    "shortName": "Halle",
-    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/4440_20170721710.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 86321,
-   "utcDate": "2026-10-17T11:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
-   "home": {
-    "id": 7332,
-    "name": "1. FC Magdeburg II",
-    "shortName": "1. FC Magdeburg II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
-   },
-   "away": {
     "id": 5389,
     "name": "Greifswalder FC",
     "shortName": "Greifswald",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Greifswalder_FC_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "away": {
+    "id": 66,
+    "name": "Erzgebirge Aue",
+    "shortName": "Aue",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/1/13/Fc_erzgebirge_aue.svg/960px-Fc_erzgebirge_aue.svg.png"
+   },
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
   },
   {
-   "id": 86322,
-   "utcDate": "2026-10-17T11:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
+   "id": 86313,
+   "utcDate": "2026-10-11T12:00:00Z",
+   "finished": true,
+   "round": "12. Spieltag",
+   "roundOrder": 12,
    "home": {
-    "id": 5798,
-    "name": "FSV 63 Luckenwalde",
-    "shortName": "Luckenwalde",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/FSV_63_Luckenwalde_Logo.svg/250px-FSV_63_Luckenwalde_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+    "id": 208,
+    "name": "Hallescher FC",
+    "shortName": "Halle",
+    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/4440_20170721710.png"
    },
    "away": {
-    "id": 69,
-    "name": "FC Carl Zeiss Jena",
-    "shortName": "Jena",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Logo_FC_Carl_Zeiss_Jena.svg"
+    "id": 6904,
+    "name": "RSV Eintracht 1949",
+    "shortName": "Eintracht",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/c/cf/RSV_Eintracht_1949.png/250px-RSV_Eintracht_1949.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 0
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86314,
+   "utcDate": "2026-10-11T12:00:00Z",
+   "finished": true,
+   "round": "12. Spieltag",
+   "roundOrder": 12,
+   "home": {
+    "id": 117,
+    "name": "SV Babelsberg 03",
+    "shortName": "Babelsberg",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/e/ee/SV_Babelsberg_03.svg/250px-SV_Babelsberg_03.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "away": {
+    "id": 1584,
+    "name": "1. FC Lok Leipzig",
+    "shortName": "Lok Leipzig",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_1._FC_Lokomotive_Leipzig.svg/250px-Logo_1._FC_Lokomotive_Leipzig.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86316,
+   "utcDate": "2026-10-11T14:00:00Z",
+   "finished": true,
+   "round": "12. Spieltag",
+   "roundOrder": 12,
+   "home": {
+    "id": 202,
+    "name": "Chemnitzer FC",
+    "shortName": "Chemnitz",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chemnitzer_FC_Logo.svg/120px-Chemnitzer_FC_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "away": {
+    "id": 2111,
+    "name": "Rot-Weiß Erfurt",
+    "shortName": "Erfurt",
+    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/61_20170721536.png"
+   },
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
   },
   {
    "id": 86323,
-   "utcDate": "2026-10-17T11:00:00Z",
+   "utcDate": "2026-10-16T17:00:00Z",
    "finished": false,
    "round": "13. Spieltag",
    "roundOrder": 13,
@@ -4002,7 +3921,7 @@
   },
   {
    "id": 86324,
-   "utcDate": "2026-10-17T11:00:00Z",
+   "utcDate": "2026-10-16T17:00:00Z",
    "finished": false,
    "round": "13. Spieltag",
    "roundOrder": 13,
@@ -4026,33 +3945,8 @@
    "viewers": null
   },
   {
-   "id": 86325,
-   "utcDate": "2026-10-17T11:00:00Z",
-   "finished": false,
-   "round": "13. Spieltag",
-   "roundOrder": 13,
-   "home": {
-    "id": 2964,
-    "name": "BFC Dynamo",
-    "shortName": "BFC Dynamo",
-    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2024/fussball/vereine/xxl/72_20230728382.png"
-   },
-   "away": {
-    "id": 202,
-    "name": "Chemnitzer FC",
-    "shortName": "Chemnitz",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chemnitzer_FC_Logo.svg/120px-Chemnitzer_FC_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 86326,
-   "utcDate": "2026-10-17T11:00:00Z",
+   "utcDate": "2026-10-16T17:00:00Z",
    "finished": false,
    "round": "13. Spieltag",
    "roundOrder": 13,
@@ -4067,6 +3961,156 @@
     "name": "SV Babelsberg 03",
     "shortName": "Babelsberg",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/e/ee/SV_Babelsberg_03.svg/250px-SV_Babelsberg_03.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86318,
+   "utcDate": "2026-10-17T12:00:00Z",
+   "finished": false,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 1584,
+    "name": "1. FC Lok Leipzig",
+    "shortName": "Lok Leipzig",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_1._FC_Lokomotive_Leipzig.svg/250px-Logo_1._FC_Lokomotive_Leipzig.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "away": {
+    "id": 4599,
+    "name": "BSG Chemie Leipzig",
+    "shortName": "Chemie Leipzig",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/0/0b/BSG_Chemie_Leipzig_1997.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86319,
+   "utcDate": "2026-10-17T12:00:00Z",
+   "finished": false,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 4344,
+    "name": "BFC Preussen",
+    "shortName": "BFC Preussen",
+    "crest": "https://storage.fussballdaten.de/source/1/vereinhaupt/5295/originale/bfc-preussen-berlin.png"
+   },
+   "away": {
+    "id": 4600,
+    "name": "VSG Altglienicke Berlin",
+    "shortName": "Altglienicke",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e8/VSG_Altglienicke.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86322,
+   "utcDate": "2026-10-17T12:00:00Z",
+   "finished": false,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 5798,
+    "name": "FSV 63 Luckenwalde",
+    "shortName": "Luckenwalde",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/FSV_63_Luckenwalde_Logo.svg/250px-FSV_63_Luckenwalde_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "away": {
+    "id": 69,
+    "name": "FC Carl Zeiss Jena",
+    "shortName": "Jena",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Logo_FC_Carl_Zeiss_Jena.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86320,
+   "utcDate": "2026-10-18T12:00:00Z",
+   "finished": false,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 66,
+    "name": "Erzgebirge Aue",
+    "shortName": "Aue",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/1/13/Fc_erzgebirge_aue.svg/960px-Fc_erzgebirge_aue.svg.png"
+   },
+   "away": {
+    "id": 208,
+    "name": "Hallescher FC",
+    "shortName": "Halle",
+    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/4440_20170721710.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86321,
+   "utcDate": "2026-10-18T12:00:00Z",
+   "finished": false,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 7332,
+    "name": "1. FC Magdeburg II",
+    "shortName": "1. FC Magdeburg II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
+   },
+   "away": {
+    "id": 5389,
+    "name": "Greifswalder FC",
+    "shortName": "Greifswald",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Greifswalder_FC_Logo.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86325,
+   "utcDate": "2026-10-18T12:00:00Z",
+   "finished": false,
+   "round": "13. Spieltag",
+   "roundOrder": 13,
+   "home": {
+    "id": 2964,
+    "name": "BFC Dynamo",
+    "shortName": "BFC Dynamo",
+    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2024/fussball/vereine/xxl/72_20230728382.png"
+   },
+   "away": {
+    "id": 202,
+    "name": "Chemnitzer FC",
+    "shortName": "Chemnitz",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chemnitzer_FC_Logo.svg/120px-Chemnitzer_FC_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
    "homeGoals": null,
    "awayGoals": null,

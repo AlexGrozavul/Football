@@ -2154,7 +2154,7 @@
     {
      "name": "Halbzeit",
      "home": 0,
-     "away": 0
+     "away": 2
     },
     {
      "name": "Endergebnis",
@@ -2169,7 +2169,7 @@
   {
    "id": 83608,
    "utcDate": "2026-10-11T11:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -2184,9 +2184,20 @@
     "shortName": "Karlsruhe",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2194,7 +2205,7 @@
   {
    "id": 83613,
    "utcDate": "2026-10-11T11:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -2209,9 +2220,20 @@
     "shortName": "Fürth",
     "crest": "https://i.imgur.com/pwuVbKr.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2219,7 +2241,7 @@
   {
    "id": 83616,
    "utcDate": "2026-10-11T11:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "7. Spieltag",
    "roundOrder": 7,
    "home": {
@@ -2234,9 +2256,20 @@
     "shortName": "Bielefeld",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Arminia_Bielefeld_Logo_2021%E2%80%93.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
