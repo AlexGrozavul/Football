@@ -1230,6 +1230,253 @@ function alarmAt(ev, al){
 
 
   {
+  // ---- 2026-10-13: the Add a match form (and Edit this match). Expected values are worked out here from the form's own input and
+  //      from data/attended.json, never typed in as results. Own context, so the earlier blocks' counts are not disturbed.
+  const IMPK = 'football-attended-imported', SUPK = 'football-attended-personal';
+  const reqStart = requests.length;
+  const ctxF = await newCtx();
+  await ctxF.addInitScript(() => {
+    window.__r = []; window.__w = []; window.__i = [];
+    const g = Storage.prototype.getItem, w = Storage.prototype.setItem, r = Storage.prototype.removeItem;
+    Storage.prototype.getItem = function(k){ window.__r.push(k); return g.call(this, k); };
+    Storage.prototype.setItem = function(k, v){ window.__w.push(k); return w.call(this, k, v); };
+    Storage.prototype.removeItem = function(k){ window.__w.push(k); return r.call(this, k); };
+    const o = IDBFactory.prototype.open;
+    IDBFactory.prototype.open = function(n){ window.__i.push(n); return o.apply(this, arguments); };
+  });
+  const pF = await ctxF.newPage();
+  pF.on('pageerror', e => errors.push(e.message));
+  pF.on('dialog', d => d.accept());
+  await pF.goto(BASE);
+  await pF.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await pF.click('nav button[data-pane=me]');
+  await pF.waitForSelector('#meStats .astat');
+  await pF.click('#meTabMatches'); await pF.waitForSelector('#meMatches .acard');
+  const canon = o => JSON.stringify(o, (k, v) => v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort()) : v);
+  const stored = async () => { const v = await pF.evaluate(k => localStorage.getItem(k), IMPK); return v ? JSON.parse(v).matches : []; };
+  const openAdd = async () => { if(!(await pF.$eval('#aAdd', d => d.open))) await pF.click('#aAdd summary'); };
+  const resetForm = async () => { await pF.click('#aFormCancel'); await openAdd(); };
+  const msgF = async () => (await pF.textContent('#aImpMsg')).trim();
+  const ferr = async name => (await pF.textContent(`#aForm [data-ferr="${name}"]`)).trim();
+  const submitF = async () => { await pF.click('#aImpBtn'); return msgF(); };
+  const setForm = async (v, goals = []) => {
+    for(const [k, val] of Object.entries(v)) await pF.fill(`#aForm [name=${k}]`, val);
+    for(const g of goals){
+      await pF.click('#aGoalAdd');
+      const row = pF.locator('#aGoals .agoal').last();
+      await row.locator('[name=gteam]').selectOption(g.team); await row.locator('[name=gplayer]').fill(g.player); await row.locator('[name=gminute]').fill(g.minute);
+    }
+  };
+  const part = s => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const overF = () => pF.evaluate(() => { const bad = [];
+    document.getElementById('pane-me').querySelectorAll('*').forEach(x => { const r = x.getBoundingClientRect(); if(r.width > 0 && (r.right > innerWidth + 1 || r.left < -1)) bad.push(x.tagName + '.' + x.className); });
+    return {bad: bad.slice(0, 4), doc: document.documentElement.scrollWidth}; });
+  const idRe = /^[A-Za-z0-9._-]{1,80}$/;
+  const openCardF = async key => { await pF.click('#meTabMatches'); await pF.waitForSelector('#meMatches .acard'); await pF.click(`#meMatches .acard[data-id="${key}"]`); await pF.waitForSelector('#asheet:not([hidden])'); await pF.waitForTimeout(350); };
+  const H = 'Zürich Ünited ' + TAG, A = 'Åland FC ' + TAG, D = '2026-03-14';
+  const F = {date: D, kickoff: '18:30', home: H, away: A, sh: '3', sa: '1', competition: 'Cup ' + TAG, stage: 'Round of 16', stadium: 'Ground ' + TAG, city: 'Town ' + TAG,
+    attendance: '12345', referee: 'Ref ' + TAG, note: 'Line one ' + TAG + '\nLine two'};
+  const FG = [{team: 'home', player: 'ScorerA' + TAG, minute: '10'}, {team: 'away', player: 'ScorerB' + TAG, minute: '67'}];   // one word each: the sheet shows a scorer's surname
+  const expectRec = () => ({date: F.date, kickoff: F.kickoff, home: {name: F.home}, away: {name: F.away}, score: `${+F.sh}-${+F.sa}`, competition: F.competition, stage: F.stage,
+    stadium: F.stadium, city: F.city, attendance: {value: +F.attendance}, referee: F.referee, note: F.note, goals: FG.map(g => ({team: g.team, player: g.player, minute: +g.minute}))});
+  const strip = r => { const c = JSON.parse(JSON.stringify(r)); delete c.id; return c; };
+
+  await openAdd();
+  check('The Matches tab has the form: date picker, time picker, the team names, two number boxes for the score, the text fields, Add goal and the JSON box last, labelled optional',
+    await pF.evaluate(() => { const f = document.getElementById('aForm'), n = [...f.elements].map(e => e.name || e.id).filter(Boolean);
+      return f.elements.date.type === 'date' && f.elements.kickoff.type === 'time' && f.elements.sh.type === 'number' && f.elements.sa.type === 'number' && !!document.getElementById('aGoalAdd') &&
+        n.indexOf('aImpBox') > n.indexOf('note') && n.indexOf('date') < n.indexOf('kickoff') && n.indexOf('kickoff') < n.indexOf('home') && n.indexOf('away') < n.indexOf('sh') && /optional/i.test(f.querySelector('.jsonbox .flab').textContent); }), '');
+  check('...no field asks for an id', await pF.evaluate(() => ![...document.getElementById('aForm').elements].some(e => /^id$/i.test(e.name))), '');
+
+  // Each missing required field is refused, with a reason next to the field, nothing stored and the rest of what was typed kept.
+  const req = {date: ['date', 'date'], home: ['home', 'home'], away: ['away', 'away'], score: ['sa', 'score']};
+  const reqBad = [];
+  for(const [what, [field, errName]] of Object.entries(req)){
+    await resetForm();
+    const v = Object.assign({}, F); v[field] = '';
+    await setForm(v);
+    const m = await submitF();
+    const kept = await pF.inputValue('#aForm [name=stadium]');
+    if(!/^Not saved/.test(m) || !(await ferr(errName)) || (await stored()).length || kept !== F.stadium) reqBad.push(`${what}: ${m} / ${await ferr(errName)} / ${(await stored()).length} / ${kept}`);
+  }
+  check('Each missing required field (date, home team, away team, score) is refused with a reason next to that field, nothing is stored and the typed text is kept', !reqBad.length, reqBad.join(' | '));
+  await resetForm();
+  await setForm(Object.assign({}, F, {attendance: '12.5'}));
+  check('A bad attendance is refused next to the field', /^Not saved/.test(await submitF()) && !!(await ferr('attendance')) && !(await stored()).length, '');
+
+  // Goal rows: team names as typed, removable, a row with no scorer is refused next to the row.
+  await resetForm();
+  await setForm({home: H, away: A});
+  await pF.click('#aGoalAdd'); await pF.click('#aGoalAdd');
+  const opts = await pF.$$eval('#aGoals .agoal:first-child select option', os => os.map(o => o.textContent));
+  check('Add goal adds a row whose team dropdown shows the typed home and away names; two rows are two rows', opts.join() === [H, A].join() && (await pF.$$('#aGoals .agoal')).length === 2, opts.join());
+  await pF.fill('#aGoals .agoal:nth-child(2) [name=gminute]', '30');
+  await pF.fill('#aForm [name=date]', D); await pF.fill('#aForm [name=sh]', '1'); await pF.fill('#aForm [name=sa]', '0');
+  const mg = await submitF();
+  check('A goal row with a minute and no scorer is refused next to that row and nothing is stored', /^Not saved/.test(mg) && !!(await ferr('g1')) && !(await stored()).length, mg + ' / ' + await ferr('g1'));
+  await pF.click('#aGoals .agoal:nth-child(2) [data-gdel]');
+  check('A goal row can be removed', (await pF.$$('#aGoals .agoal')).length === 1, '');
+
+  // The whole form, saved.
+  await resetForm();
+  await setForm(F, FG);
+  const okm = await submitF();
+  let st = await stored();
+  check('A filled form is saved with a message', /^Added 1 imported match/.test(okm) && st.length === 1, okm);
+  check('Every form field lands in the stored record under the validator\'s own field name (date, kickoff, home.name, away.name, score "H-A", competition, stage, stadium, city, attendance.value, referee, note, goals as {team, player, minute})',
+    canon(strip(st[0])) === canon(expectRec()), JSON.stringify(st[0]));
+  const exId = `${D}-${part(H)}-${part(A)}`;
+  check('The id is generated from the date and the team names (ASCII, allowed characters, at most 80)', st[0].id === exId && idRe.test(st[0].id), st[0].id + ' vs ' + exId);
+  check('...and the form is empty again', await pF.evaluate(() => [...document.getElementById('aForm').elements].filter(e => /^(date|home|away|sh|sa|stadium|note)$/.test(e.name)).every(e => e.value === '') && !document.querySelector('.agoal')), '');
+  await openAdd();
+  await setForm(F, FG); const m2 = await submitF();
+  await openAdd();
+  await setForm(F); const m3 = await submitF();
+  st = await stored();
+  check('Two identical entries get unique ids: the second ends -2, the third -3', /^Added 1/.test(m2) && /^Added 1/.test(m3) && st.map(m => m.id).join() === [exId, exId + '-2', exId + '-3'].join(), st.map(m => m.id).join());
+  await openAdd();
+  const longH = 'Alpha '.repeat(11) + TAG, longA = 'Bravo '.repeat(11) + TAG;      // each name within the validator's 80 characters, the id well past 80
+  await setForm(Object.assign({}, F, {home: longH, away: longA})); await submitF();
+  await openAdd();
+  await setForm(Object.assign({}, F, {home: longH, away: longA})); await submitF();
+  st = await stored();
+  const longIds = st.slice(3).map(m => m.id);
+  check('A very long team name still gives a valid id of at most 80 characters, and a repeat is unique', longIds.length === 2 && longIds.every(i => idRe.test(i)) && longIds[0] !== longIds[1] && new Set(st.map(m => m.id)).size === st.length, longIds.map(i => i.length).join());
+  const fileIds = new Set(ATTF.matches.map(m => m.id));
+  check('No generated id equals an id of data/attended.json', st.every(m => !fileIds.has(m.id)), '');
+  // The saved match in the list and its sheet.
+  const key1 = 'imp:' + exId;
+  await openCardF(key1);
+  const sh1 = await pF.$eval('#asheet', s => s.innerText.replace(/\s+/g, ' ')), hd1 = await pF.$eval('#asheetHead', h => h.innerText);
+  check('The sheet shows the goals (scorers and minutes), the kick-off, the note, and does not call the user\'s own note "written by an assistant"',
+    FG.every(g => sh1.includes(g.player) && sh1.includes(g.minute + "'")) && hd1.includes(`Kick-off ${F.kickoff} (local time)`) && sh1.includes('Line one ' + TAG) && !/Written by an assistant/.test(sh1), sh1.slice(0, 200));
+  check('...and has Edit this match and Remove; a match of the file has neither', !!(await pF.$('#aImpEdit')) && !!(await pF.$('#aImpRemove')) && await (async () => {
+    await pF.click('#asheetClose'); await openCardF(attOrder[3].id); const no = !(await pF.$('#aImpEdit')); await pF.click('#asheetClose'); return no; })(), '');
+
+  // The JSON box.
+  const mj = (id, extra) => Object.assign({id, date: '2025-06-01', competition: {ro: 'Cupa ' + TAG, en: 'Cup ' + TAG}, home: {name: 'Edit Casa ' + TAG, nameEn: 'Edit Home ' + TAG, short: 'EDH'},
+    away: {name: 'Edit Oaspeți ' + TAG}, score: '2-2', stadium: 'Old Ground', kickoff: '20:00', kickoffSource: 'user-supplied',
+    goals: [{team: 'home', player: 'E One', minute: 5, pen: true}, {team: 'away', player: 'E Two', minute: 50, assist: 'E Three'}], cards: [{team: 'home', type: 'yellow', player: 'Y', minute: 30}],
+    stats: {possession: [55, 45]}, lineups: {home: {formation: '4-4-2', coach: 'Coach'}}, note: {ro: 'Notă', en: 'Note'}}, extra || {});
+  const jsonRound = async (v, goals, json) => { await resetForm(); await setForm(v, goals); await pF.fill('#aImpBox', typeof json === 'string' ? json : JSON.stringify(json)); return submitF(); };
+  const nBefore = (await stored()).length;
+  let m = await jsonRound({}, [], [mj('lst1' + TAG), mj('lst2' + TAG)]);
+  check('Form empty + a list of two matches in the JSON box: accepted, as before', /^Added 2 imported match/.test(m) && (await stored()).length === nBefore + 2, m);
+  const small = {date: '2026-04-01', home: 'Small Home ' + TAG, away: 'Small Away ' + TAG, sh: '1', sa: '0'};
+  m = await jsonRound(small, [], [mj('lst3' + TAG)]);
+  check('Form filled + a list in the JSON box: refused (one object only), nothing stored', /one match object/.test(m) && (await stored()).length === nBefore + 2, m);
+  m = await jsonRound(small, [], '{"stadium": ');
+  check('Form filled + JSON that is not JSON: refused, nothing stored', /not valid JSON/.test(m) && (await stored()).length === nBefore + 2, m);
+  m = await jsonRound(small, [], {home: {nameEn: 'Small Home EN'}, lineups: {home: {formation: '4-3-3'}}});
+  let st2 = await stored(), added = st2[st2.length - 1];
+  check('Form filled + one object adding home.nameEn and lineups: accepted, merged at leaf level (the form\'s home.name kept), id generated',
+    /^Added 1/.test(m) && st2.length === nBefore + 3 && canon(added.home) === canon({name: small.home, nameEn: 'Small Home EN'}) && added.lineups.home.formation === '4-3-3' && added.score === '1-0' &&
+    added.id === `2026-04-01-${part(small.home)}-${part(small.away)}`, JSON.stringify(added).slice(0, 220));
+  const cl = [['stadium', {stadium: 'From JSON'}, 'stadium'], ['home.name', {home: {name: 'Other'}}, 'home.name'], ['score', {score: '9-9'}, 'score'], ['date', {date: '2020-01-01'}, 'date'],
+    ['competition as a pair', {competition: {ro: 'x', en: 'y'}}, 'competition'], ['note', {note: 'n'}, 'note']];
+  const clBad = [];
+  for(const [what, j, key] of cl){
+    const before = (await stored()).length;
+    const mm = await jsonRound(Object.assign({}, small, {stadium: 'Form Ground', competition: 'Form Cup', note: 'Form note'}), [], j);
+    if(!(new RegExp(`both the form and the JSON fill "${key.replace('.', '\\.')}"`).test(mm)) || (await stored()).length !== before) clBad.push(`${what}: ${mm.slice(0, 120)}`);
+  }
+  check('Form filled + JSON repeating a filled field (stadium, home.name, score, date, competition, note): refused, the key named, nothing stored', !clBad.length, clBad.join(' | '));
+  m = await jsonRound(small, [{team: 'home', player: 'G ' + TAG, minute: '3'}], {goals: [{team: 'home', player: 'X', minute: 1}]});
+  check('Goals count as filled when the form has goal rows: a JSON "goals" is refused naming "goals"', /both the form and the JSON fill "goals"/.test(m), m);
+  m = await jsonRound(small, [], {goals: [{team: 'home', player: 'J ' + TAG, minute: 1}]});
+  st2 = await stored();
+  check('...and with no goal rows in the form the JSON may supply the goals', /^Added 1/.test(m) && st2[st2.length - 1].goals[0].player === 'J ' + TAG, m);
+  const noScore = Object.assign({}, small, {sh: '', sa: ''});
+  m = await jsonRound(Object.assign({}, noScore, {stadium: ''}), [], {score: '4-4', stadium: 'Supplied ' + TAG, id: 'given-' + TAG});
+  st2 = await stored(); added = st2[st2.length - 1];
+  check('A field left empty in the form (the score, the stadium) is supplied by the JSON, and the JSON\'s own id is used', /^Added 1/.test(m) && added.score === '4-4' && added.stadium === 'Supplied ' + TAG && added.id === 'given-' + TAG, JSON.stringify(added).slice(0, 160));
+  const nn = (await stored()).length;
+  m = await jsonRound(small, [], {id: ATTF.matches[0].id});
+  check('A JSON id the file already uses is refused', /already used by a match in data\/attended\.json/.test(m) && (await stored()).length === nn, m);
+  m = await jsonRound(small, [], {id: 'given-' + TAG});
+  check('...and so is one already on the device', /already imported on this device/.test(m) && (await stored()).length === nn, m);
+  m = await jsonRound(small, [], {bonus: 1, kickoff: '8pm'});
+  check('The merged result goes through the same validator: an unknown field and a bad kickoff are both refused, both reasons given, nothing stored',
+    /unknown field "bonus"/.test(m) && /"kickoff" must be a time/.test(m) && (await stored()).length === nn, m);
+
+  // Edit this match.
+  const EID = 'edit-' + TAG, EKEY = 'imp:' + EID, orig = mj(EID);
+  await jsonRound({}, [], orig);
+  await openCardF(EKEY);
+  await pF.fill('#asheetBody [data-pf=note]', 'Keep me ' + TAG);
+  await pF.click('#aSupport button[data-sup=away]');
+  await pF.setInputFiles('#aMfile', [{name: 'e.png', mimeType: 'image/png', buffer: PNG}]);
+  await pF.waitForFunction(() => document.querySelectorAll('#aMgrid .amcell').length === 1, null, {timeout: 10000}).catch(() => {});
+  await pF.waitForTimeout(300);
+  const persBefore = JSON.parse(await pF.evaluate(k => localStorage.getItem(k), SUPK))[EKEY];
+  const idbCount = () => pF.evaluate(key => new Promise((res, rej) => { const rq = indexedDB.open('football-attended-media');
+    rq.onsuccess = () => { const db = rq.result, g = db.transaction('items').objectStore('items').getAll(); g.onsuccess = () => { db.close(); res(g.result.filter(x => x.entryId === key).length); }; };
+    rq.onerror = () => rej(rq.error); }), EKEY);
+  const media0 = await idbCount();
+  await pF.click('#aImpEdit');
+  await pF.waitForSelector('#aForm:not([data-edit=""])');
+  const pre = await pF.evaluate(() => { const f = document.getElementById('aForm'); return {date: f.elements.date.value, kickoff: f.elements.kickoff.value, home: f.elements.home.value, away: f.elements.away.value,
+    sh: f.elements.sh.value, sa: f.elements.sa.value, stadium: f.elements.stadium.value, competition: f.elements.competition.value, note: f.elements.note.value, goals: f.querySelectorAll('.agoal').length,
+    json: !!document.getElementById('aImpBox'), edit: f.dataset.edit}; });
+  const [oh, oa] = orig.score.split('-');
+  check('Edit this match opens the same form pre-filled from the stored record (same id, score split in two boxes, goal rows), and the JSON box is hidden',
+    pre.date === orig.date && pre.kickoff === orig.kickoff && pre.home === orig.home.name && pre.away === orig.away.name && pre.sh === oh && pre.sa === oa && pre.stadium === orig.stadium &&
+    pre.goals === orig.goals.length && !pre.json && pre.edit === EID && pre.competition === orig.competition.en, JSON.stringify(pre));
+  await pF.fill('#aForm [name=stadium]', 'New Ground ' + TAG); await pF.fill('#aForm [name=sh]', '3');
+  await pF.fill('#aGoals .agoal:first-child [name=gminute]', '6');
+  await pF.click('#aImpBtn');
+  await pF.waitForSelector('#asheet:not([hidden])'); await pF.waitForTimeout(350);
+  st2 = await stored();
+  const exp = JSON.parse(JSON.stringify(orig)); exp.stadium = 'New Ground ' + TAG; exp.score = `3-${oa}`; exp.goals[0].minute = 6;
+  check('Saving replaces only the fields the form covers: the record equals the original with just the stadium, the score and one goal minute changed (line-ups, stats, cards, kickoffSource, the goal\'s pen and assist, nameEn and the {ro, en} texts untouched)',
+    canon(st2.find(x => x.id === EID)) === canon(exp) && st2.filter(x => x.id === EID).length === 1, JSON.stringify(st2.find(x => x.id === EID)));
+  const persAfter = JSON.parse(await pF.evaluate(k => localStorage.getItem(k), SUPK))[EKEY];
+  check('The id is kept, so the note and the supporter choice stay attached, and the sheet is back open on the same match',
+    canon(persAfter) === canon(persBefore) && persAfter.note === 'Keep me ' + TAG && persAfter.supported === 'away' && (await pF.$eval('#asheetBody', b => b.dataset.open)) === 'match:' + EKEY, JSON.stringify(persAfter));
+  check('...and the photo is still attached', media0 === 1 && (await idbCount()) === 1 && (await pF.$$('#aMgrid .amcell')).length === 1, String(media0));
+  check('...and the sheet shows the new score and stadium', /3-2/.test(await pF.$eval('#asheetHead', h => h.innerText)) && /New Ground/.test(await pF.$eval('#asheet', s => s.innerText)), '');
+  await pF.click('#asheetClose');
+  await openCardF(EKEY); await pF.click('#aImpEdit'); await pF.waitForSelector('#aForm:not([data-edit=""])');
+  await pF.fill('#aForm [name=home]', '');
+  await pF.click('#aImpBtn');
+  check('Editing: an emptied required field is refused next to the field and the stored record is unchanged', !!(await ferr('home')) && canon((await stored()).find(x => x.id === EID)) === canon(exp), '');
+  await pF.click('#aFormCancel');
+  check('Cancel leaves the form and the record as they were', !(await pF.$('#aForm:not([data-edit=""])')) && canon((await stored()).find(x => x.id === EID)) === canon(exp), '');
+
+  // Both languages at 390 px, errors and goal rows showing.
+  const fitBad = [];
+  for(const lang of ['en', 'ro']){
+    await pF.evaluate(l => setLang(l), lang);
+    await pF.click('#meTabMatches'); await pF.waitForSelector('#aForm', {state: 'attached'});
+    await openAdd();
+    await setForm({home: 'Home ' + 'W'.repeat(30), away: 'Away ' + 'W'.repeat(30), sh: '1'}, [{team: 'away', player: 'P'.repeat(40), minute: ''}]);
+    await pF.fill('#aImpBox', '{"x": ');
+    await pF.click('#aImpBtn');
+    const o = await overF();
+    const txt = await pF.$eval('#aForm', f => f.innerText);
+    if(o.bad.length || o.doc > W) fitBad.push(lang + ' ' + JSON.stringify(o));
+    const want = lang === 'ro' ? [/Echipa gazdă/, /Adaugă gol/, /JSON \(opțional\)/, /Nesalvat/] : [/Home team/, /Add goal/, /JSON \(optional\)/, /Not saved/];
+    if(!want.every(r => r.test(txt))) fitBad.push(lang + ' text ' + txt.slice(0, 120));
+    await resetForm();
+  }
+  await pF.evaluate(() => setLang('en'));
+  check('The form, its errors, a goal row and the JSON box fit at 390 px with no sideways scroll, in English and in Romanian, and are written in each language', !fitBad.length, fitBad.join(' | '));
+  await pF.evaluate(() => setLang('ro'));
+  await openCardF(EKEY);
+  check('Romanian: the sheet\'s Edit this match button is in Romanian and the sheet does not overflow', /Modifică acest meci/.test(await pF.textContent('#aImpEdit')) && (await pF.evaluate(() => { const b = document.getElementById('asheetBody'); return b.scrollWidth - b.clientWidth; })) <= 1, '');
+  await pF.evaluate(() => setLang('en'));
+
+  // Storage and requests.
+  const sr = await pF.evaluate(() => ({r: window.__r, w: window.__w, i: window.__i}));
+  check('No mf_ key was read or written and no mf_ database opened by any of it', ![...sr.r, ...sr.w, ...sr.i].some(k => String(k).startsWith('mf_')) && sr.w.includes(IMPK), [...new Set(sr.w)].join());
+  const typed = [TAG, 'Line one', 'ScorerA', 'Keep me'];
+  const leaked = requests.slice(reqStart).filter(r => typed.some(s => (r.url + r.body + r.headers).includes(s) || (r.url + r.body + r.headers).includes(encodeURIComponent(s))));
+  check('Nothing typed into the form, the JSON box or the sheet appears in any request (URL, body or headers)', !leaked.length, leaked.map(r => r.method + ' ' + r.url.slice(0, 80)).join(', '));
+  check('No request other than GET reached the site during the form tests', !nonGet.length, nonGet.join(', '));
+  await ctxF.close();
+  }
+
+  {
   // ---- 2026-10-09: the whole interface in two languages. The dictionary, the Settings sheet, the choice kept on the device, every
   //      main tab and the four Me sub-tabs in Romanian at 390 px, no English left outside the data's own text, and a live change.
   const NAMES_SAME = new Set(['tl.pen', 'imp.placeholder', 'md.video', 'sheet.club', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',

@@ -609,18 +609,31 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   .me button.b.del{color:var(--bad);border-color:var(--bad-line)}
   .me button.b:disabled{opacity:.45;cursor:default}
   .me .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-  .me .meform{background:var(--surf2);border:1px solid var(--t3);border-radius:10px;padding:10px 12px;margin-bottom:9px}
-  .me .meform h3{margin:0 0 4px;font-size:15px}
-  .me .meform label{display:block;font-size:12px;letter-spacing:.04em;color:var(--dim);margin-top:9px}
-  .me .meform input,.me .meform select,.me .meform textarea{display:block;width:100%;margin-top:3px;background:var(--field);
+  :is(.me .meform,.att .amform){background:var(--surf2);border:1px solid var(--t3);border-radius:10px;padding:10px 12px;margin-bottom:9px}
+  :is(.me .meform,.att .amform) h3{margin:0 0 4px;font-size:15px}
+  :is(.me .meform,.att .amform) label{display:block;font-size:12px;letter-spacing:.04em;color:var(--dim);margin-top:9px}
+  :is(.me .meform,.att .amform) :is(input,select,textarea){display:block;width:100%;margin-top:3px;background:var(--field);
     color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:8px 9px;font:inherit;font-size:16px;
     color-scheme:var(--scheme);min-width:0}
-  .me .meform textarea{min-height:64px;resize:vertical}
-  .me .meform .two{display:flex;gap:8px}
-  .me .meform .two>label{flex:1 1 0;min-width:0}
-  .me .meform .hint{font-size:11.5px;color:var(--faint);margin-top:2px;letter-spacing:0}
-  .me .meerr{color:var(--bad);font-size:13px;margin-top:8px}
-  .me .meerr:empty{display:none}
+  :is(.me .meform,.att .amform) textarea{min-height:64px;resize:vertical}
+  :is(.me .meform,.att .amform) .two{display:flex;gap:8px}
+  :is(.me .meform,.att .amform) .two>label{flex:1 1 0;min-width:0}
+  :is(.me .meform,.att .amform) .hint{font-size:11.5px;color:var(--faint);margin-top:2px;letter-spacing:0}
+  :is(.me,.att) .meerr{color:var(--bad);font-size:13px;margin-top:8px}
+  :is(.me,.att) .meerr:empty{display:none}
+  /* The Add / Edit a match form (2026-10-13): the Me forms' look, inside the Matches panel. */
+  .att .amform .flab{display:block;font-size:12px;letter-spacing:.04em;color:var(--dim);margin-top:9px}
+  .att .amform .scorebox{display:flex;align-items:center;gap:8px;margin-top:3px}
+  .att .amform .scorebox input{margin-top:0;flex:1 1 0}
+  .att .amform .ferr{display:block;color:var(--bad);font-size:12.5px;margin-top:3px;overflow-wrap:anywhere}
+  .att .amform .ferr:empty{display:none}
+  .att .amform .agoal{border:1px solid var(--line);border-radius:8px;padding:0 10px 4px;margin-top:8px}
+  .att .amform .agoal button.ab{margin:6px 0 4px}
+  .att .aadd .amform{background:none;border:0;padding:0 0 10px;margin:0}
+  .att .aedit{padding-top:8px}
+  .att .amform .jsonbox{margin-top:14px;border-top:1px solid var(--line);padding-top:4px}
+  .att .amform .jsonbox textarea{min-height:96px}
+  .att .amform .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
   .me .sub{color:var(--faint);font-size:12px;margin-top:6px}
   .me .memsg{font-size:13px;color:var(--dim);margin-top:8px;overflow-wrap:anywhere}
   .me .memsg.bad{color:var(--bad)}
@@ -922,6 +935,22 @@ const I18N = {
     'imp.skipped': '{n} stored imported match(es) could not be read and were left out.',
     'imp.remove': 'Remove this imported match', 'imp.removeAsk': 'Remove this imported match from this device? Its notes and its photos and videos here are deleted too.',
     'imp.blocked': 'This browser blocks storage, so imported matches last only until the page is closed.',
+    'imf.edit': 'Edit this match', 'imf.editTitle': 'Edit this match',
+    'imf.editHint': 'Only the fields below change. Line-ups, timeline, stats, your notes, your supporter choice and your photos and videos stay as they are.',
+    'imf.kickoff': 'Kick-off (optional)', 'imf.kickoffHint': 'The local time at the ground.',
+    'imf.home': 'Home team', 'imf.away': 'Away team', 'imf.scoreH': 'Home goals', 'imf.scoreA': 'Away goals',
+    'imf.stage': 'Stage or round', 'imf.note': 'Note',
+    'imf.goals': 'Goals', 'imf.addGoal': 'Add goal', 'imf.goalTeam': 'Team', 'imf.goalPlayer': 'Scorer', 'imf.goalMinute': 'Minute',
+    'imf.goalRemove': 'Remove goal', 'imf.goalsHint': 'The list may be partial: it does not have to add up to the score.',
+    'imf.jsonTitle': 'JSON (optional)',
+    'imf.jsonHint': 'Leave the form empty to paste one or several matches as before. With the form filled in, paste at most one match object: it can only add what the form left empty.',
+    'imf.e.date': 'Choose a real date.', 'imf.e.home': 'Enter the home team.', 'imf.e.away': 'Enter the away team.',
+    'imf.e.score': 'Enter both goal numbers, 0 to 99.', 'imf.e.attendance': 'A whole number from 0 to 500000.',
+    'imf.e.goal': 'A scorer and a minute from 0 to 150 are needed.',
+    'imf.notSaved': 'Not saved: check the marked fields. Nothing was stored.',
+    'imf.needObject': 'Not added: with the form filled in, the JSON must be one match object, not a list.',
+    'imf.clash': 'both the form and the JSON fill "{k}"',
+    'imf.gone': 'Not saved: this imported match is no longer on this device.',
     'md.title': 'Photos and videos', 'md.add': 'Add from gallery', 'md.none': 'No photos or videos yet.',
     'md.count': '{n} files · {mb} MB', 'md.quota': '{used} of {quota} used on this device',
     'md.hint': 'Files stay on this device only, inside the browser. They are not uploaded, not in the repo, and not in the Me tab export. Clearing the site data deletes them.',
@@ -2117,6 +2146,22 @@ const I18N = {
     'imp.skipped': '{n} meci(uri) importate păstrate nu au putut fi citite și au fost lăsate deoparte.',
     'imp.remove': 'Șterge acest meci importat', 'imp.removeAsk': 'Ștergi acest meci importat de pe acest dispozitiv? Se șterg și notițele lui și pozele și filmările de aici.',
     'imp.blocked': 'Acest browser blochează stocarea, deci meciurile importate rămân doar până închizi pagina.',
+    'imf.edit': 'Modifică acest meci', 'imf.editTitle': 'Modifică acest meci',
+    'imf.editHint': 'Se schimbă doar câmpurile de mai jos. Formațiile, cronologia, statisticile, notițele tale, echipa susținută și pozele și filmările rămân cum sunt.',
+    'imf.kickoff': 'Ora de start (opțional)', 'imf.kickoffHint': 'Ora locală de pe stadion.',
+    'imf.home': 'Echipa gazdă', 'imf.away': 'Echipa oaspete', 'imf.scoreH': 'Goluri gazde', 'imf.scoreA': 'Goluri oaspeți',
+    'imf.stage': 'Fază sau etapă', 'imf.note': 'Notă',
+    'imf.goals': 'Goluri', 'imf.addGoal': 'Adaugă gol', 'imf.goalTeam': 'Echipa', 'imf.goalPlayer': 'Marcator', 'imf.goalMinute': 'Minutul',
+    'imf.goalRemove': 'Șterge golul', 'imf.goalsHint': 'Lista poate fi parțială: nu trebuie să se potrivească cu scorul.',
+    'imf.jsonTitle': 'JSON (opțional)',
+    'imf.jsonHint': 'Lasă formularul gol ca să lipești unul sau mai multe meciuri ca până acum. Cu formularul completat, lipește cel mult un obiect de meci: poate adăuga doar ce a lăsat gol formularul.',
+    'imf.e.date': 'Alege o dată reală.', 'imf.e.home': 'Scrie echipa gazdă.', 'imf.e.away': 'Scrie echipa oaspete.',
+    'imf.e.score': 'Scrie ambele numere de goluri, de la 0 la 99.', 'imf.e.attendance': 'Un număr întreg de la 0 la 500000.',
+    'imf.e.goal': 'Sunt necesare un marcator și un minut între 0 și 150.',
+    'imf.notSaved': 'Nesalvat: verifică câmpurile marcate. Nu s-a păstrat nimic.',
+    'imf.needObject': 'Neadăugat: cu formularul completat, JSON-ul trebuie să fie un singur obiect de meci, nu o listă.',
+    'imf.clash': 'și formularul, și JSON-ul completează „{k}”',
+    'imf.gone': 'Nesalvat: acest meci importat nu mai este pe acest dispozitiv.',
     'md.title': 'Poze și filmări', 'md.add': 'Adaugă din galerie', 'md.none': 'Nicio poză sau filmare încă.',
     'md.count': '{n} fișiere · {mb} MB', 'md.quota': '{used} din {quota} folosiți pe acest dispozitiv',
     'md.hint': 'Fișierele rămân doar pe acest dispozitiv, în browser. Nu se încarcă nicăieri, nu sunt în repo și nu intră în exportul din tabul Eu. Ștergerea datelor site-ului le șterge.',
@@ -8151,7 +8196,7 @@ async function renderTickets(rules){
    migrated from the old app. The chosen language is the only other thing
    kept. */
 
-const ATT = {sub: 'stats', data: null, side: 'home'};
+const ATT = {sub: 'stats', data: null, side: 'home', edit: null};
 
 /* A value of the file as the page's language shows it. A name pair has
    nameEn; a text pair is {ro, en}. Nothing is filled in when absent. */
@@ -8277,16 +8322,15 @@ function renderAttMatches(d){
     `<div class="am">${esc(attJoin([attJoin([m.stadium, attL(m.city)], ', '), attDate(m.date)]))}` +
     `${attKickoff(m) ? ` · <span class="ako">${esc(attKickoff(m))}</span>` : ''}${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join('');
 }
-/* The paste box above the list. The message lives in ATT.impMsg so it
-   survives the redraw after a successful add. */
+/* The Add a match form above the list, with the JSON box at its end; while
+   an imported match is being edited, the same form pre-filled instead. The
+   message lives in ATT.impMsg so it survives the redraw after a successful add. */
 function renderAttAdd(){
-  const M = ATT.impMsg;
-  return `<details class="aadd" id="aAdd"${ATT.impOpen ? ' open' : ''}><summary>${esc(t('imp.title'))}</summary>` +
-    `<p class="anote">${esc(t('imp.hint'))}${IMP_BLOCKED ? ' ' + esc(t('imp.blocked')) : ''}</p>` +
-    `<textarea id="aImpBox" spellcheck="false" aria-label="${esc(t('imp.title'))}" placeholder="${esc(t('imp.placeholder'))}"></textarea>` +
-    `<button type="button" class="ab go" id="aImpBtn">${esc(t('imp.add'))}</button>` +
-    `<div class="amsg${M ? ' ' + M.kind : ''}" id="aImpMsg" role="status">${M ? esc(M.text) : ''}</div></details>` +
-    (IMP_SKIPPED ? `<p class="anote" id="aImpSkipped">${esc(t('imp.skipped', {n: IMP_SKIPPED}))}</p>` : '');
+  const rec = ATT.edit ? IMP.find(m => m.id === ATT.edit) : null;
+  if(ATT.edit && !rec) ATT.edit = null;
+  const skipped = IMP_SKIPPED ? `<p class="anote" id="aImpSkipped">${esc(t('imp.skipped', {n: IMP_SKIPPED}))}</p>` : '';
+  if(rec) return `<div class="aadd aedit" id="aAdd">${attFormHtml(rec)}</div>` + skipped;
+  return `<details class="aadd" id="aAdd"${ATT.impOpen ? ' open' : ''}><summary>${esc(t('imp.title'))}</summary>${attFormHtml(null)}</details>` + skipped;
 }
 function renderAttEvents(d){
   const es = attEvents(d);
@@ -8320,7 +8364,7 @@ async function renderAtt(){
 
 function showMeSub(sub){
   ATT.sub = sub;
-  if(sub !== 'matches'){ ATT.impMsg = null; ATT.impOpen = false; }
+  if(sub !== 'matches'){ ATT.impMsg = null; ATT.impOpen = false; ATT.edit = null; }
   const panel = {stats: 'meStats', matches: 'meMatches', events: 'meEvents', tix: 'meBody'};
   document.querySelectorAll('#meSubs button').forEach(b => b.setAttribute('aria-selected', b.dataset.sub === sub));
   for(const k in panel) document.getElementById(panel[k]).hidden = k !== sub;
@@ -8539,6 +8583,214 @@ function impCheckText(raw){
   return {added};
 }
 
+/* ---- The Add / Edit a match form (2026-10-13). It builds the same record
+   the JSON box takes and sends it through the same validator, attCheckMatch(),
+   so nothing is accepted here that a paste would refuse. Device-only like
+   every imported match: football-attended-imported, never data/attended.json. */
+const attTextOf = o => attL(o);                      // a stored text as the page shows it
+const FORM_TEXT = ['competition', 'stage', 'stadium', 'city', 'referee', 'note'];
+const FORM_NAMES = ['date', 'kickoff', 'home', 'away', 'sh', 'sa', 'attendance', ...FORM_TEXT];
+
+/* What the form holds right now. Strings are trimmed; goals are the rows
+   with a scorer or a minute typed (a row with neither is an empty row). */
+function attFormValues(form){
+  const v = n => (form.elements[n] ? form.elements[n].value : '').trim();
+  const o = {};
+  FORM_NAMES.forEach(n => { o[n] = v(n); });
+  o.goals = [...form.querySelectorAll('.agoal')].map((r, i) => ({
+    i, gi: r.dataset.gi === '' ? null : Number(r.dataset.gi), team: r.querySelector('[name=gteam]').value,
+    player: r.querySelector('[name=gplayer]').value.trim(), minute: r.querySelector('[name=gminute]').value.trim()}))
+    .filter(g => g.player || g.minute);
+  return o;
+}
+const attFormFilled = v => FORM_NAMES.some(n => v[n] !== '') || v.goals.length > 0;
+
+/* Problems with what was typed, by field name. `need` also asks for the
+   four required fields (the JSON may supply them instead, so it is off
+   when a JSON object is going to be merged in). */
+function attFormErrors(v, need){
+  const e = {};
+  if(need){
+    if(!realDay(v.date)) e.date = t('imf.e.date');
+    if(!v.home) e.home = t('imf.e.home');
+    if(!v.away) e.away = t('imf.e.away');
+  }else if(v.date && !realDay(v.date)) e.date = t('imf.e.date');
+  const n = /^\d{1,2}$/;
+  if((need || v.sh !== '' || v.sa !== '') && !(n.test(v.sh) && n.test(v.sa))) e.score = t('imf.e.score');
+  if(v.attendance !== '' && !(/^\d{1,6}$/.test(v.attendance) && Number(v.attendance) <= 500000)) e.attendance = t('imf.e.attendance');
+  if(v.kickoff && !KICKOFF_RE.test(v.kickoff)) e.kickoff = t('v.kickoff');
+  v.goals.forEach(g => {
+    if(!g.player || !/^\d{1,3}$/.test(g.minute) || Number(g.minute) > 150) e['g' + g.i] = t('imf.e.goal');
+  });
+  return e;
+}
+
+/* Only what the form filled, under the validator's own field names. */
+function attFormRecord(v){
+  const r = {};
+  if(v.date) r.date = v.date;
+  if(v.kickoff) r.kickoff = v.kickoff;
+  if(v.home) r.home = {name: v.home};
+  if(v.away) r.away = {name: v.away};
+  if(v.sh !== '' && v.sa !== '') r.score = `${Number(v.sh)}-${Number(v.sa)}`;
+  FORM_TEXT.forEach(k => { if(v[k]) r[k] = v[k]; });
+  if(v.attendance !== '') r.attendance = {value: Number(v.attendance)};
+  if(v.goals.length) r.goals = v.goals.map(g => ({team: g.team, player: g.player, minute: Number(g.minute)}));
+  return r;
+}
+
+/* The JSON merged into the form's record at leaf level. A leaf both fill is
+   a clash, named by its key; a key the form left empty comes from the JSON;
+   objects merge; a list (goals) is one leaf; a JSON null counts as absent. */
+function attMergeLeaves(base, extra, path, out, clash){
+  for(const k of Object.keys(extra)){
+    const ev = extra[k], bv = base[k], p = path ? path + '.' + k : k;
+    if(ev == null) continue;
+    if(bv === undefined) out[k] = JSON.parse(JSON.stringify(ev));
+    else if(isObj(bv) && isObj(ev)){ out[k] = Object.assign({}, bv); attMergeLeaves(bv, ev, p, out[k], clash); }
+    else clash.push(p);
+  }
+}
+function attMerge(formRec, json){
+  const out = JSON.parse(JSON.stringify(formRec)), clash = [];
+  attMergeLeaves(formRec, json, '', out, clash);
+  return {rec: out, clash};
+}
+
+/* An id nobody uses: date and team names, ASCII, at most 80, -2, -3 on a clash. */
+const attIdPart = s => fold(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function attGenId(rec){
+  const parts = [typeof rec.date === 'string' ? rec.date : '', rec.home && rec.home.name, rec.away && rec.away.name].map(attIdPart).filter(Boolean);
+  const base = (parts.join('-') || 'match').slice(0, 76).replace(/-$/, '');
+  const used = new Set((ATT.data?.matches || []).map(m => m.id).concat(IMP.map(m => m.id)));
+  let id = base, n = 1;
+  while(used.has(id)) id = `${base}-${++n}`;
+  return id;
+}
+
+/* An edit: the stored record with only the fields the form covers replaced. */
+function attEditRecord(orig, v){
+  const r = JSON.parse(JSON.stringify(orig)), setOrDel = (k, val) => { if(val === '' || val == null) delete r[k]; else r[k] = val; };
+  r.date = v.date;
+  r.score = `${Number(v.sh)}-${Number(v.sa)}`;
+  r.home = Object.assign({}, orig.home, {name: v.home});
+  r.away = Object.assign({}, orig.away, {name: v.away});
+  setOrDel('kickoff', v.kickoff);
+  setOrDel('stadium', v.stadium);
+  setOrDel('referee', v.referee);
+  for(const k of ['competition', 'stage', 'city', 'note']){      // unchanged text keeps a stored {ro, en} pair as it was
+    if(v[k] !== attTextOf(orig[k])) setOrDel(k, v[k]);
+  }
+  const att = Object.assign({}, orig.attendance);
+  if(v.attendance === '') delete att.value; else att.value = Number(v.attendance);
+  if(Object.keys(att).length) r.attendance = att; else delete r.attendance;
+  if(v.goals.length) r.goals = v.goals.map(g => Object.assign({}, g.gi != null && orig.goals && orig.goals[g.gi], {team: g.team, player: g.player, minute: Number(g.minute)}));
+  else delete r.goals;
+  return r;
+}
+
+/* The form's HTML. `rec` is the stored imported match when editing. */
+function attGoalRow(g, i, homeName, awayName){
+  const opt = (val, nm, lbl) => `<option value="${val}"${g.team === val ? ' selected' : ''}>${esc(nm || lbl)}</option>`;
+  return `<div class="agoal" data-gi="${g.gi == null ? '' : g.gi}"><label>${esc(t('imf.goalTeam'))}<select name="gteam">` +
+    `${opt('home', homeName, t('imf.home'))}${opt('away', awayName, t('imf.away'))}</select></label>` +
+    `<div class="two"><label>${esc(t('imf.goalPlayer'))}<input name="gplayer" value="${esc(g.player || '')}" autocomplete="off"></label>` +
+    `<label>${esc(t('imf.goalMinute'))}<input name="gminute" type="number" min="0" max="150" step="1" inputmode="numeric" value="${esc(g.minute ?? '')}"></label></div>` +
+    `<span class="ferr" data-ferr="g${i}" role="alert"></span>` +
+    `<button type="button" class="ab del" data-gdel="1">${esc(t('imf.goalRemove'))}</button></div>`;
+}
+function attFormHtml(rec){
+  const edit = !!rec;
+  const fe = (html, name) => html.replace(/<\/label>$/, `<span class="ferr" data-ferr="${name}" role="alert"></span></label>`);
+  const sc = rec && SCORE_RE.test(rec.score || '') ? rec.score.split('-') : ['', ''];
+  const goals = (rec && rec.goals || []).map((g, gi) => ({gi, team: g.team, player: g.player, minute: g.minute}));
+  const txt = k => rec ? attTextOf(rec[k]) : '';
+  const hn = rec ? rec.home.name : '', an = rec ? rec.away.name : '';
+  const num = (name, val, label) => `<input name="${name}" type="number" min="0" max="99" step="1" inputmode="numeric" aria-label="${esc(label)}" value="${esc(val)}">`;
+  const f = fe(meInput(t('att.date'), 'date', rec?.date, 'type="date"'), 'date') +
+    fe(meInput(t('imf.kickoff'), 'kickoff', rec?.kickoff, 'type="time"', t('imf.kickoffHint')), 'kickoff') +
+    fe(meInput(t('imf.home'), 'home', hn, 'autocomplete="off"'), 'home') +
+    fe(meInput(t('imf.away'), 'away', an, 'autocomplete="off"'), 'away') +
+    `<div class="fgrp"><span class="flab">${esc(t('att.score'))}</span><div class="scorebox">${num('sh', sc[0], t('imf.scoreH'))}<span aria-hidden="true">–</span>${num('sa', sc[1], t('imf.scoreA'))}</div>` +
+      `<span class="ferr" data-ferr="score" role="alert"></span></div>` +
+    meInput(t('att.competition'), 'competition', txt('competition'), 'autocomplete="off"') +
+    meInput(t('imf.stage'), 'stage', txt('stage'), 'autocomplete="off"') +
+    meInput(t('att.stadium'), 'stadium', rec?.stadium, 'autocomplete="off"') +
+    meInput(t('att.city'), 'city', txt('city'), 'autocomplete="off"') +
+    fe(meInput(t('att.attendance'), 'attendance', rec?.attendance?.value, 'type="number" min="0" max="500000" step="1" inputmode="numeric"'), 'attendance') +
+    meInput(t('att.referee'), 'referee', rec?.referee, 'autocomplete="off"') +
+    meArea(t('imf.note'), 'note', txt('note')) +
+    `<div class="fgrp"><span class="flab">${esc(t('imf.goals'))}</span><div id="aGoals">${goals.map((g, i) => attGoalRow(g, i, hn, an)).join('')}</div>` +
+      `<button type="button" class="ab" id="aGoalAdd">${esc(t('imf.addGoal'))}</button><span class="hint">${esc(t('imf.goalsHint'))}</span></div>`;
+  const json = edit ? '' : `<div class="jsonbox"><span class="flab">${esc(t('imf.jsonTitle'))}</span>` +
+    `<p class="anote">${esc(t('imf.jsonHint'))}</p><p class="anote">${esc(t('imp.hint'))}${IMP_BLOCKED ? ' ' + esc(t('imp.blocked')) : ''}</p>` +
+    `<textarea id="aImpBox" spellcheck="false" aria-label="${esc(t('imf.jsonTitle'))}" placeholder="${esc(t('imp.placeholder'))}"></textarea></div>`;
+  const M = ATT.impMsg;
+  return `<form class="amform" id="aForm" data-edit="${esc(rec?.id || '')}" novalidate>` +
+    (edit ? `<h3>${esc(t('imf.editTitle'))}</h3><p class="anote">${esc(t('imf.editHint'))}</p>` : '') + f + json +
+    `<div class="amsg${M && !edit ? ' ' + M.kind : ''}" id="aImpMsg" role="status">${M && !edit ? esc(M.text) : ''}</div>` +
+    `<div class="acts"><button type="submit" class="ab go" id="aImpBtn">${esc(t(edit ? 'me.form.save' : 'imp.add'))}</button>` +
+    `<button type="button" class="ab" id="aFormCancel">${esc(t('gen.cancel'))}</button></div></form>`;
+}
+
+/* The form submitted. Everything is checked first; if anything fails
+   nothing is stored and the form keeps what was typed. */
+function attFormSubmit(form){
+  impLoad();
+  const msg = (kind, text) => { const m = document.getElementById('aImpMsg'); m.className = 'amsg ' + kind; m.textContent = text; };
+  const setErrs = errs => form.querySelectorAll('[data-ferr]').forEach(s => { s.textContent = errs[s.dataset.ferr] || ''; });
+  const done = list => {                                  // store, then redraw
+    if(!impSave(list)) return msg('bad', t('imp.saveFailed'));
+    attTouched(); return true;
+  };
+  const v = attFormValues(form), editId = form.dataset.edit, jsonEl = document.getElementById('aImpBox');
+  const jsonText = jsonEl ? jsonEl.value : '';
+  if(editId){                                              // editing: same id, only the covered fields change
+    const errs = attFormErrors(v, true); setErrs(errs);
+    if(Object.keys(errs).length) return msg('bad', t('imf.notSaved'));
+    const i = IMP.findIndex(m => m.id === editId);
+    if(i < 0) return msg('bad', t('imf.gone'));
+    const c = attCheckMatch(attEditRecord(IMP[i], v));
+    if(c.errs) return msg('bad', t('imp.rejected', {reasons: c.errs.join('; ')}));
+    const list = IMP.slice(); list[i] = c.rec;
+    if(!done(list)) return;
+    ATT.edit = null; ATT.impMsg = null;
+    renderAtt().then(() => openASheet('match', 'imp:' + editId));
+    return;
+  }
+  if(!attFormFilled(v)){                                   // form empty: the paste box as it always was
+    setErrs({});
+    const c = impCheckText(jsonText);
+    if(c.error) return msg('bad', c.error);
+    if(!done(IMP.concat(c.added))) return;
+    ATT.impMsg = {kind: 'ok', text: t('imp.added', {n: c.added.length})}; ATT.impOpen = true;
+    return renderAtt();
+  }
+  const hasJson = !!jsonText.trim();
+  const errs = attFormErrors(v, !hasJson); setErrs(errs);
+  if(Object.keys(errs).length) return msg('bad', t('imf.notSaved'));
+  let rec = attFormRecord(v);
+  if(hasJson){
+    if(jsonText.length > IMP_MAX_TEXT) return msg('bad', t('imp.tooBig', {max: attNum(IMP_MAX_TEXT)}));
+    let obj;
+    try{ obj = JSON.parse(jsonText); }catch(e){ return msg('bad', t('imp.notJson')); }
+    if(!isObj(obj)) return msg('bad', t('imf.needObject'));
+    const m = attMerge(rec, obj);
+    if(m.clash.length) return msg('bad', t('imp.rejected', {reasons: m.clash.map(k => t('imf.clash', {k})).join('; ')}));
+    rec = m.rec;
+  }
+  if(rec.id == null) rec.id = attGenId(rec);
+  const c = attCheckMatch(rec);
+  if(c.errs) return msg('bad', t('imp.rejected', {reasons: c.errs.join('; ')}));
+  const id = c.rec.id;
+  if((ATT.data?.matches || []).some(m => m.id === id)) return msg('bad', t('imp.rejected', {reasons: t('imp.clashFile', {id})}));
+  if(IMP.some(m => m.id === id)) return msg('bad', t('imp.rejected', {reasons: t('imp.clashDevice', {id})}));
+  if(IMP.length + 1 > IMP_MAX_TOTAL) return msg('bad', t('imp.tooManyTotal', {max: IMP_MAX_TOTAL}));
+  if(!done(IMP.concat([c.rec]))) return;
+  ATT.impMsg = {kind: 'ok', text: t('imp.added', {n: 1})}; ATT.impOpen = true;
+  renderAtt();
+}
+
 /* The file's matches and events with the device's imported matches after
    them. An imported match carries _imp, which attKey() turns into its own
    id space. */
@@ -8671,7 +8923,7 @@ function attStatsPane(m){
 const attUnverified = () => `<p class="aunv">${esc(t('nt.unverified'))}</p>`;
 function attNotePane(m){
   const n = attL(m.note); if(!n) return '';
-  return `<h4>${esc(t('nt.title'))}</h4>${attUnverified()}<div class="afact">${esc(n)}</div>`;
+  return `<h4>${esc(t('nt.title'))}</h4>${m._imp ? '' : attUnverified()}<div class="afact">${esc(n)}</div>`;
 }
 
 /* My notes, ticket, seat, block, who I went with: this device only. */
@@ -8822,7 +9074,7 @@ function openASheet(kind, id){
       row('att.stage', attL(m.stage)) + row('att.stadium', m.stadium) + row('att.city', attL(m.city)) + row('att.country', attL(m.country)) +
       opt('att.attendance', att) + opt('att.referee', m.referee) + attSupport(m) +
       attLineups(m) + attTimeline(m) + attStatsPane(m) + attNotePane(m) + attPersonal(id, true) + attMediaPane() +
-      (m._imp ? `<button type="button" class="ab del" id="aImpRemove">${esc(t('imp.remove'))}</button>` : '');
+      (m._imp ? `<button type="button" class="ab" id="aImpEdit">${esc(t('imf.edit'))}</button><button type="button" class="ab del" id="aImpRemove">${esc(t('imp.remove'))}</button>` : '');
   }else{
     const e = ATT.data.events.find(x => x.id === id); if(!e) return;
     head = `<h3>${esc(attL(e.title) || t('att.na'))}</h3><div class="meta"><span class="tag">${esc(t('att.event'))}</span></div>`;
@@ -8864,16 +9116,34 @@ function attSupport(m){
   sheetDrag(document.getElementById('asheet'), closeASheet);
   const body = document.getElementById('asheetBody');
   const openKey = () => (body.dataset.open || '').split(/:(.*)/)[1] || '';
-  document.getElementById('meMatches').addEventListener('click', e => {        // the paste box: checked whole, then stored on this device only
-    if(!e.target.closest('#aImpBtn')) return;
-    impLoad();
-    const show = (kind, text) => { const m = document.getElementById('aImpMsg'); m.className = 'amsg ' + kind; m.textContent = text; };
-    const c = impCheckText(document.getElementById('aImpBox').value);
-    if(c.error) return show('bad', c.error);
-    if(!impSave(IMP.concat(c.added))) return show('bad', t('imp.saveFailed'));
-    attTouched();
-    ATT.impMsg = {kind: 'ok', text: t('imp.added', {n: c.added.length})}; ATT.impOpen = true;
-    renderAtt();
+  const mm = document.getElementById('meMatches');
+  mm.addEventListener('submit', e => {                                          // the form: checked whole, then stored on this device only
+    const form = e.target.closest('#aForm'); if(!form) return;
+    e.preventDefault();
+    attFormSubmit(form);
+  });
+  mm.addEventListener('click', e => {
+    const form = e.target.closest('#aForm'); if(!form) return;
+    if(e.target.closest('#aGoalAdd')){
+      const rows = form.querySelector('#aGoals'), n = rows.children.length;
+      rows.insertAdjacentHTML('beforeend', attGoalRow({gi: null, team: 'home'}, n, form.elements.home.value.trim(), form.elements.away.value.trim()));
+      rows.lastElementChild.querySelector('[name=gplayer]').focus();
+    }else if(e.target.closest('[data-gdel]')){
+      const row = e.target.closest('.agoal'), rows = row.parentNode;
+      row.remove();
+      [...rows.children].forEach((r, i) => { r.querySelector('[data-ferr]').dataset.ferr = 'g' + i; });
+    }else if(e.target.closest('#aFormCancel')){
+      ATT.edit = null; ATT.impMsg = null; ATT.impOpen = false;
+      renderAtt();
+    }
+  });
+  mm.addEventListener('input', e => {                                           // the goal rows name the teams as typed
+    if(e.target.name !== 'home' && e.target.name !== 'away') return;
+    const form = e.target.form;
+    form.querySelectorAll('select[name=gteam] option').forEach(o => {
+      const nm = form.elements[o.value].value.trim();
+      o.textContent = nm || t(o.value === 'home' ? 'imf.home' : 'imf.away');
+    });
   });
   body.addEventListener('click', e => {
     const sb = e.target.closest('button[data-sup]');                              // the supporter buttons: pressing the chosen one clears it
@@ -8885,6 +9155,14 @@ function attSupport(m){
     }
     const mo = e.target.closest('button[data-mopen]');
     if(mo){ mediaViewer(openKey(), mo.dataset.mopen); return; }
+    if(e.target.closest('#aImpEdit')){
+      const key = openKey();
+      if(!key.startsWith('imp:')) return;
+      ATT.edit = key.slice(4); ATT.impMsg = null;
+      closeASheet(); renderAtt();
+      document.getElementById('pane-me').scrollTop = 0;
+      return;
+    }
     if(e.target.closest('#aImpRemove')){
       const key = openKey();
       if(!key.startsWith('imp:') || !confirm(t('imp.removeAsk'))) return;

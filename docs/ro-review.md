@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1256 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1286 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -128,6 +128,36 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `imp.remove` | Remove this imported match | Șterge acest meci importat |
 | `imp.removeAsk` | Remove this imported match from this device? Its notes and its photos and videos here are deleted too. | Ștergi acest meci importat de pe acest dispozitiv? Se șterg și notițele lui și pozele și filmările de aici. |
 | `imp.blocked` | This browser blocks storage, so imported matches last only until the page is closed. | Acest browser blochează stocarea, deci meciurile importate rămân doar până închizi pagina. |
+| `imf.edit` | Edit this match | Modifică acest meci |
+| `imf.editTitle` | Edit this match | Modifică acest meci |
+| `imf.editHint` | Only the fields below change. Line-ups, timeline, stats, your notes, your supporter choice and your photos and videos stay as they are. | Se schimbă doar câmpurile de mai jos. Formațiile, cronologia, statisticile, notițele tale, echipa susținută și pozele și filmările rămân cum sunt. |
+| `imf.kickoff` | Kick-off (optional) | Ora de start (opțional) |
+| `imf.kickoffHint` | The local time at the ground. | Ora locală de pe stadion. |
+| `imf.home` | Home team | Echipa gazdă |
+| `imf.away` | Away team | Echipa oaspete |
+| `imf.scoreH` | Home goals | Goluri gazde |
+| `imf.scoreA` | Away goals | Goluri oaspeți |
+| `imf.stage` | Stage or round | Fază sau etapă |
+| `imf.note` | Note | Notă |
+| `imf.goals` | Goals | Goluri |
+| `imf.addGoal` | Add goal | Adaugă gol |
+| `imf.goalTeam` | Team | Echipa |
+| `imf.goalPlayer` | Scorer | Marcator |
+| `imf.goalMinute` | Minute | Minutul |
+| `imf.goalRemove` | Remove goal | Șterge golul |
+| `imf.goalsHint` | The list may be partial: it does not have to add up to the score. | Lista poate fi parțială: nu trebuie să se potrivească cu scorul. |
+| `imf.jsonTitle` | JSON (optional) | JSON (opțional) |
+| `imf.jsonHint` | Leave the form empty to paste one or several matches as before. With the form filled in, paste at most one match object: it can only add what the form left empty. | Lasă formularul gol ca să lipești unul sau mai multe meciuri ca până acum. Cu formularul completat, lipește cel mult un obiect de meci: poate adăuga doar ce a lăsat gol formularul. |
+| `imf.e.date` | Choose a real date. | Alege o dată reală. |
+| `imf.e.home` | Enter the home team. | Scrie echipa gazdă. |
+| `imf.e.away` | Enter the away team. | Scrie echipa oaspete. |
+| `imf.e.score` | Enter both goal numbers, 0 to 99. | Scrie ambele numere de goluri, de la 0 la 99. |
+| `imf.e.attendance` | A whole number from 0 to 500000. | Un număr întreg de la 0 la 500000. |
+| `imf.e.goal` | A scorer and a minute from 0 to 150 are needed. | Sunt necesare un marcator și un minut între 0 și 150. |
+| `imf.notSaved` | Not saved: check the marked fields. Nothing was stored. | Nesalvat: verifică câmpurile marcate. Nu s-a păstrat nimic. |
+| `imf.needObject` | Not added: with the form filled in, the JSON must be one match object, not a list. | Neadăugat: cu formularul completat, JSON-ul trebuie să fie un singur obiect de meci, nu o listă. |
+| `imf.clash` | both the form and the JSON fill "{k}" | și formularul, și JSON-ul completează „{k}” |
+| `imf.gone` | Not saved: this imported match is no longer on this device. | Nesalvat: acest meci importat nu mai este pe acest dispozitiv. |
 | `md.title` | Photos and videos | Poze și filmări |
 | `md.add` | Add from gallery | Adaugă din galerie |
 | `md.none` | No photos or videos yet. | Nicio poză sau filmare încă. |
