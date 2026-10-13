@@ -491,6 +491,7 @@ function alarmAt(ev, al){
     yellow: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'yellow').length, 0),
     red: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'red').length, 0),
     second: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'second-yellow').length, 0),
+    cardsOk: ATTF.matches.filter(m => m.cardsComplete).length,
     cities: new Set(ATTF.matches.map(m => m.city.en)).size,
     countries: new Set(ATTF.matches.map(m => m.country.en)).size,
     comps: new Set(ATTF.matches.map(m => (m.competitionKey || m.competition).en)).size,
@@ -533,11 +534,17 @@ function alarmAt(ev, al){
 
   const tiles = await p3.$$eval('#meStats .astat', ts => ts.map(t => [t.querySelector('b').textContent.replace(/[^\d]/g, ''), t.querySelector('span').textContent]));
   const tv = tiles.map(t => +t[0]);
-  check('Stats: matches, goals, penalties, stadiums, yellow cards, red cards (type red only) and second yellows equal the counts in the file',
-    JSON.stringify(tv) === JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red, fx.second]), JSON.stringify(tv) + ' file ' + JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red, fx.second]));
+  check('Stats: matches, goals, penalties, stadiums, yellow cards and red cards (straight reds plus second yellows) equal the counts in the file',
+    JSON.stringify(tv) === JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red + fx.second]), JSON.stringify(tv) + ' file ' + JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red + fx.second]));
   const goalsAvg = (fx.goals / fx.n).toFixed(2) + ' per match';
   check('Stats: "goals seen" shows the sum of the scores per match', tiles[1][1] === 'goals seen' && await p3.$eval('#meStats .astat:nth-child(2) i', e => e.textContent) === goalsAvg, goalsAvg);
-  check('Stats: "second yellows" has its own tile, and "red cards" is not that tile', tiles[5][1] === 'red cards' && tiles[6][1] === 'second yellows', JSON.stringify(tiles.slice(4)));
+  const redTile = await p3.$$eval('#meStats .astat', ts => ts[5] && ({label: ts[5].querySelector('span').textContent, lines: [...ts[5].querySelectorAll('i')].map(x => x.textContent)}));
+  check('Stats: ONE "red cards" card (no "second yellows" card): the split line gives second yellows and straight reds, then the per-match figure over the matches with complete card data',
+    tiles.length === 6 && !tiles.some(t => /second yellow/i.test(t[1])) && tiles[5][1] === 'red cards' &&
+    JSON.stringify(redTile.lines) === JSON.stringify([`${plEn(fx.second, 'second yellow', 'second yellows')} · ${plEn(fx.red, 'straight red', 'straight reds')}`, ((fx.red + fx.second) / fx.cardsOk).toFixed(2) + ' per match']), JSON.stringify(redTile));
+  check('Stats: the yellow card keeps its per-match figure and the "complete data for a of b matches" note stays',
+    await p3.$$eval('#meStats .astat', ts => ts[4].querySelector('i').textContent) === (fx.yellow / fx.cardsOk).toFixed(2) + ' per match' &&
+    new RegExp(`Complete data currently exists for ${fx.cardsOk} of ${fx.n} matches`).test(await p3.$eval('#meStats', e => e.textContent)), '');
   const gnote = await p3.$eval('#aGoalsNote', e => e.textContent).catch(() => null);
   check('Stats: the footnote counts goals and matches whose goals list is shorter than the score',
     fx.goalsShort.length ? gnote === `Includes ${plEn(fx.goalsShort.reduce((a, b) => a + b, 0), 'goal', 'goals')} from ${plEn(fx.goalsShort.length, 'match', 'matches')} without a full goals list` : gnote === null, String(gnote));
@@ -740,16 +747,20 @@ function alarmAt(ev, al){
     const st = await sheetState(p3);
     const head = await p3.$eval('#asheetHead', h => h.textContent);
     if(!head.includes(e.title.en)) evBad.push(e.id + ' title');
-    const need = [e.place.en, e.what.en, 'What it was'].concat(e.why ? [e.why.en, 'Why it mattered'] : []);
+    const need = [e.place.en, 'Factual note'];
     if(st.hidden || need.some(x => !st.text.toLowerCase().includes(x.toLowerCase()))) evBad.push(e.id + ' content ' + need.filter(x => !st.text.toLowerCase().includes(x.toLowerCase())).join('/'));
+    if('what' in e || 'why' in e || typeof e.note.en !== 'string') evBad.push(e.id + ' data still has what/why or no note');
+    if(JSON.stringify(st.h4.filter(h => /Factual note|What it was|Why it mattered/.test(h))) !== '["Factual note"]') evBad.push(e.id + ' headings ' + st.h4.join('/'));
+    const shown = await p3.$eval('#asheetBody .afact', x => ({text: x.innerText, ws: getComputedStyle(x).whiteSpace}));
+    if(shown.text.trim() !== e.note.en || shown.ws !== 'pre-line' || !/\n\n/.test(shown.text)) evBad.push(e.id + ' note text/line breaks ' + JSON.stringify(shown).slice(0, 80));
     if(!new RegExp('At the stadium ' + (e.atStadium ? 'yes' : 'no'), 'i').test(st.text)) evBad.push(e.id + ' atStadium flag');
     const want = e.atStadium ? ['note', 'ticket', 'seat', 'block', 'withWho'] : ['note', 'withWho'];
     if(JSON.stringify(st.pf) !== JSON.stringify(want)) evBad.push(e.id + ' personal fields ' + st.pf);
     if(!st.fits || st.empty.length) evBad.push(e.id + ' fit/empty');
-    if(st.unv.length !== 1 + (e.why ? 1 : 0)) evBad.push(e.id + ' unverified labels');
+    if(st.unv.length !== 1) evBad.push(e.id + ' unverified labels');
     await p3.click('#asheetClose');
   }
-  check(`All ${ATTF.events.length} events open their sheet: title, place, what, why, the atStadium flag, ticket/seat/block only where atStadium, and the unverified label`, !evBad.length, evBad.slice(0, 3).join(' | '));
+  check(`All ${ATTF.events.length} events open their sheet: title, place, one Factual note (the note from the file, line breaks kept, no What it was / Why it mattered headings), the atStadium flag, ticket/seat/block only where atStadium, and one unverified label`, !evBad.length, evBad.slice(0, 3).join(' | '));
 
   // Personal fields: this device only, under football-attended-personal, never an mf_ key.
   const PK = 'football-attended-personal';
@@ -843,6 +854,12 @@ function alarmAt(ev, al){
   check('The Romanian sub-tab labels fit at 390 px', !subsRo.length, subsRo.join(', '));
   await p3.click('#meTabStats');
   noSideways('Romanian stats: no sideways scroll at 390 px', await sideways(p3));
+  {
+    const roPl = (n, one, other, many) => `${n} ${n === 1 ? one : (n >= 20 && (n % 100 === 0 || n % 100 >= 20) ? many : other)}`;
+    const rl = await p3.$$eval('#meStats .astat', ts => ts[5] && ({label: ts[5].querySelector('span').textContent, lines: [...ts[5].querySelectorAll('i')].map(x => x.textContent)}));
+    const want = `${roPl(fx.second, 'cartonaș galben secund', 'cartonașe galbene secunde', 'de cartonașe galbene secunde')} · ${roPl(fx.red, 'cartonaș roșu direct', 'cartonașe roșii directe', 'de cartonașe roșii directe')}`;
+    check('Romanian stats: the red-cards card says its split line with the right plural forms (.many from 20)', rl.label === 'cartonașe roșii' && rl.lines[0] === want, JSON.stringify(rl) + ' want ' + want);
+  }
   await p3.click('#meTabEvents');
   noSideways('Romanian events: no sideways scroll at 390 px', await sideways(p3));
   await p3.reload();
@@ -1479,7 +1496,7 @@ function alarmAt(ev, al){
   {
   // ---- 2026-10-09: the whole interface in two languages. The dictionary, the Settings sheet, the choice kept on the device, every
   //      main tab and the four Me sub-tabs in Romanian at 390 px, no English left outside the data's own text, and a live change.
-  const NAMES_SAME = new Set(['tl.pen', 'imp.placeholder', 'md.video', 'sheet.club', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',
+  const NAMES_SAME = new Set(['tl.pen', 'st.redSplit', 'imp.placeholder', 'md.video', 'sheet.club', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',
     'oc.sold-out', 'cov.club.one', 'cnm.Austria', 'cnm.Argentina', 'cnm.Serbia', 'cnm.Bulgaria', 'cnm.Chile', 'cnm.Slovenia', 'cnm.Uruguay', 'iso.AR', 'iso.AT', 'iso.BG', 'iso.CL',
     'iso.RS', 'iso.SI', 'iso.UY', 'kind.derby', 'ctopic.format', 'me.cost', 'me.plus', 'bk.tabCal', 'nl.context', 'nl.bonus', 'nl.realism']);       // names, units and abbreviations that are the same word in Romanian
   const ctxL = await newCtx();

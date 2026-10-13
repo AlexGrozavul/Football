@@ -559,7 +559,7 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   #asheet .abar .tr i:last-child{background:var(--accent)}
   #asheet .aunv{color:var(--warn);font-size:12px;margin:2px 0 6px}
   #asheet .ako{display:block;color:var(--dim);font-size:12.5px;margin-top:4px}
-  #asheet .afact{background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.55;overflow-wrap:anywhere}
+  #asheet .afact{white-space:pre-line;background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.55;overflow-wrap:anywhere}
   #asheet .anote{color:var(--faint);font-size:12.5px;line-height:1.5;margin:8px 0}
   #asheet .apers label{display:block;font-size:12px;letter-spacing:.04em;color:var(--dim);margin-top:9px}
   #asheet .apers input,#asheet .apers textarea{display:block;width:100%;margin-top:3px;background:var(--field);border:1px solid var(--line);
@@ -886,7 +886,9 @@ const I18N = {
     'st.matches': 'matches', 'st.goals': 'goals seen', 'st.pens': 'penalties scored',
     'st.yellow': 'yellow cards', 'st.red': 'red cards', 'st.cards': 'Yellow / red cards',
     'st.perMatch': 'per match',
-    'st.second': 'second yellows',
+    'st.redSplit': '{second} · {straight}',
+    'st.nSecond.one': '{n} second yellow', 'st.nSecond.other': '{n} second yellows', 'st.nSecond.many': '{n} second yellows',
+    'st.nStraight.one': '{n} straight red', 'st.nStraight.other': '{n} straight reds', 'st.nStraight.many': '{n} straight reds',
     'st.goalsShort': 'Includes {goals} from {matches} without a full goals list',
     'st.nGoals.one': '{n} goal', 'st.nGoals.other': '{n} goals', 'st.nGoals.many': '{n} goals',   // English has one plural form; .many only keeps the key sets equal
     'st.nMatches.one': '{n} match', 'st.nMatches.other': '{n} matches', 'st.nMatches.many': '{n} matches',
@@ -905,7 +907,6 @@ const I18N = {
     'sx.title': 'Stats', 'sx.possession': 'Possession', 'sx.shots': 'Shots', 'sx.onTarget': 'Shots on target',
     'sx.fouls': 'Fouls', 'sx.corners': 'Corners', 'sx.offsides': 'Offsides', 'sx.source': 'Source',
     'nt.title': 'Factual note', 'nt.unverified': 'Written by an assistant from memory, not yet verified',
-    'ev.what': 'What it was', 'ev.why': 'Why it mattered',
     'pf.title': 'My notes and details', 'pf.note': 'My notes', 'pf.ticket': 'Ticket', 'pf.seat': 'Seat', 'pf.block': 'Block',
     'pf.withWho': 'Who I went with',
     'pf.hint': 'Saved automatically, on this device only.',
@@ -2097,7 +2098,9 @@ const I18N = {
     'st.matches': 'meciuri', 'st.goals': 'goluri văzute', 'st.pens': 'penalty-uri transformate',
     'st.yellow': 'cartonașe galbene', 'st.red': 'cartonașe roșii', 'st.cards': 'Cartonașe galbene / roșii',
     'st.perMatch': 'pe meci',
-    'st.second': 'al doilea galben',
+    'st.redSplit': '{second} · {straight}',
+    'st.nSecond.one': '{n} cartonaș galben secund', 'st.nSecond.other': '{n} cartonașe galbene secunde', 'st.nSecond.many': '{n} de cartonașe galbene secunde',
+    'st.nStraight.one': '{n} cartonaș roșu direct', 'st.nStraight.other': '{n} cartonașe roșii directe', 'st.nStraight.many': '{n} de cartonașe roșii directe',
     'st.goalsShort': 'Include {goals} din {matches} fără o listă completă a golurilor',
     'st.nGoals.one': '{n} gol', 'st.nGoals.other': '{n} goluri', 'st.nGoals.many': '{n} de goluri',
     'st.nMatches.one': '{n} meci', 'st.nMatches.other': '{n} meciuri', 'st.nMatches.many': '{n} de meciuri',
@@ -2116,7 +2119,6 @@ const I18N = {
     'sx.title': 'Statistici', 'sx.possession': 'Posesie', 'sx.shots': 'Șuturi', 'sx.onTarget': 'Șuturi pe poartă',
     'sx.fouls': 'Faulturi', 'sx.corners': 'Cornere', 'sx.offsides': 'Ofsaiduri', 'sx.source': 'Sursa',
     'nt.title': 'Notă factuală', 'nt.unverified': 'Scrisă de un asistent din memorie, încă neverificată',
-    'ev.what': 'Ce a fost', 'ev.why': 'De ce a contat',
     'pf.title': 'Notițele și datele mele', 'pf.note': 'Notițele mele', 'pf.ticket': 'Bilet', 'pf.seat': 'Loc', 'pf.block': 'Bloc',
     'pf.withWho': 'Cu cine am fost',
     'pf.hint': 'Se salvează automat, doar pe acest dispozitiv.',
@@ -8277,7 +8279,7 @@ function renderAttStats(d){
     let v = (n / den).toFixed(2); if(LANG === 'ro') v = v.replace('.', ',');
     return v + ' ' + t('st.perMatch');
   };
-  const tile = (n, label, sub) => `<div class="astat"><b>${attNum(n)}</b><span>${esc(label)}</span>${sub ? `<i>${esc(sub)}</i>` : ''}</div>`;
+  const tile = (n, label, sub) => `<div class="astat"><b>${attNum(n)}</b><span>${esc(label)}</span>${[].concat(sub || []).filter(Boolean).map(x => `<i>${esc(x)}</i>`).join('')}</div>`;
   const top = o => {
     const k = Object.keys(o); if(!k.length) return null;
     const mx = Math.max(...k.map(x => o[x]));
@@ -8296,7 +8298,7 @@ function renderAttStats(d){
     `${tile(S.pens, t('st.pens'))}${tile(Object.keys(S.stad).length, t('st.stadiums'))}</div>` +
     (S.goalsShortN ? `<p class="anote" id="aGoalsNote">${esc(t('st.goalsShort', {goals: tn('st.nGoals', S.goalsShort, {n: attNum(S.goalsShort)}), matches: tn('st.nMatches', S.goalsShortN, {n: attNum(S.goalsShortN)})}))}</p>` : '') +
     sec('st.cards', partial(S.cardsOk, S.n) +
-      `<div class="agrid">${tile(S.yellow, t('st.yellow'), avg(S.yellow, S.cardsOk))}${tile(S.red, t('st.red'), avg(S.red, S.cardsOk))}${tile(S.second, t('st.second'), avg(S.second, S.cardsOk))}</div>`) +
+      `<div class="agrid">${tile(S.yellow, t('st.yellow'), avg(S.yellow, S.cardsOk))}${tile(S.red + S.second, t('st.red'), [t('st.redSplit', {second: tn('st.nSecond', S.second, {n: attNum(S.second)}), straight: tn('st.nStraight', S.red, {n: attNum(S.red)})}), avg(S.red + S.second, S.cardsOk)])}</div>`) +
     sec('st.record', `<p class="anote" id="aRecCount">${esc(t('st.recordCounted', {n: S.rec.n, total: S.n}))}</p>` +
       (S.rec.n ? `<div class="awdl" id="aRecord"><div class="astat"><b>${attNum(S.rec.w)}</b><span>${esc(t('st.w'))}</span></div>` +
         `<div class="astat"><b>${attNum(S.rec.d)}</b><span>${esc(t('st.d'))}</span></div>` +
@@ -9078,10 +9080,10 @@ function openASheet(kind, id){
   }else{
     const e = ATT.data.events.find(x => x.id === id); if(!e) return;
     head = `<h3>${esc(attL(e.title) || t('att.na'))}</h3><div class="meta"><span class="tag">${esc(t('att.event'))}</span></div>`;
-    const sec = (k, v) => v ? `<h4>${esc(t(k))}</h4>${attUnverified()}<div class="afact">${esc(v)}</div>` : '';
+    const note = attL(e.note);
     body = row('att.date', attDate(e.date)) + row('att.place', attL(e.place)) +
       (typeof e.atStadium === 'boolean' ? row('att.atStadium', t(e.atStadium ? 'att.yes' : 'att.no')) : '') +
-      sec('ev.what', attL(e.what)) + sec('ev.why', attL(e.why)) + attPersonal(e.id, e.atStadium === true) + attMediaPane();
+      (note ? `<h4>${esc(t('nt.title'))}</h4>${attUnverified()}<div class="afact">${esc(note)}</div>` : '') + attPersonal(e.id, e.atStadium === true) + attMediaPane();
   }
   closeBSheet(); closeCSheet(); closeFilter();
   document.getElementById('asheetHead').innerHTML = head;
