@@ -1709,7 +1709,7 @@
   {
    "id": 558876,
    "utcDate": "2026-10-11T10:15:00Z",
-   "status": "FINISHED",
+   "status": "TIMED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1727,14 +1727,14 @@
     "tla": "WII",
     "crest": "https://crests.football-data.org/672.png"
    },
-   "homeGoals": 3,
-   "awayGoals": 1,
-   "winner": "HOME_TEAM"
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
   },
   {
    "id": 558874,
    "utcDate": "2026-10-11T12:30:00Z",
-   "status": "FINISHED",
+   "status": "TIMED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1752,14 +1752,14 @@
     "tla": "CAM",
     "crest": "https://crests.football-data.org/1909.png"
    },
-   "homeGoals": 0,
-   "awayGoals": 1,
-   "winner": "AWAY_TEAM"
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
   },
   {
    "id": 558875,
    "utcDate": "2026-10-11T12:30:00Z",
-   "status": "FINISHED",
+   "status": "TIMED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1777,14 +1777,14 @@
     "tla": "ADO",
     "crest": "https://crests.football-data.org/680.png"
    },
-   "homeGoals": 2,
-   "awayGoals": 2,
-   "winner": "DRAW"
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
   },
   {
    "id": 558873,
    "utcDate": "2026-10-11T14:45:00Z",
-   "status": "FINISHED",
+   "status": "TIMED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1802,9 +1802,9 @@
     "tla": "GRO",
     "crest": "https://crests.football-data.org/677.png"
    },
-   "homeGoals": 1,
-   "awayGoals": 5,
-   "winner": "AWAY_TEAM"
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
   },
   {
    "id": 558872,
