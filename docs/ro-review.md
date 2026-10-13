@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1286 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1290 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -36,7 +36,13 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `st.red` | red cards | cartonașe roșii |
 | `st.cards` | Yellow / red cards | Cartonașe galbene / roșii |
 | `st.perMatch` | per match | pe meci |
-| `st.second` | second yellows | al doilea galben |
+| `st.redSplit` | {second} · {straight} | {second} · {straight} |
+| `st.nSecond.one` | {n} second yellow | {n} cartonaș galben secund |
+| `st.nSecond.other` | {n} second yellows | {n} cartonașe galbene secunde |
+| `st.nSecond.many` | {n} second yellows | {n} de cartonașe galbene secunde |
+| `st.nStraight.one` | {n} straight red | {n} cartonaș roșu direct |
+| `st.nStraight.other` | {n} straight reds | {n} cartonașe roșii directe |
+| `st.nStraight.many` | {n} straight reds | {n} de cartonașe roșii directe |
 | `st.goalsShort` | Includes {goals} from {matches} without a full goals list | Include {goals} din {matches} fără o listă completă a golurilor |
 | `st.nGoals.one` | {n} goal | {n} gol |
 | `st.nGoals.other` | {n} goals | {n} goluri |
@@ -86,8 +92,6 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `sx.source` | Source | Sursa |
 | `nt.title` | Factual note | Notă factuală |
 | `nt.unverified` | Written by an assistant from memory, not yet verified | Scrisă de un asistent din memorie, încă neverificată |
-| `ev.what` | What it was | Ce a fost |
-| `ev.why` | Why it mattered | De ce a contat |
 | `pf.title` | My notes and details | Notițele și datele mele |
 | `pf.note` | My notes | Notițele mele |
 | `pf.ticket` | Ticket | Bilet |

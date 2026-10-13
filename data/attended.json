@@ -6843,13 +6843,9 @@
     "ro": "Allianz Arena, München",
     "en": "Allianz Arena, Munich"
    },
-   "what": {
-    "ro": "Prezentarea lotului pentru sezonul 2022/23, urmată de un antrenament deschis condus de Julian Nagelsmann.",
-    "en": "The squad presentation for the 2022/23 season, followed by an open training session led by Julian Nagelsmann."
-   },
-   "why": {
-    "ro": "Primul contact al fanilor, pe stadion, cu noile transferuri Sadio Mané, Ryan Gravenberch și Noussair Mazraoui. Arena a fost iluminată în culorile curcubeului, iar pe esplanadă a avut loc un meet and greet cu o legendă a clubului.",
-    "en": "The fans' first sight, in the stadium, of new signings Sadio Mané, Ryan Gravenberch and Noussair Mazraoui. The arena was lit in rainbow colours, and a meet and greet with a club legend was held on the esplanade."
+   "note": {
+    "ro": "Prezentarea lotului pentru sezonul 2022/23, urmată de un antrenament deschis condus de Julian Nagelsmann.\n\nPrimul contact al fanilor, pe stadion, cu noile transferuri Sadio Mané, Ryan Gravenberch și Noussair Mazraoui. Arena a fost iluminată în culorile curcubeului, iar pe esplanadă a avut loc un meet and greet cu o legendă a clubului.",
+    "en": "The squad presentation for the 2022/23 season, followed by an open training session led by Julian Nagelsmann.\n\nThe fans' first sight, in the stadium, of new signings Sadio Mané, Ryan Gravenberch and Noussair Mazraoui. The arena was lit in rainbow colours, and a meet and greet with a club legend was held on the esplanade."
    },
    "atStadium": true
   },
@@ -6864,13 +6860,9 @@
     "ro": "Fan Zone Schlossplatz, Stuttgart",
     "en": "Fan Zone Schlossplatz, Stuttgart"
    },
-   "what": {
-    "ro": "România – Ucraina 3-0, primul meci al grupei E de la EURO 2024, jucat la München și urmărit pe ecranul mare din Fan Zone-ul oficial UEFA din Schlossplatz. Zona de fani din centrul Stuttgartului, cu intrare liberă, primea până la 30.000 de oameni și transmitea toate cele 51 de meciuri ale turneului.",
-    "en": "Romania – Ukraine 3-0, the opening match of Group E at EURO 2024, played in Munich and watched on the big screen at UEFA's official Fan Zone on Schlossplatz. The fan zone in central Stuttgart had free entry, held up to 30,000 people and showed all 51 matches of the tournament."
-   },
-   "why": {
-    "ro": "Prima victorie a României la un Campionat European după 24 de ani și abia a doua din 17 meciuri jucate la turneele finale europene, după 3-2 cu Anglia la EURO 2000. Au marcat căpitanul Nicolae Stanciu (România) în minutul 29, Răzvan Marin (România) în 53 și Denis Drăguș (România) în 57 — cel mai clar succes al României la un turneu final. Potrivit Opta, era prima dată din 1980 când o echipă câștiga un meci de EURO cu o posesie atât de mică, 29%.",
-    "en": "Romania's first win at a European Championship in 24 years, and only their second in 17 matches at European finals, after the 3-2 against England at EURO 2000. Captain Nicolae Stanciu (Romania) scored on 29 minutes, Răzvan Marin (Romania) on 53 and Denis Drăguș (Romania) on 57 — Romania's most emphatic win at a major finals. According to Opta, it was the first time since 1980 that a team had won a EURO match with possession as low as 29%."
+   "note": {
+    "ro": "România – Ucraina 3-0, primul meci al grupei E de la EURO 2024, jucat la München și urmărit pe ecranul mare din Fan Zone-ul oficial UEFA din Schlossplatz. Zona de fani din centrul Stuttgartului, cu intrare liberă, primea până la 30.000 de oameni și transmitea toate cele 51 de meciuri ale turneului.\n\nPrima victorie a României la un Campionat European după 24 de ani și abia a doua din 17 meciuri jucate la turneele finale europene, după 3-2 cu Anglia la EURO 2000. Au marcat căpitanul Nicolae Stanciu (România) în minutul 29, Răzvan Marin (România) în 53 și Denis Drăguș (România) în 57 — cel mai clar succes al României la un turneu final. Potrivit Opta, era prima dată din 1980 când o echipă câștiga un meci de EURO cu o posesie atât de mică, 29%.",
+    "en": "Romania – Ukraine 3-0, the opening match of Group E at EURO 2024, played in Munich and watched on the big screen at UEFA's official Fan Zone on Schlossplatz. The fan zone in central Stuttgart had free entry, held up to 30,000 people and showed all 51 matches of the tournament.\n\nRomania's first win at a European Championship in 24 years, and only their second in 17 matches at European finals, after the 3-2 against England at EURO 2000. Captain Nicolae Stanciu (Romania) scored on 29 minutes, Răzvan Marin (Romania) on 53 and Denis Drăguș (Romania) on 57 — Romania's most emphatic win at a major finals. According to Opta, it was the first time since 1980 that a team had won a EURO match with possession as low as 29%."
    },
    "atStadium": false
   },
@@ -6885,13 +6877,9 @@
     "ro": "Fan Zone Schlossplatz, Stuttgart",
     "en": "Fan Zone Schlossplatz, Stuttgart"
    },
-   "what": {
-    "ro": "Belgia – România 2-0, etapa a doua din grupa E de la EURO 2024, jucată la Köln și urmărită tot pe ecranul mare din Fan Zone Schlossplatz, la cinci zile după meciul cu Ucraina.",
-    "en": "Belgium – Romania 2-0, the second round of Group E at EURO 2024, played in Cologne and watched again on the big screen at Fan Zone Schlossplatz, five days after the Ukraine match."
-   },
-   "why": {
-    "ro": "Youri Tielemans (Belgia) a deschis scorul în minutul 2, după o pasă a lui Romelu Lukaku (Belgia), iar Kevin De Bruyne (Belgia) a stabilit scorul final; în minutul 59 un gol al lui Lukaku a fost anulat pentru ofsaid. După acest meci, toate cele patru echipe din grupa E aveau câte trei puncte.",
-    "en": "Youri Tielemans (Belgium) scored inside two minutes from a Romelu Lukaku (Belgium) pass and Kevin De Bruyne (Belgium) added the second; on 59 minutes a Lukaku goal was ruled out for offside. After the match all four teams in Group E were level on three points."
+   "note": {
+    "ro": "Belgia – România 2-0, etapa a doua din grupa E de la EURO 2024, jucată la Köln și urmărită tot pe ecranul mare din Fan Zone Schlossplatz, la cinci zile după meciul cu Ucraina.\n\nYouri Tielemans (Belgia) a deschis scorul în minutul 2, după o pasă a lui Romelu Lukaku (Belgia), iar Kevin De Bruyne (Belgia) a stabilit scorul final; în minutul 59 un gol al lui Lukaku a fost anulat pentru ofsaid. După acest meci, toate cele patru echipe din grupa E aveau câte trei puncte.",
+    "en": "Belgium – Romania 2-0, the second round of Group E at EURO 2024, played in Cologne and watched again on the big screen at Fan Zone Schlossplatz, five days after the Ukraine match.\n\nYouri Tielemans (Belgium) scored inside two minutes from a Romelu Lukaku (Belgium) pass and Kevin De Bruyne (Belgium) added the second; on 59 minutes a Lukaku goal was ruled out for offside. After the match all four teams in Group E were level on three points."
    },
    "atStadium": false
   }
