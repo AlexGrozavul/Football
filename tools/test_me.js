@@ -387,7 +387,7 @@ function alarmAt(ev, al){
   await page.click('nav button[data-pane=me]'); await page.click('#meTabTix');
   let exp = await download(page, () => page.click('#meExport'));
   const file = JSON.parse(exp.text);
-  check('Export: one JSON file with a format and a version number', file.format === 'football-planner-me' && file.version === 2 && /\.json$/.test(exp.name), exp.name);
+  check('Export: one JSON file with a format and a version number', file.format === 'football-planner-me' && file.version === 3 && /\.json$/.test(exp.name), exp.name);
   check('Export: it holds the memberships, tickets and favorites', file.memberships.length === 2 && file.tickets.length === 2 &&
     JSON.stringify(file.favorites) === '["el-final-2027"]', JSON.stringify({m: file.memberships.length, t: file.tickets.length, f: file.favorites}));
   check('The backup banner goes after an export', await page.$eval('#meBackup', e => e.hidden), '');
@@ -427,7 +427,7 @@ function alarmAt(ev, al){
   const broken = [
     ['not JSON', '{"format": "football-planner-me", '],
     ['another app\'s file (a saved-routes export)', JSON.stringify({format: 'football-planner-saved-routes', version: 1, routes: []})],
-    ['a newer version', JSON.stringify(Object.assign({}, good, {version: 3}))],
+    ['a newer version', JSON.stringify(Object.assign({}, good, {version: 4}))],
     ['a ticket with no status', JSON.stringify(Object.assign({}, good, {tickets: [Object.assign({}, good.tickets[0], {status: undefined})]}))],
     ['a card number in a membership note', JSON.stringify(Object.assign({}, good, {memberships: [Object.assign({}, good.memberships[0], {notes: 'pay 4111111111111111'})]}))],
     ['the same id twice', JSON.stringify(Object.assign({}, good, {tickets: [good.tickets[0], good.tickets[0]]}))],
@@ -1091,13 +1091,13 @@ function alarmAt(ev, al){
   check('An event\'s sheet takes photos too, kept under the event\'s id and separate from the match\'s', items5.filter(i => i.entryId === ev0.id).length === 1 && items5.filter(i => i.entryId === IMPKEY).length === 2, JSON.stringify(items5.map(i => i.entryId)));
   await closeSheet5();
 
-  // ---- The Me export at version 2
+  // ---- The Me export (version 3 since the imported events; version 2 files still import)
   await sub5('#meTabTix', '#meBody');
   check('The backup banner is up before the export (the attended data changed)', !(await p5.$eval('#meBackup', e => e.hidden)), '');
   const exp5 = await download(p5, () => p5.click('#meExport'));
   const f5 = JSON.parse(exp5.text);
-  check('Export: version 2 with the personal fields, the supporter choices and the imported matches',
-    f5.version === 2 && f5.format === 'football-planner-me' && JSON.stringify(f5.personal) === await lsGet(SUPK) && f5.importedMatches.length === 1 && f5.importedMatches[0].id === IMPID &&
+  check('Export: version 3 with the personal fields, the supporter choices, the imported matches and the (empty) imported events',
+    f5.version === 3 && Array.isArray(f5.importedEvents) && !f5.importedEvents.length && f5.format === 'football-planner-me' && JSON.stringify(f5.personal) === await lsGet(SUPK) && f5.importedMatches.length === 1 && f5.importedMatches[0].id === IMPID &&
     picks.every(([m, sup]) => f5.personal[m.id].supported === sup) && f5.personal[IMPKEY].supported === 'home', Object.keys(f5).join());
   check('Export: says photos and videos are not included, and holds none (no media name, no blob)', /not in this file/.test(f5.notIncluded || '') && !/a\.png|clip\.mp4|ev\.png|blob:/.test(exp5.text) &&
     /Photos and videos are not included/.test(await p5.textContent('#meMsg')) && /Photos and videos are not in the file/.test(await p5.textContent('#meBody')), f5.notIncluded);
@@ -1121,7 +1121,7 @@ function alarmAt(ev, al){
     ['a supporter choice that is not home, neutral or away', Object.assign({}, f5, {personal: {[picks[0][0].id]: {supported: 'both'}}}), /"supported" must be/],
     ['an unknown personal field', Object.assign({}, f5, {personal: {[picks[0][0].id]: {password: 'x'}}}), /unknown field "password"/],
     ['no personal object in a version 2 file', Object.assign({}, f5, {personal: undefined}), /no personal object/],
-    ['a newer version', Object.assign({}, f5, {version: 3}), /newer version/],
+    ['a newer version', Object.assign({}, f5, {version: 4}), /newer version/],
     ['the old app\'s own export shape (no format, personal + imported)', {personal: {'2021-06-23-por-fra': {supported: 'home'}}, imported: []}, /not a Me-tab export/],
   ];
   const refBad = [];
@@ -1491,6 +1491,344 @@ function alarmAt(ev, al){
   check('Nothing typed into the form, the JSON box or the sheet appears in any request (URL, body or headers)', !leaked.length, leaked.map(r => r.method + ' ' + r.url.slice(0, 80)).join(', '));
   check('No request other than GET reached the site during the form tests', !nonGet.length, nonGet.join(', '));
   await ctxF.close();
+  }
+
+  {
+  // ---- 2026-10-13: the Add an event form (and Edit this event), the imported events, and the version 3 backup file. Expected values are worked
+  //      out here from the form's own input and from data/attended.json, never typed in as results. Own context, so the earlier counts are not disturbed.
+  const IMPK = 'football-attended-imported', PERK = 'football-attended-personal';
+  const reqStart = requests.length;
+  const ctxE = await newCtx();
+  await ctxE.addInitScript(() => {
+    window.__r = []; window.__w = []; window.__i = [];
+    const g = Storage.prototype.getItem, w = Storage.prototype.setItem, r = Storage.prototype.removeItem;
+    Storage.prototype.getItem = function(k){ window.__r.push(k); return g.call(this, k); };
+    Storage.prototype.setItem = function(k, v){ window.__w.push(k); return w.call(this, k, v); };
+    Storage.prototype.removeItem = function(k){ window.__w.push(k); return r.call(this, k); };
+    const o = IDBFactory.prototype.open;
+    IDBFactory.prototype.open = function(n){ window.__i.push(n); return o.apply(this, arguments); };
+  });
+  const pE = await ctxE.newPage();
+  pE.on('pageerror', e => errors.push(e.message));
+  pE.on('dialog', d => d.accept());
+  await pE.goto(BASE);
+  await pE.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await pE.click('nav button[data-pane=me]');
+  await pE.waitForSelector('#meStats .astat');
+  const toEvents = async () => { await pE.click('#meTabEvents'); await pE.waitForSelector('#aEvForm', {state: 'attached'}); };
+  await toEvents();
+  const evKeys = [...new Set(ATTF.events.flatMap(e => Object.keys(e)))].sort();         // the fields the events hold
+  const lsE = k => pE.evaluate(x => localStorage.getItem(x), k);
+  const storedAll = async () => { const v = await lsE(IMPK); return v ? JSON.parse(v) : {matches: [], events: undefined}; };
+  const storedEv = async () => (await storedAll()).events || [];
+  const openAddE = async () => { if(!(await pE.$eval('#aEvAdd', d => d.open))) await pE.click('#aEvAdd summary'); };
+  const msgE = async () => (await pE.textContent('#aEvMsg')).trim();
+  const ferrE = async name => (await pE.textContent(`#aEvForm [data-ferr="${name}"]`)).trim();
+  const submitE = async () => { await pE.click('#aEvBtn'); return msgE(); };
+  const fillE = async v => { for(const [k, val] of Object.entries(v)) { if(k === 'atStadium') await pE.selectOption('#aEvForm [name=atStadium]', val); else await pE.fill(`#aEvForm [name=${k}]`, val); } };
+  const resetE = async () => { await openAddE(); await pE.click('#aEvCancel'); await openAddE(); };
+  const strip = r => { const c = JSON.parse(JSON.stringify(r)); delete c.id; return c; };
+  const canon = o => JSON.stringify(o, (k, v) => v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort()) : v);
+  const partE = s => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const idRe = /^[A-Za-z0-9._-]{1,80}$/;
+  const overE = () => pE.evaluate(() => { const bad = [];
+    document.querySelectorAll('#pane-me *, #asheet *').forEach(x => { const r = x.getBoundingClientRect(); if(r.width > 0 && (r.right > innerWidth + 1 || r.left < -1)) bad.push(x.tagName + '.' + x.className); });
+    return {bad: bad.slice(0, 4), doc: document.documentElement.scrollWidth}; });
+  const openEvCard = async key => { await pE.click('#meTabEvents'); await pE.waitForSelector('#meEvents .acard'); await pE.click(`#meEvents .acard[data-id="${key}"]`); await pE.waitForSelector('#asheet:not([hidden])'); await pE.waitForTimeout(350); };
+  const sheetE = () => pE.evaluate(() => ({text: document.getElementById('asheetBody').innerText, head: document.getElementById('asheetHead').innerText,
+    pf: [...document.querySelectorAll('#asheetBody [data-pf]')].map(x => x.dataset.pf), btn: [...document.querySelectorAll('#asheetBody .ab')].map(x => x.id)}));
+  const closeE = async () => { if(!(await pE.$eval('#asheet', x => x.hidden))) await pE.click('#asheetClose'); };
+  const idbE = () => pE.evaluate(() => new Promise((res, rej) => {
+    const rq = indexedDB.open('football-attended-media');
+    rq.onsuccess = () => { const db = rq.result, g = db.transaction('items').objectStore('items').getAll(); g.onsuccess = () => { db.close(); res(g.result.map(x => x.entryId)); }; };
+    rq.onerror = () => rej(rq.error);
+  }));
+  const stor = {r: [], w: [], i: []};          // the page's storage log, collected before every reload (a reload starts a new log)
+  const harvestE = async () => { const x = await pE.evaluate(() => ({r: window.__r, w: window.__w, i: window.__i})); stor.r.push(...x.r); stor.w.push(...x.w); stor.i.push(...x.i); };
+  const T = 'Fan walk ' + TAG, D = '2026-05-09';
+  const F = {title: T, date: D, place: 'Marktplatz ' + TAG, atStadium: 'yes', note: 'Line one ' + TAG + '\nLine two'};
+  const expectRec = () => ({date: F.date, title: F.title, place: F.place, note: F.note, atStadium: true});
+
+  check('The Events sub-tab has a collapsed "Add an event" above the list, and the file\'s events are listed as before', (await pE.$eval('#aEvAdd', d => ({open: d.open, s: d.querySelector('summary').textContent}))).s === 'Add an event' &&
+    !(await pE.$eval('#aEvAdd', d => d.open)) && JSON.stringify(await pE.$$eval('#meEvents .acard', cs => cs.map(c => c.dataset.id))) === JSON.stringify(ATTF.events.map(e => e.id)), '');
+  await openAddE();
+  const labels = await pE.$$eval('#aEvForm label, #aEvForm .flab', ls => ls.map(l => l.firstChild.textContent.trim()));
+  check('The form has the fields in the order the event sheet shows them: name, date, place, at the stadium, factual note; then the optional JSON box last', JSON.stringify(labels) === JSON.stringify(['Name', 'Date', 'Place', 'I was at the stadium', 'Factual note', 'JSON (optional)']), JSON.stringify(labels));
+  check('...and every form field is named after a real field of the events (title, date, place, atStadium, note)',
+    JSON.stringify(await pE.$$eval('#aEvForm input, #aEvForm select, #aEvForm textarea:not(#aEvBox)', xs => xs.map(x => x.name))) === JSON.stringify(['title', 'date', 'place', 'atStadium', 'note']) &&
+    ['title', 'date', 'place', 'atStadium', 'note'].every(k => evKeys.includes(k)), evKeys.join());
+  check('"I was at the stadium" is a Yes/No choice that starts on No', await pE.$eval('#aEvForm [name=atStadium]', x => x.value + '|' + [...x.options].map(o => o.textContent).join('/')) === 'no|No/Yes', '');
+
+  // Each missing required field is refused, with a reason next to it, nothing stored and the rest of what was typed kept.
+  const reqBad = [];
+  for(const [what, [field, kept]] of Object.entries({'the name': ['title', 'place'], 'the date': ['date', 'title']})){
+    await resetE(); await fillE(F); await pE.fill(`#aEvForm [name=${field}]`, '');
+    const m = await submitE();
+    if(!/^Not saved/.test(m) || !(await ferrE(field)) || (await storedEv()).length || await pE.inputValue(`#aEvForm [name=${kept}]`) !== F[kept]) reqBad.push(`${what}: ${m} / ${await ferrE(field)}`);
+  }
+  check('Each missing required field (name, date) is refused: "Not saved", the reason beside the field, nothing stored, everything else typed kept', !reqBad.length, reqBad.join(' | '));
+
+  // A full save: every field stored under the real names.
+  await resetE(); await fillE(F);
+  const mAdd = await submitE();
+  const st1 = await storedAll();
+  check('A saved event is stored in football-attended-imported under "events" with every field under its real name, "matches" untouched, version still 1',
+    st1.version === 1 && Array.isArray(st1.matches) && st1.events.length === 1 && canon(strip(st1.events[0])) === canon(expectRec()) && Object.keys(st1.events[0]).every(k => evKeys.includes(k)) && /Added 1 imported event/.test(mAdd), JSON.stringify(st1).slice(0, 220) + ' / ' + mAdd);
+  const id1 = st1.events[0].id;
+  check('The generated id is date and name, ASCII, allowed characters only, at most 80', idRe.test(id1) && id1 === `${D}-${partE(T)}`.slice(0, 76) && /^[\x20-\x7e]+$/.test(id1), id1);
+  check('The new event is listed after the file\'s, marked "Imported on this device", and its card is addressed impev:<id>',
+    await pE.$$eval('#meEvents .acard', cs => cs.map(c => c.dataset.id)).then(a => a.length === ATTF.events.length + 1 && a[a.length - 1] === 'impev:' + id1) &&
+    /Imported on this device/.test(await pE.$eval('#meEvents .acard:last-of-type', c => c.textContent)), '');
+  await openEvCard('impev:' + id1);
+  const sh1 = await sheetE();
+  const afactE = await pE.$eval('#asheetBody .afact', x => x.innerText);
+  const conds1 = {place: sh1.text.includes(F.place), stad: /At the stadium\s*yes/i.test(sh1.text), note: sh1.text.includes('Line one ' + TAG) && /Factual note/i.test(sh1.text), noLabel: !/Written by an assistant/.test(sh1.text),
+    tag: /Imported on this device/i.test(sh1.head), btn: JSON.stringify(sh1.btn.filter(x => x.startsWith('aEv'))) === '["aEvEdit","aEvRemove"]', br: afactE === F.note};
+  check('Its sheet shows the date, place, "At the stadium yes", one Factual note with the line break kept, no "written by an assistant" label, the tag, and Edit and Remove', Object.values(conds1).every(Boolean), JSON.stringify(conds1) + JSON.stringify(afactE));
+  check('The stadium Yes shows ticket, seat and block beside the notes and who I went with', JSON.stringify(sh1.pf) === '["note","ticket","seat","block","withWho"]', JSON.stringify(sh1.pf));
+  const fileEv = ATTF.events.find(e => e.atStadium === true), noEv = ATTF.events.find(e => e.atStadium === false);
+  await closeE(); await openEvCard(noEv.id);
+  const shNo = await sheetE();
+  check('A file event keeps its "written by an assistant" label and has no Edit or Remove; with the stadium No only notes and who I went with show',
+    /Written by an assistant from memory/.test(shNo.text) && !shNo.btn.some(x => x.startsWith('aEv')) && JSON.stringify(shNo.pf) === '["note","withWho"]', JSON.stringify(shNo));
+  await closeE();
+
+  // Personal fields and a photo, keyed by the address.
+  await openEvCard('impev:' + id1);
+  await pE.fill('#asheetBody [data-pf=note]', 'Mine ' + TAG);
+  await pE.fill('#asheetBody [data-pf=ticket]', 'T-' + TAG);
+  await pE.setInputFiles('#aMfile', [{name: 'ev.png', mimeType: 'image/png', buffer: PNG}]);
+  await pE.waitForFunction(() => document.querySelectorAll('#aMgrid .amcell').length === 1, null, {timeout: 10000}).catch(() => {});
+  const per1 = JSON.parse(await lsE(PERK) || '{}');
+  check('Its personal fields and photo are keyed impev:<id>, in the personal record and the media database', per1['impev:' + id1]?.note === 'Mine ' + TAG && per1['impev:' + id1]?.ticket === 'T-' + TAG &&
+    !(id1 in per1) && (await idbE()).filter(k => k === 'impev:' + id1).length === 1, JSON.stringify(Object.keys(per1)) + JSON.stringify(await idbE()));
+  await closeE();
+
+  // Ids stay unique across all the id spaces, in both orders.
+  await resetE(); await fillE(F);
+  const mDup = await submitE(); const stDup = (await storedEv());
+  check('The same date and name again gets -2 (then -3): ids never repeat', stDup.length === 2 && stDup[1].id === id1 + '-2', stDup.map(e => e.id).join());
+  await resetE(); await fillE(F); await submitE();
+  check('...and -3', (await storedEv()).map(e => e.id).join() === [id1, id1 + '-2', id1 + '-3'].join(), (await storedEv()).map(e => e.id).join());
+  const longT = 'Long name ' + 'abc '.repeat(40) + TAG;
+  await resetE(); await fillE({title: longT, date: D, atStadium: 'no'}); await submitE();
+  const longEv = (await storedEv()).pop();
+  check('A very long name still gives a valid id of at most 80 characters, and an event typed with the stadium No stores atStadium false', idRe.test(longEv.id) && longEv.id.length <= 80 && longEv.atStadium === false, longEv.id);
+  // an imported match and an imported event with the same date and name
+  const MD = '2026-06-01';
+  await pE.click('#meTabMatches'); await pE.waitForSelector('#aForm', {state: 'attached'});
+  if(!(await pE.$eval('#aAdd', d => d.open))) await pE.click('#aAdd summary');
+  for(const [k, val] of Object.entries({date: MD, home: 'Alpha ' + TAG, away: 'Beta', sh: '1', sa: '0'})) await pE.fill(`#aForm [name=${k}]`, val);
+  await pE.click('#aImpBtn');
+  const matchId = (await storedAll()).matches[0].id;
+  await toEvents(); await openAddE(); await fillE({title: 'Alpha ' + TAG + ' Beta', date: MD}); await submitE();
+  const evSame = (await storedEv()).pop();
+  check('An imported event and an imported match with the same date and name never clash: the event\'s id differs, and a match added after an event gets a new id too',
+    matchId === `${MD}-${partE('Alpha ' + TAG)}-beta` && evSame.id === matchId + '-2', matchId + ' / ' + evSame.id);
+  await toEvents(); await openAddE(); await fillE({title: 'Gamma ' + TAG + ' Delta', date: MD}); await submitE();
+  const ev2 = (await storedEv()).pop();
+  await pE.click('#meTabMatches'); await pE.waitForSelector('#aForm', {state: 'attached'});
+  if(!(await pE.$eval('#aAdd', d => d.open))) await pE.click('#aAdd summary');
+  await pE.fill('#aForm [name=date]', MD); await pE.fill('#aForm [name=home]', 'Gamma ' + TAG); await pE.fill('#aForm [name=away]', 'Delta'); await pE.fill('#aForm [name=sh]', '2'); await pE.fill('#aForm [name=sa]', '2');
+  await pE.click('#aImpBtn');
+  const m2 = (await storedAll()).matches.pop();
+  const allIds = [...ATTF.events.map(e => e.id), ...ATTF.matches.map(m => m.id), ...(await storedAll()).matches.map(m => m.id), ...(await storedEv()).map(e => e.id)];
+  check('...in the other order too (an event first, then a match with the same date and name: the match gets -2), and no id is used twice anywhere (file events, file matches, imported matches, imported events)',
+    ev2.id === `${MD}-${partE('Gamma ' + TAG)}-delta` && m2.id === ev2.id + '-2' && new Set(allIds).size === allIds.length, m2.id + ' / ' + ev2.id);
+  await toEvents();
+
+  // The JSON box.
+  const base = (await storedEv()).length;
+  await resetE();
+  const rA = await (async () => { await pE.fill('#aEvBox', JSON.stringify([{id: 'json-a-' + TAG, date: '2026-07-01', title: 'JSON A ' + TAG}, {id: 'json-b-' + TAG, date: '2026-07-02', title: {ro: 'Ro ' + TAG, en: 'En ' + TAG}, place: 'P', note: 'N', atStadium: true}])); return submitE(); })();
+  check('Form empty + a list in the JSON box: accepted as a plain import (two events, the object form of title kept)', (await storedEv()).length === base + 2 && /Added 2 imported event/.test(rA) &&
+    canon((await storedEv()).find(e => e.id === 'json-b-' + TAG).title) === canon({ro: 'Ro ' + TAG, en: 'En ' + TAG}), rA);
+  await openAddE(); await fillE({title: 'Form ' + TAG, date: '2026-08-01'}); await pE.fill('#aEvBox', JSON.stringify([{id: 'json-c-' + TAG, date: '2026-08-02', title: 'C'}]));
+  const rB = await submitE();
+  check('Form filled + a list in the JSON box: refused (one object needed), nothing stored, the form keeps what was typed', /one event object/.test(rB) && (await storedEv()).length === base + 2 && await pE.inputValue('#aEvForm [name=title]') === 'Form ' + TAG, rB);
+  await pE.fill('#aEvBox', JSON.stringify({place: 'From JSON ' + TAG, note: 'Json note', id: 'json-d-' + TAG}));
+  const rC = await submitE();
+  const evC = (await storedEv()).find(e => e.id === 'json-d-' + TAG);
+  check('Form filled + one object that only adds keys the form left empty (place, note, id): accepted, merged key by key, atStadium false', !!evC && canon(strip(evC)) === canon({date: '2026-08-01', title: 'Form ' + TAG, place: 'From JSON ' + TAG, note: 'Json note', atStadium: false}) && /Added 1/.test(rC), rC + JSON.stringify(evC));
+  await resetE(); await fillE({title: 'Form2 ' + TAG, date: '2026-08-03'}); await pE.fill('#aEvBox', JSON.stringify({title: 'Other', id: 'json-e-' + TAG}));
+  const rD = await submitE(); const n3 = (await storedEv()).length;
+  check('A JSON object repeating a field the form filled is refused with its key named, nothing stored', /both the form and the JSON fill "title"/.test(rD) && n3 === base + 3, rD);
+  await pE.fill('#aEvBox', JSON.stringify({atStadium: true}));
+  await pE.selectOption('#aEvForm [name=atStadium]', 'yes');
+  const rD2 = await submitE();
+  check('...the Yes of the stadium choice counts as filled: a JSON atStadium is then refused by key', /both the form and the JSON fill "atStadium"/.test(rD2) && (await storedEv()).length === n3, rD2);
+  await pE.selectOption('#aEvForm [name=atStadium]', 'no');
+  await pE.fill('#aEvBox', JSON.stringify({atStadium: true, foo: 1, id: 'json-f-' + TAG}));
+  const rE = await submitE();
+  check('The merged result goes through the same validator: an unknown field is refused, every reason shown, nothing stored', /Not added, nothing was stored/.test(rE) && /unknown field "foo"/.test(rE) && (await storedEv()).length === n3, rE);
+  await pE.fill('#aEvBox', JSON.stringify({id: 'json-g-' + TAG, atStadium: 'yes'}));
+  const rE2 = await submitE();
+  check('...a field of the wrong type is refused', /"atStadium" must be true or false/.test(rE2) && (await storedEv()).length === n3, rE2);
+  await resetE();
+  const clashes = [['an id the file\'s events use', ATTF.events[0].id], ['an id the file\'s matches use', ATTF.matches[0].id], ['an imported match', matchId], ['an imported event', id1]];
+  const clBad = [];
+  for(const [what, cid] of clashes){
+    await pE.fill('#aEvBox', JSON.stringify({id: cid, date: '2026-09-01', title: 'Clash'})); const m = await submitE();
+    if(!/Not added/.test(m) || !new RegExp(cid.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).test(m) || (await storedEv()).length !== n3) clBad.push(`${what}: ${m.slice(0, 100)}`);
+  }
+  check('A JSON id already used in any of the four spaces is refused, naming the id', !clBad.length, clBad.join(' | '));
+  await pE.fill('#aEvBox', JSON.stringify([{id: 'x1', date: '2026-09-01', title: 'a'}, {id: 'x1', date: '2026-09-01', title: 'b'}]));
+  check('...and so is the same id twice in one paste', /appears twice/.test(await submitE()) && (await storedEv()).length === n3, '');
+  await pE.fill('#aEvBox', JSON.stringify({id: 'bad-date', date: '2026-02-31', title: 'x'}));
+  check('...an impossible date in the JSON is refused by the validator', /"date" must be a real day/.test(await submitE()) && (await storedEv()).length === n3, '');
+  await pE.fill('#aEvBox', JSON.stringify(Array.from({length: 51}, (_, i) => ({id: `lim-${i}`, date: '2026-09-01', title: 'L' + i}))));
+  const rL = await submitE();
+  check('Limits: 51 events in one paste are refused (50 at a time), and 200,001 characters are refused', /at most 50 events/.test(rL) && (await (async () => { await pE.fill('#aEvBox', 'x'.repeat(200001)); return /Too much text/.test(await submitE()); })()) && (await storedEv()).length === n3, rL);
+  // up to 100 in all
+  const room = 100 - n3;
+  for(let from = 0; from < room; from += 50){
+    await pE.fill('#aEvBox', JSON.stringify(Array.from({length: Math.min(50, room - from)}, (_, i) => ({id: `fill-${from + i}`, date: '2026-09-01', title: 'F' + (from + i)}))));
+    await submitE(); await openAddE();
+  }
+  check('Exactly 100 imported events can be held', (await storedEv()).length === 100, String((await storedEv()).length));
+  await openAddE(); await pE.fill('#aEvBox', JSON.stringify({id: 'over-1', date: '2026-09-01', title: 'Over'}));
+  const rO = await submitE();
+  check('The 101st is refused ("at most 100 imported events") and the matches have their own count (50 per paste, 300 in all) apart from it', /at most 100 imported events/.test(rO) && (await storedEv()).length === 100, rO);
+  // back to a handful: keep the first five stored events
+  const all100 = await storedEv(), keep = all100.slice(0, 4).concat(all100.filter(e => e.id === 'json-b-' + TAG));
+  await pE.evaluate(([k, ev]) => { const v = JSON.parse(localStorage.getItem(k)); v.events = ev; localStorage.setItem(k, JSON.stringify(v)); }, [IMPK, keep]);
+  await harvestE(); await pE.reload(); await pE.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await pE.click('nav button[data-pane=me]'); await toEvents();
+
+  // Edit this event.
+  const target = keep[1];
+  await openEvCard('impev:' + target.id);
+  await pE.click('#aEvEdit');
+  await pE.waitForSelector('#aEvForm[data-edit]');
+  const pre = await pE.evaluate(() => ({title: document.querySelector('#aEvForm [name=title]').value, date: document.querySelector('#aEvForm [name=date]').value, place: document.querySelector('#aEvForm [name=place]').value,
+    st: document.querySelector('#aEvForm [name=atStadium]').value, note: document.querySelector('#aEvForm [name=note]').value, box: !!document.getElementById('aEvBox'), edit: document.getElementById('aEvForm').dataset.edit}));
+  check('Edit this event opens the same form pre-filled from the stored record (same id), and the JSON box is hidden', pre.edit === target.id && pre.title === target.title && pre.date === target.date && pre.place === target.place &&
+    pre.st === (target.atStadium ? 'yes' : 'no') && pre.note === target.note && !pre.box, JSON.stringify(pre));
+  await pE.fill('#aEvForm [name=title]', 'Renamed ' + TAG); await pE.selectOption('#aEvForm [name=atStadium]', target.atStadium ? 'no' : 'yes');
+  await pE.click('#aEvBtn');
+  await pE.waitForSelector('#asheet:not([hidden])'); await pE.waitForTimeout(300);
+  const after = (await storedEv()).find(e => e.id === target.id);
+  check('Saving an edit keeps the id and replaces only the covered fields; the sheet reopens on the same event', !!after && canon(after) === canon(Object.assign({}, target, {title: 'Renamed ' + TAG, atStadium: !target.atStadium})) &&
+    (await storedEv()).length === 5 && /Renamed/.test((await sheetE()).head), JSON.stringify(after));
+  const sh2 = await sheetE();
+  check('...the stadium toggle shows or hides ticket, seat and block (now ' + (target.atStadium ? 'No' : 'Yes') + ')', JSON.stringify(sh2.pf) === (target.atStadium ? '["note","withWho"]' : '["note","ticket","seat","block","withWho"]'), JSON.stringify(sh2.pf));
+  await closeE();
+  // personal fields and the media record of the first event stayed attached (id1 is the first stored event)
+  await openEvCard('impev:' + id1); await pE.click('#aEvEdit'); await pE.waitForSelector('#aEvForm[data-edit]');
+  await pE.fill('#aEvForm [name=place]', 'Edited place ' + TAG); await pE.click('#aEvBtn');
+  await pE.waitForSelector('#asheet:not([hidden])'); await pE.waitForTimeout(300);
+  const per2 = JSON.parse(await lsE(PERK) || '{}');
+  check('Editing keeps the personal fields and the media record attached to the same address', per2['impev:' + id1]?.note === 'Mine ' + TAG && per2['impev:' + id1]?.ticket === 'T-' + TAG &&
+    (await idbE()).filter(k => k === 'impev:' + id1).length === 1 && /Edited place/.test((await sheetE()).text), JSON.stringify(per2['impev:' + id1]));
+  await closeE();
+  // a stored {ro,en} title is kept when the name is not touched
+  const objEv = (await storedEv()).find(e => e.title && typeof e.title === 'object');
+  if(objEv){
+    await openEvCard('impev:' + objEv.id); await pE.click('#aEvEdit'); await pE.waitForSelector('#aEvForm[data-edit]');
+    await pE.fill('#aEvForm [name=place]', 'Moved ' + TAG); await pE.click('#aEvBtn'); await pE.waitForSelector('#asheet:not([hidden])'); await pE.waitForTimeout(300);
+    const o2 = (await storedEv()).find(e => e.id === objEv.id);
+    check('A stored {ro, en} name that was not changed in the form stays an {ro, en} pair', canon(o2.title) === canon(objEv.title) && o2.place === 'Moved ' + TAG, JSON.stringify(o2));
+    await closeE();
+  }else check('A stored {ro, en} name stays a pair when untouched', false, 'no object-title event kept');
+  await openEvCard('impev:' + target.id); await pE.click('#aEvEdit'); await pE.waitForSelector('#aEvForm[data-edit]');
+  await pE.fill('#aEvForm [name=title]', ''); await pE.click('#aEvBtn');
+  check('An edit that empties the name is refused and nothing changes', /^Not saved/.test(await msgE()) && (await storedEv()).find(e => e.id === target.id).title === 'Renamed ' + TAG, '');
+  await pE.click('#aEvCancel'); await pE.waitForSelector('#aEvAdd summary');
+
+  // Remove this imported event.
+  await openEvCard('impev:' + id1);
+  const nBefore = (await storedEv()).length, mBefore = (await storedAll()).matches.length;
+  await pE.click('#aEvRemove');
+  await pE.waitForFunction(() => document.getElementById('asheet').hidden, null, {timeout: 5000}).catch(() => {});
+  await pE.waitForTimeout(300);
+  const per3 = JSON.parse(await lsE(PERK) || '{}');
+  check('Removing an imported event (asked first) deletes it, its personal fields and its media; the other events and the matches are untouched', (await storedEv()).length === nBefore - 1 &&
+    !(await storedEv()).some(e => e.id === id1) && !(('impev:' + id1) in per3) && !(await idbE()).includes('impev:' + id1) && (await storedAll()).matches.length === mBefore, '');
+
+  // The backup file.
+  await pE.click('#meTabTix'); await pE.waitForSelector('#meExport');
+  const dlE = async click => { const [d] = await Promise.all([pE.waitForEvent('download'), click()]); return {name: d.suggestedFilename(), text: fs.readFileSync(await d.path(), 'utf8')}; };
+  const expE = await dlE(() => pE.click('#meExport'));
+  const fE = JSON.parse(expE.text);
+  const evNow = await storedEv();
+  check('Export: version 3 with importedEvents exactly as stored, and the Back up text and the message say events are in it, photos and videos are not', fE.version === 3 && canon(fE.importedEvents) === canon(evNow) && /not in this file/.test(fE.notIncluded || '') &&
+    /imported events/.test(await pE.textContent('#meMsg')) && /imported events/.test(await pE.textContent('#meBody')), (await pE.textContent('#meMsg')).slice(-140));
+  const importE = async (obj, name) => {
+    const fp = path.join(require('os').tmpdir(), `me-${name}-${TAG}.json`);
+    fs.writeFileSync(fp, typeof obj === 'string' ? obj : JSON.stringify(obj));
+    await pE.setInputFiles('#meFile', []); await pE.setInputFiles('#meFile', fp);
+    await pE.waitForFunction(() => document.getElementById('meConfirm') || /Not imported/.test(document.getElementById('meMsg')?.textContent || ''), null, {timeout: 8000}).catch(() => {});
+    const r = {confirm: (await pE.$('#meConfirm')) ? await pE.textContent('#meConfirm') : '', msg: (await pE.$('#meMsg')) ? await pE.textContent('#meMsg') : ''};
+    fs.unlinkSync(fp); return r;
+  };
+  const devE = async () => JSON.stringify([await lsE(PERK), await lsE(IMPK)]);
+  const devBeforeE = await devE();
+  const refE = [
+    ['a version 3 file with no importedEvents list', Object.assign({}, fE, {importedEvents: undefined}), /no importedEvents list/],
+    ['an invalid imported event', Object.assign({}, fE, {importedEvents: [Object.assign({}, evNow[0], {date: '2026-13-40'})]}), /"date"/],
+    ['an imported event with an unknown field', Object.assign({}, fE, {importedEvents: [Object.assign({}, evNow[0], {secret: 'x'})]}), /unknown field "secret"/],
+    ['an imported event whose id a file event uses', Object.assign({}, fE, {importedEvents: [Object.assign({}, evNow[0], {id: ATTF.events[0].id})]}), /already used by a match or an event in data\/attended\.json/],
+    ['an imported event whose id a file match uses', Object.assign({}, fE, {importedEvents: [Object.assign({}, evNow[0], {id: ATTF.matches[0].id})]}), /already used by a match or an event in data\/attended\.json/],
+    ['the same event id twice', Object.assign({}, fE, {importedEvents: [evNow[0], evNow[0]]}), /the same id twice/],
+    ['101 imported events', Object.assign({}, fE, {importedEvents: Array.from({length: 101}, (_, i) => ({id: `e${i}`, date: '2026-01-01', title: 'E'}))}), /more than 100 imported events/],
+    ['a card number in a personal field of an imported event', Object.assign({}, fE, {personal: Object.assign({}, fE.personal, {['impev:' + evNow[0].id]: {ticket: '4111 1111 1111 1111'}})}), /payment card number/],
+    ['a newer version', Object.assign({}, fE, {version: 4}), /newer version/],
+  ];
+  const refBadE = [];
+  for(const [what, obj, re] of refE){
+    const r = await importE(obj, 'bade');
+    if(!/Not imported/.test(r.msg) || !re.test(r.msg) || !/Nothing on this device was changed/.test(r.msg) || r.confirm || await devE() !== devBeforeE) refBadE.push(`${what}: ${r.msg.slice(0, 160)}`);
+  }
+  check('Import refuses (device unchanged): a missing importedEvents list, an invalid event, an unknown field, an id clash with the file\'s events or matches, a repeated id, more than 100, a card number, a newer version', !refBadE.length, refBadE.join(' | '));
+  // round trip: remove one event, import the export, it is back
+  await pE.evaluate(([k, ev]) => { const v = JSON.parse(localStorage.getItem(k)); v.events = ev; localStorage.setItem(k, JSON.stringify(v)); }, [IMPK, evNow.slice(0, 1)]);
+  const impE = await importE(fE, 'good');
+  check('A version 3 file first says what it holds, including its imported events', /plus \d+ attended-match records? \(notes and supporter choices\) and \d+ imported match(es)?, as well as 4 imported events/.test(impE.confirm), impE.confirm);
+  await pE.click('[data-act=import-yes]');
+  const msgImp = await pE.textContent('#meMsg');
+  check('Round trip: the imported events are exactly as exported and the message says they were replaced', canon(await storedEv()) === canon(evNow) && /imported events on this device were replaced/.test(msgImp), msgImp.slice(-170));
+  const devKeep = await devE();
+  const v2file = Object.assign({}, fE, {version: 2}); delete v2file.importedEvents;
+  await pE.click('#meTabTix'); await pE.waitForSelector('#meFile', {state: 'attached'});
+  const r2 = await importE(v2file, 'v2'); await pE.click('[data-act=import-yes]');
+  const m2msg = await pE.textContent('#meMsg');
+  check('A version 2 file still imports and leaves the imported events alone (and says so)', !/Not imported/.test(r2.msg) && canon(await storedEv()) === canon(evNow) && /imported events on this device were left as they are/.test(m2msg), m2msg.slice(-170));
+  const r1 = await importE({format: 'football-planner-me', version: 1, memberships: [], tickets: [], favorites: [], settings: {renewWindowDays: 30}}, 'v1e'); await pE.click('[data-act=import-yes]');
+  check('A version 1 file leaves the imported events alone too (and says so)', !/Not imported/.test(r1.msg) && canon(await storedEv()) === canon(evNow) && /left as they are/.test(await pE.textContent('#meMsg')), (await pE.textContent('#meMsg')).slice(-120));
+  // a stored record from before this feature (no "events" at all) reads as no events and keeps its matches
+  await pE.evaluate(([k, m]) => localStorage.setItem(k, JSON.stringify({version: 1, matches: m})), [IMPK, (await storedAll()).matches]);
+  await harvestE(); await pE.reload(); await pE.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await pE.click('nav button[data-pane=me]'); await toEvents();
+  check('A stored record without "events" reads as no events, its matches are untouched, and nothing is rewritten by reading', (await pE.$$('#meEvents .acard')).length === ATTF.events.length && (await storedAll()).matches.length === mBefore && (await storedAll()).events === undefined, '');
+  await pE.evaluate(k => localStorage.setItem(k, JSON.stringify({version: 1, matches: [], events: [{id: 'ok-1', date: '2026-01-01', title: 'Fine'}, {id: 'bad id', date: '2026-01-01', title: 'x'}, 7]})), IMPK);
+  await harvestE(); await pE.reload(); await pE.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await pE.click('nav button[data-pane=me]'); await toEvents();
+  check('A stored event that no longer validates is left out and counted on the tab; the good one stays', (await pE.$$('#meEvents .acard')).length === ATTF.events.length + 1 && /2 stored imported event\(s\) could not be read/.test(await pE.textContent('#meEvents')), '');
+
+  // Romanian, at 390 px.
+  await pE.evaluate(() => setLang('ro'));
+  await toEvents(); await openAddE();
+  const roTxt = await pE.textContent('#meEvents');
+  const roLab = await pE.$$eval('#aEvForm label, #aEvForm .flab', ls => ls.map(l => l.firstChild.textContent.trim()));
+  check('Romanian: the form and its labels are in Romanian and nothing overflows at 390 px', /Adaugă un eveniment/.test(roTxt) && JSON.stringify(roLab) === JSON.stringify(['Nume', 'Data', 'Locul', 'Am fost la stadion', 'Notă factuală', 'JSON (opțional)']) &&
+    JSON.stringify(await pE.$$eval('#aEvForm [name=atStadium] option', o => o.map(x => x.textContent))) === '["Nu","Da"]' && !(await overE()).bad.length && (await overE()).doc <= 390, JSON.stringify(roLab) + JSON.stringify(await overE()));
+  await pE.click('#aEvCancel');
+  await pE.click('#meEvents .acard:last-of-type'); await pE.waitForSelector('#asheet:not([hidden])'); await pE.waitForTimeout(350);
+  const roSh = await sheetE();
+  check('Romanian: the imported event\'s sheet has its buttons in Romanian and fits', /Modifică acest eveniment/.test(await pE.textContent('#aEvEdit')) && /Șterge acest eveniment importat/.test(await pE.textContent('#aEvRemove')) && !(await overE()).bad.length, JSON.stringify(await overE()));
+  await closeE(); await pE.evaluate(() => setLang('en'));
+  await toEvents(); await openAddE();
+  await pE.fill('#aEvForm [name=title]', 'Keep me typed'); 
+  noSideways('Events tab with the form open: no sideways scroll at 390 px', await sideways(pE));
+
+  // Storage, and what leaves the device.
+  await harvestE(); const srE = stor;
+  check('No mf_ key was read or written and no mf_ database opened by any of it', ![...srE.r, ...srE.w, ...srE.i].some(k => String(k).startsWith('mf_')) && srE.w.includes(IMPK), [...new Set(srE.w)].join());
+  const typedE = [TAG, 'Line one', 'Keep me typed', 'Mine ', 'From JSON'];
+  const leakedE = requests.slice(reqStart).filter(r => typedE.some(s => (r.url + r.body + r.headers).includes(s) || (r.url + r.body + r.headers).includes(encodeURIComponent(s))));
+  check('Nothing typed into the event form, the JSON box or the sheet appears in any request (URL, body or headers)', !leakedE.length, leakedE.map(r => r.method + ' ' + r.url.slice(0, 80)).join(', '));
+  check('data/attended.json was only ever fetched (GET), never written, and no request other than GET reached the site', !nonGet.length && !requests.slice(reqStart).some(r => r.method !== 'GET' && r.method !== 'HEAD' && r.url.startsWith(BASE)), nonGet.join(', '));
+  await ctxE.close();
   }
 
   {

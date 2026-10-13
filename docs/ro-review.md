@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1290 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1323 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -162,6 +162,27 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `imf.needObject` | Not added: with the form filled in, the JSON must be one match object, not a list. | Neadăugat: cu formularul completat, JSON-ul trebuie să fie un singur obiect de meci, nu o listă. |
 | `imf.clash` | both the form and the JSON fill "{k}" | și formularul, și JSON-ul completează „{k}” |
 | `imf.gone` | Not saved: this imported match is no longer on this device. | Nesalvat: acest meci importat nu mai este pe acest dispozitiv. |
+| `ive.title` | Add an event | Adaugă un eveniment |
+| `ive.name` | Name | Nume |
+| `ive.atStadium` | I was at the stadium | Am fost la stadion |
+| `ive.yes` | Yes | Da |
+| `ive.no` | No | Nu |
+| `ive.hint` | Paste one event as JSON, or a list of them. Required: id (letters, digits, . _ -), date (YYYY-MM-DD) and title (text). Optional: place, note and atStadium (true or false). Kept on this device only; data/attended.json is never changed. | Lipește un eveniment ca JSON sau o listă de evenimente. Obligatorii: id (litere, cifre, . _ -), date (AAAA-LL-ZZ) și title (text). Opționale: place, note și atStadium (true sau false). Se păstrează doar pe acest dispozitiv; data/attended.json nu se schimbă niciodată. |
+| `ive.jsonHint` | Leave the form empty to paste one or several events as before. With the form filled in, paste at most one event object: it can only add what the form left empty. | Lasă formularul gol ca să lipești unul sau mai multe evenimente ca până acum. Cu formularul completat, lipește cel mult un obiect de eveniment: poate adăuga doar ce a lăsat formularul gol. |
+| `ive.e.title` | Enter a name. | Introdu un nume. |
+| `ive.tooMany` | Not added: at most {max} events at a time. | Neadăugat: cel mult {max} evenimente odată. |
+| `ive.tooManyTotal` | Not added: this device can hold at most {max} imported events. | Neadăugat: acest dispozitiv poate păstra cel mult {max} evenimente importate. |
+| `ive.clashFile` | the id "{id}" is already used by a match or an event in data/attended.json | id-ul „{id}” este deja folosit de un meci sau un eveniment din data/attended.json |
+| `ive.clashDevice` | the id "{id}" is already used by an imported match or event on this device | id-ul „{id}” este deja folosit de un meci sau un eveniment importat pe acest dispozitiv |
+| `ive.added` | Added {n} imported event(s). They are marked "Imported on this device". | S-au adăugat {n} eveniment(e) importat(e). Sunt marcate „Importat pe acest dispozitiv”. |
+| `ive.skipped` | {n} stored imported event(s) could not be read and were left out. | {n} eveniment(e) importat(e) păstrat(e) nu au putut fi citite și au fost lăsate deoparte. |
+| `ive.edit` | Edit this event | Modifică acest eveniment |
+| `ive.editHint` | Only the fields below change. Your notes, ticket details and your photos and videos stay as they are. | Se schimbă doar câmpurile de mai jos. Notițele tale, datele biletului și pozele și filmările rămân așa cum sunt. |
+| `ive.remove` | Remove this imported event | Șterge acest eveniment importat |
+| `ive.removeAsk` | Remove this imported event from this device? Its notes and its photos and videos here are deleted too. | Ștergi acest eveniment importat de pe acest dispozitiv? Se șterg și notițele lui și pozele și filmările de aici. |
+| `ive.gone` | Not saved: this imported event is no longer on this device. | Nesalvat: acest eveniment importat nu mai este pe acest dispozitiv. |
+| `ive.needObject` | Not added: with the form filled in, the JSON must be one event object, not a list. | Neadăugat: cu formularul completat, JSON-ul trebuie să fie un singur obiect de eveniment, nu o listă. |
+| `ive.blocked` | This browser blocks storage, so imported events last only until the page is closed. | Acest browser blochează stocarea, deci evenimentele importate rămân doar până la închiderea paginii. |
 | `md.title` | Photos and videos | Poze și filmări |
 | `md.add` | Add from gallery | Adaugă din galerie |
 | `md.none` | No photos or videos yet. | Nicio poză sau filmare încă. |
@@ -994,6 +1015,9 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `me.n.attRec.other` | {n} attended-match records | {n} înregistrări de meciuri la care ai fost |
 | `me.n.imp.one` | {n} imported match | {n} meci importat |
 | `me.n.imp.other` | {n} imported matches | {n} meciuri importate |
+| `me.n.impEv.one` | {n} imported event | {n} eveniment importat |
+| `me.n.impEv.other` | {n} imported events | {n} evenimente importate |
+| `me.attDeviceEv` | {base}, as well as {evs} | {base}, precum și {evs} |
 | `me.n.membership.one` | {n} membership | {n} calitate de membru |
 | `me.n.membership.other` | {n} memberships | {n} calități de membru |
 | `me.n.ticket.one` | {n} ticket | {n} bilet |
@@ -1008,14 +1032,17 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `me.i.noList` | it has no {k} list | nu are lista {k} |
 | `me.i.noPersonal` | it has no personal object | nu are obiectul personal |
 | `me.i.noImported` | it has no importedMatches list | nu are lista importedMatches |
+| `me.i.noImportedEv` | it has no importedEvents list | nu are lista importedEvents |
 | `me.i.membership` | membership {n} | calitatea de membru {n} |
 | `me.i.ticket` | ticket {n} | biletul {n} |
 | `me.i.noId` | no id, or the same id twice | fără id sau același id de două ori |
 | `me.i.favNotId` | favorite {n} is not an entry id | favoritul {n} nu este un id de intrare |
-| `me.i.cantCheck` | the imported matches could not be checked against data/attended.json, which did not load | meciurile importate nu au putut fi verificate cu data/attended.json, care nu s-a încărcat |
+| `me.i.cantCheck` | the imported matches and events could not be checked against data/attended.json, which did not load | meciurile și evenimentele importate nu au putut fi verificate cu data/attended.json, care nu s-a încărcat |
 | `me.i.impMatch` | imported match {n} | meciul importat {n} |
+| `me.i.impEvent` | imported event {n} | evenimentul importat {n} |
 | `me.i.sameId` | the same id twice | același id de două ori |
 | `me.i.tooManyImp` | more than {max} imported matches | mai mult de {max} meciuri importate |
+| `me.i.tooManyImpEv` | more than {max} imported events | mai mult de {max} evenimente importate |
 | `me.i.tooManyRec` | more than 1000 attended-match records | mai mult de 1000 de înregistrări de meciuri |
 | `me.i.notesFor` | notes and choices for "{k}" | notițe și alegeri pentru „{k}” |
 | `me.i.notRecord` | not a record | nu este o înregistrare |
@@ -1027,8 +1054,10 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `me.i.notJson` | Not imported: {name} is not a JSON file. Nothing on this device was changed. | Neimportat: {name} nu este un fișier JSON. Nimic de pe acest dispozitiv nu a fost schimbat. |
 | `me.i.refused` | Not imported: {name} - {list}. Nothing on this device was changed. | Neimportat: {name} - {list}. Nimic de pe acest dispozitiv nu a fost schimbat. |
 | `me.i.andMore` | ; and {n} more | ; și încă {n} |
-| `me.c.v1` | This file is from the first version of the export: it holds no attended-match records or imported matches, so those on this device were left as they are. | Acest fișier este din prima versiune a exportului: nu conține înregistrări de meciuri la care ai fost sau meciuri importate, deci cele de pe acest dispozitiv au rămas neschimbate. |
+| `me.c.v1` | This file is from the first version of the export: it holds no attended-match records, imported matches or imported events, so those on this device were left as they are. | Acest fișier este din prima versiune a exportului: nu conține înregistrări de meciuri la care ai fost, meciuri importate sau evenimente importate, deci cele de pe acest dispozitiv au rămas neschimbate. |
+| `me.c.evKept` | This file holds no imported events, so the imported events on this device were left as they are. | Acest fișier nu conține evenimente importate, deci evenimentele importate de pe acest dispozitiv au rămas neschimbate. |
 | `me.c.replacedAtt` | The attended-match records and imported matches on this device were replaced by the file's {att}. | Înregistrările de meciuri la care ai fost și meciurile importate de pe acest dispozitiv au fost înlocuite cu cele din fișier: {att}. |
+| `me.c.replacedAtt3` | The attended-match records, imported matches and imported events on this device were replaced by the file's {att}. | Înregistrările de meciuri la care ai fost, meciurile importate și evenimentele importate de pe acest dispozitiv au fost înlocuite cu cele din fișier: {att}. |
 | `me.c.imported` | Imported {counts} from {name}, replacing {before} that were on this device. | S-au importat {counts} din {name}, înlocuind {before} care erau pe acest dispozitiv. |
 | `me.c.dropped.one` | {n} favorite named an entry no longer in the bucket list and was left out ({list}). | {n} favorit numea o intrare care nu mai este în lista de dorințe și a fost lăsat deoparte ({list}). |
 | `me.c.dropped.other` | {n} favorites named an entry no longer in the bucket list and were left out ({list}). | {n} favorite numeau o intrare care nu mai este în lista de dorințe și au fost lăsate deoparte ({list}). |
@@ -1050,7 +1079,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `me.alertsH` | Calendar alerts | Alerte în calendar |
 | `me.alertsNote` | A web page cannot alert you while it is closed. "Add to phone calendar" downloads a file with one event and an alarm; open it and your calendar app adds it. The dates are used exactly as you typed them. A renewal, or a match with no kick-off, is a whole-day event and its alert goes off at 09:00. | O pagină web nu te poate alerta cât timp este închisă. „Adaugă în calendarul telefonului” descarcă un fișier cu un eveniment și o alarmă; deschide-l și aplicația de calendar îl adaugă. Datele sunt folosite exact cum le-ai scris. O reînnoire sau un meci fără oră de start este un eveniment pe toată ziua, iar alerta sună la 09:00. |
 | `me.backupH` | Back up | Copie de siguranță |
-| `me.backupNote1` | One file with your memberships, tickets held and bucket list favorites, and (since version 2) the notes, supporter choices and imported matches of My attended matches. | Un fișier cu calitățile tale de membru, biletele deținute și favoritele din lista de dorințe și (din versiunea 2) notițele, alegerile de suporter și meciurile importate din Meciurile mele. |
+| `me.backupNote1` | One file with your memberships, tickets held and bucket list favorites, and (since version 2) the notes, supporter choices and imported matches of My attended matches, and (since version 3) the imported events of My attended events. | Un fișier cu calitățile tale de membru, biletele deținute și favoritele din lista de dorințe și (din versiunea 2) notițele, alegerile de suporter și meciurile importate din Meciurile mele și (din versiunea 3) evenimentele importate din Evenimentele mele. |
 | `me.backupNoMedia` | Photos and videos are not in the file | Pozele și filmările nu sunt în fișier |
 | `me.backupNote2` | : they stay in this browser only. | : rămân doar în acest browser. |
 | `me.backupReplace` | Importing a file replaces what is on this device with what the file holds. | Importul unui fișier înlocuiește ce este pe acest dispozitiv cu ce conține fișierul. |
@@ -1096,6 +1125,10 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `v.mustObject` | {w} must be an object | {w} trebuie să fie un obiect |
 | `v.formation` | "formation" must look like "4-3-3" | „formation” trebuie să arate ca „4-3-3” |
 | `v.matchN` | match {n} | meciul {n} |
+| `v.eventN` | event {n} | evenimentul {n} |
+| `v.notObjectEv` | it is not an event object | nu este un obiect de eveniment |
+| `v.theEvent` | the event | evenimentul |
+| `v.evTitle` | "title" must be text (or {"ro": …, "en": …}) and not empty | „title” trebuie să fie text (sau {"ro": …, "en": …}) și nu gol |
 | `gen.fileFailDash` | Could not load {file} — {err} | Nu s-a putut încărca {file} — {err} |
 | `map.default` | default | implicit |
 | `search.ph` | Find a club | Caută un club |

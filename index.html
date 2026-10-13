@@ -952,6 +952,21 @@ const I18N = {
     'imf.needObject': 'Not added: with the form filled in, the JSON must be one match object, not a list.',
     'imf.clash': 'both the form and the JSON fill "{k}"',
     'imf.gone': 'Not saved: this imported match is no longer on this device.',
+    'ive.title': 'Add an event', 'ive.name': 'Name', 'ive.atStadium': 'I was at the stadium', 'ive.yes': 'Yes', 'ive.no': 'No',
+    'ive.hint': 'Paste one event as JSON, or a list of them. Required: id (letters, digits, . _ -), date (YYYY-MM-DD) and title (text). Optional: place, note and atStadium (true or false). Kept on this device only; data/attended.json is never changed.',
+    'ive.jsonHint': 'Leave the form empty to paste one or several events as before. With the form filled in, paste at most one event object: it can only add what the form left empty.',
+    'ive.e.title': 'Enter a name.',
+    'ive.tooMany': 'Not added: at most {max} events at a time.',
+    'ive.tooManyTotal': 'Not added: this device can hold at most {max} imported events.',
+    'ive.clashFile': 'the id "{id}" is already used by a match or an event in data/attended.json',
+    'ive.clashDevice': 'the id "{id}" is already used by an imported match or event on this device',
+    'ive.added': 'Added {n} imported event(s). They are marked "Imported on this device".',
+    'ive.skipped': '{n} stored imported event(s) could not be read and were left out.',
+    'ive.edit': 'Edit this event', 'ive.editHint': 'Only the fields below change. Your notes, ticket details and your photos and videos stay as they are.',
+    'ive.remove': 'Remove this imported event', 'ive.removeAsk': 'Remove this imported event from this device? Its notes and its photos and videos here are deleted too.',
+    'ive.gone': 'Not saved: this imported event is no longer on this device.',
+    'ive.needObject': 'Not added: with the form filled in, the JSON must be one event object, not a list.',
+    'ive.blocked': 'This browser blocks storage, so imported events last only until the page is closed.',
     'md.title': 'Photos and videos', 'md.add': 'Add from gallery', 'md.none': 'No photos or videos yet.',
     'md.count': '{n} files · {mb} MB', 'md.quota': '{used} of {quota} used on this device',
     'md.hint': 'Files stay on this device only, inside the browser. They are not uploaded, not in the repo, and not in the Me tab export. Clearing the site data deletes them.',
@@ -1777,6 +1792,9 @@ const I18N = {
     "me.n.attRec.other": "{n} attended-match records",
     "me.n.imp.one": "{n} imported match",
     "me.n.imp.other": "{n} imported matches",
+    "me.n.impEv.one": "{n} imported event",
+    "me.n.impEv.other": "{n} imported events",
+    "me.attDeviceEv": "{base}, as well as {evs}",
     "me.n.membership.one": "{n} membership",
     "me.n.membership.other": "{n} memberships",
     "me.n.ticket.one": "{n} ticket",
@@ -1791,14 +1809,17 @@ const I18N = {
     "me.i.noList": "it has no {k} list",
     "me.i.noPersonal": "it has no personal object",
     "me.i.noImported": "it has no importedMatches list",
+    "me.i.noImportedEv": "it has no importedEvents list",
     "me.i.membership": "membership {n}",
     "me.i.ticket": "ticket {n}",
     "me.i.noId": "no id, or the same id twice",
     "me.i.favNotId": "favorite {n} is not an entry id",
-    "me.i.cantCheck": "the imported matches could not be checked against data/attended.json, which did not load",
+    "me.i.cantCheck": "the imported matches and events could not be checked against data/attended.json, which did not load",
     "me.i.impMatch": "imported match {n}",
+    "me.i.impEvent": "imported event {n}",
     "me.i.sameId": "the same id twice",
     "me.i.tooManyImp": "more than {max} imported matches",
+    "me.i.tooManyImpEv": "more than {max} imported events",
     "me.i.tooManyRec": "more than 1000 attended-match records",
     "me.i.notesFor": "notes and choices for \"{k}\"",
     "me.i.notRecord": "not a record",
@@ -1810,8 +1831,10 @@ const I18N = {
     "me.i.notJson": "Not imported: {name} is not a JSON file. Nothing on this device was changed.",
     "me.i.refused": "Not imported: {name} - {list}. Nothing on this device was changed.",
     "me.i.andMore": "; and {n} more",
-    "me.c.v1": "This file is from the first version of the export: it holds no attended-match records or imported matches, so those on this device were left as they are.",
+    "me.c.v1": "This file is from the first version of the export: it holds no attended-match records, imported matches or imported events, so those on this device were left as they are.",
+    "me.c.evKept": "This file holds no imported events, so the imported events on this device were left as they are.",
     "me.c.replacedAtt": "The attended-match records and imported matches on this device were replaced by the file's {att}.",
+    "me.c.replacedAtt3": "The attended-match records, imported matches and imported events on this device were replaced by the file's {att}.",
     "me.c.imported": "Imported {counts} from {name}, replacing {before} that were on this device.",
     "me.c.dropped.one": "{n} favorite named an entry no longer in the bucket list and was left out ({list}).",
     "me.c.dropped.other": "{n} favorites named an entry no longer in the bucket list and were left out ({list}).",
@@ -1833,7 +1856,7 @@ const I18N = {
     "me.alertsH": "Calendar alerts",
     "me.alertsNote": "A web page cannot alert you while it is closed. \"Add to phone calendar\" downloads a file with one event and an alarm; open it and your calendar app adds it. The dates are used exactly as you typed them. A renewal, or a match with no kick-off, is a whole-day event and its alert goes off at 09:00.",
     "me.backupH": "Back up",
-    "me.backupNote1": "One file with your memberships, tickets held and bucket list favorites, and (since version 2) the notes, supporter choices and imported matches of My attended matches.",
+    "me.backupNote1": "One file with your memberships, tickets held and bucket list favorites, and (since version 2) the notes, supporter choices and imported matches of My attended matches, and (since version 3) the imported events of My attended events.",
     "me.backupNoMedia": "Photos and videos are not in the file",
     "me.backupNote2": ": they stay in this browser only.",
     "me.backupReplace": "Importing a file replaces what is on this device with what the file holds.",
@@ -1879,6 +1902,10 @@ const I18N = {
     "v.mustObject": "{w} must be an object",
     "v.formation": "\"formation\" must look like \"4-3-3\"",
     "v.matchN": "match {n}",
+    "v.eventN": "event {n}",
+    "v.notObjectEv": "it is not an event object",
+    "v.theEvent": "the event",
+    "v.evTitle": "\"title\" must be text (or {\"ro\": …, \"en\": …}) and not empty",
     "gen.fileFailDash": "Could not load {file} — {err}",
     "map.default": "default",
     "search.ph": "Find a club",
@@ -2164,6 +2191,21 @@ const I18N = {
     'imf.needObject': 'Neadăugat: cu formularul completat, JSON-ul trebuie să fie un singur obiect de meci, nu o listă.',
     'imf.clash': 'și formularul, și JSON-ul completează „{k}”',
     'imf.gone': 'Nesalvat: acest meci importat nu mai este pe acest dispozitiv.',
+    'ive.title': 'Adaugă un eveniment', 'ive.name': 'Nume', 'ive.atStadium': 'Am fost la stadion', 'ive.yes': 'Da', 'ive.no': 'Nu',
+    'ive.hint': 'Lipește un eveniment ca JSON sau o listă de evenimente. Obligatorii: id (litere, cifre, . _ -), date (AAAA-LL-ZZ) și title (text). Opționale: place, note și atStadium (true sau false). Se păstrează doar pe acest dispozitiv; data/attended.json nu se schimbă niciodată.',
+    'ive.jsonHint': 'Lasă formularul gol ca să lipești unul sau mai multe evenimente ca până acum. Cu formularul completat, lipește cel mult un obiect de eveniment: poate adăuga doar ce a lăsat formularul gol.',
+    'ive.e.title': 'Introdu un nume.',
+    'ive.tooMany': 'Neadăugat: cel mult {max} evenimente odată.',
+    'ive.tooManyTotal': 'Neadăugat: acest dispozitiv poate păstra cel mult {max} evenimente importate.',
+    'ive.clashFile': 'id-ul „{id}” este deja folosit de un meci sau un eveniment din data/attended.json',
+    'ive.clashDevice': 'id-ul „{id}” este deja folosit de un meci sau un eveniment importat pe acest dispozitiv',
+    'ive.added': 'S-au adăugat {n} eveniment(e) importat(e). Sunt marcate „Importat pe acest dispozitiv”.',
+    'ive.skipped': '{n} eveniment(e) importat(e) păstrat(e) nu au putut fi citite și au fost lăsate deoparte.',
+    'ive.edit': 'Modifică acest eveniment', 'ive.editHint': 'Se schimbă doar câmpurile de mai jos. Notițele tale, datele biletului și pozele și filmările rămân așa cum sunt.',
+    'ive.remove': 'Șterge acest eveniment importat', 'ive.removeAsk': 'Ștergi acest eveniment importat de pe acest dispozitiv? Se șterg și notițele lui și pozele și filmările de aici.',
+    'ive.gone': 'Nesalvat: acest eveniment importat nu mai este pe acest dispozitiv.',
+    'ive.needObject': 'Neadăugat: cu formularul completat, JSON-ul trebuie să fie un singur obiect de eveniment, nu o listă.',
+    'ive.blocked': 'Acest browser blochează stocarea, deci evenimentele importate rămân doar până la închiderea paginii.',
     'md.title': 'Poze și filmări', 'md.add': 'Adaugă din galerie', 'md.none': 'Nicio poză sau filmare încă.',
     'md.count': '{n} fișiere · {mb} MB', 'md.quota': '{used} din {quota} folosiți pe acest dispozitiv',
     'md.hint': 'Fișierele rămân doar pe acest dispozitiv, în browser. Nu se încarcă nicăieri, nu sunt în repo și nu intră în exportul din tabul Eu. Ștergerea datelor site-ului le șterge.',
@@ -2990,6 +3032,9 @@ const I18N = {
     "me.n.attRec.other": "{n} înregistrări de meciuri la care ai fost",
     "me.n.imp.one": "{n} meci importat",
     "me.n.imp.other": "{n} meciuri importate",
+    "me.n.impEv.one": "{n} eveniment importat",
+    "me.n.impEv.other": "{n} evenimente importate",
+    "me.attDeviceEv": "{base}, precum și {evs}",
     "me.n.membership.one": "{n} calitate de membru",
     "me.n.membership.other": "{n} calități de membru",
     "me.n.ticket.one": "{n} bilet",
@@ -3004,14 +3049,17 @@ const I18N = {
     "me.i.noList": "nu are lista {k}",
     "me.i.noPersonal": "nu are obiectul personal",
     "me.i.noImported": "nu are lista importedMatches",
+    "me.i.noImportedEv": "nu are lista importedEvents",
     "me.i.membership": "calitatea de membru {n}",
     "me.i.ticket": "biletul {n}",
     "me.i.noId": "fără id sau același id de două ori",
     "me.i.favNotId": "favoritul {n} nu este un id de intrare",
-    "me.i.cantCheck": "meciurile importate nu au putut fi verificate cu data/attended.json, care nu s-a încărcat",
+    "me.i.cantCheck": "meciurile și evenimentele importate nu au putut fi verificate cu data/attended.json, care nu s-a încărcat",
     "me.i.impMatch": "meciul importat {n}",
+    "me.i.impEvent": "evenimentul importat {n}",
     "me.i.sameId": "același id de două ori",
     "me.i.tooManyImp": "mai mult de {max} meciuri importate",
+    "me.i.tooManyImpEv": "mai mult de {max} evenimente importate",
     "me.i.tooManyRec": "mai mult de 1000 de înregistrări de meciuri",
     "me.i.notesFor": "notițe și alegeri pentru „{k}”",
     "me.i.notRecord": "nu este o înregistrare",
@@ -3023,8 +3071,10 @@ const I18N = {
     "me.i.notJson": "Neimportat: {name} nu este un fișier JSON. Nimic de pe acest dispozitiv nu a fost schimbat.",
     "me.i.refused": "Neimportat: {name} - {list}. Nimic de pe acest dispozitiv nu a fost schimbat.",
     "me.i.andMore": "; și încă {n}",
-    "me.c.v1": "Acest fișier este din prima versiune a exportului: nu conține înregistrări de meciuri la care ai fost sau meciuri importate, deci cele de pe acest dispozitiv au rămas neschimbate.",
+    "me.c.v1": "Acest fișier este din prima versiune a exportului: nu conține înregistrări de meciuri la care ai fost, meciuri importate sau evenimente importate, deci cele de pe acest dispozitiv au rămas neschimbate.",
+    "me.c.evKept": "Acest fișier nu conține evenimente importate, deci evenimentele importate de pe acest dispozitiv au rămas neschimbate.",
     "me.c.replacedAtt": "Înregistrările de meciuri la care ai fost și meciurile importate de pe acest dispozitiv au fost înlocuite cu cele din fișier: {att}.",
+    "me.c.replacedAtt3": "Înregistrările de meciuri la care ai fost, meciurile importate și evenimentele importate de pe acest dispozitiv au fost înlocuite cu cele din fișier: {att}.",
     "me.c.imported": "S-au importat {counts} din {name}, înlocuind {before} care erau pe acest dispozitiv.",
     "me.c.dropped.one": "{n} favorit numea o intrare care nu mai este în lista de dorințe și a fost lăsat deoparte ({list}).",
     "me.c.dropped.other": "{n} favorite numeau o intrare care nu mai este în lista de dorințe și au fost lăsate deoparte ({list}).",
@@ -3046,7 +3096,7 @@ const I18N = {
     "me.alertsH": "Alerte în calendar",
     "me.alertsNote": "O pagină web nu te poate alerta cât timp este închisă. „Adaugă în calendarul telefonului” descarcă un fișier cu un eveniment și o alarmă; deschide-l și aplicația de calendar îl adaugă. Datele sunt folosite exact cum le-ai scris. O reînnoire sau un meci fără oră de start este un eveniment pe toată ziua, iar alerta sună la 09:00.",
     "me.backupH": "Copie de siguranță",
-    "me.backupNote1": "Un fișier cu calitățile tale de membru, biletele deținute și favoritele din lista de dorințe și (din versiunea 2) notițele, alegerile de suporter și meciurile importate din Meciurile mele.",
+    "me.backupNote1": "Un fișier cu calitățile tale de membru, biletele deținute și favoritele din lista de dorințe și (din versiunea 2) notițele, alegerile de suporter și meciurile importate din Meciurile mele și (din versiunea 3) evenimentele importate din Evenimentele mele.",
     "me.backupNoMedia": "Pozele și filmările nu sunt în fișier",
     "me.backupNote2": ": rămân doar în acest browser.",
     "me.backupReplace": "Importul unui fișier înlocuiește ce este pe acest dispozitiv cu ce conține fișierul.",
@@ -3092,6 +3142,10 @@ const I18N = {
     "v.mustObject": "{w} trebuie să fie un obiect",
     "v.formation": "„formation” trebuie să arate ca „4-3-3”",
     "v.matchN": "meciul {n}",
+    "v.eventN": "evenimentul {n}",
+    "v.notObjectEv": "nu este un obiect de eveniment",
+    "v.theEvent": "evenimentul",
+    "v.evTitle": "„title” trebuie să fie text (sau {\"ro\": …, \"en\": …}) și nu gol",
     "gen.fileFailDash": "Nu s-a putut încărca {file} — {err}",
     "map.default": "implicit",
     "search.ph": "Caută un club",
@@ -7487,7 +7541,7 @@ const ME_FORMAT = 'football-planner-me', ME_VERSION = 1;          // ME_VERSION 
 /* The export file. Version 2 (2026-10-09) adds the personal fields and supporter choices of the attended
    matches and events, and the matches imported by pasting JSON. Version 1 files still import and leave
    those alone. Photos and videos are never in the file. The old Meciuri app's export is not read. */
-const ME_FILE_VERSION = 2, ME_FILE_READS = [1, 2];
+const ME_FILE_VERSION = 3, ME_FILE_READS = [1, 2, 3];
 const TICKET_STATUS = ['requested', 'won', 'bought', 'transferred'];
 const FREQUENCIES = ['yearly', 'per season', 'half-yearly', 'quarterly', 'monthly', 'one-off', 'other'];
 const ME_DEFAULTS = {renewWindowDays: 30, renewalAlertDays: 14, matchAlertDays: 1};
@@ -7861,23 +7915,24 @@ function meExport(){
   const data = {format: ME_FORMAT, version: ME_FILE_VERSION, exportedAt: new Date().toISOString(),
     memberships: M.memberships, tickets: M.tickets, favorites: [...favs()],
     settings: {renewWindowDays: M.settings.renewWindowDays},
-    personal, importedMatches: IMP,
+    personal, importedMatches: IMP, importedEvents: IMP_EV,
     notIncluded: 'Photos and videos stay in this browser only; they are not in this file.'};   // file content: the same in every language
   const name = `football-planner-me-${todayISO()}.json`;
   meDownload(name, JSON.stringify(data, null, 1), 'application/json');
   meBackedUp();
   MEUI.msg = t('me.exported', {counts: counts(M.memberships.length, M.tickets.length, data.favorites.length), name,
-    att: attDeviceText(Object.keys(personal).length, IMP.length)});
+    att: attDeviceText(Object.keys(personal).length, IMP.length, IMP_EV.length)});
   MEUI.msgKind = 'ok';
   renderMe();
 }
-function attDeviceText(p, i){
-  return t('me.attDevice', {recs: tn('me.n.attRec', p), imps: tn('me.n.imp', i)});
+function attDeviceText(p, i, e){             // e: the imported events, given only for a version 3 file or for this device
+  const base = t('me.attDevice', {recs: tn('me.n.attRec', p), imps: tn('me.n.imp', i)});
+  return e == null ? base : t('me.attDeviceEv', {base, evs: tn('me.n.impEv', e)});
 }
 function counts(m, k, f){
   return t('me.counts', {m: tn('me.n.membership', m), t: tn('me.n.ticket', k), f: tn('me.n.favorite', f)});
 }
-function meCheckFile(data, fileIds){
+function meCheckFile(data, fileIds, fileEvIds){
   const errs = [];
   if(!data || typeof data !== 'object' || data.format !== ME_FORMAT) return {errs: [t('me.i.notExport')]};
   if(typeof data.version !== 'number') return {errs: [t('me.i.noVersion')]};
@@ -7888,6 +7943,7 @@ function meCheckFile(data, fileIds){
     if(!isObj(data.personal)) errs.push(t('me.i.noPersonal'));
     if(!Array.isArray(data.importedMatches)) errs.push(t('me.i.noImported'));
   }
+  if(data.version >= 3 && !Array.isArray(data.importedEvents)) errs.push(t('me.i.noImportedEv'));
   if(errs.length) return {errs};
   const out = {memberships: [], tickets: [], favorites: [], dropped: [], unlinked: 0};
   const ids = new Set();
@@ -7922,6 +7978,21 @@ function meCheckFile(data, fileIds){
       else{ seen.add(id); out.imported.push(c.rec); }
     });
     if(out.imported.length > IMP_MAX_TOTAL) errs.push(t('me.i.tooManyImp', {max: IMP_MAX_TOTAL}));
+    if(data.version >= 3){
+      out.importedEvents = [];
+      const seenEv = new Set(), matchIds = new Set(out.imported.map(m => m.id));
+      if(data.importedEvents.length && !(fileIds && fileEvIds)) errs.push(t('me.i.cantCheck'));
+      data.importedEvents.forEach((r, i) => {
+        const c = attCheckEvent(r), id = isObj(r) && typeof r.id === 'string' ? r.id : '';
+        const who = `${t('me.i.impEvent', {n: i + 1})}${id ? ` ("${id.slice(0, 40)}")` : ''}`;
+        if(c.errs) errs.push(`${who}: ${c.errs.slice(0, 3).join('; ')}`);
+        else if(seenEv.has(id)) errs.push(`${who}: ${t('me.i.sameId')}`);
+        else if(fileIds && fileEvIds && (fileIds.has(id) || fileEvIds.has(id))) errs.push(`${who}: ${t('ive.clashFile', {id})}`);
+        else if(matchIds.has(id)) errs.push(`${who}: ${t('ive.clashDevice', {id})}`);
+        else{ seenEv.add(id); out.importedEvents.push(c.rec); }
+      });
+      if(out.importedEvents.length > IMP_EV_MAX_TOTAL) errs.push(t('me.i.tooManyImpEv', {max: IMP_EV_MAX_TOTAL}));
+    }
     const keys = Object.keys(data.personal);
     if(keys.length > 1000) errs.push(t('me.i.tooManyRec'));
     for(const k of keys.slice(0, 1000)){
@@ -7952,12 +8023,12 @@ async function meImportFile(file){
   MEUI.pending = null;
   try{ data = JSON.parse(await file.text()); }
   catch(err){ MEUI.msg = t('me.i.notJson', {name: file.name}); MEUI.msgKind = 'bad'; return renderMe(); }
-  let fileIds = null;                           // the imported matches' ids are checked against the file's
-  if(isObj(data) && data.version >= 2 && Array.isArray(data.importedMatches) && data.importedMatches.length){
+  let fileIds = null, fileEvIds = null;           // the imported matches' and events' ids are checked against the file's
+  if(isObj(data) && data.version >= 2 && ((Array.isArray(data.importedMatches) && data.importedMatches.length) || (data.version >= 3 && Array.isArray(data.importedEvents) && data.importedEvents.length))){
     const r = await loadAttended();
-    if(r.ok){ ATT.data = ATT.data || r.v; fileIds = new Set(r.v.matches.map(m => m.id)); }
+    if(r.ok){ ATT.data = ATT.data || r.v; fileIds = new Set(r.v.matches.map(m => m.id)); fileEvIds = new Set(r.v.events.map(e => e.id)); }
   }
-  const c = meCheckFile(data, fileIds);
+  const c = meCheckFile(data, fileIds, fileEvIds);
   if(c.errs){
     MEUI.msg = t('me.i.refused', {name: file.name, list: c.errs.slice(0, 6).join('; ') + (c.errs.length > 6 ? t('me.i.andMore', {n: c.errs.length - 6}) : '')});
     MEUI.msgKind = 'bad';
@@ -7980,9 +8051,12 @@ function meImportConfirm(){
   let attNote = ' ' + t('me.c.v1');
   if(P.data.personal){
     try{ localStorage.setItem(PERS_KEY, JSON.stringify(P.data.personal)); }catch(e){ MEUI.blocked = true; }
-    if(!impSave(P.data.imported)) MEUI.blocked = true;
+    impLoad();                                  // a version 2 file leaves this device's imported events as they are
+    const v3 = !!P.data.importedEvents;
+    if(!impSave(P.data.imported, v3 ? P.data.importedEvents : IMP_EV)) MEUI.blocked = true;
     persLoad(); impLoad();
-    attNote = ' ' + t('me.c.replacedAtt', {att: attDeviceText(Object.keys(P.data.personal).length, P.data.imported.length)});
+    attNote = v3 ? ' ' + t('me.c.replacedAtt3', {att: attDeviceText(Object.keys(P.data.personal).length, P.data.imported.length, P.data.importedEvents.length)})
+      : ' ' + t('me.c.replacedAtt', {att: attDeviceText(Object.keys(P.data.personal).length, P.data.imported.length)}) + ' ' + t('me.c.evKept');
   }
   meBackedUp();
   MEUI.pending = null;
@@ -8061,7 +8135,7 @@ function renderMe(){
       `<button type="button" class="b" data-act="import" id="meImport">${esc(t('rt.sv.import'))}</button>` +
       `<input type="file" id="meFile" accept="application/json,.json" hidden></div>` +
     (P ? `<div class="mewarn" id="meConfirm" role="alert">${esc(t('me.holds', {name: P.name, counts: counts(P.data.memberships.length, P.data.tickets.length, P.data.favorites.length)}))}` +
-      (P.data.personal ? esc(', ' + t('me.plus', {att: attDeviceText(Object.keys(P.data.personal).length, P.data.imported.length)})) : '') + `. ` +
+      (P.data.personal ? esc(', ' + t('me.plus', {att: attDeviceText(Object.keys(P.data.personal).length, P.data.imported.length, P.data.importedEvents ? P.data.importedEvents.length : null)})) : '') + `. ` +
       `${esc(t('me.replaces', {counts: counts(M.memberships.length, M.tickets.length, favs().size)}))}` +
       `<div class="acts"><button type="button" class="b go" data-act="import-yes">${esc(t('me.replace'))}</button>` +
       `<button type="button" class="b" data-act="import-no">${esc(t('gen.cancel'))}</button></div></div>` : '') +
@@ -8198,7 +8272,7 @@ async function renderTickets(rules){
    migrated from the old app. The chosen language is the only other thing
    kept. */
 
-const ATT = {sub: 'stats', data: null, side: 'home', edit: null};
+const ATT = {sub: 'stats', data: null, side: 'home', edit: null, editEv: null, evMsg: null, evOpen: false};
 
 /* A value of the file as the page's language shows it. A name pair has
    nameEn; a text pair is {ro, en}. Nothing is filled in when absent. */
@@ -8219,7 +8293,7 @@ const attKickoff = m => typeof m.kickoff === 'string' && KICKOFF_RE.test(m.kicko
    Events in the file's order. Both as the old app listed them. */
 const attMatches = d => d.matches.map((m, i) => [m, i])
   .sort((a, b) => a[0].date < b[0].date ? -1 : a[0].date > b[0].date ? 1 : a[1] - b[1]).map(x => x[0]);
-const attEvents = d => d.events.slice();
+const attEvents = d => d.events.slice();      // the file's events in the file's order, then the imported ones in the order they were added
 
 function loadAttended(){
   return loadOnce('attended', () => getJSON('data/attended.json')).then(r => {
@@ -8334,13 +8408,21 @@ function renderAttAdd(){
   if(rec) return `<div class="aadd aedit" id="aAdd">${attFormHtml(rec)}</div>` + skipped;
   return `<details class="aadd" id="aAdd"${ATT.impOpen ? ' open' : ''}><summary>${esc(t('imp.title'))}</summary>${attFormHtml(null)}</details>` + skipped;
 }
+/* The Add an event form above the list; while an imported event is being
+   edited, the same form pre-filled instead. */
+function renderAttEvAdd(){
+  const rec = ATT.editEv ? IMP_EV.find(e => e.id === ATT.editEv) : null;
+  if(ATT.editEv && !rec) ATT.editEv = null;
+  const skipped = IMP_EV_SKIPPED ? `<p class="anote" id="aEvSkipped">${esc(t('ive.skipped', {n: IMP_EV_SKIPPED}))}</p>` : '';
+  if(rec) return `<div class="aadd aedit" id="aEvAdd">${attEvFormHtml(rec)}</div>` + skipped;
+  return `<details class="aadd" id="aEvAdd"${ATT.evOpen ? ' open' : ''}><summary>${esc(t('ive.title'))}</summary>${attEvFormHtml(null)}</details>` + skipped;
+}
 function renderAttEvents(d){
   const es = attEvents(d);
-  if(!es.length) return `<p class="anote">${esc(t('att.noEvents'))}</p>`;
-  return es.map((e, i) =>
-    `<button type="button" class="acard" data-att="event" data-id="${esc(e.id)}"><span class="an">${i + 1}</span>` +
+  return renderAttEvAdd() + (!es.length ? `<p class="anote">${esc(t('att.noEvents'))}</p>` : es.map((e, i) =>
+    `<button type="button" class="acard" data-att="event" data-id="${esc(attEvKey(e))}"><span class="an">${i + 1}</span>` +
     `<span class="at"><span class="tm">${esc(attL(e.title))}</span></span>` +
-    `<div class="am">${esc(attJoin([attL(e.place), attDate(e.date)]))}</div></button>`).join('');
+    `<div class="am">${esc(attJoin([attL(e.place), attDate(e.date)]))}${e._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join(''));
 }
 
 /* The panel for the open sub-tab. The file is fetched the first time one
@@ -8367,6 +8449,7 @@ async function renderAtt(){
 function showMeSub(sub){
   ATT.sub = sub;
   if(sub !== 'matches'){ ATT.impMsg = null; ATT.impOpen = false; ATT.edit = null; }
+  if(sub !== 'events'){ ATT.evMsg = null; ATT.evOpen = false; ATT.editEv = null; }
   const panel = {stats: 'meStats', matches: 'meMatches', events: 'meEvents', tix: 'meBody'};
   document.querySelectorAll('#meSubs button').forEach(b => b.setAttribute('aria-selected', b.dataset.sub === sub));
   for(const k in panel) document.getElementById(panel[k]).hidden = k !== sub;
@@ -8391,10 +8474,14 @@ const PERS_STORED = [...PERS_FIELDS, 'supported'];           // supported: '', '
 const SUPPORT_VALUES = ['home', 'neutral', 'away'];
 const IMP_KEY = 'football-attended-imported';
 const IMP_MAX_TEXT = 200000, IMP_MAX_BATCH = 50, IMP_MAX_TOTAL = 300;
+const IMP_EV_MAX_BATCH = 50, IMP_EV_MAX_TOTAL = 100;                // imported events, counted apart from the matches
 /* The key an entry's personal fields, supporter choice and media are kept
    under. An imported match is "imp:" + its id, so its ids can never meet
    the file's, even if the file later gains a match with the same id. */
 const attKey = m => m._imp ? 'imp:' + m.id : m.id;
+/* An imported event is addressed as "impev:" + its id: its own space, apart from the
+   file's events and matches (plain id) and from imported matches ("imp:"). */
+const attEvKey = e => e._imp ? 'impev:' + e.id : e.id;
 let PERS = {}, PERS_BLOCKED = false;
 function persLoad(){
   PERS = {}; PERS_BLOCKED = false;
@@ -8426,9 +8513,9 @@ function persSet(id, k, v){
    or a list). Validated whole; anything that fails is refused and nothing is
    stored. Kept only under football-attended-imported, never in
    data/attended.json, and every one is marked as imported. */
-let IMP = [], IMP_SKIPPED = 0, IMP_BLOCKED = false;
+let IMP = [], IMP_SKIPPED = 0, IMP_BLOCKED = false, IMP_EV = [], IMP_EV_SKIPPED = 0;
 function impLoad(){
-  IMP = []; IMP_SKIPPED = 0; IMP_BLOCKED = false;
+  IMP = []; IMP_SKIPPED = 0; IMP_BLOCKED = false; IMP_EV = []; IMP_EV_SKIPPED = 0;
   let raw = null;
   try{ raw = localStorage.getItem(IMP_KEY); }catch(e){ IMP_BLOCKED = true; return; }
   if(raw == null) return;
@@ -8441,9 +8528,21 @@ function impLoad(){
     const c = attCheckMatch(r);
     if(c.rec && !seen.has(c.rec.id)){ seen.add(c.rec.id); IMP.push(c.rec); } else IMP_SKIPPED++;
   }
+  if(v.events == null) return;                       // a record written before imported events existed: no events
+  if(!Array.isArray(v.events)){ IMP_EV_SKIPPED = 1; return; }
+  const seenEv = new Set();
+  for(const r of v.events){
+    const c = attCheckEvent(r);
+    if(c.rec && !seenEv.has(c.rec.id)){ seenEv.add(c.rec.id); IMP_EV.push(c.rec); } else IMP_EV_SKIPPED++;
+  }
 }
-function impSave(list){
-  try{ localStorage.setItem(IMP_KEY, JSON.stringify({version: 1, matches: list})); return true; }
+/* Saves the matches and the events together (the callers load first, so
+   neither list is ever written from a stale copy). `events` is left out of
+   the record when there are none. */
+function impSave(list, events = IMP_EV){
+  const rec = {version: 1, matches: list};
+  if(events.length) rec.events = events;
+  try{ localStorage.setItem(IMP_KEY, JSON.stringify(rec)); return true; }
   catch(e){ IMP_BLOCKED = true; return false; }
 }
 
@@ -8585,6 +8684,51 @@ function impCheckText(raw){
   return {added};
 }
 
+/* One event as the file has it (id, date, title, place, note, atStadium).
+   Same shape of answer as attCheckMatch(): {rec} or {errs}. Required: id,
+   date and title; everything else is optional. Unknown fields are refused. */
+const IMP_EVENT_KEYS = ['id', 'date', 'title', 'place', 'note', 'atStadium'];
+function attCheckEvent(r){
+  const errs = [], bad = m => { if(errs.length < 8) errs.push(m); };
+  if(!isObj(r)) return {errs: [V('notObjectEv')]};
+  Object.keys(r).forEach(k => { if(!IMP_EVENT_KEYS.includes(k)) bad(V('unknown', {what: V('theEvent'), k})); });
+  if(typeof r.id !== 'string' || !/^[A-Za-z0-9._-]{1,80}$/.test(r.id)) bad(V('id'));
+  if(!realDay(r.date)) bad(V('date'));
+  if(!isLoc(r.title, 300) || !(typeof r.title === 'string' ? r.title.trim() : Object.values(r.title).some(x => x.trim()))) bad(V('evTitle'));
+  for(const k of ['place', 'note']) if(r[k] != null && !isLoc(r[k], k === 'note' ? 2000 : 300)) bad(V('locText', {k}));
+  if(r.atStadium != null && typeof r.atStadium !== 'boolean') bad(V('bool', {k: 'atStadium'}));
+  return errs.length ? {errs} : {rec: JSON.parse(JSON.stringify(r))};
+}
+/* An explicit event id must be free in all four spaces: the file's events and
+   matches, and the imported matches and events on this device. */
+function attEvIdTaken(id, extra){
+  if((ATT.data?.events || []).some(e => e.id === id) || (ATT.data?.matches || []).some(m => m.id === id)) return t('ive.clashFile', {id});
+  if(IMP.some(m => m.id === id) || IMP_EV.some(e => e.id === id) || (extra && extra.has(id))) return t('ive.clashDevice', {id});
+  return '';
+}
+function impEvCheckText(raw){
+  if(!raw.trim()) return {error: t('imp.empty')};
+  if(raw.length > IMP_MAX_TEXT) return {error: t('imp.tooBig', {max: attNum(IMP_MAX_TEXT)})};
+  let obj;
+  try{ obj = JSON.parse(raw); }catch(e){ return {error: t('imp.notJson')}; }
+  const arr = Array.isArray(obj) ? obj : [obj];
+  if(!arr.length) return {error: t('imp.none')};
+  if(arr.length > IMP_EV_MAX_BATCH) return {error: t('ive.tooMany', {max: IMP_EV_MAX_BATCH})};
+  const pasted = new Set(), problems = [], added = [];
+  arr.forEach((r, i) => {
+    const c = attCheckEvent(r), id = isObj(r) && typeof r.id === 'string' ? r.id : '';
+    const who = `${t('v.eventN', {n: i + 1})}${id ? ` ("${id.slice(0, 40)}")` : ''}`;
+    if(c.errs){ problems.push(`${who}: ${c.errs.slice(0, 3).join('; ')}`); return; }
+    const taken = attEvIdTaken(id);
+    if(taken) problems.push(`${who}: ${taken}`);
+    else if(pasted.has(id)) problems.push(`${who}: ${t('imp.clashTwice', {id})}`);
+    else{ pasted.add(id); added.push(c.rec); }
+  });
+  if(problems.length) return {error: t('imp.rejected', {reasons: problems.slice(0, 5).join(' | ') + (problems.length > 5 ? ` | +${problems.length - 5}` : '')})};
+  if(IMP_EV.length + added.length > IMP_EV_MAX_TOTAL) return {error: t('ive.tooManyTotal', {max: IMP_EV_MAX_TOTAL})};
+  return {added};
+}
+
 /* ---- The Add / Edit a match form (2026-10-13). It builds the same record
    the JSON box takes and sends it through the same validator, attCheckMatch(),
    so nothing is accepted here that a paste would refuse. Device-only like
@@ -8664,7 +8808,7 @@ const attIdPart = s => fold(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 function attGenId(rec){
   const parts = [typeof rec.date === 'string' ? rec.date : '', rec.home && rec.home.name, rec.away && rec.away.name].map(attIdPart).filter(Boolean);
   const base = (parts.join('-') || 'match').slice(0, 76).replace(/-$/, '');
-  const used = new Set((ATT.data?.matches || []).map(m => m.id).concat(IMP.map(m => m.id)));
+  const used = new Set((ATT.data?.matches || []).map(m => m.id).concat(IMP.map(m => m.id), (ATT.data?.events || []).map(e => e.id), IMP_EV.map(e => e.id)));
   let id = base, n = 1;
   while(used.has(id)) id = `${base}-${++n}`;
   return id;
@@ -8793,12 +8937,137 @@ function attFormSubmit(form){
   renderAtt();
 }
 
-/* The file's matches and events with the device's imported matches after
+/* ---- The Add / Edit an event form (2026-10-13), built on the match form's
+   helpers (meInput, meArea, attMerge, the amform styles). The record it makes
+   goes through attCheckEvent(), the validator the JSON box uses. Device-only:
+   football-attended-imported, key "events"; never data/attended.json. */
+const EVFORM_NAMES = ['title', 'date', 'place', 'note'];
+function attEvFormValues(form){
+  const v = n => (form.elements[n] ? form.elements[n].value : '').trim();
+  const o = {};
+  EVFORM_NAMES.forEach(n => { o[n] = v(n); });
+  o.atStadium = form.elements.atStadium && form.elements.atStadium.value === 'yes';
+  return o;
+}
+// The Yes/No answer counts as filled only when it is Yes: a default No leaves atStadium to the JSON, and says false if the JSON has none.
+const attEvFormFilled = v => EVFORM_NAMES.some(n => v[n] !== '') || v.atStadium;
+function attEvFormErrors(v, need){
+  const e = {};
+  if(need){
+    if(!realDay(v.date)) e.date = t('imf.e.date');
+    if(!v.title) e.title = t('ive.e.title');
+  }else if(v.date && !realDay(v.date)) e.date = t('imf.e.date');
+  return e;
+}
+function attEvFormRecord(v){
+  const r = {};
+  if(v.date) r.date = v.date;
+  if(v.title) r.title = v.title;
+  if(v.place) r.place = v.place;
+  if(v.note) r.note = v.note;
+  if(v.atStadium) r.atStadium = true;
+  return r;
+}
+/* An edit: the stored record with only the fields the form covers replaced; an unchanged text keeps a stored {ro, en} pair. */
+function attEvEditRecord(orig, v){
+  const r = JSON.parse(JSON.stringify(orig));
+  r.date = v.date;
+  r.atStadium = v.atStadium;
+  for(const k of ['title', 'place', 'note']){
+    if(v[k] !== attTextOf(orig[k])){ if(v[k] === '') delete r[k]; else r[k] = v[k]; }
+  }
+  return r;
+}
+/* An id nobody uses in any of the four spaces: date and name, ASCII, at most 80, -2, -3 on a clash. */
+function attEvGenId(rec){
+  const parts = [typeof rec.date === 'string' ? rec.date : '', typeof rec.title === 'string' ? rec.title : attL(rec.title)].map(attIdPart).filter(Boolean);
+  const base = (parts.join('-') || 'event').slice(0, 76).replace(/-$/, '');
+  let id = base, n = 1;
+  while(attEvIdTaken(id)) id = `${base}-${++n}`;
+  return id;
+}
+function attEvFormHtml(rec){
+  const edit = !!rec;
+  const fe = (html, name) => html.replace(/<\/label>$/, `<span class="ferr" data-ferr="${name}" role="alert"></span></label>`);
+  const yes = rec ? rec.atStadium === true : false;
+  const f = fe(meInput(t('ive.name'), 'title', rec ? attL(rec.title) : '', 'autocomplete="off"'), 'title') +
+    fe(meInput(t('att.date'), 'date', rec?.date, 'type="date"'), 'date') +
+    meInput(t('att.place'), 'place', rec ? attL(rec.place) : '', 'autocomplete="off"') +
+    meSelect(t('ive.atStadium'), 'atStadium', yes ? 'yes' : 'no', [['no', t('ive.no')], ['yes', t('ive.yes')]]) +
+    meArea(t('nt.title'), 'note', rec ? attL(rec.note) : '');
+  const json = edit ? '' : `<div class="jsonbox"><span class="flab">${esc(t('imf.jsonTitle'))}</span>` +
+    `<p class="anote">${esc(t('ive.jsonHint'))}</p><p class="anote">${esc(t('ive.hint'))}${IMP_BLOCKED ? ' ' + esc(t('ive.blocked')) : ''}</p>` +
+    `<textarea id="aEvBox" spellcheck="false" aria-label="${esc(t('imf.jsonTitle'))}" placeholder="${esc(t('imp.placeholder'))}"></textarea></div>`;
+  const M = ATT.evMsg;
+  return `<form class="amform" id="aEvForm" data-edit="${esc(rec?.id || '')}" novalidate>` +
+    (edit ? `<h3>${esc(t('ive.edit'))}</h3><p class="anote">${esc(t('ive.editHint'))}</p>` : '') + f + json +
+    `<div class="amsg${M && !edit ? ' ' + M.kind : ''}" id="aEvMsg" role="status">${M && !edit ? esc(M.text) : ''}</div>` +
+    `<div class="acts"><button type="submit" class="ab go" id="aEvBtn">${esc(t(edit ? 'me.form.save' : 'imp.add'))}</button>` +
+    `<button type="button" class="ab" id="aEvCancel">${esc(t('gen.cancel'))}</button></div></form>`;
+}
+function attEvFormSubmit(form){
+  impLoad();
+  const msg = (kind, text) => { const m = document.getElementById('aEvMsg'); m.className = 'amsg ' + kind; m.textContent = text; };
+  const setErrs = errs => form.querySelectorAll('[data-ferr]').forEach(x => { x.textContent = errs[x.dataset.ferr] || ''; });
+  const done = events => {
+    if(!impSave(IMP, events)) return msg('bad', t('imp.saveFailed'));
+    attTouched(); return true;
+  };
+  const v = attEvFormValues(form), editId = form.dataset.edit, jsonEl = document.getElementById('aEvBox');
+  const jsonText = jsonEl ? jsonEl.value : '';
+  if(editId){
+    const errs = attEvFormErrors(v, true); setErrs(errs);
+    if(Object.keys(errs).length) return msg('bad', t('imf.notSaved'));
+    const i = IMP_EV.findIndex(e => e.id === editId);
+    if(i < 0) return msg('bad', t('ive.gone'));
+    const c = attCheckEvent(attEvEditRecord(IMP_EV[i], v));
+    if(c.errs) return msg('bad', t('imp.rejected', {reasons: c.errs.join('; ')}));
+    const list = IMP_EV.slice(); list[i] = c.rec;
+    if(!done(list)) return;
+    ATT.editEv = null; ATT.evMsg = null;
+    renderAtt().then(() => openASheet('event', 'impev:' + editId));
+    return;
+  }
+  if(!attEvFormFilled(v)){                                  // form empty: the paste box, one object or a list
+    setErrs({});
+    const c = impEvCheckText(jsonText);
+    if(c.error) return msg('bad', c.error);
+    if(!done(IMP_EV.concat(c.added))) return;
+    ATT.evMsg = {kind: 'ok', text: t('ive.added', {n: c.added.length})}; ATT.evOpen = true;
+    return renderAtt();
+  }
+  const hasJson = !!jsonText.trim();
+  const errs = attEvFormErrors(v, !hasJson); setErrs(errs);
+  if(Object.keys(errs).length) return msg('bad', t('imf.notSaved'));
+  let rec = attEvFormRecord(v);
+  if(hasJson){
+    if(jsonText.length > IMP_MAX_TEXT) return msg('bad', t('imp.tooBig', {max: attNum(IMP_MAX_TEXT)}));
+    let obj;
+    try{ obj = JSON.parse(jsonText); }catch(e){ return msg('bad', t('imp.notJson')); }
+    if(!isObj(obj)) return msg('bad', t('ive.needObject'));
+    const m = attMerge(rec, obj);
+    if(m.clash.length) return msg('bad', t('imp.rejected', {reasons: m.clash.map(k => t('imf.clash', {k})).join('; ')}));
+    rec = m.rec;
+  }
+  if(rec.atStadium === undefined) rec.atStadium = false;
+  if(rec.id == null) rec.id = attEvGenId(rec);
+  const c = attCheckEvent(rec);
+  if(c.errs) return msg('bad', t('imp.rejected', {reasons: c.errs.join('; ')}));
+  const taken = attEvIdTaken(c.rec.id);
+  if(taken) return msg('bad', t('imp.rejected', {reasons: taken}));
+  if(IMP_EV.length + 1 > IMP_EV_MAX_TOTAL) return msg('bad', t('ive.tooManyTotal', {max: IMP_EV_MAX_TOTAL}));
+  if(!done(IMP_EV.concat([c.rec]))) return;
+  ATT.evMsg = {kind: 'ok', text: t('ive.added', {n: 1})}; ATT.evOpen = true;
+  renderAtt();
+}
+
+/* The file's matches and events with the device's imported ones after
    them. An imported match carries _imp, which attKey() turns into its own
-   id space. */
+   id space; an imported event does too, through attEvKey(). */
 function attMerged(){
   const f = ATT.data;
-  return {matches: f.matches.concat(IMP.map(m => Object.assign({}, m, {_imp: true}))), events: f.events};
+  return {matches: f.matches.concat(IMP.map(m => Object.assign({}, m, {_imp: true}))),
+    events: f.events.concat(IMP_EV.map(e => Object.assign({}, e, {_imp: true})))};
 }
 
 const ATT_STATS = ['possession', 'shots', 'onTarget', 'fouls', 'corners', 'offsides'];
@@ -9078,12 +9347,14 @@ function openASheet(kind, id){
       attLineups(m) + attTimeline(m) + attStatsPane(m) + attNotePane(m) + attPersonal(id, true) + attMediaPane() +
       (m._imp ? `<button type="button" class="ab" id="aImpEdit">${esc(t('imf.edit'))}</button><button type="button" class="ab del" id="aImpRemove">${esc(t('imp.remove'))}</button>` : '');
   }else{
-    const e = ATT.data.events.find(x => x.id === id); if(!e) return;
-    head = `<h3>${esc(attL(e.title) || t('att.na'))}</h3><div class="meta"><span class="tag">${esc(t('att.event'))}</span></div>`;
+    impLoad();
+    const e = attMerged().events.find(x => attEvKey(x) === id); if(!e) return;
+    head = `<h3>${esc(attL(e.title) || t('att.na'))}</h3><div class="meta"><span class="tag">${esc(t('att.event'))}</span>${e._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div>`;
     const note = attL(e.note);
     body = row('att.date', attDate(e.date)) + row('att.place', attL(e.place)) +
       (typeof e.atStadium === 'boolean' ? row('att.atStadium', t(e.atStadium ? 'att.yes' : 'att.no')) : '') +
-      (note ? `<h4>${esc(t('nt.title'))}</h4>${attUnverified()}<div class="afact">${esc(note)}</div>` : '') + attPersonal(e.id, e.atStadium === true) + attMediaPane();
+      (note ? `<h4>${esc(t('nt.title'))}</h4>${e._imp ? '' : attUnverified()}<div class="afact">${esc(note)}</div>` : '') + attPersonal(id, e.atStadium === true) + attMediaPane() +
+      (e._imp ? `<button type="button" class="ab" id="aEvEdit">${esc(t('ive.edit'))}</button><button type="button" class="ab del" id="aEvRemove">${esc(t('ive.remove'))}</button>` : '');
   }
   closeBSheet(); closeCSheet(); closeFilter();
   document.getElementById('asheetHead').innerHTML = head;
@@ -9118,6 +9389,17 @@ function attSupport(m){
   sheetDrag(document.getElementById('asheet'), closeASheet);
   const body = document.getElementById('asheetBody');
   const openKey = () => (body.dataset.open || '').split(/:(.*)/)[1] || '';
+  const me = document.getElementById('meEvents');
+  me.addEventListener('submit', e => {                                          // the event form: checked whole, then stored on this device only
+    const form = e.target.closest('#aEvForm'); if(!form) return;
+    e.preventDefault();
+    attEvFormSubmit(form);
+  });
+  me.addEventListener('click', e => {
+    if(!e.target.closest('#aEvCancel')) return;
+    ATT.editEv = null; ATT.evMsg = null; ATT.evOpen = false;
+    renderAtt();
+  });
   const mm = document.getElementById('meMatches');
   mm.addEventListener('submit', e => {                                          // the form: checked whole, then stored on this device only
     const form = e.target.closest('#aForm'); if(!form) return;
@@ -9163,6 +9445,24 @@ function attSupport(m){
       ATT.edit = key.slice(4); ATT.impMsg = null;
       closeASheet(); renderAtt();
       document.getElementById('pane-me').scrollTop = 0;
+      return;
+    }
+    if(e.target.closest('#aEvEdit')){
+      const key = openKey();
+      if(!key.startsWith('impev:')) return;
+      ATT.editEv = key.slice(6); ATT.evMsg = null;
+      closeASheet(); renderAtt();
+      document.getElementById('pane-me').scrollTop = 0;
+      return;
+    }
+    if(e.target.closest('#aEvRemove')){
+      const key = openKey();
+      if(!key.startsWith('impev:') || !confirm(t('ive.removeAsk'))) return;
+      impLoad();
+      if(!impSave(IMP, IMP_EV.filter(x => x.id !== key.slice(6)))) return;
+      persDelete(key); attTouched();
+      mediaDeleteEntry(key).catch(() => {});
+      closeASheet(); renderAtt();
       return;
     }
     if(e.target.closest('#aImpRemove')){
