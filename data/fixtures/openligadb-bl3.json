@@ -2889,7 +2889,7 @@
   {
    "id": 84825,
    "utcDate": "2026-10-13T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2904,9 +2904,20 @@
     "shortName": "Meppen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/SV_Meppen_Logo_2022.svg/250px-SV_Meppen_Logo_2022.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2914,7 +2925,7 @@
   {
    "id": 84827,
    "utcDate": "2026-10-13T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2929,9 +2940,20 @@
     "shortName": "Fortuna Köln",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg/250px-SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2939,7 +2961,7 @@
   {
    "id": 84832,
    "utcDate": "2026-10-13T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2954,9 +2976,20 @@
     "shortName": "TSG 1899 Hoffenheim II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2964,7 +2997,7 @@
   {
    "id": 84833,
    "utcDate": "2026-10-13T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2979,9 +3012,20 @@
     "shortName": "Duisburg",
     "crest": "https://upload.wikimedia.org/wikipedia/en/c/c8/Msv_duisburg%28new%29.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 4,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 3
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 4
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2989,7 +3033,7 @@
   {
    "id": 84834,
    "utcDate": "2026-10-13T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -3004,9 +3048,20 @@
     "shortName": "Würzburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Würzburger_Kickers_Logo.svg/250px-Würzburger_Kickers_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

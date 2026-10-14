@@ -171,7 +171,7 @@
     "id": 6,
     "name": "Bayer 04 Leverkusen",
     "shortName": "Leverkusen",
-    "crest": "https://www.bundesliga-reisefuehrer.de/sites/default/files/B04_Standard_Logo_RGB.png"
+    "crest": "https://upload.wikimedia.org/wikipedia/de/f/f7/Bayer_Leverkusen_Logo.svg"
    },
    "homeGoals": 0,
    "awayGoals": 4,
@@ -1543,7 +1543,7 @@
     "id": 6,
     "name": "Bayer 04 Leverkusen",
     "shortName": "Leverkusen",
-    "crest": "https://www.bundesliga-reisefuehrer.de/sites/default/files/B04_Standard_Logo_RGB.png"
+    "crest": "https://upload.wikimedia.org/wikipedia/de/f/f7/Bayer_Leverkusen_Logo.svg"
    },
    "away": {
     "id": 79,
@@ -1614,7 +1614,7 @@
    "id": 6,
    "name": "Bayer 04 Leverkusen",
    "shortName": "Leverkusen",
-   "crest": "https://www.bundesliga-reisefuehrer.de/sites/default/files/B04_Standard_Logo_RGB.png"
+   "crest": "https://upload.wikimedia.org/wikipedia/de/f/f7/Bayer_Leverkusen_Logo.svg"
   },
   "7": {
    "id": 7,
