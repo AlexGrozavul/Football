@@ -569,8 +569,19 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   #asheet .perr{color:var(--bad);font-size:12.5px;margin-top:3px}
   #asheet .perr:empty{display:none}
   /* Device-only additions of 2026-10-09: imported matches, the supporter choice, the record, photos and videos. */
-  .att .aimp,#asheet .aimp{display:inline-block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--t3);
+  .att .aimp,#asheet .aimp,.att .aexh,#asheet .aexh{display:inline-block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--t3);
     border:1px solid var(--t3);border-radius:999px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+  .att .aexh,#asheet .aexh{color:var(--t2);border-color:var(--t2)}
+  /* Suggestions under the Competition and Stadium fields of the match form: in the page flow, so they never hide a button; the height is set by the page from the visible viewport. */
+  .att .amform .asugg{margin-top:4px;background:var(--surf);border:1px solid var(--line);border-radius:9px;padding:3px;overflow-y:auto;
+    max-height:320px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;box-sizing:border-box}
+  .att .amform .asugg[hidden]{display:none}
+  .att .amform .asugg button{display:block;width:100%;text-align:left;background:none;border:0;border-radius:6px;color:var(--ink);font:inherit;
+    font-size:14px;padding:7px 8px;min-height:44px;cursor:pointer;margin:0;box-sizing:border-box}
+  .att .amform .asugg button:hover{background:var(--hover)}
+  .att .amform .asugg .sn{display:block;overflow-wrap:anywhere}
+  .att .amform .asugg .rd{display:block;color:var(--faint);font-size:12px;overflow-wrap:anywhere}
+  .att .amform .asugg .none{padding:8px 9px;color:var(--dim);font-size:13.5px}
   .att .awdl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .att .aadd{background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:0 12px;margin-bottom:10px}
   .att .aadd summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:14px}
@@ -941,6 +952,9 @@ const I18N = {
     'imf.kickoff': 'Kick-off (optional)', 'imf.kickoffHint': 'The local time at the ground.',
     'imf.home': 'Home team', 'imf.away': 'Away team', 'imf.scoreH': 'Home goals', 'imf.scoreA': 'Away goals',
     'imf.stage': 'Stage or round', 'imf.note': 'Note',
+    'imf.exhibition': 'Exhibition match', 'exh.tag': 'Exhibition',
+    'st.exclGoals': "Doesn't include goals from exhibition matches ({goals} excluded)",
+    'sug.friendly': 'Friendly', 'sug.exhibition': 'Exhibition', 'sug.more': '+ {n} more', 'sug.aria': 'Suggestions',
     'imf.goals': 'Goals', 'imf.addGoal': 'Add goal', 'imf.goalTeam': 'Team', 'imf.goalPlayer': 'Scorer', 'imf.goalMinute': 'Minute',
     'imf.goalRemove': 'Remove goal', 'imf.goalsHint': 'The list may be partial: it does not have to add up to the score.',
     'imf.jsonTitle': 'JSON (optional)',
@@ -2180,6 +2194,9 @@ const I18N = {
     'imf.kickoff': 'Ora de start (opțional)', 'imf.kickoffHint': 'Ora locală de pe stadion.',
     'imf.home': 'Echipa gazdă', 'imf.away': 'Echipa oaspete', 'imf.scoreH': 'Goluri gazde', 'imf.scoreA': 'Goluri oaspeți',
     'imf.stage': 'Fază sau etapă', 'imf.note': 'Notă',
+    'imf.exhibition': 'Meci demonstrativ', 'exh.tag': 'Demonstrativ',
+    'st.exclGoals': 'Nu include golurile din meciurile demonstrative (excluse: {goals})',
+    'sug.friendly': 'Meci amical', 'sug.exhibition': 'Meci demonstrativ', 'sug.more': '+ încă {n}', 'sug.aria': 'Sugestii',
     'imf.goals': 'Goluri', 'imf.addGoal': 'Adaugă gol', 'imf.goalTeam': 'Echipa', 'imf.goalPlayer': 'Marcator', 'imf.goalMinute': 'Minutul',
     'imf.goalRemove': 'Șterge golul', 'imf.goalsHint': 'Lista poate fi parțială: nu trebuie să se potrivească cu scorul.',
     'imf.jsonTitle': 'JSON (opțional)',
@@ -8303,18 +8320,23 @@ function loadAttended(){
 }
 
 function attStats(d){
-  const ms = d.matches, S = {n: ms.length, goals: 0, goalsShort: 0, goalsShortN: 0, pens: 0, yellow: 0, red: 0, second: 0, cardsOk: 0, luOk: 0,
+  const ms = d.matches, S = {n: ms.length, nReal: 0, goals: 0, goalsShort: 0, goalsShortN: 0, exclGoals: 0, pens: 0, yellow: 0, red: 0, second: 0, cardsOk: 0, luOk: 0,
     stad: {}, city: {}, ctry: {}, comp: {}, team: {}, plr: {}, big: null, small: null, rec: {n: 0, w: 0, d: 0, l: 0}};
   const inc = (o, k) => { if(k) o[k] = (o[k] || 0) + 1; };
   ms.forEach(m => {
     // Goals are the two numbers of the score; the goals list only feeds the penalty count and the scorer lists.
-    const gs = /^(\d+)-(\d+)$/.exec(m.score || '');
+    // An exhibition match (exhibition: true) is left out of goals seen, goals per match and penalties scored; its goals are counted by the same rule and only reported.
+    const gs = /^(\d+)-(\d+)$/.exec(m.score || ''), exh = m.exhibition === true;
+    if(!exh) S.nReal++;
     if(gs){
       const tot = +gs[1] + +gs[2];
-      S.goals += tot;
-      if((m.goals || []).length < tot){ S.goalsShort += tot; S.goalsShortN++; }
+      if(exh) S.exclGoals += tot;
+      else{
+        S.goals += tot;
+        if((m.goals || []).length < tot){ S.goalsShort += tot; S.goalsShortN++; }
+      }
     }
-    (m.goals || []).forEach(g => { if(g.pen) S.pens++; });
+    if(!exh) (m.goals || []).forEach(g => { if(g.pen) S.pens++; });
     if(m.cardsComplete){
       S.cardsOk++;
       (m.cards || []).forEach(c => { if(c.type === 'yellow') S.yellow++; else if(c.type === 'red') S.red++; else if(c.type === 'second-yellow') S.second++; });
@@ -8368,9 +8390,10 @@ function renderAttStats(d){
   const sec = (key, inner) => `<div class="aeye">${esc(t(key))}</div>${inner}`;
 
   const tp = top(S.plr);
-  let h = `<div class="agrid">${tile(S.n, t('st.matches'))}${tile(S.goals, t('st.goals'), avg(S.goals, S.n))}` +
+  let h = `<div class="agrid">${tile(S.n, t('st.matches'))}${tile(S.goals, t('st.goals'), avg(S.goals, S.nReal))}` +
     `${tile(S.pens, t('st.pens'))}${tile(Object.keys(S.stad).length, t('st.stadiums'))}</div>` +
     (S.goalsShortN ? `<p class="anote" id="aGoalsNote">${esc(t('st.goalsShort', {goals: tn('st.nGoals', S.goalsShort, {n: attNum(S.goalsShort)}), matches: tn('st.nMatches', S.goalsShortN, {n: attNum(S.goalsShortN)})}))}</p>` : '') +
+    (S.exclGoals ? `<p class="anote" id="aGoalsExcl">${esc(t('st.exclGoals', {goals: tn('st.nGoals', S.exclGoals, {n: attNum(S.exclGoals)})}))}</p>` : '') +
     sec('st.cards', partial(S.cardsOk, S.n) +
       `<div class="agrid">${tile(S.yellow, t('st.yellow'), avg(S.yellow, S.cardsOk))}${tile(S.red + S.second, t('st.red'), [t('st.redSplit', {second: tn('st.nSecond', S.second, {n: attNum(S.second)}), straight: tn('st.nStraight', S.red, {n: attNum(S.red)})}), avg(S.red + S.second, S.cardsOk)])}</div>`) +
     sec('st.record', `<p class="anote" id="aRecCount">${esc(t('st.recordCounted', {n: S.rec.n, total: S.n}))}</p>` +
@@ -8396,7 +8419,7 @@ function renderAttMatches(d){
     `<span class="at"><span class="tm">${esc(attTeam(m.home))}</span><b>${esc(m.score ?? t('att.na'))}</b><span class="tm">${esc(attTeam(m.away))}</span></span>` +
     `<div class="am">${esc(attJoin([attL(m.competition), attL(m.stage)]))}</div>` +
     `<div class="am">${esc(attJoin([attJoin([m.stadium, attL(m.city)], ', '), attDate(m.date)]))}` +
-    `${attKickoff(m) ? ` · <span class="ako">${esc(attKickoff(m))}</span>` : ''}${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join('');
+    `${attKickoff(m) ? ` · <span class="ako">${esc(attKickoff(m))}</span>` : ''}${m.exhibition === true ? `<span class="aexh">${esc(t('exh.tag'))}</span>` : ''}${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join('');
 }
 /* The Add a match form above the list, with the JSON box at its end; while
    an imported match is being edited, the same form pre-filled instead. The
@@ -8552,7 +8575,7 @@ const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
 const isLoc = (v, max) => isStr(v, max) || (isObj(v) && Object.keys(v).length > 0 && Object.keys(v).every(k => (k === 'ro' || k === 'en') && isStr(v[k], max)));
 const SCORE_RE = /^\d{1,2}-\d{1,2}$/;
 const IMP_MATCH_KEYS = ['id', 'date', 'kickoff', 'kickoffSource', 'competition', 'competitionKey', 'stage', 'home', 'away', 'score', 'scoreHT', 'after90',
-  'stadium', 'city', 'country', 'attendance', 'referee', 'goals', 'cards', 'cardsComplete', 'stats', 'statsSource', 'lineups', 'note'];
+  'stadium', 'city', 'country', 'attendance', 'referee', 'goals', 'cards', 'cardsComplete', 'stats', 'statsSource', 'lineups', 'note', 'exhibition'];
 
 /* One match as the old app's data format has it. Returns {rec} (a clean copy)
    or {errs}. Unknown fields are refused, so a typo is not silently dropped. */
@@ -8579,6 +8602,7 @@ function attCheckMatch(r){
   if(r.kickoffSource != null && !isStr(r.kickoffSource, 300)) bad(V('text', {k: 'kickoffSource'}));
   for(const k of ['stadium', 'referee', 'statsSource']) if(r[k] != null && !isStr(r[k], 120)) bad(V('text', {k}));
   if(r.cardsComplete != null && typeof r.cardsComplete !== 'boolean') bad(V('bool', {k: 'cardsComplete'}));
+  if(r.exhibition != null && typeof r.exhibition !== 'boolean') bad(V('bool', {k: 'exhibition'}));
   if(r.attendance != null){
     const a = r.attendance;
     if(!isObj(a)) bad(V('object', {k: 'attendance'}));
@@ -8743,13 +8767,15 @@ function attFormValues(form){
   const v = n => (form.elements[n] ? form.elements[n].value : '').trim();
   const o = {};
   FORM_NAMES.forEach(n => { o[n] = v(n); });
+  o.exhibition = !!form.elements.exhibition && form.elements.exhibition.value === 'yes';
   o.goals = [...form.querySelectorAll('.agoal')].map((r, i) => ({
     i, gi: r.dataset.gi === '' ? null : Number(r.dataset.gi), team: r.querySelector('[name=gteam]').value,
     player: r.querySelector('[name=gplayer]').value.trim(), minute: r.querySelector('[name=gminute]').value.trim()}))
     .filter(g => g.player || g.minute);
   return o;
 }
-const attFormFilled = v => FORM_NAMES.some(n => v[n] !== '') || v.goals.length > 0;
+// The Yes/No answer counts as filled only when it is Yes (as for an event's atStadium): a default No leaves "exhibition" to the JSON.
+const attFormFilled = v => FORM_NAMES.some(n => v[n] !== '') || v.goals.length > 0 || v.exhibition;
 
 /* Problems with what was typed, by field name. `need` also asks for the
    four required fields (the JSON may supply them instead, so it is off
@@ -8781,6 +8807,7 @@ function attFormRecord(v){
   if(v.sh !== '' && v.sa !== '') r.score = `${Number(v.sh)}-${Number(v.sa)}`;
   FORM_TEXT.forEach(k => { if(v[k]) r[k] = v[k]; });
   if(v.attendance !== '') r.attendance = {value: Number(v.attendance)};
+  if(v.exhibition) r.exhibition = true;
   if(v.goals.length) r.goals = v.goals.map(g => ({team: g.team, player: g.player, minute: Number(g.minute)}));
   return r;
 }
@@ -8824,6 +8851,7 @@ function attEditRecord(orig, v){
   setOrDel('kickoff', v.kickoff);
   setOrDel('stadium', v.stadium);
   setOrDel('referee', v.referee);
+  if(v.exhibition) r.exhibition = true; else delete r.exhibition;
   for(const k of ['competition', 'stage', 'city', 'note']){      // unchanged text keeps a stored {ro, en} pair as it was
     if(v[k] !== attTextOf(orig[k])) setOrDel(k, v[k]);
   }
@@ -8859,9 +8887,10 @@ function attFormHtml(rec){
     fe(meInput(t('imf.away'), 'away', an, 'autocomplete="off"'), 'away') +
     `<div class="fgrp"><span class="flab">${esc(t('att.score'))}</span><div class="scorebox">${num('sh', sc[0], t('imf.scoreH'))}<span aria-hidden="true">–</span>${num('sa', sc[1], t('imf.scoreA'))}</div>` +
       `<span class="ferr" data-ferr="score" role="alert"></span></div>` +
-    meInput(t('att.competition'), 'competition', txt('competition'), 'autocomplete="off"') +
+    meInput(t('att.competition'), 'competition', txt('competition'), 'autocomplete="off" data-sug="competition"') +
+    meSelect(t('imf.exhibition'), 'exhibition', rec && rec.exhibition === true ? 'yes' : 'no', [['no', t('ive.no')], ['yes', t('ive.yes')]]) +
     meInput(t('imf.stage'), 'stage', txt('stage'), 'autocomplete="off"') +
-    meInput(t('att.stadium'), 'stadium', rec?.stadium, 'autocomplete="off"') +
+    meInput(t('att.stadium'), 'stadium', rec?.stadium, 'autocomplete="off" data-sug="stadium"') +
     meInput(t('att.city'), 'city', txt('city'), 'autocomplete="off"') +
     fe(meInput(t('att.attendance'), 'attendance', rec?.attendance?.value, 'type="number" min="0" max="500000" step="1" inputmode="numeric"'), 'attendance') +
     meInput(t('att.referee'), 'referee', rec?.referee, 'autocomplete="off"') +
@@ -8935,6 +8964,140 @@ function attFormSubmit(form){
   if(!done(IMP.concat([c.rec]))) return;
   ATT.impMsg = {kind: 'ok', text: t('imp.added', {n: 1})}; ATT.impOpen = true;
   renderAtt();
+}
+
+/* ---- Suggestions under the Competition and Stadium fields of the match form
+   (2026-10-15), in the style of the map's club search: matching by fold(),
+   names that start with what was typed first, then a word that does, then the
+   rest; up to 8 rows and "+ n more". Free text still works. Names are data,
+   shown as written. Nothing is stored and nothing is requested except GET
+   data/competitions.csv, through the page's own loader, once the form opens. */
+const SUG = {input: null, box: null, hits: [], cache: {}};
+let SUG_COMPS = null;                                  // the rows of data/competitions.csv, once loaded
+function sugLoadComps(){
+  if(SUG_COMPS) return Promise.resolve(SUG_COMPS);
+  return csvFile('data/competitions.csv').then(r => {
+    if(r.ok) SUG_COMPS = r.v.filter(x => x.name && !x._over);
+    else delete LOADS['data/competitions.csv'];        // a failed load is not remembered: the other sources still work
+    return SUG_COMPS;
+  }, () => null);
+}
+/* Every ground of the club files (all of CLUBS, one per folded name) plus the stadiums of the file's and the imported matches. */
+function sugStadiums(){
+  const by = new Map();
+  const add = (name, club, ctry, fromClub) => {
+    const f = fold(name); if(!f) return;
+    let e = by.get(f); if(!e) by.set(f, e = {name, f, clubs: [], ctry: new Set(), mctry: new Set()});
+    if(club && !e.clubs.includes(club)) e.clubs.push(club);
+    if(ctry) (fromClub ? e.ctry : e.mctry).add(ctry);
+  };
+  CLUBS.forEach(c => add(c.venue, c.name || c.id, countryName(c.country), true));
+  (ATT.data?.matches || []).concat(IMP).forEach(m => add(m.stadium, '', attL(m.country), false));
+  return [...by.values()].map(e => {
+    const cl = e.clubs.length > 3 ? e.clubs.slice(0, 3).join(', ') + ` +${e.clubs.length - 3}` : e.clubs.join(', ');
+    const ct = [...(e.ctry.size ? e.ctry : e.mctry)].join(', ');
+    return {name: e.name, label: e.name, sub: [cl, ct].filter(Boolean).join(' · '), fs: [e.f]};
+  });
+}
+/* "Friendly" and "Exhibition" first (the label is the page's language, the stored value the English word), then data/competitions.csv, the leagues of the coverage panel and the competition texts of the file's and the imported matches. */
+function sugCompetitions(){
+  const by = new Map(), out = [];
+  const add = (name, sub, special) => {
+    const f = fold(name), lab = special ? special.label : name, fl = fold(lab);
+    if(!f || by.has(f) || (special ? false : by.has(fl))) return;
+    by.set(f, 1); if(fl) by.set(fl, 1);
+    out.push({name, label: lab, sub: sub || '', fs: [f, fl], exhibition: !!(special && special.exhibition)});
+  };
+  add('Friendly', '', {label: t('sug.friendly')});
+  add('Exhibition', '', {label: t('sug.exhibition'), exhibition: true});
+  (SUG_COMPS || []).forEach(r => add(r.name, [r.country ? countryName(r.country) : '', COMP_TYPE[r.type] || r.type].filter(Boolean).join(' · ')));
+  coverage().groups.filter(g => g.recorded).forEach(g => add(g.name, countryName(g.country)));
+  (ATT.data?.matches || []).concat(IMP).forEach(m => add(attL(m.competition), ''));
+  return out;
+}
+function sugItems(kind){
+  const sig = [kind, LANG, CLUBS.length, IMP.length, ATT.data ? ATT.data.matches.length : -1, SUG_COMPS ? SUG_COMPS.length : -1].join('|');
+  const c = SUG.cache[kind];
+  if(c && c.sig === sig) return c.items;
+  const items = kind === 'stadium' ? sugStadiums() : sugCompetitions();
+  items.forEach(i => { if(!i.fs) i.fs = [fold(i.name)]; });
+  SUG.cache[kind] = {sig, items};
+  return items;
+}
+function sugSearch(kind, q, limit = 8){
+  const f = fold(q);
+  if(!f) return {total: 0, list: []};
+  const words = f.split(' '), hits = [];
+  for(const it of sugItems(kind)){
+    let best = 9;
+    for(const n of it.fs){
+      if(!n || !words.every(w => n.includes(w))) continue;
+      const at = n.indexOf(f);
+      best = Math.min(best, at === 0 ? 0 : at > 0 && n[at - 1] === ' ' ? 1 : at > 0 ? 2 : 3);
+    }
+    if(best < 9) hits.push({it, rank: best});
+  }
+  hits.sort((a, b) => a.rank - b.rank || String(a.it.label).localeCompare(String(b.it.label)));
+  return {total: hits.length, list: hits.slice(0, limit).map(h => h.it)};
+}
+function sugHide(){ if(SUG.box) SUG.box.hidden = true; SUG.hits = []; }
+/* The list ends above the keyboard: its height is the room left between its top and the bottom of what is visible (visualViewport, as the club search does), and a field too low is scrolled up first. */
+function sugPlace(){
+  const box = SUG.box, input = SUG.input; if(!box || box.hidden) return;
+  const pane = document.getElementById('pane-me');
+  const vvB = window.visualViewport ? visualViewport.offsetTop + visualViewport.height : innerHeight;
+  const bottom = Math.min(vvB, pane.getBoundingClientRect().bottom) - 6;
+  box.style.maxHeight = '';
+  let top = box.getBoundingClientRect().top;
+  if(top + 150 > bottom){
+    pane.scrollTop += input.closest('label').getBoundingClientRect().top - pane.getBoundingClientRect().top - 8;
+    top = box.getBoundingClientRect().top;
+  }
+  box.style.maxHeight = Math.max(96, Math.min(320, bottom - top)) + 'px';
+}
+function sugShow(input){
+  const f = fold(input.value);
+  if(!f){ sugHide(); return; }
+  const label = input.closest('label');
+  if(!SUG.box || !SUG.box.isConnected || SUG.box.previousElementSibling !== label){
+    sugHide();
+    if(SUG.box) SUG.box.remove();
+    SUG.box = document.createElement('div');
+    SUG.box.className = 'asugg'; SUG.box.setAttribute('role', 'listbox'); SUG.box.setAttribute('aria-label', t('sug.aria'));
+    label.after(SUG.box);
+  }
+  const wasHidden = SUG.box.hidden;
+  SUG.input = input;
+  const r = sugSearch(input.dataset.sug, input.value);
+  SUG.hits = r.list;
+  SUG.box.innerHTML = r.list.map((it, i) => `<button type="button" role="option" data-s="${i}"><span class="sn"${it.exhibition || it.label !== it.name ? '' : ' data-content'}>${esc(it.label)}</span>` +
+      (it.sub ? `<span class="rd">${esc(it.sub)}</span>` : '') + `</button>`).join('') +
+    (r.total > r.list.length ? `<div class="none">${esc(t('sug.more', {n: r.total - r.list.length}))}</div>` : '');
+  SUG.box.hidden = !r.list.length;
+  if(!SUG.box.hidden) sugPlace();
+}
+function sugPick(i){
+  const it = SUG.hits[i], input = SUG.input;
+  if(!it || !input) return;
+  input.value = it.name;                              // the stored value is the name as written (the English word for Friendly and Exhibition)
+  if(it.exhibition && input.form && input.form.elements.exhibition) input.form.elements.exhibition.value = 'yes';
+  sugHide();
+}
+function wireSuggestions(host){
+  const isSug = el => el && el.matches && el.matches('#aForm input[data-sug]');
+  host.addEventListener('focusin', e => { if(isSug(e.target)){ sugLoadComps().then(() => { if(document.activeElement === e.target) sugShow(e.target); }); } });
+  host.addEventListener('toggle', e => { if(e.target.matches && e.target.matches('details')) sugLoadComps(); }, true);
+  host.addEventListener('input', e => { if(isSug(e.target)) sugShow(e.target); });
+  host.addEventListener('focusout', e => { if(isSug(e.target)) sugHide(); });
+  host.addEventListener('keydown', e => {
+    if(!isSug(e.target) || !SUG.box || SUG.box.hidden) return;
+    if(e.key === 'Enter'){ e.preventDefault(); sugHide(); }              // keeps what is typed and does not save the form
+    else if(e.key === 'Escape'){ e.stopPropagation(); sugHide(); }
+  });
+  host.addEventListener('mousedown', e => { if(e.target.closest('.asugg')) e.preventDefault(); });   // the field keeps focus while a row is pressed
+  host.addEventListener('click', e => { const b = e.target.closest('.asugg button[data-s]'); if(b) sugPick(Number(b.dataset.s)); });
+  document.addEventListener('pointerdown', e => { if(SUG.box && !SUG.box.hidden && !SUG.box.contains(e.target) && e.target !== SUG.input) sugHide(); });
+  window.visualViewport?.addEventListener('resize', sugPlace);
 }
 
 /* ---- The Add / Edit an event form (2026-10-13), built on the match form's
@@ -9338,7 +9501,7 @@ function openASheet(kind, id){
     if(a.approx) tags.push(t('att.approx'));
     const att = a.value ? attNum(a.value) + (tags.length ? ' (' + tags.join(', ') + ')' : '') : tags.join(', ');
     head = `<h3>${esc(attTeam(m.home))} ${esc(m.score ?? '')} ${esc(attTeam(m.away))}</h3>` +
-      `<div class="meta"><span class="tag">${esc(attL(m.competition) || t('att.na'))}</span>${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div>` +
+      `<div class="meta"><span class="tag">${esc(attL(m.competition) || t('att.na'))}</span>${m.exhibition === true ? `<span class="aexh">${esc(t('exh.tag'))}</span>` : ''}${m._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div>` +
       (attKickoff(m) ? `<span class="ako">${esc(attKickoff(m))}</span>` : '');
     ATT.side = 'home';
     body = row('att.date', attDate(m.date)) + row('att.score', m.score) + opt('att.after90', m.after90) + row('att.competition', attL(m.competition)) +
@@ -9401,6 +9564,7 @@ function attSupport(m){
     renderAtt();
   });
   const mm = document.getElementById('meMatches');
+  wireSuggestions(mm);
   mm.addEventListener('submit', e => {                                          // the form: checked whole, then stored on this device only
     const form = e.target.closest('#aForm'); if(!form) return;
     e.preventDefault();

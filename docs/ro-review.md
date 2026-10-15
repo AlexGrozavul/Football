@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1323 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1330 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -143,6 +143,13 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `imf.scoreA` | Away goals | Goluri oaspeți |
 | `imf.stage` | Stage or round | Fază sau etapă |
 | `imf.note` | Note | Notă |
+| `imf.exhibition` | Exhibition match | Meci demonstrativ |
+| `exh.tag` | Exhibition | Demonstrativ |
+| `st.exclGoals` | Doesn't include goals from exhibition matches ({goals} excluded) | Nu include golurile din meciurile demonstrative (excluse: {goals}) |
+| `sug.friendly` | Friendly | Meci amical |
+| `sug.exhibition` | Exhibition | Meci demonstrativ |
+| `sug.more` | + {n} more | + încă {n} |
+| `sug.aria` | Suggestions | Sugestii |
 | `imf.goals` | Goals | Goluri |
 | `imf.addGoal` | Add goal | Adaugă gol |
 | `imf.goalTeam` | Team | Echipa |

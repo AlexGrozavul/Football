@@ -74,6 +74,7 @@
   {
    "id": "2019-05-18-sfr-sfb",
    "date": "2019-05-18",
+   "exhibition": true,
    "competition": {
     "ro": "Meci demonstrativ",
     "en": "Exhibition match"
