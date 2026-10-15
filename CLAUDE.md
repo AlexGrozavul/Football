@@ -2557,8 +2557,8 @@ stays English** and **the Romanian is unchecked until he says otherwise**.
   screen a label wraps at the slash instead of overflowing. The bottom bar's
   Romanian "Lista de dorințe" would have run into its neighbour, so its
   label there is "Dorințe" (a test checks all five fit their slot). The tab has no heading of its own
-  beyond its two section headings ("Memberships - N", "Tickets held - N"),
-  which were left as they were.
+  beyond its two section headings ("Tickets held - N", "Memberships - N",
+  in that order since 2026-10-15), which were left as they were.
 - **Tested** in `tools/test_me.js`: identical key sets, no `ro` value equal to
   its `en` value except a short whitelist of names and units, every
   `{placeholder}` kept, the choice kept over a reload, and in Romanian every
@@ -2639,6 +2639,13 @@ bar (its four labels fit 390 px, one line each - `test_me.js` checks it).
   sees it** - the saved-routes arrangement. Every read and write is
   wrapped: with storage blocked the tab says what you add lasts only until
   the page is closed, and works for the visit.
+- **Order on the Tickets/Memberships sub-tab (since 2026-10-15)**: the backup
+  banner and the "kept on this device" note, then **Tickets held** (its Add
+  ticket button, the list, the collapsed Past section, and the note about
+  linking a ticket to a bucket entry), then **Memberships** (its Add
+  membership button, the renewal-window setting and the list), then the
+  alerts note and the Back up section last. Memberships came first until
+  then; only the order changed, no field, text, count, sort or stored data.
 - **Memberships**: club or organisation (required), who it is for, scheme
   name, cost (amount, a three-letter currency, and - only when not EUR - a
   euro figure **he types**: no exchange rate is held, so a missing one
@@ -2842,7 +2849,7 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16` → `v17` → `v18` → `v19`; it has been `v30` since 2026-10-13, when the Add an event form and the version 3 backup file shipped; it was `v29` the same day, when the red-cards card and the event `note` shipped; it was `v28` the same day, when the Add a match form shipped; it was `v27` from 2026-10-12, when the researched kick-off times shipped (the five `user-supplied` kick-off times of 2026-10-13 arrived with no version change: a change to `data/attended.json` alone needs none); it was `v26` from 2026-10-11, when the Romanian translations of data texts shipped (`v25` before that, when sheets and panels learned to expand to full size); it was `v23` from 2026-10-10, when the source quote on fan friendships shipped; it was `v22` the same day, when the atmosphere section was removed; it was `v21` the same day, when the atmosphere section was reduced to recurring occasions with a recurrence; it was `v20` from 2026-10-09, when Fan friendships shipped; it was `v19` the same day, when the Light theme shipped; it was `v18` the same day, when the whole interface was translated (it was `v17` from the same day, when the imported matches, supporter buttons and media shipped); it was `v16` from the same day, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
+  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16` → `v17` → `v18` → `v19`; it has been `v31` since 2026-10-15, when the Me tab's Tickets/Memberships sub-tab began showing tickets first; it was `v30` from 2026-10-13, when the Add an event form and the version 3 backup file shipped; it was `v29` the same day, when the red-cards card and the event `note` shipped; it was `v28` the same day, when the Add a match form shipped; it was `v27` from 2026-10-12, when the researched kick-off times shipped (the five `user-supplied` kick-off times of 2026-10-13 arrived with no version change: a change to `data/attended.json` alone needs none); it was `v26` from 2026-10-11, when the Romanian translations of data texts shipped (`v25` before that, when sheets and panels learned to expand to full size); it was `v23` from 2026-10-10, when the source quote on fan friendships shipped; it was `v22` the same day, when the atmosphere section was removed; it was `v21` the same day, when the atmosphere section was reduced to recurring occasions with a recurrence; it was `v20` from 2026-10-09, when Fan friendships shipped; it was `v19` the same day, when the Light theme shipped; it was `v18` the same day, when the whole interface was translated (it was `v17` from the same day, when the imported matches, supporter buttons and media shipped); it was `v16` from the same day, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
   2026-10-08, when the 160-entry bucket batch and Group order shipped, `v8` before that, from 2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,

@@ -310,6 +310,33 @@ function alarmAt(ev, al){
     /75\.00 EUR/.test(milan) && /bought/.test(milan) && milan.includes(`${linked.title} (${LINK_ID})`), milan);
   check('A ticket with no kick-off says "time not set"', /Sat,? 30 Jan 2027\s*time not set/.test(vfbk), vfbk);
   check('A past ticket goes in a collapsed Past section', await page.$eval('#meTickets details.past', d => !d.open && /Old cup tie/.test(d.textContent)), '');
+  // 2026-10-15: on this sub-tab the tickets part comes first and the memberships part second; the banner stays at the top, Back up last.
+  // The tickets part runs from the Tickets heading's row up to the Memberships heading's row, the memberships part from there up to the alerts heading.
+  const ord = await page.evaluate(() => {
+    const B = document.getElementById('meBody'), $ = id => document.getElementById(id);
+    const before = (a, b) => !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+    const tixRow = $('meTixTitle').closest('.mesec'), memRow = $('meMemTitle').closest('.mesec');
+    const h2s = [...B.querySelectorAll('h2')], backupH = h2s.filter(h => before(h, $('meExport'))).pop(), alertsH = h2s[h2s.indexOf(backupH) - 1];
+    return {
+      titles: before($('meTixTitle'), $('meMemTitle')),
+      addButtons: before(B.querySelector('button[data-act=add][data-kind=ticket]'), B.querySelector('button[data-act=add][data-kind=membership]')),
+      lists: before($('meTickets'), $('meMemberships')),
+      pastInTix: before(tixRow, B.querySelector('#meTickets details.past')) && before(B.querySelector('#meTickets details.past'), memRow) && $('meTickets').contains(B.querySelector('details.past')),
+      pastOnlyOne: B.querySelectorAll('details.past').length === 1,
+      windowInMem: before(memRow, $('meWindow')) && before($('meWindow'), $('meMemberships')) && !$('meTickets').contains($('meWindow')),
+      windowAfterTix: before($('meTickets'), $('meWindow')),
+      bannerFirst: B.firstElementChild === $('meBackup'),
+      backupLast: before($('meMemberships'), alertsH) && before(alertsH, backupH) && before($('meTickets'), backupH) &&
+        before(backupH, $('meExport')) && before($('meExport'), $('meImport')) && !B.querySelector('#meExport ~ .mesec, #meExport ~ #meTickets, #meExport ~ #meMemberships'),
+      backupNothingAfterButBar: ![...B.querySelectorAll('#meTickets, #meMemberships, #meTixTitle, #meMemTitle, #meWindow')].some(e => before(backupH, e)),
+      sectionCounts: [...B.querySelectorAll('#meBody > .mesec')].map(e => e.querySelector('h2').id)
+    };
+  });
+  check('Tickets/Memberships: the Tickets held heading, its Add button and its list come before the Memberships ones', ord.titles && ord.addButtons && ord.lists, JSON.stringify(ord));
+  check('...the Past tickets section is inside the tickets part (once), before the memberships part starts', ord.pastInTix && ord.pastOnlyOne, JSON.stringify(ord));
+  check('...the renewal-window setting is inside the memberships part, below the tickets', ord.windowInMem && ord.windowAfterTix, JSON.stringify(ord));
+  check('...the backup banner is still the first element, the Back up section the last, with its Export and Import buttons', ord.bannerFirst && ord.backupLast && ord.backupNothingAfterButBar, JSON.stringify(ord));
+  check('...the two section headings are exactly Tickets, then Memberships', JSON.stringify(ord.sectionCounts) === JSON.stringify(['meTixTitle', 'meMemTitle']), JSON.stringify(ord.sectionCounts));
   await page.click('.mecard[data-kind=ticket]:has(h3:text("VfB v KSC")) [data-act=edit]');
   await fill(page, {status: 'won', alertDays: '3'}); await page.click('form.meform button[type=submit]');
   check('A ticket edit is saved', /won/.test(await cardText(page, 'ticket', 'VfB v KSC')), '');

@@ -8106,14 +8106,6 @@ function renderMe(){
     (MEUI.blocked ? `<div class="mewarn" id="meBlocked" role="status">${esc(t('me.blocked'))}</div>` : '') +
     `<p class="note" style="margin-top:0">${esc(t('me.keptHere'))}</p>` +
 
-    `<div class="mesec"><h2 id="meMemTitle">${esc(t('me.memH', {n: M.memberships.length}))}</h2>` +
-      `<button type="button" class="b" data-act="add" data-kind="membership">${esc(t('me.addM'))}</button></div>` +
-    `<div class="ctl"><label for="meWindow">${esc(t('me.sayDue'))}</label>` +
-      `<input id="meWindow" type="number" min="1" max="365" step="1" inputmode="numeric" value="${M.settings.renewWindowDays}"> ${esc(t('me.days'))}</div>` +
-    form('membership') +
-    `<div id="meMemberships">` + (mems.length ? mems.map(m => card('membership', m)).join('')
-      : (F?.kind === 'membership' && !F.id ? '' : `<p class="note" style="margin:0 0 9px">${esc(t('me.noMem'))}</p>`)) + `</div>` +
-
     `<div class="mesec"><h2 id="meTixTitle">${esc(t('me.tixH', {n: M.tickets.length}))}</h2>` +
       `<button type="button" class="b" data-act="add" data-kind="ticket">${esc(t('me.addT'))}</button></div>` +
     form('ticket') +
@@ -8122,6 +8114,14 @@ function renderMe(){
       (past.length ? `<details class="past"><summary>${esc(t('bk.pastH', {n: past.length}))}</summary>${past.map(k => card('ticket', k)).join('')}</details>` : '') +
     `</div>` +
     `<p class="note">${esc(t('me.linkNote'))}</p>` +
+
+    `<div class="mesec"><h2 id="meMemTitle">${esc(t('me.memH', {n: M.memberships.length}))}</h2>` +
+      `<button type="button" class="b" data-act="add" data-kind="membership">${esc(t('me.addM'))}</button></div>` +
+    `<div class="ctl"><label for="meWindow">${esc(t('me.sayDue'))}</label>` +
+      `<input id="meWindow" type="number" min="1" max="365" step="1" inputmode="numeric" value="${M.settings.renewWindowDays}"> ${esc(t('me.days'))}</div>` +
+    form('membership') +
+    `<div id="meMemberships">` + (mems.length ? mems.map(m => card('membership', m)).join('')
+      : (F?.kind === 'membership' && !F.id ? '' : `<p class="note" style="margin:0 0 9px">${esc(t('me.noMem'))}</p>`)) + `</div>` +
 
     `<h2>${esc(t('me.alertsH'))}</h2>` +
     `<p class="note" style="margin-top:0">${esc(t('me.alertsNote'))}</p>` +
