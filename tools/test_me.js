@@ -51,6 +51,11 @@
 //    newer version, the old app's export shape), and a version 1 file still importing and leaving those alone; nothing overflows at 390 px in English
 //    and Romanian; since 2026-10-12, the kick-off: every kickoff in the file is HH:MM with a kickoffSource, shown as "Kick-off HH:MM (local time)"
 //    on its card and in its sheet header and absent from the others, and an imported kickoff accepted (no source) or refused when malformed;
+//  - since 2026-10-15 exhibition matches leave the goal stats ("exhibition": true on a match: goals seen, goals per match and penalties scored ignore it,
+//    a note says how many goals were excluded; the file's one exhibition match, the validator, the Add/Edit form's Yes/No, its JSON merge rule and the
+//    tag), and the Competition and Stadium fields of the match form offer suggestions (every club ground, data/competitions.csv, the coverage leagues,
+//    the matches' own texts; ranking, "+ n more", accents, tap, free text, Enter; inside the screen at 390x844 and 390x500; both languages; the CSV
+//    unreachable; no storage key and no request beyond the one GET of data/competitions.csv); expected values are worked out from the files here;
 //  - since 2026-10-09 the whole interface is translated (English and Romanian, the Romanian written by the assistant and unchecked): the dictionary's
 //    key sets, no ro value equal to its en value outside a short whitelist of names, every {placeholder} kept; Settings reached from the top of the
 //    Me tab, the choice stored under football-planner-lang and kept over a reload, the fourth sub-tab renamed Tickets/Memberships in both languages;
@@ -510,10 +515,14 @@ function alarmAt(ev, al){
   const fx = {
     n: ATTF.matches.length, ne: ATTF.events.length,
     // Goals are the sum of both score numbers; a match whose goals list is shorter than its score is footnoted.
-    goals: ATTF.matches.reduce((n, m) => { const s = /^(\d+)-(\d+)$/.exec(m.score); return n + (s ? +s[1] + +s[2] : 0); }, 0),
-    goalsShort: ATTF.matches.filter(m => { const s = /^(\d+)-(\d+)$/.exec(m.score); return s && m.goals.length < +s[1] + +s[2]; })
+    // Since 2026-10-15 a match with "exhibition": true is left out of goals seen, goals per match and penalties scored, and its goals are reported as excluded.
+    nReal: ATTF.matches.filter(m => m.exhibition !== true).length,
+    nExh: ATTF.matches.filter(m => m.exhibition === true).length,
+    goals: ATTF.matches.filter(m => m.exhibition !== true).reduce((n, m) => { const s = /^(\d+)-(\d+)$/.exec(m.score); return n + (s ? +s[1] + +s[2] : 0); }, 0),
+    exclGoals: ATTF.matches.filter(m => m.exhibition === true).reduce((n, m) => { const s = /^(\d+)-(\d+)$/.exec(m.score); return n + (s ? +s[1] + +s[2] : 0); }, 0),
+    goalsShort: ATTF.matches.filter(m => m.exhibition !== true).filter(m => { const s = /^(\d+)-(\d+)$/.exec(m.score); return s && m.goals.length < +s[1] + +s[2]; })
       .map(m => { const s = /^(\d+)-(\d+)$/.exec(m.score); return +s[1] + +s[2]; }),
-    pens: ATTF.matches.reduce((n, m) => n + m.goals.filter(g => g.pen).length, 0),
+    pens: ATTF.matches.filter(m => m.exhibition !== true).reduce((n, m) => n + m.goals.filter(g => g.pen).length, 0),
     stadiums: new Set(ATTF.matches.map(m => m.stadium)).size,
     yellow: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'yellow').length, 0),
     red: ATTF.matches.filter(m => m.cardsComplete).reduce((n, m) => n + m.cards.filter(c => c.type === 'red').length, 0),
@@ -563,8 +572,10 @@ function alarmAt(ev, al){
   const tv = tiles.map(t => +t[0]);
   check('Stats: matches, goals, penalties, stadiums, yellow cards and red cards (straight reds plus second yellows) equal the counts in the file',
     JSON.stringify(tv) === JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red + fx.second]), JSON.stringify(tv) + ' file ' + JSON.stringify([fx.n, fx.goals, fx.pens, fx.stadiums, fx.yellow, fx.red + fx.second]));
-  const goalsAvg = (fx.goals / fx.n).toFixed(2) + ' per match';
-  check('Stats: "goals seen" shows the sum of the scores per match', tiles[1][1] === 'goals seen' && await p3.$eval('#meStats .astat:nth-child(2) i', e => e.textContent) === goalsAvg, goalsAvg);
+  const goalsAvg = (fx.goals / fx.nReal).toFixed(2) + ' per match';
+  check('Stats: "goals seen" shows the sum of the scores of the matches that are not exhibition matches, per non-exhibition match',
+    tiles[1][1] === 'goals seen' && await p3.$eval('#meStats .astat:nth-child(2) i', e => e.textContent) === goalsAvg, goalsAvg);
+  check('Stats: the file has at least one exhibition match, and the matches card still counts every match, exhibition included', fx.nExh >= 1 && fx.exclGoals > 0 && tv[0] === fx.n && fx.nReal === fx.n - fx.nExh, `${fx.nExh} exhibition, ${fx.exclGoals} goals`);
   const redTile = await p3.$$eval('#meStats .astat', ts => ts[5] && ({label: ts[5].querySelector('span').textContent, lines: [...ts[5].querySelectorAll('i')].map(x => x.textContent)}));
   check('Stats: ONE "red cards" card (no "second yellows" card): the split line gives second yellows and straight reds, then the per-match figure over the matches with complete card data',
     tiles.length === 6 && !tiles.some(t => /second yellow/i.test(t[1])) && tiles[5][1] === 'red cards' &&
@@ -575,6 +586,10 @@ function alarmAt(ev, al){
   const gnote = await p3.$eval('#aGoalsNote', e => e.textContent).catch(() => null);
   check('Stats: the footnote counts goals and matches whose goals list is shorter than the score',
     fx.goalsShort.length ? gnote === `Includes ${plEn(fx.goalsShort.reduce((a, b) => a + b, 0), 'goal', 'goals')} from ${plEn(fx.goalsShort.length, 'match', 'matches')} without a full goals list` : gnote === null, String(gnote));
+  const gexcl = await p3.$eval('#aGoalsExcl', e => e.textContent).catch(() => null);
+  check('Stats: the exclusion note comes after the goals-list note and names the goals of the exhibition matches, counted by the same rule',
+    gexcl === `Doesn't include goals from exhibition matches (${plEn(fx.exclGoals, 'goal', 'goals')} excluded)` &&
+    await p3.evaluate(() => { const a = document.getElementById('aGoalsNote'), b = document.getElementById('aGoalsExcl'); return !a || !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING); }), String(gexcl));
   const lists = await p3.evaluate(() => {
     const out = {};
     document.querySelectorAll('#meStats .aeye').forEach(h => {
@@ -1518,6 +1533,289 @@ function alarmAt(ev, al){
   check('Nothing typed into the form, the JSON box or the sheet appears in any request (URL, body or headers)', !leaked.length, leaked.map(r => r.method + ' ' + r.url.slice(0, 80)).join(', '));
   check('No request other than GET reached the site during the form tests', !nonGet.length, nonGet.join(', '));
   await ctxF.close();
+  }
+
+  {
+  // ---- 2026-10-15: exhibition matches leave the goal stats, and the Competition and Stadium fields of the match form offer suggestions.
+  //      Expected values are worked out here from data/attended.json, data/competitions.csv and the club files, never typed in as results.
+  //      Own context with an empty device, so the counts below are the file's plus what this block adds.
+  const IMPK = 'football-attended-imported';
+  const reqStart = requests.length, nonGet0 = nonGet.length;
+  const FOLDX = {'ß': 'ss', 'ø': 'o', 'đ': 'd', 'ł': 'l', 'æ': 'ae', 'œ': 'oe', 'ı': 'i', 'þ': 'th', 'ð': 'd'};
+  const foldN = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/[ßøđłæœıþð]/g, c => FOLDX[c]).replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+  const csvRows = text => { const rows = []; let row = [], cell = '', q = false;
+    for(let i = 0; i < text.length; i++){ const ch = text[i];
+      if(q){ if(ch === '"' && text[i + 1] === '"'){ cell += '"'; i++; } else if(ch === '"') q = false; else cell += ch; }
+      else if(ch === '"') q = true; else if(ch === ','){ row.push(cell); cell = ''; }
+      else if(ch === '\n' || ch === '\r'){ if(ch === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; } else cell += ch; }
+    if(cell !== '' || row.length){ row.push(cell); rows.push(row); }
+    const head = rows.shift(); return rows.filter(r => r.some(c => c.trim())).map(r => Object.fromEntries(head.map((h, i) => [h.trim(), (r[i] || '').trim()]))); };
+  const CSVN = csvRows(fs.readFileSync(path.join(ROOT, 'data/competitions.csv'), 'utf8')).filter(r => r.name);
+  const CLUBN = [];                                   // the clubs the map draws: a position and a tier, as CLUBS holds them
+  for(const f of fs.readdirSync(path.join(ROOT, 'data/clubs')).filter(f => /^[A-Z]{2}\.json$/.test(f))){
+    const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/clubs', f), 'utf8'));
+    for(const c of d.clubs || []) if(c.lat != null && c.lon != null && c.tier != null) CLUBN.push(Object.assign({}, c, {country: d.country}));
+  }
+  const venueFolds = new Set(CLUBN.filter(c => c.venue && foldN(c.venue)).map(c => foldN(c.venue)));
+  const stadiumFolds = new Set([...venueFolds, ...ATTF.matches.filter(m => m.stadium && foldN(m.stadium)).map(m => foldN(m.stadium))]);
+  const leagueNames = [...new Set(CLUBN.filter(c => c.competition).map(c => c.competition))];
+  const compFoldsNoCsv = new Set(['friendly', 'exhibition', ...leagueNames.map(foldN), ...ATTF.matches.map(m => foldN(m.competition.en))].filter(Boolean));
+  const compFolds = new Set([...compFoldsNoCsv, ...CSVN.map(r => foldN(r.name)).filter(Boolean)]);
+  // In Romanian the matches' competition texts are the Romanian ones.
+  const compFoldsRo = new Set([...leagueNames.map(foldN), ...ATTF.matches.map(m => foldN(m.competition.ro)), ...CSVN.map(r => foldN(r.name))].filter(f => f && f !== 'meci amical' && f !== 'meci demonstrativ'));
+  const rankOf = (n, q) => { const f = foldN(q), at = n.indexOf(f); return at === 0 ? 0 : at > 0 && n[at - 1] === ' ' ? 1 : at > 0 ? 2 : 3; };
+  const totalFor = (folds, q) => { const ws = foldN(q).split(' '); return [...folds].filter(n => ws.every(w => n.includes(w))).length; };
+
+  const ctxS = await newCtx();
+  await ctxS.addInitScript(() => {
+    window.__w = [];
+    const w = Storage.prototype.setItem, r = Storage.prototype.removeItem;
+    Storage.prototype.setItem = function(k, v){ window.__w.push(k); return w.call(this, k, v); };
+    Storage.prototype.removeItem = function(k){ window.__w.push(k); return r.call(this, k); };
+  });
+  const pS = await ctxS.newPage();
+  pS.on('pageerror', e => errors.push(e.message));
+  pS.on('dialog', d => d.accept());
+  await pS.goto(BASE);
+  await pS.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await pS.click('nav button[data-pane=me]');
+  await pS.waitForSelector('#meStats .astat');
+  await pS.click('#meTabMatches'); await pS.waitForSelector('#meMatches .acard');
+  const stored = async () => { const v = await pS.evaluate(k => localStorage.getItem(k), IMPK); return v ? JSON.parse(v).matches : []; };
+  const openAddS = async () => { await pS.click('#meTabMatches'); await pS.waitForSelector('#aForm', {state: 'attached'}); if(!(await pS.$eval('#aAdd', d => d.open))) await pS.click('#aAdd summary'); };
+  const resetS = async () => { await pS.click('#meTabMatches'); await pS.waitForSelector('#aForm', {state: 'attached'}); if(await pS.$eval('#aAdd', d => d.open)) await pS.click('#aFormCancel'); await openAddS(); };
+  const msgS = async () => (await pS.textContent('#aImpMsg')).trim();
+  const fillS = async v => { for(const [k, val] of Object.entries(v)) await pS.fill(`#aForm [name=${k}]`, val); };
+  let seq = 0;
+  const base = o => Object.assign({date: '2026-05-0' + (1 + (seq++ % 9)), home: 'Exh Home ' + TAG + seq, away: 'Exh Away ' + TAG, sh: '1', sa: '0'}, o);
+  const addS = async (v, {exh, json} = {}) => {      // the form (and the JSON box), submitted; the message
+    await resetS(); await fillS(v);
+    if(exh != null) await pS.selectOption('#aForm [name=exhibition]', exh);
+    if(json != null) await pS.fill('#aImpBox', json);
+    await pS.click('#aImpBtn'); return msgS();
+  };
+  const statsS = async () => { await pS.click('#meTabStats'); await pS.waitForSelector('#meStats .astat');
+    return pS.evaluate(() => { const ts = [...document.querySelectorAll('#meStats .astat')], n = s => +s.replace(/[^\d]/g, ''), ex = document.getElementById('aGoalsExcl'), sh = document.getElementById('aGoalsNote');
+      return {matches: n(ts[0].querySelector('b').textContent), goals: n(ts[1].querySelector('b').textContent), avg: ts[1].querySelector('i').textContent, pens: n(ts[2].querySelector('b').textContent),
+        excl: ex ? ex.textContent : null, short: sh ? sh.textContent : null}; }); };
+  const exclN = s => s.excl ? +/\((\d+) goals? excluded\)/.exec(s.excl)[1] : 0;
+  const cardsS = async () => { await pS.click('#meTabMatches'); await pS.waitForSelector('#meMatches .acard');
+    return pS.$$eval('#meMatches .acard', cs => cs.map(c => ({id: c.dataset.id, exh: [...c.querySelectorAll('.aexh')].map(x => x.textContent)}))); };
+  const openCardS = async key => { await pS.click('#meTabMatches'); await pS.waitForSelector('#meMatches .acard'); await pS.click(`#meMatches .acard[data-id="${key}"]`); await pS.waitForSelector('#asheet:not([hidden])'); await pS.waitForTimeout(350); };
+  const closeS = async () => { if(await pS.$('#asheet:not([hidden])')){ await pS.click('#asheetClose'); await pS.waitForTimeout(250); } };
+  const fileExh = ATTF.matches.filter(m => m.exhibition === true).map(m => m.id);
+
+  // ---- The flag in the file, the validator, the toggle.
+  check('data/attended.json: exactly one match carries "exhibition", it is true, and it is the 2019 charity match (7-6, empty goals list)',
+    ATTF.matches.filter(m => 'exhibition' in m).length === 1 && fileExh.join() === '2019-05-18-sfr-sfb' && ATTF.matches.find(m => m.exhibition).score === '7-6' && ATTF.matches.find(m => m.exhibition).goals.length === 0, fileExh.join());
+  await openAddS();
+  const sel = await pS.evaluate(() => { const s = document.querySelector('#aForm [name=exhibition]'); return {tag: s && s.tagName, val: s && s.value, opts: s && [...s.options].map(o => o.value + ':' + o.textContent), label: s && s.closest('label').firstChild.textContent}; });
+  check('The Add form has a Yes/No "Exhibition match", default No', sel.tag === 'SELECT' && sel.val === 'no' && sel.opts.join() === 'no:No,yes:Yes' && sel.label === 'Exhibition match', JSON.stringify(sel));
+  const vr = await pS.evaluate(() => { const ok = {id: 'v', date: '2026-01-01', score: '1-0', home: {name: 'A'}, away: {name: 'B'}};
+    const run = ex => { const c = attCheckMatch(Object.assign({}, ok, ex)); return c.rec ? 'ok' : c.errs.join('; '); };
+    return {t: run({exhibition: true}), f: run({exhibition: false}), none: run({}), s: run({exhibition: 'true'}), n: run({exhibition: 1}), o: run({exhibition: {}}), a: run({exhibition: []}), typo: run({exhibitions: true})}; });
+  check('The validator accepts exhibition true and false, and refuses a string, a number, an object, a list; an unknown field is still refused',
+    vr.t === 'ok' && vr.f === 'ok' && vr.none === 'ok' && [vr.s, vr.n, vr.o, vr.a].every(x => /exhibition/.test(x) && x !== 'ok') && /exhibitions/.test(vr.typo) && vr.typo !== 'ok', JSON.stringify(vr));
+  const s0 = await statsS(), c0 = await cardsS();
+  check('Baseline: the stats show the file only, exhibition match excluded (goals per match over the other matches, exclusion note)',
+    s0.matches === fx.n && s0.goals === fx.goals && s0.avg === (fx.goals / fx.nReal).toFixed(2) + ' per match' && s0.pens === fx.pens && exclN(s0) === fx.exclGoals, JSON.stringify(s0));
+  check('The tag "Exhibition" is on the exhibition match\'s card and on no other card', JSON.stringify(c0.filter(c => c.exh.length).map(c => [c.id, c.exh.join()])) === JSON.stringify(fileExh.map(i => [i, 'Exhibition'])), JSON.stringify(c0.filter(c => c.exh.length)));
+
+  const m1 = await addS(base({sh: '5', sa: '2'}), {exh: 'yes'});
+  const st1 = await stored(), E1 = st1[0];
+  check('Adding with Yes stores "exhibition": true', /^Added 1 imported match/.test(m1) && st1.length === 1 && E1.exhibition === true, m1 + ' ' + JSON.stringify(E1));
+  const s1 = await statsS();
+  check('...the matches card counts it; goals seen, goals per match and penalties scored do not; the exclusion note grows by its 7 goals',
+    s1.matches === s0.matches + 1 && s1.goals === s0.goals && s1.avg === s0.avg && s1.pens === s0.pens && exclN(s1) === exclN(s0) + 7 && s1.short === s0.short, JSON.stringify(s1));
+  const c1 = await cardsS();
+  check('...its card carries the "Exhibition" tag', c1.filter(c => c.exh.length).map(c => c.id).sort().join() === [...fileExh, 'imp:' + E1.id].sort().join(), '');
+  await openCardS('imp:' + E1.id);
+  check('...and its sheet header carries the tag', await pS.$$eval('#asheetHead .meta .aexh', x => x.map(e => e.textContent).join()) === 'Exhibition', '');
+  await closeS();
+
+  const m2 = await addS(base({sh: '2', sa: '0'}));
+  const st2 = await stored(), N1 = st2.find(x => x.id !== E1.id);
+  check('Adding with the default No stores no "exhibition" key at all', /^Added 1/.test(m2) && !('exhibition' in N1), JSON.stringify(N1));
+  const s2 = await statsS();
+  check('...it counts: goals seen +2, goals per match over one more non-exhibition match, the exclusion note unchanged',
+    s2.goals === s1.goals + 2 && s2.avg === ((fx.goals + 2) / (fx.nReal + 1)).toFixed(2) + ' per match' && exclN(s2) === exclN(s1) && s2.matches === s1.matches + 1, JSON.stringify(s2));
+
+  // The JSON merge rule: Yes counts as filled, a default No does not.
+  const jm1 = await addS(base({}), {json: '{"exhibition": true}'});
+  const jm1r = (await stored()).find(x => x.exhibition === true && x.id !== E1.id);
+  check('Merge: form left at No, JSON says true -> the JSON supplies it (stored true)', /^Added 1/.test(jm1) && !!jm1r, jm1);
+  const n1 = (await stored()).length;
+  const jm2 = await addS(base({}), {exh: 'yes', json: '{"exhibition": true}'});
+  check('Merge: form says Yes and the JSON fills it too -> refused, "exhibition" named, nothing stored', /exhibition/.test(jm2) && /both the form and the JSON/.test(jm2) && (await stored()).length === n1, jm2);
+  const jm3 = await addS(base({}), {json: '{"exhibition": false}'});
+  const jm3r = (await stored()).filter(x => x.exhibition === false);
+  check('Merge: form at No, JSON says false -> stored false, not an exhibition match', /^Added 1/.test(jm3) && jm3r.length === 1 && !(await cardsS()).find(c => c.id === 'imp:' + jm3r[0].id).exh.length, jm3);
+  const n2 = (await stored()).length;
+  const jm4 = await addS(base({}), {json: '{"exhibition": "yes"}'});
+  check('Merge: a JSON "exhibition" that is not true or false is refused and nothing is stored', /exhibition/.test(jm4) && (await stored()).length === n2, jm4);
+  await resetS(); await pS.selectOption('#aForm [name=exhibition]', 'yes'); await pS.click('#aImpBtn');
+  check('A form with only the Yes chosen counts as filled (the required fields are asked for, the paste box is not read)',
+    /Not saved/.test(await msgS()) && (await pS.textContent('#aForm [data-ferr="date"]')).trim() !== '' && (await stored()).length === n2, await msgS());
+  const jm5 = await addS({}, {json: JSON.stringify([{id: 'p1' + TAG, date: '2026-04-01', score: '3-3', home: {name: 'P1'}, away: {name: 'P2'}, exhibition: true}, {id: 'p2' + TAG, date: '2026-04-02', score: '1-0', home: {name: 'P3'}, away: {name: 'P4'}}])});
+  check('With the form empty the paste box still takes a list, exhibition included', /^Added 2 imported match/.test(jm5) && (await stored()).filter(x => x.id.startsWith('p') && x.id.endsWith(TAG)).map(x => x.exhibition === true).join() === 'true,false', jm5);
+
+  // Edit shows the stored state and changes it.
+  await openCardS('imp:' + E1.id); await pS.click('#aImpEdit'); await pS.waitForSelector('#aForm:not([data-edit=""])');
+  check('Edit shows the stored state (Yes for an exhibition match)', await pS.inputValue('#aForm [name=exhibition]') === 'yes', '');
+  await pS.selectOption('#aForm [name=exhibition]', 'no'); await pS.click('#aImpBtn'); await pS.waitForSelector('#asheet:not([hidden])'); await pS.waitForTimeout(350);
+  const E1b = (await stored()).find(x => x.id === E1.id);
+  check('Saving with No removes the key; the tag leaves the sheet and the card; the goals now count',
+    !('exhibition' in E1b) && !(await pS.$('#asheetHead .meta .aexh')) && !(await cardsS()).find(c => c.id === 'imp:' + E1.id).exh.length && (await statsS()).goals >= s2.goals + 7, JSON.stringify(E1b).slice(0, 80));
+  await closeS(); await openCardS('imp:' + N1.id); await pS.click('#aImpEdit'); await pS.waitForSelector('#aForm:not([data-edit=""])');
+  check('Edit shows No for a match without the key', await pS.inputValue('#aForm [name=exhibition]') === 'no', '');
+  await pS.selectOption('#aForm [name=exhibition]', 'yes'); await pS.click('#aImpBtn'); await pS.waitForSelector('#asheet:not([hidden])'); await pS.waitForTimeout(350);
+  check('Saving with Yes stores true and shows the tag in the sheet', (await stored()).find(x => x.id === N1.id).exhibition === true && (await pS.$$eval('#asheetHead .meta .aexh', x => x.length)) === 1, '');
+  await closeS();
+
+  // ---- Suggestions. Typing and tapping store nothing and request nothing.
+  await resetS();
+  const w0 = await pS.evaluate(() => window.__w.length);
+  await pS.focus('#aForm [name=competition]');
+  await pS.waitForFunction(() => typeof SUG_COMPS !== 'undefined' && SUG_COMPS);
+  const rowsOf = sel => pS.$$eval(`${sel} + .asugg button`, bs => bs.map(b => ({name: b.querySelector('.sn').textContent, sub: (b.querySelector('.rd') || {}).textContent || ''})));
+  const moreOf = sel => pS.$eval(`${sel} + .asugg .none`, e => e.textContent).catch(() => null);
+  const compSel = 'label:has([name=competition])', stadSel = 'label:has([name=stadium])';
+  const typeC = async v => { await pS.fill('#aForm [name=competition]', v); };
+  const typeS = async v => { await pS.fill('#aForm [name=stadium]', v); };
+  const itemsC = await pS.evaluate(() => sugItems('competition').map(i => fold(i.name)));
+  check('Competition suggestions hold every name of data/competitions.csv, every league of the coverage panel, every competition text of the file\'s matches, "Friendly" and "Exhibition", once each',
+    itemsC.length === new Set(itemsC).size && [...compFolds].every(f => itemsC.includes(f)) && itemsC.length === compFolds.size, `${itemsC.length} in the page, ${compFolds.size} expected`);
+  check('data/competitions.csv was requested once, by GET, when the form opened', requests.slice(reqStart).filter(r => /data\/competitions\.csv/.test(r.url) && r.method === 'GET').length === 1, '');
+  await typeC('liga');
+  let rc = await rowsOf(compSel), mc = await moreOf(compSel);
+  const totLiga = totalFor(compFolds, 'liga');
+  check('"liga": 8 rows and "+ n more" with n worked out from the sources', totLiga > 8 && rc.length === 8 && mc === `+ ${totLiga - 8} more`, `${rc.length} rows, ${mc}, expected total ${totLiga}`);
+  const ranks = rc.map(r => rankOf(foldN(r.name), 'liga'));
+  check('...names that start with what was typed come first, then those with a word that does, then the rest', ranks.every((x, i) => !i || ranks[i - 1] <= x), ranks.join());
+  const accented = CSVN.find(r => foldN(r.name) !== r.name.toLowerCase() && /[^\x00-\x7f]/.test(r.name) && totalFor(compFolds, r.name) <= 8);
+  await typeC(foldN(accented.name));
+  rc = await rowsOf(compSel);
+  check('Matching ignores accents and case: the accent-free lower-case name finds the CSV name as written', rc.some(r => r.name === accented.name), accented.name);
+  const withCtry = CSVN.find(r => r.country && foldN(r.name) && totalFor(compFolds, r.name) <= 8);
+  await typeC(withCtry.name); rc = await rowsOf(compSel);
+  check('A CSV row\'s second line gives its country and type', rc.some(r => r.name === withCtry.name && r.sub.length > 0 && r.sub.includes('·')), JSON.stringify(rc.find(r => r.name === withCtry.name)));
+  await typeC('friend'); rc = await rowsOf(compSel);
+  check('"Friendly" is offered', rc.some(r => r.name === 'Friendly'), JSON.stringify(rc.map(r => r.name)));
+  await pS.click(`${compSel} + .asugg .sn:text-is("Friendly")`);
+  check('Tapping a row fills the field with the name and closes the list; the exhibition toggle is left alone',
+    await pS.inputValue('#aForm [name=competition]') === 'Friendly' && await pS.$eval(`${compSel} + .asugg`, e => e.hidden) && await pS.inputValue('#aForm [name=exhibition]') === 'no', '');
+  await typeC('exhib'); rc = await rowsOf(compSel);
+  check('"Exhibition" is offered', rc.some(r => r.name === 'Exhibition'), JSON.stringify(rc.map(r => r.name)));
+  await pS.click(`${compSel} + .asugg .sn:text-is("Exhibition")`);
+  check('Tapping "Exhibition" fills it and switches the toggle on', await pS.inputValue('#aForm [name=competition]') === 'Exhibition' && await pS.inputValue('#aForm [name=exhibition]') === 'yes', '');
+  await pS.selectOption('#aForm [name=exhibition]', 'no'); await typeC(withCtry.name);
+  await pS.click(`${compSel} + .asugg button >> nth=0`);
+  check('Tapping any other suggestion leaves the toggle alone (No stays No)', await pS.inputValue('#aForm [name=exhibition]') === 'no', '');
+  await pS.selectOption('#aForm [name=exhibition]', 'yes'); await typeC(withCtry.name);
+  await pS.click(`${compSel} + .asugg button >> nth=0`);
+  check('...and Yes stays Yes', await pS.inputValue('#aForm [name=exhibition]') === 'yes', '');
+  await pS.selectOption('#aForm [name=exhibition]', 'no');
+  const FREE = 'Free Cup ' + TAG;
+  await typeC(FREE); const nSt = (await stored()).length;
+  await pS.press('#aForm [name=competition]', 'Enter');
+  check('Free text works: Enter keeps what is typed, closes the list and does not save the form', await pS.inputValue('#aForm [name=competition]') === FREE && (await stored()).length === nSt && !!(await pS.$('#aForm')), '');
+  await pS.click('#aForm [name=stage]');
+  check('...and leaving the field keeps it', await pS.inputValue('#aForm [name=competition]') === FREE, '');
+
+  // Stadiums.
+  const itemsS = await pS.evaluate(() => sugItems('stadium').map(i => fold(i.name)));
+  check('Stadium suggestions hold the venue of every club the map draws (all club files) and the stadiums of the file\'s matches, once per folded name',
+    itemsS.length === new Set(itemsS).size && [...stadiumFolds].every(f => itemsS.includes(f)) && itemsS.length === stadiumFolds.size && venueFolds.size > 400, `${itemsS.length} in the page, ${stadiumFolds.size} expected, ${venueFolds.size} from clubs`);
+  const byCountry = new Map();
+  for(const c of CLUBN){ if(!c.venue || byCountry.has(c.country)) continue; const f = foldN(c.venue);
+    if(f.length >= 6 && CLUBN.filter(x => x.venue && foldN(x.venue) === f).length === 1 && !ATTF.matches.some(m => m.stadium && foldN(m.stadium) === f)) byCountry.set(c.country, c); }
+  const nCountryFiles = fs.readdirSync(path.join(ROOT, 'data/clubs')).filter(f => /^[A-Z]{2}\.json$/.test(f)).length;
+  const sampleBad = [];
+  for(const [cc, c] of byCountry){
+    await typeS(foldN(c.venue));
+    const rs = await rowsOf(stadSel), want = await pS.evaluate(x => countryName(x), cc), row = rs.find(r => r.name === c.venue);
+    if(!row || !row.sub.includes(c.name || c.id) || !row.sub.includes(want)) sampleBad.push(cc + ':' + c.venue + ' ' + JSON.stringify(rs.slice(0, 2)));
+  }
+  check('A club of every country file is found by its ground (typed without accents), with the club and the country on the second line', byCountry.size === nCountryFiles && !sampleBad.length, `${byCountry.size} of ${nCountryFiles}; ${sampleBad.join(' | ')}`);
+  const fm = ATTF.matches.find(m => m.stadium && !venueFolds.has(foldN(m.stadium)));
+  if(fm){ await typeS(foldN(fm.stadium)); check('A stadium that only a file match has is offered too, with its country', (await rowsOf(stadSel)).some(r => r.name === fm.stadium && r.sub.includes(fm.country.en)), fm.stadium); }
+  else check('A stadium that only a file match has is offered too (every file stadium is also a club ground)', true, 'none to test');
+  await pS.fill('#aForm [name=city]', ''); await typeS(foldN(byCountry.values().next().value.venue));
+  await pS.click(`${stadSel} + .asugg button >> nth=0`);
+  check('Tapping a stadium fills the stadium and does not fill the city', (await pS.inputValue('#aForm [name=stadium]')).length > 0 && await pS.inputValue('#aForm [name=city]') === '', '');
+  const wDuring = await pS.evaluate(w => window.__w.slice(w), w0);
+  check('Typing, tapping, Enter and leaving a field wrote nothing to the browser\'s storage', wDuring.length === 0, wDuring.join());
+
+  // Layout: at 390x844, and at 390x500 with the keyboard stood in by the smaller window.
+  const placed = () => pS.evaluate(() => { const b = document.querySelector('.asugg:not([hidden])'); if(!b) return null; const r = b.getBoundingClientRect(), nx = b.nextElementSibling, nr = nx && nx.getBoundingClientRect(),
+    vh = window.visualViewport ? visualViewport.height : innerHeight, btn = document.getElementById('aImpBtn').getBoundingClientRect(), sc = document.getElementById('pane-me');
+    return {top: r.top, bottom: r.bottom, left: r.left, right: r.right, vh, w: innerWidth, nextTop: nr ? nr.top : null, btnTop: btn.top, scrollW: sc.scrollWidth, clientW: sc.clientWidth, rows: b.querySelectorAll('button').length}; });
+  await typeC('liga'); let pl = await placed();
+  check('At 390x844 the list is inside the screen, sits in the page flow above the next field and the buttons, and nothing scrolls sideways',
+    pl && pl.left >= 0 && pl.right <= pl.w && pl.top >= 0 && pl.bottom <= pl.vh && pl.nextTop >= pl.bottom - 1 && pl.btnTop >= pl.bottom - 1 && pl.scrollW <= pl.clientW + 1, JSON.stringify(pl));
+  await pS.fill('#aForm [name=competition]', '');
+  await pS.focus('#aForm [name=stadium]');
+  await pS.setViewportSize({width: 390, height: 500});
+  await typeS('stad'); pl = await placed();
+  check('At 390x500 with the keyboard stood in, the stadium list ends above the bottom of the visible area and is on screen', pl && pl.rows >= 1 && pl.top >= 0 && pl.bottom <= pl.vh && pl.left >= 0 && pl.right <= pl.w && pl.btnTop >= pl.bottom - 1, JSON.stringify(pl));
+  await typeC('liga'); pl = await placed();
+  check('...and so does the competition list', pl && pl.top >= 0 && pl.bottom <= pl.vh && pl.nextTop >= pl.bottom - 1, JSON.stringify(pl));
+  await pS.setViewportSize({width: 390, height: 844});
+  await pS.fill('#aForm [name=competition]', ''); await pS.fill('#aForm [name=stadium]', '');
+
+  // Saving a match with free text.
+  const nowN = (await stored()).length;
+  await resetS(); await fillS(base({})); await typeC(FREE); await typeS('Free Ground ' + TAG); await pS.click('#aImpBtn');
+  const svr = (await stored()).find(x => x.competition === FREE);
+  check('A match saved with free text in both fields stores it as typed', /^Added 1/.test(await msgS()) && svr && svr.stadium === 'Free Ground ' + TAG && (await stored()).length === nowN + 1, JSON.stringify(svr).slice(0, 100));
+
+  // Romanian: labels in Romanian, stored values in English, nothing overflows.
+  await pS.evaluate(() => setLang('ro'));
+  await resetS();
+  await pS.focus('#aForm [name=competition]');
+  await typeC('amical'); rc = await rowsOf(compSel);
+  check('Romanian: "Meci amical" is offered', rc.some(r => r.name === 'Meci amical'), JSON.stringify(rc.map(r => r.name)));
+  await pS.click(`${compSel} + .asugg .sn:text-is("Meci amical")`);
+  check('...tapping it stores the English word "Friendly"', await pS.inputValue('#aForm [name=competition]') === 'Friendly', await pS.inputValue('#aForm [name=competition]'));
+  await typeC('demonstrativ'); rc = await rowsOf(compSel);
+  await pS.click(`${compSel} + .asugg .sn:text-is("Meci demonstrativ")`);
+  check('Romanian: the "Meci demonstrativ" row stores "Exhibition" and switches the toggle on', await pS.inputValue('#aForm [name=competition]') === 'Exhibition' && await pS.inputValue('#aForm [name=exhibition]') === 'yes', '');
+  await typeC('liga');
+  const totRo = totalFor(compFoldsRo, 'liga');
+  const roTxt = await pS.$eval(`${compSel} + .asugg`, e => e.querySelector('.none') ? e.querySelector('.none').textContent : '');
+  const roOver = await pS.evaluate(() => { const bad = []; document.getElementById('pane-me').querySelectorAll('*').forEach(x => { const r = x.getBoundingClientRect(); if(r.width > 0 && (r.right > innerWidth + 1 || r.left < -1)) bad.push(x.tagName + '.' + x.className); }); return bad.slice(0, 4); });
+  check('Romanian: the "+ n more" line is in Romanian and nothing overflows at 390 px', totRo > 8 && roTxt === `+ încă ${totRo - 8}` && !roOver.length, roTxt + ' expected ' + (totRo - 8) + ' ' + JSON.stringify(roOver));
+  await pS.evaluate(() => setLang('en'));
+  await closeS();
+
+  const keys = await pS.evaluate(() => [...new Set(window.__w)]);
+  check('No new storage key: the only keys written are the imported matches\', the backup banner\'s "unsaved" flag and the language (all existing)', keys.every(k => k === IMPK || k === 'football-planner-lang' || k === 'football-planner-me-unsaved'), keys.join());
+  const sreq = requests.slice(reqStart);
+  check('No request other than GET reached the site, and data/competitions.csv was requested once', nonGet.length === nonGet0 && sreq.filter(r => /data\/competitions\.csv/.test(r.url)).length === 1, nonGet.slice(nonGet0).join());
+  await ctxS.close();
+
+  // The CSV cannot load: the other sources still work and nothing breaks.
+  const ctxX = await newCtx();
+  await ctxX.route('**/data/competitions.csv', r => r.abort());
+  const pX = await ctxX.newPage();
+  const errX = errors.length;
+  pX.on('pageerror', e => errors.push(e.message));
+  await pX.goto(BASE);
+  await pX.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  await pX.click('nav button[data-pane=me]'); await pX.waitForSelector('#meStats .astat');
+  await pX.click('#meTabMatches'); await pX.waitForSelector('#aForm', {state: 'attached'}); await pX.click('#aAdd summary');
+  await pX.focus('#aForm [name=competition]'); await pX.waitForTimeout(600);
+  await pX.fill('#aForm [name=competition]', 'friend');
+  const xr = await pX.$$eval('label:has([name=competition]) + .asugg button .sn', b => b.map(x => x.textContent));
+  const csvOnly = CSVN.find(r => foldN(r.name) && !compFoldsNoCsv.has(foldN(r.name)));
+  await pX.fill('#aForm [name=competition]', csvOnly ? csvOnly.name : 'zzzz');
+  const xo = await pX.$$eval('label:has([name=competition]) + .asugg button .sn', b => b.map(x => x.textContent));
+  const gv = CLUBN.find(c => c.venue).venue;
+  await pX.fill('#aForm [name=stadium]', foldN(gv));
+  const xs = await pX.$$eval('label:has([name=stadium]) + .asugg button .sn', b => b.map(x => x.textContent));
+  check('CSV unreachable: "Friendly" and the club grounds are still offered, a CSV-only name is not, and there is no script error',
+    xr.includes('Friendly') && xs.includes(gv) && (!csvOnly || !xo.includes(csvOnly.name)) && errors.length === errX, JSON.stringify({xr, csvOnly: csvOnly && csvOnly.name, xo, xs: xs.slice(0, 2)}));
+  await ctxX.close();
   }
 
   {
