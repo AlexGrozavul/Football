@@ -1063,6 +1063,7 @@ const I18N = {
     "fri.note": "As stated by the cited source. Fan friendships change and can end.",
     "fri.groups": "Groups: {text}",
     "fri.quote": "Source says:",
+    "fri.mirror": "Stated on {club}'s page only",
     "fris.fan-groups": "Between fan groups",
     "fris.clubs": "Between clubs",
     "fris.unclear": "Not specified",
@@ -2306,6 +2307,7 @@ const I18N = {
     "fri.note": "Așa cum le arată sursa citată. Prieteniile dintre suporteri se pot schimba și pot lua sfârșit.",
     "fri.groups": "Grupuri: {text}",
     "fri.quote": "Sursa spune:",
+    "fri.mirror": "Menționat doar pe pagina {club}",
     "fris.fan-groups": "Între grupurile de suporteri",
     "fris.clubs": "Între cluburi",
     "fris.unclear": "Nespecificat",
@@ -4275,8 +4277,18 @@ async function friendshipsHtml(club){
   const C = await cultureFiles(['data/club-friendships.csv']);
   if(C.err) return `<h4>${esc(t('fri.title'))}</h4>` + unavailable(t('fri.short'), esc(t('fri.loadFail'))) +
     why(esc(t('gen.fileFail', {file: C.err, err: C.why})));
-  const rows = C.files[0].filter(r => r.clubQ === club.id && !r._over && r.friendName && r.friendQ !== club.id &&
-      FRI_ORDER[r.status] !== undefined && FRI_SCOPE[r.scope] && C.src.has(r.sourceId))
+  const valid = r => !r._over && r.friendName && r.friendQ !== r.clubQ &&
+      FRI_ORDER[r.status] !== undefined && FRI_SCOPE[r.scope] && C.src.has(r.sourceId);
+  const all = C.files[0].filter(valid);
+  const own = all.filter(r => r.clubQ === club.id);
+  const ownFor = new Set(own.map(r => r.friendQ).filter(Boolean));
+  /* A friendship stated on one club's page only also shows on the friend's sheet, as that
+     page states it, labelled. Never when the friend has its own row for that club, never
+     for a row with no friendQ, and only where the club stating it is on the map (its name
+     comes from the club files). Drawn here; no data file is written. */
+  const mirrored = all.filter(r => r.friendQ === club.id && r.clubQ && !ownFor.has(r.clubQ) && mapClub(r.clubQ))
+    .map(r => ({...r, friendQ: r.clubQ, friendName: mapClub(r.clubQ).name, _mirror: true}));
+  const rows = [...own, ...mirrored]
     .sort((a, b) => FRI_ORDER[a.status] - FRI_ORDER[b.status] || a.friendName.localeCompare(b.friendName));
   if(!rows.length) return '';
   const rowHtml = (r, i) => {
@@ -4288,7 +4300,8 @@ async function friendshipsHtml(club){
       `<div class="frtop">${name}<span class="tag frscope">${FRI_SCOPE[r.scope]}</span><span class="tag frstatus">${FRI_STATUS[r.status]}</span></div>` +
       (r.groupsText ? `<div class="sub frgroups" data-content>${esc(t('fri.groups', {text: r.groupsText}))}</div>` : '') +
       (r.quote ? `<div class="sub frquote"><span>${esc(t('fri.quote'))}</span> <span data-content>«${esc(r.quote)}»</span></div>` : '') +
-      `<div class="sub frsrc">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div></div>`;
+      `<div class="sub frsrc">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div>` +
+      (r._mirror ? `<div class="sub frmirror">${esc(t('fri.mirror', {club: r.friendName}))}</div>` : '') + `</div>`;
   };
   return `<h4>${esc(t('fri.title'))}</h4><div class="fris">` + rows.map(rowHtml).join('') +
     (rows.length > FRI_SHOWN ? `<button class="frmore" aria-expanded="false">${esc(t('gen.showAll', {n: rows.length}))}</button>` : '') +

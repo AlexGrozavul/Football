@@ -237,16 +237,16 @@ const server = http.createServer((req, res) => {
   pg2.on('pageerror', e => errors.push(e.message));
   await pg2.goto(BASE);
   await pg2.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
-  const M = await rivalSheet(pg2, many);
+  const Mriv = await rivalSheet(pg2, many);
   const mrows = csvText(mixed).filter(r => r.clubQ === many);
   const mwant = expectOrder(mrows);
   check('mixed classes: main first, then local, then other, alphabetical within a class',
-    new Set(mrows.map(r => r.class)).size > 1 && JSON.stringify(M.rows.map(r => r.name)) === JSON.stringify(mwant.map(r => r.rivalName)) &&
-    JSON.stringify(M.rows.map(r => r.cls)) === JSON.stringify(mwant.map(r => LABEL[r.class])) && M.rows[0].cls === LABEL[mwant[0].class],
-    M.rows.map(r => `${r.name}:${r.cls}`).join(' | '));
+    new Set(mrows.map(r => r.class)).size > 1 && JSON.stringify(Mriv.rows.map(r => r.name)) === JSON.stringify(mwant.map(r => r.rivalName)) &&
+    JSON.stringify(Mriv.rows.map(r => r.cls)) === JSON.stringify(mwant.map(r => LABEL[r.class])) && Mriv.rows[0].cls === LABEL[mwant[0].class],
+    Mriv.rows.map(r => `${r.name}:${r.cls}`).join(' | '));
   // More than 5 rows: the first 5 show, the rest wait behind "Show all (n)".
   check(`more than 5 rows (${mrows.length}): 5 shown, "Show all (${mrows.length})" present`,
-    mrows.length > 5 && M.rows.filter(r => r.shown).length === 5 && M.more === `Show all (${mrows.length})`, `${M.rows.filter(r => r.shown).length} shown, "${M.more}"`);
+    mrows.length > 5 && Mriv.rows.filter(r => r.shown).length === 5 && Mriv.more === `Show all (${mrows.length})`, `${Mriv.rows.filter(r => r.shown).length} shown, "${Mriv.more}"`);
   await pg2.click('#sheetBody .rvmore');
   const opened = await pg2.evaluate(() => ({shown: [...document.querySelectorAll('#sheetBody .riv')].filter(r => !r.hidden).length,
     expanded: document.querySelector('#sheetBody .rvmore').getAttribute('aria-expanded'),
@@ -274,12 +274,23 @@ const server = http.createServer((req, res) => {
     });
   };
   const realFri = csv('data/club-friendships.csv');
+  // What a club's Fan friendships section holds, worked out from the rows alone: the club's own rows, plus every
+  // row that names this club in friendQ when this club has no row of its own for the club that states it (shown
+  // as that club, labelled). A row with no friendQ is never mirrored.
+  const clubNames = await page.evaluate(() => Object.fromEntries(CLUBS.map(c => [c.id, c.name])));
+  const FR0 = {active: 0, unclear: 1, ended: 2};
+  const friShown = (qid, rows) => {
+    const own = rows.filter(r => r.clubQ === qid).map(r => ({...r, mirror: ''}));
+    const ownFor = new Set(own.map(r => r.friendQ).filter(Boolean));
+    const mir = rows.filter(r => r.friendQ === qid && r.clubQ && !ownFor.has(r.clubQ) && clubNames[r.clubQ])
+      .map(r => ({...r, friendQ: r.clubQ, friendName: clubNames[r.clubQ], mirror: r.clubQ}));
+    return [...own, ...mir].sort((a, b) => FR0[a.status] - FR0[b.status] || a.friendName.localeCompare(b.friendName));
+  };
   // The sections that exist for a club are Rivalries and Fan friendships, Fan friendships directly after Rivalries
   // when both exist. Clubs are picked from the data: one with both, one with only one, one with none.
   const SECTIONS = [['Rivalries', riv], ['Fan friendships', realFri]];
-  const has = (q, rows) => rows.some(r => r.clubQ === q);
-  const present = q => SECTIONS.filter(([, rows]) => has(q, rows)).map(([h]) => h);
-  const fileClubs = [...new Set([...riv, ...realFri].map(r => r.clubQ))].filter(q => onMap.includes(q));
+  const present = q => SECTIONS.filter(([h, rows]) => h === 'Fan friendships' ? friShown(q, rows).length > 0 : rows.some(r => r.clubQ === q)).map(([h]) => h);
+  const fileClubs = onMap.filter(q => present(q).length > 0);
   const bothAt = fileClubs.find(q => present(q).length === 2);
   const oneOnly = fileClubs.find(q => present(q).length === 1);
   const noneAt = onMap.find(q => present(q).length === 0);
@@ -315,6 +326,8 @@ const server = http.createServer((req, res) => {
   const FH = 'clubQ,friendQ,friendName,scope,status,groupsText,sourceId,checkedOn,quote';
   const LONGQ = 'Averyverylongquotewithoutanybreakshere' + 'y'.repeat(120);
   const LONG = 'Averyveryverylongfangroupnamewithoutanybreakshere' + 'x'.repeat(120);
+  const spare = await page.evaluate(ids => CLUBS.filter(c => !ids.includes(c.id)).slice(0, 8).map(c => c.id), [many, nonDE, friendOnMap.id]);
+  const [M, X1, X2, X3, X4, X5, X6] = spare;
   const frRows = [
     {clubQ: many, friendQ: '', friendName: 'Zulu Test', scope: 'clubs', status: 'ended', groupsText: '', quote: 'Zu Zeiten der Teilung gab es eine Fanfreundschaft'},
     {clubQ: many, friendQ: '', friendName: 'Alpha Test', scope: 'fan-groups', status: 'active', groupsText: 'Group One, Group Two', quote: 'Une amitié, « très forte », entre „supporters“'},
@@ -325,6 +338,17 @@ const server = http.createServer((req, res) => {
     {clubQ: many, friendQ: friendOnMap.id, friendName: friendOnMap.name, scope: 'fan-groups', status: 'unclear', groupsText: '', quote: 'ein freundschaftliches Verhältnis'},
     {clubQ: nonDE, friendQ: '', friendName: 'Foreign Beta', scope: 'clubs', status: 'ended', groupsText: ''},
     {clubQ: nonDE, friendQ: '', friendName: 'Foreign Alpha', scope: 'fan-groups', status: 'active', groupsText: 'Some Fans'},
+    // mirror tests: six clubs state a friendship with M (one two-sided: M also has its own row for X2), X3 also has a
+    // name-only row, and M has a name-only row of its own
+    {clubQ: X1, friendQ: M, friendName: clubNames[M], scope: 'clubs', status: 'ended', groupsText: '', quote: 'Quote from X1'},
+    {clubQ: X2, friendQ: M, friendName: clubNames[M], scope: 'fan-groups', status: 'active', groupsText: 'X2 Fans', quote: 'Quote from X2 about M'},
+    {clubQ: M, friendQ: X2, friendName: clubNames[X2], scope: 'clubs', status: 'active', groupsText: '', quote: 'Quote from M about X2'},
+    {clubQ: X3, friendQ: M, friendName: clubNames[M], scope: 'unclear', status: 'unclear', groupsText: '', quote: 'Quote from X3'},
+    {clubQ: X3, friendQ: '', friendName: 'Name Only FC', scope: 'clubs', status: 'active', groupsText: '', quote: 'Name only quote'},
+    {clubQ: X4, friendQ: M, friendName: clubNames[M], scope: 'clubs', status: 'active', groupsText: '', quote: 'Quote from X4'},
+    {clubQ: X5, friendQ: M, friendName: clubNames[M], scope: 'fan-groups', status: 'unclear', groupsText: 'X5 Fans', quote: 'Quote from X5'},
+    {clubQ: X6, friendQ: M, friendName: clubNames[M], scope: 'clubs', status: 'ended', groupsText: '', quote: 'Quote from X6'},
+    {clubQ: M, friendQ: '', friendName: 'Own Name Only', scope: 'clubs', status: 'unclear', groupsText: ''},
   ].map(r => ({...r, sourceId: srcId, checkedOn: '2026-10-03'}));
   const frCsv = FH + '\n' + frRows.map(r => FH.split(',').map(k => q(r[k] || '')).join(',')).join('\n') + '\n';
   const rivExtra = `${nonDE},,Test Rival,main,${srcId},2026-10-03`;
@@ -352,7 +376,7 @@ const server = http.createServer((req, res) => {
           fid: r.querySelector('.frname').dataset.id || '', scope: r.querySelector('.frscope').textContent, status: r.querySelector('.frstatus').textContent,
           groups: r.querySelector('.frgroups')?.textContent || '', quote: r.querySelector('.frquote')?.textContent || '',
           quoteLabel: r.querySelector('.frquote > span:first-child')?.textContent || '', quoteIsData: r.querySelector('.frquote > span[data-content]')?.textContent || '', href: r.querySelector('.frsrc a')?.href || '', src: r.querySelector('.frsrc').textContent,
-          shown: !r.hidden, wide: r.scrollWidth > r.clientWidth + 1})),
+          shown: !r.hidden, mirror: r.querySelector('.frmirror')?.textContent || '', wide: r.scrollWidth > r.clientWidth + 1})),
         more: b.querySelector('.frmore')?.textContent || '', sections: b.querySelectorAll('.fris').length,
         rivs: b.querySelectorAll('.riv').length, atm: b.querySelectorAll('details.atm, .atmrow, .atmnote, #sheetAtm').length,
         sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
@@ -389,12 +413,51 @@ const server = http.createServer((req, res) => {
   await pg4.click(`#sheetBody .fris .frname[data-id="${friendOnMap.id}"]`);
   await pg4.waitForFunction(id => SHEET_FOR === id, friendOnMap.id, {timeout: 8000}).catch(() => {});
   check('friendships: tapping a friend on the map opens its own sheet', await pg4.evaluate(() => SHEET_FOR) === friendOnMap.id);
-  const NF = await friSheet(pg4, (await pg4.evaluate(([a, b, c]) => CLUBS.find(x => ![a, b, c].includes(x.id)).id, [many, nonDE, friendOnMap.id])));
+  const NF = await friSheet(pg4, (await pg4.evaluate(([a, b, c, sp]) => CLUBS.find(x => ![a, b, c, ...sp].includes(x.id)).id, [many, nonDE, friendOnMap.id, spare])));
   check('friendships: a club without rows shows no Fan friendships section', !NF.h4.includes('Fan friendships') && !NF.sections && !NF.rows.length && !NF.note);
   const FD = await friSheet(pg4, nonDE), fd = wantFri(nonDE);
   check(`friendships: a non-German club (${nonDE}) shows Rivalries and Fan friendships, in that order, and no atmosphere section`,
     FD.h4.indexOf('Fan friendships') === FD.h4.indexOf('Rivalries') + 1 && !FD.h4.includes('When the atmosphere is best') &&
     FD.rivs === 1 && FD.atm === 0 && JSON.stringify(FD.rows.map(r => r.name)) === JSON.stringify(fd.map(r => r.friendName)) && !FD.sideways, FD.h4.join(' | '));
+  // ---- Mirrored rows (injected): a friendship stated on one club's page only also shows on the friend's sheet.
+  const LBL = n => `Stated on ${n}'s page only`;
+  const sameRows = (S, want, lbl) => S.rows.length === want.length && want.every((w, i) => {
+    const r = S.rows[i];
+    return r.name === w.friendName && r.scope === SC[w.scope] && r.status === ST[w.status] &&
+      (w.groupsText ? r.groups === `Groups: ${w.groupsText}` : r.groups === '') &&
+      (w.quote ? r.quote === `Source says: «${w.quote}»` : r.quote === '') &&
+      r.mirror === (w.mirror ? lbl(clubNames[w.mirror]) : '') && r.tap === !!w.friendQ && r.fid === (w.friendQ || '');
+  });
+  const mirT = await friSheet(pg4, friendOnMap.id), mirTw = friShown(friendOnMap.id, frRows);
+  check(`mirror: a club whose only rows are mirrored (${friendOnMap.id}) gets the section, with the friend shown as the club that states it (tappable), the row exactly as stated and the label`,
+    mirTw.length === 1 && mirTw[0].mirror === many && mirT.h4.includes('Fan friendships') && mirT.note === 'As stated by the cited source. Fan friendships change and can end.' && sameRows(mirT, mirTw, LBL),
+    JSON.stringify(mirT.rows.map(r => [r.name, r.mirror, r.quote])));
+  const mirM = await friSheet(pg4, M), mirMw = friShown(M, frRows);
+  check(`mirror: ${M} shows its own rows and the mirrored ones, sorted active / not clear / ended and alphabetically by the friend shown, each mirrored row with its label`,
+    sameRows(mirM, mirMw, LBL) && mirM.rows.map(r => r.status).every((x, i, a) => i === 0 || stRank[x] >= stRank[a[i - 1]]), JSON.stringify(mirM.rows.map(r => [r.name, r.status, r.mirror ? 'mirror' : 'own'])));
+  check(`mirror: ${M} has ${mirMw.length} rows, 5 shown and "Show all (${mirMw.length})" - mirrored rows count`, mirMw.length === 7 && mirM.rows.filter(r => r.shown).length === 5 && mirM.more === `Show all (${mirMw.length})`,
+    `${mirM.rows.filter(r => r.shown).length} shown, "${mirM.more}"`);
+  const x2On = mirM.rows.filter(r => r.fid === X2);
+  const mirX2 = await friSheet(pg4, X2);
+  check(`mirror: a two-sided pair (${X2} and ${M}) shows once on each sheet, with its own row only and no label`,
+    x2On.length === 1 && !x2On[0].mirror && x2On[0].quote === 'Source says: «Quote from M about X2»' && mirX2.rows.filter(r => r.fid === M).length === 1 &&
+    !mirX2.rows.find(r => r.fid === M).mirror && mirX2.rows.find(r => r.fid === M).quote === 'Source says: «Quote from X2 about M»', JSON.stringify(mirX2.rows.map(r => [r.name, r.mirror])));
+  const mirX3 = await friSheet(pg4, X3);
+  const everyoneElse = [];
+  for(const c of [M, X1, X2, X4, friendOnMap.id]){ const S = await friSheet(pg4, c); if(S.rows.some(r => /Name Only FC|Own Name Only/.test(r.name) && c !== X3 && c !== M)) everyoneElse.push(c); }
+  check('mirror: a row with no friendQ shows only on its own club\'s sheet (X3\'s "Name Only FC" and M\'s "Own Name Only" are on no other)',
+    mirX3.rows.some(r => r.name === 'Name Only FC' && !r.mirror) && mirM.rows.filter(r => r.name === 'Own Name Only').length === 1 && !everyoneElse.length &&
+    sameRows(mirX3, friShown(X3, frRows), LBL), everyoneElse.join(', '));
+  const mirOver = await pg4.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
+    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+  await friSheet(pg4, M);
+  await pg4.click('#sheetBody .frmore');
+  const mirOpen = await pg4.evaluate(() => ({shown: [...document.querySelectorAll('#sheetBody .fri')].filter(r => !r.hidden).length, wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
+    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+  check('mirror (English): every row open, label included, nothing overflows at 390 px', mirOpen.shown === 7 && !mirOpen.wide && !mirOpen.sideways && !mirOver.sideways, JSON.stringify(mirOpen));
+  await pg4.click(`#sheetBody .fris .frname[data-id="${X1}"]`);
+  await pg4.waitForFunction(id => SHEET_FOR === id, X1, {timeout: 8000}).catch(() => {});
+  check('mirror: tapping the club shown on a mirrored row opens that club\'s sheet', await pg4.evaluate(() => SHEET_FOR) === X1);
   const pg5 = await friPage('ro');
   const RO = await friSheet(pg5, many);
   const SCro = {'fan-groups': 'Între grupurile de suporteri', clubs: 'Între cluburi', unclear: 'Nespecificat'}, STro = {active: 'Activă', ended: 'Încheiată', unclear: 'Neclară'};
@@ -408,15 +471,31 @@ const server = http.createServer((req, res) => {
   const ROo = await pg5.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
     sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
   check('friendships (Romanian): nothing overflows at 390 px with every row open', !ROo.wide && !ROo.sideways && !RO.sideways, JSON.stringify(ROo));
+  const LBLro = n => `Menționat doar pe pagina ${n}`;
+  const roM = await friSheet(pg5, M);
+  await pg5.click('#sheetBody .frmore');
+  const roMo = await pg5.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
+    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+  const roMw = friShown(M, frRows);
+  check('mirror (Romanian): the label reads "Menționat doar pe pagina <club>" on every mirrored row and only there, the quote stays in its original language, nothing overflows at 390 px',
+    roM.rows.length === roMw.length && roMw.every((w, i) => roM.rows[i].mirror === (w.mirror ? LBLro(clubNames[w.mirror]) : '') && (w.quote ? roM.rows[i].quote === `Sursa spune: «${w.quote}»` : true)) &&
+    roMw.some(w => w.mirror) && roM.more === `Arată tot (${roMw.length})` && !roMo.wide && !roMo.sideways, JSON.stringify(roM.rows.map(r => r.mirror)));
   await pg4.close(); await pg5.close();
 
   // ---- Real data: every row of data/club-friendships.csv shows its quote on its club's sheet, and the sheet
   // lists the active rows first and the ended ones last; nothing overflows at 390 px in English or Romanian.
   const realByClub = {};
   for(const r of realFri) (realByClub[r.clubQ] = realByClub[r.clubQ] || []).push(r);
-  const realClubs = Object.keys(realByClub).filter(c => onMap.includes(c));
-  check('real data: every club with friendship rows is on the map', realClubs.length === Object.keys(realByClub).length && realClubs.length > 0,
+  check('real data: every club with friendship rows is on the map', Object.keys(realByClub).every(c => onMap.includes(c)) && Object.keys(realByClub).length > 0,
     Object.keys(realByClub).filter(c => !onMap.includes(c)).join(', '));
+  // Every club whose sheet should hold rows: its own, and the ones mirrored onto it.
+  const realExp = {};
+  for(const c of onMap){ const e = friShown(c, realFri); if(e.length) realExp[c] = e; }
+  const realClubs = Object.keys(realExp);
+  const mirroredTotal = Object.values(realExp).reduce((n, e) => n + e.filter(r => r.mirror).length, 0);
+  const gained = Object.keys(realExp).filter(c => realExp[c].some(r => r.mirror));
+  const gainedSection = gained.filter(c => !realByClub[c]);
+  console.log(`  mirrored rows shown in total: ${mirroredTotal}; clubs with mirrored rows: ${gained.length} (${gainedSection.length} only mirrored, i.e. gained the section)`);
   const realPage = async lang => {
     const pg = await ctx.newPage();
     if(lang) await pg.addInitScript(l => { try { localStorage.setItem('football-planner-lang', l); } catch(e){} }, lang);
@@ -426,34 +505,55 @@ const server = http.createServer((req, res) => {
     return pg;
   };
   const pgR = await realPage('en');   // pinned: the Romanian page above left its language in the shared localStorage
-  const lacking = [], badOrder = [], overflowR = [];
+  const lacking = [], badOrder = [], overflowR = [], seen = {};
   for(const c of realClubs){
-    const S = await friSheet(pgR, c);
-    if(S.rows.length !== realByClub[c].length) lacking.push(`${c}: ${S.rows.length} rows shown, ${realByClub[c].length} in the file`);
-    for(const r of realByClub[c]){
-      const row = S.rows.find(x => x.name === r.friendName);
+    const S = await friSheet(pgR, c); seen[c] = S;
+    const exp = realExp[c];
+    if(S.rows.length !== exp.length) lacking.push(`${c}: ${S.rows.length} rows shown, ${exp.length} expected`);
+    if(!S.h4.includes('Fan friendships')) lacking.push(`${c}: no Fan friendships section`);
+    if(!realByClub[c] && !exp.every(r => r.mirror)) lacking.push(`${c}: expected only mirrored rows`);
+    for(const r of exp){
+      const row = S.rows.find(x => x.name === r.friendName && !!x.mirror === !!r.mirror);
       if(!row) lacking.push(`${c}/${r.friendName}: row missing`);
-      else if(r.quote ? row.quote !== `Source says: «${r.quote}»` : row.quote !== '') lacking.push(`${c}/${r.friendName}: quote`);
+      else {
+        if(r.quote ? row.quote !== `Source says: «${r.quote}»` : row.quote !== '') lacking.push(`${c}/${r.friendName}: quote`);
+        if(row.scope !== SC[r.scope] || row.status !== ST[r.status] || (r.groupsText ? row.groups !== `Groups: ${r.groupsText}` : row.groups !== '')) lacking.push(`${c}/${r.friendName}: scope, status or groups`);
+        if(row.mirror !== (r.mirror ? `Stated on ${clubNames[r.mirror]}'s page only` : '')) lacking.push(`${c}/${r.friendName}: label "${row.mirror}"`);
+        if(r.mirror && (!row.tap || row.fid !== r.mirror)) lacking.push(`${c}/${r.friendName}: not tappable to ${r.mirror}`);
+      }
     }
+    const shown = S.rows.filter(r => r.shown).length;
+    if(shown !== Math.min(5, exp.length) || S.more !== (exp.length > 5 ? `Show all (${exp.length})` : '')) lacking.push(`${c}: ${shown} shown, "${S.more}" for ${exp.length} rows`);
     if(!S.rows.every((r, i) => i === 0 || stRank[r.status] >= stRank[S.rows[i - 1].status])) badOrder.push(c);
-    const lastNonEnded = S.rows.map(r => r.status).lastIndexOf('Active');
-    if(S.rows.some(r => r.status === 'Ended') && S.rows.findIndex(r => r.status === 'Ended') <= Math.max(lastNonEnded, S.rows.map(r => r.status).lastIndexOf('Not clear'))) badOrder.push(c + ' (ended not last)');
     await pgR.click('#sheetBody .frmore').catch(() => {});
     const w = await pgR.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
       sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
     if(w.wide || w.sideways) overflowR.push(c);
   }
-  check(`real data: all ${realFri.length} rows of ${realClubs.length} clubs are on their sheets, each with its quote as "Source says: «…»" (none where the file has none)`, !lacking.length, lacking.slice(0, 5).join(' | '));
+  check(`real data: ${realClubs.length} clubs show their rows - own, plus ${mirroredTotal} mirrored ones on ${gained.length} clubs - each with its quote as "Source says: «…»", scope, status, groups, the label on mirrored rows only, and "Show all (n)" counting all of them`, !lacking.length, lacking.slice(0, 5).join(' | '));
+  check('real data: every row of the file with a friendQ shows on its own club\'s sheet and, unless the friend has its own row for that club, on the friend\'s sheet with the label; a two-sided pair shows once per sheet with no label',
+    realFri.every(r => {
+      const own = (seen[r.clubQ]?.rows || []).filter(x => !x.mirror && x.quote === (r.quote ? `Source says: «${r.quote}»` : '') && x.name === r.friendName);
+      if(!own.length) return false;
+      if(!r.friendQ) return true;
+      const twoSided = realFri.some(f => f.clubQ === r.friendQ && f.friendQ === r.clubQ);
+      const onFriend = (seen[r.friendQ]?.rows || []).filter(x => x.fid === r.clubQ);
+      return onFriend.length === 1 && (twoSided ? !onFriend[0].mirror : onFriend[0].mirror === `Stated on ${clubNames[r.clubQ]}'s page only` && onFriend[0].quote === (r.quote ? `Source says: «${r.quote}»` : ''));
+    }), '');
+  check('real data: a row with no friendQ is on its own club\'s sheet only',
+    realFri.filter(r => !r.friendQ).every(r => Object.entries(seen).every(([c, S]) => (c === r.clubQ) === S.rows.some(x => x.quote === `Source says: «${r.quote}»` && x.name === r.friendName && !x.mirror)) ||
+      !r.quote), '');
   check('real data: active rows first, then not clear, then ended, on every sheet', !badOrder.length, badOrder.join(', '));
   check('real data (English): nothing overflows at 390 px with every row open', !overflowR.length, overflowR.join(', '));
-  const bigClub = [...realClubs].sort((a, b) => realByClub[b].length - realByClub[a].length)[0];
+  const bigClub = [...realClubs].filter(c => realExp[c].some(r => r.mirror)).sort((a, b) => realExp[b].length - realExp[a].length)[0];
   const pgRo = await realPage('ro');
   const SRo = await friSheet(pgRo, bigClub);
   await pgRo.click('#sheetBody .frmore').catch(() => {});
   const wRo = await pgRo.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
     sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
-  check(`real data (Romanian, ${bigClub}, ${realByClub[bigClub].length} rows): label "Sursa spune:", quote unchanged, nothing overflows at 390 px`,
-    SRo.rows.length === realByClub[bigClub].length && realByClub[bigClub].every(r => { const row = SRo.rows.find(x => x.name === r.friendName); return row && (r.quote ? row.quote === `Sursa spune: «${r.quote}»` : row.quote === ''); }) &&
+  check(`real data (Romanian, ${bigClub}, ${realExp[bigClub].length} rows, ${realExp[bigClub].filter(r => r.mirror).length} mirrored): labels "Sursa spune:" and "Menționat doar pe pagina …", quote unchanged, nothing overflows at 390 px`,
+    SRo.rows.length === realExp[bigClub].length && realExp[bigClub].every(r => { const row = SRo.rows.find(x => x.name === r.friendName && !!x.mirror === !!r.mirror);
+      return row && (r.quote ? row.quote === `Sursa spune: «${r.quote}»` : row.quote === '') && row.mirror === (r.mirror ? `Menționat doar pe pagina ${clubNames[r.mirror]}` : ''); }) &&
     !wRo.wide && !wRo.sideways, JSON.stringify(wRo));
   await pgR.close(); await pgRo.close();
 
