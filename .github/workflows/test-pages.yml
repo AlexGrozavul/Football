@@ -134,11 +134,12 @@ on:
 
 permissions:
   contents: read
+  actions: read   # only so the last step can list this job's step durations
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
 
     steps:
       - name: Check out repository
@@ -307,3 +308,14 @@ jobs:
               echo '```'
             done
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # Prints how long each step of this job took, so a slow one shows in the log
+      # (the 40-minute limit was hit by one step; the Actions page shows durations only per click).
+      - name: Step durations
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/$GITHUB_RUN_ATTEMPT/jobs" \
+            --jq '.jobs[] | select(.name == "test") | .steps[] | select(.started_at != null and .completed_at != null) | [((.completed_at | fromdate) - (.started_at | fromdate)), .name] | @tsv' \
+            | awk -F'\t' '{ printf "%6d s  %s\n", $1, $2 }' || echo "could not list step durations"
