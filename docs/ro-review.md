@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1331 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1332 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -150,6 +150,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `sug.exhibition` | Exhibition | Meci demonstrativ |
 | `sug.more` | + {n} more | + încă {n} |
 | `sug.aria` | Suggestions | Sugestii |
+| `sug.usedInMatches` | Used in your matches | Folosit în meciurile tale |
 | `imf.goals` | Goals | Goluri |
 | `imf.addGoal` | Add goal | Adaugă gol |
 | `imf.goalTeam` | Team | Echipa |

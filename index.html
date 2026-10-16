@@ -954,7 +954,7 @@ const I18N = {
     'imf.stage': 'Stage or round', 'imf.note': 'Note',
     'imf.exhibition': 'Exhibition match', 'exh.tag': 'Exhibition',
     'st.exclGoals': "Doesn't include goals from exhibition matches ({goals} excluded)",
-    'sug.friendly': 'Friendly', 'sug.exhibition': 'Exhibition', 'sug.more': '+ {n} more', 'sug.aria': 'Suggestions',
+    'sug.friendly': 'Friendly', 'sug.exhibition': 'Exhibition', 'sug.more': '+ {n} more', 'sug.aria': 'Suggestions', 'sug.usedInMatches': 'Used in your matches',
     'imf.goals': 'Goals', 'imf.addGoal': 'Add goal', 'imf.goalTeam': 'Team', 'imf.goalPlayer': 'Scorer', 'imf.goalMinute': 'Minute',
     'imf.goalRemove': 'Remove goal', 'imf.goalsHint': 'The list may be partial: it does not have to add up to the score.',
     'imf.jsonTitle': 'JSON (optional)',
@@ -2197,7 +2197,7 @@ const I18N = {
     'imf.stage': 'Fază sau etapă', 'imf.note': 'Notă',
     'imf.exhibition': 'Meci demonstrativ', 'exh.tag': 'Demonstrativ',
     'st.exclGoals': 'Nu include golurile din meciurile demonstrative (excluse: {goals})',
-    'sug.friendly': 'Meci amical', 'sug.exhibition': 'Meci demonstrativ', 'sug.more': '+ încă {n}', 'sug.aria': 'Sugestii',
+    'sug.friendly': 'Meci amical', 'sug.exhibition': 'Meci demonstrativ', 'sug.more': '+ încă {n}', 'sug.aria': 'Sugestii', 'sug.usedInMatches': 'Folosit în meciurile tale',
     'imf.goals': 'Goluri', 'imf.addGoal': 'Adaugă gol', 'imf.goalTeam': 'Echipa', 'imf.goalPlayer': 'Marcator', 'imf.goalMinute': 'Minutul',
     'imf.goalRemove': 'Șterge golul', 'imf.goalsHint': 'Lista poate fi parțială: nu trebuie să se potrivească cu scorul.',
     'imf.jsonTitle': 'JSON (opțional)',
@@ -8896,8 +8896,8 @@ function attFormHtml(rec){
   const num = (name, val, label) => `<input name="${name}" type="number" min="0" max="99" step="1" inputmode="numeric" aria-label="${esc(label)}" value="${esc(val)}">`;
   const f = fe(meInput(t('att.date'), 'date', rec?.date, 'type="date"'), 'date') +
     fe(meInput(t('imf.kickoff'), 'kickoff', rec?.kickoff, 'type="time"', t('imf.kickoffHint')), 'kickoff') +
-    fe(meInput(t('imf.home'), 'home', hn, 'autocomplete="off"'), 'home') +
-    fe(meInput(t('imf.away'), 'away', an, 'autocomplete="off"'), 'away') +
+    fe(meInput(t('imf.home'), 'home', hn, 'autocomplete="off" data-sug="team"'), 'home') +
+    fe(meInput(t('imf.away'), 'away', an, 'autocomplete="off" data-sug="team"'), 'away') +
     `<div class="fgrp"><span class="flab">${esc(t('att.score'))}</span><div class="scorebox">${num('sh', sc[0], t('imf.scoreH'))}<span aria-hidden="true">–</span>${num('sa', sc[1], t('imf.scoreA'))}</div>` +
       `<span class="ferr" data-ferr="score" role="alert"></span></div>` +
     meInput(t('att.competition'), 'competition', txt('competition'), 'autocomplete="off" data-sug="competition"') +
@@ -9028,11 +9028,35 @@ function sugCompetitions(){
   (ATT.data?.matches || []).concat(IMP).forEach(m => add(attL(m.competition), ''));
   return out;
 }
+/* Team names for the Home and Away team fields: every club of CLUBS (all countries, the name as the club file has it; one row per folded name and country) plus the teams of the file's and the imported matches that no club of CLUBS carries (the English text, nameEn when there is one; a national team is one). Second line: country and competition as the club search shows them, or "Used in your matches" for a team only in his matches, which has no country and no tier. */
+const teamText = o => o == null ? '' : typeof o === 'string' ? o : (o.en || o.ro || '');
+function sugTeams(){
+  const by = new Map(), clubFolds = new Set(), out = [];
+  CLUBS.forEach(c => {
+    const f = fold(c.name); if(!f) return;
+    clubFolds.add(f);
+    const key = f + '|' + (c.country || ''), tier = Number.isFinite(c.tier) ? c.tier : 99, prev = by.get(key);
+    const sub = [countryName(c.country), competitionLabel(c)].filter(Boolean).join(' · ');
+    if(prev){ if(tier < prev.tier){ prev.tier = tier; prev.sub = sub; } return; }
+    const it = {name: c.name, label: c.name, sub, fs: [f], tier};
+    by.set(key, it); out.push(it);
+  });
+  const mine = new Map();
+  (ATT.data?.matches || []).concat(IMP).forEach(m => ['home', 'away'].forEach(side => {
+    const tm = m[side]; if(!tm) return;
+    const nm = teamText(tm.nameEn) || teamText(tm.name), f = fold(nm), f2 = fold(teamText(tm.name));
+    if(!f || clubFolds.has(f) || mine.has(f)) return;
+    mine.set(f, 1);
+    out.push({name: nm, label: nm, sub: t('sug.usedInMatches'), fs: f2 && f2 !== f ? [f, f2] : [f], tier: 99});
+  }));
+  return out;
+}
 function sugItems(kind){
-  const sig = [kind, LANG, CLUBS.length, IMP.length, ATT.data ? ATT.data.matches.length : -1, SUG_COMPS ? SUG_COMPS.length : -1].join('|');
+  const sig = [kind, LANG, CLUBS.length, IMP.length, ATT.data ? ATT.data.matches.length : -1, SUG_COMPS ? SUG_COMPS.length : -1,
+    kind === 'team' ? IMP.map(m => teamText(m.home && m.home.nameEn) + teamText(m.home && m.home.name) + '/' + teamText(m.away && m.away.nameEn) + teamText(m.away && m.away.name)).join('|') : ''].join('|');
   const c = SUG.cache[kind];
   if(c && c.sig === sig) return c.items;
-  const items = kind === 'stadium' ? sugStadiums() : sugCompetitions();
+  const items = kind === 'stadium' ? sugStadiums() : kind === 'team' ? sugTeams() : sugCompetitions();
   items.forEach(i => { if(!i.fs) i.fs = [fold(i.name)]; });
   SUG.cache[kind] = {sig, items};
   return items;
@@ -9050,7 +9074,7 @@ function sugSearch(kind, q, limit = 8){
     }
     if(best < 9) hits.push({it, rank: best});
   }
-  hits.sort((a, b) => a.rank - b.rank || String(a.it.label).localeCompare(String(b.it.label)));
+  hits.sort((a, b) => a.rank - b.rank || (a.it.tier ?? 99) - (b.it.tier ?? 99) || String(a.it.label).localeCompare(String(b.it.label)));
   return {total: hits.length, list: hits.slice(0, limit).map(h => h.it)};
 }
 function sugHide(){ if(SUG.box) SUG.box.hidden = true; SUG.hits = []; }
@@ -9069,6 +9093,7 @@ function sugPlace(){
   box.style.maxHeight = Math.max(96, Math.min(320, bottom - top)) + 'px';
 }
 function sugShow(input){
+  if(SUG.picking) return;
   const f = fold(input.value);
   if(!f){ sugHide(); return; }
   const label = input.closest('label');
@@ -9094,6 +9119,8 @@ function sugPick(i){
   if(!it || !input) return;
   input.value = it.name;                              // the stored value is the name as written (the English word for Friendly and Exhibition)
   if(it.exhibition && input.form && input.form.elements.exhibition) input.form.elements.exhibition.value = 'yes';
+  SUG.picking = true;                                 // a team field tells the goal rows' team menu; the list must not reopen on that event
+  try{ input.dispatchEvent(new Event('input', {bubbles: true})); }finally{ SUG.picking = false; }
   sugHide();
 }
 function wireSuggestions(host){
