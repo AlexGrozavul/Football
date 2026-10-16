@@ -50,7 +50,7 @@ Q38245,,Atalanta Bergamo,unclear,active,,C17,2026-10-10,Im Ausland bestehen lang
 Q97905916,Q535785,Würzburger Kickers,fan-groups,active,,C18,2026-10-10,Einige Fangruppen des FCA pflegen eine Freundschaft zu den Anhängern der Würzburger Kickers
 Q97905916,Q696507,SC Austria Lustenau,fan-groups,active,,C18,2026-10-10,gibt es freundschaftliche Beziehungen zu der Anhängerschaft des SC Austria Lustenau
 Q32494,Q15786,1. FC Nürnberg,fan-groups,active,,C19,2026-10-10,Fans des S04 unterhalten seit Anfang der 1980er Jahre eine innige Fanfreundschaft
-Q32494,,FC Twente Enschede,fan-groups,active,,C19,2026-10-10,gibt es eine Freundschaft mit den Fans des FC Twente Enschede
+Q32494,Q19603,FC Twente Enschede,fan-groups,active,,C19,2026-10-10,gibt es eine Freundschaft mit den Fans des FC Twente Enschede
 Q32494,,Vardar Skopje,fan-groups,active,,C19,2026-10-10,besteht eine Freundschaft zwischen den beiden Fanlagern
 Q32494,,US Salernitana,fan-groups,active,,C19,2026-10-10,Seit 2016 existiert eine Fanfreundschaft mit US Salernitana
 Q32494,Q170157,Wuppertaler SV,fan-groups,ended,,C19,2026-10-10,Eine heute nicht mehr existente Freundschaft ist die zum Wuppertaler SV
@@ -89,7 +89,7 @@ Q107818,Q141971,1. FC Union Berlin,fan-groups,active,,C32,2026-10-16,vom 1. FC U
 Q107818,Q161554,Chemnitzer FC,fan-groups,active,,C32,2026-10-16,Des Weiteren pflegen einige Anhänger der Cottbuser eine Fanfreundschaft mit Ultragruppen des Chemnitzer FC
 Q141931,Q316896,FSV Zwickau,fan-groups,active,,C33,2026-10-16,Eine langjährige Fanfreundschaft wird mit Anhängern des FSV Zwickau unterhalten
 Q153539,,SpVgg Bayreuth,fan-groups,active,,C34,2026-10-16,"Fanfreundschaften bestehen zu Fans der SpVgg Bayreuth, dem 1. FC Heidenheim, des FSV Frankfurt"
-Q153539,,1. FC Heidenheim,fan-groups,active,,C34,2026-10-16,"Fanfreundschaften bestehen zu Fans der SpVgg Bayreuth, dem 1. FC Heidenheim, des FSV Frankfurt"
+Q153539,Q162251,1. FC Heidenheim,fan-groups,active,,C34,2026-10-16,"Fanfreundschaften bestehen zu Fans der SpVgg Bayreuth, dem 1. FC Heidenheim, des FSV Frankfurt"
 Q153539,Q157352,FSV Frankfurt,fan-groups,active,,C34,2026-10-16,"Fanfreundschaften bestehen zu Fans der SpVgg Bayreuth, dem 1. FC Heidenheim, des FSV Frankfurt"
 Q153539,Q321061,FC Sion,fan-groups,active,,C34,2026-10-16,"des FSV Frankfurt, des FC Sion und des italienischen Drittligisten Audace Cerignola"
 Q153539,,Audace Cerignola,fan-groups,active,,C34,2026-10-16,"des FSV Frankfurt, des FC Sion und des italienischen Drittligisten Audace Cerignola"
