@@ -56,6 +56,9 @@
 //    tag), and the Competition and Stadium fields of the match form offer suggestions (every club ground, data/competitions.csv, the coverage leagues,
 //    the matches' own texts; ranking, "+ n more", accents, tap, free text, Enter; inside the screen at 390x844 and 390x500; both languages; the CSV
 //    unreachable; no storage key and no request beyond the one GET of data/competitions.csv); expected values are worked out from the files here;
+//  - since 2026-10-16 the Home team and Away team fields offer team suggestions too (every club of every country file, one row per folded name and country,
+//    plus the teams only the matches use, "Used in your matches"; deduplication, order by rank then tier, 8 rows and "+ n more", accents, tap fills only that
+//    field and the goal rows' menu, free text, Enter, Edit leaves a stored name unchanged, 390x844 and 390x500, both languages);
 //  - since 2026-10-09 the whole interface is translated (English and Romanian, the Romanian written by the assistant and unchecked): the dictionary's
 //    key sets, no ro value equal to its en value outside a short whitelist of names, every {placeholder} kept; Settings reached from the top of the
 //    Me tab, the choice stored under football-planner-lang and kept over a reload, the fourth sub-tab renamed Tickets/Memberships in both languages;
@@ -1763,6 +1766,131 @@ function alarmAt(ev, al){
   await pS.setViewportSize({width: 390, height: 844});
   await pS.fill('#aForm [name=competition]', ''); await pS.fill('#aForm [name=stadium]', '');
 
+  // ---- Home team and Away team suggestions (2026-10-16). Expected values are worked out here from the club files, data/attended.json and what the device holds.
+  const homeSel = 'label:has([name=home])', awaySel = 'label:has([name=away])';
+  const typeT = (n, v) => pS.fill(`#aForm [name=${n}]`, v);
+  const tt = o => o == null ? '' : typeof o === 'string' ? o : (o.en || o.ro || '');
+  const codes = [...new Set(CLUBN.map(c => c.country))];
+  const ctryName = await pS.evaluate(cs => Object.fromEntries(cs.map(c => [c, countryName(c)])), codes);
+  const notRec = await pS.evaluate(() => Object.fromEntries([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => [n, t('gen.leagueNot', {tier: n})])));
+  const subOf = c => `${ctryName[c.country]} · ${c.competition || notRec[c.tier]}`;
+  const teamModel = imps => {
+    const rows = new Map();
+    for(const c of CLUBN){ const f = foldN(c.name); if(!f) continue; const key = f + '|' + c.country, p = rows.get(key);
+      if(p){ if(c.tier < p.tier){ p.tier = c.tier; p.sub = subOf(c); } continue; }
+      rows.set(key, {name: c.name, fs: [f], tier: c.tier, sub: subOf(c), club: true}); }
+    const cf = new Set([...rows.values()].map(r => r.fs[0])), mine = new Map();
+    for(const m of ATTF.matches.concat(imps)) for(const sd of ['home', 'away']){ const tm = m[sd], nm = tt(tm.nameEn) || tt(tm.name), f = foldN(nm), f2 = foldN(tt(tm.name));
+      if(!f || cf.has(f) || mine.has(f)) continue;
+      mine.set(f, {name: nm, fs: f2 && f2 !== f ? [f, f2] : [f], tier: 99, sub: 'Used in your matches', club: false}); }
+    return [...rows.values(), ...mine.values()];
+  };
+  const modelHits = (model, q) => { const ws = foldN(q).split(' ');
+    return model.map(r => { let best = 9; for(const n of r.fs){ if(!ws.every(w => n.includes(w))) continue; best = Math.min(best, rankOf(n, q)); } return {r, best}; }).filter(h => h.best < 9)
+      .sort((a, b) => a.best - b.best || a.r.tier - b.r.tier || a.r.name.localeCompare(b.r.name)); };
+  const impNow = await stored();
+  const model = teamModel(impNow);
+  const itemsT = await pS.evaluate(() => sugItems('team').map(i => [fold(i.name), i.sub, i.tier]));
+  const nClubRows = model.filter(r => r.club).length, nMine = model.length - nClubRows;
+  check('Team suggestions hold every club of every country file (one row per folded name and country) plus the teams only the file\'s and the device\'s matches use, once each',
+    itemsT.length === model.length && JSON.stringify(itemsT.map(i => i[0]).sort()) === JSON.stringify(model.map(r => r.fs[0]).sort()) && nClubRows > 500 && nMine > 5, `${itemsT.length} in the page, ${model.length} expected (${nClubRows} clubs, ${nMine} only in matches)`);
+  // Every club, typed with its own name, is offered (worked through in the page, one search each).
+  const allBad = await pS.evaluate(cl => cl.filter(c => !sugSearch('team', c.name, 100000).list.some(i => i.name === c.name && i.sub.startsWith(countryName(c.country) + ' · '))).map(c => c.name).slice(0, 5), CLUBN.map(c => ({name: c.name, country: c.country})));
+  check(`All ${CLUBN.length} clubs of all ${codes.length} country files are offered for their own name`, !allBad.length, allBad.join(' | '));
+  // A sample from each country file, through the field: the row's second line is country and competition as the club search shows them.
+  const sampleT = new Map();
+  for(const c of CLUBN){ if(sampleT.has(c.country) || !foldN(c.name)) continue;
+    const f = foldN(c.name); if(CLUBN.filter(x => foldN(x.name) === f).length !== 1 || ATTF.matches.some(m => ['home', 'away'].some(sd => foldN(tt(m[sd].nameEn) || tt(m[sd].name)) === f))) continue;
+    if(modelHits(model, c.name).length > 8) continue; sampleT.set(c.country, c); }
+  const sampBad = [];
+  for(const [cc, c] of sampleT){ await typeT('home', foldN(c.name)); const rs = await rowsOf(homeSel), row = rs.find(r => r.name === c.name);
+    if(!row || row.sub !== subOf(c)) sampBad.push(cc + ':' + c.name + ' ' + JSON.stringify(rs.slice(0, 2))); }
+  check('A club of every country file is offered in the Home team field for its typed name, second line "country · competition"', sampleT.size === codes.length && !sampBad.length, `${sampleT.size} of ${codes.length}; ${sampBad.join(' | ')}`);
+  const noLeague = CLUBN.find(c => !c.competition && modelHits(model, c.name).length <= 8 && CLUBN.filter(x => foldN(x.name) === foldN(c.name)).length === 1);
+  if(noLeague){ await typeT('away', foldN(noLeague.name)); check('A club with no league recorded reads "league not recorded (tier N)" on its second line', (await rowsOf(awaySel)).some(r => r.name === noLeague.name && r.sub === subOf(noLeague) && /league not recorded \(tier \d+\)$/.test(r.sub)), noLeague.name); }
+  // Teams only in his matches: a national team and the others.
+  const natM = ATTF.matches.flatMap(m => ['home', 'away'].map(sd => m[sd])).find(tm => tm.nameEn && tm.nameEn !== tm.name && model.some(r => !r.club && r.name === tm.nameEn));
+  await typeT('home', foldN(natM.nameEn)); let rt = await rowsOf(homeSel);
+  check('A national team from the file\'s matches is offered by its English name, second line "Used in your matches"', rt.some(r => r.name === natM.nameEn && r.sub === 'Used in your matches'), JSON.stringify(rt.slice(0, 3)));
+  await typeT('home', foldN(natM.name)); rt = await rowsOf(homeSel);
+  check('...and typing the stored (Romanian) name finds it too', rt.some(r => r.name === natM.nameEn), natM.name + ' ' + JSON.stringify(rt.slice(0, 3)));
+  const mineBad = await pS.evaluate(l => l.filter(n => !sugSearch('team', n, 100000).list.some(i => i.name === n && i.sub === 'Used in your matches')).slice(0, 5), model.filter(r => !r.club).map(r => r.name));
+  check(`All ${nMine} teams used only in matches are offered with "Used in your matches" and no country`, !mineBad.length, mineBad.join(' | '));
+  const sharedM = ATTF.matches.flatMap(m => ['home', 'away'].map(sd => tt(m[sd].nameEn) || tt(m[sd].name))).filter(n => model.some(r => r.club && r.fs[0] === foldN(n)));
+  const dupBad = sharedM.filter(n => itemsT.filter(i => i[0] === foldN(n)).length !== model.filter(r => r.club && r.fs[0] === foldN(n)).length || itemsT.some(i => i[0] === foldN(n) && i[1] === 'Used in your matches'));
+  check('Deduplication: a match team that is also a club is the club\'s row, not a second one', sharedM.length > 3 && !dupBad.length, `${sharedM.length} shared; ${dupBad.join(', ')}`);
+  const dd = await pS.evaluate(() => {
+    const keep = CLUBS.length; CLUBS.push({name: 'Zz Dup FC', country: 'DE', tier: 3, competition: 'League A'}, {name: 'ZZ-Dup FC', country: 'DE', tier: 1, competition: 'League B'}, {name: 'zz dup fc', country: 'RO', tier: 2, competition: 'League C'});
+    const r = sugItems('team').filter(i => fold(i.name) === 'zz dup fc').map(i => i.sub + '#' + i.tier);
+    CLUBS.length = keep; return {r}; });
+  check('Deduplication: the same folded name and the same country is one row (the more senior tier\'s), the same name in another country is a second row',
+    dd.r.length === 2 && dd.r.some(x => /League B#1$/.test(x)) && dd.r.some(x => /League C#2$/.test(x)) && !dd.r.some(x => /League A/.test(x)), JSON.stringify(dd));
+  // Order, 8 rows and the more-count, accent-insensitive match.
+  await typeT('home', 'fc'); rt = await rowsOf(homeSel); let mt = await moreOf(homeSel);
+  const hf = modelHits(model, 'fc'), tierOf = n => (model.find(r => r.name === n) || {tier: 99}).tier;
+  const seq8 = rt.map(r => [rankOf(foldN(r.name), 'fc'), tierOf(r.name)]);
+  check('"fc": 8 rows and "+ n more" with n worked out from the sources', hf.length > 8 && rt.length === 8 && mt === `+ ${hf.length - 8} more`, `${rt.length} rows, ${mt}, expected total ${hf.length}`);
+  check('...names starting with it first, then names with a word that does, then the rest; within each the more senior tier first',
+    seq8.every((x, i) => !i || x[0] > seq8[i - 1][0] || (x[0] === seq8[i - 1][0] && x[1] >= seq8[i - 1][1])), JSON.stringify(seq8));
+  check('...the 8 rows are the first 8 of the expected order (tier, then name inside equal rank and tier)',
+    JSON.stringify(rt.map(r => r.name)) === JSON.stringify(hf.slice(0, 8).map(h => h.r.name)), JSON.stringify(rt.map(r => r.name)) + ' vs ' + JSON.stringify(hf.slice(0, 8).map(h => h.r.name)));
+  const accC = CLUBN.find(c => foldN(c.name) !== c.name.toLowerCase() && /[^\x00-\x7f]/.test(c.name) && modelHits(model, c.name).length <= 8);
+  await typeT('away', foldN(accC.name)); rt = await rowsOf(awaySel);
+  check('Matching ignores accents and case: the accent-free lower-case name finds the club as written', rt.some(r => r.name === accC.name), accC.name);
+  // Tap fills only that field; independence; the goal rows' menu.
+  await resetS(); await pS.click('#aGoalAdd');
+  const before = await pS.evaluate(() => Object.fromEntries([...document.querySelector('#aForm').elements].filter(e => e.name).map(e => [e.name, e.value])));
+  await typeT('home', foldN(sampleT.values().next().value.name)); const hRows = await rowsOf(homeSel);
+  await pS.click(`${homeSel} + .asugg button >> nth=0`);
+  const homeVal = await pS.inputValue('#aForm [name=home]');
+  const after = await pS.evaluate(() => Object.fromEntries([...document.querySelector('#aForm').elements].filter(e => e.name).map(e => [e.name, e.value])));
+  const changed = Object.keys(after).filter(k => before[k] !== after[k]);
+  check('Tapping a team row fills the field with the name as written, closes the list and fills nothing else', homeVal === hRows[0].name && await pS.$eval(`${homeSel} + .asugg`, e => e.hidden) && changed.join() === 'home', changed.join() + ' ' + homeVal);
+  check('The goal rows\' team menu shows the tapped name', (await pS.$$eval('#aForm select[name=gteam] option', o => o.map(x => x.textContent)))[0] === homeVal, '');
+  await typeT('away', 'zzz'); check('Away is independent: typing in Away a text nothing matches shows no suggestion and leaves Home alone', await pS.inputValue('#aForm [name=home]') === homeVal && !(await rowsOf(awaySel)).length, '');
+  await typeT('away', foldN(accC.name)); await pS.click(`${awaySel} + .asugg button >> nth=0`);
+  check('...and tapping in Away fills Away only; Home keeps its name and its list stays closed', await pS.inputValue('#aForm [name=home]') === homeVal && (await pS.inputValue('#aForm [name=away]')).length > 0 && !(await pS.$('.asugg:not([hidden])')), '');
+  check('...and the goal rows\' menu now shows both names', JSON.stringify(await pS.$$eval('#aForm select[name=gteam] option', o => o.map(x => x.textContent))) === JSON.stringify([homeVal, await pS.inputValue('#aForm [name=away]')]), '');
+  // Free text and Enter.
+  await typeT('home', 'Free Home ' + TAG); const nSt2 = (await stored()).length;
+  await pS.press('#aForm [name=home]', 'Enter');
+  check('Free text in a team field: Enter keeps what is typed and does not save the form', await pS.inputValue('#aForm [name=home]') === 'Free Home ' + TAG && (await stored()).length === nSt2 && !!(await pS.$('#aForm')), '');
+  await typeT('home', 'fc'); await pS.press('#aForm [name=home]', 'Enter');
+  check('Enter with the list open closes it and keeps the text', await pS.inputValue('#aForm [name=home]') === 'fc' && await pS.$eval(`${homeSel} + .asugg`, e => e.hidden), '');
+  // Layout.
+  const placedT = () => pS.evaluate(() => { const b = document.querySelector('.asugg:not([hidden])'); if(!b) return null; const r = b.getBoundingClientRect(), nx = b.nextElementSibling, nr = nx && nx.getBoundingClientRect(),
+    vh = window.visualViewport ? visualViewport.height : innerHeight, btn = document.getElementById('aImpBtn').getBoundingClientRect(), sc = document.getElementById('pane-me');
+    return {top: r.top, bottom: r.bottom, left: r.left, right: r.right, vh, w: innerWidth, nextTop: nr ? nr.top : null, btnTop: btn.top, scrollW: sc.scrollWidth, clientW: sc.clientWidth, rows: b.querySelectorAll('button').length}; });
+  await typeT('home', 'fc'); let plT = await placedT();
+  check('At 390x844 the Home list is on screen, in the page flow above the next field and the buttons, nothing scrolls sideways',
+    plT && plT.rows === 8 && plT.left >= 0 && plT.right <= plT.w && plT.top >= 0 && plT.bottom <= plT.vh && plT.nextTop >= plT.bottom - 1 && plT.btnTop >= plT.bottom - 1 && plT.scrollW <= plT.clientW + 1, JSON.stringify(plT));
+  await pS.focus('#aForm [name=away]'); await pS.setViewportSize({width: 390, height: 500});
+  for(const n of ['away', 'home']){ await typeT(n, 'fc'); plT = await placedT();
+    check(`At 390x500 with the keyboard stood in, the ${n === 'home' ? 'Home' : 'Away'} team list ends above the bottom of the visible area and is on screen`, plT && plT.rows >= 1 && plT.top >= 0 && plT.bottom <= plT.vh && plT.left >= 0 && plT.right <= plT.w && plT.btnTop >= plT.bottom - 1, JSON.stringify(plT)); }
+  await pS.setViewportSize({width: 390, height: 844});
+  // Saved with free text, then Edit leaves the stored names unchanged and the saved free names are offered.
+  const FH = 'Free Home ' + TAG, FA = 'Free Away ' + TAG;
+  await resetS(); await fillS(base({home: FH, away: FA})); await pS.click('#aImpBtn');
+  const savedT = (await stored()).find(x => x.home.name === FH);
+  check('A match saved with free text in both team fields stores the names as typed', /^Added 1/.test(await msgS()) && savedT && savedT.away.name === FA, JSON.stringify(savedT && savedT.home));
+  await resetS(); await typeT('home', 'free home'); rt = await rowsOf(homeSel);
+  check('A team saved on the device is offered next time, as "Used in your matches"', rt.some(r => r.name === FH && r.sub === 'Used in your matches'), JSON.stringify(rt.slice(0, 2)));
+  await closeS(); await openCardS('imp:' + savedT.id); await pS.click('#aImpEdit'); await pS.waitForSelector('#aForm:not([data-edit=""])');
+  const preT = [await pS.inputValue('#aForm [name=home]'), await pS.inputValue('#aForm [name=away]')];
+  await typeT('home', 'free'); const edRows = await rowsOf(homeSel);
+  check('Edit: the fields open with the stored names and offer the same suggestions', preT.join() === [FH, FA].join() && edRows.some(r => r.name === FH), JSON.stringify(preT));
+  await pS.click('#aForm [name=stage]'); await typeT('home', FH);
+  const edBefore = JSON.stringify(savedT);
+  await pS.click('#aImpBtn'); await pS.waitForSelector('#asheet:not([hidden])'); await pS.waitForTimeout(350);
+  const savedT2 = (await stored()).find(x => x.id === savedT.id);
+  check('Edit: opening it, typing in the field and saving does not change a stored name', savedT2.home.name === FH && savedT2.away.name === FA && JSON.stringify(savedT2) === edBefore, JSON.stringify(savedT2).slice(0, 120));
+  await closeS(); await openCardS('imp:' + savedT.id); await pS.click('#aImpEdit'); await pS.waitForSelector('#aForm:not([data-edit=""])');
+  await typeT('away', foldN(accC.name)); await pS.click(`${awaySel} + .asugg button >> nth=0`);
+  await pS.click('#aImpBtn'); await pS.waitForSelector('#asheet:not([hidden])'); await pS.waitForTimeout(350);
+  const savedT3 = (await stored()).find(x => x.id === savedT.id);
+  check('Edit: choosing a suggestion in Away changes Away only (Home untouched, same id)', savedT3.away.name === accC.name && savedT3.home.name === FH && savedT3.id === savedT.id, JSON.stringify(savedT3.away));
+  await closeS();
+
   // Saving a match with free text.
   const nowN = (await stored()).length;
   await resetS(); await fillS(base({})); await typeC(FREE); await typeS('Free Ground ' + TAG); await pS.click('#aImpBtn');
@@ -1785,6 +1913,21 @@ function alarmAt(ev, al){
   const roTxt = await pS.$eval(`${compSel} + .asugg`, e => e.querySelector('.none') ? e.querySelector('.none').textContent : '');
   const roOver = await pS.evaluate(() => { const bad = []; document.getElementById('pane-me').querySelectorAll('*').forEach(x => { const r = x.getBoundingClientRect(); if(r.width > 0 && (r.right > innerWidth + 1 || r.left < -1)) bad.push(x.tagName + '.' + x.className); }); return bad.slice(0, 4); });
   check('Romanian: the "+ n more" line is in Romanian and nothing overflows at 390 px', totRo > 8 && roTxt === `+ încă ${totRo - 8}` && !roOver.length, roTxt + ' expected ' + (totRo - 8) + ' ' + JSON.stringify(roOver));
+  // Romanian: the team lists.
+  await resetS();
+  const modelRo = teamModel(await stored());
+  await typeT('home', 'fc'); rt = await rowsOf(homeSel); mt = await moreOf(homeSel);
+  const hfRo = modelHits(modelRo, 'fc');
+  const ctryRo = await pS.evaluate(cs => Object.fromEntries(cs.map(c => [c, countryName(c)])), codes);
+  check('Romanian: the team list gives 8 rows and "+ încă n", and a club\'s second line starts with its Romanian country name',
+    hfRo.length > 8 && rt.length === 8 && mt === `+ încă ${hfRo.length - 8}` && rt.filter(r => CLUBN.some(c => c.name === r.name)).every(r => r.sub.startsWith(ctryRo[CLUBN.find(c => c.name === r.name).country] + ' · ')), `${mt} ${hfRo.length} ${rt[0] && rt[0].sub}`);
+  await typeT('away', 'free home'); rt = await rowsOf(awaySel);
+  check('Romanian: a team only in his matches reads "Folosit în meciurile tale"', rt.some(r => r.name === FH && r.sub === 'Folosit în meciurile tale'), JSON.stringify(rt.slice(0, 2)));
+  await pS.click(`${awaySel} + .asugg button >> nth=0`);
+  check('Romanian: tapping stores the name as written, not translated', await pS.inputValue('#aForm [name=away]') === FH, await pS.inputValue('#aForm [name=away]'));
+  await typeT('home', 'fc');
+  const roOverT = await pS.evaluate(() => { const bad = []; document.getElementById('pane-me').querySelectorAll('*').forEach(x => { const r = x.getBoundingClientRect(); if(r.width > 0 && (r.right > innerWidth + 1 || r.left < -1)) bad.push(x.tagName + '.' + x.className); }); return bad.slice(0, 4); });
+  check('Romanian: nothing overflows at 390 px with a team list open', !roOverT.length, JSON.stringify(roOverT));
   await pS.evaluate(() => setLang('en'));
   await closeS();
 
