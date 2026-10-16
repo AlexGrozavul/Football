@@ -24,6 +24,10 @@ const TYPES = {'.html':'text/html; charset=utf-8','.js':'text/javascript','.css'
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 const results = [];
 const check = (name, ok, detail='') => { results.push(ok); console.log((ok ? 'PASS ' : 'FAIL ') + name + (detail ? ' :: ' + detail : '')); };
+// One duration line per section, so a slow section is visible in the job log.
+const T_START = Date.now();
+let tMark = T_START;
+const tick = name => { const now = Date.now(); console.log(`TIME ${name}: ${((now - tMark) / 1000).toFixed(1)} s`); tMark = now; };
 
 const CLUBS = [['VfB Stuttgart', 'Q4512'], ['Karlsruher SC', 'Q105853'], ['1. FC Kaiserslautern', 'Q8466'],
   ['Stuttgarter Kickers', 'Q170105'], ['Poli Timișoara', 'Q4654417'], ['UTA Arad', 'Q680770'],
@@ -144,6 +148,7 @@ const server = http.createServer((req, res) => {
     if(label === 'Inter') await page.screenshot({path: path.join(process.env.SHOT_DIR || '/tmp', 'sheet-inter.png')});
   }
 
+  tick('page load + ticket info per club');
   // A club with no ticket information at all keeps the unavailable state.
   const plain = await page.evaluate(() => {
     const c = CLUBS.find(c => c.name === 'Hamburger SV') || CLUBS[CLUBS.length - 1];
@@ -156,6 +161,7 @@ const server = http.createServer((req, res) => {
   }
 
 
+  tick('club with neither source');
   // ---- Rivalries section: read from the data files, no club name or count written here.
   const riv = csv('data/club-rivalries.csv'), rivSrc = csv('data/club-culture-sources.csv');
   const bucketLines = csv('data/bucket-links-manual.csv').filter(r => !r.ticketEventId);
@@ -253,6 +259,7 @@ const server = http.createServer((req, res) => {
     sideways: document.getElementById('sheetBody').scrollWidth > document.getElementById('sheetBody').clientWidth + 1}));
   check('"Show all" reveals every row, no sideways scroll', opened.shown === mrows.length && opened.expanded === 'true' && !opened.sideways, JSON.stringify(opened));
 
+  tick('rivalries');
   // ---- The "When the atmosphere is best" section was removed (2026-10-10): the sheet has Rivalries and Fan
   // friendships only. The page must not ask for the old file or draw any atmosphere element, on the two clubs
   // that used to have rows (Borussia Dortmund and 1. FC Union Berlin) or on any other.
@@ -317,6 +324,7 @@ const server = http.createServer((req, res) => {
   await pg3.close();
   await pg2.close();
 
+  tick('atmosphere removed');
   // ---- "Fan friendships": temporary rows injected here only (the real file is header-only and stays so).
   // A German club and a non-German one, the order, the labels, "Show all", a tap on a friend on the map,
   // a club without rows, and 390 px in English and Romanian.
@@ -419,6 +427,7 @@ const server = http.createServer((req, res) => {
   check(`friendships: a non-German club (${nonDE}) shows Rivalries and Fan friendships, in that order, and no atmosphere section`,
     FD.h4.indexOf('Fan friendships') === FD.h4.indexOf('Rivalries') + 1 && !FD.h4.includes('When the atmosphere is best') &&
     FD.rivs === 1 && FD.atm === 0 && JSON.stringify(FD.rows.map(r => r.name)) === JSON.stringify(fd.map(r => r.friendName)) && !FD.sideways, FD.h4.join(' | '));
+  tick('friendships, injected rows');
   // ---- Mirrored rows (injected): a friendship stated on one club's page only also shows on the friend's sheet.
   const LBL = n => `Stated on ${n}'s page only`;
   const sameRows = (S, want, lbl) => S.rows.length === want.length && want.every((w, i) => {
@@ -482,6 +491,7 @@ const server = http.createServer((req, res) => {
     roMw.some(w => w.mirror) && roM.more === `Arată tot (${roMw.length})` && !roMo.wide && !roMo.sideways, JSON.stringify(roM.rows.map(r => r.mirror)));
   await pg4.close(); await pg5.close();
 
+  tick('mirrored rows, injected');
   // ---- Real data: every row of data/club-friendships.csv shows its quote on its club's sheet, and the sheet
   // lists the active rows first and the ended ones last; nothing overflows at 390 px in English or Romanian.
   const realByClub = {};
@@ -525,7 +535,8 @@ const server = http.createServer((req, res) => {
     const shown = S.rows.filter(r => r.shown).length;
     if(shown !== Math.min(5, exp.length) || S.more !== (exp.length > 5 ? `Show all (${exp.length})` : '')) lacking.push(`${c}: ${shown} shown, "${S.more}" for ${exp.length} rows`);
     if(!S.rows.every((r, i) => i === 0 || stRank[r.status] >= stRank[S.rows[i - 1].status])) badOrder.push(c);
-    await pgR.click('#sheetBody .frmore').catch(() => {});
+    // click only when the button exists: a missing one made click() wait its 30 s default for 61 of 72 clubs
+    const moreBtn = await pgR.$('#sheetBody .frmore'); if(moreBtn) await moreBtn.click();
     const w = await pgR.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
       sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
     if(w.wide || w.sideways) overflowR.push(c);
@@ -548,7 +559,7 @@ const server = http.createServer((req, res) => {
   const bigClub = [...realClubs].filter(c => realExp[c].some(r => r.mirror)).sort((a, b) => realExp[b].length - realExp[a].length)[0];
   const pgRo = await realPage('ro');
   const SRo = await friSheet(pgRo, bigClub);
-  await pgRo.click('#sheetBody .frmore').catch(() => {});
+  const moreBtnRo = await pgRo.$('#sheetBody .frmore'); if(moreBtnRo) await moreBtnRo.click();
   const wRo = await pgRo.evaluate(() => ({wide: [...document.querySelectorAll('#sheetBody .fri')].some(r => r.scrollWidth > r.clientWidth + 1),
     sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
   check(`real data (Romanian, ${bigClub}, ${realExp[bigClub].length} rows, ${realExp[bigClub].filter(r => r.mirror).length} mirrored): labels "Sursa spune:" and "Menționat doar pe pagina …", quote unchanged, nothing overflows at 390 px`,
@@ -557,6 +568,7 @@ const server = http.createServer((req, res) => {
     !wRo.wide && !wRo.sideways, JSON.stringify(wRo));
   await pgR.close(); await pgRo.close();
 
+  tick('real friendship data');
   // ---- The checker (tools/check_club_culture.py) on a scratch copy of the data: a pair in both the friendships
   // and the rivalries file exits 1 unless the friendship has ended; a quote over 15 words exits 1; no quote warns.
   const cp = require('child_process'), os = require('os');
@@ -594,9 +606,11 @@ const server = http.createServer((req, res) => {
   fs.rmSync(scratch, {recursive: true, force: true});
   function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
 
+  tick('checker on scratch data');
   check('no script error', !errors.length, errors.join(' | '));
   await browser.close(); server.close();
   const failed = results.filter(x => !x).length;
   console.log(`\n${results.length - failed} passed, ${failed} failed`);
+  console.log(`TIME total: ${((Date.now() - T_START) / 1000).toFixed(1)} s`);
   process.exit(failed ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });

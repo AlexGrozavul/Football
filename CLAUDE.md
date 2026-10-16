@@ -603,6 +603,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   on the sheet as written, the Next window line naming only that club's
   own entries, never a disputed one, always labelled, and never an
   estimate to the day.
+  **Since 2026-10-16 it prints one `TIME <section>: n s` line per section and a total** (about 42 s locally; it had grown to 31 min in CI because `click('.frmore')` waited Playwright's 30 s default for every club with 5 rows or fewer, which has no "Show all" button - it now clicks only when the button exists). A slow section shows in the log; keep any click on an optional element guarded.
 - **All sheets and panels share one expand-to-full mechanism (`sheetDrag()` in `index.html`, 2026-10-11): drag the handle or title row up for full size, tap the handle to toggle, a sheet reopens at half. New sheets must use it (any `.sheet` is wired at boot); `tools/test_layout.js` section 7 finds every `.sheet` and fails one with no trigger.**
 - `tools/test_layout.js` — added 2026-10-03: the phone-layout problems
   Alexandru saw on a real phone, at 390x844 with the real data. Fails if
@@ -784,7 +785,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   `data/club-tickets.csv`, `data/country-ticket-rules.csv`,
   `data/ticket-sources.csv`) and `tools/check_tickets.py`, or
   itself. Playwright is installed in the job,
-  pinned, not added to the repo. **Every Stadia request in all three is
+  pinned, not added to the repo. **Since 2026-10-16 the job's `timeout-minutes` is 60 (was 40) and a last step, "Step durations", prints each step's duration** (needs `actions: read`). **Every Stadia request in all three is
   stubbed**, so a run spends no credit and does not show that Stadia
   itself answers; that was checked separately (Secrets).
 - `tools/link_fixtures.py` — joins fixture-source teams to map clubs
