@@ -46,7 +46,7 @@ Q38245,Q154293,MSV Duisburg,fan-groups,active,,C17,2026-10-10,"Zu dieser Fan-Fre
 Q38245,Q1921747,BSG Chemie Leipzig,unclear,active,,C17,2026-10-10,Weitere Freundschaften gibt es derzeit zur BSG Chemie Leipzig (seit 2004)
 Q38245,Q170134,SV Waldhof Mannheim,fan-groups,active,,C17,2026-10-10,gibt es derzeit zur BSG Chemie Leipzig (seit 2004) und zum SV Waldhof Mannheim
 Q38245,Q261813,FC Wacker Innsbruck,unclear,active,,C17,2026-10-10,Im Ausland bestehen langjährige Freundschaften zum FC Wacker Innsbruck und Atalanta Bergamo
-Q38245,,Atalanta Bergamo,unclear,active,,C17,2026-10-10,Im Ausland bestehen langjährige Freundschaften zum FC Wacker Innsbruck und Atalanta Bergamo
+Q38245,Q1886,Atalanta Bergamo,unclear,active,,C17,2026-10-10,Im Ausland bestehen langjährige Freundschaften zum FC Wacker Innsbruck und Atalanta Bergamo
 Q97905916,Q535785,Würzburger Kickers,fan-groups,active,,C18,2026-10-10,Einige Fangruppen des FCA pflegen eine Freundschaft zu den Anhängern der Würzburger Kickers
 Q97905916,Q696507,SC Austria Lustenau,fan-groups,active,,C18,2026-10-10,gibt es freundschaftliche Beziehungen zu der Anhängerschaft des SC Austria Lustenau
 Q32494,Q15786,1. FC Nürnberg,fan-groups,active,,C19,2026-10-10,Fans des S04 unterhalten seit Anfang der 1980er Jahre eine innige Fanfreundschaft
@@ -79,7 +79,7 @@ Q105844,Q51974,Hamburger SV,fan-groups,active,,C29,2026-10-16,Fanfreundschaften 
 Q105844,Q33748,Hannover 96,fan-groups,active,,C29,2026-10-16,Freundschaftliche Bande gibt es ebenfalls zu Teilen der Fanszene von Hannover 96
 Q105853,Q102720,Hertha BSC,fan-groups,active,,C30,2026-10-16,Der KSC pflegt eine langjährige und sehr intensive Fanfreundschaft mit Hertha BSC
 Q105853,Q124007617,SK Sturm Graz,fan-groups,active,,C30,2026-10-16,Fanfreundschaft pflegt man ebenfalls mit den Fans des österreichischen Erstligisten SK Sturm Graz
-Q105853,,Racing Straßburg,fan-groups,active,,C30,2026-10-16,mit den Fans des österreichischen Erstligisten SK Sturm Graz und des französischen Nachbarn Racing Straßburg
+Q105853,Q126334,Racing Straßburg,fan-groups,active,,C30,2026-10-16,mit den Fans des österreichischen Erstligisten SK Sturm Graz und des französischen Nachbarn Racing Straßburg
 Q105853,Q289613,Pisa Sporting Club,fan-groups,active,,C30,2026-10-16,Ebenfalls besteht eine Freundschaft mehrerer Fanclubs mit dem Pisa Sporting Club
 Q105861,Q15789,FC Bayern München,fan-groups,active,Schickeria; Red Fanatic München,C31,2026-10-16,Im Allgemeinen besteht eine Fanfreundschaft zu den Fans des FC Bayern München
 Q105861,Q1893,FC Bologna,fan-groups,active,Ultras Bologna – Ultrà Rossoblù; Freak Boys,C31,2026-10-16,Auf Ultraebene besteht eine Freundschaft zu Fans des italienischen Verein FC Bologna
@@ -109,8 +109,8 @@ Q8466,Q221525,FC Metz,fan-groups,active,Generation Luzifer; Horda Frenetik 97,C4
 Q8466,Q4512,VfB Stuttgart,fan-groups,active,,C44,2026-10-16,eine Freundschaft zwischen dem 1. FC Kaiserslautern und dem VfB Stuttgart. Diese wächst seitdem stetig
 Q8466,Q131603,TSV 1860 München,fan-groups,active,,C44,2026-10-16,Die älteste der aktuellen größeren Verbindungen besteht zu den Fans des TSV 1860 München
 Q8466,,Kilmarnock FC,fan-groups,active,,C44,2026-10-16,Im Ausland bestehen außerdem Fanfreundschaften zum Kilmarnock FC sowie zu US Palermo und Hellas Verona
-Q8466,,US Palermo,fan-groups,active,,C44,2026-10-16,Im Ausland bestehen außerdem Fanfreundschaften zum Kilmarnock FC sowie zu US Palermo und Hellas Verona
-Q8466,,Hellas Verona,fan-groups,active,,C44,2026-10-16,Im Ausland bestehen außerdem Fanfreundschaften zum Kilmarnock FC sowie zu US Palermo und Hellas Verona
+Q8466,Q2674,US Palermo,fan-groups,active,,C44,2026-10-16,Im Ausland bestehen außerdem Fanfreundschaften zum Kilmarnock FC sowie zu US Palermo und Hellas Verona
+Q8466,Q8639,Hellas Verona,fan-groups,active,,C44,2026-10-16,Im Ausland bestehen außerdem Fanfreundschaften zum Kilmarnock FC sowie zu US Palermo und Hellas Verona
 Q8466,Q51976,Werder Bremen,fan-groups,unclear,,C44,2026-10-16,längerfristige und von vielen Fans getragene Freundschaft bestand zu den Fans von Werder Bremen
 Q142005,Q141931,Dynamo Dresden,fan-groups,ended,,C45,2026-10-16,Diese Freundschaft bestand etwa von 1983 bis 1987.
 Q142005,Q170105,Stuttgarter Kickers,fan-groups,ended,,C45,2026-10-16,"zwischen einzelnen Fangruppen, die allerdings von der aktiven Fanszene Rostocks heute nicht mehr getragen wird"
