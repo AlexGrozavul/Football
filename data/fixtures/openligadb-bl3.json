@@ -3249,7 +3249,7 @@
   {
    "id": 84840,
    "utcDate": "2026-10-16T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3264,9 +3264,20 @@
     "shortName": "Stuttgart II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/VfB_Stuttgart_1893_Logo.svg/960px-VfB_Stuttgart_1893_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

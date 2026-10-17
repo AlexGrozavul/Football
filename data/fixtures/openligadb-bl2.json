@@ -2277,7 +2277,7 @@
   {
    "id": 83632,
    "utcDate": "2026-10-16T16:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2292,9 +2292,20 @@
     "shortName": "Hertha",
     "crest": "https://i.imgur.com/apFwbYZ.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2302,7 +2313,7 @@
   {
    "id": 83641,
    "utcDate": "2026-10-16T16:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2317,9 +2328,20 @@
     "shortName": "Nürnberg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
