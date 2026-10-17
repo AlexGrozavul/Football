@@ -4258,6 +4258,7 @@ async function rivalriesHtml(club){
       `<button class="rvbucket" data-bucket="${esc(id)}">${esc(t('riv.bucket'))}: ${esc(entries.get(id).title || id)}</button>`).join('');
     return `<div class="riv" data-class="${esc(r.class)}"${i >= RIV_SHOWN ? ' hidden data-extra="1"' : ''}>` +
       `<div class="rvtop">${name}<span class="tag rvclass">${RIV_LABEL[r.class]}</span></div>` +
+      (r.quote ? `<div class="sub frquote"><span>${esc(t('fri.quote'))}</span> <span data-content>«${esc(r.quote)}»</span></div>` : '') +
       `<div class="sub">${sourceLine(src.get(r.sourceId), r.checkedOn)}</div>${links}</div>`;
   };
   return `<h4>${esc(t('riv.title'))}</h4><div class="rivs">` + rows.map(rowHtml).join('') +

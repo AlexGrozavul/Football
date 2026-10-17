@@ -177,7 +177,9 @@ const server = http.createServer((req, res) => {
         rows: [...b.querySelectorAll('.riv')].map(r => ({name: r.querySelector('.rvname').textContent,
           cls: r.querySelector('.rvclass').textContent, tap: r.querySelector('.rvname').tagName === 'BUTTON',
           rivalId: r.querySelector('.rvname').dataset.id || '', href: r.querySelector('a')?.href || '',
-          sub: r.querySelector('.sub').textContent, bucket: [...r.querySelectorAll('.rvbucket')].map(x => x.dataset.bucket),
+          sub: r.querySelector('.sub:not(.frquote)').textContent, quote: r.querySelector('.frquote')?.textContent || '',
+          quoteLabel: r.querySelector('.frquote > span:first-child')?.textContent || '', quoteIsData: r.querySelector('.frquote > span[data-content]')?.textContent || '',
+          sourceSays: /Source says/.test(r.textContent), bucket: [...r.querySelectorAll('.rvbucket')].map(x => x.dataset.bucket),
           wide: r.scrollWidth > r.clientWidth + 1, shown: !r.hidden})),
         more: b.querySelector('.rvmore')?.textContent || '',
         sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
@@ -258,6 +260,34 @@ const server = http.createServer((req, res) => {
     expanded: document.querySelector('#sheetBody .rvmore').getAttribute('aria-expanded'),
     sideways: document.getElementById('sheetBody').scrollWidth > document.getElementById('sheetBody').clientWidth + 1}));
   check('"Show all" reveals every row, no sideways scroll', opened.shown === mrows.length && opened.expanded === 'true' && !opened.sideways, JSON.stringify(opened));
+
+  // ---- Rivalry quotes (2026-10-17): a row with a quote shows "Source says: «…»" under it, the quote marked as data, using
+  // the Fan friendships quote's renderer and string; a row without one looks as before. Expected values come from the files.
+  const qSrc = rivSrc[0].sourceId;
+  const RQ = 'Erbitterte Rivalität zwischen den beiden Vereinen';
+  const rivQCsv = fs.readFileSync(path.join(ROOT, 'data/club-rivalries.csv'), 'utf8').replace(/\n?$/, '\n') +
+    `${without.id},,Quote Test FC,other,${qSrc},2026-10-03,"${RQ}, «so»"\n${without.id},,Noquote Test FC,other,${qSrc},2026-10-03\n`;
+  const RQT = `${RQ}, «so»`;
+  const pgQ = await ctx.newPage();
+  await pgQ.route('**/data/club-rivalries.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: rivQCsv}));
+  pgQ.on('pageerror', e => errors.push(e.message));
+  await pgQ.goto(BASE);
+  await pgQ.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+  const QS = await rivalSheet(pgQ, without.id);
+  const qRow = QS.rows.find(r => r.name === 'Quote Test FC'), nRow = QS.rows.find(r => r.name === 'Noquote Test FC');
+  check('rivalry quote: an injected row with a quote shows "Source says: «…»", the quote in the data-content element',
+    !!qRow && qRow.quote === `Source says: «${RQT}»` && qRow.quoteLabel === 'Source says:' && qRow.quoteIsData === `«${RQT}»` && /Checked on /.test(qRow.sub), JSON.stringify(qRow));
+  check('rivalry quote: an injected row without a quote shows no "Source says" and keeps its source line',
+    !!nRow && nRow.quote === '' && !nRow.sourceSays && /Checked on /.test(nRow.sub) && !QS.sideways && QS.rows.every(r => !r.wide), JSON.stringify(nRow));
+  await pgQ.close();
+  const quoted = riv.filter(r => r.quote);
+  const quotedClubs = [...new Set(quoted.map(r => r.clubQ))].filter(c => onMap.includes(c));
+  let quotedBad = [];
+  for(const c of quotedClubs){
+    const R = await rivalSheet(page, c), want = expectOrder(riv.filter(r => r.clubQ === c));
+    want.forEach((w, i) => { if(w.quote ? R.rows[i].quote !== `Source says: «${w.quote}»` || R.rows[i].quoteIsData !== `«${w.quote}»` : R.rows[i].sourceSays) quotedBad.push(`${c}/${w.rivalName}`); });
+  }
+  check(`rivalry quote: every real row with a quote (${quoted.length} rows on ${quotedClubs.length} clubs) shows it, and rows without one show none`, quotedBad.length === 0 && quoted.every(r => r.quote.split(/\s+/).length <= 15), quotedBad.join(' | '));
 
   tick('rivalries');
   // ---- The "When the atmosphere is best" section was removed (2026-10-10): the sheet has Rivalries and Fan
@@ -603,6 +633,13 @@ const server = http.createServer((req, res) => {
   const R15 = withRow({...other, quote: words(15)}), R16 = withRow({...other, quote: words(16)}), R0 = withRow({...other, quote: ''});
   check('checker: a quote of 15 words passes, of 16 words exits 1', R15.status === 0 && R16.status === 1 && /16 words; 15 at most/.test(R16.stdout), (R16.stdout + R16.stderr).slice(-200));
   check('checker: a row with no quote only warns (exit 0)', R0.status === 0 && /has no quote/.test(R0.stdout), (R0.stdout + R0.stderr).slice(-200));
+  const rivFile = path.join(scratch, 'data/club-rivalries.csv'), baseRiv = fs.readFileSync(rivFile, 'utf8').replace(/\n?$/, '\n');
+  const withRiv = quote => { fs.writeFileSync(rivFile, baseRiv + `${pairRiv.clubQ},,Scratch Rival FC,other,${rivSrc[0].sourceId},2026-10-03,${quote}\n`); return runChecker(); };
+  const RV15 = withRiv(words(15)), RV16 = withRiv(words(16)), RV0 = withRiv('');
+  check('checker: a rivalry quote of 15 words passes, of 16 words exits 1', RV15.status === 0 && RV16.status === 1 && /club-rivalries\.csv line \d+: the quote is 16 words; 15 at most/.test(RV16.stdout), (RV16.stdout + RV16.stderr).slice(-200));
+  const noQ = (RV0.stdout.match(/^WARNING: club-rivalries\.csv: \d+ rows have no quote/gm) || []);
+  check('checker: rivalry rows with no quote give one warning with a count, no row listed, exit 0',
+    RV0.status === 0 && noQ.length === 1 && !/Scratch Rival FC.*no quote/.test(RV0.stdout) && Number(noQ[0].match(/: (\d+) rows/)[1]) === riv.filter(r => !r.quote).length + 1, (RV0.stdout + RV0.stderr).slice(-200));
   fs.rmSync(scratch, {recursive: true, force: true});
   function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
 
