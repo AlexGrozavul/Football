@@ -7,8 +7,9 @@ All three are hand-written and nothing writes to them. This tool reads them,
 prints every accepted row as understood and exits 1 on a problem.
 
 club-rivalries.csv: clubQ, rivalQ (blank when the rival is not on the map),
-rivalName, class (main, local, other), sourceId, checkedOn. The class comes
-only from the wording of the source. There is no row limit and no target.
+rivalName, class (main, local, other), sourceId, checkedOn, and an optional quote (the
+page's own words behind the class, in the original language, 15 words at most). The class
+comes only from the wording of the source. There is no row limit and no target.
 club-friendships.csv: clubQ, friendQ (blank when the friend is not on the map),
 friendName, scope (fan-groups, clubs, unclear), status (active, ended, unclear),
 groupsText (the fan groups the source names, blank if it names none), sourceId,
@@ -21,12 +22,12 @@ EXITS 1 on: a clubQ or rivalQ on no data/clubs/*.json, a sourceId
 not in club-culture-sources.csv, a class or source kind
 outside its list, a duplicate row, a missing rivalName,
 a day-level date in the future in a text cell, a row with more values than
-the header has columns; in club-friendships.csv also an unknown friendQ, a scope
+the header has columns, a rivalry quote of more than 15 words; in club-friendships.csv also an unknown friendQ, a scope
 or status outside its list, a club listed as its own friend, a duplicate row, a quote
 of more than 15 words, and a pair of clubs that is in both the friendships file and the
 rivalries file unless the friendship's status is ended.
 WARNS (exit stays 0) on a missing or malformed checkedOn, a friendship row with no
-quote, a club with more
+quote, once and with a count only the rivalry rows with no quote, a club with more
 than 12 rows in either file (so they can be reviewed for padding), and a
 source no row uses.
 
@@ -141,6 +142,7 @@ def common(at, r, ok):
 
 
 riv, fri = {}, {}
+riv_no_quote = 0
 seen = set()
 for line, r in read('club-rivalries.csv', ['clubQ', 'rivalQ', 'rivalName', 'class', 'sourceId', 'checkedOn']):
     at = f'club-rivalries.csv line {line}'
@@ -153,9 +155,14 @@ for line, r in read('club-rivalries.csv', ['clubQ', 'rivalQ', 'rivalName', 'clas
         problems.append(f'{at}: rivalName is empty'); ok = False
     if r['class'] not in CLASSES:
         problems.append(f'{at}: class "{r["class"]}" is not one of {", ".join(CLASSES)}'); ok = False
-    for col in ('rivalName',):
-        if future_days(r[col]):
+    for col in ('rivalName', 'quote'):
+        if future_days(r.get(col, '')):
             problems.append(f'{at}: {col} holds a future day-level date'); ok = False
+    rq = r.get('quote', '')
+    if not rq:
+        riv_no_quote += 1
+    elif len(rq.split()) > QUOTE_MAX_WORDS:
+        problems.append(f'{at}: the quote is {len(rq.split())} words; {QUOTE_MAX_WORDS} at most'); ok = False
     key = ('riv', r['clubQ'], r['rivalQ'] or r['rivalName'].casefold())
     if key in seen:
         problems.append(f'{at}: {clubs.get(r["clubQ"], r["clubQ"])} / {r["rivalName"]} is entered twice'); ok = False
@@ -205,6 +212,8 @@ for q, rs in fri.items():
         if hit and r['status'] != 'ended':
             problems.append(f'{clubs[q]} / {r["friendName"]} is in club-friendships.csv ({r["status"]}) and in club-rivalries.csv ({hit["class"]}); a pair may be in both only when the friendship has ended')
 
+if riv_no_quote:
+    warnings.append(f'club-rivalries.csv: {riv_no_quote} rows have no quote (the page\'s own words behind the class)')
 for label, d in (('club-rivalries.csv', riv), ('club-friendships.csv', fri)):
     for q, rs in d.items():
         if len(rs) > REVIEW_OVER:
@@ -219,6 +228,7 @@ for q in sorted(riv, key=lambda q: clubs[q]):
     print(f'  {clubs[q]} ({q})')
     for r in sorted(riv[q], key=lambda r: (CLASSES.index(r['class']), r['rivalName'])):
         print(f'    {r["class"]:5}  {r["rivalName"]}  {r["rivalQ"] or "(not on the map)"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
+        if r.get('quote'): print(f'             quote: «{r["quote"]}»')
 print('  rows by class: ' + ', '.join(f'{c} {sum(1 for v in riv.values() for r in v if r["class"] == c)}' for c in CLASSES))
 print(f'club-friendships.csv: {sum(len(v) for v in fri.values())} accepted rows, {len(fri)} clubs')
 for q in sorted(fri, key=lambda q: clubs[q]):
