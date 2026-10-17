@@ -110,6 +110,7 @@ jobs:
           def fold(s):
               s=unicodedata.normalize('NFKD',s.lower().translate(SPECIAL))
               s=''.join(c for c in s if not unicodedata.combining(c))
+              s=re.sub(r'(?<![a-z0-9])((?:[a-z]\.){2,}[a-z]?)(?![a-z0-9])',lambda m:m.group(1).replace('.',''),s)
               return re.sub(r'[^a-z0-9]+',' ',s).strip()
           def words(s): return set(fold(s).split())
           def http(url,tries=5):
@@ -294,7 +295,7 @@ jobs:
               Q=resolve(host,allt)
               linkq={t:Q[t] for t in P['links'] if Q.get(t)}
               # sentence
-              sent=None; sq=[]
+              sent=None; sq=[]; SD={}
               text=P['text']
               if kind=='F':
                   r=find_quote(text,row['quote'])
@@ -306,7 +307,8 @@ jobs:
               if r:
                   s,e=sentence_span(text,r[0],r[1]); sent=text[s:e]
                   for a0,a1,t in P['anch']:
-                      if a0>=s and a1<=e+1 and Q.get(t) in MAP and Q[t]!=cq: sq.append(Q[t])
+                      if a0>=s and a1<=e+1 and Q.get(t) in MAP and Q[t]!=cq:
+                          sq.append(Q[t]); SD.setdefault(Q[t],[]).append(text[a0:a1].strip()+'->'+t)
                   sq=list(dict.fromkeys(sq))
               # route 1
               r1=sorted({q for t,q in linkq.items() if q in MAP and q!=cq and name_ok(name,MAP[q]['name'])})
@@ -314,14 +316,17 @@ jobs:
               if len(r1)>1: return tag,'AMBIG',','.join(f"{q}({MAP[q]['name']})" for q in r1)
               chosen=None; route=None
               if len(r1)==1: chosen=r1[0]; route='R1'
-              elif len(sq)==1 and sent is not None: chosen=sq[0]; route='R2'
-              elif len(sq)>1: note=' sentence has >1 map clubs: '+','.join(sq)
+              elif len(sq)==1 and sent is not None:
+                  dw=words(' '.join(SD[sq[0]]))
+                  if dw & words(name): chosen=sq[0]; route='R2'
+                  else: note=' R2-guard: sentence link '+str(SD[sq[0]])+' shares no word with the name;'
+              elif len(sq)>1: note=' sentence has >1 map clubs: '+', '.join(f"{q}({MAP[q]['name']}) via {SD[q]}" for q in sq)
               if chosen:
                   pk=pairkey(cq,chosen)
                   if kind=='F' and pk in RV_PAIRS: return tag,'CONFLICT',f'{chosen}({MAP[chosen]["name"]}) pair is in rivalries'
                   if kind=='R' and pk in FR_ACTIVE: return tag,'CONFLICT',f'{chosen}({MAP[chosen]["name"]}) pair is a non-ended friendship'
                   ins='inSent' if (sent is not None and chosen in sq) else 'notInSent'
-                  extra=f" sent=«{sent[:150]}»" if route=='R2' else ''
+                  extra=f" via {SD.get(chosen)} sent=«{sent[:200]}»" if sent is not None else ''
                   return tag,'FILL',f'{route} {chosen} ({MAP[chosen]["name"]},{MAP[chosen]["country"]}) {ins}{extra}'
               # not filled: report map-name matches and off-map candidates
               mn=[f"{q}({v['name']})" for q,v in MAP.items() if q!=cq and name_ok(name,v['name'])][:4]
