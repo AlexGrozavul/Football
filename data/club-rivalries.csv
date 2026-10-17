@@ -352,8 +352,8 @@ Q105254,Q38245,Eintracht Frankfurt,main,C14,2026-10-17,In jüngerer Vergangenhei
 Q105254,Q8466,1. FC Kaiserslautern,main,C14,2026-10-17,In jüngerer Vergangenheit gelten Eintracht Frankfurt und der 1. FC Kaiserslautern als größte Rivalen
 Q105254,Q819419,Wormatia Worms,other,C14,2026-10-17,Die Rivalität mit Wormatia Worms entwickelte sich aus dem Kopf-an-Kopf-Rennen
 Q105254,Q97905916,FC Augsburg,other,C14,2026-10-17,entwickelte sich seit den 2010er Jahren eine Fangegnerschaft zum FC Augsburg
-Q105254,,SV Darmstadt 98,other,C14,2026-10-17,Jedoch sind beide Rivalitäten weniger ernst genommen als die zuvor genannten Feindschaften
-Q105254,,SV Wehen Wiesbaden,other,C14,2026-10-17,Jedoch sind beide Rivalitäten weniger ernst genommen als die zuvor genannten Feindschaften
+Q105254,Q479351,SV Darmstadt 98,other,C14,2026-10-17,Jedoch sind beide Rivalitäten weniger ernst genommen als die zuvor genannten Feindschaften
+Q105254,Q310621,SV Wehen Wiesbaden,other,C14,2026-10-17,Jedoch sind beide Rivalitäten weniger ernst genommen als die zuvor genannten Feindschaften
 Q106394,,Freiburger FC,local,C21,2026-10-17,Ortskonkurrenten Freiburger FC (FFC) und denen des SC bestand lange eine Rivalität
 Q106394,Q4512,VfB Stuttgart,main,C21,2026-10-17,Die mit Abstand größte Rivalität besteht jedoch zu den Anhängern des VfB Stuttgart
 Q160532,Q105844,Arminia Bielefeld,local,C22,2026-10-17,Rivalitäten bestehen hauptsächlich zu den in der Nachbarschaft gelegenen Vereinen Arminia Bielefeld
@@ -428,9 +428,9 @@ Q1120838,Q1457,UC Sampdoria,other,C182,2026-10-17,"Other rivalries are with the 
 Q1120838,,Ternana,other,C182,2026-10-17,"Other rivalries are with the supporters of Modena, Livorno, Atalanta, Venezia, Palermo, Cremonese, Brescia, Verona"
 Q1120838,,Piacenza,other,C182,2026-10-17,"Other rivalries are with the supporters of Modena, Livorno, Atalanta, Venezia, Palermo, Cremonese, Brescia, Verona"
 Q13391,,Bari,main,C183,2026-10-17,"The main rivalry is with the other most successful football team from Apulia, Bari."
-Q289482,,Como,main,C184,2026-10-17,Monza's main rivalry is with fellow Lombardy club Como
+Q289482,Q1120838,Como 1907,main,C184,2026-10-17,Monza's main rivalry is with fellow Lombardy club Como
 Q289482,,Pro Sesto,other,C184,2026-10-17,"Another important rivalry is the one with Pro Sesto, which is based in"
-Q289482,,Pisa,other,C184,2026-10-17,Monza also have a more recent rivalry with Pisa
+Q289482,Q289613,Pisa Sporting Club,other,C184,2026-10-17,Monza also have a more recent rivalry with Pisa
 Q501372,,Cosenza,local,C185,2026-10-17,Cosenza – Calabria Derby (Derby della Calabria) – this is the most historic
 Q501372,,Reggina,local,C185,2026-10-17,This contest has had the most Serie B meetings of all Calabrian derbies
 Q501372,,Crotone,local,C185,2026-10-17,Crotone – The former Province of Catanzaro Derby (Derby dell'ex provincia di Catanzaro)
@@ -454,7 +454,7 @@ Q56542463,Q501245,Venezia FC,other,C187,2026-10-17,"there are also other histori
 Q56542463,Q1543,AC Milan,other,C187,2026-10-17,"AC Milan, and Inter Milan (long-standing rivals, also accentuated by the friendship"
 Q56542463,Q631,FC Inter,other,C187,2026-10-17,"AC Milan, and Inter Milan (long-standing rivals, also accentuated by the friendship"
 Q56542463,Q9616,Chelsea F.C.,other,C187,2026-10-17,"Internationally, the only rivalry worth mentioning is the one with Chelsea"
-Q1886,,Brescia,main,C188,2026-10-17,Atalanta supporters share their most intense rivalry [it] with supporters of nearby club Brescia.
+Q1886,,Brescia,local,C188,2026-10-17,Atalanta supporters share their most intense rivalry [it] with supporters of nearby club Brescia.
 Q1886,Q2768,Torino FC,other,C188,2026-10-17,"Since at least 1977, a heartfelt rivalry has existed between fans of Atalanta and Torino"
 Q1886,Q1422,Juventus FC,other,C188,2026-10-17,Atalanta supporters now also consider Juventus a hated rival
 Q1886,Q2739,AS Roma,other,C188,2026-10-17,The rivalry between Atalanta and Roma emerged in 1984 after once-friendly relations
@@ -474,7 +474,7 @@ Q8639,Q56542463,L.R. Vicenza,other,C189,2026-10-17,an intense rivalry with Vicen
 Q8639,,Chievo Verona,local,C189,2026-10-17,"The intercity fixtures against Chievo Verona are known as the ""Derby della Scala"""
 Q1387710,,Trento,other,C190,2026-10-17,"alcuni rapporti di rivalità, tra i quali spiccano per ""calore"" quelle contro le maggiori"
 Q1387710,,Mezzocorona,other,C190,2026-10-17,"alcuni rapporti di rivalità, tra i quali spiccano per ""calore"" quelle contro le maggiori"
-Q16848949,Q1893,Bologna FC 1909,main,C191,2026-10-17,"derby con la principale squadra rivale, il Bologna"
+Q16848949,Q1893,Bologna FC 1909,local,C191,2026-10-17,"derby con la principale squadra rivale, il Bologna"
 Q16848949,,Rimini,local,C191,2026-10-17,Il match con il Rimini è soprannominato «Derby della Romagna»
 Q16848949,,Ravenna,other,C191,2026-10-17,forti rivalità di carattere geografico sono quelle con due squadre di calcio romagnole professioniste
 Q16848949,Q8639,H. Verona,other,C191,2026-10-17,"Ulteriori rivalità di discreta importanza oppongono Cesena soprattutto con Hellas Verona, Pescara, Sambenedettese, Sangiustese"
@@ -502,7 +502,7 @@ Q16848949,,SPAL,other,C191,2026-10-17,"Ulteriori rivalità di discreta importanz
 Q16848949,Q8408,Modena Football Club 2018,other,C191,2026-10-17,"Ulteriori rivalità di discreta importanza oppongono Cesena soprattutto con Hellas Verona, Pescara, Sambenedettese, Sangiustese"
 Q16848949,,Reggiana,other,C191,2026-10-17,"Ulteriori rivalità di discreta importanza oppongono Cesena soprattutto con Hellas Verona, Pescara, Sambenedettese, Sangiustese"
 Q16848949,Q8603,Unione Sportiva Sassuolo Calcio,other,C191,2026-10-17,"Ulteriori rivalità di discreta importanza oppongono Cesena soprattutto con Hellas Verona, Pescara, Sambenedettese, Sangiustese"
-Q2276413,,Sestri Levante,main,C192,2026-10-17,La rivalità più importante dei tifosi entelliani è quella con i sostenitori del Sestri Levante
+Q2276413,,Sestri Levante,other,C192,2026-10-17,La rivalità più importante dei tifosi entelliani è quella con i sostenitori del Sestri Levante
 Q2276413,,Imperia,other,C192,2026-10-17,"rivali vi sono quelle rappresentanti i capoluoghi delle province liguri - Imperia, Savona e Spezia"
 Q2276413,,Savona,other,C192,2026-10-17,"rivali vi sono quelle rappresentanti i capoluoghi delle province liguri - Imperia, Savona e Spezia"
 Q2276413,,Spezia,other,C192,2026-10-17,"rivali vi sono quelle rappresentanti i capoluoghi delle province liguri - Imperia, Savona e Spezia"
@@ -568,7 +568,7 @@ Q289613,Q2052,ACF Fiorentina,other,C199,2026-10-17,La rivalità tra il Pisa e la
 Q289613,,Lucchese,other,C199,2026-10-17,"ma la più sentita, sia per la vicinanza, sia per le opposte idee politiche"
 Q289613,,Spezia,other,C199,2026-10-17,una fra le rivalità più sentite è quella con gli ultras dello Spezia
 Q759482,,Piacenza,local,C200,2026-10-17,"con il Piacenza, contro cui la Cremonese disputa il cosiddetto ""derby del Po"""
-Q8603,,Carpi,main,C201,2026-10-17,La rivalità più sentita è storicamente quella con i tifosi del Carpi
+Q8603,,Carpi,other,C201,2026-10-17,La rivalità più sentita è storicamente quella con i tifosi del Carpi
 Q8603,Q8408,Modena Football Club 2018,other,C201,2026-10-17,"Nata recentemente, per ragioni di vicinanza e di campanilismo, è quella con il Modena"
 Q8603,Q6703,Empoli Football Club,other,C201,2026-10-17,"altre rivalità sussistono con le tifoserie di Empoli, Ancona, Grosseto, Sansovino, Savona, Trento, Pro Vercelli,"
 Q8603,,Ancona,other,C201,2026-10-17,"altre rivalità sussistono con le tifoserie di Empoli, Ancona, Grosseto, Sansovino, Savona, Trento, Pro Vercelli,"
@@ -608,7 +608,7 @@ Q8408,,Triestina,other,C203,2026-10-17,"Altre rivalità minori si hanno con: Ata
 Q8408,,Spezia,other,C203,2026-10-17,"Altre rivalità minori si hanno con: Atalanta, Brescia, Verona, Vicenza"
 Q8408,Q2768,Torino FC,other,C203,2026-10-17,"Altre rivalità minori si hanno con: Atalanta, Brescia, Verona, Vicenza"
 Q8408,,Reggina,other,C203,2026-10-17,"Altre rivalità minori si hanno con: Atalanta, Brescia, Verona, Vicenza"
-Q845043,,Latina,main,C204,2026-10-17,"la più accesa è senza dubbio quella contro gli odiati ""cugini"" pontini del Latina"
+Q845043,,Latina,other,C204,2026-10-17,"la più accesa è senza dubbio quella contro gli odiati ""cugini"" pontini del Latina"
 Q845043,,Reggina,other,C204,2026-10-17,Tra le rivalità più sentite ci sono anche quelle con le tifoserie della Reggina
 Q845043,,Nocerina,other,C204,2026-10-17,Tra le rivalità più sentite ci sono anche quelle con le tifoserie della Reggina
 Q845043,,Foggia,other,C204,2026-10-17,Tra le rivalità più sentite ci sono anche quelle con le tifoserie della Reggina
@@ -640,11 +640,11 @@ Q12236,Q8687,Athletic Club,main,C208,2026-10-17,"consider their biggest rival to
 Q12236,Q271574,Real Oviedo,other,C208,2026-10-17,also a minor rivalry between Racing and a club from neighboring Asturias: Real Oviedo
 Q8749,Q8760,Deportivo de A Coruña,local,C209,2026-10-17,"club Deportivo A Coruña, with whom they contest the Galician derby"
 Q8760,Q8749,RC Celta de Vigo,local,C210,2026-10-17,"with Celta Vigo, and matches between the two sides are known as the Galician derby"
-Q10319,,UD Salamanca,main,C211,2026-10-17,En el plano deportivo la mayor rivalidad es contra el UD Salamanca
-Q10319,,Burgos CF,other,C211,2026-10-17,los últimos años ha surgido cierta rivalidad entre el Burgos C.F. y el Real Valladolid
+Q10319,,UD Salamanca,other,C211,2026-10-17,En el plano deportivo la mayor rivalidad es contra el UD Salamanca
+Q10319,Q852079,Burgos CF,other,C211,2026-10-17,los últimos años ha surgido cierta rivalidad entre el Burgos C.F. y el Real Valladolid
 Q10319,Q12278,Sporting de Gijón,other,C211,2026-10-17,rivalidad hay son el Sporting de Gijón y el Racing de Santander
 Q10319,Q12236,Racing de Santander,other,C211,2026-10-17,rivalidad hay son el Sporting de Gijón y el Racing de Santander
-Q10300,Q8682,Real Madrid Club de Fútbol,main,C212,2026-10-17,"rivalidad más intensa es, sin duda, con su rival de la ciudad, el Real Madrid"
+Q10300,Q8682,Real Madrid Club de Fútbol,local,C212,2026-10-17,"rivalidad más intensa es, sin duda, con su rival de la ciudad, el Real Madrid"
 Q10407,,Poli Ejido,other,C213,2026-10-17,iba a empezar a trocarse en una rivalidad importante a partir de una fecha importante
 Q10407,,Real Murcia,other,C213,2026-10-17,se fraguó una bonita rivalidad entre la U.D. Almería y el Real Murcia
 Q460448,,Xerez CD,local,C214,2026-10-17,Derbi gaditano: El club mantiene una marcada rivalidad con el Xerez Club Deportivo
@@ -659,13 +659,13 @@ Q600232,,Cartagena,local,C215,2026-10-17,se han ido generando otros derbis tradi
 Q600232,,Alicante C. F.,local,C215,2026-10-17,se han ido generando otros derbis tradicionales
 Q600232,,Benidorm,local,C215,2026-10-17,se han ido generando otros derbis tradicionales
 Q743557,Q10333,Valencia CF,local,C216,2026-10-17,Castellón y Valencia han disputado 26 derbis en liga
-Q743557,,Villarreal CF,main,C216,2026-10-17,El otro gran rival histórico es el Villareal CF
+Q743557,Q12297,Villarreal CF,main,C216,2026-10-17,El otro gran rival histórico es el Villareal CF
 Q743557,,Hércules,other,C216,2026-10-17,la rivalidad entre Castellón y Hércules creció especialmente desde 1999
 Q743557,,Nàstic de Tarragona,other,C216,2026-10-17,Otras rivalidades de menor importancia son las que mantiene con el Nàstic de Tarragona
 Q743557,,Alicante CF,other,C216,2026-10-17,Otras rivalidades de menor importancia son las que mantiene con el Nàstic de Tarragona
 Q770740,Q10286,Club Atlético Osasuna,other,C217,2026-10-17,estableciéndose una fuerte rivalidad entre ambos clubes
 Q1140695,Q209509,Grenoble Foot 38,local,C218,2026-10-17,la concurrence du Grenoble Foot 38 dans le Derby des Alpes
-Q192071,,Bordeaux,main,C219,2026-10-17,rivalité la plus forte et la plus durable est cependant le Derby de l'Atlantique
+Q192071,,Bordeaux,local,C219,2026-10-17,rivalité la plus forte et la plus durable est cependant le Derby de l'Atlantique
 Q192071,Q19521,AS Saint-Étienne,local,C219,2026-10-17,"Les matches opposant le FC Nantes et l'AS Saint-Étienne, surnommée le Derby de la Loire"
 Q192071,Q19509,Stade rennais FC,local,C219,2026-10-17,Le derby avec le Stade rennais (le Derby breton)
 Q208228,,Sedan,other,C220,2026-10-17,Les supporters rémois nourrissent traditionnellement une rivalité particulière avec ceux de Sedan
@@ -673,7 +673,7 @@ Q19513,,Nîmes Olympique,other,C221,2026-10-17,Outre ces deux grandes rivalités
 Q210864,Q760736,Stade lavallois,local,C222,2026-10-17,rencontre la plus disputée est le « derby du Maine » avec le Stade Lavallois
 Q218372,,AS Brestoise,local,C223,2026-10-17,"Pendant quelques saisons, ces derbies voient s'affronter les « laïcs » de l'AS Brestoise"
 Q218372,Q459148,En avant Guingamp,main,C223,2026-10-17,"Parmi les clubs voisins, le principal rival va devenir l'En Avant Guingamp"
-Q288419,,Aviron bayonnais FC,main,C224,2026-10-17,« Les Txuri-Urdin » restent les principaux rivaux du Pau FC
+Q288419,,Aviron bayonnais FC,other,C224,2026-10-17,« Les Txuri-Urdin » restent les principaux rivaux du Pau FC
 Q288419,,Tarbes Pyrénées Football,other,C224,2026-10-17,plusieurs rivalités régionales avec les clubs majeurs de Gascogne et du Pays basque
 Q288419,,Stade Montois,other,C224,2026-10-17,plusieurs rivalités régionales avec les clubs majeurs de Gascogne et du Pays basque
 Q288419,,Girondins de Bordeaux,other,C224,2026-10-17,l'apparition d'une certaine rivalité sportive avec les Girondins de Bordeaux
@@ -683,7 +683,7 @@ Q328658,,FC Rouen,local,C225,2026-10-17,Le derby historique de la Normandie oppo
 Q328658,,Stade Malherbe de Caen,other,C225,2026-10-17,l'opposition Caen-Le Havre le principal duel du football normand
 Q522283,Q483020,Paris Saint-Germain FC,other,C226,2026-10-17,le Red Star entretient une éphémère rivalité avec le Paris Saint-Germain FC
 Q522283,Q1051013,Paris FC,local,C226,2026-10-17,le principal derby est celui opposant le Red Star au Paris Football Club
-Q760736,,Le Mans,local,C227,2026-10-17,derby contre le Mans est le plus populaire étant considéré comme le derby du Maine
+Q760736,Q210864,Le Mans Football Club,local,C227,2026-10-17,derby contre le Mans est le plus populaire étant considéré comme le derby du Maine
 Q760736,Q845137,Angers SCO,local,C227,2026-10-17,"Les autres derbies, plus récents, opposent le Stade lavallois au SCO Angers"
 Q845137,Q192071,Football Club de Nantes,other,C228,2026-10-17,Le principal compétiteur du SCO d'Angers est le FC Nantes
 Q845137,Q760736,Stade lavallois,local,C228,2026-10-17,Le derby avec le Stade lavallois est né à la fin des années 1970
@@ -706,7 +706,8 @@ Q19451,,Wigan Athletic,main,C230,2026-10-17,Wigan eventually became known as Bol
 Q19451,Q18656,Manchester United F.C.,main,C230,2026-10-17,"named Manchester United, Blackburn Rovers, Wigan Athletic, Oldham Athletic and Bury as their biggest rivals"
 Q19451,,Oldham Athletic,main,C230,2026-10-17,"named Manchester United, Blackburn Rovers, Wigan Athletic, Oldham Athletic and Bury as their biggest rivals"
 Q19568,Q18732,Southampton F.C.,main,C231,2026-10-17,Bournemouth supporters named their club's near neighbour Southampton as its biggest rival
-Q19568,,Leeds United,main,C231,2026-10-17,The most intense rivalry is with Leeds United
+Q19568,Q1128631,Leeds United F.C.,other,C231,2026-10-17,The most intense rivalry is with Leeds United
 Q19568,Q19604,Portsmouth F.C.,other,C231,2026-10-17,"with Portsmouth, Brighton and Hove Albion, Reading and Leeds United following"
 Q19568,Q19453,Brighton & Hove Albion F.C.,other,C231,2026-10-17,"with Portsmouth, Brighton and Hove Albion, Reading and Leeds United following"
 Q19568,,Reading,other,C231,2026-10-17,"with Portsmouth, Brighton and Hove Albion, Reading and Leeds United following"
+Q141931,Q155730,1. FC Magdeburg,other,C33,2026-10-17,weiterer ehemaliger DDR-Oberligavereine wie dem 1. FC Magdeburg. Bei Spielen mit letztgenanntem Fußballclub
