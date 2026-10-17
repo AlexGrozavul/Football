@@ -27,16 +27,16 @@ Q4654417,Q245162,Rapid București,fan-groups,active,Sud Timișoara; Nord Rapid; 
 Q4654417,Q101959,Borussia Mönchengladbach,fan-groups,active,Peluza Sud Timișoara; Nordkurve Mönchengladbach,C9,2026-10-10,Peluza Sud Timișoara are o relație de înfrățire cu suporteri ultrași din Nordkurve Mönchengladbach
 Q4654417,,Aridaias (Gate 4),fan-groups,unclear,,C9,2026-10-10,legând o legătură de prietenie cu grupul Aridaias (Gate 4)
 Q4654417,,Peluza Sud '97 Craiova,fan-groups,ended,,C9,2026-10-10,relație de prietenie care s-a stins este cea cu Peluza Sud '97 Craiova
-Q104770,,FC Liverpool,fan-groups,unclear,,C13,2026-10-10,entstanden freundschaftliche Beziehungen zu den Fans des englischen Gegners
+Q104770,Q1130849,FC Liverpool,fan-groups,unclear,,C13,2026-10-10,entstanden freundschaftliche Beziehungen zu den Fans des englischen Gegners
 Q104770,Q6463,FC St. Pauli,fan-groups,unclear,,C13,2026-10-10,Seit den 2000er Jahren hat diese Freundschaft jedoch stark an Bedeutung eingebüßt
 Q104770,Q41420,Borussia Dortmund,unclear,active,Boyz Köln; Desperados Dortmund,C13,2026-10-10,besteht zwischen den beiden Vereinen aus Sicht einiger Fans ein freundschaftliches Verhältnis
-Q104770,,Paris Saint-Germain,fan-groups,unclear,Supras Auteuil; Authentiks Paris; Grinta; Wilde Horde; Coloniacs,C13,2026-10-10,Auf Ultra-Ebene gibt es zudem noch eine gewachsene Freundschaft zu den ehemaligen Gruppen
+Q104770,Q483020,Paris Saint-Germain,fan-groups,unclear,Supras Auteuil; Authentiks Paris; Grinta; Wilde Horde; Coloniacs,C13,2026-10-10,Auf Ultra-Ebene gibt es zudem noch eine gewachsene Freundschaft zu den ehemaligen Gruppen
 Q105254,Q101959,Borussia Mönchengladbach,fan-groups,ended,,C14,2026-10-10,kündigten die Gladbacher diese Freundschaft kurzerhand auf
 Q105254,Q154293,MSV Duisburg,fan-groups,active,,C14,2026-10-10,Gegenwärtig führt die aktive Fanszene eine enge Freundschaft zu der aktiven Fanszene aus Duisburg
 Q105254,Q155186,FC Carl Zeiss Jena,fan-groups,unclear,,C14,2026-10-10,Einzelne freundschaftliche Kontakte bestanden auch zur aktiven Fanszene des FC Carl Zeiss Jena
 Q104761,Q159936,Kickers Offenbach,fan-groups,active,,C15,2026-10-10,Eine Fanfreundschaft gibt es mit den Anhängern von Kickers Offenbach
 Q101959,Q105254,1. FSV Mainz 05,fan-groups,unclear,,C16,2026-10-10,inzwischen nur noch von wenigen Anhängern gepflegt wird
-Q101959,,FC Liverpool,fan-groups,active,,C16,2026-10-10,hat die lange Freundschaft zum FC Liverpool nach wie vor Bestand
+Q101959,Q1130849,FC Liverpool,fan-groups,active,,C16,2026-10-10,hat die lange Freundschaft zum FC Liverpool nach wie vor Bestand
 Q38245,Q4512,VfB Stuttgart,fan-groups,ended,,C17,2026-10-10,"1. FC Nürnberg und FC Schalke 04, die jedoch alle sehr kurzlebig waren"
 Q38245,Q51974,Hamburger SV,fan-groups,ended,,C17,2026-10-10,"1. FC Nürnberg und FC Schalke 04, die jedoch alle sehr kurzlebig waren"
 Q38245,Q15786,1. FC Nürnberg,fan-groups,ended,,C17,2026-10-10,"1. FC Nürnberg und FC Schalke 04, die jedoch alle sehr kurzlebig waren"
@@ -72,7 +72,7 @@ Q51976,,Maccabi Haifa,fan-groups,active,Ultra‘ Boys,C26,2026-10-10,Die Ultra�
 Q245162,Q4654417,Politehnica Timișoara,fan-groups,active,,C8,2026-10-10,suporterii Rapidului îi consideră aliați pe suporterii Politehnicii Timișoara
 Q101859,,Esbjerg fB,fan-groups,active,,C27,2026-10-16,Es besteht eine Fanfreundschaft zwischen dem VfL Wolfsburg und dem dänischen Verein Esbjerg fB
 Q102720,Q105853,Karlsruher SC,fan-groups,unclear,,C28,2026-10-16,eine intensive Fanfreundschaft zwischen den Hertha-Anhängern und den Fans des Karlsruher SC
-Q102720,,Racing Straßburg,fan-groups,unclear,,C28,2026-10-16,gab es auf Ultra-Ebene auch Freundschaften mit der Fanszene von Racing Straßburg
+Q102720,Q126334,Racing Straßburg,fan-groups,unclear,,C28,2026-10-16,gab es auf Ultra-Ebene auch Freundschaften mit der Fanszene von Racing Straßburg
 Q102720,Q15789,FC Bayern München,fan-groups,unclear,,C28,2026-10-16,"eine Freundschaft, die aber durch Angriffe Berliner Fans gegen Bayern-Fans zum großen Teil beendet wurde"
 Q102720,,Malmö FF,fan-groups,active,,C28,2026-10-16,Zudem pflegen einige Teile der Hertha-Ultra-Szene eine Freundschaft mit dem Malmö FF
 Q105844,Q51974,Hamburger SV,fan-groups,active,,C29,2026-10-16,Fanfreundschaften pflegen die Fans des DSC insbesondere zu Gruppierungen des Hamburger SV
@@ -82,7 +82,7 @@ Q105853,Q124007617,SK Sturm Graz,fan-groups,active,,C30,2026-10-16,Fanfreundscha
 Q105853,,Racing Straßburg,fan-groups,active,,C30,2026-10-16,mit den Fans des österreichischen Erstligisten SK Sturm Graz und des französischen Nachbarn Racing Straßburg
 Q105853,Q289613,Pisa Sporting Club,fan-groups,active,,C30,2026-10-16,Ebenfalls besteht eine Freundschaft mehrerer Fanclubs mit dem Pisa Sporting Club
 Q105861,Q15789,FC Bayern München,fan-groups,active,Schickeria; Red Fanatic München,C31,2026-10-16,Im Allgemeinen besteht eine Fanfreundschaft zu den Fans des FC Bayern München
-Q105861,,FC Bologna,fan-groups,active,Ultras Bologna – Ultrà Rossoblù; Freak Boys,C31,2026-10-16,Auf Ultraebene besteht eine Freundschaft zu Fans des italienischen Verein FC Bologna
+Q105861,Q1893,FC Bologna,fan-groups,active,Ultras Bologna – Ultrà Rossoblù; Freak Boys,C31,2026-10-16,Auf Ultraebene besteht eine Freundschaft zu Fans des italienischen Verein FC Bologna
 Q105861,,Leicester City,fan-groups,active,,C31,2026-10-16,besteht seit 2008 eine Fanfreundschaft mit dem englischen Championship-Club Leicester City
 Q107818,Q4512,VfB Stuttgart,fan-groups,active,,C32,2026-10-16,Einige Fans des FCE pflegen eine Fan-Freundschaft mit den Anhängern des VfB Stuttgart
 Q107818,Q141971,1. FC Union Berlin,fan-groups,active,,C32,2026-10-16,vom 1. FC Union Berlin einen herzlichen Kontakt zu den Cottbusern. Diese Freundschaft begründet sich
@@ -103,7 +103,7 @@ Q162251,Q153539,SpVgg Greuther Fürth,fan-groups,active,,C40,2026-10-16,Fanfreun
 Q162251,,EV Ravensburg,fan-groups,active,,C40,2026-10-16,Fanfreundschaften bestehen mit der SpVgg Greuther Fürth und dem Eishockeyverein EV Ravensburg
 Q33748,Q51974,Hamburger SV,fan-groups,active,,C41,2026-10-16,Es besteht eine langjährige Fanfreundschaft mit dem Hamburger SV
 Q479351,,1. FCA Darmstadt,clubs,active,,C42,2026-10-16,Seit jeher ein freundschaftliches Verhältnis besteht zum drittgrößten Darmstädter Verein 1. FCA Darmstadt
-Q479351,,Young Boys,fan-groups,active,Ostkurve Bern; Urban Squad,C42,2026-10-16,Die Ultras des SV 98 unterhalten eine Fanfreundschaft zu den Ultras der Young Boys
+Q479351,Q190526,Young Boys,fan-groups,active,Ostkurve Bern; Urban Squad,C42,2026-10-16,Die Ultras des SV 98 unterhalten eine Fanfreundschaft zu den Ultras der Young Boys
 Q479351,Q6463,FC St. Pauli,fan-groups,active,Darmstädter Skinheads,C42,2026-10-16,pflegen darüber hinaus eine langjährige Freundschaft mit den Fans des FC St. Pauli
 Q8466,Q221525,FC Metz,fan-groups,active,Generation Luzifer; Horda Frenetik 97,C44,2026-10-16,Ultragruppierung „Generation Luzifer“ ist mit den Ultras der „Horda Frenetik 97“ vom FC Metz befreundet
 Q8466,Q4512,VfB Stuttgart,fan-groups,active,,C44,2026-10-16,eine Freundschaft zwischen dem 1. FC Kaiserslautern und dem VfB Stuttgart. Diese wächst seitdem stetig
