@@ -1809,7 +1809,7 @@
   {
    "id": 558872,
    "utcDate": "2026-10-16T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1827,9 +1827,9 @@
     "tla": "EXC",
     "crest": "https://crests.football-data.org/670.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558871,

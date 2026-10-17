@@ -1134,7 +1134,7 @@
   {
    "id": 565828,
    "utcDate": "2026-10-16T18:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 6,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1152,9 +1152,9 @@
     "tla": "KOE",
     "crest": "https://crests.football-data.org/1.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 565821,
