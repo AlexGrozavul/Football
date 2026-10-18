@@ -417,6 +417,23 @@
    "competition": "Serie A"
   },
   {
+   "id": "Q650365",
+   "name": "Carrarese Calcio",
+   "leagues": [
+    "Q194052"
+   ],
+   "tier": 2,
+   "venue": "Stadio dei Marmi",
+   "capacity": null,
+   "lat": 44.065328,
+   "lon": 10.076805,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serie_B; https://en.wikipedia.org/wiki/Carrarese_Calcio_1908; https://www.wikidata.org/wiki/Q3967924; https://www.openstreetmap.org/way/27643000",
+   "note": "PLACED, 2026-10-18 - the roster check had it as unplaced-no-coordinates: neither Q650365 nor a ground on it had a position (the item has no P115). GROUND, two places for 2026-27: the 2026-27 Serie B stadiums table ('Stadio dei Marmi', Carrara, 4,194) and the club's own English infobox ('Stadio dei Marmi - IV Olimpionici Azzurri'). COORDINATE: the ground's Wikidata item Q3967924, P625 44.065328 / 10.076805, which is also what the English Wikipedia article 'Stadio dei Marmi (Carrara)' returns through its coordinates property (44.06532778 / 10.07680556); OpenStreetMap way/27643000 (leisure=stadium, sport=soccer, named 'Stadio Comunale dei Marmi' and 'Stadio Comunale dei quattro Olimpionici') is 22 m away. CAPACITY LEFT EMPTY on purpose: 4,194 (the Serie B table and the ground's English article, both Wikipedia), 3,520 (the club's English infobox), 5,587 (the Italian club article), 9,500 (OpenStreetMap's capacity tag); StadiumDB's Italian page has no row for Carrara; no two independent sources are within 5%. Read on a runner (Wikidata, Overpass) and from the Wikipedia API",
+   "manual": true,
+   "competition": "Serie B"
+  },
+  {
    "id": "Q652516",
    "name": "Benevento Calcio",
    "leagues": [

@@ -610,6 +610,23 @@
    "competition": "Liga a II-a"
   },
   {
+   "id": "Q39487082",
+   "name": "CSA Steaua București",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Steaua",
+   "capacity": 31254,
+   "lat": 44.413169,
+   "lon": 26.040313,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II; https://en.wikipedia.org/wiki/CSA_Steaua_Bucure%C8%99ti_(football); https://www.wikidata.org/wiki/Q65090741; https://www.openstreetmap.org/way/858835474; https://stadiumdb.com/stadiums/rou",
+   "note": "PLACED, 2026-10-18 - the roster check had it as unplaced-no-coordinates: neither Q39487082 nor a ground on it had a position (the item has no P115). GROUND, two places for 2026-27: the 2026-27 Liga II stadiums table ('Steaua Stadium (2021)', 31,254) and the club's own English infobox (ground 'Steaua', the same article; the Romanian infobox says Stadionul Steaua). Wikidata's item for the ground is Q65090741 (label Stadionul Steaua, aliases Steaua Stadium and Ghencea Stadium). COORDINATE: that item's own P625, 44.413169 / 26.040313. Two more reads agree within 150 m: OpenStreetMap way/858835474 (leisure=stadium, sport=soccer, name 'Stadionul Steaua / Steaua Stadium') at 44.413068 / 26.040309, 11 m away, and the coordinate in the Romanian Wikipedia article's infobox (44 24 46.10 N, 26 2 25.60 E), about 38 m away. CAPACITY 31254: the Liga II table; StadiumDB's Romanian page ('Stadionul Steaua', Bucharest, CSA Steaua) says 31,350, 0.3% apart; the club's English and Romanian infoboxes say 31,254 too (Wikipedia, so not a third source). Read on a runner (Wikidata, Overpass, StadiumDB) and from the Wikipedia API",
+   "manual": true,
+   "competition": "Liga a II-a"
+  },
+  {
    "id": "Q4654138",
    "name": "ASC Corona Brașov",
    "leagues": [
