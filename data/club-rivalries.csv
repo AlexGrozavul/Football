@@ -742,7 +742,6 @@ Q501693,Q208228,Stade de Reims,other,C247,2026-10-18,vers le rival historique du
 Q216032,Q190561,Standard Liège,main,C248,2026-10-18,Defour te verkopen aan aartsrivaal Standard
 Q216032,Q138248,Sint-Truidense V.V.,main,C248,2026-10-18,tegen aartsrivaal Sint-Truiden VV
 Q849544,,KFC Heultje,local,C249,2026-10-18,"plusieurs derbys contre le KFC Heultje, un club d'une entité voisine"
-Q1065328,,FC Denderleeuw,other,C250,2026-10-18,"son rival de Denderleeuw, tout juste relégué de Division 2"
 Q869907,Q309456,FC Lausanne-Sport,local,C251,2026-10-18,"plusieurs derbies lausannois avec son voisin, le Lausanne-Sport"
 Q201969,Q201360,Grasshopper Club Zürich,local,C252,2026-10-18,to return to his boyhood club and cantonal rivals Grasshopper Club Zürich
 Q841245,Q204237,Dinamo București,main,C392,2026-10-18,"Dinamo București a fost, de-a lungul timpului, principalul rival tradițional"
@@ -752,7 +751,7 @@ Q841245,,CS Mioveni,local,C392,2026-10-18,FC Argeș are rivalitate locală împo
 Q1135735,Q1689705,Jiul Petroșani,local,C393,2026-10-18,"Cea mai puternică rivalitate este cea cu Jiul Petroșani, considerată un Derby al Hunedoarei"
 Q1135735,Q1024397,CSM Reșița,other,C393,2026-10-18,"Alte rivalități sunt CSM Reșița, Mureșul Deva și Politehnica Timișoara"
 Q1135735,Q19902101,CSM Deva,other,C393,2026-10-18,"Alte rivalități sunt CSM Reșița, Mureșul Deva și Politehnica Timișoara"
-Q1135735,Q4654417,Știința Poli Timișoara,other,C393,2026-10-18,"Alte rivalități sunt CSM Reșița, Mureșul Deva și Politehnica Timișoara"
+Q1135735,,Știința Poli Timișoara,other,C393,2026-10-18,"Alte rivalități sunt CSM Reșița, Mureșul Deva și Politehnica Timișoara"
 Q298201,Q753462,FC Universitatea Cluj,main,C394,2026-10-18,Rivala principala a ASA Targul Mures este Universitatea Cluj
 Q298201,Q205998,CFR Cluj,other,C394,2026-10-18,s-a declansat o rivalitate cu clubul CFR Cluj
 Q23051672,,AFC Odorheiu Secuiesc,local,C395,2026-10-18,"una locală, de puțină intensitate, există împotriva AFC Odorheiu Secuiesc"
@@ -773,11 +772,11 @@ Q1057672,,Șoimii Gura Humorului,local,C400,2026-10-18,behind local rivals Șoim
 Q123283162,,Trikala,main,C435,2026-10-18,"Anagennisi Karditsa's main rivals are Trikala, from the neighbouring city of Trikala, and Ionikos."
 Q123283162,,Ionikos,main,C435,2026-10-18,"Anagennisi Karditsa's main rivals are Trikala, from the neighbouring city of Trikala, and Ionikos."
 Q123283162,,AOK,local,C435,2026-10-18,Anagennisi also maintained a bitter local rivalry with AOK
-Q16245443,Q1547133,Athens Kallithea F.C.,other,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
-Q16245443,,Egaleo,other,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
-Q16245443,,Fostiras,other,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
-Q16245443,,Apollon Smyrnis,other,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
-Q16245443,,Proodeftiki,other,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
+Q16245443,Q1547133,Athens Kallithea F.C.,main,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
+Q16245443,,Egaleo,main,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
+Q16245443,,Fostiras,main,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
+Q16245443,,Apollon Smyrnis,main,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
+Q16245443,,Proodeftiki,main,C440,2026-10-18,"rivals are smaller Athens football clubs like Kallithea, Egaleo, Fostiras, Apollon Smyrnis, Proodeftiki"
 Q2744247,,Paniliakos,other,C442,2026-10-18,"Kalamata's long-standing rivals are Paniliakos, located in Pyrgos in the western Peloponnese, and Egaleo"
 Q2744247,,Egaleo,other,C442,2026-10-18,"Kalamata's long-standing rivals are Paniliakos, located in Pyrgos in the western Peloponnese, and Egaleo"
 Q2744247,,Messiniakos,local,C442,2026-10-18,Messiniakos is Kalamata's cross-town rival
@@ -789,5 +788,5 @@ Q209619,Q188656,FK Partizan,other,C454,2026-10-18,Other rivals to a much lesser 
 Q209619,,FK Zemun,other,C454,2026-10-18,OFK Beograd had a bitter rivalry with FK Zemun
 Q2614598,Q207501,FK Vojvodina,other,C459,2026-10-18,Mačva developed a fierce rivalry for the titles in those leagues with FK Vojvodina
 Q4863629,,FK Proleter Loznica,other,C462,2026-10-18,"FK Proleter Loznica, and a huge rivalry bagins between the two clubs"
-Q619215,,Π.Α.Ο.Κ.,main,C478,2026-10-18,Ο Π.Α.Ο.Κ. θεωρείται ο μεγαλύτερος αντίπαλος του Απόλλωνα
+Q619215,Q204888,Π.Α.Ο.Κ.,main,C478,2026-10-18,Ο Π.Α.Ο.Κ. θεωρείται ο μεγαλύτερος αντίπαλος του Απόλλωνα
 Q619215,,Ηρακλή,other,C478,2026-10-18,Τις δεκαετίες 1980 και 1990 υπήρχε μεγάλη αντιπαλότητα με τον Ηρακλή
