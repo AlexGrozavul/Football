@@ -156,6 +156,10 @@ a subscribed calendar reads as a schedule regardless of its description.
   optional columns may be omitted. Required: `date`, `home`, `away`,
   `feed`, `dateSource`.
 - `data/clubs-manual.csv` — corrections and additions to the club layer.
+  **Since 2026-10-18 an optional `allowDissolved` column** (value `yes`)
+  lets the hand-named fallback accept a candidate that carries a `P576`,
+  for that row only and only when a tracked roster names the club
+  (Conventions, "The dissolution exception of the hand-named fallback").
   A row with a `clubQid` overrides only the cells that are filled in; a
   row without one adds a club; `skip` in the tier column removes one,
   which is how a duplicate Wikidata item is dropped, and also how a club
@@ -1091,6 +1095,40 @@ Nyonnais, the seven Austrian additions, seven Serbian ones) is missing
 from a build whose roster read failed, and is named as missing. One
 roster read per country per run is shared by both fallbacks, so the
 second never asks again or gets a different answer.
+
+**The dissolution exception of the hand-named fallback, 2026-10-18.**
+Alexandru's decision: Calcio Padova (`Q8428`) is on the map at tier 2
+although its Wikidata item carries `P576` 2014 (the old club's
+bankruptcy; the item now describes the refounded club - its own infobox
+says 10th in the 2025-26 Serie B and the 2026-27 Serie B article lists
+it). **This supersedes the sentence "must not be loosened for one club"
+in the Italy entry.** The dissolution gate itself (CLUB_QUERY, the
+novalue fallback) is unchanged; the exception is **per hand row and
+roster-gated**: `data/clubs-manual.csv` has an optional column
+`allowDissolved` (header-driven; value `yes`, anything else is reported
+and ignored, and it needs a `clubQid`). `hand_named_fallback()` accepts a
+candidate that carries a `P576` **only if** its hand row says `yes`
+**and** a tracked current-season roster names it (condition 3, applied
+unchanged - a mistyped Q-id or a club the roster does not name stays off,
+with the reason printed). Without the cell the club is left out exactly
+as before. The run summary prints, on every run, each club accepted this
+way: `ACCEPTED DESPITE P576 (dissolved) <year>: <name> (<Q-id>) -
+allowDissolved yes in data/clubs-manual.csv line N, and the roster
+article <article> names it`. Padova's row has country IT, tier 2 and no
+venue, capacity or coordinates (the fetched ones stand). To undo: empty
+the cell or delete the row. Checked offline with the roster and the query
+mocked: `yes` plus a roster naming it surfaces the club with its P576
+year; the cell blanked leaves it off ("Wikidata marks Q8428 dissolved");
+`yes` with a roster that does not name it leaves it off. Padova is the
+only club with the cell, and nothing else in this convention changed.
+**Proof, on the branch (build-clubs.yml and check-rosters.yml dispatched):**
+Calcio Padova is in `data/clubs/IT.json` at tier 2 (stadio Euganeo, 32,420,
+45.432222 / 11.858333, fetched), the run summary printed `surfaced by the
+hand-named fallback: Calcio Padova (Q8428), named by 2026–27 Serie B; tier 2
+from data/clubs-manual.csv line 260; ON THE MAP` and `ACCEPTED DESPITE P576
+(dissolved) 2014: ...`, its roster verdict changed from
+`missing-from-wikidata` to `ok`, and no other club or country file changed
+(`IT.json` gained that one club; `index.json` only its counts).
 
 **A failed fetch never rewrites a review file.** `capacity-review.csv`
 and `coordinate-review.csv` are evidence waiting to be judged, and the
@@ -5590,9 +5628,15 @@ how each rests on them, is in Conventions, "The installable app" and
       Serie B, 10th of 20* and the 2026–27 article links this item.
       A `P576` for a 2014 bankruptcy and refoundation, on the item that
       now describes the refounded club. That gate is working as
-      designed and must not be loosened for one club; and
+      designed and must not be loosened for one club *(SUPERSEDED
+      2026-10-18, on Alexandru's decision: the gate is not loosened, but
+      a hand row may carry `allowDissolved yes`, which lets the
+      hand-named fallback accept a P576 for that one row, roster-gated -
+      see the Conventions entry "The dissolution exception of the
+      hand-named fallback". Padova has that row)*; and
       `apply_manual`'s guard rejects a `clubQid` the query did not
-      return, so no hand row reaches it. **Alexandru's call**, and the
+      return, so no hand row reaches it *(true until the fallback was
+      built; the row now reaches it that way)*. **Alexandru's call**, and the
       roster check's `missing-from-wikidata` verdict undersells it —
       the club is on Wikidata, the gate that removes dead clubs removed
       it.
