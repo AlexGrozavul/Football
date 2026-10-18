@@ -748,13 +748,47 @@ def qids_for_titles(titles):
         if canonical:
             print(f"    {len(canonical)} unresolved title(s) were redirects, "
                   f"retrying under what they point at")
+            # The reserve-marker guard, applied AGAIN to where the link
+            # lands (2026-10-18). table_rows() compares the marker of the
+            # cell with the marker of the linked title, and "1. FC
+            # Magdeburg II" passes - but that title is a redirect to the
+            # PARENT club, and read under the parent's article the reserve
+            # side became the first team at tier 4 (wrong-tier: 1. FC
+            # Magdeburg II, FC St. Pauli II, SC Paderborn 07 II). A
+            # redirect whose target has a different set of markers is not
+            # followed; the caller leaves the row out and names it.
+            refused = {o: t for o, t in canonical.items()
+                       if team_markers(o) != team_markers(t)}
+            REDIRECT_REFUSED.update(refused)
+            followed = {o: t for o, t in canonical.items() if o not in refused}
             retried, retry_failures = _hop(
-                sorted(set(canonical.values())), {}, [])
+                sorted(set(followed.values())), {}, [])
             failures.extend(retry_failures)
-            for original, target in canonical.items():
+            for original, target in followed.items():
                 if target in retried:
                     found[original] = retried[target]
     return found, failures
+
+
+# Titles a link redirects from, to the parent club they land on, whose
+# reserve marker differs from the title's own - filled by qids_for_titles,
+# read by the callers, which leave those rows out and name them.
+REDIRECT_REFUSED = {}
+
+
+def drop_refused_redirects(clubs, forced):
+    """
+    Remove from {title: ...} the titles qids_for_titles refused, unless a
+    hand link names that row, and return [(row text, reason)] for the
+    summary. A hand link in data/roster-links-manual.csv always wins.
+    """
+    out = []
+    for title in [t for t in clubs if t in REDIRECT_REFUSED and t not in forced]:
+        del clubs[title]
+        out.append((title, f"a reserve side whose link redirects to "
+                           f"{REDIRECT_REFUSED[title]!r} - the reserve marker does not "
+                           f"agree after the redirect, so it is not read as that club"))
+    return out
 
 
 def follow_redirects(titles):
@@ -935,6 +969,8 @@ def roster_qids(country, tiers, config=None):
         print(f"  turning {len(set(all_titles))} article titles into Q-ids")
         qid_by_title, hop_failures = qids_for_titles(all_titles)
         failures.extend(hop_failures)
+    for names in titles.values():
+        names[:] = [t for t in names if t not in REDIRECT_REFUSED or t in forced]
 
     named = {}
     for article, names in titles.items():
@@ -1311,6 +1347,11 @@ def main():
         failures.extend(hop_failures)
         if hop_failures:
             incomplete.append("at least one sitelink lookup failed")
+    for r in rosters.values():
+        for text, why in drop_refused_redirects(r["clubs"], forced):
+            r["capacities"].pop(text, None)
+            print(f"      row not read: {text!r} - {why}")
+            skipped.append(f"{text}: {why}")
     link_readback = []
     for key, link in sorted(forced.items(), key=lambda kv: kv[1]["line"]):
         if link["read"]:
