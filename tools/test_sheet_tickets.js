@@ -167,6 +167,21 @@ const server = http.createServer((req, res) => {
   const bucketLines = csv('data/bucket-links-manual.csv').filter(r => !r.ticketEventId);
   const RANK = {main: 0, local: 1, other: 2}, LABEL = {main: 'Main rival', local: 'Local rival', other: 'Other rivalry'};
   const expectOrder = rows => [...rows].sort((a, b) => RANK[a.class] - RANK[b.class] || a.rivalName.localeCompare(b.rivalName));
+  const clubNames = await page.evaluate(() => Object.fromEntries(CLUBS.map(c => [c.id, c.name])));
+  const RIV_NONE = 'No rivalry recorded for this club yet.', RIV_MIRROR = n => `Stated on ${n}'s page only`;
+  // What a club's Rivalries section holds (2026-10-18), worked out from the rows alone: its own rows (class order, then name), then every
+  // row that names this club in rivalQ when this club has no row of its own for the club that states it, shown as that club (no class),
+  // labelled, alphabetical. A row with no rivalQ is never mirrored.
+  const rivValid = r => RANK[r.class] !== undefined && rivSrc.some(x => x.sourceId === r.sourceId);
+  const expRiv = (q, rows = riv) => {
+    const ok = rows.filter(rivValid);
+    const own = expectOrder(ok.filter(r => r.clubQ === q)).map(r => ({...r, mirror: ''}));
+    const ownFor = new Set(own.map(r => r.rivalQ).filter(Boolean));
+    const mir = ok.filter(r => r.rivalQ === q && r.clubQ && r.clubQ !== q && !ownFor.has(r.clubQ) && clubNames[r.clubQ])
+      .map(r => ({...r, rivalQ: r.clubQ, rivalName: clubNames[r.clubQ], mirror: r.clubQ, class: ''}))
+      .sort((a, b) => a.rivalName.localeCompare(b.rivalName));
+    return [...own, ...mir];
+  };
   const rivalSheet = async (pg, qid) => {
     await pg.evaluate(q => openSheet(CLUBS.find(c => c.id === q)), qid);
     await pg.waitForFunction(() => !/Loading/.test(document.getElementById('sheetTix').textContent), null, {timeout: 10000});
@@ -174,8 +189,10 @@ const server = http.createServer((req, res) => {
     return pg.evaluate(() => {
       const b = document.getElementById('sheetBody'), sb = document.querySelector('#sheet .sbody');
       return {h4: [...b.querySelectorAll('h4')].map(h => h.textContent),
+        none: b.querySelector('.rivnone')?.textContent || '',
         rows: [...b.querySelectorAll('.riv')].map(r => ({name: r.querySelector('.rvname').textContent,
-          cls: r.querySelector('.rvclass').textContent, tap: r.querySelector('.rvname').tagName === 'BUTTON',
+          mirror: r.querySelector('.rvmirror')?.textContent || '', dataMirror: r.dataset.mirror === '1', dataClass: r.dataset.class || '',
+          cls: r.querySelector('.rvclass')?.textContent || '', tap: r.querySelector('.rvname').tagName === 'BUTTON',
           rivalId: r.querySelector('.rvname').dataset.id || '', href: r.querySelector('a')?.href || '',
           sub: r.querySelector('.sub:not(.frquote)').textContent, quote: r.querySelector('.frquote')?.textContent || '',
           quoteLabel: r.querySelector('.frquote > span:first-child')?.textContent || '', quoteIsData: r.querySelector('.frquote > span[data-content]')?.textContent || '',
@@ -186,18 +203,34 @@ const server = http.createServer((req, res) => {
     });
   };
   const onMap = await page.evaluate(() => CLUBS.map(c => c.id));
-  const withRows = [...new Set(riv.map(r => r.clubQ))].filter(q => onMap.includes(q));
-  check('at least one club has rivalry rows', withRows.length > 0, `${withRows.length} clubs`);
-  let sectionOk = true, orderOk = true, linkOk = true, widthOk = true, bucketOk = true, bad = [];
-  for(const q of withRows){
-    const want = expectOrder(riv.filter(r => r.clubQ === q));
+  const ownClubs = [...new Set(riv.map(r => r.clubQ))].filter(q => onMap.includes(q));
+  const withRows = onMap.filter(q => expRiv(q).length > 0);          // own rows or mirrored ones
+  const noRows = onMap.filter(q => expRiv(q).length === 0);
+  const mirTotal = withRows.reduce((n, q) => n + expRiv(q).filter(w => w.mirror).length, 0);
+  const rivGainedRows = withRows.filter(q => ownClubs.includes(q) && expRiv(q).some(w => w.mirror)), rivGainedSection = withRows.filter(q => !ownClubs.includes(q));
+  console.log(`  rivalry rows mirrored in total: ${mirTotal}; clubs with own rows gaining mirrored rows: ${rivGainedRows.length}; clubs gaining the section: ${rivGainedSection.length}; clubs on the map with the neutral line: ${noRows.length} of ${onMap.length}`);
+  check('at least one club has rivalry rows, and one has mirrored rows', ownClubs.length > 0 && mirTotal > 0, `${withRows.length} clubs, ${mirTotal} mirrored`);
+  let sectionOk = true, orderOk = true, linkOk = true, widthOk = true, bucketOk = true, mirrorOk = true, neutralOk = true, bad = [];
+  for(const q of onMap){
+    const want = expRiv(q);
     const R = await rivalSheet(page, q);
-    const name = await page.evaluate(i => CLUBS.find(c => c.id === i).name, q);
+    const name = clubNames[q];
     if(R.h4.filter(h => h === 'Rivalries').length !== 1) { sectionOk = false; bad.push(`${name}: section`); }
+    if(!want.length){                                       // nothing own, nothing mirrored: the neutral line and no row
+      if(R.none !== RIV_NONE || R.rows.length || R.more) { neutralOk = false; bad.push(`${name}: neutral line`); }
+      continue;
+    }
+    if(R.none) { neutralOk = false; bad.push(`${name}: neutral line on a club with rows`); }
     if(JSON.stringify(R.rows.map(r => r.name)) !== JSON.stringify(want.map(r => r.rivalName)) ||
-       JSON.stringify(R.rows.map(r => r.cls)) !== JSON.stringify(want.map(r => LABEL[r.class]))){ orderOk = false; bad.push(`${name}: order`); }
-    if(R.rows.length && RANK[want[0].class] !== Math.min(...want.map(r => RANK[r.class]))){ orderOk = false; bad.push(`${name}: biggest not first`); }
+       JSON.stringify(R.rows.map(r => r.cls)) !== JSON.stringify(want.map(r => r.mirror ? '' : LABEL[r.class]))){ orderOk = false; bad.push(`${name}: order`); }
+    const wo = want.filter(w => !w.mirror);
+    if(wo.length && RANK[wo[0].class] !== Math.min(...wo.map(r => RANK[r.class]))){ orderOk = false; bad.push(`${name}: biggest not first`); }
+    if(want.findIndex(w => w.mirror) >= 0 && want.slice(want.findIndex(w => w.mirror)).some(w => !w.mirror)){ orderOk = false; bad.push(`${name}: a mirrored row before an own one`); }
     R.rows.forEach((r, i) => {
+      const w = want[i];
+      if(r.mirror !== (w.mirror ? RIV_MIRROR(clubNames[w.mirror]) : '') || r.dataMirror !== !!w.mirror || (w.mirror && (r.cls || r.dataClass)) || (!w.mirror && r.dataClass !== w.class)){ mirrorOk = false; bad.push(`${name}: label or class tag of ${r.name}`); }
+      if(w.mirror && (w.quote ? r.quote !== `Source says: «${w.quote}»` : r.quote !== '')){ mirrorOk = false; bad.push(`${name}: quote of mirrored ${r.name}`); }
+      if(w.mirror && r.rivalId !== w.mirror){ mirrorOk = false; bad.push(`${name}: mirrored ${r.name} not tappable to its club`); }
       const src = rivalSrc(want[i].sourceId), d = want[i].checkedOn;
       if(!src || r.href !== src.url || !/Checked on /.test(r.sub) || !r.sub.includes(src.title)) { linkOk = false; bad.push(`${name}: source of ${r.name}`); }
       if(r.tap !== !!(want[i].rivalQ && onMap.includes(want[i].rivalQ))) { linkOk = false; bad.push(`${name}: tap on ${r.name}`); }
@@ -210,15 +243,17 @@ const server = http.createServer((req, res) => {
     if(R.rows.filter(r => r.shown).length > 5 || (R.rows.length > 5) !== /^Show all \(\d+\)$/.test(R.more)) { sectionOk = false; bad.push(`${name}: show-all control`); }
   }
   function rivalSrc(id){ return rivSrc.find(r => r.sourceId === id); }
-  check('every club with rows shows one Rivalries section', sectionOk, bad.join(' | '));
-  check('rivals in class order, main then local then other, alphabetical within a class, biggest first', orderOk, bad.join(' | '));
+  check('every club on the map shows one Rivalries section', sectionOk, bad.join(' | '));
+  check('rivals in class order, main then local then other, alphabetical within a class, biggest first; mirrored rows after the club\'s own, alphabetical', orderOk, bad.join(' | '));
+  check(`every row with a rivalQ shows on the rival's sheet: its own row, or mirrored with "Stated on <club>'s page only", no class tag, the stating club's quote and a tap to it (${mirTotal} mirrored rows)`, mirrorOk && mirTotal === riv.filter(r => rivValid(r) && r.rivalQ && r.clubQ !== r.rivalQ && onMap.includes(r.rivalQ) && onMap.includes(r.clubQ) && !riv.some(o => rivValid(o) && o.clubQ === r.rivalQ && o.rivalQ === r.clubQ)).length, bad.join(' | '));
+  check(`a club with no own row and no mirrored row shows "${RIV_NONE}" and no row; a club with rows does not (${noRows.length} clubs)`, neutralOk && noRows.length > 0, bad.join(' | '));
   check('each row has its class label, a source link and "Checked on", and taps only when the rival is on the map', linkOk, bad.join(' | '));
   check('a bucket link shows exactly when a bucket entry names both clubs by Wikidata id', bucketOk, bad.join(' | '));
   check('the Rivalries section fits 390 px, no sideways scroll', widthOk, bad.join(' | '));
 
   const without = await page.evaluate(have => { const c = CLUBS.find(c => !have.includes(c.id)); return c && {id: c.id, name: c.name}; }, withRows);
   const W = await rivalSheet(page, without.id);
-  check(`a club without rows (${without.name}) shows no Rivalries section`, !W.h4.includes('Rivalries') && !W.rows.length);
+  check(`a club without rows (${without.name}) shows the Rivalries heading with the neutral line, no rows and no Show all`, W.h4.includes('Rivalries') && W.none === RIV_NONE && !W.rows.length && !W.more && !W.sideways);
 
   // A rival on the map opens its own sheet when tapped.
   const tapFrom = withRows.find(q => riv.some(r => r.clubQ === q && r.rivalQ && onMap.includes(r.rivalQ)));
@@ -232,7 +267,7 @@ const server = http.createServer((req, res) => {
   }else check('a rival on the map exists to tap', false);
 
   // The order is tested against mixed classes too: a served copy of the file, same club, classes rotated.
-  const many = withRows.sort((a, b) => riv.filter(r => r.clubQ === b).length - riv.filter(r => r.clubQ === a).length)[0];
+  const many = ownClubs.sort((a, b) => riv.filter(r => r.clubQ === b).length - riv.filter(r => r.clubQ === a).length)[0];
   const classes = ['main', 'other', 'local', 'main', 'other'];
   const lines = fs.readFileSync(path.join(ROOT, 'data/club-rivalries.csv'), 'utf8').split('\n');
   let k = 0;
@@ -246,11 +281,11 @@ const server = http.createServer((req, res) => {
   await pg2.goto(BASE);
   await pg2.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
   const Mriv = await rivalSheet(pg2, many);
-  const mrows = csvText(mixed).filter(r => r.clubQ === many);
-  const mwant = expectOrder(mrows);
+  const mwant = expRiv(many, csvText(mixed));        // the club's own rows, then any mirrored ones
+  const mrows = mwant;
   check('mixed classes: main first, then local, then other, alphabetical within a class',
-    new Set(mrows.map(r => r.class)).size > 1 && JSON.stringify(Mriv.rows.map(r => r.name)) === JSON.stringify(mwant.map(r => r.rivalName)) &&
-    JSON.stringify(Mriv.rows.map(r => r.cls)) === JSON.stringify(mwant.map(r => LABEL[r.class])) && Mriv.rows[0].cls === LABEL[mwant[0].class],
+    new Set(mrows.filter(r => !r.mirror).map(r => r.class)).size > 1 && JSON.stringify(Mriv.rows.map(r => r.name)) === JSON.stringify(mwant.map(r => r.rivalName)) &&
+    JSON.stringify(Mriv.rows.map(r => r.cls)) === JSON.stringify(mwant.map(r => r.mirror ? '' : LABEL[r.class])) && Mriv.rows[0].cls === LABEL[mwant[0].class],
     Mriv.rows.map(r => `${r.name}:${r.cls}`).join(' | '));
   // More than 5 rows: the first 5 show, the rest wait behind "Show all (n)".
   check(`more than 5 rows (${mrows.length}): 5 shown, "Show all (${mrows.length})" present`,
@@ -281,14 +316,83 @@ const server = http.createServer((req, res) => {
     !!nRow && nRow.quote === '' && !nRow.sourceSays && /Checked on /.test(nRow.sub) && !QS.sideways && QS.rows.every(r => !r.wide), JSON.stringify(nRow));
   await pgQ.close();
   const quoted = riv.filter(r => r.quote);
-  const quotedClubs = [...new Set(quoted.map(r => r.clubQ))].filter(c => onMap.includes(c));
+  const quotedClubs = withRows.filter(c => expRiv(c).some(w => w.quote));      // own quoted rows and mirrored ones
   let quotedBad = [];
   for(const c of quotedClubs){
-    const R = await rivalSheet(page, c), want = expectOrder(riv.filter(r => r.clubQ === c));
+    const R = await rivalSheet(page, c), want = expRiv(c);
     want.forEach((w, i) => { if(w.quote ? R.rows[i].quote !== `Source says: «${w.quote}»` || R.rows[i].quoteIsData !== `«${w.quote}»` : R.rows[i].sourceSays) quotedBad.push(`${c}/${w.rivalName}`); });
   }
   check(`rivalry quote: every real row with a quote (${quoted.length} rows on ${quotedClubs.length} clubs) shows it, and rows without one show none`, quotedBad.length === 0 && quoted.every(r => r.quote.split(/\s+/).length <= 15), quotedBad.join(' | '));
 
+  {
+  // ---- Mirrored rivalries and the neutral line, with injected rows (2026-10-18): Y is a club with nothing; X1..X6 each state a rivalry
+  // with Y (X1 and Y also state one with each other, so Y shows its own row for X1 and no label), X7 states one with Y2 only (a club whose
+  // only row is mirrored), and Z states one with a name equal to Y3's but no rivalQ (Y3 must stay empty). Expected values come from expRiv().
+  const [Y, X1, X2, X3, X4, X5, X6, Y2, X7, Z, Y3] = noRows;
+  const injS = rivSrc[0].sourceId;
+  const inj = [
+    {clubQ: X1, rivalQ: Y, rivalName: clubNames[Y], class: 'main', quote: 'Quote from X1 about Y'},
+    {clubQ: Y, rivalQ: X1, rivalName: clubNames[X1], class: 'local', quote: 'Quote from Y about X1'},
+    {clubQ: X2, rivalQ: Y, rivalName: clubNames[Y], class: 'main', quote: ''},
+    {clubQ: X3, rivalQ: Y, rivalName: clubNames[Y], class: 'local', quote: 'Quote from X3'},
+    {clubQ: X4, rivalQ: Y, rivalName: clubNames[Y], class: 'other', quote: 'Quote from X4'},
+    {clubQ: X5, rivalQ: Y, rivalName: clubNames[Y], class: 'other', quote: ''},
+    {clubQ: X6, rivalQ: Y, rivalName: clubNames[Y], class: 'main', quote: 'Quote from X6'},
+    {clubQ: X7, rivalQ: Y2, rivalName: clubNames[Y2], class: 'local', quote: 'Quote from X7 about Y2'},
+    {clubQ: Z, rivalQ: '', rivalName: clubNames[Y3], class: 'main', quote: 'Name only quote'},
+  ].map(r => ({...r, sourceId: injS, checkedOn: '2026-10-03'}));
+  const RH = 'clubQ,rivalQ,rivalName,class,sourceId,checkedOn,quote';
+  const qv = v => /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+  const injCsv = fs.readFileSync(path.join(ROOT, 'data/club-rivalries.csv'), 'utf8').replace(/\n?$/, '\n') + inj.map(r => RH.split(',').map(k => qv(r[k] || '')).join(',')).join('\n') + '\n';
+  const injRows = [...riv, ...inj];
+  const injPage = async lang => {
+    const pg = await ctx.newPage();
+    await pg.addInitScript(l => { try { localStorage.setItem('football-planner-lang', l); } catch(e){} }, lang);
+    await pg.route('**/data/club-rivalries.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: injCsv}));
+    pg.on('pageerror', e => errors.push(e.message));
+    await pg.goto(BASE);
+    await pg.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    return pg;
+  };
+  const sameRiv = (S, want, lbl) => S.rows.length === want.length && want.every((w, i) => {
+    const r = S.rows[i];
+    return r.name === w.rivalName && r.cls === (w.mirror ? '' : LABEL[w.class]) && r.mirror === (w.mirror ? lbl(clubNames[w.mirror]) : '') &&
+      (w.quote ? r.quote === `Source says: «${w.quote}»` : r.quote === '') && r.tap && r.rivalId === w.rivalQ;
+  });
+  const pgI = await injPage('en');
+  const IY = await rivalSheet(pgI, Y), IYw = expRiv(Y, injRows);
+  check(`mirror: ${clubNames[Y]} (nothing before) shows its own row for ${clubNames[X1]} (class tag, no label) first, then the five mirrored rows alphabetically, each with its label, no class tag and the stating club's quote`,
+    IYw.length === 6 && IYw[0].mirror === '' && IYw.slice(1).every(w => w.mirror) && IY.none === '' && sameRiv(IY, IYw, RIV_MIRROR), JSON.stringify(IY.rows.map(r => [r.name, r.cls, r.mirror])));
+  check('mirror: mirrored rows count in the first 5 and "Show all (6)"', IY.rows.filter(r => r.shown).length === 5 && IY.more === 'Show all (6)', `${IY.rows.filter(r => r.shown).length} shown, "${IY.more}"`);
+  await pgI.click('#sheetBody .rvmore');
+  const IYo = await pgI.evaluate(() => ({shown: [...document.querySelectorAll('#sheetBody .riv')].filter(r => !r.hidden).length, wide: [...document.querySelectorAll('#sheetBody .riv')].some(r => r.scrollWidth > r.clientWidth + 1),
+    sideways: document.querySelector('#sheet .sbody').scrollWidth > document.querySelector('#sheet .sbody').clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1}));
+  check('mirror: "Show all" reveals all 6 rows and nothing overflows at 390 px', IYo.shown === 6 && !IYo.wide && !IYo.sideways, JSON.stringify(IYo));
+  const IX1 = await rivalSheet(pgI, X1), IX1w = expRiv(X1, injRows);
+  check(`mirror: a two-sided pair (${clubNames[X1]} and ${clubNames[Y]}) shows once on each sheet, as each club's own row, with no label`,
+    IX1w.length === 1 && !IX1w[0].mirror && sameRiv(IX1, IX1w, RIV_MIRROR) && IX1.rows[0].cls === 'Main rival' && IY.rows.filter(r => r.rivalId === X1).length === 1 && !IY.rows[0].mirror, JSON.stringify(IX1.rows.map(r => [r.name, r.cls, r.mirror])));
+  const IY2 = await rivalSheet(pgI, Y2), IY2w = expRiv(Y2, injRows);
+  check(`mirror: a club whose only row is mirrored (${clubNames[Y2]}) gets the section with that row, labelled, no class tag, and no neutral line`,
+    IY2w.length === 1 && IY2w[0].mirror === X7 && IY2.h4.includes('Rivalries') && IY2.none === '' && sameRiv(IY2, IY2w, RIV_MIRROR), JSON.stringify(IY2.rows.map(r => [r.name, r.cls, r.mirror])));
+  const IY3 = await rivalSheet(pgI, Y3), IZ = await rivalSheet(pgI, Z);
+  check(`mirror: a row with no rivalQ shows only on its own club's sheet (${clubNames[Z]}); ${clubNames[Y3]}, whose name it carries, stays empty with the neutral line`,
+    expRiv(Y3, injRows).length === 0 && IY3.none === RIV_NONE && !IY3.rows.length && IZ.rows.length === 1 && IZ.rows[0].name === clubNames[Y3] && !IZ.rows[0].mirror && IZ.rows[0].cls === 'Main rival' && IZ.none === '', JSON.stringify([IY3.none, IZ.rows.map(r => r.name)]));
+  const IX7 = await rivalSheet(pgI, X7);
+  check('mirror: the stating club keeps only its own row (nothing is mirrored back onto it)', IX7.rows.length === 1 && !IX7.rows[0].mirror && IX7.rows[0].name === clubNames[Y2], JSON.stringify(IX7.rows.map(r => [r.name, r.mirror])));
+  await rivalSheet(pgI, Y2);
+  await pgI.click(`#sheetBody .rivs .rvname[data-id="${X7}"]`);
+  await pgI.waitForFunction(id => SHEET_FOR === id, X7, {timeout: 8000}).catch(() => {});
+  check('mirror: tapping the club shown on a mirrored row opens that club\'s sheet', await pgI.evaluate(() => SHEET_FOR) === X7);
+  await pgI.close();
+  // Romanian: the label and the neutral line are Romanian, from the page's own dictionary (unchecked by the user), and the club name is filled in
+  const pgIr = await injPage('ro');
+  const roLbl = await pgIr.evaluate(([n]) => ({mirror: t('riv.mirror', {club: n}), none: t('riv.none'), mirrorEn: I18N.en['riv.mirror'], noneEn: I18N.en['riv.none']}), [clubNames[X7]]);
+  const IYr = await rivalSheet(pgIr, Y2), IY3r = await rivalSheet(pgIr, Y3);
+  check('mirror (Romanian): the label reads "Menționat doar pe pagina <club>" and the neutral line is Romanian, both different from the English, with the club name filled in',
+    IYr.rows.length === 1 && IYr.rows[0].mirror === `Menționat doar pe pagina ${clubNames[X7]}` && roLbl.mirror === IYr.rows[0].mirror && IY3r.none === roLbl.none && roLbl.none !== roLbl.noneEn && roLbl.none.length > 10 && !IYr.sideways, JSON.stringify([IYr.rows.map(r => r.mirror), IY3r.none]));
+  await pgIr.evaluate(() => { try { localStorage.setItem('football-planner-lang', 'en'); } catch(e){} });   // the context shares its localStorage: later pages are English
+  await pgIr.close();
+  }
   tick('rivalries');
   // ---- The "When the atmosphere is best" section was removed (2026-10-10): the sheet has Rivalries and Fan
   // friendships only. The page must not ask for the old file or draw any atmosphere element, on the two clubs
@@ -314,7 +418,6 @@ const server = http.createServer((req, res) => {
   // What a club's Fan friendships section holds, worked out from the rows alone: the club's own rows, plus every
   // row that names this club in friendQ when this club has no row of its own for the club that states it (shown
   // as that club, labelled). A row with no friendQ is never mirrored.
-  const clubNames = await page.evaluate(() => Object.fromEntries(CLUBS.map(c => [c.id, c.name])));
   const FR0 = {active: 0, unclear: 1, ended: 2};
   const friShown = (qid, rows) => {
     const own = rows.filter(r => r.clubQ === qid).map(r => ({...r, mirror: ''}));
@@ -323,15 +426,15 @@ const server = http.createServer((req, res) => {
       .map(r => ({...r, friendQ: r.clubQ, friendName: clubNames[r.clubQ], mirror: r.clubQ}));
     return [...own, ...mir].sort((a, b) => FR0[a.status] - FR0[b.status] || a.friendName.localeCompare(b.friendName));
   };
-  // The sections that exist for a club are Rivalries and Fan friendships, Fan friendships directly after Rivalries
-  // when both exist. Clubs are picked from the data: one with both, one with only one, one with none.
+  // The sections that exist for a club are Rivalries (always, since 2026-10-18: with the neutral line when the club has no row)
+  // and Fan friendships, Fan friendships directly after Rivalries when both exist. Clubs are picked from the data: one with
+  // both, one with Rivalries only.
   const SECTIONS = [['Rivalries', riv], ['Fan friendships', realFri]];
-  const present = q => SECTIONS.filter(([h, rows]) => h === 'Fan friendships' ? friShown(q, rows).length > 0 : rows.some(r => r.clubQ === q)).map(([h]) => h);
+  const present = q => SECTIONS.filter(([h, rows]) => h === 'Fan friendships' ? friShown(q, rows).length > 0 : true).map(([h]) => h);
   const fileClubs = onMap.filter(q => present(q).length > 0);
   const bothAt = fileClubs.find(q => present(q).length === 2);
   const oneOnly = fileClubs.find(q => present(q).length === 1);
-  const noneAt = onMap.find(q => present(q).length === 0);
-  for(const [kind, q] of [['both sections', bothAt], ['only one section', oneOnly], ['no sections', noneAt]]){
+  for(const [kind, q] of [['both sections', bothAt], ['only the Rivalries section', oneOnly]]){
     if(!q){ check(`section order: a club with ${kind} exists in the data`, false, 'none found'); continue; }
     const S = await sheetOf(page, q), want = present(q);
     const got = S.h4.filter(h => SECTIONS.some(([s]) => s === h));
@@ -456,7 +559,7 @@ const server = http.createServer((req, res) => {
   const FD = await friSheet(pg4, nonDE), fd = wantFri(nonDE);
   check(`friendships: a non-German club (${nonDE}) shows Rivalries and Fan friendships, in that order, and no atmosphere section`,
     FD.h4.indexOf('Fan friendships') === FD.h4.indexOf('Rivalries') + 1 && !FD.h4.includes('When the atmosphere is best') &&
-    FD.rivs === 1 && FD.atm === 0 && JSON.stringify(FD.rows.map(r => r.name)) === JSON.stringify(fd.map(r => r.friendName)) && !FD.sideways, FD.h4.join(' | '));
+    FD.rivs === expRiv(nonDE, csvText(mixed + rivExtra + '\n')).length && FD.atm === 0 && JSON.stringify(FD.rows.map(r => r.name)) === JSON.stringify(fd.map(r => r.friendName)) && !FD.sideways, FD.h4.join(' | '));
   tick('friendships, injected rows');
   // ---- Mirrored rows (injected): a friendship stated on one club's page only also shows on the friend's sheet.
   const LBL = n => `Stated on ${n}'s page only`;
