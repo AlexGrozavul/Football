@@ -134,6 +134,23 @@
    "competition": "Super League (Greece)"
   },
   {
+   "id": "Q16845757",
+   "name": "A.S. Nestos Chrysoupolis",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Chrysoupoli Municipal Stadium",
+   "capacity": 5000,
+   "lat": 40.990763,
+   "lon": 24.688693,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece_2; https://en.wikipedia.org/wiki/Nestos_Chrysoupoli_F.C.; https://www.europlan-online.de/dimotiko-stadio-chrysoupolis/stadion-10578.html",
+   "note": "PLACED 2026-10-18 (place-clubs pass 2). GROUND named in two places for 2026-27: the 2026-27 Super League Greece 2 table (Chrysoupoli Municipal Stadium) and the club's English infobox (Municipal Stadium of Chrysoupoli); europlan-online's ground page 'Dimotiko Stadio Chrysoupolis' (= Municipal Stadium) lists the club in Super League Greece 2. COORDINATE rests on ONE source, europlan-online (40.990763, 24.688693); an unnamed OpenStreetMap football pitch, way/207469869, is 4 m from it and is not counted as a source. The season article's map pin (40.988, 24.697) is the town and is not used. CAPACITY 5,000: the table, the infobox and europlan agree. Wikidata gives the club no ground. To undo: delete the row",
+   "manual": true,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
    "id": "Q19628",
    "name": "Olympiacos F.C.",
    "leagues": [
@@ -248,6 +265,23 @@
    "city": null,
    "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece_2; https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece; https://en.wikipedia.org/wiki/Niki_Volos_F.C.",
    "note": "TIER 2 BY HAND, 2026-09-29, in the Greece pass - reviewable, the FC Wil shape. Wikidata's P118 on Q3180055 is all normal rank, and the only mapped tag among them is the Super League (Q235114) dated 1961-1966, so the club query - which does not read an end date - would draw it at tier 1. It carries no Super League 2 tag at all. The complete 2026-27 Super League article (14 of 14 resolved) does not list it, the complete 2026-27 Super League 2 article (16 of 16 resolved) does, and the club's own English infobox says league Super League Greece 2, 2025-26 North Group 2nd. Three reads, two of them complete division lists, read on a runner 2026-09-29. Empty the tier cell and it goes back to tier 1",
+   "manual": true,
+   "competition": "Super League 2 (Greece)"
+  },
+  {
+   "id": "Q3292651",
+   "name": "A.P.S. Zakynthos",
+   "leagues": [
+    "Q63980269"
+   ],
+   "tier": 2,
+   "venue": "Zakynthos Municipal Stadium",
+   "capacity": null,
+   "lat": 37.770997,
+   "lon": 20.886793,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Super_League_Greece_2; https://en.wikipedia.org/wiki/A.P.S._Zakynthos; https://www.wikidata.org/wiki/Q132566856; https://www.openstreetmap.org/way/141764449",
+   "note": "PLACED 2026-10-18 (place-clubs pass 2). GROUND, named in two places for 2026-27: the 2026-27 Super League Greece 2 table says Zakynthos Municipal Stadium, and the club's English infobox says 'Zakynthians Olympic Champions Ground'. ONE GROUND UNDER TWO NAMES: the club's own P115 item Q132566856 has the Greek label 'Δημοτικό Στάδιο Ζακύνθου' (Zakynthos Municipal Stadium) and the Greek alias 'Στάδιο Ζακυνθίων Ολυμπιονικών και Παραολυμπιονικών' (the Olympic Champions name), read on a runner 2026-10-18. COORDINATE rests on ONE source, OpenStreetMap way/141764449 (leisure=pitch, sport=soccer, name 'Δημοτικό Στάδιο Ζακύνθου', equal to the Wikidata label); the ground's Wikidata item has no P625 and no other named element is nearby. CAPACITY empty (<clear> removes the Wikidata figure): 5,000 (table), 2,500 (Wikidata), 2,000 (English infobox), no two within 5%. To undo: delete the row",
    "manual": true,
    "competition": "Super League 2 (Greece)"
   },

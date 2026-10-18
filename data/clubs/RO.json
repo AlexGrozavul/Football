@@ -432,6 +432,23 @@
    "competition": "Liga a III-a"
   },
   {
+   "id": "Q18539440",
+   "name": "CSL Ștefăneștii de Jos",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Dumitru Mătărău",
+   "capacity": null,
+   "lat": 44.53925,
+   "lon": 26.202917,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II; https://en.wikipedia.org/wiki/Stadionul_Dumitru_M%C4%83t%C4%83r%C4%83u",
+   "note": "PLACED 2026-10-18 (place-clubs pass 2). GROUND: named by the 2026-27 Liga II table (Dumitru Mătărău, 1,150) and by the ground's own tenant list (CSL Ștefănești, 1997-present). COORDINATE rests on ONE source, the ground's English article infobox, 44°32'21.3\"N 26°12'10.5\"E (the Romanian copy is identical); the ground's Wikidata item Q28230311 has no P625, and the OpenStreetMap football pitch way/28067950, 11 m away, is unnamed and not counted. CAPACITY empty: 1,150 appears only on Wikipedia. To undo: delete the row",
+   "manual": true,
+   "competition": "Liga a II-a"
+  },
+  {
    "id": "Q19902101",
    "name": "CSM Deva",
    "leagues": [
@@ -843,6 +860,23 @@
    "competition": "Liga a III-a"
   },
   {
+   "id": "Q55593565",
+   "name": "SC Popești-Leordeni",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Stadionul Clinceni",
+   "capacity": null,
+   "lat": 44.377778,
+   "lon": 25.940833,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II; https://en.wikipedia.org/wiki/Clinceni_Stadium; https://scpopestileordeni.com/; https://www.openstreetmap.org/way/23600174; https://www.wikidata.org/wiki/Q24969467",
+   "note": "PLACED 2026-10-18 (place-clubs pass 2). GROUND is where the club plays its HOME matches in 2026-27, not its registered ground (the Inter Gaz, which the club's infoboxes still name and which does not meet Liga II requirements): the 2026-27 Liga II table's footnote says Popești-Leordeni plays its home matches at the Clinceni Stadium, and the club's own site (scpopestileordeni.com, read on a runner 2026-10-18) says 'își dispută în prezent meciurile de pe teren propriu, temporar, pe stadionul din Clinceni'. Newsweek (19 Sep 2026) reports the round-8 match Clinceni v Politehnica Timișoara 3-4 'în deplasare, la Clinceni' for Popești. COORDINATE from three sources that agree within 5 m: the ground's Wikidata item Q24969467 (P625), the English article infobox and OpenStreetMap way/23600174 named 'Stadionul Clinceni' (leisure=pitch, sport=soccer). CAPACITY empty: 4,500 (table) and 4,502 (English article) are both Wikipedia, Wikidata says 4,000. If the club moves back to the Inter Gaz (44.37675, 26.203917), change venue, lat and lon. To undo: delete the row",
+   "manual": true,
+   "competition": "Liga a II-a"
+  },
+  {
    "id": "Q55618976",
    "name": "CSC Dumbrăvița",
    "leagues": [
@@ -935,6 +969,23 @@
    "lon": 27.94715,
    "city": null,
    "competition": "Liga a III-a"
+  },
+  {
+   "id": "Q66424141",
+   "name": "CSC 1599 Șelimbăr",
+   "leagues": [
+    "Q386384"
+   ],
+   "tier": 2,
+   "venue": "Măgura Stadium",
+   "capacity": null,
+   "lat": 45.710194,
+   "lon": 24.153139,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_II; https://en.wikipedia.org/wiki/M%C4%83gura_Stadium_(Cisn%C4%83die)",
+   "note": "PLACED 2026-10-18 (place-clubs pass 2). GROUND: the club plays 2026-27 at the Măgura Stadium in Cisnădie (the Comunal in Șelimbăr is under renovation), named by the 2026-27 Liga II table and its footnote and by the ground's own tenant list (1599 Șelimbăr, 2019-present). COORDINATE rests on ONE source, the ground's English article infobox, 45°42'36.7\"N 24°09'11.3\"E (the Romanian copy is identical, so not a second); the ground's Wikidata item Q131850818 has no P625, and the OpenStreetMap stadium way/98881476, 8 m from it, is unnamed and not counted. CAPACITY empty: 2,450 appears only on Wikipedia (table, English and Romanian articles) and StadiumDB has no Romanian row for it. To undo: delete the row",
+   "manual": true,
+   "competition": "Liga a II-a"
   },
   {
    "id": "Q66424146",

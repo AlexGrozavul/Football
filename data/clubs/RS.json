@@ -36,6 +36,40 @@
    "competition": "SuperLiga (Serbia)"
   },
   {
+   "id": "Q1323373",
+   "name": "FK Zemun",
+   "leagues": [
+    "Q1506296"
+   ],
+   "tier": 1,
+   "venue": "Stadion Dragan Džajić, Ub",
+   "capacity": null,
+   "lat": 44.453014,
+   "lon": 20.071359,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_SuperLiga; https://www.superliga.rs/raspored-i-rezultati/; https://en.wikipedia.org/wiki/FK_Zemun; https://www.wikidata.org/wiki/Q110045992; https://www.europlan-online.de/stadion-dragan-d%C5%BEaji%C4%87/stadion-27864.html",
+   "note": "PLACED 2026-10-18 (place-clubs pass 2): the position is europlan-online's for the Stadion Dragan Džajić in Ub, 44.4530144877681, 20.071359 (ONE source for the coordinate; the page lists FK Zemun and FK Jedinstvo Ub as the clubs playing there), and the capacity <clear> drops the Zemun City Stadium's 10,000 that Wikidata's P115 would otherwise bring (4,000 in the table and infobox, 3,214 on europlan, no two within 5%). The text that follows is the state before this and is kept as history: ON THE MAP THROUGH THE HAND-NAMED FALLBACK, 2026-09-27, in the Serbia pass: this row names the club's own Q-id with a country and a tier, and fetch_clubs.py brings the item in because Wikidata has it with no P576 and the 2026-27 SuperLiga article names it - so the roster check reads one club, not a missing one and an extra one. Wikidata gives Q1323373 one P118, Q1506296, a league below the First League. TIER 1: the complete SuperLiga article lists it and its Team changes table has it promoted from the First League; the complete First League article does not list it; its English and Serbian infoboxes say 2025-26 First League, 1st (read on a runner 2026-09-27). OFF THE MAP ON PURPOSE, AND NAMED: its 2026-27 home games are at the Stadion 'Dragan Dzajic' in Ub, 50 km from Zemun - the league's own schedule (Zemun 2:2 Partizan, 18 July; Zemun 0:1 Radnicki Nis, 2 August; Zemun 0:1 Mladost, 16 August), the SuperLiga table and the English infobox. Its own ground, the Zemun City Stadium (Wikidata's P115 Q2743782, the league's team page, the Serbian infobox), is where the map would otherwise have put it, and no 2026-27 match has been played there. The Ub ground's Wikidata item Q110045992 has no position, and OpenStreetMap maps three unnamed full-size pitches in Ub and no grandstand, so which one is the stadium is not known - the lat and lon are cleared rather than guessed. FK Jedinstvo Ub, whose ground it is, is off the map for the same reason. Put both halves of a coordinate here, once a source gives the Ub ground's position, and it returns. If a build cannot confirm it (a roster read failed), it is missing from that build and the run summary says so",
+   "manual": true,
+   "competition": "SuperLiga (Serbia)"
+  },
+  {
+   "id": "Q1388917",
+   "name": "FK Jedinstvo Ub",
+   "leagues": [
+    "Q1813595"
+   ],
+   "tier": 2,
+   "venue": "Stadion Dragan Džajić",
+   "capacity": null,
+   "lat": 44.453014,
+   "lon": 20.071359,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Serbian_First_League; https://en.wikipedia.org/wiki/FK_Jedinstvo_Ub; https://www.europlan-online.de/stadion-dragan-d%C5%BEaji%C4%87/stadion-27864.html",
+   "note": "PLACED 2026-10-18 (place-clubs pass 2). TIER 2: the First League 2026-27 article lists the club; Wikidata's SuperLiga tag would give tier 1. GROUND named in several places for 2026-27: the First League table and the club's English infobox (Stadium Dragan Džajić, Ub), the league's own schedule (prvaliga.rs, read in the Serbia pass) and europlan-online's ground page, which lists FK Jedinstvo Ub (Prva Liga Srbije) and FK Zemun (Super liga Srbije) there. COORDINATE rests on ONE source, europlan-online (44.4530144877681, 20.071359); the Serbian ground article has no coordinate, the ground's Wikidata item Q110045992 has no P625, and no named OpenStreetMap element is the stadium (a second Overpass look at it failed this run). It shares the pin with FK Zemun, genuinely. CAPACITY empty: 4,000 (table, infobox) against 3,214 (europlan). To undo: delete the row",
+   "manual": true,
+   "competition": "First League (Serbia)"
+  },
+  {
    "id": "Q1389125",
    "name": "FK Voždovac",
    "leagues": [
