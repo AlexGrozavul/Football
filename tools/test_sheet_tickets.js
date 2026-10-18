@@ -390,6 +390,7 @@ const server = http.createServer((req, res) => {
   const IYr = await rivalSheet(pgIr, Y2), IY3r = await rivalSheet(pgIr, Y3);
   check('mirror (Romanian): the label reads "Menționat doar pe pagina <club>" and the neutral line is Romanian, both different from the English, with the club name filled in',
     IYr.rows.length === 1 && IYr.rows[0].mirror === `Menționat doar pe pagina ${clubNames[X7]}` && roLbl.mirror === IYr.rows[0].mirror && IY3r.none === roLbl.none && roLbl.none !== roLbl.noneEn && roLbl.none.length > 10 && !IYr.sideways, JSON.stringify([IYr.rows.map(r => r.mirror), IY3r.none]));
+  await pgIr.evaluate(() => { try { localStorage.setItem('football-planner-lang', 'en'); } catch(e){} });   // the context shares its localStorage: later pages are English
   await pgIr.close();
   }
   tick('rivalries');
