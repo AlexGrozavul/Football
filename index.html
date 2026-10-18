@@ -1064,6 +1064,8 @@ const I18N = {
     "fri.groups": "Groups: {text}",
     "fri.quote": "Source says:",
     "fri.mirror": "Stated on {club}'s page only",
+    "riv.mirror": "Stated on {club}'s page only",
+    "riv.none": "No rivalry recorded for this club yet.",
     "fris.fan-groups": "Between fan groups",
     "fris.clubs": "Between clubs",
     "fris.unclear": "Not specified",
@@ -2308,6 +2310,8 @@ const I18N = {
     "fri.groups": "Grupuri: {text}",
     "fri.quote": "Sursa spune:",
     "fri.mirror": "Menționat doar pe pagina {club}",
+    "riv.mirror": "Menționat doar pe pagina {club}",
+    "riv.none": "Nu este încă înregistrată nicio rivalitate pentru acest club.",
     "fris.fan-groups": "Între grupurile de suporteri",
     "fris.clubs": "Între cluburi",
     "fris.unclear": "Nespecificat",
@@ -4235,9 +4239,20 @@ async function rivalriesHtml(club){
   if(C.err) return `<h4>${esc(t('riv.title'))}</h4>` + unavailable(t('riv.title'), esc(t('riv.loadFail'))) +
     why(esc(t('gen.fileFail', {file: C.err, err: C.why})));
   const src = C.src;
-  const rows = C.files[0].filter(r => r.clubQ === club.id && !r._over && RIV_ORDER[r.class] !== undefined && src.has(r.sourceId))
+  const valid = C.files[0].filter(r => !r._over && RIV_ORDER[r.class] !== undefined && src.has(r.sourceId));
+  const own = valid.filter(r => r.clubQ === club.id)
     .sort((a, b) => RIV_ORDER[a.class] - RIV_ORDER[b.class] || a.rivalName.localeCompare(b.rivalName));
-  if(!rows.length) return '';
+  const ownFor = new Set(own.map(r => r.rivalQ).filter(Boolean));
+  /* A rivalry stated on one club's page only also shows on the rival's sheet, as that page
+     states it, labelled, with no class (a class is the stating club's view). Never when the
+     rival has its own row for that club, never for a row with no rivalQ, and only where the
+     club stating it is on the map (its name comes from the club files). After the club's own
+     rows, alphabetical. Drawn here; no data file is written. */
+  const mirrored = valid.filter(r => r.rivalQ === club.id && r.clubQ && r.clubQ !== club.id && !ownFor.has(r.clubQ) && mapClub(r.clubQ))
+    .map(r => ({...r, rivalQ: r.clubQ, rivalName: mapClub(r.clubQ).name, _mirror: true}))
+    .sort((a, b) => a.rivalName.localeCompare(b.rivalName));
+  const rows = [...own, ...mirrored];
+  if(!rows.length) return `<h4>${esc(t('riv.title'))}</h4><p class="sub rivnone">${esc(t('riv.none'))}</p>`;
   const B = await bucketLinks();
   const entries = new Map((RULES?.bucketList || []).map(b => [b.id, b]));
   const bucketFor = q => {
@@ -4256,10 +4271,11 @@ async function rivalriesHtml(club){
       : `<span class="rvname">${esc(r.rivalName)}</span>`;
     const links = bucketFor(r.rivalQ).map(id =>
       `<button class="rvbucket" data-bucket="${esc(id)}">${esc(t('riv.bucket'))}: ${esc(entries.get(id).title || id)}</button>`).join('');
-    return `<div class="riv" data-class="${esc(r.class)}"${i >= RIV_SHOWN ? ' hidden data-extra="1"' : ''}>` +
-      `<div class="rvtop">${name}<span class="tag rvclass">${RIV_LABEL[r.class]}</span></div>` +
+    return `<div class="riv"${r._mirror ? ' data-mirror="1"' : ` data-class="${esc(r.class)}"`}${i >= RIV_SHOWN ? ' hidden data-extra="1"' : ''}>` +
+      `<div class="rvtop">${name}${r._mirror ? '' : `<span class="tag rvclass">${RIV_LABEL[r.class]}</span>`}</div>` +
       (r.quote ? `<div class="sub frquote"><span>${esc(t('fri.quote'))}</span> <span data-content>«${esc(r.quote)}»</span></div>` : '') +
-      `<div class="sub">${sourceLine(src.get(r.sourceId), r.checkedOn)}</div>${links}</div>`;
+      `<div class="sub">${sourceLine(src.get(r.sourceId), r.checkedOn)}</div>` +
+      (r._mirror ? `<div class="sub rvmirror">${esc(t('riv.mirror', {club: r.rivalName}))}</div>` : '') + links + `</div>`;
   };
   return `<h4>${esc(t('riv.title'))}</h4><div class="rivs">` + rows.map(rowHtml).join('') +
     (rows.length > RIV_SHOWN ? `<button class="rvmore" aria-expanded="false">${esc(t('gen.showAll', {n: rows.length}))}</button>` : '') + `</div>`;
