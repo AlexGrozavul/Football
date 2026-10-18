@@ -55,7 +55,7 @@ MANUAL_FILE = "data/clubs-manual.csv"
 # matter and unused columns may be left out.
 MANUAL_REQUIRED = ("name",)
 MANUAL_OPTIONAL = ("clubQid", "country", "tier", "venue", "capacity",
-                   "lat", "lon", "ticketUrl", "source", "note")
+                   "lat", "lon", "ticketUrl", "source", "note", "allowDissolved")
 
 # The clear sentinel.
 #
@@ -365,7 +365,13 @@ WHERE {
 #   1. a hand row names the Q-id, gives it a country and a TIER. The
 #      tier is the hand row's, never the roster's and never Wikidata's -
 #      visibility is not tier, and here the tier is Alexandru's.
-#   2. Wikidata has the item, it is not a person, and it carries no P576.
+#   2. Wikidata has the item, it is not a person, and it carries no P576 -
+#      EXCEPT a hand row with allowDissolved yes (added 2026-10-18 for
+#      Calcio Padova, Q8428: P576 2014 is the old club's bankruptcy, the
+#      item now describes the refounded club). The exception is per hand
+#      row and still needs condition 3, so a mistyped Q-id or a club the
+#      roster does not name stays off. Every club accepted this way is
+#      named in the run summary with its P576 year and roster article.
 #      Asked below as bound flags rather than filters, so that a
 #      candidate left out is left out WITH ITS REASON.
 #   3. a current-season roster article in league-rosters.csv names it -
@@ -380,12 +386,14 @@ WHERE {
 # folded, typed and country-checked by the same code as every other.
 HAND_NAMED_QUERY = """
 SELECT ?club ?clubLabel ?league ?venue ?venueLabel ?capacity ?coord ?cityLabel ?typeLabel ?country
-       ?exists ?person ?dissolved
+       ?exists ?person ?dissolved ?dissolvedYear
 WHERE {
   VALUES ?club { %(clubs)s }
   BIND(EXISTS { ?club schema:version ?anyVersion } AS ?exists)
   BIND(EXISTS { ?club wdt:P31 wd:Q5 } AS ?person)
   BIND(EXISTS { ?club wdt:P576 ?anyDissolved } AS ?dissolved)
+  OPTIONAL { ?club wdt:P576 ?dissolvedDate }
+  BIND(YEAR(?dissolvedDate) AS ?dissolvedYear)
   OPTIONAL { ?club wdt:P118 ?league }
   OPTIONAL { ?club wdt:P31 ?type }
   OPTIONAL { ?club wdt:P17 ?country }
@@ -1074,10 +1082,12 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
         elif cell(flags, "person") == "true":
             notes.append(f"    left out: {label} - {cid} is a person on Wikidata, not a "
                          f"club. Check the Q-id")
-        elif cell(flags, "dissolved") == "true":
+        elif cell(flags, "dissolved") == "true" and hand.get("allowDissolved") != "yes":
             notes.append(f"    left out: {label} - Wikidata marks {cid} dissolved (P576). "
                          f"The club query excludes dissolved clubs and this route does "
-                         f"too; if the club is playing, the P576 is the thing to fix")
+                         f"too; if the club is playing, the P576 is the thing to fix, or "
+                         f"the hand row may say allowDissolved yes (it still needs a "
+                         f"roster to name the club)")
         else:
             passed[cid] = rows
     if not passed:
@@ -1114,6 +1124,10 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
             "articles": sorted({article for _tier, article in where}),
             "line": hand["_line"],
         }
+        if cell(rows[0], "dissolved") == "true":
+            years = sorted({cell(r, "dissolvedYear") for r in rows
+                            if cell(r, "dissolvedYear")})
+            surfaced[cid]["dissolvedYear"] = "/".join(years) or "year not given"
     return extra_rows, surfaced, notes
 
 
@@ -1413,6 +1427,16 @@ def load_manual():
             if qid_val and not re.match(r"^Q\d+$", qid_val):
                 problems.append(f"{MANUAL_FILE} line {line}: clubQid {qid_val!r} is not a Q-id")
                 continue
+
+            allow = row.get("allowDissolved", "")
+            if allow and allow != "yes":
+                problems.append(f"{MANUAL_FILE} line {line}: allowDissolved {allow!r} is not "
+                                f"'yes' - the cell is ignored (leave it blank to say no)")
+                row["allowDissolved"] = ""
+            elif allow and not qid_val:
+                problems.append(f"{MANUAL_FILE} line {line}: allowDissolved needs a clubQid "
+                                f"- the cell is ignored")
+                row["allowDissolved"] = ""
 
             # ---- the clear sentinel
             #
@@ -1879,6 +1903,13 @@ def main():
                 f"    surfaced by the hand-named fallback: {info['name']} ({cid}), named by "
                 f"{', '.join(info['articles'])}; tier {info['handTier']} from "
                 f"{MANUAL_FILE} line {info['line']}; {where}")
+            if info.get("dissolvedYear"):
+                report.append(
+                    f"        ACCEPTED DESPITE P576 (dissolved) {info['dissolvedYear']}: "
+                    f"{info['name']} ({cid}) - allowDissolved yes in {MANUAL_FILE} line "
+                    f"{info['line']}, and the roster article "
+                    f"{', '.join(info['articles'])} names it. The exception is per hand "
+                    f"row; delete the cell and the club goes off the map")
             if info["handTier"] not in info["rosterTiers"]:
                 report.append(
                     f"        TIER DISAGREES: the hand row says tier {info['handTier']}, "
