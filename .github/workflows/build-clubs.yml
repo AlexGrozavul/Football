@@ -31,7 +31,6 @@ concurrency:
 
 jobs:
   clubs:
-    if: false   # TEMPORARY: probe only (removed before merge)
     runs-on: ubuntu-latest
 
     steps:
@@ -88,12 +87,3 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
-
-  probe:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: TEMPORARY place-clubs probe (removed before merge)
-        run: |
-          set -o pipefail
-          python3 tools/probe_place.py | tee /tmp/probe.log
