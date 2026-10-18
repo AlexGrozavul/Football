@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1332 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1333 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -97,6 +97,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `pf.ticket` | Ticket | Bilet |
 | `pf.seat` | Seat | Loc |
 | `pf.block` | Block | Bloc |
+| `pf.row` | Row | Rând |
 | `pf.withWho` | Who I went with | Cu cine am fost |
 | `pf.hint` | Saved automatically, on this device only. | Se salvează automat, doar pe acest dispozitiv. |
 | `pf.card` | Not saved: this looks like a payment card number, and card numbers are never stored. | Nesalvat: seamănă cu un număr de card bancar, iar numerele de card nu se păstrează niciodată. |

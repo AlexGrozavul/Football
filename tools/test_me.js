@@ -36,7 +36,7 @@
 //    have identical key sets and every key the page uses exists; the page reads no browser storage on them; a failed load says so;
 //  - since 2026-10-09 the tapped match or event opens the full detail sheet: line-ups (home side first, with a switch), the pitch as inline SVG
 //    (only where the formation adds up; never inferred), timeline in minute order, stats only with a stats block, the factual note labelled
-//    unverified, no empty pane; the personal fields (note, ticket, seat, block, who I went with) are kept only under football-attended-personal,
+//    unverified, no empty pane; the personal fields (note, ticket, block, row, seat, who I went with) are kept only under football-attended-personal,
 //    card numbers are refused on four of them, no storage read or write is an mf_ key, mf_media is untouched; nothing overflows at 390 px;
 //  - since 2026-10-09 (device-only additions, none ever committed, nothing migrated from the old app; every storage read and write and every
 //    IndexedDB open is recorded and none is an mf_ name): the supporter choice on a match sheet (nothing chosen by default; the chosen button pressed;
@@ -69,6 +69,9 @@
 //    variable sets; text at least 4.5:1 on every main tab, the Me sub-tabs and the sheets in both themes, with no near-black-on-dark or white-on-white
 //    pair in light; Stadia's light tiles in light mode with a fall-back to the dark tiles and a note when they keep failing; the palette distinct;
 //    nothing overflows at 390 px in either theme;
+//  - since 2026-10-18 the personal field Row: order note, ticket, block, row, seat, who I went with on every match sheet and on an event sheet (the ticket, block, row
+//    and seat fields only at the stadium), saved as typed and kept over a reload, in the export and back through an import, an older file importing unchanged
+//    (a seat reading "Row 8 Seat 8" is not parsed), a card number refused on it, the label in both languages;
 //  - no script error.
 // Stadia's tiles are stubbed. CHROMIUM_PATH points it at a Chromium other than Playwright's own.
 const { chromium } = require('playwright');
@@ -84,6 +87,7 @@ const check = (name, ok, detail='') => { results.push(ok); console.log((ok ? 'PA
 
 // Unique to this run, so finding it anywhere it should not be cannot be a coincidence.
 const TAG = 'Zq' + Math.random().toString(36).slice(2, 8);
+const PF_ORDER = ['note', 'ticket', 'block', 'row', 'seat', 'withWho'], PF_TICKET = ['ticket', 'block', 'row', 'seat'];   // the personal fields in the order of the sheet; the four that need "I was at the stadium" on an event
 const rules = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/football-rules.json'), 'utf8'));
 const LINK_ID = 'derby-madonnina';
 const linked = rules.bucketList.find(b => b.id === LINK_ID);
@@ -745,7 +749,8 @@ function alarmAt(ev, al){
     if(st.h4.includes('Factual note') !== !!m.note) bad('note pane presence');
     if(m.note && (!st.unv.includes('Written by an assistant from memory, not yet verified') || st.note !== m.note.en)) bad('note text or label');
     if(JSON.stringify(st.tlMin) !== JSON.stringify(expectedTimeline(m))) bad('timeline order ' + st.tlMin.join(' ') + ' vs ' + expectedTimeline(m).join(' '));
-    if(!st.pf.includes('note') || !st.pf.includes('ticket') || !st.pf.includes('seat') || !st.pf.includes('block') || !st.pf.includes('withWho')) bad('personal fields ' + st.pf);
+    if(JSON.stringify(st.pf) !== JSON.stringify(PF_ORDER)) bad('personal fields ' + st.pf);
+    if(!(st.pf.indexOf('block') < st.pf.indexOf('row') && st.pf.indexOf('row') < st.pf.indexOf('seat'))) bad('Block, Row, Seat order ' + st.pf);
     if(sides.length === 2){
       if(JSON.stringify(st.switchBtns) !== JSON.stringify([[nm(m.home), 'true'], [nm(m.away), 'false']])) bad('switch ' + JSON.stringify(st.switchBtns));
     }else if(st.switchBtns.length) bad('a switch with one side');
@@ -799,26 +804,26 @@ function alarmAt(ev, al){
     const shown = await p3.$eval('#asheetBody .afact', x => ({text: x.innerText, ws: getComputedStyle(x).whiteSpace}));
     if(shown.text.trim() !== e.note.en || shown.ws !== 'pre-line' || !/\n\n/.test(shown.text)) evBad.push(e.id + ' note text/line breaks ' + JSON.stringify(shown).slice(0, 80));
     if(!new RegExp('At the stadium ' + (e.atStadium ? 'yes' : 'no'), 'i').test(st.text)) evBad.push(e.id + ' atStadium flag');
-    const want = e.atStadium ? ['note', 'ticket', 'seat', 'block', 'withWho'] : ['note', 'withWho'];
+    const want = e.atStadium ? PF_ORDER : PF_ORDER.filter(k => !PF_TICKET.includes(k));
     if(JSON.stringify(st.pf) !== JSON.stringify(want)) evBad.push(e.id + ' personal fields ' + st.pf);
     if(!st.fits || st.empty.length) evBad.push(e.id + ' fit/empty');
     if(st.unv.length !== 1) evBad.push(e.id + ' unverified labels');
     await p3.click('#asheetClose');
   }
-  check(`All ${ATTF.events.length} events open their sheet: title, place, one Factual note (the note from the file, line breaks kept, no What it was / Why it mattered headings), the atStadium flag, ticket/seat/block only where atStadium, and one unverified label`, !evBad.length, evBad.slice(0, 3).join(' | '));
+  check(`All ${ATTF.events.length} events open their sheet: title, place, one Factual note (the note from the file, line breaks kept, no What it was / Why it mattered headings), the atStadium flag, ticket/block/row/seat only where atStadium (in that order), and one unverified label`, !evBad.length, evBad.slice(0, 3).join(' | '));
 
   // Personal fields: this device only, under football-attended-personal, never an mf_ key.
   const PK = 'football-attended-personal';
   const pm = ATTF.matches[0], pe = ATTF.events.find(e => e.atStadium);
   await openEntry(p3, 'meMatches', '#meTabMatches', pm.id);
   check('The old app\'s mf_personal key is not read: a seeded note there is not shown', !(await sheetState(p3)).text.includes('OLDAPPNOTE'), '');
-  const vals = {note: 'Cold night ' + TAG, ticket: 'T-' + TAG, seat: 'Row 7 ' + TAG, block: 'Block 12 ' + TAG, withWho: 'Ana and Radu ' + TAG};
+  const vals = {note: 'Cold night ' + TAG, ticket: 'T-' + TAG, block: 'Block 12 ' + TAG, row: 'Row 3 ' + TAG, seat: 'Row 7 ' + TAG, withWho: 'Ana and Radu ' + TAG};
   for(const k of Object.keys(vals)) await p3.fill(`#asheetBody [data-pf="${k}"]`, vals[k]);
   const persStored = async () => JSON.parse(await p3.evaluate(k => localStorage.getItem(k), PK) || 'null');
-  check('Editing the personal fields saves under football-attended-personal, keyed by entry id, with the old shape (note, ticket, seat, block, withWho)',
+  check('Editing the personal fields saves under football-attended-personal, keyed by entry id, with the old shape plus row (note, ticket, block, row, seat, withWho)',
     JSON.stringify((await persStored())[pm.id]) === JSON.stringify(vals), JSON.stringify(await persStored()));
   await openEntry(p3, 'meEvents', '#meTabEvents', pe.id);
-  await p3.fill('#asheetBody [data-pf="withWho"]', 'Friends ' + TAG); await p3.fill('#asheetBody [data-pf="ticket"]', 'E-' + TAG);
+  await p3.fill('#asheetBody [data-pf="withWho"]', 'Friends ' + TAG); await p3.fill('#asheetBody [data-pf="ticket"]', 'E-' + TAG); await p3.fill('#asheetBody [data-pf="row"]', 'ER-' + TAG);
   await p3.click('#asheetClose');
   check('An event\'s personal fields are kept under its own id beside the match\'s', (await persStored())[pe.id].withWho === 'Friends ' + TAG && (await persStored())[pm.id].note === vals.note, JSON.stringify(Object.keys(await persStored())));
   await p3.reload();
@@ -826,10 +831,17 @@ function alarmAt(ev, al){
   await p3.click('nav button[data-pane=me]'); await p3.waitForSelector('#meStats .astat');
   await openEntry(p3, 'meMatches', '#meTabMatches', pm.id);
   const persBack = await p3.evaluate(() => Object.fromEntries([...document.querySelectorAll('#asheetBody [data-pf]')].map(x => [x.dataset.pf, x.value])));
-  check('The personal fields are still there after a reload', JSON.stringify(persBack) === JSON.stringify(vals), JSON.stringify(persBack));
-  // Card numbers are refused on ticket, seat, block and who I went with; digits failing Luhn are kept.
+  check('The personal fields, Row included, are still there after a reload, in the order of the sheet', JSON.stringify(persBack) === JSON.stringify(vals) && JSON.stringify(Object.keys(persBack)) === JSON.stringify(PF_ORDER), JSON.stringify(persBack));
+  const rowLabel = await p3.$eval('#asheetBody [data-pf="row"]', x => x.closest('label').firstChild.textContent.trim());
+  check('The Row field is labelled "Row" and a seat reading "Row 7 ..." is kept as typed, not parsed', rowLabel === 'Row' && persBack.seat === vals.seat && persBack.row === vals.row, rowLabel);
+  await p3.click('#asheetClose');
+  await openEntry(p3, 'meEvents', '#meTabEvents', pe.id);
+  check('An event\'s Row is kept under its own id and shown again after the reload', await p3.$eval('#asheetBody [data-pf="row"]', x => x.value) === 'ER-' + TAG && (await persStored())[pe.id].row === 'ER-' + TAG, '');
+  await p3.click('#asheetClose');
+  await openEntry(p3, 'meMatches', '#meTabMatches', pm.id);
+  // Card numbers are refused on ticket, block, row, seat and who I went with; digits failing Luhn are kept.
   const cardBad = [];
-  for(const k of ['ticket', 'seat', 'block', 'withWho']){
+  for(const k of PF_ORDER.filter(k => k !== 'note')){
     const before = (await persStored())[pm.id][k];
     await p3.fill(`#asheetBody [data-pf="${k}"]`, 'card 4111 1111 1111 1111 ok');
     const r = await p3.evaluate(kk => ({err: document.querySelector(`#asheetBody [data-err="${kk}"]`).textContent, inv: document.querySelector(`#asheetBody [data-pf="${kk}"]`).getAttribute('aria-invalid')}), k);
@@ -837,7 +849,7 @@ function alarmAt(ev, al){
     await p3.fill(`#asheetBody [data-pf="${k}"]`, 'ref 4111 1111 1111 1112');
     if((await persStored())[pm.id][k] !== 'ref 4111 1111 1111 1112' || await p3.$eval(`#asheetBody [data-err="${k}"]`, x => x.textContent)) cardBad.push(k + ' non-card refused');
   }
-  check('A payment card number (Luhn) is refused on Ticket, Seat, Block and Who I went with, nothing saved, reason shown; digits failing Luhn are kept', !cardBad.length, cardBad.join(' | '));
+  check('A payment card number (Luhn) is refused on Ticket, Block, Row, Seat and Who I went with, nothing saved, reason shown; digits failing Luhn are kept', !cardBad.length, cardBad.join(' | '));
   const stReads = await p3.evaluate(() => window.__reads), stWrites = await p3.evaluate(() => window.__writes);
   check('Every storage read the page made is recorded, and none is an mf_ key; football-attended-personal was read',
     stReads.length > 0 && !stReads.some(k => String(k).startsWith("mf_")) && stReads.includes(PK), [...new Set(stReads)].join(','));
@@ -849,7 +861,7 @@ function alarmAt(ev, al){
   check('The only mf_ key in storage is the one this test seeded, unchanged', JSON.stringify(lsKeys) === '["mf_personal"]' && await p3.evaluate(() => localStorage.getItem('mf_personal')) === JSON.stringify({'*': {note: 'OLDAPPNOTE'}}), lsKeys.join(','));
   check('Nothing typed is in a cookie or sessionStorage', await p3.evaluate(tag => !document.cookie.includes(tag) && !JSON.stringify(Object.assign({}, sessionStorage)).includes(tag), TAG), '');
   await p3.click('#asheetClose');
-  const dictKeys = await p3.evaluate(ks => ks.filter(k => !I18N.en[k] || !I18N.ro[k]), STAT_KEYS.map(k => 'sx.' + k).concat(['pf.note', 'pf.ticket', 'pf.seat', 'pf.block', 'pf.withWho']));
+  const dictKeys = await p3.evaluate(ks => ks.filter(k => !I18N.en[k] || !I18N.ro[k]), STAT_KEYS.map(k => 'sx.' + k).concat(['pf.note', 'pf.ticket', 'pf.block', 'pf.row', 'pf.seat', 'pf.withWho']));
   check('The new strings exist in both en and ro (statistics labels, personal field labels)', !dictKeys.length, dictKeys.join(','));
   await p3.click('#meTabMatches');
 
@@ -1137,6 +1149,9 @@ function alarmAt(ev, al){
   await closeSheet5();
 
   // ---- The Me export (version 3 since the imported events; version 2 files still import)
+  const rowMatch = ATTF.matches.find(m => !picks.some(([pm]) => pm.id === m.id)), ROWV = 'Row 12 ' + TAG;
+  await openCard('#meTabMatches', '#meMatches', rowMatch.id);
+  await p5.fill('#asheetBody [data-pf="row"]', ROWV); await closeSheet5();
   await sub5('#meTabTix', '#meBody');
   check('The backup banner is up before the export (the attended data changed)', !(await p5.$eval('#meBackup', e => e.hidden)), '');
   const exp5 = await download(p5, () => p5.click('#meExport'));
@@ -1144,6 +1159,7 @@ function alarmAt(ev, al){
   check('Export: version 3 with the personal fields, the supporter choices, the imported matches and the (empty) imported events',
     f5.version === 3 && Array.isArray(f5.importedEvents) && !f5.importedEvents.length && f5.format === 'football-planner-me' && JSON.stringify(f5.personal) === await lsGet(SUPK) && f5.importedMatches.length === 1 && f5.importedMatches[0].id === IMPID &&
     picks.every(([m, sup]) => f5.personal[m.id].supported === sup) && f5.personal[IMPKEY].supported === 'home', Object.keys(f5).join());
+  check('Export: the personal record carries "row" as typed, beside the other fields, and the file stays version 3', f5.personal[rowMatch.id] && f5.personal[rowMatch.id].row === ROWV && Object.keys(f5.personal[rowMatch.id]).join() === 'row' && f5.version === 3, JSON.stringify(f5.personal[rowMatch.id]));
   check('Export: says photos and videos are not included, and holds none (no media name, no blob)', /not in this file/.test(f5.notIncluded || '') && !/a\.png|clip\.mp4|ev\.png|blob:/.test(exp5.text) &&
     /Photos and videos are not included/.test(await p5.textContent('#meMsg')) && /Photos and videos are not in the file/.test(await p5.textContent('#meBody')), f5.notIncluded);
   check('The banner goes after the export', await p5.$eval('#meBackup', e => e.hidden), '');
@@ -1164,6 +1180,7 @@ function alarmAt(ev, al){
     ['an imported match whose id the file already uses', Object.assign({}, f5, {importedMatches: [Object.assign({}, f5.importedMatches[0], {id: ATTF.matches[0].id})]}), /already used by a match in data\/attended\.json/],
     ['an invalid imported match', Object.assign({}, f5, {importedMatches: [Object.assign({}, f5.importedMatches[0], {score: 'x'})]}), /"score"/],
     ['a supporter choice that is not home, neutral or away', Object.assign({}, f5, {personal: {[picks[0][0].id]: {supported: 'both'}}}), /"supported" must be/],
+    ['a card number in the row field', Object.assign({}, f5, {personal: Object.assign({}, f5.personal, {[picks[0][0].id]: {row: '4111 1111 1111 1111'}})}), /payment card number/],
     ['an unknown personal field', Object.assign({}, f5, {personal: {[picks[0][0].id]: {password: 'x'}}}), /unknown field "password"/],
     ['no personal object in a version 2 file', Object.assign({}, f5, {personal: undefined}), /no personal object/],
     ['a newer version', Object.assign({}, f5, {version: 4}), /newer version/],
@@ -1185,6 +1202,7 @@ function alarmAt(ev, al){
   const msg5 = await p5.textContent('#meMsg');
   check('Round trip: the personal fields, supporter choices and imported matches are exactly as exported, and the message says they were replaced',
     await lsGet(SUPK) === JSON.stringify(f5.personal) && JSON.stringify(JSON.parse(await lsGet(IMPK)).matches) === JSON.stringify(f5.importedMatches) && /replaced by the file's/.test(msg5), msg5.slice(-160));
+  check('Round trip: the row typed before the export is back, as typed', JSON.parse(await lsGet(SUPK))[rowMatch.id].row === ROWV, await lsGet(SUPK));
   check('...the banner is down after the import', await p5.$eval('#meBackup', e => e.hidden), '');
   await sub5('#meTabMatches', '#meMatches');
   check('...and the imported match is back in the list, marked', (await p5.$$('#meMatches .acard')).length === fx.n + 1 && /Imported on this device/.test(await p5.$eval(`#meMatches .acard[data-id="${IMPKEY}"]`, c => c.textContent)), '');
@@ -1197,6 +1215,13 @@ function alarmAt(ev, al){
   await p5.click('[data-act=import-yes]');
   check('A version 1 file still imports and leaves the attended records and imported matches alone (and says so)', !v1.msg.includes('Not imported') && await dev() === dev2 &&
     /left as they are/.test(await p5.textContent('#meMsg')), (await p5.textContent('#meMsg')).slice(-120));
+
+  // An older file (version 2: no row, no imported events; a seat that reads like a row) still imports unchanged, and its seat is kept as written
+  const OLDSEAT = 'Row 8 Seat 8', v2old = Object.assign({}, f5, {version: 2, personal: Object.assign({}, f5.personal, {[rowMatch.id]: {block: 'B3', seat: OLDSEAT}})}); delete v2old.importedEvents;
+  await p5.click('#meTabTix'); await p5.waitForSelector('#meFile', {state: 'attached'});
+  const v2r = await importFile(v2old, 'v2row'); await p5.click('[data-act=import-yes]');
+  const oldRec = JSON.parse(await lsGet(SUPK))[rowMatch.id];
+  check('An older file without "row" imports; the seat "Row 8 Seat 8" stays exactly as written and nothing is moved into Row', !v2r.msg.includes('Not imported') && JSON.stringify(oldRec) === JSON.stringify({block: 'B3', seat: OLDSEAT}), JSON.stringify(oldRec) + v2r.msg.slice(0, 100));
 
   // ---- Removing an imported match
   await openCard('#meTabMatches', '#meMatches', IMPKEY);
@@ -2053,7 +2078,7 @@ function alarmAt(ev, al){
   const conds1 = {place: sh1.text.includes(F.place), stad: /At the stadium\s*yes/i.test(sh1.text), note: sh1.text.includes('Line one ' + TAG) && /Factual note/i.test(sh1.text), noLabel: !/Written by an assistant/.test(sh1.text),
     tag: /Imported on this device/i.test(sh1.head), btn: JSON.stringify(sh1.btn.filter(x => x.startsWith('aEv'))) === '["aEvEdit","aEvRemove"]', br: afactE === F.note};
   check('Its sheet shows the date, place, "At the stadium yes", one Factual note with the line break kept, no "written by an assistant" label, the tag, and Edit and Remove', Object.values(conds1).every(Boolean), JSON.stringify(conds1) + JSON.stringify(afactE));
-  check('The stadium Yes shows ticket, seat and block beside the notes and who I went with', JSON.stringify(sh1.pf) === '["note","ticket","seat","block","withWho"]', JSON.stringify(sh1.pf));
+  check('The stadium Yes shows ticket, block, row and seat beside the notes and who I went with, in that order', JSON.stringify(sh1.pf) === JSON.stringify(PF_ORDER), JSON.stringify(sh1.pf));
   const fileEv = ATTF.events.find(e => e.atStadium === true), noEv = ATTF.events.find(e => e.atStadium === false);
   await closeE(); await openEvCard(noEv.id);
   const shNo = await sheetE();
@@ -2179,7 +2204,7 @@ function alarmAt(ev, al){
   check('Saving an edit keeps the id and replaces only the covered fields; the sheet reopens on the same event', !!after && canon(after) === canon(Object.assign({}, target, {title: 'Renamed ' + TAG, atStadium: !target.atStadium})) &&
     (await storedEv()).length === 5 && /Renamed/.test((await sheetE()).head), JSON.stringify(after));
   const sh2 = await sheetE();
-  check('...the stadium toggle shows or hides ticket, seat and block (now ' + (target.atStadium ? 'No' : 'Yes') + ')', JSON.stringify(sh2.pf) === (target.atStadium ? '["note","withWho"]' : '["note","ticket","seat","block","withWho"]'), JSON.stringify(sh2.pf));
+  check('...the stadium toggle shows or hides ticket, block, row and seat (now ' + (target.atStadium ? 'No' : 'Yes') + ')', JSON.stringify(sh2.pf) === JSON.stringify(target.atStadium ? PF_ORDER.filter(k => !PF_TICKET.includes(k)) : PF_ORDER), JSON.stringify(sh2.pf));
   await closeE();
   // personal fields and the media record of the first event stayed attached (id1 is the first stored event)
   await openEvCard('impev:' + id1); await pE.click('#aEvEdit'); await pE.waitForSelector('#aEvForm[data-edit]');

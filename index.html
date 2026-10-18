@@ -918,7 +918,7 @@ const I18N = {
     'sx.title': 'Stats', 'sx.possession': 'Possession', 'sx.shots': 'Shots', 'sx.onTarget': 'Shots on target',
     'sx.fouls': 'Fouls', 'sx.corners': 'Corners', 'sx.offsides': 'Offsides', 'sx.source': 'Source',
     'nt.title': 'Factual note', 'nt.unverified': 'Written by an assistant from memory, not yet verified',
-    'pf.title': 'My notes and details', 'pf.note': 'My notes', 'pf.ticket': 'Ticket', 'pf.seat': 'Seat', 'pf.block': 'Block',
+    'pf.title': 'My notes and details', 'pf.note': 'My notes', 'pf.ticket': 'Ticket', 'pf.seat': 'Seat', 'pf.block': 'Block', 'pf.row': 'Row',
     'pf.withWho': 'Who I went with',
     'pf.hint': 'Saved automatically, on this device only.',
     'pf.card': 'Not saved: this looks like a payment card number, and card numbers are never stored.',
@@ -2161,7 +2161,7 @@ const I18N = {
     'sx.title': 'Statistici', 'sx.possession': 'Posesie', 'sx.shots': 'Șuturi', 'sx.onTarget': 'Șuturi pe poartă',
     'sx.fouls': 'Faulturi', 'sx.corners': 'Cornere', 'sx.offsides': 'Ofsaiduri', 'sx.source': 'Sursa',
     'nt.title': 'Notă factuală', 'nt.unverified': 'Scrisă de un asistent din memorie, încă neverificată',
-    'pf.title': 'Notițele și datele mele', 'pf.note': 'Notițele mele', 'pf.ticket': 'Bilet', 'pf.seat': 'Loc', 'pf.block': 'Bloc',
+    'pf.title': 'Notițele și datele mele', 'pf.note': 'Notițele mele', 'pf.ticket': 'Bilet', 'pf.seat': 'Loc', 'pf.block': 'Bloc', 'pf.row': 'Rând',
     'pf.withWho': 'Cu cine am fost',
     'pf.hint': 'Se salvează automat, doar pe acest dispozitiv.',
     'pf.card': 'Nesalvat: seamănă cu un număr de card bancar, iar numerele de card nu se păstrează niciodată.',
@@ -8503,10 +8503,10 @@ function closeASheet(){ document.getElementById('asheet').hidden = true; mediaCl
 
 /* Personal fields: this device only, never committed. Same names and
    shape as the old app's mf_personal ({id: {note, ticket, seat, block,
-   withWho}}) but under this app's own key. The old keys are never read. */
+   withWho}}, plus row) but under this app's own key. The old keys are never read. */
 const PERS_KEY = 'football-attended-personal';
-const PERS_FIELDS = ['note', 'ticket', 'seat', 'block', 'withWho'];
-const PERS_CARD_CHECKED = ['ticket', 'seat', 'block', 'withWho'];
+const PERS_FIELDS = ['note', 'ticket', 'block', 'row', 'seat', 'withWho'];
+const PERS_CARD_CHECKED = ['ticket', 'block', 'row', 'seat', 'withWho'];
 const PERS_STORED = [...PERS_FIELDS, 'supported'];           // supported: '', 'home', 'neutral' or 'away'
 const SUPPORT_VALUES = ['home', 'neutral', 'away'];
 const IMP_KEY = 'football-attended-imported';
@@ -9401,13 +9401,13 @@ function attNotePane(m){
   return `<h4>${esc(t('nt.title'))}</h4>${m._imp ? '' : attUnverified()}<div class="afact">${esc(n)}</div>`;
 }
 
-/* My notes, ticket, seat, block, who I went with: this device only. */
+/* My notes, ticket, block, row, seat, who I went with: this device only. */
 function attPersonal(id, withTicket){
   const field = k => `<label>${esc(t('pf.' + k))}<input type="text" data-pf="${k}" data-id="${esc(id)}" value="${esc(persGet(id, k))}" autocomplete="off"></label>` +
     `<div class="perr" data-err="${k}" role="alert"></div>`;
   return `<h4>${esc(t('pf.title'))}</h4><div class="apers">` +
     `<label>${esc(t('pf.note'))}<textarea data-pf="note" data-id="${esc(id)}">${esc(persGet(id, 'note'))}</textarea></label>` +
-    (withTicket ? field('ticket') + field('seat') + field('block') : '') + field('withWho') +
+    (withTicket ? field('ticket') + field('block') + field('row') + field('seat') : '') + field('withWho') +
     `<p class="anote">${esc(t('pf.hint'))}${PERS_BLOCKED ? ' ' + esc(t('pf.blocked')) : ''}</p></div>`;
 }
 
