@@ -307,7 +307,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   Jong KAA Gent, RSCA Futures), on Alexandru's instruction; and three 2. Liga
   rows - Rapid II and Sturm II (added on Alexandru's instruction) and
   Austria Wien II - and, since 2026-09-30, the Super League Greece 2 row
-  "Asteras Tripolis B" (also on his instruction). **A link is a hand-written identity claim** - the same kind of
+  "Asteras Tripolis B" (also on his instruction). **Since 2026-10-18 it holds nine rows**: the ninth joins the 2026-27 Liga II row "FC Bihor Oradea" (the roster's own link is the 2022 item `Q113541238`, which has no league tag, ground or position and cannot be drawn) to `Q1386940`, the 1958 item the map draws at tier 2, **Alexandru's decision of 2026-10-18**; it settles which item the roster row is read as and nothing about whether the two items are one club. The roster check now reads Bihor as one club, `ok` (the two rows `missing-from-wikidata` and `extra-not-in-roster` became one). **A link is a hand-written identity claim** - the same kind of
   decision as a `fixture-links-manual.csv` row, and Alexandru's to make.
 - `data/coordinate-reviews.csv` — added 2026-09-26. **What a person
   already decided about a row of `coordinate-review.csv`**, so the
@@ -6438,6 +6438,7 @@ how each rests on them, is in Conventions, "The installable app" and
     depending on who edited the item. Drawing it does not answer that,
     and the hand row says so out loud rather than letting a pin imply
     the question was settled.
+  - **Bihor Oradea, decided 2026-10-18: the roster row is joined to `Q1386940`** by a hand link (`data/roster-links-manual.csv`, Alexandru's decision), so the roster check reads one club, `ok`. The text below is the identity question as first found; it is **not** settled by the link, which only says which item the roster row is read as.
   - **Bihor Oradea is two clubs with one name**, and the two sources
     disagree about which is in Liga II. `Q1386940` is "established in
     1958", 12 sitelinks, and carries Liga II at **preferred** rank — so
@@ -6543,6 +6544,8 @@ how each rests on them, is in Conventions, "The installable app" and
   statement of the reason — an infobox dissolution date for one, the
   league's own certification note and a cited report for the other.
   Absence from one table on its own would still not have been enough.
+
+- **The roster check reads a redirect's target for the reserve marker too, 2026-10-18.** `table_rows()` already left out a row whose cell and linked title disagree on a reserve marker (the Rapid II shape). It did not look at where the link lands: "1. FC Magdeburg II", "FC St. Pauli II" and "SC Paderborn 07 II" are titles that agree with their cells but are **redirects to the parent club**, so the sitelink hop's redirect step read them as the first team, and the Regionalliga article seemed to put three tier 1-2 clubs at tier 4 (three `wrong-tier` rows). `qids_for_titles()` now applies `team_markers()` again to a redirect: one whose target has a different set of markers (`II`, `U23`, `B` and the rest of `RESERVE_MARKERS`) is **not followed**, is recorded in `REDIRECT_REFUSED`, and `main()` and `roster_qids()` leave the row out and name it ("a reserve side whose link redirects to ... the reserve marker does not agree after the redirect"). A hand link in `data/roster-links-manual.csv` still wins over this. Checked by the roster check dispatched on the branch and diffed against `main`: the three `wrong-tier` rows disappeared, the two Bihor rows became one `ok` row (the hand link above), and **no other row of `data/clubs/roster-review.csv` changed**.
 
 - **Three of the roster check's own bugs are worth keeping, because all
   three failed SILENTLY and two were the same mistake.** Found and fixed
