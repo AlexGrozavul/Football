@@ -4005,7 +4005,7 @@
   {
    "id": 86318,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -4020,9 +4020,20 @@
     "shortName": "Chemie Leipzig",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/0/0b/BSG_Chemie_Leipzig_1997.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4030,7 +4041,7 @@
   {
    "id": 86319,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -4045,9 +4056,20 @@
     "shortName": "Altglienicke",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e8/VSG_Altglienicke.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4055,7 +4077,7 @@
   {
    "id": 86322,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -4070,9 +4092,20 @@
     "shortName": "Jena",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Logo_FC_Carl_Zeiss_Jena.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

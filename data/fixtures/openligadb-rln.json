@@ -4100,7 +4100,7 @@
   {
    "id": 87151,
    "utcDate": "2026-10-16T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4115,9 +4115,20 @@
     "shortName": "Bremer SV",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/3/35/Bremer_SV_logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4125,7 +4136,7 @@
   {
    "id": 87150,
    "utcDate": "2026-10-16T17:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4140,9 +4151,20 @@
     "shortName": "SV Drochtersen/Assel",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/c/ca/SV_Drochtersen-Assel.png/120px-SV_Drochtersen-Assel.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4150,7 +4172,7 @@
   {
    "id": 87153,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4165,9 +4187,20 @@
     "shortName": "FSV Schöningen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d7/FSV_Sch%C3%B6ningen_2011.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4175,7 +4208,7 @@
   {
    "id": 87158,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4190,9 +4223,20 @@
     "shortName": "FC St. Pauli II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4200,7 +4244,7 @@
   {
    "id": 87152,
    "utcDate": "2026-10-17T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4215,9 +4259,20 @@
     "shortName": "Bremen II",
     "crest": "https://www.openligadb.de/images/teamicons/Werder_Bremen.gif"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 3,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4225,7 +4280,7 @@
   {
    "id": 87156,
    "utcDate": "2026-10-17T16:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4240,9 +4295,20 @@
     "shortName": "Phönix Lübeck",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9b/1._FC_Phoenix_Luebeck_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

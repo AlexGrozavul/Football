@@ -3285,7 +3285,7 @@
   {
    "id": 84835,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3300,9 +3300,20 @@
     "shortName": "Saarbrücken",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/f/ff/1._FC_Saarbr%C3%BCcken.svg/960px-1._FC_Saarbr%C3%BCcken.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3310,7 +3321,7 @@
   {
    "id": 84837,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3325,9 +3336,20 @@
     "shortName": "Rot-Weiss Essen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Rot-Weiss_Essen.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3335,7 +3357,7 @@
   {
    "id": 84838,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3350,9 +3372,20 @@
     "shortName": "Wiesbaden",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/3/3d/Logo_SV_Wehen_Wiesbaden.svg/250px-Logo_SV_Wehen_Wiesbaden.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3360,7 +3393,7 @@
   {
    "id": 84842,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3375,9 +3408,20 @@
     "shortName": "Münster",
     "crest": "https://upload.wikimedia.org/wikipedia/de/7/7e/SC_Preussen_Muenster_Logo_2018.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3385,7 +3429,7 @@
   {
    "id": 84844,
    "utcDate": "2026-10-17T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3400,9 +3444,20 @@
     "shortName": "Rostock",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/F.C._Hansa_Rostock_Logo.svg/960px-F.C._Hansa_Rostock_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3410,7 +3465,7 @@
   {
    "id": 84843,
    "utcDate": "2026-10-17T14:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3425,9 +3480,20 @@
     "shortName": "Mannheim",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Svwaldhof.svg/960px-Svwaldhof.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
