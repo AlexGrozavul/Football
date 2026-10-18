@@ -474,7 +474,7 @@ Q8639,Q56542463,L.R. Vicenza,other,C189,2026-10-17,an intense rivalry with Vicen
 Q8639,,Chievo Verona,local,C189,2026-10-17,"The intercity fixtures against Chievo Verona are known as the ""Derby della Scala"""
 Q1387710,,Trento,other,C190,2026-10-17,"alcuni rapporti di rivalità, tra i quali spiccano per ""calore"" quelle contro le maggiori"
 Q1387710,,Mezzocorona,other,C190,2026-10-17,"alcuni rapporti di rivalità, tra i quali spiccano per ""calore"" quelle contro le maggiori"
-Q16848949,Q1893,Bologna FC 1909,local,C191,2026-10-17,"derby con la principale squadra rivale, il Bologna"
+Q16848949,Q1893,Bologna FC 1909,main,C191,2026-10-17,"derby con la principale squadra rivale, il Bologna"
 Q16848949,,Rimini,local,C191,2026-10-17,Il match con il Rimini è soprannominato «Derby della Romagna»
 Q16848949,,Ravenna,other,C191,2026-10-17,forti rivalità di carattere geografico sono quelle con due squadre di calcio romagnole professioniste
 Q16848949,Q8639,H. Verona,other,C191,2026-10-17,"Ulteriori rivalità di discreta importanza oppongono Cesena soprattutto con Hellas Verona, Pescara, Sambenedettese, Sangiustese"
@@ -742,9 +742,9 @@ Q501693,Q208228,Stade de Reims,other,C247,2026-10-18,vers le rival historique du
 Q216032,Q190561,Standard Liège,main,C248,2026-10-18,Defour te verkopen aan aartsrivaal Standard
 Q216032,Q138248,Sint-Truidense V.V.,main,C248,2026-10-18,tegen aartsrivaal Sint-Truiden VV
 Q849544,,KFC Heultje,local,C249,2026-10-18,"plusieurs derbys contre le KFC Heultje, un club d'une entité voisine"
-Q1065328,,Denderleeuw,other,C250,2026-10-18,"son rival de Denderleeuw, tout juste relégué de Division 2"
+Q1065328,,FC Denderleeuw,other,C250,2026-10-18,"son rival de Denderleeuw, tout juste relégué de Division 2"
 Q869907,Q309456,FC Lausanne-Sport,local,C251,2026-10-18,"plusieurs derbies lausannois avec son voisin, le Lausanne-Sport"
-Q201969,Q201360,Grasshopper Club Zürich,other,C252,2026-10-18,to return to his boyhood club and cantonal rivals Grasshopper Club Zürich
+Q201969,Q201360,Grasshopper Club Zürich,local,C252,2026-10-18,to return to his boyhood club and cantonal rivals Grasshopper Club Zürich
 Q841245,Q204237,Dinamo București,main,C392,2026-10-18,"Dinamo București a fost, de-a lungul timpului, principalul rival tradițional"
 Q841245,Q584629,FCU Craiova,other,C392,2026-10-18,au fost de asemenea încărcate de emoție și rivalitate sportivă
 Q841245,Q179658,FCSB,other,C392,2026-10-18,Printre cele mai marcante rivalități se numără cea cu galeria echipei Steaua București
