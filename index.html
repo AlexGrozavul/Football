@@ -4212,7 +4212,8 @@ function openSheet(club, mates, keep = false){
 /* ---- rivalries and fan friendships. Both files are hand-written (data/club-rivalries.csv,
    data/club-friendships.csv) and both cite data/club-culture-sources.csv. A rivalry's
    class (main, local, other) is taken only from the wording of its source, and nothing
-   here ranks anything. A section is drawn only for a club that has rows. Main rivals
+   here ranks anything. Rivalries are drawn for every club (a neutral line when it has no
+   row, own or mirrored); Fan friendships only for a club that has rows. Main rivals
    first, then local, then other; alphabetical within a class. */
 const RIV_ORDER = {main: 0, local: 1, other: 2};
 const RIV_LABEL = labelsOf('riv.', ['main', 'local', 'other']);
