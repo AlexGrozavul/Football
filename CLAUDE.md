@@ -1121,6 +1121,14 @@ mocked: `yes` plus a roster naming it surfaces the club with its P576
 year; the cell blanked leaves it off ("Wikidata marks Q8428 dissolved");
 `yes` with a roster that does not name it leaves it off. Padova is the
 only club with the cell, and nothing else in this convention changed.
+**Proof, on the branch (build-clubs.yml and check-rosters.yml dispatched):**
+Calcio Padova is in `data/clubs/IT.json` at tier 2 (stadio Euganeo, 32,420,
+45.432222 / 11.858333, fetched), the run summary printed `surfaced by the
+hand-named fallback: Calcio Padova (Q8428), named by 2026–27 Serie B; tier 2
+from data/clubs-manual.csv line 260; ON THE MAP` and `ACCEPTED DESPITE P576
+(dissolved) 2014: ...`, its roster verdict changed from
+`missing-from-wikidata` to `ok`, and no other club or country file changed
+(`IT.json` gained that one club; `index.json` only its counts).
 
 **A failed fetch never rewrites a review file.** `capacity-review.csv`
 and `coordinate-review.csv` are evidence waiting to be judged, and the
