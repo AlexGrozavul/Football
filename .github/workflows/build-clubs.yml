@@ -31,6 +31,7 @@ concurrency:
 
 jobs:
   clubs:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -87,3 +88,88 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
+
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: probe
+        run: |
+          cat > /tmp/urls.json <<'URLS'
+          ["https://www.freiepresse.de/chemnitz/chemnitzer-fc-gegen-fc-erzgebirge-aue-polizei-bereitet-sich-auf-hochrisikospiel-vor-artikel14219016",
+          "https://www.freiepresse.de/sport/fussball/fc-erzgebirge/sachsenpokal-auslosung-so-lauten-die-halbfinal-begegnungen-artikel13746941",
+          "https://www.freiepresse.de/sport/fussball/regionalliga-mit-erzgebirge-aue-fsv-zwickau-chemnitzer-fc-derby-boom-oder-absturz-ein-pro-und-kontra-artikel14241596",
+          "https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-gegengerade-im-vogtlandstadion-bleibt-auch-gegen-den-vfb-auerbach-leer-artikel14233446",
+          "https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-anzeigetafel-streikt-ausgerechnet-beim-sieg-gegen-den-vfb-auerbach-artikel14239780",
+          "https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-was-geht-da-noch-in-richtung-fussball-regionalliga-artikel14237518",
+          "https://www.freiepresse.de/sport/lokalsport/vogtland/120-jahre-vfb-auerbach-was-zum-jubilaeum-in-den-naechsten-tagen-alles-geplant-ist-artikel14258613",
+          "https://www.freiepresse.de/sport/lokalsport/vogtland/vfb-auerbachs-revanche-in-stahnsdorf-nach-dem-hinspiel-stellte-der-verein-alles-infrage-artikel13793730",
+          "https://www.rheinpfalz.de/sport/fussball_artikel,-fcs-siegt-im-saarderby-in-elversberg-aufsteiger-elf-und-ein-saarbr%C3%BCcker-jammern-_arid,5390494.html",
+          "https://www.volksstimme.de/sport/lokalsport-magdeburg/furioser-start-aber-dann-kommt-der-favorit-1996353",
+          "https://www.volksstimme.de/sport/derby-gelungene-einstimmung-auf-saison-highlight-537114",
+          "https://www.volksstimme.de/sport/lokalsport-magdeburg/ein-punktchen-fur-germania-halberstadt-1997734"]
+
+          URLS
+          cat > /tmp/probe.py <<'PYEOF'
+          import urllib.request,urllib.parse,urllib.robotparser,urllib.error,re,sys,time,html,json
+          UA="FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)"
+          URLS=json.loads(open(sys.argv[1]).read()) if len(sys.argv)>1 else []
+          QUOTES=json.loads(open(sys.argv[2]).read()) if len(sys.argv)>2 else {}
+          last=[0]; robots={}; stop=set()
+          def get(url):
+              for t in range(4):
+                  w=1-(time.time()-last[0])
+                  if w>0: time.sleep(w)
+                  last[0]=time.time()
+                  req=urllib.request.Request(url,headers={"User-Agent":UA,"Accept-Language":"de"})
+                  try:
+                      with urllib.request.urlopen(req,timeout=40) as r:
+                          return r.status,r.read().decode(r.headers.get_content_charset() or 'utf-8','replace')
+                  except urllib.error.HTTPError as e:
+                      if e.code==429:
+                          try: ra=int(e.headers.get("Retry-After","10"))
+                          except: ra=10
+                          print("  429, wait",ra); time.sleep(min(ra,60)); continue
+                      return e.code,""
+                  except Exception as e:
+                      print("  ERR",str(e)[:80]); time.sleep(3)
+              return 0,""
+          def allowed(url):
+              p=urllib.parse.urlparse(url); host=p.scheme+"://"+p.netloc
+              if host not in robots:
+                  st,body=get(host+"/robots.txt")
+                  if st in (401,403,429): robots[host]=("STOP",st)
+                  else:
+                      rp=urllib.robotparser.RobotFileParser(); rp.parse(body.splitlines() if st==200 else [])
+                      robots[host]=(rp,st)
+              r,st=robots[host]
+              if r=="STOP": return False,"robots.txt HTTP %d (stop)"%st
+              return r.can_fetch(UA,url),"robots %s"%st
+          def text(h):
+              h=re.sub(r'(?is)<(script|style|noscript|svg|nav|footer|header)[^>]*>.*?</\1>',' ',h)
+              h=re.sub(r'(?s)<[^>]+>',' ',h)
+              return re.sub(r'\s+',' ',html.unescape(h)).strip()
+          pat=re.compile(r'rival|erzfeind|derby|nachbarverein|lokalduell|stadtduell|feindschaft|todfeind',re.I)
+          print("PROBE START",len(URLS),"urls")
+          res={}
+          for u in URLS:
+              ok,why=allowed(u)
+              if not ok: print("SKIP",u,why); continue
+              st,body=get(u)
+              if st!=200 or len(body)<2000 or re.search(r'(?i)captcha|just a moment|access denied|attention required|cf-chl|bot detection',body[:6000]):
+                  print("STOP",u,"HTTP",st,"len",len(body)); continue
+              t=text(body); res[u]=t
+              m=re.search(r'(?is)<title[^>]*>(.*?)</title>',body)
+              print("OPEN",u,"HTTP",st,"text",len(t),"|",html.unescape(m.group(1)).strip()[:110] if m else "")
+              if not QUOTES:
+                  seen=0
+                  for s in re.split(r'(?<=[.!?])\s+(?=[A-ZÄÖÜ„"])',t):
+                      if pat.search(s) and seen<8:
+                          print("   -",s[:330]); seen+=1
+          for u,qs in QUOTES.items():
+              for q in qs:
+                  n=re.sub(r'\s+',' ',q).strip()
+                  print("QUOTE", "OK" if u in res and n in res[u] else "NO", len(n.split()),"words |",n[:90])
+          print("PROBE END opened",len(res))
+
+          PYEOF
+          python3 /tmp/probe.py /tmp/urls.json 2>&1 | cut -c1-420
