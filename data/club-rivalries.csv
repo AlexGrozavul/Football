@@ -37,11 +37,11 @@ Q105853,Q4512,VfB Stuttgart,other,R12,2026-10-03
 Q479351,Q38245,Eintracht Frankfurt,other,R2,2026-10-03
 Q153539,Q15786,1. FC Nürnberg,other,R15,2026-10-03
 Q160530,Q316865,Preußen Münster,other,R2,2026-10-03
-Q126334,Q221525,FC Metz,local,C6,2026-10-09
-Q126334,,SR Colmar,local,C6,2026-10-09
-Q126334,,FC Mulhouse,local,C6,2026-10-09
-Q126334,Q19512,FC Sochaux-Montbéliard,other,C6,2026-10-09
-Q126334,,Bordeaux,other,C7,2026-10-09
+Q126334,Q221525,FC Metz,main,C568,2026-10-09,Racing Strasbourg's main rival is Metz.
+Q126334,,SR Colmar,local,C6,2026-10-09,le principal derby se joue à nouveau contre le SR Colmar
+Q126334,,FC Mulhouse,local,C6,2026-10-09,le « grand derby alsacien » par 9-1 sur le terrain de Mulhouse
+Q126334,Q19512,FC Sochaux-Montbéliard,other,C6,2026-10-09,quelques rivalités contre leur voisin du FC Sochaux-Montbéliard
+Q126334,,Bordeaux,other,C7,2026-10-09,il existe une rivalité entre ces deux groupes de supporters
 Q131215,Q131209,FK Austria Wien,other,C63,2026-10-17
 Q131209,Q131215,SK Rapid Wien,other,C63,2026-10-17
 Q659780,Q124007617,SK Sturm Graz,other,C64,2026-10-17
@@ -825,3 +825,7 @@ Q831867,,TSB Flensburg,local,C561,2026-10-19,Fusion mit dem Lokalrivalen TSB Fle
 Q97927365,Q141931,Dynamo Dresden,main,C565,2026-10-19,Direkter Konkurrent war dabei Erzrivale Dynamo Dresden
 Q97927380,,SV Bornim,local,C566,2026-10-19,hinter dem Stadtrivalen SV Bornim gelandet
 Q22707,Q4512,VfB Stuttgart,local,C567,2026-10-19,beim Landesrivalen VfB Stuttgart am Samstag
+Q647893,Q157463,1. FC Saarbrücken,main,C550,2026-10-19,zum alles entscheidenden Duell ausgerechnet auswärts beim Erzrivalen 1. FC Saarbrücken
+Q97927365,Q316896,FSV Zwickau,main,C565,2026-10-19,schlug Aue den Erzfeind FSV Zwickau
+Q97927380,Q107818,Energie Cottbus,main,C566,2026-10-19,Der Erzrivale Energie Cottbus gewann mit 2:1.
+Q97927380,Q141971,1. FC Union Berlin,other,C566,2026-10-19,4:1-Niederlage beim Rivalen Union Berlin musste Trainer Karsten Heine gehen
