@@ -135,10 +135,8 @@ jobs:
                   if d: s.t.append(d)
           PAT=re.compile(r"Rivale|Rivalit|Erzrivale|Derby|Lokalrivale|Erzfeind|Feindschaft|Nachbar",re.I)
           URLS=[
-           ("http://www.tsg-neustrelitz.de/chronik",["Zum Auswärtsspiel beim Erzrivalen FC Neubrandenburg begleiten mehr als 1.500 Neustrelitzer","Im letzten Spiel muss man beim Erzrivalen FC Tollense Neubrandenburg unbedingt gewinnen"]),
-           ("https://www.schwaebische.de/regional/oberschwaben/ravensburg/der-ligaalltag-heisst-sc-pfullendorf-694454",[]),
-           ("https://www.schwaebische.de/regional/oberschwaben/ravensburg/pfullendorfer-talfahrt-gewinnt-an-rasanz-746141",[]),
-           ("https://www.diefalsche9.de/?p=68225",[]),
+           ("https://www.volksstimme.de/sport/amateurfussball/germania-halberstadt-weckt-emotionen-921897",[]),
+           ("https://www.volksstimme.de/sport/derby-gelungene-einstimmung-auf-saison-highlight-537114",[]),
           ]
           robots={}
           for url,quotes in URLS:
