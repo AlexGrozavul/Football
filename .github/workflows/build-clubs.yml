@@ -96,19 +96,8 @@ jobs:
         run: |
           set -o pipefail
           cat > /tmp/urls.txt <<'LIST'
-          https://www.freiepresse.de/chemnitz/chemnitzer-fc-gegen-fc-erzgebirge-aue-polizei-bereitet-sich-auf-hochrisikospiel-vor-artikel14219016|Aue;Zwickau;Leipzig
-          https://www.freiepresse.de/sport/fussball/regionalliga-mit-erzgebirge-aue-fsv-zwickau-chemnitzer-fc-derby-boom-oder-absturz-ein-pro-und-kontra-artikel14241596|Aue;Zwickau;CFC
-          https://www.freiepresse.de/sport/fussball/chemnitzer-fc/chemnitzer-fc-derby-light-zum-letzten-saisonheimspiel-gegen-den-fsv-zwickau-artikel14240632|Zwickau;CFC
-          https://www.schwaebische.de/regional/baden-wuerttemberg/gut-gelaunte-hoffenheimer-vor-vfb-spiel-der-schmaeh-rennt-4208955|Stuttgart;VfB
-          https://www.stuttgarter-zeitung.de/sport/sport-mix/gegner-des-vfb-stuttgart-darum-steht-die-tsg-hoffenheim-im-landesduell-unter-druck-79457969.html|Hoffenheim;TSG
-          https://www.freiepresse.de/sport/lokalsport/vogtland/was-der-vfb-auerbach-gegen-rudolstadt-besser-machen-will-als-beim-derby-in-plauen-artikel14242505|Plauen;Auerbach
-          https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-gegen-chemnitzer-fc-das-bezirksderby-bleibt-ohne-sieger-artikel13772814|Chemnitz;CFC;Plauen
-          https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-gegengerade-im-vogtlandstadion-bleibt-auch-gegen-den-vfb-auerbach-leer-artikel14233446|Auerbach;Plauen
-          https://www.nordkurier.de/sport/fur-fan-noch-immer-reizvolles-derby-1275498|Neustrelitz;TSG;Torgelow
-          https://www.stuttgarter-zeitung.de/sport/stuttgarter-kickers-in-grossaspach-richtungsweisendes-derby-wer-gewinnt-duell-der-gegensaetze-78885711.html|Großaspach;Kickers
-          https://www.heidelberg24.de/sport/fussball/als-dankeschoen-svs-laedt-fans-im-derby-gegen-waldhof-ein-93606992.html|Sandhausen;SVS;Waldhof
-          https://www.infranken.de/lk/bamberg/sport/die-statistik-spricht-fuer-ein-remis-art-4570476|Eltersdorf;Bamberg
-          https://www.hessenschau.de/sport/fussball/regionalliga/fsv-frankfurt-vor-naechstem-derby-in-der-regionalliga-suedwest--v1,kurz-regio_samstag-100.html|Steinbach;Frankfurt
+          VERIFY|https://www.schwaebische.de/regional/baden-wuerttemberg/gut-gelaunte-hoffenheimer-vor-vfb-spiel-der-schmaeh-rennt-4208955|beim Landesrivalen VfB Stuttgart am Samstag
+          https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-holt-sven-koehler-so-reagieren-der-vfb-auerbach-und-der-aktuelle-vfc-trainer-artikel14230525|Auerbach;Plauen;VfB;VFC
           LIST
           python3 - <<'PY' 2>&1 | cut -c1-420
           import re,sys,urllib.request,urllib.robotparser,urllib.parse,html,json
@@ -146,7 +135,11 @@ jobs:
           for line in open('/tmp/urls.txt'):
               line=line.strip()
               if not line: continue
-              url,_,toks=line.partition('|'); toks=[t for t in toks.split(';') if t]
+              verify=None
+              if line.startswith('VERIFY|'):
+                  _,url,verify=line.split('|',2); toks=[]
+              else:
+                  url,_,toks=line.partition('|'); toks=[t for t in toks.split(';') if t]
               print('=====',url)
               ok,why=allowed(url)
               if not ok: print('SKIP',why); continue
@@ -160,6 +153,8 @@ jobs:
               p=P(); p.feed(body); text=html.unescape(''.join(p.t)); text=re.sub(r'[ \t\xa0]+',' ',text)
               open('/tmp/'+re.sub(r'\W+','_',url)[-80:]+'.txt','w').write(text)
               print('status',st,'len',len(text),'title',p.title.strip()[:100])
+              if verify is not None:
+                  print('VERIFY','OK' if any(verify in l for l in text.split('\n')) else 'NOT FOUND in one line','|',len(verify.split()),'words'); continue
               n=0
               for s in re.split(r'(?<=[.!?])\s+|\n+',text):
                   s=s.strip()
