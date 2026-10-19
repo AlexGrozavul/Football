@@ -31,7 +31,6 @@ concurrency:
 
 jobs:
   clubs:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -88,77 +87,3 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
-
-  probe:
-    runs-on: ubuntu-latest
-    steps:
-      - name: TEMPORARY probe - open candidate press pages (removed before merge)
-        run: |
-          set -o pipefail
-          cat > /tmp/urls.txt <<'LIST'
-          VERIFY|https://www.schwaebische.de/regional/baden-wuerttemberg/gut-gelaunte-hoffenheimer-vor-vfb-spiel-der-schmaeh-rennt-4208955|beim Landesrivalen VfB Stuttgart am Samstag
-          https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-holt-sven-koehler-so-reagieren-der-vfb-auerbach-und-der-aktuelle-vfc-trainer-artikel14230525|Auerbach;Plauen;VfB;VFC
-          LIST
-          python3 - <<'PY' 2>&1 | cut -c1-420
-          import re,sys,urllib.request,urllib.robotparser,urllib.parse,html,json
-          from html.parser import HTMLParser
-          UA="FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)"
-          RIV=re.compile(r"Rival|Erzfeind|Lokalderby|Derby|Nachbar|Feindschaft|verfeindet|Stadtrivale|Ortsrivale|Ortskonkurrent|Konkurrent",re.I)
-          class P(HTMLParser):
-              def __init__(s): super().__init__(); s.t=[]; s.skip=0; s.title=''; s.intitle=False
-              def handle_starttag(s,tag,a):
-                  if tag in('script','style','noscript'): s.skip+=1
-                  if tag=='title': s.intitle=True
-                  if tag in('p','div','br','li','h1','h2','h3','section','article'): s.t.append('\n')
-              def handle_endtag(s,tag):
-                  if tag in('script','style','noscript'): s.skip-=1
-                  if tag=='title': s.intitle=False
-              def handle_data(s,d):
-                  if s.intitle: s.title+=d
-                  elif not s.skip: s.t.append(d)
-          robots={}
-          def allowed(url):
-              u=urllib.parse.urlparse(url); host=u.scheme+'://'+u.netloc
-              if host not in robots:
-                  rp=urllib.robotparser.RobotFileParser()
-                  try:
-                      r=urllib.request.urlopen(urllib.request.Request(host+'/robots.txt',headers={'User-Agent':UA}),timeout=30)
-                      rp.parse(r.read().decode('utf-8','replace').splitlines()); robots[host]=('ok',rp)
-                  except urllib.error.HTTPError as e:
-                      robots[host]=('stop',e.code) if e.code in(401,403,429) else ('none',None)
-                  except Exception as e: robots[host]=('err',str(e))
-              k,rp=robots[host]
-              if k=='stop': return False,f'robots.txt HTTP {rp} = stop'
-              if k=='err': return False,'robots.txt error '+rp
-              if k=='ok' and not rp.can_fetch(UA,url): return False,'robots.txt disallows'
-              return True,''
-          for line in open('/tmp/urls.txt'):
-              line=line.strip()
-              if not line: continue
-              verify=None
-              if line.startswith('VERIFY|'):
-                  _,url,verify=line.split('|',2); toks=[]
-              else:
-                  url,_,toks=line.partition('|'); toks=[t for t in toks.split(';') if t]
-              print('=====',url)
-              ok,why=allowed(url)
-              if not ok: print('SKIP',why); continue
-              try:
-                  r=urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':UA}),timeout=40)
-                  body=r.read().decode('utf-8','replace'); st=r.status
-              except urllib.error.HTTPError as e:
-                  print('HTTP',e.code,'= stop, not retried'); continue
-              except Exception as e: print('ERR',e); continue
-              if re.search(r'captcha|Just a moment|cf-chl|Access Denied',body[:4000],re.I) and len(body)<20000: print('BOT CHALLENGE = stop'); continue
-              p=P(); p.feed(body); text=html.unescape(''.join(p.t)); text=re.sub(r'[ \t\xa0]+',' ',text)
-              open('/tmp/'+re.sub(r'\W+','_',url)[-80:]+'.txt','w').write(text)
-              print('status',st,'len',len(text),'title',p.title.strip()[:100])
-              if verify is not None:
-                  print('VERIFY','OK' if any(verify in l for l in text.split('\n')) else 'NOT FOUND in one line','|',len(verify.split()),'words'); continue
-              n=0
-              for s in re.split(r'(?<=[.!?])\s+|\n+',text):
-                  s=s.strip()
-                  if RIV.search(s) and (not toks or any(t.lower() in s.lower() for t in toks)):
-                      print('>',s[:330]); n+=1
-                      if n>=10: break
-          PY
