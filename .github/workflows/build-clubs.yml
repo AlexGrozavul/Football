@@ -126,8 +126,11 @@ jobs:
           sites={}
           for k in range(0,len(IDS),25):
               q="https://www.wikidata.org/w/api.php?"+urllib.parse.urlencode(dict(action="wbgetentities",ids="|".join(IDS[k:k+25]),props="claims|labels",languages="de|en",format="json",maxlag="5"))
-              st,body,_=get(q)
-              if st!=200: print("WIKIDATA FAIL",st,body[:100]); continue
+              for attempt in range(5):
+                  st,body,_=get(q)
+                  if st==200 and "entities" in json.loads(body): break
+                  print("WIKIDATA retry",attempt,st,body[:160]); time.sleep(25)
+              if st!=200 or "entities" not in json.loads(body): print("WIKIDATA FAIL"); sys.exit(1)
               for qid,e in json.loads(body)["entities"].items():
                   lab=(e.get("labels",{}).get("de") or e.get("labels",{}).get("en") or {}).get("value","?")
                   u=[c["mainsnak"]["datavalue"]["value"] for c in e.get("claims",{}).get("P856",[]) if c.get("rank")!="deprecated" and c["mainsnak"].get("datavalue")]
