@@ -95,20 +95,22 @@ jobs:
       - name: probe
         run: |
           cat > /tmp/urls.json <<'URLS'
-          ["https://www.freiepresse.de/chemnitz/chemnitzer-fc-gegen-fc-erzgebirge-aue-polizei-bereitet-sich-auf-hochrisikospiel-vor-artikel14219016",
-          "https://www.freiepresse.de/sport/fussball/fc-erzgebirge/sachsenpokal-auslosung-so-lauten-die-halbfinal-begegnungen-artikel13746941",
-          "https://www.freiepresse.de/sport/fussball/regionalliga-mit-erzgebirge-aue-fsv-zwickau-chemnitzer-fc-derby-boom-oder-absturz-ein-pro-und-kontra-artikel14241596",
+          ["https://www.nordkurier.de/sport/fur-fan-noch-immer-reizvolles-derby-1275498",
+          "https://www.nordkurier.de/sport/tsg-qualt-sich-zum-derby-sieg-1186647",
+          "https://www.stuttgarter-zeitung.de/sport/stuttgarter-kickers-in-grossaspach-richtungsweisendes-derby-wer-gewinnt-duell-der-gegensaetze-78885711.html",
+          "https://www.stuttgarter-zeitung.de/sport/stuttgarter-kickers-in-grossaspach-loris-maier-alles-ist-ruhiger-und-entspannter-als-bei-den-blauen-78882942.html",
+          "https://www.diefalsche9.de/stuttgarter-kickers-sorgen-fuer-groesste-gaestekulisse-in-grossaspach/",
+          "https://www.freiepresse.de/chemnitz/chemnitzer-fc-gegen-fc-erzgebirge-aue-polizei-bereitet-sich-auf-hochrisikospiel-vor-artikel14219016",
           "https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-gegengerade-im-vogtlandstadion-bleibt-auch-gegen-den-vfb-auerbach-leer-artikel14233446",
-          "https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-anzeigetafel-streikt-ausgerechnet-beim-sieg-gegen-den-vfb-auerbach-artikel14239780",
-          "https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-was-geht-da-noch-in-richtung-fussball-regionalliga-artikel14237518",
-          "https://www.freiepresse.de/sport/lokalsport/vogtland/120-jahre-vfb-auerbach-was-zum-jubilaeum-in-den-naechsten-tagen-alles-geplant-ist-artikel14258613",
-          "https://www.freiepresse.de/sport/lokalsport/vogtland/vfb-auerbachs-revanche-in-stahnsdorf-nach-dem-hinspiel-stellte-der-verein-alles-infrage-artikel13793730",
-          "https://www.rheinpfalz.de/sport/fussball_artikel,-fcs-siegt-im-saarderby-in-elversberg-aufsteiger-elf-und-ein-saarbr%C3%BCcker-jammern-_arid,5390494.html",
-          "https://www.volksstimme.de/sport/lokalsport-magdeburg/furioser-start-aber-dann-kommt-der-favorit-1996353",
-          "https://www.volksstimme.de/sport/derby-gelungene-einstimmung-auf-saison-highlight-537114",
-          "https://www.volksstimme.de/sport/lokalsport-magdeburg/ein-punktchen-fur-germania-halberstadt-1997734"]
+          "https://www.rheinpfalz.de/sport/fussball_artikel,-fcs-siegt-im-saarderby-in-elversberg-aufsteiger-elf-und-ein-saarbr%C3%BCcker-jammern-_arid,5390494.html"]
 
           URLS
+          cat > /tmp/quotes.json <<'QUOTES'
+          {"https://www.freiepresse.de/chemnitz/chemnitzer-fc-gegen-fc-erzgebirge-aue-polizei-bereitet-sich-auf-hochrisikospiel-vor-artikel14219016":["Die Rivalität der Clubs geht bis in die DDR-Zeit zurück","Auch abseits des Platzes birgt dieses Lokalderby einigen Zündstoff."],
+          "https://www.freiepresse.de/sport/lokalsport/vogtland/vfc-plauen-gegengerade-im-vogtlandstadion-bleibt-auch-gegen-den-vfb-auerbach-leer-artikel14233446":["Vogtlandderby der Fußball-Oberliga zwischen dem VFC Plauen und dem VfB Auerbach"],
+          "https://www.rheinpfalz.de/sport/fussball_artikel,-fcs-siegt-im-saarderby-in-elversberg-aufsteiger-elf-und-ein-saarbr%C3%BCcker-jammern-_arid,5390494.html":["ausgerechnet der Drittliga-Lokalrivale geschafft: Der 1. FC Saarbrücken"]}
+
+          QUOTES
           cat > /tmp/probe.py <<'PYEOF'
           import urllib.request,urllib.parse,urllib.robotparser,urllib.error,re,sys,time,html,json
           UA="FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)"
@@ -160,7 +162,7 @@ jobs:
               t=text(body); res[u]=t
               m=re.search(r'(?is)<title[^>]*>(.*?)</title>',body)
               print("OPEN",u,"HTTP",st,"text",len(t),"|",html.unescape(m.group(1)).strip()[:110] if m else "")
-              if not QUOTES:
+              if u not in QUOTES:
                   seen=0
                   for s in re.split(r'(?<=[.!?])\s+(?=[A-ZÄÖÜ„"])',t):
                       if pat.search(s) and seen<8:
@@ -172,4 +174,4 @@ jobs:
           print("PROBE END opened",len(res))
 
           PYEOF
-          python3 /tmp/probe.py /tmp/urls.json 2>&1 | cut -c1-420
+          python3 /tmp/probe.py /tmp/urls.json /tmp/quotes.json 2>&1 | cut -c1-420
