@@ -277,6 +277,7 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
     min-height:36px;max-width:100%}
   .sheet button.rvbucket{display:block;margin-top:6px;color:var(--t3);font-size:12.5px}
   .sheet .riv .sub{overflow-wrap:anywhere}
+  .sheet .rvparent{margin:8px 0 0;overflow-wrap:anywhere;min-width:0}
   .sheet .riv[hidden]{display:none}
   .sheet button.rvmore{margin-top:8px;background:var(--surf);border:1px solid var(--line);border-radius:7px;
     padding:8px 12px;color:var(--ink);font:inherit;font-size:13.5px;min-height:44px;cursor:pointer}
@@ -1066,6 +1067,7 @@ const I18N = {
     "fri.mirror": "Stated on {club}'s page only",
     "riv.mirror": "Stated on {club}'s page only",
     "riv.none": "No rivalry recorded for this club yet.",
+    "riv.parent": "Reserve side of {club}. Its rivals are listed on the first team's sheet.",
     "fris.fan-groups": "Between fan groups",
     "fris.clubs": "Between clubs",
     "fris.unclear": "Not specified",
@@ -2312,6 +2314,7 @@ const I18N = {
     "fri.mirror": "Menționat doar pe pagina {club}",
     "riv.mirror": "Menționat doar pe pagina {club}",
     "riv.none": "Nu este încă înregistrată nicio rivalitate pentru acest club.",
+    "riv.parent": "Echipa de rezerve a clubului {club}. Rivalii ei sunt afișați pe pagina primei echipe.",
     "fris.fan-groups": "Între grupurile de suporteri",
     "fris.clubs": "Între cluburi",
     "fris.unclear": "Nespecificat",
@@ -4253,7 +4256,18 @@ async function rivalriesHtml(club){
     .map(r => ({...r, rivalQ: r.clubQ, rivalName: mapClub(r.clubQ).name, _mirror: true}))
     .sort((a, b) => a.rivalName.localeCompare(b.rivalName));
   const rows = [...own, ...mirrored];
-  if(!rows.length) return `<h4>${esc(t('riv.title'))}</h4><p class="sub rivnone">${esc(t('riv.none'))}</p>`;
+  /* data/club-parents.csv (hand-written): this club is a reserve side of a club on the map. Its rivals
+     are not looked for on its own page; the sentence points to the first team's sheet. A file that
+     cannot be loaded only leaves the sentence out. */
+  const PF = await csvFile('data/club-parents.csv');
+  const par = PF.ok ? PF.v.find(r => !r._over && r.clubQ === club.id && mapClub(r.parentQ)) : null;
+  const parentHtml = () => {
+    const pc = mapClub(par.parentQ);
+    return `<p class="sub rvparent">` + esc(t('riv.parent', {club: '%%CLUB%%'}))
+      .replace('%%CLUB%%', `<button class="rvname" data-id="${esc(pc.id)}">${esc(pc.name)}</button>`) + `</p>`;
+  };
+  if(!rows.length) return `<h4>${esc(t('riv.title'))}</h4>` +
+    (par ? `<div class="rivs">${parentHtml()}</div>` : `<p class="sub rivnone">${esc(t('riv.none'))}</p>`);
   const B = await bucketLinks();
   const entries = new Map((RULES?.bucketList || []).map(b => [b.id, b]));
   const bucketFor = q => {
@@ -4279,7 +4293,8 @@ async function rivalriesHtml(club){
       (r._mirror ? `<div class="sub rvmirror">${esc(t('riv.mirror', {club: r.rivalName}))}</div>` : '') + links + `</div>`;
   };
   return `<h4>${esc(t('riv.title'))}</h4><div class="rivs">` + rows.map(rowHtml).join('') +
-    (rows.length > RIV_SHOWN ? `<button class="rvmore" aria-expanded="false">${esc(t('gen.showAll', {n: rows.length}))}</button>` : '') + `</div>`;
+    (rows.length > RIV_SHOWN ? `<button class="rvmore" aria-expanded="false">${esc(t('gen.showAll', {n: rows.length}))}</button>` : '') +
+    (par ? parentHtml() : '') + `</div>`;
 }
 
 /* Fan friendships: data/club-friendships.csv, hand-written, cites club-culture-sources.csv.

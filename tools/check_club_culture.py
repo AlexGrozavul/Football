@@ -10,6 +10,10 @@ club-rivalries.csv: clubQ, rivalQ (blank when the rival is not on the map),
 rivalName, class (main, local, other), sourceId, checkedOn, and an optional quote (the
 page's own words behind the class, in the original language, 15 words at most). The class
 comes only from the wording of the source. There is no row limit and no target.
+club-parents.csv: clubQ (a reserve side on the map), parentQ (the first team's club on the map),
+source (URL of the reserve side's Wikipedia page whose redirect to the parent proves it), checkedOn.
+The club sheet shows "Reserve side of <parent>" for a club with a row here; nothing is inferred from
+names.
 club-friendships.csv: clubQ, friendQ (blank when the friend is not on the map),
 friendName, scope (fan-groups, clubs, unclear), status (active, ended, unclear),
 groupsText (the fan groups the source names, blank if it names none), sourceId,
@@ -18,7 +22,7 @@ checkedOn, quote (the source's own words behind the status, in the original lang
 nothing is inferred from rivalries or shared enemies. Status active needs present-tense
 wording and ended needs wording that says so; the quote is what lets a person check both.
 
-EXITS 1 on: a clubQ or rivalQ on no data/clubs/*.json, a sourceId
+EXITS 1 on: in club-parents.csv an unknown clubQ or parentQ, a repeated clubQ, a club that is its own parent and a parent that is itself a reserve side; a clubQ or rivalQ on no data/clubs/*.json, a sourceId
 not in club-culture-sources.csv, a class or source kind
 outside its list, a duplicate row, a missing rivalName,
 a day-level date in the future in a text cell, a row with more values than
@@ -195,6 +199,33 @@ for line, r in read('club-friendships.csv', ['clubQ', 'friendQ', 'friendName', '
     seen.add(key)
     if ok: fri.setdefault(r['clubQ'], []).append(r)
 
+# club-parents.csv: a reserve side and the first team it belongs to. Exits 1 on a clubQ or parentQ on no
+# club file, a repeated clubQ, a club that is its own parent, and a parent that is itself a reserve side
+# (a clubQ of this file). Warns on a missing source or checkedOn.
+parents = {}
+for line, r in read('club-parents.csv', ['clubQ', 'parentQ', 'source', 'checkedOn']):
+    at = f'club-parents.csv line {line}'
+    ok = True
+    for col in ('clubQ', 'parentQ'):
+        if r[col] not in clubs:
+            problems.append(f'{at}: {col} "{r[col]}" is on no club file'); ok = False
+    if r['clubQ'] == r['parentQ']:
+        problems.append(f'{at}: a club cannot be its own parent'); ok = False
+    if r['clubQ'] in parents:
+        problems.append(f'{at}: {clubs.get(r["clubQ"], r["clubQ"])} is entered twice'); ok = False
+    if not r['source'].startswith('http'):
+        warnings.append(f'{at}: no source URL')
+    if not r['checkedOn']:
+        warnings.append(f'{at}: no checkedOn')
+    elif not iso(r['checkedOn']):
+        warnings.append(f'{at}: checkedOn "{r["checkedOn"]}" is not an ISO date')
+    elif iso(r['checkedOn']) > today:
+        warnings.append(f'{at}: checkedOn {r["checkedOn"]} is in the future')
+    if ok: parents[r['clubQ']] = r
+for q, r in parents.items():
+    if r['parentQ'] in parents:
+        problems.append(f'club-parents.csv: {clubs[q]} has {clubs[r["parentQ"]]} as its parent, which is itself a reserve side of {clubs[parents[r["parentQ"]]["parentQ"]]}')
+
 # A pair of clubs may be in both the friendships and the rivalries file only when the friendship
 # has ended: an undated or current friendship cannot be shown next to a rivalry. Exits 1 otherwise.
 rival_pairs = {}
@@ -236,6 +267,9 @@ for q in sorted(fri, key=lambda q: clubs[q]):
     for r in sorted(fri[q], key=lambda r: (ORDER_SHOWN.index(r['status']), r['friendName'])):
         print(f'    {r["status"]:7} {r["scope"]:10} {r["friendName"]}  {r["friendQ"] or "(not on the map)"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
         if r['quote']: print(f'             quote: «{r["quote"]}»')
+print(f'club-parents.csv: {len(parents)} accepted rows')
+for q in sorted(parents, key=lambda q: clubs[q]):
+    print(f'  {clubs[q]} ({q}) is a reserve side of {clubs[parents[q]["parentQ"]]} ({parents[q]["parentQ"]})  checked {parents[q]["checkedOn"] or "-"}')
 for w in warnings: print('WARNING:', w)
 for p in problems: print('PROBLEM:', p)
 if problems:
