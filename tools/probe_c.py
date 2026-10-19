@@ -9,7 +9,10 @@ def req(url, data=None, tries=4):
         try:
             r = urllib.request.Request(url, data=data, headers={"User-Agent": UA})
             with urllib.request.urlopen(r, timeout=120) as f:
-                return json.loads(f.read().decode())
+                j = json.loads(f.read().decode())
+                if isinstance(j, dict) and "error" in j:
+                    print("  API error:", str(j["error"])[:120], "try", t+1, flush=True); time.sleep(10*(t+1)); continue
+                return j
         except urllib.error.HTTPError as e:
             ra = e.headers.get("Retry-After")
             print(f"  HTTP {e.code} try {t+1}" + (f" retry-after {ra}" if ra else ""), flush=True)
@@ -32,53 +35,42 @@ def kind(t):
     if l == "pitch" and ("soccer" in s or "football" in s): return "pitch:" + s
     if l == "sports_centre": return "sports_centre"
     return None
-CLUBS = [("Nestos Chrysoupoli", 40.990763, 24.688693), ("Zemun/Jedinstvo Ub (Dzajic)", 44.453014, 20.071359),
-         ("Selimbar (Magura)", 45.710194, 24.153139), ("Stefanestii de Jos (Matarau)", 44.539250, 26.202917)]
-print("== C: OSM within 300 m of the hand-row coordinate")
-for n, la, lo in CLUBS:
-    q = f'[out:json][timeout:90];(nwr["leisure"~"^(stadium|pitch|sports_centre)$"](around:300,{la},{lo});nwr["building"="stadium"](around:300,{la},{lo}););out tags center;'
-    d = overpass(q)
-    if d is None: print(n, ": QUERY FAILED"); continue
-    rows = []
-    for e in d["elements"]:
-        k = kind(e.get("tags", {}));
-        if not k: continue
-        c = center(e)
-        if c[0] is None: continue
-        rows.append((hav(la, lo, *c), k, e["type"] + "/" + str(e["id"]), e["tags"].get("name"), e["tags"].get("name:en")))
-    rows.sort()
-    print(n, ":", len(rows), "football-type elements within 300 m;", "named:", sum(1 for r in rows if r[3]))
-    for r in rows[:6]: print("   %4.0f m %s %s name=%r en=%r" % r)
-print("== Syros: OSM (island bbox) names")
-q = '[out:json][timeout:90];(nwr["leisure"~"^(stadium|pitch|sports_centre)$"](37.30,24.85,37.50,25.00);nwr["building"="stadium"](37.30,24.85,37.50,25.00););out tags center;'
-d = overpass(q)
+
 EU = (37.427929, 24.937678)
-if d:
-    rows = []
-    for e in d["elements"]:
-        k = kind(e.get("tags", {}));
-        if not k: continue
-        c = center(e); rows.append((k, e["type"] + "/" + str(e["id"]), e["tags"].get("name"), e["tags"].get("name:en"), c, hav(*EU, *c)))
-    print(len(rows), "football-type elements on Syros; those within 1.2 km of europlan's Ano Syros point (37.427929, 24.937678):")
-    for r in sorted(rows, key=lambda r: r[5]):
-        if r[5] < 1200: print("   %4.0f m %s %s name=%r en=%r at %.6f,%.6f" % (r[5], r[0], r[1], r[2], r[3], *r[4]))
-else: print("Syros OSM query failed")
+print("== Syros: OSM full tags of the unnamed stadium and the nearest pitch, and any name match on the island")
+q='[out:json][timeout:90];(way(209001423);way(208927852);way(209001410);way(208927855););out tags center;'
+d=overpass(q)
+for e in (d or {}).get("elements",[]): print(" ", e["type"]+"/"+str(e["id"]), json.dumps(e.get("tags",{}), ensure_ascii=False), center(e))
+q='[out:json][timeout:90];nwr["name"~"Ερμούπ|Ermoupol|Βικελ|Vikelas|Άνω Σύρ|Ανω Συρ|Ano Syr|Ellas|Ελλάς|Hellas",i](37.30,24.85,37.50,25.00);out tags center;'
+d=overpass(q)
+for e in (d or {}).get("elements",[]):
+    t=e.get("tags",{}); c=center(e)
+    if c[0] is not None: print("  name-match %s/%s name=%r leisure=%s dist_to_europlan=%.0f m" % (e["type"],e["id"],t.get("name"),t.get("leisure"),hav(*EU,*c)))
 print("== Syros: Wikidata")
 W = "https://www.wikidata.org/w/api.php?format=json&maxlag=5&"
+def srch(term, lang):
+    d = req(W + "action=wbsearchentities&limit=7&language=%s&uselang=en&search=%s" % (lang, urllib.parse.quote(term)))
+    return [(x["id"], x.get("label"), x.get("description")) for x in (d or {}).get("search", [])] if d else None
 found = {}
-for term, lang in [("Ermoupoli Municipal Stadium", "en"), ("Ermoupoli stadium", "en"), ("Δημοτικό Στάδιο Ερμούπολης", "el"), ("Ανω Σύρος γήπεδο", "el"), ("Ano Syros stadium", "en"), ("Σύρος στάδιο", "el"), ("Vikelas", "en")]:
-    d = req(W + "action=wbsearchentities&limit=5&language=%s&uselang=en&search=%s" % (lang, urllib.parse.quote(term)))
-    hits = [(x["id"], x.get("label"), x.get("description")) for x in (d or {}).get("search", [])]
-    print(" search %r: %s" % (term, hits))
-    for h in hits: found[h[0]] = h
-if found:
-    d = req(W + "action=wbgetentities&props=labels|aliases|claims|descriptions&languages=en|el&ids=" + "|".join(list(found)[:40]))
+for term, lang in [("Hellas Syros", "en"), ("Ermoupoli Municipal Stadium", "en"), ("Ermoupoli", "en"), ("Δημοτικό Στάδιο Ερμούπολης", "el"), ("Ermoupoli stadium", "en"), ("Ano Syros", "en"), ("Vikelas", "en")]:
+    hits = srch(term, lang); print(" search %r: %s" % (term, hits))
+    for h in hits or []: found[h[0]] = h
+found["Q12872753"] = ("Q12872753", "Hellas Syros", "club")
+d = req(W + "action=wbgetentities&props=labels|aliases|claims|descriptions&languages=en|el&ids=" + "|".join(list(found)[:45]))
+ids115 = []
+for qid, e in (d or {}).get("entities", {}).items():
+    cl = e.get("claims", {})
+    co = [(s["mainsnak"]["datavalue"]["value"]["latitude"], s["mainsnak"]["datavalue"]["value"]["longitude"]) for s in cl.get("P625", []) if "datavalue" in s["mainsnak"]]
+    p31 = [s["mainsnak"]["datavalue"]["value"]["id"] for s in cl.get("P31", []) if "datavalue" in s["mainsnak"]]
+    p115 = [s["mainsnak"]["datavalue"]["value"]["id"] for s in cl.get("P115", []) if "datavalue" in s["mainsnak"]]
+    ids115 += p115
+    al = {l: [a["value"] for a in v] for l, v in e.get("aliases", {}).items()}
+    print(" %s en=%r el=%r P31=%s P115=%s P625=%s d_europlan=%s aliases=%s" % (qid, e.get("labels", {}).get("en", {}).get("value"), e.get("labels", {}).get("el", {}).get("value"), p31, p115, co, ["%.0f m" % hav(*EU, *c) for c in co], al))
+if ids115:
+    d = req(W + "action=wbgetentities&props=labels|claims&languages=en|el&ids=" + "|".join(ids115))
     for qid, e in (d or {}).get("entities", {}).items():
-        cl = e.get("claims", {}); p625 = cl.get("P625", [])
-        co = [(s["mainsnak"]["datavalue"]["value"]["latitude"], s["mainsnak"]["datavalue"]["value"]["longitude"]) for s in p625 if "datavalue" in s["mainsnak"]]
-        p31 = [s["mainsnak"]["datavalue"]["value"]["id"] for s in cl.get("P31", []) if "datavalue" in s["mainsnak"]]
-        al = {l: [a["value"] for a in v] for l, v in e.get("aliases", {}).items()}
-        print(" %s en=%r el=%r P31=%s P625=%s dist_to_europlan=%s aliases=%s" % (qid, e.get("labels", {}).get("en", {}).get("value"), e.get("labels", {}).get("el", {}).get("value"), p31, co, ["%.0f m" % hav(*EU, *c) for c in co], al))
-# geosearch around Syros on Wikidata
-d = req(W + "action=query&list=geosearch&gscoord=37.4290|24.9370&gsradius=3000&gslimit=50")
-print(" Wikidata geosearch 3 km around Ano Syros:", [(x["title"], x.get("dist")) for x in (d or {}).get("query", {}).get("geosearch", [])] if d else "failed/none")
+        co = [(s["mainsnak"]["datavalue"]["value"]["latitude"], s["mainsnak"]["datavalue"]["value"]["longitude"]) for s in e.get("claims", {}).get("P625", []) if "datavalue" in s["mainsnak"]]
+        print(" P115 target %s en=%r el=%r P625=%s" % (qid, e.get("labels",{}).get("en",{}).get("value"), e.get("labels",{}).get("el",{}).get("value"), co))
+q = """SELECT ?i ?l ?c ?t WHERE { SERVICE wikibase:around { ?i wdt:P625 ?c . bd:serviceParam wikibase:center "Point(24.9370 37.4290)"^^geo:wktLiteral . bd:serviceParam wikibase:radius "3" . } OPTIONAL { ?i wdt:P31 ?t } SERVICE wikibase:label { bd:serviceParam wikibase:language "en,el". ?i rdfs:label ?l } } LIMIT 80"""
+d = req("https://query.wikidata.org/sparql?format=json&query=" + urllib.parse.quote(q))
+print(" SPARQL items with coordinates within 3 km of Ano Syros:", None if d is None else sorted({(b["i"]["value"].rsplit("/",1)[1], b["l"]["value"], b["c"]["value"]) for b in d["results"]["bindings"]}))
