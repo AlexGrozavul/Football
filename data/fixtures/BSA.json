@@ -7634,7 +7634,7 @@
   {
    "id": 555045,
    "utcDate": "2026-10-18T19:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 31,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7652,14 +7652,14 @@
     "tla": "SAN",
     "crest": "https://crests.football-data.org/6685.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 555046,
    "utcDate": "2026-10-18T19:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 31,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7677,14 +7677,14 @@
     "tla": "CRU",
     "crest": "https://crests.football-data.org/1771.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 4,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 555042,
    "utcDate": "2026-10-18T21:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 31,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7702,14 +7702,14 @@
     "tla": "FLA",
     "crest": "https://crests.football-data.org/1783.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 555048,
    "utcDate": "2026-10-18T22:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 31,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7727,9 +7727,9 @@
     "tla": "RBB",
     "crest": "https://crests.football-data.org/4286.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 555044,
@@ -8157,31 +8157,6 @@
    "winner": null
   },
   {
-   "id": 555064,
-   "utcDate": "2026-10-29T22:30:00Z",
-   "status": "TIMED",
-   "matchday": 33,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 4241,
-    "name": "Coritiba FBC",
-    "shortName": "Coritiba",
-    "tla": "COR",
-    "crest": "https://crests.football-data.org/4241.png"
-   },
-   "away": {
-    "id": 1782,
-    "name": "EC Vitória",
-    "shortName": "Vitória",
-    "tla": "VIT",
-    "crest": "https://crests.football-data.org/1782.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 555069,
    "utcDate": "2026-10-29T23:00:00Z",
    "status": "TIMED",
@@ -8251,6 +8226,31 @@
     "shortName": "Mirassol",
     "tla": "MIR",
     "crest": "https://crests.football-data.org/4364.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555064,
+   "utcDate": "2026-10-31T19:00:00Z",
+   "status": "TIMED",
+   "matchday": 33,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 4241,
+    "name": "Coritiba FBC",
+    "shortName": "Coritiba",
+    "tla": "COR",
+    "crest": "https://crests.football-data.org/4241.png"
+   },
+   "away": {
+    "id": 1782,
+    "name": "EC Vitória",
+    "shortName": "Vitória",
+    "tla": "VIT",
+    "crest": "https://crests.football-data.org/1782.png"
    },
    "homeGoals": null,
    "awayGoals": null,
