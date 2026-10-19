@@ -2493,7 +2493,7 @@
   {
    "id": 83629,
    "utcDate": "2026-10-18T11:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2508,9 +2508,20 @@
     "shortName": "Darmstadt",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e5/SV_Darmstadt_98_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2518,7 +2529,7 @@
   {
    "id": 83630,
    "utcDate": "2026-10-18T11:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2533,9 +2544,20 @@
     "shortName": "Magdeburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2543,7 +2565,7 @@
   {
    "id": 83635,
    "utcDate": "2026-10-18T11:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "8. Spieltag",
    "roundOrder": 8,
    "home": {
@@ -2558,9 +2580,20 @@
     "shortName": "Osnabrück",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

@@ -3501,7 +3501,7 @@
   {
    "id": 84839,
    "utcDate": "2026-10-18T11:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3516,9 +3516,20 @@
     "shortName": "Verl",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/SC_Verl_Logo.svg/960px-SC_Verl_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3526,7 +3537,7 @@
   {
    "id": 84836,
    "utcDate": "2026-10-18T14:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3541,9 +3552,20 @@
     "shortName": "Viktoria Köln",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3551,7 +3573,7 @@
   {
    "id": 84841,
    "utcDate": "2026-10-18T17:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3566,9 +3588,20 @@
     "shortName": null,
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
