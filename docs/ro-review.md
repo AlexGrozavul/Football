@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1335 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1336 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -284,6 +284,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `fri.mirror` | Stated on {club}'s page only | Menționat doar pe pagina {club} |
 | `riv.mirror` | Stated on {club}'s page only | Menționat doar pe pagina {club} |
 | `riv.none` | No rivalry recorded for this club yet. | Nu este încă înregistrată nicio rivalitate pentru acest club. |
+| `riv.parent` | Reserve side of {club}. Its rivals are listed on the first team's sheet. | Echipa de rezerve a clubului {club}. Rivalii ei sunt afișați pe pagina primei echipe. |
 | `fris.fan-groups` | Between fan groups | Între grupurile de suporteri |
 | `fris.clubs` | Between clubs | Între cluburi |
 | `fris.unclear` | Not specified | Nespecificat |

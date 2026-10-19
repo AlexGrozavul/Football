@@ -199,25 +199,43 @@ const server = http.createServer((req, res) => {
           sourceSays: /Source says/.test(r.textContent), bucket: [...r.querySelectorAll('.rvbucket')].map(x => x.dataset.bucket),
           wide: r.scrollWidth > r.clientWidth + 1, shown: !r.hidden})),
         more: b.querySelector('.rvmore')?.textContent || '',
+        parent: (p => p && {text: p.textContent, id: p.querySelector('button.rvname')?.dataset.id || '', tap: !!p.querySelector('button.rvname'),
+          btnText: p.querySelector('button.rvname')?.textContent || '', inRivs: !!p.closest('.rivs'),
+          last: ![...b.querySelectorAll('.riv, .rvmore')].some(x => x.compareDocumentPosition(p) & Node.DOCUMENT_POSITION_PRECEDING),
+          wide: p.scrollWidth > p.clientWidth + 1})(b.querySelector('.rvparent')),
         sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
     });
   };
   const onMap = await page.evaluate(() => CLUBS.map(c => c.id));
   const ownClubs = [...new Set(riv.map(r => r.clubQ))].filter(q => onMap.includes(q));
   const withRows = onMap.filter(q => expRiv(q).length > 0);          // own rows or mirrored ones
-  const noRows = onMap.filter(q => expRiv(q).length === 0);
+  // data/club-parents.csv (2026-10-19): a reserve side whose first team is on the map. Read here from the file; the sentence it
+  // makes the sheet show is worked out from the row alone.
+  const parentsCsv = csv('data/club-parents.csv');
+  const parentOf = Object.fromEntries(parentsCsv.filter(r => onMap.includes(r.clubQ) && onMap.includes(r.parentQ)).map(r => [r.clubQ, r.parentQ]));
+  const PARENT_SENTENCE = pn => `Reserve side of ${pn}. Its rivals are listed on the first team's sheet.`;
+  const noRows = onMap.filter(q => expRiv(q).length === 0 && !parentOf[q]);   // the neutral line only on a club that is no reserve side here
   const mirTotal = withRows.reduce((n, q) => n + expRiv(q).filter(w => w.mirror).length, 0);
   const rivGainedRows = withRows.filter(q => ownClubs.includes(q) && expRiv(q).some(w => w.mirror)), rivGainedSection = withRows.filter(q => !ownClubs.includes(q));
   console.log(`  rivalry rows mirrored in total: ${mirTotal}; clubs with own rows gaining mirrored rows: ${rivGainedRows.length}; clubs gaining the section: ${rivGainedSection.length}; clubs on the map with the neutral line: ${noRows.length} of ${onMap.length}`);
   check('at least one club has rivalry rows, and one has mirrored rows', ownClubs.length > 0 && mirTotal > 0, `${withRows.length} clubs, ${mirTotal} mirrored`);
-  let sectionOk = true, orderOk = true, linkOk = true, widthOk = true, bucketOk = true, mirrorOk = true, neutralOk = true, bad = [];
+  let sectionOk = true, orderOk = true, linkOk = true, widthOk = true, bucketOk = true, mirrorOk = true, neutralOk = true, parentOk = true, nParents = 0, nParentRows = 0, bad = [];
   for(const q of onMap){
     const want = expRiv(q);
     const R = await rivalSheet(page, q);
     const name = clubNames[q];
     if(R.h4.filter(h => h === 'Rivalries').length !== 1) { sectionOk = false; bad.push(`${name}: section`); }
-    if(!want.length){                                       // nothing own, nothing mirrored: the neutral line and no row
-      if(R.none !== RIV_NONE || R.rows.length || R.more) { neutralOk = false; bad.push(`${name}: neutral line`); }
+    const pq = parentOf[q];                                  // a reserve side listed in club-parents.csv, with its first team on the map
+    if(pq){
+      nParents++;
+      if(!R.parent || R.parent.text !== PARENT_SENTENCE(clubNames[pq]) || R.parent.id !== pq || !R.parent.tap || R.parent.btnText !== clubNames[pq] || !R.parent.inRivs || !R.parent.last || R.parent.wide){
+        parentOk = false; bad.push(`${name}: reserve-side sentence ${JSON.stringify(R.parent)}`); }
+      if(want.length) nParentRows++;
+    } else if(R.parent !== null){ parentOk = false; bad.push(`${name}: a sentence on a club with no row in club-parents.csv`); }
+    if(!want.length){                                       // nothing own, nothing mirrored
+      if(pq){                                               // a reserve side: the sentence instead of the neutral line, and no row
+        if(R.none || R.rows.length || R.more) { neutralOk = false; bad.push(`${name}: neutral line or rows on a reserve side with no rows`); }
+      } else if(R.none !== RIV_NONE || R.rows.length || R.more) { neutralOk = false; bad.push(`${name}: neutral line`); }
       continue;
     }
     if(R.none) { neutralOk = false; bad.push(`${name}: neutral line on a club with rows`); }
@@ -250,8 +268,11 @@ const server = http.createServer((req, res) => {
   check('each row has its class label, a source link and "Checked on", and taps only when the rival is on the map', linkOk, bad.join(' | '));
   check('a bucket link shows exactly when a bucket entry names both clubs by Wikidata id', bucketOk, bad.join(' | '));
   check('the Rivalries section fits 390 px, no sideways scroll', widthOk, bad.join(' | '));
+  console.log(`  reserve sides in club-parents.csv: ${parentsCsv.length} rows, ${nParents} with both clubs on the map, ${nParentRows} of them with rivalry rows of their own or mirrored`);
+  check(`every reserve side in club-parents.csv (${nParents}) shows "Reserve side of <parent>. Its rivals are listed on the first team's sheet." with the parent tappable, below any rivalry rows, no neutral line; every other club shows no such sentence`,
+    parentOk && nParents > 0 && nParents === parentsCsv.length, bad.join(' | ') + ` (${nParents} of ${parentsCsv.length} rows)`);
 
-  const without = await page.evaluate(have => { const c = CLUBS.find(c => !have.includes(c.id)); return c && {id: c.id, name: c.name}; }, withRows);
+  const without = await page.evaluate(have => { const c = CLUBS.find(c => !have.includes(c.id)); return c && {id: c.id, name: c.name}; }, [...withRows, ...Object.keys(parentOf)]);
   const W = await rivalSheet(page, without.id);
   check(`a club without rows (${without.name}) shows the Rivalries heading with the neutral line, no rows and no Show all`, W.h4.includes('Rivalries') && W.none === RIV_NONE && !W.rows.length && !W.more && !W.sideways);
 
@@ -394,6 +415,53 @@ const server = http.createServer((req, res) => {
   await pgIr.close();
   }
   tick('rivalries');
+  // ---- Reserve sides (2026-10-19): data/club-parents.csv. Expected values come from the file and from expRiv(); the real data has
+  // no reserve side with rows of its own that is checked below unless it exists, so the "both" and "mirrored" cases are also injected.
+  {
+    const resList = Object.keys(parentOf);
+    const resA = resList.find(q => expRiv(q).length === 0), resB = resList.find(q => q !== resA && expRiv(q).length === 0), srcId = rivSrc[0].sourceId;
+    const sentenceEn = pn => PARENT_SENTENCE(pn);
+    const parentPage = async (lang, extra) => {
+      const pg = await ctx.newPage();
+      await pg.addInitScript(l => { try { localStorage.setItem('football-planner-lang', l); } catch(e){} }, lang);
+      if(extra) await pg.route('**/data/club-rivalries.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: extra}));
+      pg.on('pageerror', e => errors.push(e.message));
+      await pg.goto(BASE);
+      await pg.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+      return pg;
+    };
+    const baseRivCsv = fs.readFileSync(path.join(ROOT, 'data/club-rivalries.csv'), 'utf8').replace(/\n?$/, '\n');
+    // (1) tapping the parent opens its sheet
+    const TA = await rivalSheet(page, resA);
+    await page.click(`#sheetBody .rivs .rvparent button.rvname[data-id="${parentOf[resA]}"]`);
+    await page.waitForFunction(id => SHEET_FOR === id, parentOf[resA], {timeout: 8000}).catch(() => {});
+    check(`reserve side: ${clubNames[resA]} shows "${sentenceEn(clubNames[parentOf[resA]])}" and tapping ${clubNames[parentOf[resA]]} opens its sheet`,
+      !!TA.parent && TA.parent.text === sentenceEn(clubNames[parentOf[resA]]) && await page.evaluate(() => SHEET_FOR) === parentOf[resA]);
+    // (2) own rows and the sentence: an injected own row on resA, an injected mirrored row on resB (stated by a club with no rows)
+    const stater = noRows[0];
+    const injCsv2 = baseRivCsv + `${resA},,Scratch Rival FC,other,${srcId},2026-10-03,Scratch quote\n` + `${stater},${resB},${clubNames[resB]},local,${srcId},2026-10-03,\n`;
+    const pgP = await parentPage('en', injCsv2);
+    const PA = await rivalSheet(pgP, resA);
+    const PA1 = await pgP.evaluate(() => ({w: document.querySelector('#sheetBody .rvparent').getBoundingClientRect().right, sw: document.querySelector('#sheet').getBoundingClientRect().right}));
+    const PB = await rivalSheet(pgP, resB), PC = await rivalSheet(pgP, stater);
+    check(`reserve side with a row of its own (${clubNames[resA]}): the row is shown as before and the sentence comes under it, no neutral line`,
+      PA.rows.length === 1 && PA.rows[0].name === 'Scratch Rival FC' && PA.rows[0].cls === 'Other rivalry' && PA.none === '' && !!PA.parent && PA.parent.last && PA.parent.text === sentenceEn(clubNames[parentOf[resA]]) && !PA.sideways, JSON.stringify([PA.rows.map(r => r.name), PA.parent]));
+    check(`reserve side with a mirrored row (${clubNames[resB]}, stated by ${clubNames[stater]}): the mirrored row (label, no class) and the sentence under it`,
+      PB.rows.length === 1 && PB.rows[0].mirror === RIV_MIRROR(clubNames[stater]) && PB.rows[0].cls === '' && PB.none === '' && !!PB.parent && PB.parent.last && PB.parent.id === parentOf[resB], JSON.stringify([PB.rows.map(r => [r.name, r.mirror]), PB.parent]));
+    check('a club with no row in club-parents.csv is unchanged: the same rows, no sentence', PC.parent === null && PC.rows.length === 1 && !PC.rows[0].mirror && PC.rows[0].name === clubNames[resB]);
+    check('the sentence stays inside the sheet at 390 px', PA1.w <= PA1.sw + 1, JSON.stringify(PA1));
+    await pgP.close();
+    // (3) Romanian: the sentence is Romanian from the page's own dictionary, the club name is filled in, no English words of the sentence remain
+    const pgRo2 = await parentPage('ro');
+    const roSentence = await pgRo2.evaluate(n => t('riv.parent', {club: n}), clubNames[parentOf[resA]]);
+    const enSentence = await pgRo2.evaluate(n => I18N.en['riv.parent'].split('{club}').join(n), clubNames[parentOf[resA]]);
+    const RA = await rivalSheet(pgRo2, resA);
+    check('reserve side (Romanian): the sentence is the Romanian one from the dictionary with the parent filled in, not the English, parent still tappable, nothing overflows',
+      !!RA.parent && RA.parent.text === roSentence && roSentence !== enSentence && roSentence.includes(clubNames[parentOf[resA]]) && RA.parent.tap && RA.parent.id === parentOf[resA] && !RA.sideways && !RA.parent.wide, JSON.stringify([roSentence, RA.parent]));
+    await pgRo2.evaluate(() => { try { localStorage.setItem('football-planner-lang', 'en'); } catch(e){} });
+    await pgRo2.close();
+  }
+  tick('reserve sides');
   // ---- The "When the atmosphere is best" section was removed (2026-10-10): the sheet has Rivalries and Fan
   // friendships only. The page must not ask for the old file or draw any atmosphere element, on the two clubs
   // that used to have rows (Borussia Dortmund and 1. FC Union Berlin) or on any other.
@@ -709,12 +777,29 @@ const server = http.createServer((req, res) => {
   fs.mkdirSync(path.join(scratch, 'tools')); fs.mkdirSync(path.join(scratch, 'data', 'clubs'), {recursive: true});
   fs.copyFileSync(path.join(ROOT, 'tools/check_club_culture.py'), path.join(scratch, 'tools/check_club_culture.py'));
   for(const f of fs.readdirSync(path.join(ROOT, 'data/clubs'))) if(/^[A-Z]{2}\.json$/.test(f)) fs.copyFileSync(path.join(ROOT, 'data/clubs', f), path.join(scratch, 'data/clubs', f));
-  for(const f of ['club-rivalries.csv', 'club-friendships.csv', 'club-culture-sources.csv']) fs.copyFileSync(path.join(ROOT, 'data', f), path.join(scratch, 'data', f));
+  for(const f of ['club-rivalries.csv', 'club-friendships.csv', 'club-culture-sources.csv', 'club-parents.csv']) fs.copyFileSync(path.join(ROOT, 'data', f), path.join(scratch, 'data', f));
   const runChecker = () => cp.spawnSync('python3', [path.join(scratch, 'tools/check_club_culture.py')], {encoding: 'utf8'});
   const friFile = path.join(scratch, 'data/club-friendships.csv'), baseFri = fs.readFileSync(friFile, 'utf8').replace(/\n?$/, '\n');
   const withRow = row => { fs.writeFileSync(friFile, baseFri + FH.split(',').map(k => q(row[k] || '')).join(',') + '\n'); return runChecker(); };
   const B0 = runChecker();
   check('checker: the real data passes (exit 0) and prints each quote', B0.status === 0 && /quote: «/.test(B0.stdout) && !/PROBLEM/.test(B0.stdout), (B0.stdout + B0.stderr).slice(-300));
+  // club-parents.csv: unknown parentQ, repeated clubQ, own parent and a parent that is itself a reserve side exit 1; a missing checkedOn only warns.
+  const parFile = path.join(scratch, 'data/club-parents.csv'), baseParents = fs.readFileSync(parFile, 'utf8').replace(/\n?$/, '\n');
+  const withParent = lines => { fs.writeFileSync(parFile, baseParents + lines.join('\n') + '\n'); const r = runChecker(); fs.writeFileSync(parFile, baseParents); return r; };
+  const p0 = parentsCsv[0], freeClub = noRows[0], freeClub2 = noRows[1];
+  check(`checker: the real club-parents.csv passes and is read back (${parentsCsv.length} rows)`, B0.status === 0 && new RegExp(`club-parents\\.csv: ${parentsCsv.length} accepted rows`).test(B0.stdout), B0.stdout.slice(-200));
+  const BP = withParent([`${freeClub},Q0,https://example.org/x,2026-10-19`]);
+  check('checker: a parentQ on no club file exits 1 and names the cell', BP.status === 1 && /club-parents\.csv line \d+: parentQ "Q0" is on no club file/.test(BP.stdout), (BP.stdout + BP.stderr).slice(-250));
+  const BC = withParent([`Q0,${p0.parentQ},https://example.org/x,2026-10-19`]);
+  check('checker: a clubQ on no club file exits 1', BC.status === 1 && /clubQ "Q0" is on no club file/.test(BC.stdout), (BC.stdout + BC.stderr).slice(-250));
+  const BD = withParent([`${p0.clubQ},${p0.parentQ},https://example.org/x,2026-10-19`]);
+  check('checker: a repeated clubQ exits 1', BD.status === 1 && /is entered twice/.test(BD.stdout), (BD.stdout + BD.stderr).slice(-250));
+  const BS = withParent([`${freeClub},${freeClub},https://example.org/x,2026-10-19`]);
+  check('checker: a club that is its own parent exits 1', BS.status === 1 && /a club cannot be its own parent/.test(BS.stdout), (BS.stdout + BS.stderr).slice(-250));
+  const BR = withParent([`${p0.parentQ},${freeClub2},https://example.org/x,2026-10-19`]);
+  check('checker: a parent that is itself a reserve side exits 1', BR.status === 1 && /which is itself a reserve side/.test(BR.stdout), (BR.stdout + BR.stderr).slice(-250));
+  const BW = withParent([`${freeClub},${freeClub2},https://example.org/x,`]);
+  check('checker: a row with no checkedOn only warns (exit 0)', BW.status === 0 && /club-parents\.csv line \d+: no checkedOn/.test(BW.stdout), (BW.stdout + BW.stderr).slice(-250));
   const pairRiv = riv.find(r => r.rivalQ && !realFri.some(f => (f.clubQ === r.clubQ && f.friendQ === r.rivalQ) || (f.clubQ === r.rivalQ && f.friendQ === r.clubQ)));
   const base = {scope: 'fan-groups', groupsText: '', sourceId: realFri[0].sourceId, checkedOn: realFri[0].checkedOn, quote: 'a short quote'};
   const rowOf = st => ({...base, clubQ: pairRiv.clubQ, friendQ: pairRiv.rivalQ, friendName: pairRiv.rivalName, status: st});
