@@ -123,18 +123,47 @@ jobs:
                       time.sleep(2)
               return 429,"",url
           # Wikidata P856
-          sites={}
-          for k in range(0,len(IDS),25):
-              q="https://www.wikidata.org/w/api.php?"+urllib.parse.urlencode(dict(action="wbgetentities",ids="|".join(IDS[k:k+25]),props="claims|labels",languages="de|en",format="json",maxlag="5"))
-              for attempt in range(5):
-                  st,body,_=get(q)
-                  if st==200 and "entities" in json.loads(body): break
-                  print("WIKIDATA retry",attempt,st,body[:160]); time.sleep(25)
-              if st!=200 or "entities" not in json.loads(body): print("WIKIDATA FAIL"); sys.exit(1)
-              for qid,e in json.loads(body)["entities"].items():
-                  lab=(e.get("labels",{}).get("de") or e.get("labels",{}).get("en") or {}).get("value","?")
-                  u=[c["mainsnak"]["datavalue"]["value"] for c in e.get("claims",{}).get("P856",[]) if c.get("rank")!="deprecated" and c["mainsnak"].get("datavalue")]
-                  sites[qid]=(lab,u)
+          SITES='''
+          Q13426883 https://viktoria.berlin/
+          Q136089 https://www.zfc.de/startseite.html
+          Q1378922 http://www.eutin08.de/
+          Q1387417 http://www.ofc-neugersdorf.de/
+          Q1514109 http://1fcgel.de/
+          Q1565781 http://www.tasmania-berlin.de
+          Q15849956 https://sg-barockstadt.de
+          Q16743331 https://tsv-steinbach.de/
+          Q17321080 https://www.djk-vilzing.de/
+          Q175616 http://www.svs-seligenporten.de/
+          Q176168 http://www.tsg-neustrelitz.de
+          Q176850 http://www.bahlingersc.de
+          Q2207914 http://www.ssvjeddeloh.de/
+          Q2208389 http://www.sveichede.de/
+          Q2521441 https://www.vfb-eichstaett.de/
+          Q479306 http://www.vfb-huels.de/
+          Q479340 http://www.tsvrain.de
+          Q493464 http://www.bergischgladbach09.de/
+          Q535785 https://www.wuerzburger-kickers.de/
+          Q537301 http://www.tsvhavelse.de/
+          Q566141 https://www.ssvg.de
+          Q566165 https://www.fsv-optik.de/
+          Q566172 http://www.sc07.de
+          Q566183 http://www.tsv-buchbach.de/
+          Q639419 https://www.vfbgermaniahalberstadt.de/
+          Q639472 http://www.gsc08.de/
+          Q639506 http://www.vfr-neumuenster.de
+          Q639525 https://www.svs1916.de/
+          Q666000 https://www.bayern-alzenau.com/
+          Q666024 https://sc-pfullendorf.de/
+          Q666067 https://sf-lotte.de/
+          Q692704 http://www.bak07.de/
+          Q692755 https://www.sg94.de/
+          Q720528 http://www.fckray.de/
+          Q797022 http://www.bsv-rehden.de/
+          Q821096 http://www.sceltersdorf.de/
+          Q831887 http://www.fcismaning.de/
+          Q831892 https://usilupomartini.wordpress.com/
+          '''
+          sites={l.split()[0]:(l.split()[0],[l.split()[1]]) for l in SITES.split('\n') if l.strip()}
           print("SUMMARY clubs",len(IDS),"with P856",sum(1 for v in sites.values() if v[1]))
           class P(HTMLParser):
               def __init__(s):
