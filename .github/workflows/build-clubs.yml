@@ -119,86 +119,51 @@ jobs:
                       if i==tries-1: return -1,str(e)[:80],url
                       time.sleep(2)
               return 429,"",url
-          # Wikidata P856
-          sites={}
-          for k in range(0,len(IDS),25):
-              q="https://www.wikidata.org/w/api.php?"+urllib.parse.urlencode(dict(action="wbgetentities",ids="|".join(IDS[k:k+25]),props="claims|labels",languages="de|en",format="json",maxlag="5"))
-              st,body,_=get(q)
-              if st!=200: print("WIKIDATA FAIL",st,body[:100]); continue
-              for qid,e in json.loads(body)["entities"].items():
-                  lab=(e.get("labels",{}).get("de") or e.get("labels",{}).get("en") or {}).get("value","?")
-                  u=[c["mainsnak"]["datavalue"]["value"] for c in e.get("claims",{}).get("P856",[]) if c.get("rank")!="deprecated" and c["mainsnak"].get("datavalue")]
-                  sites[qid]=(lab,u)
-          print("SUMMARY clubs",len(IDS),"with P856",sum(1 for v in sites.values() if v[1]))
           class P(HTMLParser):
               def __init__(s):
-                  super().__init__(); s.skip=0; s.t=[]; s.links=[]; s.href=None; s.lt=[]
+                  super().__init__(); s.skip=0; s.t=[]; s.title=""; s.intitle=False
               def handle_starttag(s,tag,a):
                   if tag in("script","style","noscript"): s.skip+=1
-                  if tag=="a":
-                      s.href=dict(a).get("href"); s.lt=[]
+                  if tag=="title": s.intitle=True
               def handle_endtag(s,tag):
                   if tag in("script","style","noscript"): s.skip=max(0,s.skip-1)
-                  if tag=="a" and s.href:
-                      s.links.append((s.href," ".join(s.lt))); s.href=None
+                  if tag=="title": s.intitle=False
               def handle_data(s,d):
+                  if s.intitle: s.title+=d
                   if s.skip: return
                   d=d.strip()
-                  if d:
-                      s.t.append(d)
-                      if s.href is not None: s.lt.append(d)
-          KW=["chronik","geschichte","historie","tradition","derby","rivale","verein","über uns","ueber-uns","ueber uns","ueber_uns","ueberuns","ueber-den-verein"]
-          PAT=re.compile(r"Rivale|Rivalit|Erzrivale|Derby|Lokalrivale|Erzfeind|Feindschaft",re.I)
-          def page(url):
+                  if d: s.t.append(d)
+          PAT=re.compile(r"Rivale|Rivalit|Erzrivale|Derby|Lokalrivale|Erzfeind|Feindschaft|Nachbar",re.I)
+          URLS=[
+           ("http://www.tsg-neustrelitz.de/chronik",["Zum Auswärtsspiel beim Erzrivalen FC Neubrandenburg begleiten mehr als 1.500 Neustrelitzer","Im letzten Spiel muss man beim Erzrivalen FC Tollense Neubrandenburg unbedingt gewinnen"]),
+           ("https://www.schwaebische.de/regional/oberschwaben/ravensburg/der-ligaalltag-heisst-sc-pfullendorf-694454",[]),
+           ("https://www.schwaebische.de/regional/oberschwaben/ravensburg/pfullendorfer-talfahrt-gewinnt-an-rasanz-746141",[]),
+           ("https://www.diefalsche9.de/?p=68225",[]),
+          ]
+          robots={}
+          for url,quotes in URLS:
+              pr=urllib.parse.urlparse(url); base=f"{pr.scheme}://{pr.netloc}"
+              if base not in robots:
+                  st,rb,_=get(base+"/robots.txt")
+                  rp=urllib.robotparser.RobotFileParser()
+                  if st in(401,403,429) or st==-1:
+                      robots[base]=None; print("ROBOTS STOP",base,st)
+                  else:
+                      rp.parse(rb.splitlines() if st==200 else []); robots[base]=rp
+              rp=robots[base]
+              if rp is None: continue
+              if not (rp.can_fetch(UA,url) or rp.can_fetch("*",url)):
+                  print("DISALLOWED",url); continue
               st,html,fu=get(url)
-              if st!=200: return st,None,[]
-              p=P(); p.feed(html)
-              return st," ".join(p.t),p.links
-          opened=0;nosite=[];nofetch=[]
-          for qid in IDS:
-              lab,us=sites.get(qid,("?",[]))
-              if not us:
-                  nosite.append(lab); continue
-              site=us[0]
-              pr=urllib.parse.urlparse(site); base=f"{pr.scheme}://{pr.netloc}"
-              rp=urllib.robotparser.RobotFileParser()
-              st,rb,_=get(base+"/robots.txt")
-              if st in(401,403,429) or st==-1:
-                  print(f"== {lab} {qid} {site}: robots.txt status {st}: STOP"); nofetch.append((lab,f"robots {st}")); continue
-              rp.parse(rb.splitlines() if st==200 else [])
-              if not rp.can_fetch(UA,site) and not rp.can_fetch("*",site):
-                  print(f"== {lab} {qid} {site}: home disallowed by robots"); nofetch.append((lab,"robots disallow")); continue
-              st,txt,links=page(site)
-              if txt is None:
-                  print(f"== {lab} {qid} {site}: home status {st}"); nofetch.append((lab,f"home {st}")); continue
-              opened+=1
-              print(f"== {lab} {qid} {site}")
-              cands=[];seen=set()
-              for h,t in links:
-                  if not h or h.startswith(("mailto:","tel:","javascript:","#")): continue
-                  u=urllib.parse.urljoin(site,h).split("#")[0]
-                  hp=urllib.parse.urlparse(u)
-                  if hp.netloc.replace("www.","")!=pr.netloc.replace("www.",""): continue
-                  s=(h+" "+t).lower()
-                  pri=[i for i,k in enumerate(KW) if k in s]
-                  if pri and u not in seen and u!=site:
-                      seen.add(u); cands.append((min(pri),u))
-              cands.sort(key=lambda x:x[0]); cands=[u for _,u in cands][:6]
-              pages=[(site,txt)]
-              for u in cands:
-                  if not (rp.can_fetch(UA,u) or rp.can_fetch("*",u)):
-                      print("  skip(robots)",u); continue
-                  st,t2,_=page(u)
-                  if t2 is None: print("  fail",st,u); continue
-                  opened+=1; pages.append((u,t2))
-              for u,t in pages:
-                  hits=list(PAT.finditer(t)); print("  PAGE",u,len(t),"hits",len(hits))
-                  last_end=-1;n=0
-                  for m in hits:
-                      if m.start()<last_end: continue
-                      a=max(0,m.start()-220);b=min(len(t),m.end()+220); last_end=b; n+=1
-                      if n>8: break
-                      print("    >>",t[a:b])
-          print("SUMMARY opened pages",opened,"no site:",nosite)
-          print("SUMMARY not fetched:",nofetch)
+              if st!=200: print("FAIL",st,url); continue
+              p=P(); p.feed(html); t=" ".join(p.t)
+              print("== PAGE",url,"title:",p.title.strip()[:120],"len",len(t))
+              for q in quotes: print("   QUOTE",q in t,"|",q)
+              last_end=-1;n=0
+              for m in PAT.finditer(t):
+                  if m.start()<last_end: continue
+                  a=max(0,m.start()-300);b=min(len(t),m.end()+300);last_end=b;n+=1
+                  if n>10: break
+                  print("    >>",t[a:b])
+          print("SUMMARY done")
           PY
