@@ -22,6 +22,23 @@
    "competition": "Liga Portugal 2"
   },
   {
+   "id": "Q1046440",
+   "name": "Casa Pia A.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal de Rio Maior",
+   "capacity": 7000,
+   "lat": 39.344553,
+   "lon": -8.935249,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Primeira_Liga; https://prod.beinsports.com/en-us/soccer/articles/live-casa-pia-vs-benfica-the-eagles-look-to-bounce-back-in-liga-portugal-on-bein-sports-2026-08-17; https://en.wikipedia.org/wiki/Est%C3%A1dio_Municipal_de_Rio_Maior; https://pt.wikipedia.org/wiki/Casa_Pia_Atl%C3%A9tico_Clube; https://www.wikidata.org/wiki/Q2990539; https://www.openstreetmap.org/relation/13900988",
+   "note": "ADDED BY THE HAND-NAMED FALLBACK AND PLACED, 2026-10-20, in the second Portugal pass. Q1046440 carries no P115 and no P625 (the first Portugal pass left it unplaced: nothing read said which ground Casa Pia uses in 2026-27). Tier 1 is the complete 2026-27 Primeira Liga table's (18 of 18; 'Casa Pia, Lisbon, Estádio Municipal de Rio Maior, at Rio Maior', 7,000). Ground for 2026-27, two sources: (1) that table, whose footnote reads 'As the Estádio Pina Manique did not meet the standards to host Primeira Liga matches, Casa Pia played their home matches at the Estádio Municipal de Rio Maior in Rio Maior' (past tense, a footnote that carries over from earlier seasons); (2) a beIN SPORTS match page for Casa Pia v Benfica, matchday 2, read on a runner on 2026-10-20 (robots.txt allows the path), headed 'Competition: Liga Portugal 2026/27 Date: Monday, August 17, 2026 ... Stadium: Estádio Municipal de Rio Maior, Portugal' and saying 'Casa Pia host Benfica at the Estádio Municipal de Rio Maior on Matchday 2'. Also consistent, not counted: the Portuguese Wikipedia infobox ('mando' Estádio Municipal de Rio Maior, 7 000) and the ground's English article (tenants: Casa Pia 2023-). Against it, not for the same question: the club's English article and StadiumDB name the Estádio Pina Manique (Lisbon, 2,574) as the club's own ground; the Portuguese article says Pina Manique has no licence for professional league matches. No league schedule or club page was opened (ESPN's match page answered 202 with no body, the club's home page and Liga Portugal's gave nothing on the venue). Position: OpenStreetMap relation/13900988, a leisure=stadium element named exactly 'Estádio Municipal de Rio Maior', centre 39.344553 / -8.935249; the ground's English article (39 20 40 N, 8 56 07 W) is 12 m away and Wikidata's own item for the ground Q2990539 (P625 39.3446 / -8.9352) 7 m. Capacity 7,000: the table, Q2990539 (P1083) and the Portuguese article agree. To undo: delete this row.",
+   "manual": true,
+   "competition": "Primeira Liga"
+  },
+  {
    "id": "Q120775987",
    "name": "AVS Futebol SAD",
    "leagues": [
@@ -398,6 +415,23 @@
    "lon": -9.406,
    "city": null,
    "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q6705180",
+   "name": "Lusitânia F.C.",
+   "leagues": [
+    "Q618131"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Lusitânia de Lourosa FC",
+   "capacity": null,
+   "lat": 40.987887,
+   "lon": -8.543598,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/Lusit%C3%A2nia_F.C.; https://www.openstreetmap.org/way/870819809",
+   "note": "ADDED BY THE HAND-NAMED FALLBACK, 2026-10-20, in the Portugal pass; PLACED, 2026-10-20, in the second Portugal pass. Q6705180 carries no P118, no P115 and no P625, so no query returned it. The complete 2026-27 Liga Portugal 2 table lists it ('Lusitânia Lourosa', 12th in Liga Portugal 2 in 2025-26); its English article says it 'competes in Liga Portugal 2'. Tier 2 is this row's. Ground: named twice - the table ('Estádio do Lusitânia de Lourosa FC', 4,900) and the club's article ('Estádio do Lusitânia de Lourosa FC'). Position: OpenStreetMap way/870819809, a leisure=pitch, sport=soccer element named 'Estádio do Lusitânia de Lourosa', read on a runner on 2026-10-20 at 40.987887 / -8.543598. Its name equals the ground's name once the legal-form word 'FC' is set aside, the only element that does: way/305202095 (a sports_centre, 40.987883 / -8.543555, 3.6 m away) is named 'Estádio da Lusitânia Futebol Clube de Lourosa' and is not counted. This is the only ground-specific coordinate source, so the position rests on it alone; the table's location-map pin for the club is 217 m away (40.9878602 / -8.546188), consistent with it but not a source. Capacity blank: 4,900 (table) against 'approximately 8,000 until the 2024/25 season' (the article), no two agree. To undo: empty lat and lon.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
   },
   {
    "id": "Q671042",
