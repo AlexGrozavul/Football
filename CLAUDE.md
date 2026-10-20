@@ -792,7 +792,7 @@ a subscribed calendar reads as a schedule regardless of its description.
   itself. Playwright is installed in the job,
   pinned, not added to the repo. **Since 2026-10-16 the job's `timeout-minutes` is 60 (was 40) and a last step, "Step durations", prints each step's duration** (needs `actions: read`). **Every Stadia request in all three is
   stubbed**, so a run spends no credit and does not show that Stadia
-  itself answers; that was checked separately (Secrets).
+  itself answers; that was checked separately (Secrets). **Since 2026-10-19 the club-culture files trigger it as well: `data/club-parents.csv` joined `data/club-rivalries.csv`, `data/club-friendships.csv`, `data/club-culture-sources.csv` and `tools/check_club_culture.py` in the `push` and `pull_request` path lists** (the checker step already ran; only the parents file had been missing, so a change to it alone ran no workflow).
 - `tools/link_fixtures.py` — joins fixture-source teams to map clubs
   and writes `fixture-links.json` and `fixture-link-review.csv`. Reads
   committed files only, no network. Run by `link-fixtures.yml` after
