@@ -4466,6 +4466,25 @@
     }
    ]
   },
+  "Q1046440": {
+   "name": "Casa Pia A.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "6618",
+     "teamName": "Casa Pia AC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
   "Q1386850": {
    "name": "F.C. Alverca",
    "links": [
