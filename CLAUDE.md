@@ -3346,6 +3346,18 @@ right.
 
 ---
 
+## Adding a country: the places to touch
+
+Read off the Belgium and Greece wiring on 2026-10-20 (Portugal pass); keep it in step when a file below changes.
+- **Hand-written data**: `data/league-tiers.csv` (one row per league: Q-id from the league article's enwiki sitelink, read by probe, never remembered); `data/league-rosters.csv` (the 2026–27 article, en dash, a complete table); `data/clubs-manual.csv` (skip, tier, ground, hand-named rows); `data/roster-links-manual.csv` (reserve rows the reader refuses); `data/coordinate-reviews.csv` (`open` or `rejected` rows for clubs left unplaced); `data/fixture-links-manual.csv` (abbreviations).
+- **`tools/fetch_clubs.py`**: `COUNTRIES` (code, P17 Q-id, name), `COUNTRY_BOX` and its comment, `COUNTRY_NAMES` (Q-id to name), and the label languages in the build loop.
+- **Other tools**: `diagnose_p118_rank.py` `COUNTRIES` (P17 Q-id to code); `crosscheck_stadiumdb.py` `COUNTRY_PAGES` (the slug by probe: the `/stadiums/<slug>` that answers 200 with a table) and `EXTRA_PAGES` if the pyramid crosses a border; `link_fixtures.py` `CLUB_FILES`, and `FD_COUNTRY` if football-data carries a league of that country; `fetch_fixtures.py` only if football-data carries it; `build_calendars.py` time zone (usually there already).
+- **Nothing to edit** (they read the folder or the lists above): `crosscheck_capacity.py` (every `data/clubs/XX.json`; the file code is the Overpass ISO code), `propose_coordinates.py` (`COUNTRIES`), `check_rosters.py` (`league-rosters.csv`; `RESERVE_MARKERS` only for a reserve naming it has not seen), `check_tickets.py`, `test_zoom.js` and `test_coverage.js` (they read `COUNTRY_FILES`), every workflow file.
+- **`index.html`**: `COUNTRY_FILES`; `cn.XX` in `en` and `ro` and the `COUNTRY_NAME` list; `adj.XX` and `COUNTRY_ADJ` for a country with no fixtures; the `top` map of `noFixturesReason()` for a country whose first division has fixtures and its second has not; `fx.coverage` (`en` and `ro`) and `LEAGUE_CODES` if a football-data league is added; `iso.XX` exists for most codes. Then `docs/ro-review.md` (rows for new keys), `sw.js` `SHELL_VERSION` with its history line here, and the printed count in `tools/test_nearme.js` ("of N country files").
+- **Order that worked**: probe the league items and season tables, wire, build, classify every difference by the six shapes, hand rows, rebuild, then dispatch `check-rosters.yml`, `diagnose-rank.yml`, `crosscheck-stadiumdb.yml` and `crosscheck-capacity.yml` on the branch (`link-fixtures.yml` runs after the build).
+
+---
+
 ## Secrets
 
 `FOOTBALL_DATA_TOKEN` is in Actions secrets. It must never appear in
