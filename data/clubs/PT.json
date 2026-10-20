@@ -1,0 +1,521 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "PT",
+ "countryName": "Portugal",
+ "clubs": [
+  {
+   "id": "Q1023227",
+   "name": "CD Tondela",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 2,
+   "venue": "Estádio João Cardoso",
+   "capacity": 5000,
+   "lat": 40.512,
+   "lon": -8.08282,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Primeira_Liga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/C.D._Tondela",
+   "note": "TIER CORRECTED, 2026-10-20, in the Portugal pass - the FC Wil shape, reviewable. Wikidata's truthy P118 is a PREFERRED Primeira Liga tag from 2025 with no end date, so the club arrived at tier 1. The complete 2026-27 Primeira Liga article (18 of 18) does not list it; the complete 2026-27 Liga Portugal 2 table does ('Tondela↓', 17th in the Primeira Liga); the club's own English article says it 'plays in Liga Portugal 2 ... following their relegation in the 2025–26 Primeira Liga'. Empty the cell to put it back at tier 1.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q120775987",
+   "name": "AVS Futebol SAD",
+   "leagues": [
+    "Q754488",
+    "Q182994"
+   ],
+   "tier": 2,
+   "venue": "Estádio do CD Aves",
+   "capacity": 6230,
+   "lat": 41.366932,
+   "lon": -8.411789,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/AVS_Futebol_SAD; https://www.wikidata.org/wiki/Q968244; https://stadiumdb.com/stadiums/por",
+   "note": "PLACED AND TIER CORRECTED, 2026-10-20, in the Portugal pass. Q120775987 carries a Primeira Liga tag (2024-2026) and a Liga Portugal 2 tag (2026-), both normal rank, so the builder took tier 1; it has no P115 and no P625, so it was dropped at the coordinates gate. The complete 2026-27 Liga Portugal 2 table lists it (AVS, 18th in the Primeira Liga) and not the Primeira Liga one; its English article says it is 'currently playing in the Liga Portugal 2'. Tier 2 is this row's. Ground: the Estádio do CD Aves - named by the club's English article ('play in Estádio do CD Aves'), by the Liga Portugal 2 table (Estádio do Clube Desportivo das Aves) and by StadiumDB ('Estádio do CD das Aves', club AVS). Position: the ground's own Wikidata item Q968244 (P625), the stadium of the old Clube Desportivo das Aves, which now has a skip row. Capacity 6,230: the table and Q968244 agree; StadiumDB's 5,441 is 13% off and is the outlier.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q128446",
+   "name": "FC Porto",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio do Dragão",
+   "capacity": 50033,
+   "lat": 41.161758,
+   "lon": -8.583933,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q131499",
+   "name": "S.L. Benfica",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio da Luz",
+   "capacity": 68100,
+   "lat": 38.752778,
+   "lon": -9.184722,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1346314",
+   "name": "Moreirense F.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Parque de Jogos Comendador Joaquim de Almeida Freitas",
+   "capacity": 6150,
+   "lat": 41.378089,
+   "lon": -8.354761,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1386850",
+   "name": "F.C. Alverca",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Complexo Desportivo do FC Alverca",
+   "capacity": null,
+   "lat": 38.898811,
+   "lon": -9.036763,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Primeira_Liga; https://en.wikipedia.org/wiki/F.C._Alverca; https://www.wikidata.org/wiki/Q136001729; https://www.openstreetmap.org/way/1148238538",
+   "note": "PLACED, 2026-10-20, in the Portugal pass. Q1386850 carries a Primeira Liga tag (preferred rank from 2025), the tier the 2026-27 Primeira Liga table gives, but no P115 and no P625, so it was dropped at the coordinates gate. Ground: the Complexo Desportivo do FC Alverca - named by the club's English article ('The club's home venue is the 6,932 capacity Complexo Desportivo do FC Alverca') and by the 2026-27 Primeira Liga table. Position: the ground's own Wikidata item Q136001729 (P625, no capacity). OpenStreetMap was read later the same day and names the complex only approximately: way/1148238538 'Complexo Desportivo FC Alverca' (a sports_centre, no 'do') at 38.8975648 / -9.0353682 and way/114731386 'Estádio do FC Alverca' (a stadium) at 38.8978826 / -9.035234, 184 m and 167 m from the item's point. Neither name equals the ground's name exactly, so neither is counted as a source and the 150 m test is not applied; the item's point stands alone and the difference is written down. Capacity blank: 6,932 appears only on Wikipedia (the table and the club's article are one source) and StadiumDB has no row for it.",
+   "manual": true,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1386869",
+   "name": "F.C. Arouca",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal de Arouca",
+   "capacity": 5000,
+   "lat": 40.928333,
+   "lon": -8.248611,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Primeira_Liga; https://stadiumdb.com/stadiums/por",
+   "note": "CAPACITY CORRECTED, 2026-10-20, in the Portugal pass, by the UTA Arad rule. Wikidata's ground item gives 5,600; the 2026-27 Primeira Liga table and StadiumDB both give 5,000 (the map's figure is 12% above both). Not taken: 5,600.",
+   "manual": true,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1387105",
+   "name": "FC Famalicão",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal 22 de Junho",
+   "capacity": 5186,
+   "lat": 41.401278,
+   "lon": -8.522422,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1387471",
+   "name": "F.C. Penafiel",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal 25 de Abril",
+   "capacity": 5230,
+   "lat": 41.2117,
+   "lon": -8.277919,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Primeira_Liga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/2025%E2%80%9326_Liga_Portugal_2",
+   "note": "TIER CORRECTED, 2026-10-20, in the Portugal pass - the FC Wil shape, reviewable, and weaker than usual on one leg. Wikidata's only P118 is a Primeira Liga tag (2014-15, normal rank, ended), so the club arrived at tier 1. The complete 2026-27 Primeira Liga article does not list it; the complete 2026-27 Liga Portugal 2 table does ('14th in LP 2') and so does the 2025-26 Liga Portugal 2 article ('16th in LP 2' in 2024-25). The club's own English article is short and names no current league, so the third leg is the second Liga Portugal 2 article, not the club's page. Empty the cell to put it back at tier 1.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q1387855",
+   "name": "F.C. Vizela",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Futebol Clube de Vizela",
+   "capacity": 6000,
+   "lat": 41.388722,
+   "lon": -8.307511,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q17505449",
+   "name": "F.C. Felgueiras 1932",
+   "leagues": [
+    "Q13668768"
+   ],
+   "tier": 2,
+   "venue": "Estádio Dr. Machado de Matos",
+   "capacity": 7540,
+   "lat": 41.356,
+   "lon": -8.190722,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/F.C._Felgueiras_1932",
+   "note": "ADDED BY THE HAND-NAMED FALLBACK, 2026-10-20, in the Portugal pass. Q17505449 is the club founded in 2006 after the original F.C. Felgueiras ended in 2005 (the original, Q1387110, has a skip row); it carries no P118, so no query returned it. The complete 2026-27 Liga Portugal 2 table lists it as 'F.C. Felgueiras (2006)' (linked to this item through a redirect; 11th in Liga Portugal 2 in 2025-26). Tier 2 is this row's. Ground and capacity are the item's own: the Estádio Dr. Machado de Matos (Q10276896, P625, 7,540), which the table gives too.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q1853273",
+   "name": "S.C.U. Torreense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Manuel Marques",
+   "capacity": 2431,
+   "lat": 39.094878,
+   "lon": -9.256594,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q211401",
+   "name": "U.D. Leiria",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Dr. Magalhães Pessoa",
+   "capacity": 23888,
+   "lat": 39.748611,
+   "lon": -8.813056,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q216459",
+   "name": "C.D. Nacional",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio da Madeira",
+   "capacity": 5200,
+   "lat": 32.670625,
+   "lon": -16.883525,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q216503",
+   "name": "C.S. Marítimo",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio do Marítimo",
+   "capacity": 10600,
+   "lat": 32.645561,
+   "lon": -16.928331,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q223450",
+   "name": "Vitória S.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio D. Afonso Henriques",
+   "capacity": 30029,
+   "lat": 41.445833,
+   "lon": -8.300972,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q2410944",
+   "name": "Académico de Viseu FC",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 1,
+   "venue": "Estádio do Fontelo",
+   "capacity": 6912,
+   "lat": 40.659444,
+   "lon": -7.900833,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Primeira_Liga; https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/Acad%C3%A9mico_de_Viseu_F.C.",
+   "note": "TIER CORRECTED, 2026-10-20, in the Portugal pass - the FC Wil shape, reviewable. Wikidata's only P118 is a Liga Portugal 2 tag (normal rank, no dates), so the club arrived at tier 2. The complete 2026-27 Primeira Liga article lists it ('Académico de Viseu↑', 2nd in Liga Portugal 2); the complete 2026-27 Liga Portugal 2 table does not; the club's own English article says it 'currently play in the Primeira Liga, following promotion in the 2025-26 season'. Empty the cell to put it back at tier 2.",
+   "manual": true,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q243235",
+   "name": "Associação Académica de Coimbra – O.A.F.",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Cidade de Coimbra",
+   "capacity": 29622,
+   "lat": 40.203333,
+   "lon": -8.407778,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q2841205",
+   "name": "Amarante FC",
+   "leagues": [
+    "Q618131"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal de Amarante",
+   "capacity": 5000,
+   "lat": 41.28209,
+   "lon": -8.075706,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/Amarante_F.C.",
+   "note": "ADDED BY THE HAND-NAMED FALLBACK, 2026-10-20, in the Portugal pass - the Rapperswil-Jona shape. Q2841205 carries no mapped league tag, so no query returned it (Liga 3 is not mapped). The complete 2026-27 Liga Portugal 2 table lists it ('Amarante↑', 1st in Liga 3); its English article says it 'currently competes in the Liga Portugal 2'. Tier 2 is this row's. Ground and capacity are the item's own: the Estádio Municipal de Amarante (Q25419598, P625, 5,000), which the club's article and the table also give.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q3494112",
+   "name": "Sporting CP B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Aurélio Pereira",
+   "capacity": null,
+   "lat": 38.729734,
+   "lon": -8.848912,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/Sporting_CP_B; https://en.wikipedia.org/wiki/Academia_Cristiano_Ronaldo; https://www.openstreetmap.org/way/135459411",
+   "note": "GROUND CORRECTED AND PLACED, 2026-10-20, in the Portugal pass. Wikidata's P115 is the Estádio José Alvalade, the first team's ground (a copy). The club's English article and the 2026-27 Liga Portugal 2 table both name the Estádio Aurélio Pereira in the Academia Cristiano Ronaldo, Alcochete (1,180): two places for the ground. Position: OpenStreetMap way/135459411, a leisure=stadium element whose name is exactly 'Estádio Aurélio Pereira' (read on a runner, 38.7297336 / -8.8489115) - the only ground-specific source, so the position rests on it alone; the academy's own coordinate (Wikipedia and Wikidata Q2945331, 38.73028 / -8.85) is a different, larger object and lies about 110 m away, consistent with it but not counted as a source. It was first left off the map on 2026-10-20 because Overpass was at capacity and no ground-specific coordinate had been read; a retry later the same day answered. Capacity cleared: 1,180 appears only on Wikipedia (the table and the club's article are one source).",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q5423714",
+   "name": "FC Porto B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Luís Filipe Menezes (CTFD PortoGaia)",
+   "capacity": null,
+   "lat": 41.065921,
+   "lon": -8.51707,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/FC_Porto_B; https://en.wikipedia.org/wiki/CTFD_PortoGaia; https://www.openstreetmap.org/way/1003177522",
+   "note": "GROUND CORRECTED, 2026-10-20, in the Portugal pass - reviewable. Wikidata's P115 is the Estádio Municipal Jorge Sampaio in Pedroso (8,500). Against it: the club's English article says it plays 'at the CTFD PortoGaia main pitch'; the 2026-27 Liga Portugal 2 table gives the Estádio Luís Filipe Menezes, Vila Nova de Gaia (3,800); and the CTFD PortoGaia article says the complex has 'one grass pitch with a 3,800-capacity grandstand and floodlighting named Estádio Luís Filipe Menezes', so the table's ground and the club article's are one. The Jorge Sampaio article ('used by FC Porto B as their home ground') is the one that disagrees and is the stale statement. Position: the CTFD PortoGaia article's own coordinate (41.065921 / -8.51707, the complex, whose only stadium pitch this is), confirmed by OpenStreetMap way/1003177522, a leisure=stadium element named exactly 'Estádio Luís Filipe Menezes' (41.0660073 / -8.5169135, about 10 m away); two ground-specific sources that agree. Capacity cleared: 3,800 appears only on Wikipedia (the table and the CTFD article) and Wikidata's 8,500 belongs to the other ground.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q543467",
+   "name": "G.D. Chaves",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal Eng. Manuel Branco Teixeira",
+   "capacity": 8400,
+   "lat": 41.75064,
+   "lon": -7.464985,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q621120",
+   "name": "Portimonense S.C.",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal de Portimão",
+   "capacity": 4961,
+   "lat": 37.135694,
+   "lon": -8.539833,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q622432",
+   "name": "Rio Ave F.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio do Rio Ave FC",
+   "capacity": 5300,
+   "lat": 41.362756,
+   "lon": -8.740186,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q623730",
+   "name": "Leixões S.C.",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Mar",
+   "capacity": 6000,
+   "lat": 41.183889,
+   "lon": -8.666944,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q634829",
+   "name": "G.D. Estoril Praia",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio António Coimbra da Mota",
+   "capacity": 5094,
+   "lat": 38.716,
+   "lon": -9.406,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q671042",
+   "name": "C.D. Feirense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Marcolino de Castro",
+   "capacity": 5401,
+   "lat": 40.926689,
+   "lon": -8.545814,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q7387221",
+   "name": "S.L. Benfica B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Benfica Campus",
+   "capacity": 2644,
+   "lat": 38.640556,
+   "lon": -9.091944,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/S.L._Benfica_B; https://en.wikipedia.org/wiki/Benfica_Campus; https://www.wikidata.org/wiki/Q5510501; https://stadiumdb.com/stadiums/por",
+   "note": "GROUND CORRECTED, 2026-10-20, in the Portugal pass. Wikidata's P115 is the Estádio da Luz, the first team's ground (a copy, the Borussia Dortmund II shape). The club's English article says it plays 'holding home matches at Benfica Campus' main pitch' (permanently since 2013-14); the 2026-27 Liga Portugal 2 table gives 'Benfica Campus - Campo n.° 1' (2,644); StadiumDB lists Benfica B at the 'Caixa Futebol Campus' (2,708), and Wikidata's item for the ground (Q5510501, P625 and P1083 2,644) carries 'Caixa Futebol Campus' as a label, so the two names are one ground. Position: Q5510501's P625, which the ground's own Wikipedia article repeats. Capacity 2,644: the table, the article and Q5510501 agree; StadiumDB's 2,708 is within 2.4%.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q740637",
+   "name": "C.D. Santa Clara",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio de São Miguel",
+   "capacity": 12500,
+   "lat": 37.763708,
+   "lon": -25.622589,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q744353",
+   "name": "S.C. Farense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio de São Luís",
+   "capacity": 7000,
+   "lat": 37.022778,
+   "lon": -7.928611,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/S.C._Farense; https://en.wikipedia.org/wiki/Est%C3%A1dio_de_S%C3%A3o_Lu%C3%ADs; https://www.wikidata.org/wiki/Q2586520; https://stadiumdb.com/stadiums/por",
+   "note": "GROUND CORRECTED, 2026-10-20, in the Portugal pass. Wikidata's only P115 is the Estádio Algarve (30,305). The club's English article says Farense 'moved back to the Estádio de São Luís in 2013'; the 2026-27 Liga Portugal 2 table gives the Estádio de São Luís (7,000); StadiumDB lists the club there (7,000); the ground's Wikipedia article says it is 'the home stadium for Sporting Clube Farense'. Position: Wikidata's own item for the ground Q2586520 (P625), which the ground's Wikipedia article agrees with within about 20 m. Capacity 7,000: the table, Q2586520 and StadiumDB agree.",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q75684",
+   "name": "S.C. Braga",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal de Braga",
+   "capacity": 30286,
+   "lat": 41.5624,
+   "lon": -8.4308,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q75729",
+   "name": "Sporting CP",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio José Alvalade",
+   "capacity": 52095,
+   "lat": 38.761194,
+   "lon": -9.160783,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q838134",
+   "name": "C.F. Estrela da Amadora",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio José Gomes",
+   "capacity": 9288,
+   "lat": 38.752036,
+   "lon": -9.227967,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q926438",
+   "name": "Gil Vicente F.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Cidade de Barcelos",
+   "capacity": 12046,
+   "lat": 41.551111,
+   "lon": -8.622778,
+   "city": null,
+   "competition": "Primeira Liga"
+  }
+ ]
+}

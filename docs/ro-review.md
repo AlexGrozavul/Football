@@ -300,7 +300,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `fx.v` | v | vs |
 | `fx.at` | at | la |
 | `fx.oppNotSet` | opponent not set | adversar nestabilit |
-| `fx.coverage` | Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord and Nordost, DFB-Pokal, Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie and Champions League | Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord și Nordost, DFB-Pokal, Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie și Champions League |
+| `fx.coverage` | Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord and Nordost, DFB-Pokal, Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie, Primeira Liga and Champions League | Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord și Nordost, DFB-Pokal, Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie, Primeira Liga și Champions League |
 | `adj.RO` | Romanian | românești |
 | `adj.CH` | Swiss | elvețiene |
 | `adj.AT` | Austrian | austriece |
@@ -655,6 +655,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `gen.countryNot` | country not recorded | țară neînregistrată |
 | `cn.AT` | Austria | Austria |
 | `cn.BE` | Belgium | Belgia |
+| `cn.PT` | Portugal | Portugalia |
 | `cn.CH` | Switzerland | Elveția |
 | `cn.DE` | Germany | Germania |
 | `cn.ES` | Spain | Spania |

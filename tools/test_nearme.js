@@ -373,7 +373,7 @@ const sorted = rows => rows.every((r, i) => !i || rows[i-1].km <= r.km);
     await p.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 60000});
     await p.tap('#tabDerbies'); await p.tap('#tabClubs');
     const tiers = await p.$$eval('.ntiers button', bs => bs.map(b => [Number(b.dataset.tier), b.getAttribute('aria-pressed')]));
-    console.log(`    the panel opened with ${early} of 12 country files read`);
+    console.log(`    the panel opened with ${early} of 13 country files read`);
     await setKm(p, 500);                               // within 100 km of Leonberg every club is German
     const rowsLate = await allRows(p);
     check('opened before every club file loaded: a tier that loaded later has its chip, on, and its clubs listed',

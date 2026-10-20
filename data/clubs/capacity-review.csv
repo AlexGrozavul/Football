@@ -23,22 +23,28 @@ Q5424829,FC Augsburg II,DE,,,,,,,,,26443,28000,Rosenaustadion,capacity,16,source
 Q153539,SpVgg Greuther Fürth,DE,,,,,,,,,16626,18000,Sportpark Ronhof | Thomas Sommer,capacity,19,sources differ by 8%
 Q170157,Wuppertaler SV,DE,,,,,,,,,23067,21000,Stadion am Zoo,capacity,14,sources differ by 9%
 Q1067750,Real Sociedad B,ES,,,,,,,,,,,,,4721,no stadium in OSM within 500m
+Q12236,Racing de Santander,ES,,,,,,,,,22,22514,Estadio El Sardinero,capacity,10,sources differ by 100%
 Q460448,Cádiz Club de Fútbol,ES,,,,,,,,,20724,25033,Estadio Nuevo Mirandilla,capacity:persons,26,sources differ by 17%
 Q7156,FC Barcelona,ES,,,,,,,,,62652,99354,Spotify Camp Nou,capacity,6,sources differ by 37%
-Q292231,Rodez Aveyron Football,FR,,,,,,,,,,,,,8806,no stadium in OSM within 500m
 Q126334,RC Strasbourg Alsace,FR,,,,,,,,,26109,29000,Stade de la Meinau,capacity,176,sources differ by 10%
 Q182876,AJ Auxerre,FR,,,,,,,,,18541,21379,Stade Abbé-Deschamps,capacity,5,sources differ by 13%
 Q192071,Football Club de Nantes,FR,,,,,,,,,35318,38004,Stade de La Beaujoire - Louis Fonteneau,capacity,11,sources differ by 7%
 Q1130849,Liverpool F.C.,GB,,,,,,,,,61276,54074,Anfield,capacity,7,sources differ by 12%
 Q18747,West Ham United F.C.,GB,,,,,,,,,62500,66000,London Stadium,capacity,17,sources differ by 5%
+Q3292651,A.P.S. Zakynthos,GR,,,,,,,,,,,,,49602,no stadium in OSM within 500m
 Q15309584,G.S. Marko,GR,,,,,,,,,,,,,2894,no stadium in OSM within 500m
+Q650365,Carrarese Calcio,IT,,,,,,,,,,9500,Stadio Comunale dei Marmi,capacity,23,only OpenStreetMap has a figure
 Q50573061,Jong AZ,NL,,,,,,,,,,,,,12289,no stadium in OSM within 500m
+Q1386850,F.C. Alverca,PT,,,,,,,,,,,,,123,neither source has a capacity
+Q5423714,FC Porto B,PT,,,,,,,,,,,Estádio Luís Filipe Menezes,,16,neither source has a capacity
+Q3494112,Sporting CP B,PT,,,,,,,,,,,Estádio Aurélio Pereira,,0,neither source has a capacity
 Q113331350,ACS Mediaș 2022,RO,,,,,,,,,,,Stadionul Gaz Metan,,0,neither source has a capacity
 Q5424763,Avântul Reghin,RO,,,,,,,,,,,Stadionul Municipal Avântul Reghin,,34,neither source has a capacity
 Q18537232,Bucovina Rădăuți,RO,,,,,,,,,,,Stadion,,10,neither source has a capacity
 Q12723169,CS Afumați,RO,,,,,,,,,,,Stadion Afumați,,1,neither source has a capacity
 Q2932010,CS Medgidia,RO,,,,,,,,,,,,,21,neither source has a capacity
 Q15920568,CS Național Sebiș,RO,,,,,,,,,,,Stadion,,7,neither source has a capacity
+Q66424141,CSC 1599 Șelimbăr,RO,,,,,,,,,,,,,8,neither source has a capacity
 Q1024393,CSM Pașcani,RO,,,,,,,,,,,Stadionul municipal Pașcani,,12,neither source has a capacity
 Q1024397,CSM Reșița,RO,,,,,,,,,,,Stadionul Mircea Chivu,,33,neither source has a capacity
 Q130302376,CSM Târgu Jiu (fotbal),RO,,,,,,,,,,,Stadionul Constantina Diță-Tomescu,,9,neither source has a capacity
@@ -57,12 +63,15 @@ Q7579573,ACS ARO Muscelul Câmpulung,RO,,,,,,,,,,,,,7750,no stadium in OSM withi
 Q55864953,ACS Înainte Modelu,RO,,,,,,,,,,,,,4547,no stadium in OSM within 500m
 Q4654138,ASC Corona Brașov,RO,,,,,,,,,,,,,2093,no stadium in OSM within 500m
 Q5014447,Aerostar Bacău,RO,,,,,,,,,,,,,3093,no stadium in OSM within 500m
-Q16850839,CS Știința Miroslava,RO,,,,,,,,,,,,,5979,no stadium in OSM within 500m
+Q18539440,CSL Ștefăneștii de Jos,RO,,,,,,,,,,,,,4567,no stadium in OSM within 500m
 Q966392,FC Unirea Dej,RO,,,,,,,,,,,,,7596,no stadium in OSM within 500m
 Q23051672,FK Csíkszereda,RO,,,,,,,,,,,,,30859,no stadium in OSM within 500m
 Q130199486,Oltul Curtișoara,RO,,,,,,,,,,,,,6961,no stadium in OSM within 500m
+Q55593565,SC Popești-Leordeni,RO,,,,,,,,,,,,,2036,no stadium in OSM within 500m
 Q2614598,FK Mačva Šabac,RS,,,,,,,,,,,Стадион ФК Мачва,,10,neither source has a capacity
 Q12760457,FK Železničar Pančevo,RS,,,,,,,,,,,,,92,neither source has a capacity
 Q61130291,OFK Vršac,RS,,,,,,,,,,,Градски стадион,,0,neither source has a capacity
 Q3063273,RFK Grafičar Beograd,RS,,,,,,,,,,,Стадион „Рајко Митић”,,19,neither source has a capacity
+Q1388917,FK Jedinstvo Ub,RS,,,,,,,,,,,,,23669,no stadium in OSM within 500m
+Q1323373,FK Zemun,RS,,,,,,,,,,,,,23669,no stadium in OSM within 500m
 Q209619,OFK Beograd,RS,,,,,,,,,,,,,4553,no stadium in OSM within 500m

@@ -4370,6 +4370,339 @@
      ]
     }
    ]
+  },
+  "Q2410944": {
+   "name": "Académico de Viseu FC",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5527",
+     "teamName": "Académico de Viseu FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q216459": {
+   "name": "C.D. Nacional",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5529",
+     "teamName": "CD Nacional",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q740637": {
+   "name": "C.D. Santa Clara",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5530",
+     "teamName": "CD Santa Clara",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q838134": {
+   "name": "C.F. Estrela da Amadora",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "9136",
+     "teamName": "CF Estrela da Amadora",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q216503": {
+   "name": "C.S. Marítimo",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5575",
+     "teamName": "CS Marítimo",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1386850": {
+   "name": "F.C. Alverca",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "7822",
+     "teamName": "FC Alverca",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1386869": {
+   "name": "F.C. Arouca",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "712",
+     "teamName": "FC Arouca",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1387105": {
+   "name": "FC Famalicão",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5531",
+     "teamName": "FC Famalicão",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q128446": {
+   "name": "FC Porto",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "503",
+     "teamName": "FC Porto",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q634829": {
+   "name": "G.D. Estoril Praia",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "582",
+     "teamName": "GD Estoril Praia",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q926438": {
+   "name": "Gil Vicente F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5533",
+     "teamName": "Gil Vicente FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1346314": {
+   "name": "Moreirense F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "583",
+     "teamName": "Moreirense FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q622432": {
+   "name": "Rio Ave F.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "496",
+     "teamName": "Rio Ave FC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q75684": {
+   "name": "S.C. Braga",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5613",
+     "teamName": "Sporting Clube de Braga",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q131499": {
+   "name": "S.L. Benfica",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "1903",
+     "teamName": "Sport Lisboa e Benfica",
+     "basis": "short-name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q75729": {
+   "name": "Sporting CP",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "498",
+     "teamName": "Sporting Clube de Portugal",
+     "basis": "short-name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "CL",
+       "file": "data/fixtures/CL.json",
+       "label": "UEFA Champions League"
+      },
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
+  "Q223450": {
+   "name": "Vitória S.C.",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5543",
+     "teamName": "Vitória SC",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
   }
  },
  "notLinked": {}
