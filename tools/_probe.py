@@ -277,6 +277,36 @@ def step_grounds():
       SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""")
     for r in rows: say("  " + str({k: v["value"][-70:] for k, v in r.items()}))
 
+
+def step_verify():
+    say("== preferred-rank novalue/somevalue P118 on items in Portugal (or carrying P17 Q45) - query A/B shape")
+    rows = sparql("""SELECT ?x ?xLabel ?dis WHERE { ?x p:P118 ?st . ?st wikibase:rank wikibase:PreferredRank . ?st a wdno:P118 .
+       ?x wdt:P17 wd:Q45 . OPTIONAL{?x wdt:P576 ?dis} SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""")
+    say("  " + (str(rows[0]) if rows and "error" in rows[0] else f"{len(rows)} items: " + str([(qid(r,'x'), val(r,'xLabel'), (val(r,'dis') or '')[:4]) for r in rows])))
+    rows = sparql("""SELECT ?x ?xLabel ?dis WHERE { ?x p:P118 ?st . ?st wikibase:rank wikibase:PreferredRank . ?st ps:P118 ?v . FILTER(?v = wikibase:Somevalue || isBLANK(?v))
+       ?x wdt:P17 wd:Q45 . OPTIONAL{?x wdt:P576 ?dis} SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""")
+    say("  somevalue: " + (str(rows[0]) if rows and "error" in rows[0] else f"{len(rows)} items: " + str([(qid(r,'x'), val(r,'xLabel')) for r in rows])))
+    rows = sparql("""SELECT ?x ?xLabel WHERE { VALUES ?l { wd:Q182994 wd:Q754488 } ?x p:P118 ?st . ?st ps:P118 ?l . ?st wikibase:rank wikibase:DeprecatedRank .
+       SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""")
+    say("  deprecated-rank tags on either league: " + (str(rows[0]) if rows and "error" in rows[0] else f"{len(rows)}: " + str([(qid(r,'x'), val(r,'xLabel')) for r in rows])))
+    say("== overpass retry (small queries, 4 tries each, 40 s apart)")
+    qs = {
+      "aurelio": '[out:json][timeout:60];nwr["name"~"Aur.lio Pereira",i](38.6,-9.1,38.9,-8.6);out center tags;',
+      "lusitania": '[out:json][timeout:60];nwr["name"~"Lusit.nia|Lourosa",i]["leisure"~"stadium|pitch|sports_centre"](40.8,-8.6,41.0,-8.4);out center tags;',
+      "alverca": '[out:json][timeout:60];nwr["name"~"Alverca",i]["leisure"~"stadium|pitch|sports_centre"](38.85,-9.1,38.95,-8.95);out center tags;',
+      "portogaia": '[out:json][timeout:60];nwr["name"~"Menezes|CTFD|PortoGaia",i](41.0,-8.6,41.12,-8.45);out center tags;',
+    }
+    for k, q in qs.items():
+        for attempt in range(4):
+            s_, b, _ = get("https://overpass-api.de/api/interpreter", data=urllib.parse.urlencode({"data": q}).encode(), headers={"Content-Type": "application/x-www-form-urlencoded"}, tries=1)
+            if s_ == 200: break
+            time.sleep(40)
+        if s_ != 200: say(f"  {k}: HTTP {s_} {b[:60]!r}"); continue
+        els = json.loads(b)["elements"]; say(f"  {k}: {len(els)} elements")
+        for e in els:
+            t = e.get("tags", {}); c = e.get("center") or {"lat": e.get("lat"), "lon": e.get("lon")}
+            say(f"    {e['type']}/{e['id']} name={t.get('name')!r} leisure={t.get('leisure')} sport={t.get('sport')} cap={t.get('capacity')} at {c.get('lat')},{c.get('lon')}")
+
 if __name__ == "__main__":
     step = sys.argv[1]
     if step == "leagues":
@@ -289,5 +319,8 @@ if __name__ == "__main__":
         except Exception as e: say(f"  STEP FAILED {e!r}")
     if step == "grounds":
         try: step_grounds()
+        except Exception as e: say(f"  STEP FAILED {e!r}")
+    if step == "verify":
+        try: step_verify()
         except Exception as e: say(f"  STEP FAILED {e!r}")
     say("== DONE " + step)
