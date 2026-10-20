@@ -4623,6 +4623,25 @@
     }
    ]
   },
+  "Q75684": {
+   "name": "S.C. Braga",
+   "links": [
+    {
+     "source": "football-data",
+     "teamId": "5613",
+     "teamName": "Sporting Clube de Braga",
+     "basis": "manual",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "PPL",
+       "file": "data/fixtures/PPL.json",
+       "label": "Primeira Liga"
+      }
+     ]
+    }
+   ]
+  },
   "Q131499": {
    "name": "S.L. Benfica",
    "links": [
