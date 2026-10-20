@@ -157,6 +157,86 @@ def step_stadiumdb():
                 say("     " + " | ".join(cells)[:140])
             break
 
+
+def qid(r, k): return r[k]["value"].rsplit("/", 1)[1] if k in r else None
+def val(r, k): return r[k]["value"] if k in r else None
+
+def step_pt2():
+    # roster titles -> Q-ids
+    titles = []
+    for t in ["2026–27 Primeira Liga", "2026–27 Liga Portugal 2"]:
+        title, tabs = article(t)
+        for tb in tabs:
+            hdr = [c[1] for c in tb[0] if c[0] == "T"][:5] if tb else []
+            if hdr[:3] == ["Team", "Location", "Stadium"]:
+                for row in tb[1:]:
+                    links = [c[1] for c in row if c[0] == "L"]
+                    if links: titles.append(links[0])
+    say(f"== roster titles {len(titles)}")
+    qs = {}
+    for i in range(0, len(titles), 40):
+        r, red = pageprops(titles[i:i + 40])
+        redmap = {x["from"]: x["to"] for x in red}
+        for t in titles[i:i + 40]:
+            qs[t] = r.get(redmap.get(t, t))
+    say("  " + "; ".join(f"{t}={q}" for t, q in qs.items()))
+    roster = [q for q in qs.values() if q and q != "MISSING"]
+    values = " ".join(f"wd:{q}" for q in roster)
+    say("== box points of Q45")
+    rows = sparql("""SELECT ?p ?rank ?c WHERE { VALUES ?p { p:P1332 p:P1333 p:P1334 p:P1335 }
+      wd:Q45 ?p ?s . ?s ?ps ?c . FILTER(STRSTARTS(STR(?ps), "http://www.wikidata.org/prop/statement/P133") && STRENDS(STR(?ps), STRAFTER(STR(?p), "prop/")) ) ?s wikibase:rank ?rank }""")
+    if rows and "error" in rows[0]: say("  FAILED " + rows[0]["error"]["value"])
+    else:
+        for r in rows: say(f"  {val(r,'p').rsplit('/',1)[1]} {val(r,'rank').rsplit('#',1)[1]} {val(r,'c')}")
+    say("== leagues P3983/P17")
+    rows = sparql("""SELECT ?l ?lLabel ?lvl ?c ?cLabel WHERE { VALUES ?l { wd:Q182994 wd:Q754488 } OPTIONAL{?l wdt:P3983 ?lvl} OPTIONAL{?l wdt:P17 ?c}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } }""")
+    for r in rows: say("  " + str({k: v["value"].rsplit("/", 1)[-1] for k, v in r.items()}))
+    say("== roster clubs: truthy labels, types, grounds (every P115 statement with rank/dates), ground coord and capacity")
+    rows = sparql("""SELECT ?c ?cLabel ?type ?typeLabel ?g ?gLabel ?gr ?gs ?ge ?gc ?gcap WHERE { VALUES ?c { %s }
+      OPTIONAL{?c wdt:P31 ?type}
+      OPTIONAL{?c p:P115 ?st . ?st ps:P115 ?g . ?st wikibase:rank ?gr . OPTIONAL{?st pq:P580 ?gs} OPTIONAL{?st pq:P582 ?ge}
+               OPTIONAL{?g wdt:P625 ?gc} OPTIONAL{?g wdt:P1083 ?gcap}}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""" % values)
+    if rows and "error" in rows[0]: say("  FAILED " + rows[0]["error"]["value"])
+    else:
+        by = {}
+        for r in rows:
+            d = by.setdefault(qid(r, "c"), {"l": val(r, "cLabel"), "t": set(), "g": set()})
+            if "typeLabel" in r: d["t"].add(val(r, "typeLabel"))
+            if "g" in r: d["g"].add((qid(r, "g"), val(r, "gLabel"), qid(r, "gr") if False else val(r, "gr").rsplit("#", 1)[1], (val(r, "gs") or "")[:4], (val(r, "ge") or "")[:4], (val(r, "gc") or "")[:40], val(r, "gcap")))
+        for k, d in by.items():
+            say(f"  {k} {d['l']} | {sorted(d['t'])}")
+            for g in sorted(d["g"], key=lambda x: str(x)): say(f"      ground {g}")
+        say(f"  roster clubs seen {len(by)} of {len(roster)}; missing: {[q for q in roster if q not in by]}")
+    say("== related items (P749/P361/P831/P127/P1830 either way) and same-label items of other Q-ids in PT")
+    rows = sparql("""SELECT ?c ?x ?xLabel ?xDesc ?typeLabel ?prop WHERE { VALUES ?c { %s }
+      { ?x ?pp ?c . VALUES ?pp { wdt:P749 wdt:P361 wdt:P831 wdt:P127 wdt:P1830 } BIND("x->c" AS ?prop) } UNION
+      { ?c ?pp ?x . VALUES ?pp { wdt:P749 wdt:P361 wdt:P831 } BIND("c->x" AS ?prop) }
+      FILTER(?x != ?c) OPTIONAL{?x wdt:P31 ?type} OPTIONAL{?x schema:description ?xDesc FILTER(LANG(?xDesc)="en")}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""" % values)
+    if rows and "error" in rows[0]: say("  FAILED " + rows[0]["error"]["value"])
+    else:
+        by = {}
+        for r in rows:
+            by.setdefault((qid(r, "c"), qid(r, "x"), val(r, "xLabel"), val(r, "xDesc"), val(r, "prop")), set()).add(val(r, "typeLabel"))
+        for k, t in sorted(by.items(), key=lambda x: str(x)): say(f"  {k} types={sorted(x for x in t if x)}")
+        say(f"  {len(by)} related rows")
+    rows = sparql("""SELECT ?c ?cl ?o ?oLabel ?typeLabel WHERE { VALUES ?c { %s } ?c rdfs:label ?cl FILTER(LANG(?cl) IN ("en","pt"))
+      ?o rdfs:label ?cl . ?o wdt:P17 wd:Q45 . FILTER(?o != ?c) OPTIONAL{?o wdt:P31 ?type}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""" % values)
+    if rows and "error" in rows[0]: say("  FAILED same-label " + rows[0]["error"]["value"])
+    else:
+        say(f"  same-label other items in Portugal: {len(rows)}")
+        for r in rows: say(f"    {qid(r,'c')} '{val(r,'cl')}' = {qid(r,'o')} {val(r,'oLabel')} {val(r,'typeLabel')}")
+    say("== women's angles: items carrying either tag whose label/description/class says women's")
+    rows = sparql("""SELECT DISTINCT ?x ?xLabel ?xDesc WHERE { VALUES ?l { wd:Q182994 wd:Q754488 } ?x wdt:P118|wdt:P2094 ?l .
+      OPTIONAL{?x schema:description ?xDesc FILTER(LANG(?xDesc)="en")} ?x rdfs:label ?lab FILTER(LANG(?lab) IN ("en","pt"))
+      FILTER(REGEX(?lab, "fem|women|mulher|ladies|dames", "i") || REGEX(COALESCE(?xDesc,""), "women|female", "i"))
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } }""")
+    say("  " + (str(rows[0]) if rows and "error" in rows[0] else f"{len(rows)} items: " + str([(qid(r,'x'), val(r,'xLabel')) for r in rows])))
+    say("  women's team items typed women's pointing at any roster club were listed above under related items (look for 'women' in the description)")
+
 if __name__ == "__main__":
     step = sys.argv[1]
     if step == "leagues":
@@ -164,4 +244,7 @@ if __name__ == "__main__":
         for f in (lambda: step_tagged(lq), step_stadiumdb):
             try: f()
             except Exception as e: say(f"  STEP FAILED {e!r}")
+    if step == "pt2":
+        try: step_pt2()
+        except Exception as e: say(f"  STEP FAILED {e!r}")
     say("== DONE " + step)
