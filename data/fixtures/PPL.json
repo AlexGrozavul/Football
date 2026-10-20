@@ -1784,7 +1784,7 @@
   {
    "id": 567271,
    "utcDate": "2026-10-19T19:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 2,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1802,9 +1802,9 @@
     "tla": "GIL",
     "crest": "https://crests.football-data.org/5533.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 567329,
