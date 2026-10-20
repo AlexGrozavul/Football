@@ -1083,7 +1083,7 @@ const I18N = {
     "fx.v": "v",
     "fx.at": "at",
     "fx.oppNotSet": "opponent not set",
-    "fx.coverage": "Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord and Nordost, DFB-Pokal, Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie and Champions League",
+    "fx.coverage": "Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord and Nordost, DFB-Pokal, Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie, Primeira Liga and Champions League",
     "adj.RO": "Romanian",
     "adj.CH": "Swiss",
     "adj.AT": "Austrian",
@@ -1438,6 +1438,7 @@ const I18N = {
     "gen.countryNot": "country not recorded",
     "cn.AT": "Austria",
     "cn.BE": "Belgium",
+    "cn.PT": "Portugal",
     "cn.CH": "Switzerland",
     "cn.DE": "Germany",
     "cn.ES": "Spain",
@@ -2330,7 +2331,7 @@ const I18N = {
     "fx.v": "vs",
     "fx.at": "la",
     "fx.oppNotSet": "adversar nestabilit",
-    "fx.coverage": "Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord și Nordost, DFB-Pokal, Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie și Champions League",
+    "fx.coverage": "Bundesliga, 2. Bundesliga, 3. Liga, Regionalliga Nord și Nordost, DFB-Pokal, Premier League, Championship, La Liga, Serie A, Ligue 1, Eredivisie, Primeira Liga și Champions League",
     "adj.RO": "românești",
     "adj.CH": "elvețiene",
     "adj.AT": "austriece",
@@ -2685,6 +2686,7 @@ const I18N = {
     "gen.countryNot": "țară neînregistrată",
     "cn.AT": "Austria",
     "cn.BE": "Belgia",
+    "cn.PT": "Portugalia",
     "cn.CH": "Elveția",
     "cn.DE": "Germania",
     "cn.ES": "Spania",
@@ -3586,7 +3588,7 @@ function zoomForTier(tier){
   return TIER_FROM_ZOOM[tier] ?? (Number(tier) >= 3 ? DEEP_TIER_ZOOM : undefined);
 }
 
-const COUNTRY_FILES = ['data/clubs/DE.json','data/clubs/RO.json','data/clubs/FR.json','data/clubs/IT.json','data/clubs/CH.json','data/clubs/AT.json','data/clubs/RS.json','data/clubs/GR.json','data/clubs/ES.json','data/clubs/GB.json','data/clubs/NL.json','data/clubs/BE.json'];
+const COUNTRY_FILES = ['data/clubs/DE.json','data/clubs/RO.json','data/clubs/FR.json','data/clubs/IT.json','data/clubs/CH.json','data/clubs/AT.json','data/clubs/RS.json','data/clubs/GR.json','data/clubs/ES.json','data/clubs/GB.json','data/clubs/NL.json','data/clubs/BE.json','data/clubs/PT.json'];
 
 /* Fallback only. The real value comes from settings.home in
    football-rules.json once you fill in its lat/lon. */
@@ -4450,7 +4452,7 @@ function fxRow(m, teamId){
 
 /* What the fixture sources cover, in plain words: football-data.org's free
    tier and OpenLigaDB, as fetched by tools/fetch_fixtures.py and
-   tools/fetch_openligadb.py. Brazil, Portugal and the tournaments are
+   tools/fetch_openligadb.py. Brazil and the tournaments are
    fetched too but no club on the map plays in them. Keep in step with
    those two tools. */
 const FIXTURE_COVERAGE = () => t('fx.coverage');
@@ -4463,7 +4465,7 @@ function noFixturesReason(club){
     t('fx.no.adjTech', {adj: COUNTRY_ADJ[club.country]}) +
     (club.country === 'BE' ? ' ' + t('fx.no.be') : '')];
   const top = {FR:['Ligue 1','Ligue 2'], IT:['Serie A','Serie B'], ES:['La Liga',t('fx.no.segunda')],
-               NL:[t('fx.no.eredivisie'),t('fx.no.eerste')]}[club.country];
+               NL:[t('fx.no.eredivisie'),t('fx.no.eerste')], PT:['Primeira Liga','Liga Portugal 2']}[club.country];
   if(top && club.tier >= 2) return [t('fx.no.only', {a: top[0], b: top[1]}),
     t('fx.no.onlyTech', {a: top[0], b: top[1]})];
   if(club.country === 'DE' && club.tier >= 5) return [t('fx.no.below'), t('fx.no.belowTech')];
@@ -6413,7 +6415,7 @@ function fold(s){
     .replace(/[ßøđłæœıþð]/g, c => FOLD_EXTRA[c]).replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 }
 
-const COUNTRY_NAME = labelsOf('cn.', ['AT', 'BE', 'CH', 'DE', 'ES', 'FR', 'GB', 'GR', 'IT', 'NL', 'RO', 'RS']);
+const COUNTRY_NAME = labelsOf('cn.', ['AT', 'BE', 'CH', 'DE', 'ES', 'FR', 'GB', 'GR', 'IT', 'NL', 'PT', 'RO', 'RS']);
 const countryName = cc => COUNTRY_NAME[cc] || cc || t('gen.countryNot');
 
 /* The competition as the club file records it. A club whose file records

@@ -29,9 +29,15 @@ def get(url, data=None, headers=None, tries=4):
 
 def wiki(params, host="en.wikipedia.org"):
     p = {"format": "json", "formatversion": "2", "maxlag": "5", **params}
-    s, b, _ = get(f"https://{host}/w/api.php?" + urllib.parse.urlencode(p))
-    try: return json.loads(b)
-    except Exception: return {"error": f"HTTP {s} {b[:200]!r}"}
+    for attempt in range(4):
+        s, b, h = get(f"https://{host}/w/api.php?" + urllib.parse.urlencode(p))
+        try: j = json.loads(b)
+        except Exception: return {"error": f"HTTP {s} {b[:200]!r}"}
+        if isinstance(j.get("error"), dict) and j["error"].get("code") == "maxlag" and attempt < 3:
+            time.sleep(int(h.get("Retry-After", "6") or 6)); continue
+        if "error" in j: say(f"  (api error {host}: {str(j['error'])[:160]})")
+        return j
+    return j
 
 def wd(params):
     return wiki(params, "www.wikidata.org")
@@ -101,7 +107,7 @@ def step_leagues():
         say(f"  {q} {e.get('labels', {}).get('en', {}).get('value')} | desc={e.get('descriptions', {}).get('en', {}).get('value')} | P3983={vals('P3983')} P17={[(r, v.get('id') if isinstance(v, dict) else v) for r, v in vals('P17')]} P31={[v.get('id') for r, v in vals('P31') if isinstance(v, dict)]} P576={vals('P576')}")
     say("== Q45 extreme points P1332-P1335")
     j = wd({"action": "wbgetentities", "ids": "Q45", "props": "claims"})
-    c = j["entities"]["Q45"]["claims"]
+    c = j.get("entities", {}).get("Q45", {}).get("claims", {})
     for p in ("P1332", "P1333", "P1334", "P1335"):
         for x in c.get(p, []):
             v = x["mainsnak"].get("datavalue", {}).get("value", {})
@@ -154,5 +160,8 @@ def step_stadiumdb():
 if __name__ == "__main__":
     step = sys.argv[1]
     if step == "leagues":
-        lq = step_leagues(); step_tagged(lq); step_stadiumdb()
+        lq = step_leagues()
+        for f in (lambda: step_tagged(lq), step_stadiumdb):
+            try: f()
+            except Exception as e: say(f"  STEP FAILED {e!r}")
     say("== DONE " + step)

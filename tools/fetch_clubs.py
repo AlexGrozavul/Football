@@ -109,6 +109,8 @@ COUNTRIES = [
     # Belgium, P17 Q31 on both leagues and on every club item read on
     # 2026-10-01.
     ("BE", "Q31", "Belgium"),
+    # Portugal, P17 Q45 (checked by probe 2026-10-20, see the Portugal entry).
+    ("PT", "Q45", "Portugal"),
 ]
 
 REQUEST_GAP_SECONDS = 5
@@ -1271,7 +1273,7 @@ COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
 COUNTRY_NAMES = {
     "Q183": "Germany", "Q218": "Romania", "Q39": "Switzerland",
     "Q347": "Liechtenstein", "Q40": "Austria", "Q142": "France",
-    "Q31": "Belgium", "Q55": "Netherlands", "Q36": "Poland",
+    "Q31": "Belgium", "Q45": "Portugal", "Q55": "Netherlands", "Q36": "Poland",
     "Q213": "Czechia", "Q28": "Hungary", "Q403": "Serbia",
     "Q219": "Bulgaria", "Q212": "Ukraine", "Q217": "Moldova",
     "Q38": "Italy", "Q29": "Spain", "Q145": "United Kingdom",
@@ -1672,7 +1674,7 @@ def main():
         if position:
             time.sleep(REQUEST_GAP_SECONDS)
         lang = {"DE": "de", "RO": "ro", "FR": "fr", "IT": "it", "CH": "de,fr,it", "AT": "de",
-                "RS": "en,sr-el", "GR": "en,el", "ES": "en,es", "NL": "en,nl", "BE": "en,nl,fr"}.get(code, "en")
+                "RS": "en,sr-el", "GR": "en,el", "ES": "en,es", "NL": "en,nl", "BE": "en,nl,fr", "PT": "en,pt"}.get(code, "en")
         print(f"  {code}  {name}")
 
         # 1. discovery - which leagues Wikidata places in this country,
