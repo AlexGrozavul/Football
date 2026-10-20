@@ -588,14 +588,20 @@ a subscribed calendar reads as a schedule regardless of its description.
   a saved route offline, export, delete, import (good, repeated, broken
   and foreign files), a second tab seeing the same routes.
 - `tools/test_zoom.js` — added 2026-10-03: **fails, naming each club, if
-  any club on the map is not drawn at z9**, the tier-3 threshold; also
+  any club inside the visible bounds plus 50% padding is not drawn at z9**
+  (since 2026-10-19; before that, any club on the map), the tier-3
+  threshold, **if a ground outside that padding is drawn, and if a far
+  club is not drawn after the map flew to it from a search suggestion**
+  (expected sets worked out from the club files and the live map's bounds,
+  and the chip must still count every club and shared ground); also
   that tiers 1 and 2 keep z0 and z7, that `minZoom` is 3 and `zoomDelta`
   and `zoomSnap` are 1 (read from the live map, and the + button moves
   exactly one level), that every `data/clubs/??.json` is in
   `COUNTRY_FILES`, and that every club in those files with a position
   and a tier is on the map. It then **measures, and does not judge**, the
-  redraw at z9 over the Ruhr, northern Italy and Bucharest with the CPU
-  slowed 4x, beside the old rule, and prints the numbers.
+  redraw at z7, z8 and z9 over the Ruhr, northern Italy and Bucharest with
+  the CPU slowed 4x, beside the old draw-everything behaviour, and prints
+  the numbers.
 - `tools/test_search.js` — added 2026-10-03: the club search at 390x844
   with the keyboard stood in for by shrinking the window to 390x500 (see
   its Conventions entry for what that does and does not cover).
@@ -2908,7 +2914,7 @@ revalidation request per shell file per open, answered 304.
   (`skipWaiting` + `clients.claim`, harmless because both rules are
   network first), and deletes every cache it does not name.
 - **`SHELL_VERSION` in `sw.js`: change it whenever `sw.js` changes**
-  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16` → `v17` → `v18` → `v19`; it has been `v38` since 2026-10-19, when a reserve side's sheet began to point to its first team's sheet; it was `v37` from 2026-10-18, when rivalries began to show on the rival's sheet too; it was `v36` the same day, when the Row personal field shipped; it was `v35` from 2026-10-17, when rivalry rows began to show a source quote; it was `v34` from 2026-10-16, when the Home team and Away team fields of the match form got their suggestion lists; it was `v33` from 2026-10-15, when a friendship stated on one club's page only began to show on the friend's sheet; it was `v32` the same day, when exhibition matches left the goal stats and the match form got its suggestions; it was `v31` the same day, when the Me tab's Tickets/Memberships sub-tab began showing tickets first; it was `v30` from 2026-10-13, when the Add an event form and the version 3 backup file shipped; it was `v29` the same day, when the red-cards card and the event `note` shipped; it was `v28` the same day, when the Add a match form shipped; it was `v27` from 2026-10-12, when the researched kick-off times shipped (the five `user-supplied` kick-off times of 2026-10-13 arrived with no version change: a change to `data/attended.json` alone needs none); it was `v26` from 2026-10-11, when the Romanian translations of data texts shipped (`v25` before that, when sheets and panels learned to expand to full size); it was `v23` from 2026-10-10, when the source quote on fan friendships shipped; it was `v22` the same day, when the atmosphere section was removed; it was `v21` the same day, when the atmosphere section was reduced to recurring occasions with a recurrence; it was `v20` from 2026-10-09, when Fan friendships shipped; it was `v19` the same day, when the Light theme shipped; it was `v18` the same day, when the whole interface was translated (it was `v17` from the same day, when the imported matches, supporter buttons and media shipped); it was `v16` from the same day, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
+  (`v1` → ... → `v11` → `v12` → `v13` → `v14` → `v15` → `v16` → `v17` → `v18` → `v19`; it has been `v39` since 2026-10-19, when `drawClubs()` began to draw only grounds inside the visible bounds plus 50% padding; it was `v38` the same day, when a reserve side's sheet began to point to its first team's sheet; it was `v37` from 2026-10-18, when rivalries began to show on the rival's sheet too; it was `v36` the same day, when the Row personal field shipped; it was `v35` from 2026-10-17, when rivalry rows began to show a source quote; it was `v34` from 2026-10-16, when the Home team and Away team fields of the match form got their suggestion lists; it was `v33` from 2026-10-15, when a friendship stated on one club's page only began to show on the friend's sheet; it was `v32` the same day, when exhibition matches left the goal stats and the match form got its suggestions; it was `v31` the same day, when the Me tab's Tickets/Memberships sub-tab began showing tickets first; it was `v30` from 2026-10-13, when the Add an event form and the version 3 backup file shipped; it was `v29` the same day, when the red-cards card and the event `note` shipped; it was `v28` the same day, when the Add a match form shipped; it was `v27` from 2026-10-12, when the researched kick-off times shipped (the five `user-supplied` kick-off times of 2026-10-13 arrived with no version change: a change to `data/attended.json` alone needs none); it was `v26` from 2026-10-11, when the Romanian translations of data texts shipped (`v25` before that, when sheets and panels learned to expand to full size); it was `v23` from 2026-10-10, when the source quote on fan friendships shipped; it was `v22` the same day, when the atmosphere section was removed; it was `v21` the same day, when the atmosphere section was reduced to recurring occasions with a recurrence; it was `v20` from 2026-10-09, when Fan friendships shipped; it was `v19` the same day, when the Light theme shipped; it was `v18` the same day, when the whole interface was translated (it was `v17` from the same day, when the imported matches, supporter buttons and media shipped); it was `v16` from the same day, when the attended detail sheet shipped; it was `v15` from the same day, when the Me tab's attended matches and events shipped; it was `v14` from the same day, when the atmosphere section shipped (`v12` and `v13` were bumped without being recorded here); it was `v11` from 2026-10-08, when the Competitions tab and the Bucket list filter shipped, `v10` before that, when the Reminders came out, and `v9` before that, since
   2026-10-08, when the 160-entry bucket batch and Group order shipped, `v8` before that, from 2026-10-07, when the sheet and Ticket info lost their sale dates, `v7` before that, from
   2026-10-04, when the Me tab shipped, `v6` before that, the same day,
   when the Bucket list got its calendar, `v5` before that,
@@ -3235,12 +3241,22 @@ München II's tier 5 switched on — and since that club's ground was
 cleared it is a plain "2" from z9 and stays one at every zoom above.
 The corner chip says
 how many shared grounds are on screen, so the count is visible rather than
-something to discover.
+something to discover. **Since 2026-10-19 only grounds inside the visible
+bounds plus 50% padding get a marker, and the chip's club and shared-ground
+counts are still taken over every club the zoom shows, drawn or not, so a
+shared ground just off screen is counted and has no marker until the map
+moves toward it.**
 
 **Tier zoom bands: tier 3 and everything deeper switch on together at
 z9, and that is a GUARANTEED PROPERTY, since 2026-10-03.** At z9 - the
-zoom tier 3 used on its own before - **every club on the map is drawn,
-whatever its tier**, and at every zoom above it. Tiers 1 and 2 keep
+zoom tier 3 used on its own before - **every club inside the visible
+bounds plus 50% padding is drawn, whatever its tier**, and at every zoom
+above it (changed 2026-10-19 from "every club on the map": `drawClubs()`
+now gives a marker only to a ground inside `MAP.getBounds().pad(0.5)`,
+and the redraw on `moveend` and `zoomend` draws the grounds a move
+brings in; a club farther out is on the map in every other sense - the
+corner chip, search, Near me, the coverage panel and the sheets count and
+reach it - and is drawn as soon as the map is there). Tiers 1 and 2 keep
 their thresholds (z0 and z7), so the country view is unchanged.
 `TIER_FROM_ZOOM` lists tiers 1 and 2 only and `zoomForTier()` gives
 every tier from 3 down `DEEP_TIER_ZOOM`, 9, so a tier 9 or 10 club found
@@ -3249,8 +3265,9 @@ later needs no change. The map's `minZoom` is 3 (it was unset), and
 vendored copy and on the live map rather than assumed**, and now also
 set explicitly - so the map always rests on a whole zoom and is either
 below 9 or at it. **`tools/test_zoom.js` holds the property**: it fails,
-naming each club, if any club on the map is not drawn at z9, and it runs
-on every change to the page. First run: 556 of 556 clubs drawn at z9.
+naming each club, if any club inside the padded bounds is not drawn at z9,
+and it runs on every change to the page. First run: 556 of 556 clubs drawn
+at z9 (when every club was drawn).
 **The earlier "eight taps" framing is dropped.** It is not written
 anywhere in this repo or its history (searched on 2026-10-03), so it is
 recorded here only as dropped: the rule is no longer how many zoom steps
@@ -3283,6 +3300,8 @@ resolution of the method** - the empty two-frame wait is subtracted, and
 on a fast machine a pan takes less than one frame, so the pan column
 came out between -11 and +1 ms. Read a negative pan as "under a frame",
 not as a number. Neither machine is a phone.
+
+**Visible-only drawing, measured and built 2026-10-19.** Measured the same day with 1,865 clubs (Alexandru's figure for the load test; the club files on `main` hold 565 on the map, so that run used a larger list than the repo's): redrawing every marker with SVG cost 123-147 ms for `drawClubs()` and 215-266 ms for a zoom step at z7-z9 at 4x CPU; drawing only the clubs inside the padded visible bounds cut z7 to 21 / 43 ms and z9 to 5 / 12 ms (draw / zoom step); at z3-z5 everything is in view and nothing changes. **Built** in `drawClubs()`: the tier rule and the grouping by exact coordinate still run over every club, so the chip counts every club and shared ground the zoom shows; only a ground inside `MAP.getBounds().pad(0.5)` gets a marker. It redraws on `zoomend` and `moveend` (through `redrawOnMove()`, which skips a move that stays inside the last redraw's padded bounds at the same zoom, so a zoom - `zoomend` then `moveend` - draws once and a pan of up to half a screen costs nothing, and an open ground popup is not closed by its own auto-pan), and, as before, after the club files load, a language change and a theme change (those call `drawClubs()` itself, which always redraws). A map measured at zero size draws everything, as before. **Measured on this branch with the repo's 565 clubs** (`tools/test_zoom.js`, 4x CPU, median of 15, `drawClubs()` / zoom step to painted frame, new then old): z7 Ruhr 15.1 / 38.5 ms against 45.9 / 77.3; z8 Ruhr 4.7 / 18.4 against 57.0 / 92.0; z9 Ruhr 6.8 / 11.1 against 64.1 / 105.7; z9 Bucharest 4.0 / 11.0 against 51.2 / 81.4 (18 pairs are printed by every run). **Places that could have expected a marker for an off-screen club, checked:** `goToClub()` (flies first; its sheet opens on `moveend`, which draws the club first), the search, the Near me and coverage rows (all call `goToClub()`), the route panel and the derbies panel (their rows call `openSheet()` on a club from `CLUBS` directly, with no marker and no flight; a route's `fitBounds` ends in a `moveend`, which draws what the route passes), the sheet's ground-mates (built from `CLUBS`; a mate or a rival tapped in the sheet goes through `goToClub()`), the legend's shared-ground row and the corner chip (computed over all grouped clubs). Nothing reads a marker except the tests, which fly first.
 
 **Tier zoom bands for tier 4 and deeper were merged into one, 2026-09-19.**
 *(Superseded on 2026-10-03 by the entry above: the shared band now starts

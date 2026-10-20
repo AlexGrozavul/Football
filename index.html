@@ -3575,10 +3575,11 @@ const labelsOf = (prefix, keys) => new Proxy({}, {get: (_, k) => keys.includes(k
    deeper than it share one threshold, DEEP_TIER_ZOOM - the zoom tier 3
    used on its own before this merge (2026-10-03). That is a guaranteed
    property, checked by tools/test_zoom.js on every change to the page:
-   at DEEP_TIER_ZOOM every club on the map is drawn, whatever its tier,
-   so nobody has to zoom further in to find a club that is there. A
-   newly discovered tier 9 or 10 club falls into the same band with no
-   change here. */
+   at DEEP_TIER_ZOOM every club inside the visible bounds plus 50%
+   padding is drawn (drawClubs() draws nothing further out - it is drawn
+   as soon as the map moves there), whatever its tier, so nobody has to
+   zoom further in to find a club that is there. A newly discovered tier
+   9 or 10 club falls into the same band with no change here. */
 const TIER_FROM_ZOOM = {1:0, 2:7};
 const DEEP_TIER_ZOOM = 9;
 function zoomForTier(tier){
@@ -3851,9 +3852,22 @@ function groundMarker(clubs, zoom){
    exactly the clubs visible at the current zoom, and its number is how
    many those are. The Fritz-Walter-Stadion is a plain 1. FC
    Kaiserslautern marker from z7 and turns into a "2" at z9, when the
-   reserve team's tier switches on. */
+   reserve team's tier switches on.
+
+   Only grounds inside the map bounds padded by 50% get a marker (since
+   2026-10-19): with 1,865 clubs, redrawing every marker cost 123-147 ms
+   at z7-z9 at 4x CPU. The tier rule and the grouping still run over every
+   club, so the corner chip counts all clubs and shared grounds at this
+   zoom, not only the drawn ones. Nothing else relies on a marker existing:
+   goToClub() flies first, and the redraw on moveend draws the club. */
+let DRAWN = null;          // {zoom, bounds} of the last redraw, so a pan inside it costs nothing
 function drawClubs(){
   const zoom = MAP.getZoom();
+  const size = MAP.getSize();
+  /* A map measured at zero size has no usable bounds: draw everything, as
+     before, and let the next move redraw. */
+  const bounds = size.x > 0 && size.y > 0 ? MAP.getBounds().pad(0.5) : null;
+  DRAWN = bounds ? {zoom, bounds} : null;
   LAYER.clearLayers();
 
   const points = new Map();
@@ -3868,10 +3882,11 @@ function drawClubs(){
   let shown = 0, shared = 0;
   for(const clubs of points.values()){
     shown += clubs.length;
+    if(clubs.length > 1) shared++;
+    if(bounds && !bounds.contains([clubs[0].lat, clubs[0].lon])) continue;
     if(clubs.length === 1){
       soloMarker(clubs[0], zoom).addTo(LAYER);
     }else{
-      shared++;
       clubs.sort((a, b) => a.tier - b.tier ||
         String(a.name || a.id).localeCompare(String(b.name || b.id)));
       groundMarker(clubs, zoom).addTo(LAYER);
@@ -3887,6 +3902,13 @@ function drawClubs(){
     el.classList.toggle('off', zoom < zoomForTier(t));
   });
   document.querySelector('#legend .shared')?.classList.toggle('off', !shared);
+}
+/* The map's own events: after a zoom or a move, redraw unless the last
+   redraw is at this zoom and already covers everything now in view (a
+   zoom fires zoomend and then moveend; a small pan fires moveend only). */
+function redrawOnMove(){
+  if(DRAWN && DRAWN.zoom === MAP.getZoom() && MAP.getSize().x > 0 && DRAWN.bounds.contains(MAP.getBounds())) return;
+  drawClubs();
 }
 
 /* Map tiles fetched with fetch() instead of a plain <img src>, so the
@@ -4021,7 +4043,7 @@ async function initMap(){
   LAYER = L.layerGroup([], {renderer: L.canvas({padding:.5})}).addTo(MAP);
 
   buildLegend();
-  MAP.on('zoomend', drawClubs);
+  MAP.on('zoomend moveend', redrawOnMove);
   MAP.on('click', ev => PICKING ? pickPoint(ev.latlng.lat, ev.latlng.lng) : closeSheet());
   ROUTE_LAYER = L.layerGroup().addTo(MAP);
 
