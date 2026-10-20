@@ -168,6 +168,12 @@ USER_AGENT = ("football-fixture-planner/1.0 (personal project; "
 # stadium, 14 Pro League grounds, then 22 others. Short names again:
 # "Zulte", "Royal FC", "St-Truiden VV", "Waasland-Beveren" (Beveren's old
 # name) will not all match ours.
+# Portugal's "por" on 2026-10-20: /stadiums/por answers 200 on a runner
+# (prt, portugal and pt were not needed once por answered; the page is three
+# tables, 23,953 bytes). 39 grounds: 12 listed with Primeira Liga clubs, 11
+# with Liga Portugal 2 clubs (Benfica B's Seixal campus among them), then 16
+# others (the national stadium, old and lower-league grounds). Short names
+# again ("Sporting", "Vitória", "Nacional Madeira", "FC de Panafiel").
 COUNTRY_PAGES = {
     "DE": ("ger", "Germany"),
     "RO": ("rou", "Romania"),
@@ -181,6 +187,7 @@ COUNTRY_PAGES = {
     "GB": ("eng", "England"),
     "NL": ("ned", "Netherlands"),
     "BE": ("bel", "Belgium"),
+    "PT": ("por", "Portugal"),
 }
 
 # A country file is a league PYRAMID, not a territory (CLAUDE.md, the
