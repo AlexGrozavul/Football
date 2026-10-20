@@ -124,51 +124,38 @@ jobs:
           P("PROBE START")
           def robots(host):
               c, b = get("https://%s/robots.txt" % host)
-              P("robots", host, c, "| bytes", len(b), "|", re.sub(r"\s+", " ", b[:160]))
-              return c
-          # --- Overpass
-          if robots("overpass-api.de") in (200, 404):
-              def ov(q, label):
-                  c, b = get("https://overpass-api.de/api/interpreter", data=urllib.parse.urlencode({"data": q}).encode())
-                  if c != 200: P("OVERPASS", label, "HTTP", c, b[:100]); return
-                  for e in json.loads(b)["elements"]:
-                      ct = e.get("center") or e
-                      tg = e.get("tags", {})
-                      P("OSM", label, e["type"] + "/" + str(e["id"]), "%.6f %.6f" % (ct.get("lat", 0), ct.get("lon", 0)), "|", tg.get("name"), "|", tg.get("leisure"), tg.get("sport"), tg.get("capacity"))
-                  P("OSM", label, "n=", len(json.loads(b)["elements"]))
-              ov('[out:json][timeout:60];(way(870819809);way(305202095););out tags center;', "lusit-two-ways")
-              ov('[out:json][timeout:60];nwr["name"~"Lourosa|Lusit"]["leisure"~"stadium|pitch|sports_centre"](around:1500,40.9879,-8.5436);out tags center;', "lusit-around")
-              ov('[out:json][timeout:60];nwr["name"~"Rio Maior"]["leisure"~"stadium|pitch|sports_centre"](around:3000,39.3444,-8.9353);out tags center;', "riomaior-around")
-              ov('[out:json][timeout:60];nwr["leisure"~"stadium|pitch"]["sport"~"soccer|football"](around:600,39.3444,-8.9353);out tags center;', "riomaior-soccer600")
-          # --- Wikidata (Wikimedia: maxlag)
-          def wd(params):
-              q = urllib.parse.urlencode(dict(params, format="json", maxlag="5"))
-              return get("https://www.wikidata.org/w/api.php?" + q)
-          for term in ("Estádio Municipal de Rio Maior", "Estádio do Lusitânia de Lourosa"):
-              c, b = wd({"action": "wbsearchentities", "search": term, "language": "pt", "limit": "5"})
-              P("WD search", term, c, b[:60] if c != 200 else [(x["id"], x.get("label"), x.get("description")) for x in json.loads(b).get("search", [])])
-              if c == 200:
-                  ids = [x["id"] for x in json.loads(b).get("search", [])][:3]
-                  if ids:
-                      c2, b2 = wd({"action": "wbgetentities", "ids": "|".join(ids), "props": "claims|labels", "languages": "en|pt"})
-                      if c2 == 200:
-                          for i, e in json.loads(b2)["entities"].items():
-                              cl = e.get("claims", {})
-                              g = lambda p: [x.get("mainsnak", {}).get("datavalue", {}).get("value") for x in cl.get(p, [])]
-                              P("WD item", i, e.get("labels", {}).get("pt", e.get("labels", {}).get("en", {})).get("value"), "P625", g("P625"), "P1083", g("P1083"), "P31", [v.get("id") for v in g("P31") if v])
-          # --- StadiumDB
-          if robots("stadiumdb.com") in (200, 404):
-              c, b = get("https://stadiumdb.com/stadiums/por")
-              P("STADIUMDB por", c, len(b))
-              for ln in re.split(r"</tr>", b):
-                  t = re.sub(r"<[^>]+>", " ", ln); t = re.sub(r"\s+", " ", t)
-                  if re.search(r"Rio Maior|Casa Pia|Lourosa|Lusit|Pina Manique", t): P("STADIUMDB row", t[:200])
-          # --- Club site and league
-          for host, url in (("casapiaac.pt", "https://casapiaac.pt/"), ("www.ligaportugal.pt", "https://www.ligaportugal.pt/en/")):
-              rc = robots(host)
-              if rc in (200, 404):
+              P("robots", host, c, "| bytes", len(b), "|", re.sub(r"\s+", " ", b[:200]))
+              return c, b
+          def allowed(b, path):
+              ua = False; dis = []
+              for ln in b.splitlines():
+                  l = ln.strip()
+                  if l.lower().startswith("user-agent:"): ua = l.split(":", 1)[1].strip() == "*"
+                  elif ua and l.lower().startswith("disallow:"):
+                      d = l.split(":", 1)[1].strip()
+                      if d and path.startswith(d): return False
+              return True
+          for host, url in (
+              ("www.espn.com", "https://www.espn.com/soccer/match/_/gameId/750491"),
+              ("www.espn.com", "https://global.espn.com/football/match/_/gameId/750527/tondela-casa-pia"),
+              ("prod.beinsports.com", "https://prod.beinsports.com/en-us/soccer/articles/live-casa-pia-vs-benfica-the-eagles-look-to-bounce-back-in-liga-portugal-on-bein-sports-2026-08-17")):
+              h = host
+              if "global.espn" in url: h = "global.espn.com"
+              rc, rb = robots(h)
+              path = urllib.parse.urlparse(url).path
+              if rc in (200, 404) and (rc == 404 or allowed(rb, path)):
                   c, b = get(url)
-                  hits = [re.sub(r"\s+", " ", b[max(0, m.start() - 80): m.start() + 120]) for m in re.finditer(r"Rio Maior", b)][:4]
-                  P("SITE", url, c, len(b), "hits", len(hits)); [P("  HIT", h) for h in hits]
+                  bot = bool(re.search(r"captcha|are you a robot|access denied|challenge", b[:3000], re.I)) if c == 200 else False
+                  P("PAGE", url, c, len(b), "botchallenge?", bot)
+                  if c == 200 and not bot:
+                      t = re.sub(r"<script.*?</script>|<style.*?</style>", " ", b, flags=re.S)
+                      t = re.sub(r"<[^>]+>", " ", t); t = re.sub(r"\s+", " ", t)
+                      for m in list(re.finditer(r"Rio Maior|Pina Manique|Venue|Estádio|Estadio|Stadium", t))[:6]:
+                          P("  HIT", t[max(0, m.start() - 100): m.start() + 160])
+                      for m in list(re.finditer(r"Casa Pia", t))[:2]:
+                          P("  TITLE", t[max(0, m.start() - 60): m.start() + 140])
+                  elif c != 200: P("  body", re.sub(r"\s+", " ", b[:150]))
+              else:
+                  P("  robots disallow or error: not fetched", url)
           P("PROBE END")
           PY
