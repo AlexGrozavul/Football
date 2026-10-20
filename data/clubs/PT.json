@@ -93,8 +93,8 @@
    "lat": 38.898811,
    "lon": -9.036763,
    "city": null,
-   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Primeira_Liga; https://en.wikipedia.org/wiki/F.C._Alverca; https://www.wikidata.org/wiki/Q136001729",
-   "note": "PLACED, 2026-10-20, in the Portugal pass. Q1386850 carries a Primeira Liga tag (preferred rank from 2025), the tier the 2026-27 Primeira Liga table gives, but no P115 and no P625, so it was dropped at the coordinates gate. Ground: the Complexo Desportivo do FC Alverca - named by the club's English article ('The club's home venue is the 6,932 capacity Complexo Desportivo do FC Alverca') and by the 2026-27 Primeira Liga table. Position: the ground's own Wikidata item Q136001729 (P625, no capacity). Capacity blank: 6,932 appears only on Wikipedia (the table and the club's article are one source) and StadiumDB has no row for it.",
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Primeira_Liga; https://en.wikipedia.org/wiki/F.C._Alverca; https://www.wikidata.org/wiki/Q136001729; https://www.openstreetmap.org/way/1148238538",
+   "note": "PLACED, 2026-10-20, in the Portugal pass. Q1386850 carries a Primeira Liga tag (preferred rank from 2025), the tier the 2026-27 Primeira Liga table gives, but no P115 and no P625, so it was dropped at the coordinates gate. Ground: the Complexo Desportivo do FC Alverca - named by the club's English article ('The club's home venue is the 6,932 capacity Complexo Desportivo do FC Alverca') and by the 2026-27 Primeira Liga table. Position: the ground's own Wikidata item Q136001729 (P625, no capacity). OpenStreetMap was read later the same day and names the complex only approximately: way/1148238538 'Complexo Desportivo FC Alverca' (a sports_centre, no 'do') at 38.8975648 / -9.0353682 and way/114731386 'Estádio do FC Alverca' (a stadium) at 38.8978826 / -9.035234, 184 m and 167 m from the item's point. Neither name equals the ground's name exactly, so neither is counted as a source and the 150 m test is not applied; the item's point stands alone and the difference is written down. Capacity blank: 6,932 appears only on Wikipedia (the table and the club's article are one source) and StadiumDB has no row for it.",
    "manual": true,
    "competition": "Primeira Liga"
   },
@@ -296,6 +296,23 @@
    "competition": "Liga Portugal 2"
   },
   {
+   "id": "Q3494112",
+   "name": "Sporting CP B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Aurélio Pereira",
+   "capacity": null,
+   "lat": 38.729734,
+   "lon": -8.848912,
+   "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/Sporting_CP_B; https://en.wikipedia.org/wiki/Academia_Cristiano_Ronaldo; https://www.openstreetmap.org/way/135459411",
+   "note": "GROUND CORRECTED AND PLACED, 2026-10-20, in the Portugal pass. Wikidata's P115 is the Estádio José Alvalade, the first team's ground (a copy). The club's English article and the 2026-27 Liga Portugal 2 table both name the Estádio Aurélio Pereira in the Academia Cristiano Ronaldo, Alcochete (1,180): two places for the ground. Position: OpenStreetMap way/135459411, a leisure=stadium element whose name is exactly 'Estádio Aurélio Pereira' (read on a runner, 38.7297336 / -8.8489115) - the only ground-specific source, so the position rests on it alone; the academy's own coordinate (Wikipedia and Wikidata Q2945331, 38.73028 / -8.85) is a different, larger object and lies about 110 m away, consistent with it but not counted as a source. It was first left off the map on 2026-10-20 because Overpass was at capacity and no ground-specific coordinate had been read; a retry later the same day answered. Capacity cleared: 1,180 appears only on Wikipedia (the table and the club's article are one source).",
+   "manual": true,
+   "competition": "Liga Portugal 2"
+  },
+  {
    "id": "Q5423714",
    "name": "FC Porto B",
    "leagues": [
@@ -307,8 +324,8 @@
    "lat": 41.065921,
    "lon": -8.51707,
    "city": null,
-   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/FC_Porto_B; https://en.wikipedia.org/wiki/CTFD_PortoGaia",
-   "note": "GROUND CORRECTED, 2026-10-20, in the Portugal pass - reviewable. Wikidata's P115 is the Estádio Municipal Jorge Sampaio in Pedroso (8,500). Against it: the club's English article says it plays 'at the CTFD PortoGaia main pitch'; the 2026-27 Liga Portugal 2 table gives the Estádio Luís Filipe Menezes, Vila Nova de Gaia (3,800); and the CTFD PortoGaia article says the complex has 'one grass pitch with a 3,800-capacity grandstand and floodlighting named Estádio Luís Filipe Menezes', so the table's ground and the club article's are one. The Jorge Sampaio article ('used by FC Porto B as their home ground') is the one that disagrees and is the stale statement. Position: the CTFD PortoGaia article's own coordinate (the complex, whose only stadium pitch this is); no OpenStreetMap element was read (Overpass was at capacity). Capacity cleared: 3,800 appears only on Wikipedia (the table and the CTFD article) and Wikidata's 8,500 belongs to the other ground.",
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_Portugal_2; https://en.wikipedia.org/wiki/FC_Porto_B; https://en.wikipedia.org/wiki/CTFD_PortoGaia; https://www.openstreetmap.org/way/1003177522",
+   "note": "GROUND CORRECTED, 2026-10-20, in the Portugal pass - reviewable. Wikidata's P115 is the Estádio Municipal Jorge Sampaio in Pedroso (8,500). Against it: the club's English article says it plays 'at the CTFD PortoGaia main pitch'; the 2026-27 Liga Portugal 2 table gives the Estádio Luís Filipe Menezes, Vila Nova de Gaia (3,800); and the CTFD PortoGaia article says the complex has 'one grass pitch with a 3,800-capacity grandstand and floodlighting named Estádio Luís Filipe Menezes', so the table's ground and the club article's are one. The Jorge Sampaio article ('used by FC Porto B as their home ground') is the one that disagrees and is the stale statement. Position: the CTFD PortoGaia article's own coordinate (41.065921 / -8.51707, the complex, whose only stadium pitch this is), confirmed by OpenStreetMap way/1003177522, a leisure=stadium element named exactly 'Estádio Luís Filipe Menezes' (41.0660073 / -8.5169135, about 10 m away); two ground-specific sources that agree. Capacity cleared: 3,800 appears only on Wikipedia (the table and the CTFD article) and Wikidata's 8,500 belongs to the other ground.",
    "manual": true,
    "competition": "Liga Portugal 2"
   },
