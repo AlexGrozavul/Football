@@ -141,14 +141,14 @@
   },
   "PT": {
    "name": "Portugal",
-   "onMap": 48,
+   "onMap": 33,
    "byTier": {
-    "1": 20,
-    "2": 28
+    "1": 17,
+    "2": 16
    },
-   "withVenueName": 48,
-   "withCapacity": 47,
-   "handCorrected": 0
+   "withVenueName": 33,
+   "withCapacity": 31,
+   "handCorrected": 11
   }
  }
 }
