@@ -76,8 +76,9 @@ const check = (name, ok, detail='') => { results.push([ok, name, detail]); conso
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.waitForFunction(() => !!navigator.serviceWorker.controller, null, {timeout: 15000});
   const poll = async (fn, ms) => { const t0 = Date.now(); while(Date.now() - t0 < ms){ if(await fn()) return true; await new Promise(r => setTimeout(r, 300)); } return false; };
+  const nCountryFiles = await page.evaluate(() => COUNTRY_FILES.length);   // read from the page: a new country needs no edit here
   const warmed = await poll(async () => { const k = (await cacheKeys())['football-data-v1'] || [];
-     return k.includes('/Football/data/football-rules.json') && k.filter(u => /data\/clubs\/[A-Z]{2}\.json$/.test(u)).length === 12; }, 20000);
+     return k.includes('/Football/data/football-rules.json') && k.filter(u => /data\/clubs\/[A-Z]{2}\.json$/.test(u)).length === nCountryFiles; }, 20000);
   check('first visit: files loaded before the worker took over are saved for offline', warmed, JSON.stringify((await cacheKeys())['football-data-v1']));
   const s1 = await state();
   check('first visit loads, online, no banner, no map card', s1.clubs > 400 && !s1.banner && !s1.mapOff, JSON.stringify({clubs:s1.clubs, banner:s1.banner, mapOff:s1.mapOff}));
