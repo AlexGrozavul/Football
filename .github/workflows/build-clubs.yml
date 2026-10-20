@@ -21,11 +21,6 @@ on:
       - "tools/fetch_clubs.py"
       - ".github/workflows/build-clubs.yml"
   workflow_dispatch:
-    inputs:
-      step:
-        description: 'TEMPORARY probe step (empty = real build)'
-        required: false
-        default: ''
 
 permissions:
   contents: write
@@ -35,19 +30,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  probe:
-    if: github.event.inputs.step != ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v5
-      - name: Probe
-        run: |
-          set -o pipefail
-          python3 tools/_probe.py "${{ github.event.inputs.step }}" 2>&1 | tee /tmp/probe.log
-
   clubs:
-    if: github.event.inputs.step == ''
     runs-on: ubuntu-latest
 
     steps:
