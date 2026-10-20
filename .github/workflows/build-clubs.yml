@@ -119,43 +119,8 @@ jobs:
                       if t == 3: return 0, str(e)[:200]
                       time.sleep(10)
               return 0, "gave up"
-          out = []
-          def P(*a): out.append(" ".join(str(x) for x in a)); print(*a, flush=True)
-          P("PROBE START")
-          def robots(host):
-              c, b = get("https://%s/robots.txt" % host)
-              P("robots", host, c, "| bytes", len(b), "|", re.sub(r"\s+", " ", b[:200]))
-              return c, b
-          def allowed(b, path):
-              ua = False; dis = []
-              for ln in b.splitlines():
-                  l = ln.strip()
-                  if l.lower().startswith("user-agent:"): ua = l.split(":", 1)[1].strip() == "*"
-                  elif ua and l.lower().startswith("disallow:"):
-                      d = l.split(":", 1)[1].strip()
-                      if d and path.startswith(d): return False
-              return True
-          for host, url in (
-              ("www.espn.com", "https://www.espn.com/soccer/match/_/gameId/750491"),
-              ("www.espn.com", "https://global.espn.com/football/match/_/gameId/750527/tondela-casa-pia"),
-              ("prod.beinsports.com", "https://prod.beinsports.com/en-us/soccer/articles/live-casa-pia-vs-benfica-the-eagles-look-to-bounce-back-in-liga-portugal-on-bein-sports-2026-08-17")):
-              h = host
-              if "global.espn" in url: h = "global.espn.com"
-              rc, rb = robots(h)
-              path = urllib.parse.urlparse(url).path
-              if rc in (200, 404) and (rc == 404 or allowed(rb, path)):
-                  c, b = get(url)
-                  bot = bool(re.search(r"captcha|are you a robot|access denied|challenge", b[:3000], re.I)) if c == 200 else False
-                  P("PAGE", url, c, len(b), "botchallenge?", bot)
-                  if c == 200 and not bot:
-                      t = re.sub(r"<script.*?</script>|<style.*?</style>", " ", b, flags=re.S)
-                      t = re.sub(r"<[^>]+>", " ", t); t = re.sub(r"\s+", " ", t)
-                      for m in list(re.finditer(r"Rio Maior|Pina Manique|Venue|Estádio|Estadio|Stadium", t))[:6]:
-                          P("  HIT", t[max(0, m.start() - 100): m.start() + 160])
-                      for m in list(re.finditer(r"Casa Pia", t))[:2]:
-                          P("  TITLE", t[max(0, m.start() - 60): m.start() + 140])
-                  elif c != 200: P("  body", re.sub(r"\s+", " ", b[:150]))
-              else:
-                  P("  robots disallow or error: not fetched", url)
-          P("PROBE END")
+          import urllib.request
+          req = urllib.request.Request("https://prod.beinsports.com/robots.txt", headers={"User-Agent": UA})
+          with urllib.request.urlopen(req, timeout=60) as r:
+              print("ROBOTS", r.status); print(r.read().decode())
           PY
