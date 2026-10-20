@@ -1,0 +1,681 @@
+{
+ "source": "Wikidata, corrected by data/clubs-manual.csv",
+ "note": "Tier comes from data/league-tiers.csv, never from a league name.",
+ "country": "PT",
+ "countryName": "Portugal",
+ "clubs": [
+  {
+   "id": "Q1023163",
+   "name": "Clube Desportivo das Aves",
+   "leagues": [
+    "Q754488",
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio do CD das Aves",
+   "capacity": 6230,
+   "lat": 41.366932,
+   "lon": -8.411789,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1023227",
+   "name": "CD Tondela",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio João Cardoso",
+   "capacity": 5000,
+   "lat": 40.512,
+   "lon": -8.08282,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1023233",
+   "name": "C.D. Trofense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Clube Desportivo Trofense",
+   "capacity": 5017,
+   "lat": 41.332833,
+   "lon": -8.564367,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q1031307",
+   "name": "S.C. Freamunde",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Complexo Desportivo do Sport Clube de Freamunde",
+   "capacity": 3919,
+   "lat": 41.276389,
+   "lon": -8.339444,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q1256652",
+   "name": "Gondomar S.C.",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio de São Miguel",
+   "capacity": 2450,
+   "lat": 41.135956,
+   "lon": -8.541758,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q128446",
+   "name": "FC Porto",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio do Dragão",
+   "capacity": 50033,
+   "lat": 41.161758,
+   "lon": -8.583933,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q131499",
+   "name": "S.L. Benfica",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio da Luz",
+   "capacity": 68100,
+   "lat": 38.752778,
+   "lon": -9.184722,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1346314",
+   "name": "Moreirense F.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Parque de Jogos Comendador Joaquim de Almeida Freitas",
+   "capacity": 6150,
+   "lat": 41.378089,
+   "lon": -8.354761,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1386869",
+   "name": "F.C. Arouca",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal de Arouca",
+   "capacity": 5600,
+   "lat": 40.928333,
+   "lon": -8.248611,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1387105",
+   "name": "FC Famalicão",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal 22 de Junho",
+   "capacity": 5186,
+   "lat": 41.401278,
+   "lon": -8.522422,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1387110",
+   "name": "F.C. Felgueiras",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Dr. Machado de Matos",
+   "capacity": 7540,
+   "lat": 41.356,
+   "lon": -8.190722,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1387471",
+   "name": "F.C. Penafiel",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal 25 de Abril",
+   "capacity": 5230,
+   "lat": 41.2117,
+   "lon": -8.277919,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q1387855",
+   "name": "F.C. Vizela",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Futebol Clube de Vizela",
+   "capacity": 6000,
+   "lat": 41.388722,
+   "lon": -8.307511,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q1429473",
+   "name": "Varzim S.C.",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Varzim Sport Club",
+   "capacity": 7280,
+   "lat": 41.387836,
+   "lon": -8.772575,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q17518847",
+   "name": "Vitória S.C. B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio D. Afonso Henriques",
+   "capacity": 30029,
+   "lat": 41.445833,
+   "lon": -8.300972,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q176099",
+   "name": "C.D. Fátima",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal de Fátima",
+   "capacity": 1545,
+   "lat": 39.603509,
+   "lon": -8.663272,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q1762119",
+   "name": "C.F. União",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Campo do Adelino Rodrigues",
+   "capacity": 2000,
+   "lat": 32.649333,
+   "lon": -16.900361,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q1853273",
+   "name": "S.C.U. Torreense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Manuel Marques",
+   "capacity": 2431,
+   "lat": 39.094878,
+   "lon": -9.256594,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q1891367",
+   "name": "S.C. Covilhã",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Complexo Desportivo da Covilhã",
+   "capacity": 3000,
+   "lat": 40.264889,
+   "lon": -7.497869,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q2061414",
+   "name": "U.D. Oliveirense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Carlos Osório",
+   "capacity": 1750,
+   "lat": 40.8419,
+   "lon": -8.4703,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q211401",
+   "name": "U.D. Leiria",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Dr. Magalhães Pessoa",
+   "capacity": 23888,
+   "lat": 39.748611,
+   "lon": -8.813056,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q216459",
+   "name": "C.D. Nacional",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio da Madeira",
+   "capacity": 5200,
+   "lat": 32.670625,
+   "lon": -16.883525,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q216503",
+   "name": "C.S. Marítimo",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio do Marítimo",
+   "capacity": 10600,
+   "lat": 32.645561,
+   "lon": -16.928331,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q216510",
+   "name": "C.F. Os Belenenses",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Restelo",
+   "capacity": 19856,
+   "lat": 38.702778,
+   "lon": -9.207778,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q223450",
+   "name": "Vitória S.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio D. Afonso Henriques",
+   "capacity": 30029,
+   "lat": 41.445833,
+   "lon": -8.300972,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q2410944",
+   "name": "Académico de Viseu FC",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Fontelo",
+   "capacity": 6912,
+   "lat": 40.659444,
+   "lon": -7.900833,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q243235",
+   "name": "Associação Académica de Coimbra – O.A.F.",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Cidade de Coimbra",
+   "capacity": 29622,
+   "lat": 40.203333,
+   "lon": -8.407778,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q290884",
+   "name": "A.D. Ovarense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Marques da Silva",
+   "capacity": 3200,
+   "lat": 40.864722,
+   "lon": -8.626111,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q3494112",
+   "name": "Sporting CP B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio José Alvalade",
+   "capacity": 52095,
+   "lat": 38.761194,
+   "lon": -9.160783,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q371136",
+   "name": "F.C. Paços de Ferreira",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Capital do Móvel",
+   "capacity": 9076,
+   "lat": 41.271389,
+   "lon": -8.385278,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q5006215",
+   "name": "C.S. Marítimo B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Campo da Imaculada Conceição",
+   "capacity": null,
+   "lat": 32.670966,
+   "lon": -16.936198,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q5423714",
+   "name": "FC Porto B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal Jorge Sampaio",
+   "capacity": 8500,
+   "lat": 41.067158,
+   "lon": -8.544812,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q543467",
+   "name": "G.D. Chaves",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal Eng. Manuel Branco Teixeira",
+   "capacity": 8400,
+   "lat": 41.75064,
+   "lon": -7.464985,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q59212899",
+   "name": "B-SAD",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Nacional",
+   "capacity": 37593,
+   "lat": 38.708806,
+   "lon": -9.260833,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q621120",
+   "name": "Portimonense S.C.",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal de Portimão",
+   "capacity": 4961,
+   "lat": 37.135694,
+   "lon": -8.539833,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q622432",
+   "name": "Rio Ave F.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio do Rio Ave FC",
+   "capacity": 5300,
+   "lat": 41.362756,
+   "lon": -8.740186,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q623730",
+   "name": "Leixões S.C.",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio do Mar",
+   "capacity": 6000,
+   "lat": 41.183889,
+   "lon": -8.666944,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q634829",
+   "name": "G.D. Estoril Praia",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio António Coimbra da Mota",
+   "capacity": 5094,
+   "lat": 38.716,
+   "lon": -9.406,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q671042",
+   "name": "C.D. Feirense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Marcolino de Castro",
+   "capacity": 5401,
+   "lat": 40.926689,
+   "lon": -8.545814,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q688300",
+   "name": "S.C. Beira-Mar",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal de Aveiro – Mário Duarte",
+   "capacity": 32830,
+   "lat": 40.6475,
+   "lon": -8.593611,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q7387221",
+   "name": "S.L. Benfica B",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio da Luz",
+   "capacity": 68100,
+   "lat": 38.752778,
+   "lon": -9.184722,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q740637",
+   "name": "C.D. Santa Clara",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio de São Miguel",
+   "capacity": 12500,
+   "lat": 37.763708,
+   "lon": -25.622589,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q744353",
+   "name": "S.C. Farense",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Algarve",
+   "capacity": 30305,
+   "lat": 37.088333,
+   "lon": -7.974722,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q75684",
+   "name": "S.C. Braga",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Municipal de Braga",
+   "capacity": 30286,
+   "lat": 41.5624,
+   "lon": -8.4308,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q75729",
+   "name": "Sporting CP",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio José Alvalade",
+   "capacity": 52095,
+   "lat": 38.761194,
+   "lon": -9.160783,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q838134",
+   "name": "C.F. Estrela da Amadora",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio José Gomes",
+   "capacity": 9288,
+   "lat": 38.752036,
+   "lon": -9.227967,
+   "city": null,
+   "competition": "Primeira Liga"
+  },
+  {
+   "id": "Q846008",
+   "name": "Associação Naval 1º de Maio",
+   "leagues": [
+    "Q754488"
+   ],
+   "tier": 2,
+   "venue": "Estádio Municipal José Bento Pessoa",
+   "capacity": 9000,
+   "lat": 40.162675,
+   "lon": -8.859369,
+   "city": null,
+   "competition": "Liga Portugal 2"
+  },
+  {
+   "id": "Q926438",
+   "name": "Gil Vicente F.C.",
+   "leagues": [
+    "Q182994"
+   ],
+   "tier": 1,
+   "venue": "Estádio Cidade de Barcelos",
+   "capacity": 12046,
+   "lat": 41.551111,
+   "lon": -8.622778,
+   "city": null,
+   "competition": "Primeira Liga"
+  }
+ ]
+}

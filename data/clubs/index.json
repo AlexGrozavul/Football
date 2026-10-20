@@ -138,6 +138,17 @@
    "withVenueName": 33,
    "withCapacity": 26,
    "handCorrected": 24
+  },
+  "PT": {
+   "name": "Portugal",
+   "onMap": 48,
+   "byTier": {
+    "1": 20,
+    "2": 28
+   },
+   "withVenueName": 48,
+   "withCapacity": 47,
+   "handCorrected": 0
   }
  }
 }
