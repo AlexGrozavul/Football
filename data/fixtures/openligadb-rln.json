@@ -4331,9 +4331,20 @@
     "shortName": "Eimsbütteler TV",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/1/14/Eimsb%C3%BCtteler_TV_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4341,7 +4352,7 @@
   {
    "id": 87155,
    "utcDate": "2026-10-18T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4356,9 +4367,20 @@
     "shortName": "VfB Oldenburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/bc/VfB_Oldenburg.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4366,7 +4388,7 @@
   {
    "id": 87157,
    "utcDate": "2026-10-18T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4381,9 +4403,20 @@
     "shortName": "SVT",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/1/1d/SVTodesfelde_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

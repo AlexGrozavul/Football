@@ -3588,7 +3588,7 @@
     "shortName": null,
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
    },
-   "homeGoals": 1,
+   "homeGoals": 2,
    "awayGoals": 1,
    "results": [
     {
@@ -3598,7 +3598,7 @@
     },
     {
      "name": "Endergebnis",
-     "home": 1,
+     "home": 2,
      "away": 1
     }
    ],
