@@ -237,6 +237,46 @@ def step_pt2():
     say("  " + (str(rows[0]) if rows and "error" in rows[0] else f"{len(rows)} items: " + str([(qid(r,'x'), val(r,'xLabel')) for r in rows])))
     say("  women's team items typed women's pointing at any roster club were listed above under related items (look for 'women' in the description)")
 
+
+def step_grounds():
+    say("== overpass robots")
+    s_, b, _ = get("https://overpass-api.de/robots.txt"); say(f"  robots {s_} {b[:120]!r}")
+    q = ('[out:json][timeout:150];area["ISO3166-1"="PT"][admin_level=2]->.a;('
+         'nwr(area.a)["name"~"Alverca|Lusit.nia|Aur.lio Pereira|Aves|Lu.s Filipe Menezes|Jorge Sampaio|Rio Maior|Benfica Campus|Futebol Campus|CTFD|PortoGaia|S.o Lu.s|Casa Pia|Pina Manique",i]["leisure"~"stadium|pitch|sports_centre|training_ground"];'
+         'nwr(area.a)["name"~"Alverca|Lusit.nia|Aur.lio Pereira|Aves|Lu.s Filipe Menezes|Jorge Sampaio|Rio Maior|Benfica Campus|Futebol Campus|CTFD|PortoGaia|S.o Lu.s",i]["building"="stadium"];'
+         ');out center tags;')
+    for attempt in range(3):
+        s_, b, _ = get("https://overpass-api.de/api/interpreter", data=urllib.parse.urlencode({"data": q}).encode(), headers={"Content-Type": "application/x-www-form-urlencoded"}, tries=2)
+        if s_ == 200: break
+        say(f"  overpass HTTP {s_} {b[:100]!r}"); time.sleep(30)
+    if s_ == 200:
+        els = json.loads(b)["elements"]; say(f"  {len(els)} elements")
+        for e in els:
+            t = e.get("tags", {}); c = e.get("center") or {"lat": e.get("lat"), "lon": e.get("lon")}
+            say(f"  {e['type']}/{e['id']} name={t.get('name')!r} leisure={t.get('leisure')} sport={t.get('sport')} cap={t.get('capacity')} operator={t.get('operator')} at {c.get('lat')},{c.get('lon')}")
+    say("== wikidata ground items (labels, aliases, coords, capacity)")
+    ids = "wd:Q2586520 wd:Q15110461 wd:Q5510501 wd:Q2945331 wd:Q1370765"
+    rows = sparql("""SELECT ?i ?l ?alias ?c ?cap ?typeLabel WHERE { VALUES ?i { %s }
+      OPTIONAL{?i rdfs:label ?l FILTER(LANG(?l) IN ("en","pt"))} OPTIONAL{?i skos:altLabel ?alias FILTER(LANG(?alias) IN ("en","pt"))}
+      OPTIONAL{?i wdt:P625 ?c} OPTIONAL{?i wdt:P1083 ?cap} OPTIONAL{?i wdt:P31 ?type}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } }""" % ids)
+    by = {}
+    for r in rows:
+        if "error" in r: say("  FAILED " + r["error"]["value"]); break
+        d = by.setdefault(qid(r, "i"), {"l": set(), "a": set(), "c": set(), "cap": set(), "t": set()})
+        for k, f in (("l", "l"), ("a", "alias"), ("c", "c"), ("cap", "cap"), ("t", "typeLabel")):
+            if f in r: d[k].add(val(r, f)[:60])
+    for k, d in by.items(): say(f"  {k} labels={sorted(d['l'])} aliases={sorted(d['a'])} P625={sorted(d['c'])} P1083={sorted(d['cap'])} types={sorted(d['t'])}")
+    say("== grounds of Aves club item Q1023163 and its P115 item")
+    rows = sparql("""SELECT ?g ?gLabel ?c ?cap ?gr WHERE { wd:Q1023163 p:P115 ?st . ?st ps:P115 ?g . ?st wikibase:rank ?gr . OPTIONAL{?g wdt:P625 ?c} OPTIONAL{?g wdt:P1083 ?cap}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""")
+    for r in rows: say("  " + str({k: v["value"][-60:] for k, v in r.items()}))
+    say("== PT sports venues by label")
+    rows = sparql("""SELECT DISTINCT ?s ?sLabel ?c ?cap WHERE { ?s wdt:P17 wd:Q45 ; wdt:P625 ?c ; wdt:P31/wdt:P279* wd:Q1076486 ; rdfs:label ?l .
+      FILTER(LANG(?l) IN ("en","pt") && REGEX(?l, "Alverca|Lusit.nia de Lourosa|Aur.lio Pereira|Aves|Lu.s Filipe Menezes|Rio Maior|CTFD|Casa Pia|Pina Manique", "i")) OPTIONAL{?s wdt:P1083 ?cap}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,pt". } }""")
+    for r in rows: say("  " + str({k: v["value"][-70:] for k, v in r.items()}))
+
 if __name__ == "__main__":
     step = sys.argv[1]
     if step == "leagues":
@@ -246,5 +286,8 @@ if __name__ == "__main__":
             except Exception as e: say(f"  STEP FAILED {e!r}")
     if step == "pt2":
         try: step_pt2()
+        except Exception as e: say(f"  STEP FAILED {e!r}")
+    if step == "grounds":
+        try: step_grounds()
         except Exception as e: say(f"  STEP FAILED {e!r}")
     say("== DONE " + step)
