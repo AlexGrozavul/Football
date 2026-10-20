@@ -1215,6 +1215,20 @@ def hand_named_fallback(code, lang, manual_rows, fetched_rows, tiers):
 #       ("Villarreal CF", "Getafe CF") that football-data.org also uses,
 #       while the Spanish one is the full legal name ("Villarreal Club de
 #       Futbol"), which no fixture team name equals.
+#   PT  Wikidata's own P1332-P1335 on Q45, read by probe on a runner
+#       2026-10-20, are MAINLAND points only: north 42.1542 (lon -8.1989),
+#       south 36.9602, west -9.5005, east -6.1902. Madeira and the Azores are
+#       outside all four, and three 2026-27 clubs play there (Marítimo and
+#       Nacional in Funchal, Santa Clara in Ponta Delgada), so the box is
+#       widened to Madeira's south (32.35, Selvagens left out) and the
+#       Azores' west (-31.35, Flores): those two edges are FROM MEMORY, not
+#       read from a source, with a wide margin for that reason, like
+#       Greece's west edge. The box therefore holds the Atlantic, all of
+#       Galicia, western Castile and Extremadura and southern Spain west of
+#       -6.1, so P17 is the signal that catches a club across the border
+#       here, as for ES. LABELS ARE ASKED IN ENGLISH FIRST, then Portuguese:
+#       every club item in both 2026-27 divisions had an English label when
+#       read (the form football-data.org also uses, "S.C. Braga").
 #   GB  England's pyramid. North 55.8 (Marshall Meadows), south 49.85 and
 #       west -6.45 (both the Isles of Scilly), east 1.7628 (Lowestoft Ness)
 #       - Wikidata's own P1332-P1335 on Q21 England, read on a runner
@@ -1264,6 +1278,7 @@ COUNTRY_BOX = {
     "GB": {"lat": (49.75, 55.90), "lon": (-6.55, 1.85)},
     "NL": {"lat": (50.70, 53.65), "lon": (3.30, 7.30)},
     "BE": {"lat": (49.45, 51.55), "lon": (2.50, 6.45)},
+    "PT": {"lat": (32.35, 42.25), "lon": (-31.35, -6.10)},
 }
 
 COUNTRY_REVIEW = os.path.join(OUT_DIR, "country-review.csv")
