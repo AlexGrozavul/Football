@@ -351,6 +351,12 @@ _ur.urlopen = _scripted(504, 429, 502, ok_json)
 els, err = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0), (1.0, 2.0)])
 used_504_429 = pg._overpass_used[0]
 pg._overpass_used[0] = 0
+slept.clear()
+_ur.urlopen = _scripted(502, 502, 502, 502, 502, 502, ok_json)
+_els_gu, err_gu = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
+used_gu = pg._overpass_used[0]
+slept_gu = list(slept)
+pg._overpass_used[0] = 0
 _ur.urlopen = _scripted(500)
 els500, err500 = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
 used_500 = pg._overpass_used[0]
@@ -374,8 +380,9 @@ _ur.urlopen, pg.time.sleep, pc.MIN_GAP = _real_open, _real_sleep, _real_gap
 pg._overpass_used[0] = 0
 
 more5 = [
-    ("Overpass: 504, 429, 502 then a good answer = 4 requests, waits grow 30, 60, 90 s (Retry-After 7 does not shorten it)",
-     err is None and ("way", 9) in els and used_504_429 == 4 and slept[:3] == [30, 60, 90]),
+    ("Overpass: 504, 429, 502 then a good answer = 4 requests, waits double 30, 60, 120 s (Retry-After 7 does not shorten it)",
+     err is None and ("way", 9) in els and used_504_429 == 4 and slept[:3] == [30, 60, 120]),
+    ("Overpass: persistent 502 gives up after 6 tries, the 6th wait never taken", used_gu == 6 and err_gu and "HTTP 502" in err_gu and slept_gu[:5] == [30, 60, 120, 120, 120]),
     ("Overpass: a 500 is not retried", err500 == "HTTP 500" and used_500 == 1),
     ("Overpass: a read timeout is retried like a 504", err_to is None and used_to == 2),
     ("Overpass: another network error is not retried", err_net and err_net.startswith("network error") and used_net == 1),

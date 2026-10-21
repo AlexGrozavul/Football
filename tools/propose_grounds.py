@@ -81,7 +81,9 @@ import crosscheck_stadiumdb as sdb
 OVERPASS = "https://overpass-api.de/api/interpreter"
 OVERPASS_MAX_REQUESTS = 60          # per run, retries included (Alexandru, 2026-10-21)
 OVERPASS_BUSY_CODES = (429, 502, 503, 504)   # busy answers: wait and retry (502/503 as the older tools do)
-OVERPASS_WAIT_S = 30                # the operator: pause 30 s after a 429; grows 30, 60, 90 s over the tries
+OVERPASS_WAIT_S = 30                # the operator: pause 30 s after a 429; doubles over the tries (30, 60, 120 s ...)
+OVERPASS_MAX_TRIES = 6              # per request; the server's own 502 text asks for exponential backoff
+OVERPASS_MAX_WAIT_S = 120
 OVERPASS_TIMEOUT_S = 200            # the query says [timeout:180]
 OVERPASS_CENTRES_PER_REQUEST = 20   # club positions per request (a smaller request costs less when it is lost)
 _overpass_used = [0]                # requests made this run, retries included
@@ -400,13 +402,18 @@ def ground_search(pc, wanted, langs, club_words_of):
     return out
 
 
+def overpass_wait(attempt, retry_after=0):
+    """Seconds to wait after try number `attempt`: 30, 60, 120, 120 ... (exponential backoff,
+    which is what the server's own '502 ... at capacity' page asks for), or Retry-After."""
+    return min(max(retry_after, OVERPASS_WAIT_S * 2 ** (attempt - 1)), OVERPASS_MAX_WAIT_S)
+
+
 def overpass_post(pc, body):
-    """One POST to Overpass: (text, None) or (None, reason). One request at a
-    time; a 429 or 504 waits at least OVERPASS_WAIT_S (or Retry-After) and
-    asks again, up to pc.MAX_TRIES; every request, retries included, counts
-    against OVERPASS_MAX_REQUESTS."""
+    """One POST to Overpass: (text, None) or (None, reason). One request at a time; a busy
+    answer (429, 502, 503, 504, or a read timeout) waits (overpass_wait) and asks again, up to
+    OVERPASS_MAX_TRIES; every request, retries included, counts against OVERPASS_MAX_REQUESTS."""
     reason = "no attempt"
-    for attempt in range(1, pc.MAX_TRIES + 1):
+    for attempt in range(1, OVERPASS_MAX_TRIES + 1):
         if _overpass_used[0] >= OVERPASS_MAX_REQUESTS:
             return None, f"the cap of {OVERPASS_MAX_REQUESTS} Overpass requests per run was reached"
         pc._wait("overpass-api.de")
@@ -418,9 +425,9 @@ def overpass_post(pc, body):
                 return resp.read().decode("utf-8", "replace"), None
         except urllib.error.HTTPError as exc:
             reason = f"HTTP {exc.code}"
-            if exc.code in OVERPASS_BUSY_CODES and attempt < pc.MAX_TRIES:
-                wait = min(max(pc._retry_after(exc.headers), OVERPASS_WAIT_S * attempt), 120)
-                print(f"    Overpass: {reason}, waiting {wait}s (try {attempt}/{pc.MAX_TRIES})")
+            if exc.code in OVERPASS_BUSY_CODES and attempt < OVERPASS_MAX_TRIES:
+                wait = overpass_wait(attempt, pc._retry_after(exc.headers))
+                print(f"    Overpass: {reason}, waiting {wait}s (try {attempt}/{OVERPASS_MAX_TRIES})")
                 time.sleep(wait)
                 continue
             return None, reason
@@ -429,12 +436,13 @@ def overpass_post(pc, body):
             # Overpass held the request in its queue. It waits and retries like a 504; any
             # other network error (DNS, refused, reset) is a failure, not retried.
             reason = f"network error: {getattr(exc, 'reason', exc)}"
-            if "timed out" in str(reason).lower() and attempt < pc.MAX_TRIES:
-                print(f"    Overpass: {reason}, waiting {OVERPASS_WAIT_S * attempt}s (try {attempt}/{pc.MAX_TRIES})")
-                time.sleep(OVERPASS_WAIT_S * attempt)
+            if "timed out" in str(reason).lower() and attempt < OVERPASS_MAX_TRIES:
+                wait = overpass_wait(attempt)
+                print(f"    Overpass: {reason}, waiting {wait}s (try {attempt}/{OVERPASS_MAX_TRIES})")
+                time.sleep(wait)
                 continue
             return None, reason
-    return None, f"gave up after {pc.MAX_TRIES} tries ({reason})"
+    return None, f"gave up after {OVERPASS_MAX_TRIES} tries ({reason})"
 
 
 def overpass_elements(pc, centres):
