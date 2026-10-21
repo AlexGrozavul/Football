@@ -347,7 +347,7 @@ def _scripted(*answers):
 ok_json = _json.dumps({"elements": [{"type": "way", "id": 9, "center": {"lat": 1.0, "lon": 2.0},
                                      "tags": {"name": "Estadio X", "leisure": "stadium"}}]})
 pg._overpass_used[0] = 0
-_ur.urlopen = _scripted(504, 429, ok_json)
+_ur.urlopen = _scripted(504, 429, 502, ok_json)
 els, err = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0), (1.0, 2.0)])
 used_504_429 = pg._overpass_used[0]
 pg._overpass_used[0] = 0
@@ -370,8 +370,8 @@ _ur.urlopen, pg.time.sleep, pc.MIN_GAP = _real_open, _real_sleep, _real_gap
 pg._overpass_used[0] = 0
 
 more5 = [
-    ("Overpass: 504 then 429 then a good answer = 3 requests, each wait at least 30 s (Retry-After 7 does not shorten it)",
-     err is None and ("way", 9) in els and used_504_429 == 3 and slept[:2] == [30, 30]),
+    ("Overpass: 504, 429, 502 then a good answer = 4 requests, each wait at least 30 s (Retry-After 7 does not shorten it)",
+     err is None and ("way", 9) in els and used_504_429 == 4 and slept[:3] == [30, 30, 30]),
     ("Overpass: a 500 is not retried", err500 == "HTTP 500" and used_500 == 1),
     ("Overpass: a network error is not retried", err_net and err_net.startswith("network error") and used_net == 1),
     ("Overpass: at the cap of 60 requests nothing more is asked", err_cap and "cap of 60" in err_cap and used_cap == 60),

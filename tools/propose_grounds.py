@@ -31,7 +31,10 @@ OVERPASS: THE PUBLISHED USAGE POLICY GOVERNS, NOT robots.txt (Alexandru, 2026-10
   robots.txt disallows /api/ for every agent (a file written for crawlers). So
   this tool follows the published policy: the User-Agent of every other request
   of this tool; ONE request at a time (the loop is sequential); a wait of at
-  least 30 s and a retry ONLY on HTTP 429 and 504 (anything else, and a network
+  least 30 s and a retry on HTTP 429 and 504 and, as crosscheck_capacity.py and
+  propose_coordinates.py already do, on 502 and 503 (the decision named 429 and
+  504; the first live run died on a 502 at its first request, and 5 of the 18
+  requests of the last capacity run were 502 - anything else, and a network
   error, is a failure reported in the row, not retried); at most 60 requests
   per run (OVERPASS_MAX_REQUESTS, retries included; the run says how many it
   used); and never more than the regular-use guideline of the operator per day
@@ -72,7 +75,7 @@ import crosscheck_stadiumdb as sdb
 
 OVERPASS = "https://overpass-api.de/api/interpreter"
 OVERPASS_MAX_REQUESTS = 60          # per run, retries included (Alexandru, 2026-10-21)
-OVERPASS_BUSY_CODES = (429, 504)    # the only statuses that wait and retry
+OVERPASS_BUSY_CODES = (429, 502, 503, 504)   # busy answers: wait and retry (502/503 as the older tools do)
 OVERPASS_WAIT_S = 30                # the operator: pause 30 s after a 429
 OVERPASS_TIMEOUT_S = 200            # the query says [timeout:180]
 OVERPASS_CENTRES_PER_REQUEST = 40   # club positions per request
