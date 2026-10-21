@@ -3857,8 +3857,9 @@ function groundMarker(clubs, zoom){
    reserve team's tier switches on.
 
    Only grounds inside the map bounds padded by 50% get a marker (since
-   2026-10-19): with 1,865 clubs, redrawing every marker cost 123-147 ms
-   at z7-z9 at 4x CPU. The tier rule and the grouping still run over every
+   2026-10-19): in a synthetic benchmark of 1,865 clubs (565 real plus
+   1,300 generated, not a real count), redrawing every marker cost
+   123-147 ms at z7-z9 at 4x CPU. The tier rule and the grouping still run over every
    club, so the corner chip counts all clubs and shared grounds at this
    zoom, not only the drawn ones. Nothing else relies on a marker existing:
    goToClub() flies first, and the redraw on moveend draws the club. */
