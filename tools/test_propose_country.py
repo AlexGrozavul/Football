@@ -12,6 +12,8 @@ sys.path.insert(0, HERE)
 import propose_country as pc          # noqa: E402
 import propose_grounds as pg          # noqa: E402
 
+REAL_OVERPASS_ELEMENTS = pg.overpass_elements     # the tests below replace pg.overpass_elements with a stub
+
 L1, L2, OTHER = "Q1", "Q2", "Q99"
 TRACKED = {L1: 1, L2: 2}
 LABELS = {L1: "Liga One", L2: "Liga Two", OTHER: "Third Liga", "Q5000": "association football club",
@@ -246,8 +248,8 @@ pg.article_coordinates = lambda pcm, titles: {"Benfica Campus": (38.6405, -9.091
 pg.club_infobox_grounds = lambda pcm, titles: {"F.C. Famalicao": "Estadio Municipal 22 de Junho"}
 pg.stadiumdb_grounds = lambda pcm, args, label, probe: ([
     pg.sdb.ground("Estadio Municipal 22 de Junho", "Vila Nova de Famalicao", "Famalicao", 5307)], "por", [], [])
-pg.robots_allows = lambda pcm, base, path: (False, f"{base}/robots.txt disallows ['/api/'] for {path}") \
-    if "overpass" in base else (True, f"{base}/robots.txt: test")
+robots_asked = []
+pg.robots_allows = lambda pcm, base, path: robots_asked.append(base) or (True, f"{base}/robots.txt: test")
 pg.ground_search = lambda pcm, wanted, langs, cw: {"Q107": [{"qid": "Q900", "label": "Complexo Desportivo FC Alverca",
                                                          "coord": (38.8988, -9.0368), "cap": None, "desc": "stadium"}]}
 asked = []
@@ -256,8 +258,9 @@ gfail2 = []
 grows2 = pg.propose(pc, A, {"infos": ginfos2, "roster": roster2, "twin_of": {}, "country_label": "Portugal"}, [], gfail2)
 gd2 = {(r["kind"], r["clubQid"]): r["detail"] for r in grows2}
 more3 = [
-    ("Overpass disallowed by robots.txt: never asked, not a failure, said in the row",
-     not asked and not gfail2 and "osm=not queried" in gd2[("ground-proposal", "Q105")]),
+    ("Overpass is asked (the published usage policy governs, not its robots.txt) and robots.txt is not read for it",
+     asked and not gfail2 and "osm=queried" in gd2[("ground-proposal", "Q105")]
+     and not any("overpass" in b for b in robots_asked)),
     ("Benfica B: 'Benfica Stadium' is the club's name, not agreement; the P115 is flagged as the first team's",
      "verdict=attention" in gd2[("ground-proposal", "Q105")] and "first team's ground" in gd2[("ground-proposal", "Q105")]),
     ("Benfica B: the proposal is the campus article's position, not the Luz",
@@ -306,6 +309,75 @@ more4 = [
      "verdict=single-source" in gd3[("capacity-proposal", "Q109")] and "different ground" in gd3[("capacity-proposal", "Q109")]),
 ]
 for name, ok in more4:
+    bad += not ok
+    print(("ok   " if ok else "FAIL ") + name)
+
+# --- the Overpass client: only 429 and 504 wait and retry; every request counts against the cap
+import io
+import json as _json
+import urllib.error as _ue
+import urllib.request as _ur
+
+_real_open, _real_sleep, _real_gap = _ur.urlopen, pg.time.sleep, pc.MIN_GAP
+slept = []
+pg.time.sleep = lambda secs: slept.append(secs)
+pc.MIN_GAP = 0
+
+
+class _Resp:
+    def __init__(self, text): self.text = text
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+    def read(self): return self.text.encode("utf-8")
+
+
+def _scripted(*answers):
+    seq = list(answers)
+
+    def opener(req, timeout=None):
+        a = seq.pop(0)
+        if isinstance(a, int):
+            raise _ue.HTTPError(req.full_url, a, "x", {"Retry-After": "7"} if a == 429 else {}, io.BytesIO(b""))
+        if isinstance(a, Exception):
+            raise a
+        return _Resp(a)
+    return opener
+
+
+ok_json = _json.dumps({"elements": [{"type": "way", "id": 9, "center": {"lat": 1.0, "lon": 2.0},
+                                     "tags": {"name": "Estadio X", "leisure": "stadium"}}]})
+pg._overpass_used[0] = 0
+_ur.urlopen = _scripted(504, 429, ok_json)
+els, err = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0), (1.0, 2.0)])
+used_504_429 = pg._overpass_used[0]
+pg._overpass_used[0] = 0
+_ur.urlopen = _scripted(500)
+els500, err500 = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
+used_500 = pg._overpass_used[0]
+pg._overpass_used[0] = 0
+_ur.urlopen = _scripted(_ue.URLError("reset"))
+_els_n, err_net = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
+used_net = pg._overpass_used[0]
+pg._overpass_used[0] = pg.OVERPASS_MAX_REQUESTS
+_ur.urlopen = _scripted(ok_json)
+_els_cap, err_cap = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
+used_cap = pg._overpass_used[0]
+pg._overpass_used[0] = 0
+_ur.urlopen = _scripted(ok_json, ok_json, ok_json)
+REAL_OVERPASS_ELEMENTS(pc, [(40.0 + i / 100, -8.0) for i in range(85)])       # 85 centres = 3 requests of up to 40
+used_chunks = pg._overpass_used[0]
+_ur.urlopen, pg.time.sleep, pc.MIN_GAP = _real_open, _real_sleep, _real_gap
+pg._overpass_used[0] = 0
+
+more5 = [
+    ("Overpass: 504 then 429 then a good answer = 3 requests, each wait at least 30 s (Retry-After 7 does not shorten it)",
+     err is None and ("way", 9) in els and used_504_429 == 3 and slept[:2] == [30, 30]),
+    ("Overpass: a 500 is not retried", err500 == "HTTP 500" and used_500 == 1),
+    ("Overpass: a network error is not retried", err_net and err_net.startswith("network error") and used_net == 1),
+    ("Overpass: at the cap of 60 requests nothing more is asked", err_cap and "cap of 60" in err_cap and used_cap == 60),
+    ("Overpass: 85 centres go in 3 requests of at most 40", used_chunks == 3),
+]
+for name, ok in more5:
     bad += not ok
     print(("ok   " if ok else "FAIL ") + name)
 print("FAILED" if bad else "all passed")
