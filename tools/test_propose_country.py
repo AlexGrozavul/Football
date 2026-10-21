@@ -374,8 +374,8 @@ _ur.urlopen, pg.time.sleep, pc.MIN_GAP = _real_open, _real_sleep, _real_gap
 pg._overpass_used[0] = 0
 
 more5 = [
-    ("Overpass: 504, 429, 502 then a good answer = 4 requests, each wait at least 30 s (Retry-After 7 does not shorten it)",
-     err is None and ("way", 9) in els and used_504_429 == 4 and slept[:3] == [30, 30, 30]),
+    ("Overpass: 504, 429, 502 then a good answer = 4 requests, waits grow 30, 60, 90 s (Retry-After 7 does not shorten it)",
+     err is None and ("way", 9) in els and used_504_429 == 4 and slept[:3] == [30, 60, 90]),
     ("Overpass: a 500 is not retried", err500 == "HTTP 500" and used_500 == 1),
     ("Overpass: a read timeout is retried like a 504", err_to is None and used_to == 2),
     ("Overpass: another network error is not retried", err_net and err_net.startswith("network error") and used_net == 1),

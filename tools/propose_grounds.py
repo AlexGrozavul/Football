@@ -81,7 +81,7 @@ import crosscheck_stadiumdb as sdb
 OVERPASS = "https://overpass-api.de/api/interpreter"
 OVERPASS_MAX_REQUESTS = 60          # per run, retries included (Alexandru, 2026-10-21)
 OVERPASS_BUSY_CODES = (429, 502, 503, 504)   # busy answers: wait and retry (502/503 as the older tools do)
-OVERPASS_WAIT_S = 30                # the operator: pause 30 s after a 429
+OVERPASS_WAIT_S = 30                # the operator: pause 30 s after a 429; grows 30, 60, 90 s over the tries
 OVERPASS_TIMEOUT_S = 200            # the query says [timeout:180]
 OVERPASS_CENTRES_PER_REQUEST = 20   # club positions per request (a smaller request costs less when it is lost)
 _overpass_used = [0]                # requests made this run, retries included
@@ -419,7 +419,7 @@ def overpass_post(pc, body):
         except urllib.error.HTTPError as exc:
             reason = f"HTTP {exc.code}"
             if exc.code in OVERPASS_BUSY_CODES and attempt < pc.MAX_TRIES:
-                wait = min(max(pc._retry_after(exc.headers), OVERPASS_WAIT_S), 120)
+                wait = min(max(pc._retry_after(exc.headers), OVERPASS_WAIT_S * attempt), 120)
                 print(f"    Overpass: {reason}, waiting {wait}s (try {attempt}/{pc.MAX_TRIES})")
                 time.sleep(wait)
                 continue
@@ -430,8 +430,8 @@ def overpass_post(pc, body):
             # other network error (DNS, refused, reset) is a failure, not retried.
             reason = f"network error: {getattr(exc, 'reason', exc)}"
             if "timed out" in str(reason).lower() and attempt < pc.MAX_TRIES:
-                print(f"    Overpass: {reason}, waiting {OVERPASS_WAIT_S}s (try {attempt}/{pc.MAX_TRIES})")
-                time.sleep(OVERPASS_WAIT_S)
+                print(f"    Overpass: {reason}, waiting {OVERPASS_WAIT_S * attempt}s (try {attempt}/{pc.MAX_TRIES})")
+                time.sleep(OVERPASS_WAIT_S * attempt)
                 continue
             return None, reason
     return None, f"gave up after {pc.MAX_TRIES} tries ({reason})"
@@ -765,7 +765,7 @@ def propose(pc, args, ctx, langs, failures):
             problems.append("the ground is named by ONE place only (rule: two independent places)")
         if not proposed_pos:
             problems.append("NO ground-specific position found" + ("" if osm_status == "queried"
-                                                                    else " (OpenStreetMap was not queried)"))
+                                                                    else f" (OpenStreetMap: {osm_status})"))
         flags = problems
         verdict = "ok" if not problems else ("unplaced" if not build_pos else "attention")
         detail = pc.kv(
