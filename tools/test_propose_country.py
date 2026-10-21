@@ -179,6 +179,7 @@ ginfos = {
     "Q103": info("Q103", "Casa Pia AC", [(L1, *N)]),
 }
 pc.fetch_entities = fake_entities
+pg.ground_search = lambda pcm, wanted, langs, cw: {}
 pg.article_coordinates = lambda pcm, titles: {"Estadio de Sao Luis": (37.0228, -7.9286),
                                               "Estadio Municipal de Rio Maior": (39.3445, -8.9352)}
 pg.club_infobox_grounds = lambda pcm, titles: {"Casa Pia AC": "Estadio Pina Manique"}
@@ -247,6 +248,8 @@ pg.stadiumdb_grounds = lambda pcm, args, label, probe: ([
     pg.sdb.ground("Estadio Municipal 22 de Junho", "Vila Nova de Famalicao", "Famalicao", 5307)], "por", [], [])
 pg.robots_allows = lambda pcm, base, path: (False, f"{base}/robots.txt disallows ['/api/'] for {path}") \
     if "overpass" in base else (True, f"{base}/robots.txt: test")
+pg.ground_search = lambda pcm, wanted, langs, cw: {"Q107": [{"qid": "Q900", "label": "Complexo Desportivo FC Alverca",
+                                                         "coord": (38.8988, -9.0368), "cap": None, "desc": "stadium"}]}
 asked = []
 pg.overpass_elements = lambda pcm, centres: asked.append(1) or ({}, None)
 gfail2 = []
@@ -268,6 +271,37 @@ more3 = [
      and pg.name_strength("Estadio Benfica", "Estadio Benfica", {"benfica"}) == "exact"),
 ]
 for name, ok in more3:
+    bad += not ok
+    print(("ok   " if ok else "FAIL ") + name)
+
+# --- the name-search route and the capacity corrections
+GROUNDS.update({"G14": {"label": "Estadio Municipal Jorge Sampaio", "coord": (41.0671, -8.5448), "cap": 8500}})
+roster3 = [
+    dict(base, qid="Q107", team="Alverca", title="F.C. Alverca", ground="Complexo Desportivo FC Alverca", capacity=6932, ground_title=None),
+    dict(base, qid="Q108", team="Porto B", title="FC Porto B", ground="Estadio Luis Filipe Menezes", capacity=3800, ground_title=None),
+    dict(base, qid="Q109", team="Casa Pia", title="Casa Pia AC", ground="Estadio Municipal de Rio Maior", capacity=7000,
+         ground_title="Estadio Municipal de Rio Maior"),
+]
+ginfos3 = {
+    "Q107": info("Q107", "F.C. Alverca", [(L1, *N)]),
+    "Q108": dict(info("Q108", "FC Porto B", [(L2, *N)]), grounds_all=G("G14"), grounds_truthy=G("G14")),
+    "Q109": info("Q109", "Casa Pia AC", [(L1, *N)]),
+}
+pg.article_coordinates = lambda pcm, titles: {"Estadio Municipal de Rio Maior": (39.3445, -8.9352)}
+pg.club_infobox_grounds = lambda pcm, titles: {}
+pg.stadiumdb_grounds = lambda pcm, args, label, probe: ([
+    pg.sdb.ground("Estadio Pina Manique", "Lisboa", "Casa Pia", 2574)], "por", [], [])
+grows3 = pg.propose(pc, A, {"infos": ginfos3, "roster": roster3, "twin_of": {}, "country_label": "Portugal"}, [], [])
+gd3 = {(r["kind"], r["clubQid"]): r["detail"] for r in grows3}
+more4 = [
+    ("Alverca: no P115, no article - the ground's own Wikidata item found by name gives the position",
+     "proposed_position=38.898800" in gd3[("ground-proposal", "Q107")] and "found by searching" in gd3[("ground-proposal", "Q107")]),
+    ("Porto B: the map's 8500 is the capacity of another ground: CLEAR, and nothing is proposed",
+     "CLEAR the map's 8500" in gd3[("capacity-proposal", "Q108")] and "proposed=BLANK" in gd3[("capacity-proposal", "Q108")]),
+    ("Casa Pia: StadiumDB's 2574 is another ground, not a disagreement - single source, blank",
+     "verdict=single-source" in gd3[("capacity-proposal", "Q109")] and "different ground" in gd3[("capacity-proposal", "Q109")]),
+]
+for name, ok in more4:
     bad += not ok
     print(("ok   " if ok else "FAIL ") + name)
 print("FAILED" if bad else "all passed")

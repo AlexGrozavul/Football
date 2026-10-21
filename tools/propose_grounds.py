@@ -324,6 +324,44 @@ def club_infobox_grounds(pc, titles):
     return out
 
 
+def ground_search(pc, wanted, langs, club_words_of):
+    """The Wikidata items labelled like a ground, found by searching for its
+    name - the route the hand rows used when the club has no P115 (Alverca:
+    'the ground's own Wikidata item'). wanted: [(club qid, ground name)].
+    Only an item whose label EQUALS the ground's name (club words and stadium
+    words set aside) with a P625 counts. {club qid: [{qid,label,coord,cap}]}"""
+    found = {}
+    for club_q, name in wanted:
+        if not name:
+            continue
+        query = urllib.parse.urlencode({
+            "action": "wbsearchentities", "search": name, "language": "en",
+            "uselang": "en", "type": "item", "limit": "7", "format": "json"})
+        data, error = pc.fetch_json(f"{pc.WD_API}?{query}", "search the ground's name")
+        if error or not data:
+            continue
+        for hit in data.get("search") or []:
+            label = hit.get("label") or ""
+            if name_strength(name, label, club_words_of[club_q]) == "exact":
+                found.setdefault(club_q, []).append(hit["id"])
+    qids = sorted({q for qs in found.values() for q in qs})
+    ents, _f = pc.fetch_entities(qids, langs, props="claims|labels|descriptions") if qids else ({}, [])
+    out = {}
+    for club_q, qs in found.items():
+        for q in qs:
+            e = ents.get(q)
+            if not e:
+                continue
+            coords = [x["value"] for x in pc.statements(e, "P625") if x["value"]]
+            caps = [x["value"] for x in pc.truthy(pc.statements(e, "P1083")) if x["value"]]
+            if coords:
+                out.setdefault(club_q, []).append({
+                    "qid": q, "label": pc.labels_of(e, langs)[0], "coord": coords[0],
+                    "cap": caps[0] if caps else None,
+                    "desc": ((e.get("descriptions") or {}).get("en") or {}).get("value")})
+    return out
+
+
 def overpass_elements(pc, centres):
     """One Overpass request for every centre: named stadiums, sports centres
     and soccer pitches within RADIUS_M of it. {(type, id): element}."""
@@ -468,7 +506,7 @@ def propose(pc, args, ctx, langs, failures):
     # Wikidata ground is only the table's ground if its name agrees with it,
     # so when it does not, the search is centred on the ground's own article
     # first (Farense: Wikidata names the Estadio Algarve, the table Sao Luis).
-    centres, centre_of = [], {}
+    centres, centre_of, need_search = [], {}, {}
     for rec in roster:
         src = src_of(rec)
         wg = wd_ground(rec)
@@ -476,6 +514,7 @@ def propose(pc, args, ctx, langs, failures):
         wd_names = [n for g in wg for n in g["labels"] + g["aliases"]]
         cw = set(sdb.words(src["label"])) | set(sdb.words(rec["team"]))
         wd_same = bool(wg) and best_strength(table_ground, wd_names, cw)[0] is not None
+        need_search[rec["qid"]] = (not wd_same and not article_pos.get(rec["ground_title"]), table_ground, cw)
         wd_pos = ("Wikidata ground P625" + ("" if wd_same else " (a ground whose name differs)"),
                   wg[0]["coord"] if wg else None)
         art_pos = ("the ground's English article", article_pos.get(rec["ground_title"]))
@@ -487,6 +526,16 @@ def propose(pc, args, ctx, langs, failures):
                 found.append((label, pos))
         centre_of[rec["qid"]] = found
         centres.extend(pos for _l, pos in found)
+    # a ground nothing else gave a position for: look for its own Wikidata item by name
+    wanted = [(q, name) for q, (need, name, _cw) in need_search.items() if need]
+    search_hits = ground_search(pc, wanted, langs, {q: cw for q, (_n, _g, cw) in need_search.items()}) if wanted else {}
+    for q, hits in search_hits.items():
+        for h in hits:
+            centres.append(h["coord"])
+            centre_of[q] = centre_of.get(q, []) + [(f"Wikidata item {h['qid']} found by name", h["coord"])]
+    md.append(f"- Wikidata name search for {len(wanted)} ground(s) with no other position: "
+              f"{sum(1 for q in search_hits)} found an item with a position")
+
     # robots.txt FIRST (the brief, and the project's rule: a refusal is a stop). Overpass's
     # file disallows /api/ for every agent (read 2026-10-21), so by default nothing is
     # asked of it and every row says so. That is a gap reported, not a failure: it is
@@ -540,13 +589,7 @@ def propose(pc, args, ctx, langs, failures):
             places["StadiumDB"] = [sdb_gr["name"]]
 
         def agree(x, y):
-            for nx in places[x]:
-                for ny in places[y]:
-                    if name_strength(nx, ny, club_words) or \
-                            (x != "Wikidata P115" and y != "Wikidata P115"
-                             and sdb.ground_signal(nx, ny) is True and name_strength(nx, ny, club_words)):
-                        return True
-            return False
+            return any(name_strength(nx, ny, club_words) for nx in places[x] for ny in places[y])
         # connected groups of places that name the same ground
         left, groups = list(places), []
         while left:
@@ -585,6 +628,10 @@ def propose(pc, args, ctx, langs, failures):
             coord_sources.append(("Wikidata ground P625 " + wg[0]["qid"], wg[0]["coord"]))
         if article_pos.get(rec["ground_title"]):
             coord_sources.append(("the ground's English article", article_pos[rec["ground_title"]]))
+        hits_here = search_hits.get(q, [])
+        for h in hits_here[:2]:
+            coord_sources.append((f"Wikidata item {h['qid']} ({h['label']}) found by searching the ground's name",
+                                  h["coord"]))
         if exact:
             coord_sources.append((f"OpenStreetMap {exact[0]['ref']} (name equal)", exact[0]["pos"]))
         proposed_pos, agree_text = None, ""
@@ -664,17 +711,30 @@ def propose(pc, args, ctx, langs, failures):
         if verdict != "ok":
             attention.append((verdict, team, table_ground, flags))
 
-        # (e) capacity
+        # (e) capacity - a figure counts only when it is about the TABLE's ground
         wd_cap = wg[0]["capacities"][0] if wg and wg[0]["capacities"] else None
+        sdb_same = bool(sdb_gr) and name_strength(table_ground, sdb_gr["name"], club_words) is not None
+        hit_caps = [h["cap"] for h in search_hits.get(q, []) if h.get("cap")]
         osm_caps = sorted({int(re.sub(r"\D", "", e["tags"]["capacity"])) for e in exact
                            if re.fullmatch(r"\s*\d[\d ,.]*", e["tags"].get("capacity", ""))})
         osm_cap = osm_caps[0] if len(osm_caps) == 1 else None
-        sdb_cap = (sdb_gr or {}).get("capacity")
-        verdict_c, proposed, taken, note = capacity_rule(rec["capacity"], wd_cap, osm_cap, sdb_cap)
+        wd_for_rule = wd_cap if (wd_agrees or not wg) else None
+        if not wg and hit_caps:
+            wd_for_rule = hit_caps[0]
+        sdb_for_rule = sdb_gr["capacity"] if sdb_same else None
+        verdict_c, proposed, taken, note = capacity_rule(rec["capacity"], wd_for_rule, osm_cap, sdb_for_rule)
+        not_used = []
+        if wd_cap and not wd_for_rule:
+            not_used.append(f"Wikidata's {wd_cap} is the capacity of {wg[0]['label']}, not of the table's ground")
+        if sdb_gr and not sdb_same:
+            not_used.append(f"StadiumDB's {sdb_gr['capacity']} is for {sdb_gr['name']}, a different ground")
         action = ""
         if verdict_c == "agreed":
             action = "keep (the map's figure is in the agreement)" if wd_cap and within(wd_cap, proposed) \
                 else ("add (the map has no figure)" if not wd_cap else f"REPLACE the map's {wd_cap}")
+        elif wd_cap and not wd_for_rule:
+            action = (f"CLEAR the map's {wd_cap}: it is the capacity of another ground ({wg[0]['label']}), "
+                      f"unless the two names are one ground")
         elif wd_cap:
             action = (f"keep or blank, a decision: the map's {wd_cap} has no independent agreement "
                       f"(it rests on Wikipedia/Wikidata alone)")
@@ -682,7 +742,10 @@ def propose(pc, args, ctx, langs, failures):
             verdict=verdict_c, proposed=proposed if proposed is not None else "BLANK",
             action=action, rule=note,
             figures=f"table {rec['capacity']}; Wikidata {wd_cap} (map's figure); OpenStreetMap "
-                    f"{osm_cap if osm_cap else (str(osm_caps) if osm_caps else None)}; StadiumDB {sdb_cap}",
+                    f"{osm_cap if osm_cap else (str(osm_caps) if osm_caps else None)}; StadiumDB "
+                    f"{sdb_gr['capacity'] if sdb_gr else None}"
+                    + (f"; Wikidata item found by name {hit_caps[0]}" if hit_caps else ""),
+            not_used=" | ".join(not_used),
             wikidata_ground_capacities=",".join(str(c) for g in wg for c in g["capacities"]) if len(wg) > 1 or (wg and len(wg[0]["capacities"]) > 1) else "",
             stadiumdb=f"{sdb_gr['name']} ({sdb_gr['city']}) - {sdb_note}" if sdb_gr else sdb_note)
         rows.append(pc.row("capacity-proposal", tier, q, team, url,
