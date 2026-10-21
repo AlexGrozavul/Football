@@ -711,7 +711,7 @@ def intro_sentences(infos, langs):
             continue
         extract, site, title = texts.get(qid, ("", site, title))
         extract = re.sub(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]", r"\1", one_line(extract))
-        extract = re.sub(r"\b(Dr|Sr|Jr|St|No|Mr|Mrs|Eng)\.", r"\1\u2024", extract)
+        extract = re.sub(r"\b(Dr|Sr|Jr|St|No|Mr|Mrs|Eng)\.", lambda m: m.group(1) + "\u2024", extract)
         sentences = [x.replace("\u2024", ".") for x in re.split(r"(?<=[.!?])\s+(?=[A-Z\[])", extract)]
         named = next((x for x in sentences if league_word.search(x)), None)
         if not sentences or not sentences[0]:
