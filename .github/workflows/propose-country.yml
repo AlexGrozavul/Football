@@ -30,6 +30,10 @@ on:
         description: "English Wikipedia season article, tier 2 (leave empty for one tier)"
         required: false
         default: ""
+      below_articles:
+        description: "Lower-division season articles, separated by ; (used only as evidence for extras)"
+        required: false
+        default: ""
       langs:
         description: "Extra label languages, comma separated (pt)"
         required: false
@@ -70,6 +74,7 @@ jobs:
           T1: ${{ inputs.tier1_article }}
           T2: ${{ inputs.tier2_article }}
           LANGS: ${{ inputs.langs }}
+          BELOW: ${{ inputs.below_articles }}
           LEAGUES: ${{ inputs.leagues }}
           GROUNDS: ${{ inputs.grounds }}
         run: |
@@ -78,6 +83,8 @@ jobs:
           if [ -n "$T2" ]; then args+=(--article "2=$T2"); fi
           if [ -n "$LANGS" ]; then args+=(--langs "$LANGS"); fi
           if [ "$GROUNDS" = "true" ]; then args+=(--grounds); fi
+          IFS=';' read -ra B <<< "$BELOW"
+          for b in "${B[@]}"; do if [ -n "$b" ]; then args+=(--below "$b"); fi; done
           IFS=',' read -ra L <<< "$LEAGUES"
           for l in "${L[@]}"; do if [ -n "$l" ]; then args+=(--league "$l"); fi; done
           python3 tools/propose_country.py "${args[@]}" | tee /tmp/propose.log

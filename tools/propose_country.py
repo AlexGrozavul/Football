@@ -419,6 +419,21 @@ def first_words(text, n=30):
     return text if len(words) <= n else " ".join(words[:n]) + " ..."
 
 
+def clip(text, pattern, n=30):
+    """At most n words, cut around the first word the pattern matches, so the
+    phrase that matters (a league name) is not what gets cut off."""
+    words = text.split()
+    if len(words) <= n:
+        return text
+    idx = next((i for i, w in enumerate(words) if pattern.search(w)), 0)
+    start = max(0, min(idx - 18, len(words) - n))
+    return ("... " if start else "") + " ".join(words[start:start + n]) + \
+        (" ..." if start + n < len(words) else "")
+
+
+PAST_CLUB = re.compile(r"\b(was|were)\s+(an?|the)\b[^.]{0,120}\b(club|team|side)\b", re.I)
+
+
 def season_of(article):
     m = re.search(r"(\d{4})\s*[–-]\s*(\d{2,4})", article)
     return f"{m.group(1)}-{m.group(2)[-2:]}" if m else ""
@@ -509,6 +524,36 @@ def read_rosters(articles):
                          f"the linked article {r['title']!r} has no Wikidata item"))
             records.remove(r)
     return records, gaps, pages, failures
+
+
+def read_below(titles):
+    """Clubs listed in lower-division season articles ({qid: [(article, team)]}),
+    read with the same reader. Used ONLY as evidence for an extra (the
+    independent statement that it plays below the tracked tiers)."""
+    rows, failures = [], []
+    for title in titles:
+        page, real, error = cr.fetch_article(title)
+        if error:
+            failures.append(f"lower article {title!r}: {error}")
+            continue
+        tables, _shape = cr.roster_tables(page)
+        n = 0
+        for table, headers in tables:
+            for r in cr.table_rows(table, headers):
+                if r["title"] and not r["why"]:
+                    rows.append((real, re.sub(r"\s*[↑↓]+\s*", " ", r["team"]).strip(), r["title"]))
+                    n += 1
+        print(f"    lower article {real!r}: {n} clubs read")
+        if not n:
+            failures.append(f"lower article {real!r}: no club read")
+    out = {}
+    if rows:
+        found, hop_failures = cr.qids_for_titles([t for _a, _team, t in rows])
+        failures.extend(hop_failures)
+        for article, team, title in rows:
+            if found.get(title):
+                out.setdefault(found[title], []).append((article, team))
+    return out, failures
 
 
 # ============================================================ step 2: leagues
@@ -687,7 +732,7 @@ def intro_sentences(infos, langs):
             batch = items[start:start + 20]
             query = urllib.parse.urlencode({
                 "action": "query", "prop": "extracts", "exintro": "1", "explaintext": "1",
-                "exsentences": "4", "exlimit": "20", "redirects": "1",
+                "exsentences": "6", "exlimit": "20", "redirects": "1",
                 "titles": "|".join(t for _q, t in batch),
                 "format": "json", "formatversion": "2"})
             data, error = fetch_json(f"https://{site}.wikipedia.org/w/api.php?{query}",
@@ -702,7 +747,7 @@ def intro_sentences(infos, langs):
                 t = normalized.get(title, title)
                 t = redirected.get(t, t)
                 texts[qid] = (pages.get(t, ""), site, title)
-    result = {}
+    result, past = {}, {}
     league_word = re.compile(r"\b(league|division|liga|divis[aã]o|campeonato|tier|championship|"
                              r"competes?|promoted|relegated)\b", re.I)
     for qid, (site, title) in out.items():
@@ -719,8 +764,9 @@ def intro_sentences(infos, langs):
             continue
         pick = named or sentences[0] + "  [no sentence of the intro names a league]"
         url = f"https://{site}.wikipedia.org/wiki/" + urllib.parse.quote(title.replace(" ", "_"))
-        result[qid] = (("[" + site + "] " if site != "en" else "") + first_words(pick), url)
-    return result
+        result[qid] = (("[" + site + "] " if site != "en" else "") + clip(pick, league_word), url)
+        past[qid] = bool(PAST_CLUB.search(sentences[0]))
+    return result, past
 
 
 # =========================================================== country box etc
@@ -958,8 +1004,14 @@ def classify(ctx):
                         kv(drawn_by_build=("yes: has a position" if pos else
                                            "NO: no P625 on the club or on any P115 ground, so the build "
                                            "drops it at the coordinates gate, so there is nothing on the map to remove"),
-                           intro_names_a_tracked_league=("YES (" + ", ".join(names_tracked) + ") - contradicts "
-                                                         "the absence from the rosters" if names_tracked else ""),
+                           first_sentence_of_intro_is_past_tense=("yes (\"was a ... club\")"
+                                                                  if ctx.get("intro_past", {}).get(q) else ""),
+                           intro_mentions_a_tracked_league=(", ".join(names_tracked) +
+                                                            " (read the sentence: a past season or now?)"
+                                                            if names_tracked else ""),
+                           listed_in_lower_article=("; ".join(f"{a}: {t}" for a, t in (ctx.get("below") or {}).get(q, []))
+                                                    or ("not listed in the lower article(s) given"
+                                                        if ctx.get("below_given") else "")),
                            absent_from=ctx.get("rosters_summary", ""),
                            tags=tag_text(info, ctx["league_label"]), p576=info["dissolved"] or "none",
                            tag_dates=";".join(f"{s['start'] or '?'}-{s['end'] or ''}" for s in info["tracked"]),
@@ -1162,6 +1214,8 @@ def main(argv=None):
     ap.add_argument("--article", action="append", default=[], metavar="TIER=TITLE")
     ap.add_argument("--league", action="append", default=[], metavar="TIER=Q...",
                     help="name the league item when it cannot be found from the article")
+    ap.add_argument("--below", action="append", default=[], metavar="TITLE",
+                    help="a lower-division season article, read only as evidence for extras")
     ap.add_argument("--langs", default="", help="extra label languages, comma separated")
     ap.add_argument("--out-dir", default="data/clubs")
     ap.add_argument("--write-partial", action="store_true",
@@ -1274,10 +1328,11 @@ def main(argv=None):
                   + ("" if a == b else f"  DIFFER: only claims {sorted(a - b)}, only query {sorted(b - a)}"))
 
     with step("5 evidence for extras"):
-        ctx_tmp = {"infos": infos}
+        below, f = read_below([b for b in args.below if b.strip()])
+        failures += f
         extra_qs = [q for q in tagged if q not in roster_q and q in infos and infos[q]["tier"] is not None
                     and not infos[q]["dissolved"]]
-        intro = intro_sentences({q: infos[q] for q in extra_qs}, langs)
+        intro, intro_past = intro_sentences({q: infos[q] for q in extra_qs}, langs)
         titles = {}
         for tier, (real, page) in pages.items():
             for t, texts in team_change_links(page).items():
@@ -1320,7 +1375,8 @@ def main(argv=None):
            "infos": infos, "tagged": tagged, "label": lab, "ground_coord": ground_coord,
            "league_label": lambda q: lfacts.get(q, {}).get("label") or lab(q),
            "ground_label": lambda q: ground_by_q.get(q, (q, None))[0],
-           "intro": intro, "team_changes": team_changes_by_q, "pointers": pointers or {}}
+           "intro": intro, "intro_past": intro_past, "below": below,
+           "below_given": bool(args.below), "team_changes": team_changes_by_q, "pointers": pointers or {}}
 
     with step("6 candidates"):
         rows, notes = classify(ctx)
