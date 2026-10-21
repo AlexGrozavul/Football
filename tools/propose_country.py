@@ -1245,7 +1245,10 @@ def main(argv=None):
         for g in gaps:
             print(f"    READER GAP tier {g[0]}: {g[2]!r}: {g[3]}")
     if not records:
-        print("\nNo roster could be read: nothing to propose. FAILED.")
+        print("\nFAILURES:")
+        for x in failures or ["no club came out of any roster table"]:
+            print(f"  - {x}")
+        print("\nNo roster could be read: nothing to propose. FAILED. Nothing was written.")
         return 1
 
     with step("2 leagues"):
