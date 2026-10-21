@@ -355,6 +355,10 @@ _ur.urlopen = _scripted(500)
 els500, err500 = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
 used_500 = pg._overpass_used[0]
 pg._overpass_used[0] = 0
+_ur.urlopen = _scripted(TimeoutError("The read operation timed out"), ok_json)
+_els_to, err_to = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
+used_to = pg._overpass_used[0]
+pg._overpass_used[0] = 0
 _ur.urlopen = _scripted(_ue.URLError("reset"))
 _els_n, err_net = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
 used_net = pg._overpass_used[0]
@@ -363,8 +367,8 @@ _ur.urlopen = _scripted(ok_json)
 _els_cap, err_cap = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
 used_cap = pg._overpass_used[0]
 pg._overpass_used[0] = 0
-_ur.urlopen = _scripted(ok_json, ok_json, ok_json)
-REAL_OVERPASS_ELEMENTS(pc, [(40.0 + i / 100, -8.0) for i in range(85)])       # 85 centres = 3 requests of up to 40
+_ur.urlopen = _scripted(ok_json, ok_json, ok_json, ok_json, ok_json)
+REAL_OVERPASS_ELEMENTS(pc, [(40.0 + i / 100, -8.0) for i in range(85)])       # 85 centres = 5 requests of up to 20
 used_chunks = pg._overpass_used[0]
 _ur.urlopen, pg.time.sleep, pc.MIN_GAP = _real_open, _real_sleep, _real_gap
 pg._overpass_used[0] = 0
@@ -373,11 +377,25 @@ more5 = [
     ("Overpass: 504, 429, 502 then a good answer = 4 requests, each wait at least 30 s (Retry-After 7 does not shorten it)",
      err is None and ("way", 9) in els and used_504_429 == 4 and slept[:3] == [30, 30, 30]),
     ("Overpass: a 500 is not retried", err500 == "HTTP 500" and used_500 == 1),
-    ("Overpass: a network error is not retried", err_net and err_net.startswith("network error") and used_net == 1),
+    ("Overpass: a read timeout is retried like a 504", err_to is None and used_to == 2),
+    ("Overpass: another network error is not retried", err_net and err_net.startswith("network error") and used_net == 1),
     ("Overpass: at the cap of 60 requests nothing more is asked", err_cap and "cap of 60" in err_cap and used_cap == 60),
-    ("Overpass: 85 centres go in 3 requests of at most 40", used_chunks == 3),
+    ("Overpass: 85 centres go in 5 requests of at most 20", used_chunks == 5),
 ]
 for name, ok in more5:
+    bad += not ok
+    print(("ok   " if ok else "FAIL ") + name)
+
+# --- an Overpass failure is a warning, not a run failure: the rest of the evidence is written
+pg.overpass_elements = lambda pcm, centres: (None, "HTTP 502")
+fail_f = []
+fail_rows = pg.propose(pc, A, {"infos": ginfos2, "roster": roster2, "twin_of": {}, "country_label": "Portugal"}, [], fail_f)
+fd = {(r["kind"], r["clubQid"]): r["detail"] for r in fail_rows}
+more6 = [
+    ("Overpass failed: not a run failure, the rows are still written and say so",
+     not fail_f and len(fail_rows) == 6 and "osm=asked and failed: HTTP 502" in fd[("ground-proposal", "Q105")]),
+]
+for name, ok in more6:
     bad += not ok
     print(("ok   " if ok else "FAIL ") + name)
 print("FAILED" if bad else "all passed")

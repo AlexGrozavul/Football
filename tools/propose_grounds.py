@@ -34,8 +34,13 @@ OVERPASS: THE PUBLISHED USAGE POLICY GOVERNS, NOT robots.txt (Alexandru, 2026-10
   least 30 s and a retry on HTTP 429 and 504 and, as crosscheck_capacity.py and
   propose_coordinates.py already do, on 502 and 503 (the decision named 429 and
   504; the first live run died on a 502 at its first request, and 5 of the 18
-  requests of the last capacity run were 502 - anything else, and a network
-  error, is a failure reported in the row, not retried); at most 60 requests
+  requests of the last capacity run were 502; a read timeout counts as a 504 -
+  anything else, and any other network error, is a failure reported in the row,
+  not retried); a failure of the whole OpenStreetMap step does NOT discard the
+  proposal: every row says "osm=asked and failed: <reason>", the .md and the log
+  say so loudly, and the rest of the evidence is written (OpenStreetMap is a
+  supplement, a flaky third party must not take the other sources with it);
+  at most 60 requests
   per run (OVERPASS_MAX_REQUESTS, retries included; the run says how many it
   used); and never more than the regular-use guideline of the operator per day
   (about 100 queries and 10 MB; CLAUDE.md, Known open problems, has the count
@@ -78,7 +83,7 @@ OVERPASS_MAX_REQUESTS = 60          # per run, retries included (Alexandru, 2026
 OVERPASS_BUSY_CODES = (429, 502, 503, 504)   # busy answers: wait and retry (502/503 as the older tools do)
 OVERPASS_WAIT_S = 30                # the operator: pause 30 s after a 429
 OVERPASS_TIMEOUT_S = 200            # the query says [timeout:180]
-OVERPASS_CENTRES_PER_REQUEST = 40   # club positions per request
+OVERPASS_CENTRES_PER_REQUEST = 20   # club positions per request (a smaller request costs less when it is lost)
 _overpass_used = [0]                # requests made this run, retries included
 RADIUS_M = 3000
 AGREE_M = 150
@@ -420,7 +425,15 @@ def overpass_post(pc, body):
                 continue
             return None, reason
         except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
-            return None, f"network error: {getattr(exc, 'reason', exc)}"
+            # A read timeout is what a gateway timeout (504) looks like from the client:
+            # Overpass held the request in its queue. It waits and retries like a 504; any
+            # other network error (DNS, refused, reset) is a failure, not retried.
+            reason = f"network error: {getattr(exc, 'reason', exc)}"
+            if "timed out" in str(reason).lower() and attempt < pc.MAX_TRIES:
+                print(f"    Overpass: {reason}, waiting {OVERPASS_WAIT_S}s (try {attempt}/{pc.MAX_TRIES})")
+                time.sleep(OVERPASS_WAIT_S)
+                continue
+            return None, reason
     return None, f"gave up after {pc.MAX_TRIES} tries ({reason})"
 
 
@@ -605,8 +618,12 @@ def propose(pc, args, ctx, langs, failures):
     if centres:
         osm, error = overpass_elements(pc, centres)
         if error:
-            failures.append(f"OpenStreetMap (Overpass) did not answer: {error}")
+            # Not a run failure (module docstring): said in the log, the .md and every row.
             osm, osm_status = {}, f"asked and failed: {error}"
+            print(f"    WARNING: OpenStreetMap (Overpass) did not answer ({error}); the proposal is "
+                  f"written WITHOUT it and every row says so")
+            md.append(f"- **WARNING: OpenStreetMap (Overpass) did not answer ({error}). The grounds below "
+                      f"were proposed WITHOUT it; run the tool again to ask it.**")
         else:
             osm_status = "queried"
     md.append(f"- OpenStreetMap: {osm_status}" + (f"; {len(osm)} named stadium / sports centre / "
