@@ -106,28 +106,34 @@ def core(name):
     return [w for w in sdb.words(name) if w not in SET_ASIDE]
 
 
-def name_strength(a, b):
+def name_strength(a, b, club_words=()):
     """exact / contained / None between two ground names, with the words that
-    only say what kind of place it is set aside."""
+    only say what kind of place it is set aside - and the club's own name
+    words too: "Benfica Campus" and "Benfica Stadium" share only the club,
+    which says nothing about the ground. Exact equality is tried first,
+    before the club's words are dropped."""
     ca, cb = core(a), core(b)
+    if not ca or not cb:
+        return None
+    if set(ca) == set(cb) or "".join(ca) == "".join(cb):
+        return "exact"
+    drop = set(club_words)
+    ca, cb = [w for w in ca if w not in drop], [w for w in cb if w not in drop]
     if not ca or not cb:
         return None
     if set(ca) == set(cb):
         return "exact"
     if set(ca) <= set(cb) or set(cb) <= set(ca):
         return "contained"
-    ja, jb = "".join(ca), "".join(cb)
-    if ja and jb and (ja == jb):
-        return "exact"
     return None
 
 
-def best_strength(name, others):
+def best_strength(name, others, club_words=()):
     """The strongest of name_strength over several names, with the one that gave it."""
     order = {"exact": 2, "contained": 1}
     best = (None, None)
     for o in others:
-        s = name_strength(name, o)
+        s = name_strength(name, o, club_words)
         if s and order[s] > order.get(best[0], 0):
             best = (s, o)
     return best
@@ -176,6 +182,11 @@ def capacity_rule(table, wikidata, osm, stadiumdb):
         return "single-source", None, None, (
             f"one independent source only ({only}); the table and Wikidata are both Wikipedia's")
     return "contested", None, None, "no two independent sources agree within 5%"
+
+
+def cr_markers(name):
+    """The reserve-side marker words of a team name (II, B, U23, Jong ...)."""
+    return {w for w in sdb.words(name) if w in sdb.TEAM_MARKERS}
 
 
 def pick_centre(candidates):
@@ -463,7 +474,8 @@ def propose(pc, args, ctx, langs, failures):
         wg = wd_ground(rec)
         table_ground = clean_ground(rec["ground"])
         wd_names = [n for g in wg for n in g["labels"] + g["aliases"]]
-        wd_same = bool(wg) and best_strength(table_ground, wd_names)[0] is not None
+        cw = set(sdb.words(src["label"])) | set(sdb.words(rec["team"]))
+        wd_same = bool(wg) and best_strength(table_ground, wd_names, cw)[0] is not None
         wd_pos = ("Wikidata ground P625" + ("" if wd_same else " (a ground whose name differs)"),
                   wg[0]["coord"] if wg else None)
         art_pos = ("the ground's English article", article_pos.get(rec["ground_title"]))
@@ -475,17 +487,22 @@ def propose(pc, args, ctx, langs, failures):
                 found.append((label, pos))
         centre_of[rec["qid"]] = found
         centres.extend(pos for _l, pos in found)
-    osm, error = (overpass_elements(pc, centres) if centres else ({}, None))
+    # robots.txt FIRST (the brief, and the project's rule: a refusal is a stop). Overpass's
+    # file disallows /api/ for every agent (read 2026-10-21), so by default nothing is
+    # asked of it and every row says so. That is a gap reported, not a failure: it is
+    # permanent, and a failure here would turn every country's run red.
     ok, robots = robots_allows(pc, "https://overpass-api.de", "/api/interpreter")
     md.append(f"- {robots}")
-    if not ok:
-        failures.append(robots)
-        osm = {}
-    elif error:
-        failures.append(f"OpenStreetMap (Overpass) did not answer: {error}")
-        osm = {}
-    md.append(f"- OpenStreetMap: {len(osm)} named stadium / sports centre / soccer pitch elements within "
-              f"{RADIUS_M} m of {len(centres)} club position(s)")
+    osm, osm_status = {}, "not queried: " + robots
+    if ok and centres:
+        osm, error = overpass_elements(pc, centres)
+        if error:
+            failures.append(f"OpenStreetMap (Overpass) did not answer: {error}")
+            osm, osm_status = {}, f"asked and failed: {error}"
+        else:
+            osm_status = "queried"
+    md.append(f"- OpenStreetMap: {osm_status}" + (f"; {len(osm)} named stadium / sports centre / "
+              f"soccer pitch elements within {RADIUS_M} m of {len(centres)} club position(s)" if osm_status == "queried" else ""))
 
     # --- StadiumDB
     country_label = ctx.get("country_label") or args.country
@@ -511,28 +528,42 @@ def propose(pc, args, ctx, langs, failures):
         box = infobox.get(rec["title"], "")
         url = pc.enwiki_url(rec["ground_title"]) if rec["ground_title"] else pc.wd(q)
 
-        # (a)+(b) the names
+        # (a)+(b) the names, and which of them agree with each other
+        club_words = set(sdb.words(src["label"])) | set(sdb.words(team))
         sdb_gr, sdb_note = (match_stadiumdb(src["label"], table_ground, sgrounds) if sgrounds else (None, "no StadiumDB page"))
-        places = {"table": table_ground}
+        places = {"table": [table_ground]}
         if box:
-            places["club article infobox"] = box
+            places["club article infobox"] = [box]
         if wg:
-            places["Wikidata P115"] = wg[0]["label"]
+            places["Wikidata P115"] = wd_names
         if sdb_gr:
-            places["StadiumDB"] = sdb_gr["name"]
-        agree_with_table = []
-        for name, value in places.items():
-            if name == "table":
-                continue
-            if name == "Wikidata P115":
-                s, via = best_strength(table_ground, wd_names)
-                if s:
-                    agree_with_table.append(f"{name} ({s}{'' if via == wg[0]['label'] else ', alias ' + repr(via)})")
-            else:
-                if sdb.ground_signal(table_ground, value) is True or name_strength(table_ground, value):
-                    agree_with_table.append(name)
-        named_by = 1 + len(agree_with_table)
-        wd_agrees = any(a.startswith("Wikidata") for a in agree_with_table)
+            places["StadiumDB"] = [sdb_gr["name"]]
+
+        def agree(x, y):
+            for nx in places[x]:
+                for ny in places[y]:
+                    if name_strength(nx, ny, club_words) or \
+                            (x != "Wikidata P115" and y != "Wikidata P115"
+                             and sdb.ground_signal(nx, ny) is True and name_strength(nx, ny, club_words)):
+                        return True
+            return False
+        # connected groups of places that name the same ground
+        left, groups = list(places), []
+        while left:
+            group, todo = [], [left.pop(0)]
+            while todo:
+                cur = todo.pop()
+                group.append(cur)
+                for other in [o for o in left if agree(cur, o)]:
+                    left.remove(other)
+                    todo.append(other)
+            groups.append(group)
+        table_group = next(g for g in groups if "table" in g)
+        other_groups = [g for g in groups if "table" not in g]
+        named_by = len(table_group)
+        agree_with_table = [x for x in table_group if x != "table"]
+        wd_agrees = "Wikidata P115" in table_group
+        odd_table = named_by < 2 and any(len(g) >= 2 for g in other_groups)
 
         # (c) OSM elements named like the ground, within 3 km of the centre
         found = centre_of[q]
@@ -542,7 +573,7 @@ def propose(pc, args, ctx, langs, failures):
             near = min((haversine_m(pos, el["pos"]) for _l, pos in found), default=None)
             if near is None or near > RADIUS_M:
                 continue
-            strength, _via = best_strength(el["tags"].get("name", ""), [table_ground] + wd_names)
+            strength, _via = best_strength(el["tags"].get("name", ""), [table_ground] + (wd_names if wd_agrees else []), club_words)
             if strength:
                 osm_hits.append(dict(el, strength=strength, near=near))
         osm_hits.sort(key=lambda e: (e["strength"] != "exact", e["near"]))
@@ -581,32 +612,42 @@ def propose(pc, args, ctx, langs, failures):
             reasons.append("the club has no P625")
             build_note = "UNPLACED (unplaced-no-coordinates): " + "; ".join(reasons)
 
-        flags = []
+        problems, notes_ = [], []
         if len(wg) > 1:
-            flags.append(f"TWO TRUTHY GROUNDS ({', '.join(g['label'] for g in wg)})")
-        if wg and len(shared.get(wg[0]["qid"], [])) > 1:
-            flags.append("P115 shared with " + ", ".join(t for t in shared[wg[0]["qid"]] if t != team)
-                         + (" - a copied first-team ground if the table names another" if not wd_agrees else ""))
+            problems.append(f"TWO TRUTHY GROUNDS ({', '.join(g['label'] for g in wg)})")
+        if wg:
+            others = [t for t in shared.get(wg[0]["qid"], []) if t != team]
+            if others:
+                mine = bool(cr_markers(team))
+                theirs = [bool(cr_markers(o)) for o in others]
+                if mine and not all(theirs):
+                    problems.append("P115 is the first team's ground (" + ", ".join(others)
+                                    + ") - copied onto a reserve side unless the table agrees")
+                elif not mine and all(theirs):
+                    notes_.append("its P115 is also its reserve side's (" + ", ".join(others) + ")")
+                else:
+                    problems.append("P115 shared with " + ", ".join(others))
         if wg and not wd_agrees:
-            flags.append(f"Wikidata names {wg[0]['label']!r}, the table {table_ground!r}")
+            (notes_ if odd_table else problems).append(
+                f"Wikidata names {wg[0]['label']!r}, the table {table_ground!r}"
+                + (" - the table is the odd one out (three places agree with each other)" if odd_table else ""))
         elif not wg:
-            flags.append("Wikidata names no ground")
+            notes_.append("Wikidata names no ground")
         if build_pos and proposed_pos and haversine_m(build_pos, proposed_pos) > AGREE_M:
-            flags.append(f"THE MAP WOULD BE {round(haversine_m(build_pos, proposed_pos))} m FROM THE PROPOSAL")
+            problems.append(f"THE MAP WOULD BE {round(haversine_m(build_pos, proposed_pos))} m FROM THE PROPOSAL")
         if not build_pos:
-            flags.append("UNPLACED by the build")
-        if named_by < 2:
-            flags.append("the ground is named by ONE place only (rule: two independent places)")
+            problems.append("UNPLACED by the build")
+        if named_by < 2 and not odd_table:
+            problems.append("the ground is named by ONE place only (rule: two independent places)")
         if not proposed_pos:
-            flags.append("NO ground-specific position found")
-        verdict = "ok" if not flags else ("unplaced" if not build_pos else "attention")
-        # an agreeing, placed, twice-named ground needs nothing
-        if verdict == "ok":
-            pass
+            problems.append("NO ground-specific position found" + ("" if osm_status == "queried"
+                                                                    else " (OpenStreetMap was not queried)"))
+        flags = problems
+        verdict = "ok" if not problems else ("unplaced" if not build_pos else "attention")
         detail = pc.kv(
-            verdict=verdict, flags=" | ".join(flags),
+            verdict=verdict, flags=" | ".join(problems), notes=" | ".join(notes_),
             ground_table=table_ground, named_by=f"{named_by} place(s): table" + "".join(f", {a}" for a in agree_with_table),
-            other_names="; ".join(f"{k}={v}" for k, v in places.items() if k != "table"),
+            other_names="; ".join(f"{k}={' / '.join(v[:2])}" for k, v in places.items() if k != "table"),
             proposed_venue=table_ground,
             proposed_position=(f"{proposed_pos[0]:.6f} / {proposed_pos[1]:.6f}" if proposed_pos else ""),
             position_sources="; ".join(f"{l} {p[0]:.6f}/{p[1]:.6f}" for l, p in coord_sources),
@@ -616,6 +657,7 @@ def propose(pc, args, ctx, langs, failures):
                 f"{e['ref']} {e['tags'].get('name')!r} [{e['tags'].get('leisure')}"
                 f"{'/' + e['tags']['sport'] if e['tags'].get('sport') else ''}] {e['strength']}, "
                 f"{round(e['near'])} m from the nearest search centre" for e in osm_hits[:4]),
+            osm=osm_status if osm_status != "queried" else "queried",
             osm_search_centres="; ".join(l for l, _p in found) or "NONE: no position to search around")
         rows.append(pc.row("ground-proposal", tier, q, team, url,
                            f"{team}: ground {table_ground!r} - {verdict}", detail))
@@ -634,7 +676,8 @@ def propose(pc, args, ctx, langs, failures):
             action = "keep (the map's figure is in the agreement)" if wd_cap and within(wd_cap, proposed) \
                 else ("add (the map has no figure)" if not wd_cap else f"REPLACE the map's {wd_cap}")
         elif wd_cap:
-            action = f"the map's {wd_cap} has no agreeing source: blank it only by a decision"
+            action = (f"keep or blank, a decision: the map's {wd_cap} has no independent agreement "
+                      f"(it rests on Wikipedia/Wikidata alone)")
         detail_c = pc.kv(
             verdict=verdict_c, proposed=proposed if proposed is not None else "BLANK",
             action=action, rule=note,

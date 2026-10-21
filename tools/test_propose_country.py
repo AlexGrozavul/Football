@@ -223,5 +223,52 @@ more2 = [
 for name, ok in more2:
     bad += not ok
     print(("ok   " if ok else "FAIL ") + name)
+
+# --- three corrections found on the first real run
+GROUNDS.update({"G12": {"label": "Estadio da Luz", "coord": (38.7527, -9.1847), "cap": 64642, "aliases": ["Benfica Stadium"]},
+                "G13": {"label": "Estadio Municipal 22 de Junho", "coord": (41.4013, -8.5224), "cap": 5307}})
+roster2 = [
+    dict(base, qid="Q104", team="Benfica", title="S.L. Benfica", ground="Estadio da Luz", capacity=64642, ground_title="Estadio da Luz"),
+    dict(base, qid="Q105", team="Benfica B", title="S.L. Benfica B", ground="Benfica Campus - Campo n.o 1", capacity=2644,
+         ground_title="Benfica Campus"),
+    dict(base, qid="Q106", team="Famalicao", title="F.C. Famalicao", ground="Estadio Municipal de Famalicao", capacity=5307,
+         ground_title="Estadio Municipal de Famalicao"),
+]
+G = lambda g: [{"value": g, "rank": "normal", "snaktype": "value", "start": None, "end": None}]
+ginfos2 = {
+    "Q104": dict(info("Q104", "S.L. Benfica", [(L1, *N)]), grounds_all=G("G12"), grounds_truthy=G("G12")),
+    "Q105": dict(info("Q105", "S.L. Benfica B", [(L2, *N)]), grounds_all=G("G12"), grounds_truthy=G("G12")),
+    "Q106": dict(info("Q106", "F.C. Famalicao", [(L1, *N)]), grounds_all=G("G13"), grounds_truthy=G("G13")),
+}
+pg.article_coordinates = lambda pcm, titles: {"Benfica Campus": (38.6405, -9.0919), "Estadio Municipal de Famalicao": (41.4014, -8.5225),
+                                              "Estadio da Luz": (38.7527, -9.1847)}
+pg.club_infobox_grounds = lambda pcm, titles: {"F.C. Famalicao": "Estadio Municipal 22 de Junho"}
+pg.stadiumdb_grounds = lambda pcm, args, label, probe: ([
+    pg.sdb.ground("Estadio Municipal 22 de Junho", "Vila Nova de Famalicao", "Famalicao", 5307)], "por", [], [])
+pg.robots_allows = lambda pcm, base, path: (False, f"{base}/robots.txt disallows ['/api/'] for {path}") \
+    if "overpass" in base else (True, f"{base}/robots.txt: test")
+asked = []
+pg.overpass_elements = lambda pcm, centres: asked.append(1) or ({}, None)
+gfail2 = []
+grows2 = pg.propose(pc, A, {"infos": ginfos2, "roster": roster2, "twin_of": {}, "country_label": "Portugal"}, [], gfail2)
+gd2 = {(r["kind"], r["clubQid"]): r["detail"] for r in grows2}
+more3 = [
+    ("Overpass disallowed by robots.txt: never asked, not a failure, said in the row",
+     not asked and not gfail2 and "osm=not queried" in gd2[("ground-proposal", "Q105")]),
+    ("Benfica B: 'Benfica Stadium' is the club's name, not agreement; the P115 is flagged as the first team's",
+     "verdict=attention" in gd2[("ground-proposal", "Q105")] and "first team's ground" in gd2[("ground-proposal", "Q105")]),
+    ("Benfica B: the proposal is the campus article's position, not the Luz",
+     "proposed_position=38.640500" in gd2[("ground-proposal", "Q105")]),
+    ("Benfica (first team) is not flagged for sharing with its own reserve side",
+     "verdict=ok" in gd2[("ground-proposal", "Q104")] and "also its reserve side's" in gd2[("ground-proposal", "Q104")]),
+    ("Famalicao: the table is the odd one out, a note and not a problem",
+     "verdict=ok" in gd2[("ground-proposal", "Q106")] and "odd one out" in gd2[("ground-proposal", "Q106")]),
+    ("a name that is only the club's name is no agreement",
+     pg.name_strength("Benfica Campus", "Benfica Stadium", {"benfica"}) is None
+     and pg.name_strength("Estadio Benfica", "Estadio Benfica", {"benfica"}) == "exact"),
+]
+for name, ok in more3:
+    bad += not ok
+    print(("ok   " if ok else "FAIL ") + name)
 print("FAILED" if bad else "all passed")
 sys.exit(1 if bad else 0)
