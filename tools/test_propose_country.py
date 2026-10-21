@@ -373,9 +373,23 @@ _ur.urlopen = _scripted(ok_json)
 _els_cap, err_cap = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
 used_cap = pg._overpass_used[0]
 pg._overpass_used[0] = 0
-_ur.urlopen = _scripted(ok_json, ok_json, ok_json, ok_json, ok_json)
-REAL_OVERPASS_ELEMENTS(pc, [(40.0 + i / 100, -8.0) for i in range(85)])       # 85 centres = 5 requests of up to 20
+_ur.urlopen = _scripted(*([ok_json] * 9))
+REAL_OVERPASS_ELEMENTS(pc, [(40.0 + i / 100, -8.0) for i in range(85)])       # 85 centres = 9 requests of up to 10
 used_chunks = pg._overpass_used[0]
+pg._overpass_used[0] = 0
+_ur.urlopen = _scripted(502, 502, ok_json)
+_t0_real = pg.time.time
+fake_now = [_t0_real()]
+pg.time.time = lambda: fake_now[0]
+pg.time.sleep = lambda secs: fake_now.__setitem__(0, fake_now[0] + secs) or slept.append(secs)
+_els_b, err_b = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0), (2.0, 3.0)] * 1)       # waits 30 + 60 s: inside the budget
+ok_inside = err_b is None
+pg._overpass_used[0] = 0
+_ur.urlopen = _scripted(502, 502, 502, 502, 502, 502, ok_json)
+pg.OVERPASS_BUDGET_S = 50                                                         # 30 s wait ok, then 30 + 60 > 50
+_els_b2, err_b2 = REAL_OVERPASS_ELEMENTS(pc, [(1.0, 2.0)])
+pg.OVERPASS_BUDGET_S = 900
+pg.time.time = _t0_real
 _ur.urlopen, pg.time.sleep, pc.MIN_GAP = _real_open, _real_sleep, _real_gap
 pg._overpass_used[0] = 0
 
@@ -383,11 +397,13 @@ more5 = [
     ("Overpass: 504, 429, 502 then a good answer = 4 requests, waits double 30, 60, 120 s (Retry-After 7 does not shorten it)",
      err is None and ("way", 9) in els and used_504_429 == 4 and slept[:3] == [30, 60, 120]),
     ("Overpass: persistent 502 gives up after 6 tries, the 6th wait never taken", used_gu == 6 and err_gu and "HTTP 502" in err_gu and slept_gu[:5] == [30, 60, 120, 120, 120]),
+    ("Overpass: the 15 min budget stops the retries (and does not stop a run that is inside it)",
+     ok_inside and err_b2 and "time budget" in err_b2),
     ("Overpass: a 500 is not retried", err500 == "HTTP 500" and used_500 == 1),
     ("Overpass: a read timeout is retried like a 504", err_to is None and used_to == 2),
     ("Overpass: another network error is not retried", err_net and err_net.startswith("network error") and used_net == 1),
     ("Overpass: at the cap of 60 requests nothing more is asked", err_cap and "cap of 60" in err_cap and used_cap == 60),
-    ("Overpass: 85 centres go in 5 requests of at most 20", used_chunks == 5),
+    ("Overpass: 85 centres go in 9 requests of at most 10", used_chunks == 9),
 ]
 for name, ok in more5:
     bad += not ok

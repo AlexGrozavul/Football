@@ -85,7 +85,9 @@ OVERPASS_WAIT_S = 30                # the operator: pause 30 s after a 429; doub
 OVERPASS_MAX_TRIES = 6              # per request; the server's own 502 text asks for exponential backoff
 OVERPASS_MAX_WAIT_S = 120
 OVERPASS_TIMEOUT_S = 200            # the query says [timeout:180]
-OVERPASS_CENTRES_PER_REQUEST = 20   # club positions per request (a smaller request costs less when it is lost)
+OVERPASS_CENTRES_PER_REQUEST = 10   # club positions per request: the live runs of 2026-10-21 lost every 20-position request to the queue, a 3-position one came back in 65 s
+OVERPASS_BUDGET_S = 900             # the whole OpenStreetMap step gives up after 15 min, so a down server never costs the proposal
+_overpass_t0 = [0.0]
 _overpass_used = [0]                # requests made this run, retries included
 RADIUS_M = 3000
 AGREE_M = 150
@@ -416,6 +418,8 @@ def overpass_post(pc, body):
     for attempt in range(1, OVERPASS_MAX_TRIES + 1):
         if _overpass_used[0] >= OVERPASS_MAX_REQUESTS:
             return None, f"the cap of {OVERPASS_MAX_REQUESTS} Overpass requests per run was reached"
+        if _overpass_t0[0] and time.time() - _overpass_t0[0] > OVERPASS_BUDGET_S:
+            return None, f"the time budget of {OVERPASS_BUDGET_S // 60} minutes for Overpass was used up ({reason})"
         pc._wait("overpass-api.de")
         _overpass_used[0] += 1
         req = urllib.request.Request(OVERPASS, data=body, headers={
@@ -452,6 +456,7 @@ def overpass_elements(pc, centres):
     request fails the whole step, a partial map is not a map."""
     uniq = list(dict.fromkeys((round(lat, 6), round(lon, 6)) for lat, lon in centres))
     out = {}
+    _overpass_t0[0] = time.time()
     for i in range(0, len(uniq), OVERPASS_CENTRES_PER_REQUEST):
         parts = []
         for lat, lon in uniq[i:i + OVERPASS_CENTRES_PER_REQUEST]:
