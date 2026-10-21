@@ -13,7 +13,10 @@ For every roster club it reads, and proposes nothing it cannot show:
       with its P625, labels, aliases and P1083;
   (c) OpenStreetMap elements named like the ground once legal-form and
       stadium words are set aside - leisure=stadium, leisure=sports_centre, or
-      a pitch with sport=soccer - within 3 km of the club's best position;
+      a pitch with sport=soccer - within 3 km of the club's best position.
+      ONLY IF overpass-api.de/robots.txt allows /api/interpreter: it is read
+      first, and on 2026-10-21 it disallowed it for every agent, so nothing is
+      asked and every row says "not queried" (CLAUDE.md, Known open problems);
   (d) the distances between (b), the ground's English article and (c);
   (e) capacity figures: the table's, Wikidata's, OpenStreetMap's, StadiumDB's
       (crosscheck_stadiumdb.py's parser and matching signals, imported),
@@ -101,9 +104,13 @@ def clean_ground(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
+NUMBER_MARK = re.compile(r"\bn\s*\.?\s*[°º]?\s*\d+\b", re.IGNORECASE)
+
+
 def core(name):
-    """The words that say WHICH ground a name is."""
-    return [w for w in sdb.words(name) if w not in SET_ASIDE]
+    """The words that say WHICH ground a name is. A pitch number ("Campo n.° 1")
+    says which pitch of a complex, not which ground, and is set aside."""
+    return [w for w in sdb.words(NUMBER_MARK.sub(" ", name or "")) if w not in SET_ASIDE]
 
 
 def name_strength(a, b, club_words=()):
@@ -713,12 +720,14 @@ def propose(pc, args, ctx, langs, failures):
 
         # (e) capacity - a figure counts only when it is about the TABLE's ground
         wd_cap = wg[0]["capacities"][0] if wg and wg[0]["capacities"] else None
-        sdb_same = bool(sdb_gr) and name_strength(table_ground, sdb_gr["name"], club_words) is not None
+        big_other = max(other_groups, key=len) if other_groups else []
+        sdb_same = bool(sdb_gr) and (name_strength(table_ground, sdb_gr["name"], club_words) is not None
+                                     or (odd_table and "StadiumDB" in big_other))
         hit_caps = [h["cap"] for h in search_hits.get(q, []) if h.get("cap")]
         osm_caps = sorted({int(re.sub(r"\D", "", e["tags"]["capacity"])) for e in exact
                            if re.fullmatch(r"\s*\d[\d ,.]*", e["tags"].get("capacity", ""))})
         osm_cap = osm_caps[0] if len(osm_caps) == 1 else None
-        wd_for_rule = wd_cap if (wd_agrees or not wg) else None
+        wd_for_rule = wd_cap if (wd_agrees or not wg or (odd_table and "Wikidata P115" in big_other)) else None
         if not wg and hit_caps:
             wd_for_rule = hit_caps[0]
         sdb_for_rule = sdb_gr["capacity"] if sdb_same else None
@@ -736,7 +745,7 @@ def propose(pc, args, ctx, langs, failures):
             action = (f"CLEAR the map's {wd_cap}: it is the capacity of another ground ({wg[0]['label']}), "
                       f"unless the two names are one ground")
         elif wd_cap:
-            action = (f"keep or blank, a decision: the map's {wd_cap} has no independent agreement "
+            action = (f"no change proposed: the map's {wd_cap} has no independent agreement "
                       f"(it rests on Wikipedia/Wikidata alone)")
         detail_c = pc.kv(
             verdict=verdict_c, proposed=proposed if proposed is not None else "BLANK",

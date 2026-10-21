@@ -266,6 +266,10 @@ more3 = [
      "verdict=ok" in gd2[("ground-proposal", "Q104")] and "also its reserve side's" in gd2[("ground-proposal", "Q104")]),
     ("Famalicao: the table is the odd one out, a note and not a problem",
      "verdict=ok" in gd2[("ground-proposal", "Q106")] and "odd one out" in gd2[("ground-proposal", "Q106")]),
+    ("Famalicao: the table is the odd one out, so Wikidata's capacity is this ground's and nothing is cleared",
+     "verdict=agreed" in gd2[("capacity-proposal", "Q106")] and "CLEAR" not in gd2[("capacity-proposal", "Q106")]),
+    ("a pitch number is not part of the ground's name",
+     pg.name_strength("Benfica Campus - Campo n.° 1", "Caixa Futebol Campus", {"benfica"}) == "contained"),
     ("a name that is only the club's name is no agreement",
      pg.name_strength("Benfica Campus", "Benfica Stadium", {"benfica"}) is None
      and pg.name_strength("Estadio Benfica", "Estadio Benfica", {"benfica"}) == "exact"),
