@@ -957,7 +957,7 @@ def classify(ctx):
                         intro_text or f"no intro sentence: {intro_url}",
                         kv(drawn_by_build=("yes: has a position" if pos else
                                            "NO: no P625 on the club or on any P115 ground, so the build "
-                                           "drops it at the coordinates gate and no skip row is needed"),
+                                           "drops it at the coordinates gate, so there is nothing on the map to remove"),
                            intro_names_a_tracked_league=("YES (" + ", ".join(names_tracked) + ") - contradicts "
                                                          "the absence from the rosters" if names_tracked else ""),
                            absent_from=ctx.get("rosters_summary", ""),
