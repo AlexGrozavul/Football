@@ -10,6 +10,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import propose_country as pc          # noqa: E402
+import propose_grounds as pg          # noqa: E402
 
 L1, L2, OTHER = "Q1", "Q2", "Q99"
 TRACKED = {L1: 1, L2: 2}
@@ -109,6 +110,117 @@ checks = [
     ("fmt_time year precision", pc.fmt_time({"time": "+2010-00-00T00:00:00Z", "precision": 9}) == "2010"),
 ]
 for name, ok in checks:
+    bad += not ok
+    print(("ok   " if ok else "FAIL ") + name)
+# --- the ground and capacity rules (propose_grounds.py)
+cap = pg.capacity_rule
+more = [
+    ("Arouca: table and StadiumDB 5000 against Wikidata 5600 -> agreed 5000 from the table",
+     cap(5000, 5600, None, 5000)[:3] == ("agreed", 5000, "table")),
+    ("Casa Pia: table and Wikidata 7000 only -> single source, blank",
+     cap(7000, 7000, None, None)[:2] == ("single-source", None)),
+    ("Wikidata and OpenStreetMap agree, no table -> agreed, Wikidata's figure",
+     cap(None, 12000, 12400, None)[:3] == ("agreed", 12000, "wikidata")),
+    ("table 10000, Wikidata 8000, StadiumDB 20000, OSM 5000 -> contested, blank",
+     cap(10000, 8000, 5000, 20000)[:2] == ("contested", None)),
+    ("table and Wikidata disagree, nothing else -> single source, blank",
+     cap(10000, 8000, None, None)[:2] == ("single-source", None)),
+    ("no figure at all -> none", cap(None, None, None, None)[0] == "none"),
+    ("exactly 5% apart agrees, just over does not", pg.within(1000, 1050) and not pg.within(1000, 1060)),
+    ("a ground article and the same name in other words: exact",
+     pg.name_strength("Estádio Municipal de Rio Maior", "Estádio Municipal de Rio Maior") == "exact"),
+    ("'Estádio do CD Aves' is contained in 'Estádio do Clube Desportivo das Aves'",
+     pg.name_strength("Estádio do CD Aves", "Estádio do Clube Desportivo das Aves") == "contained"),
+    ("two different grounds do not match", pg.name_strength("Estádio Algarve", "Estádio de São Luís") is None),
+    ("the table's ', at Town' tail and footnote go", pg.clean_ground("Estádio Municipal de Rio Maior , at Rio Maior[3]")
+     == "Estádio Municipal de Rio Maior"),
+    ("haversine: same point 0 m, one degree of latitude about 111 km",
+     pg.haversine_m((38.7, -9.1), (38.7, -9.1)) == 0 and 110000 < pg.haversine_m((38, -9), (39, -9)) < 112500),
+    ("pick_centre takes the first position it is given",
+     pg.pick_centre([("a", None), ("b", (1, 2)), ("c", (3, 4))]) == ("b", (1, 2))),
+]
+for name, ok in more:
+    bad += not ok
+    print(("ok   " if ok else "FAIL ") + name)
+
+# --- the whole of propose_grounds.propose() with the network mocked
+def fake_entities(qids, langs, props=""):
+    ents = {}
+    for q in qids:
+        g = GROUNDS[q]
+        claims = {}
+        if g["coord"]:
+            claims["P625"] = [{"rank": "normal", "mainsnak": {"snaktype": "value", "datavalue": {
+                "type": "globecoordinate", "value": {"latitude": g["coord"][0], "longitude": g["coord"][1]}}}}]
+        if g["cap"]:
+            claims["P1083"] = [{"rank": "normal", "mainsnak": {"snaktype": "value", "datavalue": {
+                "type": "quantity", "value": {"amount": f"+{g['cap']}"}}}}]
+        ents[q] = {"id": q, "labels": {"en": {"value": g["label"]}}, "claims": claims,
+                   "aliases": {"en": [{"value": a} for a in g.get("aliases", [])]}}
+    return ents, []
+
+
+GROUNDS = {"G10": {"label": "Estadio Arouca", "coord": (40.9300, -8.2500), "cap": 5600},
+           "G11": {"label": "Estadio Algarve", "coord": (37.0900, -8.1100), "cap": 30305}}
+base = dict(tier=1, article="A1", ground_title=None)
+roster = [
+    dict(base, qid="Q101", team="Arouca", title="Arouca FC", ground="Estadio Arouca", capacity=5000,
+         ground_title="Estadio Arouca"),
+    dict(base, qid="Q102", team="Farense", title="Farense FC", ground="Estadio de Sao Luis", capacity=7000,
+         ground_title="Estadio de Sao Luis"),
+    dict(base, qid="Q103", team="Casa Pia", title="Casa Pia AC", ground="Estadio Municipal de Rio Maior , at Rio Maior",
+         capacity=7000, ground_title="Estadio Municipal de Rio Maior"),
+]
+ginfos = {
+    "Q101": dict(info("Q101", "Arouca FC", [(L1, *N)]), grounds_all=[{"value": "G10", "rank": "normal", "snaktype": "value", "start": None, "end": None}],
+                 grounds_truthy=[{"value": "G10", "rank": "normal", "snaktype": "value", "start": None, "end": None}]),
+    "Q102": dict(info("Q102", "Farense FC", [(L1, *N)]), grounds_all=[{"value": "G11", "rank": "normal", "snaktype": "value", "start": None, "end": None}],
+                 grounds_truthy=[{"value": "G11", "rank": "normal", "snaktype": "value", "start": None, "end": None}]),
+    "Q103": info("Q103", "Casa Pia AC", [(L1, *N)]),
+}
+pc.fetch_entities = fake_entities
+pg.article_coordinates = lambda pcm, titles: {"Estadio de Sao Luis": (37.0228, -7.9286),
+                                              "Estadio Municipal de Rio Maior": (39.3445, -8.9352)}
+pg.club_infobox_grounds = lambda pcm, titles: {"Casa Pia AC": "Estadio Pina Manique"}
+pg.overpass_elements = lambda pcm, centres: ({
+    ("way", 1): {"ref": "way/1", "pos": (40.9302, -8.2501), "tags": {"name": "Estadio Arouca", "leisure": "stadium", "capacity": "5000"}},
+    ("way", 2): {"ref": "way/2", "pos": (37.0229, -7.9285), "tags": {"name": "Estadio de Sao Luis", "leisure": "stadium"}},
+    ("way", 3): {"ref": "way/3", "pos": (39.3446, -8.9351), "tags": {"name": "Estadio Municipal de Rio Maior", "leisure": "pitch", "sport": "soccer"}},
+    ("way", 4): {"ref": "way/4", "pos": (39.3447, -8.9353), "tags": {"name": "Pavilhao qualquer", "leisure": "sports_centre"}}}, None)
+pg.robots_allows = lambda pcm, base, path: (True, f"{base}/robots.txt: test")
+pg.stadiumdb_grounds = lambda pcm, args, label, probe: ([
+    pg.sdb.ground("Estadio Arouca", "Arouca", "Arouca", 5000)], "por", ["StadiumDB slug 'por' answered (test)"], [])
+
+
+class A:                      # the arguments propose() reads
+    country = "PT"
+    probe_slug = False
+
+
+gctx = {"infos": ginfos, "roster": roster, "twin_of": {}, "country_label": "Portugal"}
+gfail = []
+grows = pg.propose(pc, A, gctx, [], gfail)
+gd = {(r["kind"], r["clubQid"]): r["detail"] for r in grows}
+more2 = [
+    ("two rows per club", len(grows) == 6 and not gfail),
+    ("Arouca's ground agrees everywhere", "verdict=ok" in gd[("ground-proposal", "Q101")]),
+    ("Arouca capacity: table and StadiumDB agree, the map's 5600 is replaced",
+     "proposed=5000" in gd[("capacity-proposal", "Q101")] and "REPLACE the map's 5600" in gd[("capacity-proposal", "Q101")]),
+    ("Farense: Wikidata names another ground, and the map would be far from the proposal",
+     "verdict=attention" in gd[("ground-proposal", "Q102")] and "THE MAP WOULD BE" in gd[("ground-proposal", "Q102")]
+     and "Wikidata names 'Estadio Algarve'" in gd[("ground-proposal", "Q102")]),
+    ("Farense: the proposed position is the ground article's, OSM agrees within 150 m",
+     "proposed_position=37.022800" in gd[("ground-proposal", "Q102")] and "AGREE within 150 m" in gd[("ground-proposal", "Q102")]),
+    ("Casa Pia: the build leaves it unplaced, and the proposal says where",
+     "verdict=unplaced" in gd[("ground-proposal", "Q103")] and "UNPLACED" in gd[("ground-proposal", "Q103")]
+     and "proposed_position=39.3445" in gd[("ground-proposal", "Q103")]),
+    ("Casa Pia: the club article's infobox ground is listed as another name",
+     "club article infobox=Estadio Pina Manique" in gd[("ground-proposal", "Q103")]),
+    ("Casa Pia: a ', at Rio Maior' tail is not part of the ground", "proposed_venue=Estadio Municipal de Rio Maior;" in gd[("ground-proposal", "Q103")]),
+    ("the sports hall that is not the ground is not an OSM candidate",
+     "Pavilhao" not in gd[("ground-proposal", "Q103")]),
+]
+for name, ok in more2:
     bad += not ok
     print(("ok   " if ok else "FAIL ") + name)
 print("FAILED" if bad else "all passed")

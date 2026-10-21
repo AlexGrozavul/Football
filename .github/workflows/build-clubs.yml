@@ -31,6 +31,7 @@ concurrency:
 
 jobs:
   clubs:
+    if: false   # TEMPORARY probe
     runs-on: ubuntu-latest
 
     steps:
@@ -87,3 +88,22 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
+
+  probe:   # TEMPORARY - removed before the merge
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run the probe command file
+        run: |
+          set -o pipefail
+          bash tools/_probe_cmd.sh 2>&1 | tee /tmp/probe.log
+      - name: Commit what the probe wrote
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/clubs/proposal-*.csv data/clubs/proposal-*.md 2>/dev/null || true
+          if git diff --cached --quiet; then echo "nothing"; exit 0; fi
+          git commit -m "probe output (temporary)"
+          git push || { git pull --rebase origin "${GITHUB_REF_NAME}"; git push; }
