@@ -13,10 +13,8 @@ For every roster club it reads, and proposes nothing it cannot show:
       with its P625, labels, aliases and P1083;
   (c) OpenStreetMap elements named like the ground once legal-form and
       stadium words are set aside - leisure=stadium, leisure=sports_centre, or
-      a pitch with sport=soccer - within 3 km of the club's best position.
-      ONLY IF overpass-api.de/robots.txt allows /api/interpreter: it is read
-      first, and on 2026-10-21 it disallowed it for every agent, so nothing is
-      asked and every row says "not queried" (CLAUDE.md, Known open problems);
+      a pitch with sport=soccer - within 3 km of the club's best position,
+      asked of the public Overpass API (see OVERPASS BELOW);
   (d) the distances between (b), the ground's English article and (c);
   (e) capacity figures: the table's, Wikidata's, OpenStreetMap's, StadiumDB's
       (crosscheck_stadiumdb.py's parser and matching signals, imported),
@@ -25,6 +23,29 @@ For every roster club it reads, and proposes nothing it cannot show:
 Two kinds of row: ground-proposal and capacity-proposal, one per roster club.
 The first word of the detail is the verdict. NOTHING IS WRITTEN ANYWHERE BUT
 THE PROPOSAL FILES.
+
+OVERPASS: THE PUBLISHED USAGE POLICY GOVERNS, NOT robots.txt (Alexandru, 2026-10-21)
+
+  https://overpass-api.de/api/interpreter is a documented public API, and the
+  operator's documentation tells users to send queries there, although its
+  robots.txt disallows /api/ for every agent (a file written for crawlers). So
+  this tool follows the published policy: the User-Agent of every other request
+  of this tool; ONE request at a time (the loop is sequential); a wait of at
+  least 30 s and a retry on HTTP 429 and 504 and, as crosscheck_capacity.py and
+  propose_coordinates.py already do, on 502 and 503 (the decision named 429 and
+  504; the first live run died on a 502 at its first request, and 5 of the 18
+  requests of the last capacity run were 502; a read timeout counts as a 504 -
+  anything else, and any other network error, is a failure reported in the row,
+  not retried); a failure of the whole OpenStreetMap step does NOT discard the
+  proposal: every row says "osm=asked and failed: <reason>", the .md and the log
+  say so loudly, and the rest of the evidence is written (OpenStreetMap is a
+  supplement, a flaky third party must not take the other sources with it);
+  at most 60 requests
+  per run (OVERPASS_MAX_REQUESTS, retries included; the run says how many it
+  used); and never more than the regular-use guideline of the operator per day
+  (about 100 queries and 10 MB; CLAUDE.md, Known open problems, has the count
+  of every workflow). robots.txt IS still read first for every other
+  non-Wikimedia host (StadiumDB).
 
 THE RULES IT APPLIES (CLAUDE.md, the place-clubs passes)
 
@@ -47,13 +68,27 @@ THE RULES IT APPLIES (CLAUDE.md, the place-clubs passes)
   StadiumDB's, else Wikidata's, else OpenStreetMap's.
 """
 
+import json
 import math
 import re
+import time
+import urllib.error
 import urllib.parse
+import urllib.request
 
 import crosscheck_stadiumdb as sdb
 
 OVERPASS = "https://overpass-api.de/api/interpreter"
+OVERPASS_MAX_REQUESTS = 60          # per run, retries included (Alexandru, 2026-10-21)
+OVERPASS_BUSY_CODES = (429, 502, 503, 504)   # busy answers: wait and retry (502/503 as the older tools do)
+OVERPASS_WAIT_S = 30                # the operator: pause 30 s after a 429; doubles over the tries (30, 60, 120 s ...)
+OVERPASS_MAX_TRIES = 6              # per request; the server's own 502 text asks for exponential backoff
+OVERPASS_MAX_WAIT_S = 120
+OVERPASS_TIMEOUT_S = 200            # the query says [timeout:180]
+OVERPASS_CENTRES_PER_REQUEST = 10   # club positions per request: the live runs of 2026-10-21 lost every 20-position request to the queue, a 3-position one came back in 65 s
+OVERPASS_BUDGET_S = 900             # the whole OpenStreetMap step gives up after 15 min, so a down server never costs the proposal
+_overpass_t0 = [0.0]
+_overpass_used = [0]                # requests made this run, retries included
 RADIUS_M = 3000
 AGREE_M = 150
 AGREE_PCT = sdb.AGREE_WITHIN
@@ -369,35 +404,82 @@ def ground_search(pc, wanted, langs, club_words_of):
     return out
 
 
+def overpass_wait(attempt, retry_after=0):
+    """Seconds to wait after try number `attempt`: 30, 60, 120, 120 ... (exponential backoff,
+    which is what the server's own '502 ... at capacity' page asks for), or Retry-After."""
+    return min(max(retry_after, OVERPASS_WAIT_S * 2 ** (attempt - 1)), OVERPASS_MAX_WAIT_S)
+
+
+def overpass_post(pc, body):
+    """One POST to Overpass: (text, None) or (None, reason). One request at a time; a busy
+    answer (429, 502, 503, 504, or a read timeout) waits (overpass_wait) and asks again, up to
+    OVERPASS_MAX_TRIES; every request, retries included, counts against OVERPASS_MAX_REQUESTS."""
+    reason = "no attempt"
+    for attempt in range(1, OVERPASS_MAX_TRIES + 1):
+        if _overpass_used[0] >= OVERPASS_MAX_REQUESTS:
+            return None, f"the cap of {OVERPASS_MAX_REQUESTS} Overpass requests per run was reached"
+        if _overpass_t0[0] and time.time() - _overpass_t0[0] > OVERPASS_BUDGET_S:
+            return None, f"the time budget of {OVERPASS_BUDGET_S // 60} minutes for Overpass was used up ({reason})"
+        pc._wait("overpass-api.de")
+        _overpass_used[0] += 1
+        req = urllib.request.Request(OVERPASS, data=body, headers={
+            "User-Agent": pc.UA, "Content-Type": "application/x-www-form-urlencoded"})
+        try:
+            with urllib.request.urlopen(req, timeout=OVERPASS_TIMEOUT_S) as resp:
+                return resp.read().decode("utf-8", "replace"), None
+        except urllib.error.HTTPError as exc:
+            reason = f"HTTP {exc.code}"
+            if exc.code in OVERPASS_BUSY_CODES and attempt < OVERPASS_MAX_TRIES:
+                wait = overpass_wait(attempt, pc._retry_after(exc.headers))
+                print(f"    Overpass: {reason}, waiting {wait}s (try {attempt}/{OVERPASS_MAX_TRIES})")
+                time.sleep(wait)
+                continue
+            return None, reason
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+            # A read timeout is what a gateway timeout (504) looks like from the client:
+            # Overpass held the request in its queue. It waits and retries like a 504; any
+            # other network error (DNS, refused, reset) is a failure, not retried.
+            reason = f"network error: {getattr(exc, 'reason', exc)}"
+            if "timed out" in str(reason).lower() and attempt < OVERPASS_MAX_TRIES:
+                wait = overpass_wait(attempt)
+                print(f"    Overpass: {reason}, waiting {wait}s (try {attempt}/{OVERPASS_MAX_TRIES})")
+                time.sleep(wait)
+                continue
+            return None, reason
+    return None, f"gave up after {OVERPASS_MAX_TRIES} tries ({reason})"
+
+
 def overpass_elements(pc, centres):
-    """One Overpass request for every centre: named stadiums, sports centres
-    and soccer pitches within RADIUS_M of it. {(type, id): element}."""
-    parts = []
-    for lat, lon in centres:
-        around = f"(around:{RADIUS_M},{lat:.6f},{lon:.6f})"
-        parts.append(f'nwr{around}["name"]["leisure"~"^(stadium|sports_centre)$"];')
-        parts.append(f'nwr{around}["name"]["leisure"="pitch"]["sport"~"soccer|football"];')
-    query = "[out:json][timeout:180];(" + "".join(parts) + ");out tags center;"
-    body = urllib.parse.urlencode({"data": query}).encode("utf-8")
-    text, error = fetch_text(pc, OVERPASS, "Overpass", data=body,
-                             headers={"Content-Type": "application/x-www-form-urlencoded"})
-    if error:
-        return None, error
-    import json
-    try:
-        data = json.loads(text)
-    except ValueError:
-        return None, "Overpass answered with something that is not JSON (a busy-server page?)"
-    if data.get("remark") and "error" in str(data["remark"]).lower():
-        return None, f"Overpass remark: {data['remark']}"
+    """Overpass requests for every centre (OVERPASS_CENTRES_PER_REQUEST at a
+    time): named stadiums, sports centres and soccer pitches within RADIUS_M
+    of it. ({(type, id): element}, None) or (None, reason); one failed
+    request fails the whole step, a partial map is not a map."""
+    uniq = list(dict.fromkeys((round(lat, 6), round(lon, 6)) for lat, lon in centres))
     out = {}
-    for e in data.get("elements") or []:
-        pos = (e.get("lat"), e.get("lon")) if e.get("type") == "node" else \
-            ((e.get("center") or {}).get("lat"), (e.get("center") or {}).get("lon"))
-        if pos[0] is None:
-            continue
-        out[(e["type"], e["id"])] = {"ref": f"{e['type']}/{e['id']}", "pos": pos,
-                                     "tags": e.get("tags") or {}}
+    _overpass_t0[0] = time.time()
+    for i in range(0, len(uniq), OVERPASS_CENTRES_PER_REQUEST):
+        parts = []
+        for lat, lon in uniq[i:i + OVERPASS_CENTRES_PER_REQUEST]:
+            around = f"(around:{RADIUS_M},{lat:.6f},{lon:.6f})"
+            parts.append(f'nwr{around}["name"]["leisure"~"^(stadium|sports_centre)$"];')
+            parts.append(f'nwr{around}["name"]["leisure"="pitch"]["sport"~"soccer|football"];')
+        query = "[out:json][timeout:180];(" + "".join(parts) + ");out tags center;"
+        text, error = overpass_post(pc, urllib.parse.urlencode({"data": query}).encode("utf-8"))
+        if error:
+            return None, error
+        try:
+            data = json.loads(text)
+        except ValueError:
+            return None, "Overpass answered with something that is not JSON (a busy-server page?)"
+        if data.get("remark") and "error" in str(data["remark"]).lower():
+            return None, f"Overpass remark: {data['remark']}"
+        for e in data.get("elements") or []:
+            pos = (e.get("lat"), e.get("lon")) if e.get("type") == "node" else \
+                ((e.get("center") or {}).get("lat"), (e.get("center") or {}).get("lon"))
+            if pos[0] is None:
+                continue
+            out[(e["type"], e["id"])] = {"ref": f"{e['type']}/{e['id']}", "pos": pos,
+                                         "tags": e.get("tags") or {}}
     return out, None
 
 
@@ -543,22 +625,23 @@ def propose(pc, args, ctx, langs, failures):
     md.append(f"- Wikidata name search for {len(wanted)} ground(s) with no other position: "
               f"{sum(1 for q in search_hits)} found an item with a position")
 
-    # robots.txt FIRST (the brief, and the project's rule: a refusal is a stop). Overpass's
-    # file disallows /api/ for every agent (read 2026-10-21), so by default nothing is
-    # asked of it and every row says so. That is a gap reported, not a failure: it is
-    # permanent, and a failure here would turn every country's run red.
-    ok, robots = robots_allows(pc, "https://overpass-api.de", "/api/interpreter")
-    md.append(f"- {robots}")
-    osm, osm_status = {}, "not queried: " + robots
-    if ok and centres:
+    # Overpass: the published usage policy governs, not robots.txt (module docstring);
+    # robots.txt is still read for every other non-Wikimedia host (StadiumDB, below).
+    osm, osm_status = {}, "not queried: no club position to search around"
+    if centres:
         osm, error = overpass_elements(pc, centres)
         if error:
-            failures.append(f"OpenStreetMap (Overpass) did not answer: {error}")
+            # Not a run failure (module docstring): said in the log, the .md and every row.
             osm, osm_status = {}, f"asked and failed: {error}"
+            print(f"    WARNING: OpenStreetMap (Overpass) did not answer ({error}); the proposal is "
+                  f"written WITHOUT it and every row says so")
+            md.append(f"- **WARNING: OpenStreetMap (Overpass) did not answer ({error}). The grounds below "
+                      f"were proposed WITHOUT it; run the tool again to ask it.**")
         else:
             osm_status = "queried"
     md.append(f"- OpenStreetMap: {osm_status}" + (f"; {len(osm)} named stadium / sports centre / "
-              f"soccer pitch elements within {RADIUS_M} m of {len(centres)} club position(s)" if osm_status == "queried" else ""))
+              f"soccer pitch elements within {RADIUS_M} m of {len(centres)} club position(s)" if osm_status == "queried" else "")
+              + f" [Overpass requests this run: {_overpass_used[0]} of the cap {OVERPASS_MAX_REQUESTS}]")
 
     # --- StadiumDB
     country_label = ctx.get("country_label") or args.country
@@ -695,7 +778,7 @@ def propose(pc, args, ctx, langs, failures):
             problems.append("the ground is named by ONE place only (rule: two independent places)")
         if not proposed_pos:
             problems.append("NO ground-specific position found" + ("" if osm_status == "queried"
-                                                                    else " (OpenStreetMap was not queried)"))
+                                                                    else f" (OpenStreetMap: {osm_status})"))
         flags = problems
         verdict = "ok" if not problems else ("unplaced" if not build_pos else "attention")
         detail = pc.kv(

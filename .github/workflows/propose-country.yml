@@ -14,7 +14,34 @@ name: Propose a country
 # (the en dash is not optional), optional extra label languages, and
 # optionally the league items when they cannot be found from the article.
 
+# Since 2026-10-21 the offline test (tools/test_propose_country.py) also runs on
+# a push to main or a pull request that touches the tool, its imports or this
+# file (job offline-test); the real run (job propose) stays dispatch-only.
+
 on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/propose_country.py"
+      - "tools/propose_grounds.py"
+      - "tools/test_propose_country.py"
+      - "tools/check_rosters.py"
+      - "tools/diagnose_p118_rank.py"
+      - "tools/fetch_clubs.py"
+      - "tools/fetch_fixtures.py"
+      - "tools/crosscheck_stadiumdb.py"
+      - ".github/workflows/propose-country.yml"
+  pull_request:
+    paths:
+      - "tools/propose_country.py"
+      - "tools/propose_grounds.py"
+      - "tools/test_propose_country.py"
+      - "tools/check_rosters.py"
+      - "tools/diagnose_p118_rank.py"
+      - "tools/fetch_clubs.py"
+      - "tools/fetch_fixtures.py"
+      - "tools/crosscheck_stadiumdb.py"
+      - ".github/workflows/propose-country.yml"
   workflow_dispatch:
     inputs:
       country:
@@ -43,7 +70,7 @@ on:
         required: false
         default: ""
       grounds:
-        description: "Also propose grounds and capacities (reads StadiumDB; OpenStreetMap is not asked while Overpass robots.txt disallows /api/)"
+        description: "Also propose grounds and capacities (reads StadiumDB and asks the public Overpass API under its usage policy: at most 60 requests)"
         type: boolean
         required: false
         default: true
@@ -52,11 +79,25 @@ permissions:
   contents: write
 
 concurrency:
-  group: propose-country-${{ inputs.country }}
+  group: propose-country-${{ inputs.country || github.run_id }}
   cancel-in-progress: false
 
 jobs:
+  offline-test:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Offline test of the classification and the Overpass client
+        run: python3 tools/test_propose_country.py
+
   propose:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
