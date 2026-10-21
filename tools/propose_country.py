@@ -912,6 +912,8 @@ def classify(ctx):
         hits = ctx["team_changes"].get(q) or []
         return "; ".join(f"{a}: {first_words(text, 22)}" for a, text in hits[:2])
 
+    notes["twin_of"] = twin_of
+
     # --- the roster side
     for q, recs in sorted(roster_by_q.items(), key=lambda kv: (kv[1][0]["tier"], kv[1][0]["team"])):
         rec = recs[0]
@@ -1174,6 +1176,7 @@ def build_md(args, ctx, rows, notes, leagues, trap, box, proposals, fd, places, 
     out += [f"- {c} — {n} ({src})" for c, n, src in fd] or ["- none found in the free-tier list or data/fixtures/index.json"]
     out += ["", "### Places to touch (with line numbers)", ""] + places
     out += ["", "### Stays manual", ""] + [f"- {s}" for s in STAYS_MANUAL]
+    out += [""] + list(ctx.get("grounds_md") or [])
     out += ["", "## Candidates", ""]
     for k in KINDS:
         rs = [r for r in rows if r["kind"] == k]
@@ -1221,6 +1224,8 @@ def main(argv=None):
     ap.add_argument("--write-partial", action="store_true",
                     help="write the files even after a failure (probes only)")
     ap.add_argument("--grounds", action="store_true", help="also propose grounds and capacities")
+    ap.add_argument("--probe-slug", action="store_true",
+                    help="find StadiumDB's slug by probing even if one is configured")
     args = ap.parse_args(argv)
     langs = [l.strip() for l in args.langs.split(",") if l.strip()]
     articles = []
@@ -1383,12 +1388,23 @@ def main(argv=None):
 
     with step("6 candidates"):
         rows, notes = classify(ctx)
-        if args.grounds:
-            import propose_grounds                  # PR 2
-            rows += propose_grounds.propose(args, ctx, langs)
+        ctx["twin_of"] = notes.get("twin_of", {})
         counts = {}
         for r in rows:
             counts[r["kind"]] = counts.get(r["kind"], 0) + 1
+
+    if args.grounds:
+        with step("6b grounds and capacities"):
+            import propose_grounds
+            ctx["country_label"] = None
+            cbox, f = country_box(args.country_qid, langs)
+            failures += f
+            if cbox:
+                ctx["country_label"] = cbox["label"]
+            rows += propose_grounds.propose(sys.modules[__name__], args, ctx, langs, failures)
+            counts = {}
+            for r in rows:
+                counts[r["kind"]] = counts.get(r["kind"], 0) + 1
 
     with step("7 wiring patch"):
         box, f = country_box(args.country_qid, langs)

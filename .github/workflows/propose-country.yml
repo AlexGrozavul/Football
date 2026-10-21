@@ -43,7 +43,7 @@ on:
         required: false
         default: ""
       grounds:
-        description: "Also propose grounds and capacities (reads OpenStreetMap and StadiumDB)"
+        description: "Also propose grounds and capacities (reads StadiumDB; OpenStreetMap is not asked while Overpass robots.txt disallows /api/)"
         type: boolean
         required: false
         default: true
