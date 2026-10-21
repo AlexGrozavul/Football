@@ -995,8 +995,8 @@ a subscribed calendar reads as a schedule regardless of its description.
   `propose_country.py` on hand-made items (every kind, the club item / team
   item join, the dissolved and hidden extras, the women's pointer, and since
   2026-10-21 the Overpass client of `propose_grounds.py`: retries only on 429
-  and 504, a wait of at least 30 s, the cap of 60 requests, 40 centres per
-  request), no network. Run by `propose-country.yml` before the real run, and
+  and 504, a wait of at least 30 s, the cap of 60 requests, 20 centres per
+  request, a read timeout retried like a 504, an Overpass failure as a warning), no network. Run by `propose-country.yml` before the real run, and
   **since 2026-10-21 also by its `offline-test` job on a push to `main` or a
   pull request that touches `tools/propose_country.py`, `tools/propose_grounds.py`,
   the test itself, the tools they import or the workflow file** (the real
