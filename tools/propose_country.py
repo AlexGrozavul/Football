@@ -91,6 +91,11 @@ WOMEN_WORDS = re.compile(
     r"γυναικ\w*|жен\w*)\b|\bW\.?F\.?C\.?\b", re.IGNORECASE)
 
 
+OTHER_SPORT = re.compile(r"volley|basket|handball|rugby|hockey|futsal|athletic|swimming|cycling|"
+                         r"tennis|water polo|roller|karate|judo|chess|esports", re.I)
+FOOTBALL_WORDS = re.compile(r"football|soccer|futebol|fútbol|calcio|fußball|voetbal", re.I)
+
+
 # =========================================================== http, politely
 
 _last = {}
@@ -478,7 +483,9 @@ def read_rosters(articles):
                     if r["team"] and re.search(r"[^\W\d_]{3}", r["team"]):
                         gaps.append((tier, real, r["team"], "the row has no link at all"))
                     continue
-                records.append({"tier": tier, "article": real, "team": r["team"],
+                mark = "".join(re.findall(r"[↑↓]", r["team"]))
+                records.append({"tier": tier, "article": real,
+                                "team": re.sub(r"\s*[↑↓]+\s*", " ", r["team"]).strip(), "mark": mark,
                                 "title": r["title"], "qid": None, "ground": r["ground"],
                                 "ground_title": r["ground_title"], "capacity": r["capacity"]})
                 n += 1
@@ -696,18 +703,21 @@ def intro_sentences(infos, langs):
                 t = redirected.get(t, t)
                 texts[qid] = (pages.get(t, ""), site, title)
     result = {}
-    league_word = re.compile(r"\b(league|division|liga|divis[aã]o|campeonato|tier|"
-                             r"championship|compet\w+|plays?|played|currently)\b", re.I)
+    league_word = re.compile(r"\b(league|division|liga|divis[aã]o|campeonato|tier|championship|"
+                             r"competes?|promoted|relegated)\b", re.I)
     for qid, (site, title) in out.items():
         if not site:
             result[qid] = (None, "no article in English or the extra languages")
             continue
         extract, site, title = texts.get(qid, ("", site, title))
-        sentences = re.split(r"(?<=[.!?])\s+", one_line(extract))
-        pick = next((s for s in sentences if league_word.search(s)), sentences[0] if sentences else "")
-        if not pick:
+        extract = re.sub(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]", r"\1", one_line(extract))
+        extract = re.sub(r"\b(Dr|Sr|Jr|St|No|Mr|Mrs|Eng)\.", r"\1\u2024", extract)
+        sentences = [x.replace("\u2024", ".") for x in re.split(r"(?<=[.!?])\s+(?=[A-Z\[])", extract)]
+        named = next((x for x in sentences if league_word.search(x)), None)
+        if not sentences or not sentences[0]:
             result[qid] = (None, f"the {site} article has no intro text")
             continue
+        pick = named or sentences[0] + "  [no sentence of the intro names a league]"
         url = f"https://{site}.wikipedia.org/wiki/" + urllib.parse.quote(title.replace(" ", "_"))
         result[qid] = (("[" + site + "] " if site != "en" else "") + first_words(pick), url)
     return result
@@ -864,7 +874,9 @@ def classify(ctx):
         twin = twin_of.get(q)
         url = enwiki_url(rec["title"])
         base = dict(team=rec["team"], ground=rec["ground"], capacity=rec["capacity"],
-                    article=rec["article"])
+                    article=rec["article"],
+                    table_mark={"↑": "promoted (up arrow)", "↓": "relegated (down arrow)"}.get(
+                        (rec.get("mark") or "")[:1], ""))
         if not info:
             rows.append(row("roster-untagged", tier, q, rec["team"], wd(q),
                             f"{rec['team']}: roster club, Wikidata entity not readable",
@@ -892,12 +904,14 @@ def classify(ctx):
             if shape:
                 rows.append(row("rank-shape", tier, q, rec["team"], url,
                                 f"{text}; shape {shape}: {SHAPE_TEXT[shape]}",
-                                kv(**base, shape=shape) + "; " + extras))
+                                kv(**base, shape=shape, named_in_team_changes=team_changes(q))
+                                + "; " + extras))
             else:
                 other = [ctx["league_label"](s["league"]) for s in info["p118"] if s["league"]]
                 rows.append(row("roster-untagged", tier, q, rec["team"], url,
                                 f"{text}; carries no tag of the tracked leagues",
                                 kv(**base, other_leagues=" | ".join(other),
+                                   named_in_team_changes=team_changes(q),
                                    fallback=("refused by the hand-named fallback: P576 "
                                              f"{info['dissolved']} (needs allowDissolved yes)"
                                              if info["dissolved"] else "hand-named fallback candidate"))
@@ -936,9 +950,18 @@ def classify(ctx):
             continue
         kept.append(q)
         intro_text, intro_url = ctx["intro"].get(q, (None, "not looked up"))
+        pos = info["coord"] or ctx["ground_coord"](info)
+        names_tracked = [ctx["league_label"](l) for l in tracked
+                         if intro_text and ctx["league_label"](l).casefold() in intro_text.casefold()]
         rows.append(row("extra-tagged", info["tier"], q, info["label"], intro_url if intro_text else wd(q),
                         intro_text or f"no intro sentence: {intro_url}",
-                        kv(tags=tag_text(info, ctx["league_label"]), p576=info["dissolved"] or "none",
+                        kv(drawn_by_build=("yes: has a position" if pos else
+                                           "NO: no P625 on the club or on any P115 ground, so the build "
+                                           "drops it at the coordinates gate and no skip row is needed"),
+                           intro_names_a_tracked_league=("YES (" + ", ".join(names_tracked) + ") - contradicts "
+                                                         "the absence from the rosters" if names_tracked else ""),
+                           absent_from=ctx.get("rosters_summary", ""),
+                           tags=tag_text(info, ctx["league_label"]), p576=info["dissolved"] or "none",
                            tag_dates=";".join(f"{s['start'] or '?'}-{s['end'] or ''}" for s in info["tracked"]),
                            named_in_team_changes=team_changes(q) or "no", types=" | ".join(kinds),
                            sitelinks=len(info["sitelinks"]),
@@ -984,6 +1007,9 @@ def classify(ctx):
         if w in tagged_qs or w in roster_by_q:
             continue
         text = " ".join([p["label"] or "", p["desc"] or "", " ".join(p["types"]), " ".join(p["classes"])])
+        if OTHER_SPORT.search(text) and not FOOTBALL_WORDS.search(text):
+            notes["other_sport_pointers"] = notes.get("other_sport_pointers", 0) + 1
+            continue
         if WOMEN_WORDS.search(text):
             notes["pointer_only"] += 1
             tos = ", ".join(f"{prop}->{lab(c) if c in infos else c}" for c, prop in sorted(p["to"]))
@@ -1049,7 +1075,8 @@ def build_md(args, ctx, rows, notes, leagues, trap, box, proposals, fd, places, 
     out += md_table(["kind", "rows"], [(k, counts.get(k, 0)) for k in KINDS if counts.get(k)])
     out += ["", f"Tagged but dissolved (not drawn by the build, no row): {len(notes['dissolved_tagged'])}; "
             f"tagged extras whose tag is not truthy (not drawn, no row): {len(notes['hidden_extras'])}; "
-            f"women's items pointing at a club, carrying neither tag: {notes['pointer_only']}.", ""]
+            f"women's football items pointing at a club, carrying neither tag: {notes['pointer_only']} "
+            f"(other-sport items ignored: {notes.get('other_sport_pointers', 0)}).", ""]
     if ctx["gaps"]:
         out += [f"**Reader gaps: {len(ctx['gaps'])} roster row(s) the reader cannot read** (kind roster-unread).", ""]
     out += ["Step durations (s): " + ", ".join(f"{n} {d}" for n, d in STEPS), "", "## Leagues", ""]
@@ -1217,7 +1244,7 @@ def main(argv=None):
         failures += f
         label_qs = set()
         for i in infos.values():
-            label_qs.update(i["types"] + i["p2094"] + i["p17"])
+            label_qs.update(i["types"] + i["p2094"] + i["p17"] + [x["league"] for x in i["p118"] if x["league"]])
         for l in lfacts.values():
             label_qs.update(l["p17"] + l["types"] + l["p1366"])
         label_qs -= set(infos) | set(ground_ents) | set(tracked)
@@ -1280,7 +1307,16 @@ def main(argv=None):
                 return c
         return None
 
+    sizes = {}
+    for r in records:
+        sizes[r["article"]] = sizes.get(r["article"], 0) + 1
+    gap_n = {}
+    for g in gaps:
+        gap_n[g[1]] = gap_n.get(g[1], 0) + 1
+    rosters_summary = "; ".join(f"{a} ({n} clubs resolved, {gap_n.get(a, 0)} unread rows)"
+                                for a, n in sizes.items())
     ctx = {"country_qid": args.country_qid, "tracked": tracked, "roster": records, "gaps": gaps,
+           "rosters_summary": rosters_summary,
            "infos": infos, "tagged": tagged, "label": lab, "ground_coord": ground_coord,
            "league_label": lambda q: lfacts.get(q, {}).get("label") or lab(q),
            "ground_label": lambda q: ground_by_q.get(q, (q, None))[0],
