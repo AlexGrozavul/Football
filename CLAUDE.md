@@ -475,6 +475,13 @@ a subscribed calendar reads as a schedule regardless of its description.
   matcher would not decide: ambiguous teams and clubs, teams with no
   country, cross-country name clashes, venue disagreements and German
   fixture teams with no club on the map
+- `data/clubs/proposal-<CC>.csv` and `data/clubs/proposal-<CC>.md` — added
+  2026-10-21 by `tools/propose_country.py` / `propose-country.yml`, once per
+  country the day it is being added. **Evidence for the decisions of adding a
+  country, never a decision**: one row per piece of evidence
+  (`kind,tier,clubQid,label,evidenceUrl,evidenceText,detail`) and the read-back
+  with the printed wiring patch. Written only by that run; a run that failed
+  writes neither (a proposal is not partial). Not read by any other tool.
 - `data/clubs/roster-review.csv` — one row per club per division, with
   a verdict saying whether the club is on the map, and if not, **which
   kind of missing** it is
@@ -889,6 +896,103 @@ a subscribed calendar reads as a schedule regardless of its description.
   country is mapped — and weekly after the club build. **All three
   rank shapes are therefore checked for every country by default**,
   not by somebody remembering to.
+- `tools/propose_country.py` — added 2026-10-21. **The repeatable part of
+  adding a country (tiers 1 and 2), so that a person only decides.**
+  READ-ONLY: it never edits a hand-written file (`clubs-manual.csv`,
+  `league-tiers.csv`, `league-rosters.csv`, `roster-links-manual.csv`,
+  `fixture-links-manual.csv`, `coordinate-reviews.csv`,
+  `football-rules.json`), never writes a club file, and reads no
+  hand-written file at all (it reads `data/fixtures/index.json` and the
+  source of the tools only, to print candidates and line numbers). It
+  writes exactly `data/clubs/proposal-<CC>.csv` and `.md`, and writes
+  **neither** when anything failed (a failed fetch is not an empty answer;
+  `--write-partial` exists for probes). Rule 2 holds: a gap is reported in
+  the cell, never filled. **Run by `propose-country.yml`** (`workflow_dispatch`
+  only; inputs: country code as the club files use it, the country's
+  Wikidata item, the tier 1 and tier 2 season articles with the en dash,
+  optional `below_articles` separated by `;`, extra label languages, league
+  items if the articles do not lead to them); an offline test of the
+  classification, `tools/test_propose_country.py`, runs first. It imports
+  `check_rosters.py` (the roster reader and the sitelink hop),
+  `diagnose_p118_rank.py` (its truthy-rank functions and its two rank
+  queries) and `fetch_clubs.py` (the not-a-club net, `COUNTRIES`); the only
+  change to another tool is an extra `ground` / `ground_title` key in
+  `check_rosters.table_rows()`, which nothing else reads. Politeness: User-Agent
+  `FootballPlannerBot/1.0`, `maxlag=5` on Wikimedia APIs, one request a second
+  per host, `Retry-After` honoured, at most 4 tries, no secret.
+  **What it reads, in this order.** (1) The season articles' stadiums (or
+  league) tables with the existing reader: club, Q-id by the sitelink hop,
+  ground, capacity; a table that does not resolve, a hop that returns
+  nothing, or a row the reader cannot read (a reserve side linked to its
+  parent, a team cell with no link) is printed as a failure or as kind
+  `roster-unread`. (2) The league items: season article -> its item ->
+  `P3450`, else the infobox's league link; **P3983 and P17 are printed and
+  never used to decide the country**; every non-human item carrying either
+  league at any rank (SPARQL, with rank, `P580`/`P582`, `P576`); items
+  labelled like a tier (or like a redirect to its article) that are not the
+  tier's item, with how many clubs carry them and any dissolution or
+  successor (the "old Second Division" trap, Belgium's `Q233199`). (3) The
+  candidates, each a row with evidence: `roster-ok` (tagged at the roster's
+  tier), `roster-untagged` (the hand-named fallback's candidates, with a
+  `P576` noted as refused without `allowDissolved`), `roster-wrong-tier`
+  (both lists' evidence and the season article's team-changes rows),
+  `roster-unread`, `extra-tagged` (a truthy-tagged item in no roster: its
+  `P576`, the tag's dates, the first intro sentence of its article that names
+  a league, 30 words at most with the URL, whether its intro is in the past
+  tense, whether it mentions a tracked league, whether either complete
+  article names it in its team changes, whether a lower article given with
+  `--below` lists it, **and whether the build would draw it at all**: an item
+  with no `P625` on itself or on a `P115` ground is dropped at the
+  coordinates gate and has nothing on the map to remove), `not-a-club`
+  (`fetch_clubs.not_a_club`), `duplicate` (one folded label, or one ground,
+  among items with the same reserve markers), `women-candidate` (rule 6, four
+  angles: type, label and description words, `P2094`, and a women's football
+  item pointing at a roster or tagged club by `P361`/`P749`/`P831`/`P127`,
+  marked as not reaching the map when it carries neither tag; other-sport
+  items are ignored and counted), `rank-shape` (A: every tracked statement
+  deprecated; B: a preferred novalue; C: a preferred statement naming another
+  league, LR Vicenza's shape; cross-checked against
+  `diagnose_p118_rank.QUERY_HIDDEN` and `QUERY_STALE_PREFERRED`, a
+  difference is printed) and `two-grounds` (several truthy `P115`). A
+  dissolved tagged item and a tagged extra whose tag is not truthy are
+  counted and listed in the `.md`, not given a row. (4) The wiring patch in
+  the `.md`: the `league-tiers.csv` and `league-rosters.csv` rows (en dash,
+  season), `COUNTRY_BOX` proposals from `P1332`-`P1335` at best rank and at
+  normal rank only, with a note when a point is at preferred rank, when the
+  box is large, or when a roster club's position lies outside it (an island),
+  football-data.org candidates by name (printed only), and the places a
+  person must edit with their line numbers, read off the most recently added
+  country. (5) The summary: counts per kind and every step's duration.
+  **What it never does:** decide a tier, a `skip`, a hand-named row, an
+  identity link or a box; read or edit a hand-written file; use an end date to
+  decide anything; open a page of a host other than Wikipedia and Wikidata.
+  **Order of use for a new country.** (a) Dispatch `propose-country.yml` on
+  `main` with the two season articles and, as `below_articles`, the third-
+  and fourth-tier ones, whose clubs are the independent statement a `skip`
+  needs. (b) Read the `.md` top to bottom: failures, reader gaps, the leagues
+  table (does P17 name the country given?), the same-label items. (c) Wire
+  the country with the printed patch and the list of places. (d) Build, then
+  decide each candidate in the order: tier rows, `skip` rows (two complete
+  division articles agreeing on the absence and an independent statement:
+  the Hermannstadt standard), hand-named rows, hand links for
+  `roster-unread`, pins for `two-grounds`. (e) Then the checks of "Adding a
+  country". **Known limits.** It needs the season articles to exist in the
+  shape the reader knows (a stadiums table, or a league table); a rowspan can
+  shift the ground column. It reads the tags as Wikidata has them and decides
+  nothing from an end date. The intro sentence is chosen by a word list
+  (league, division, liga, tier ...) and can be a past season: it prints the
+  sentence for a person to read, with its tense flag. `drawn_by_build` is a
+  position test on Wikidata items only; a hand row that places a club is not
+  seen. The football-data candidates match names only. It covers tiers 1 and
+  2; lower articles are evidence for an extra, nothing more. It needs
+  Wikidata, its query service and Wikipedia, which only a runner reaches. It
+  was tested on Portugal only. **A line of its output is an identity or
+  evidence claim like a `fixture-links-manual.csv` row, and Alexandru's to
+  overrule.**
+- `tools/test_propose_country.py` — added 2026-10-21: the classification of
+  `propose_country.py` on hand-made items (every kind, the club item / team
+  item join, the dissolved and hidden extras, the women's pointer), no
+  network. Run by `propose-country.yml` before the tool.
 
 ---
 

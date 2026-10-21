@@ -582,6 +582,14 @@ def table_rows(table, headers):
         if "capacit" in h:
             cap_index = i
             break
+    # The ground column, added 2026-10-21 for propose_country.py (the key is
+    # extra: nothing else reads it). The first header that names a place and
+    # is not the capacity column.
+    ground_index = None
+    for i, h in enumerate(headers):
+        if "capacit" not in h and any(k in h for k in ("stadium", "venue", "ground", "arena")):
+            ground_index = i
+            break
 
     out = []
     for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", table, re.S)[1:]:
@@ -593,7 +601,13 @@ def table_rows(table, headers):
         capacity = None
         if cap_index is not None and cap_index < len(cells):
             capacity = capacity_of(texts[cap_index])
-        row = {"title": None, "capacity": capacity, "team": team, "shown": team, "why": None}
+        row = {"title": None, "capacity": capacity, "team": team, "shown": team, "why": None,
+               "ground": None, "ground_title": None}
+        if ground_index is not None and ground_index < len(cells):
+            row["ground"] = clean_team(texts[ground_index]) or None
+            glink = re.search(r'<a[^>]+href="/wiki/([^"#:]+)"', cells[ground_index])
+            if glink:
+                row["ground_title"] = urllib.parse.unquote(glink.group(1)).replace("_", " ")
         title, at = None, None
         for i, cell in enumerate(cells):
             link = re.search(r'<a[^>]+href="/wiki/([^"#:]+)"', cell)
