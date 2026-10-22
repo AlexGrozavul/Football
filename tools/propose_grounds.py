@@ -327,9 +327,67 @@ def article_coordinates(pc, titles):
     return out
 
 
+def _infobox_value(text, names=("ground", "stadium")):
+    """The raw value of the first infobox parameter called one of `names`, read up to the next
+    `|` or `}}` that is not inside a [[link]] or a {{template}} (so [[A|B]] and {{ill|A|fr|B}}
+    stay whole). '' when there is none."""
+    m = re.search(r"\|\s*(?:%s)\s*=" % "|".join(names), text)
+    if not m:
+        return ""
+    i, depth, out = m.end(), 0, []
+    while i < len(text):
+        two = text[i:i + 2]
+        if two in ("[[", "{{"):
+            depth += 1
+            out.append(two)
+            i += 2
+        elif two in ("]]", "}}"):
+            if depth == 0:
+                break
+            depth -= 1
+            out.append(two)
+            i += 2
+        elif text[i] == "|" and depth == 0:
+            break
+        else:
+            out.append(text[i])
+            i += 1
+    return "".join(out)
+
+
+def parse_infobox_ground(text):
+    """(ground name, the title of its article or None) from the wikitext of a club's lead
+    section. Footnotes, comments, citation templates and the town after the first comma are
+    set aside; {{ill|A|fr|B}} is read as A and [[A|B]] as B with A as the article. Added
+    2026-10-21 after the Belgium and Greece runs: the older one-line regex cut at the first
+    `|`, which left `[[Lier, Belgium`, `[[Elindus Arena`, `{{cite web` and `{{ill` as 'grounds'."""
+    raw = _infobox_value(text or "")
+    if not raw.strip():
+        return "", None
+    raw = re.sub(r"<!--.*?-->", "", raw, flags=re.S)
+    raw = re.sub(r"<ref[^>]*/>|<ref[^>]*>.*?</ref>", "", raw, flags=re.S)
+    raw = re.sub(r"\{\{\s*(?:ill|interlanguage link)\s*\|\s*([^{}|]+)[^{}]*\}\}", r"\1", raw, flags=re.I)
+    prev = None
+    while prev != raw:
+        prev = raw
+        raw = re.sub(r"\{\{[^{}]*\}\}", " ", raw)
+    raw = re.sub(r"<br\s*/?>", ", ", raw, flags=re.I)
+    raw = re.sub(r"<[^>]+>", " ", raw).strip()
+    link = None
+    m = re.match(r"\[\[([^\]|]+)(?:\|([^\]]*))?\]\]", raw)
+    if m:
+        link = m.group(1).split("#")[0].strip()
+        name = (m.group(2) or m.group(1)).strip()
+    else:
+        plain = re.sub(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]", r"\1", raw)
+        name = re.split(r"\s*[,;\n]\s*", plain.strip())[0] if plain.strip() else ""
+    name = re.sub(r"\s+", " ", name).strip(" ,;")
+    return name, link
+
+
 def club_infobox_grounds(pc, titles):
-    """{club article title: ground text} from the infobox of each club's English
-    article (the `ground` / `stadium` parameter, links resolved to their text)."""
+    """{club article title: {"name": ground, "link": its article title or None}} from the
+    infobox of each club's English article (the `ground` / `stadium` parameter)."""
     out = {}
     titles = sorted(set(t for t in titles if t))
     for start in range(0, len(titles), 40):
@@ -355,14 +413,9 @@ def club_infobox_grounds(pc, titles):
             end = t
             for _ in range(3):
                 end = moved.get(end, end)
-            text = text_by_title.get(end, "")
-            m = re.search(r"\|\s*(?:ground|stadium)\s*=\s*([^\n|]+)", text)
-            if m:
-                value = re.sub(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]", r"\1", m.group(1))
-                value = re.sub(r"<[^>]+>|\{\{[^}]*\}\}", " ", value)
-                value = re.sub(r"\s+", " ", value).strip(" ,;")
-                if value:
-                    out[t] = value
+            name, link = parse_infobox_ground(text_by_title.get(end, ""))
+            if name:
+                out[t] = {"name": name, "link": link}
     return out
 
 
@@ -449,14 +502,15 @@ def overpass_post(pc, body):
     return None, f"gave up after {OVERPASS_MAX_TRIES} tries ({reason})"
 
 
-def overpass_elements(pc, centres):
+def overpass_elements(pc, centres, fresh=True):
     """Overpass requests for every centre (OVERPASS_CENTRES_PER_REQUEST at a
     time): named stadiums, sports centres and soccer pitches within RADIUS_M
     of it. ({(type, id): element}, None) or (None, reason); one failed
     request fails the whole step, a partial map is not a map."""
     uniq = list(dict.fromkeys((round(lat, 6), round(lon, 6)) for lat, lon in centres))
     out = {}
-    _overpass_t0[0] = time.time()
+    if fresh:
+        _overpass_t0[0] = time.time()
     for i in range(0, len(uniq), OVERPASS_CENTRES_PER_REQUEST):
         parts = []
         for lat, lon in uniq[i:i + OVERPASS_CENTRES_PER_REQUEST]:
@@ -481,6 +535,75 @@ def overpass_elements(pc, centres):
             out[(e["type"], e["id"])] = {"ref": f"{e['type']}/{e['id']}", "pos": pos,
                                          "tags": e.get("tags") or {}}
     return out, None
+
+
+OVERPASS_NAMES_PER_REQUEST = 12     # distinctive words per by-name request
+_ACCENTS = {"a": "aàáâãäå", "c": "cç", "e": "eèéêë", "i": "iìíîï", "n": "nñ", "o": "oòóôõö",
+            "s": "sšş", "u": "uùúûü", "y": "yýÿ", "z": "zžź"}
+
+
+def name_token(name, club_words=()):
+    """The one distinctive word of a ground's name to look for in OpenStreetMap: the longest
+    word of core(name) that is not one of the club's own words, at least 4 letters; as an
+    accent-insensitive regex. None when the name has no such word."""
+    base = [w for w in core(name) if len(w) >= 4 and not w.isdigit()]
+    # the club's own words only when nothing else is left: a ground named after its club
+    # (Estadio do Lusitania de Lourosa) is searched by those very words
+    words = [w for w in base if w not in set(club_words)] or base
+    if not words:
+        return None
+    longest = max(len(w) for w in words)
+    word = [w for w in words if len(w) == longest][-1]       # a tie goes to the later word (Robert URBAIN)
+    return "".join("[" + _ACCENTS[ch] + "]" if ch in _ACCENTS else re.escape(ch) for ch in word)
+
+
+def overpass_by_name(pc, iso, names_by_club, club_words_by_club):
+    """The grounds that no source positioned, asked of OpenStreetMap by NAME across the whole
+    country (area ISO3166-1 = iso): named stadiums, sports centres and soccer pitches whose name
+    holds the distinctive word of one of the ground's names, kept only when the full name then
+    EQUALS it (name_strength 'exact', the rule of the around search). ({club qid: [element]}, None)
+    or (None, reason). Shares the request cap and the time budget with overpass_elements."""
+    if not re.fullmatch(r"[A-Z]{2}", iso or ""):
+        return {}, None
+    # a name of ONE distinctive word ("Olympic Stadium" = Athens' ground stripped of its qualifier,
+    # which matched the "Olympic Park" of Volos, 211 km away) is too generic to search a country by
+    names_by_club = {c: [n for n in names if len(core(n)) >= 2] for c, names in names_by_club.items()}
+    tokens = {}
+    for club, names in names_by_club.items():
+        for n in names:
+            t = name_token(n, club_words_by_club.get(club, ()))
+            if t:
+                tokens.setdefault(t, []).append(club)
+    found = {}
+    toks = sorted(tokens)
+    for i in range(0, len(toks), OVERPASS_NAMES_PER_REQUEST):
+        chunk = toks[i:i + OVERPASS_NAMES_PER_REQUEST]
+        query = ('[out:json][timeout:180];area["ISO3166-1"="%s"][admin_level=2]->.a;(' % iso
+                 + 'nwr(area.a)["leisure"~"^(stadium|sports_centre|pitch)$"]["name"~"%s",i];' % "|".join(chunk)
+                 + ");out tags center;")
+        text, error = overpass_post(pc, urllib.parse.urlencode({"data": query}).encode("utf-8"))
+        if error:
+            return None, error
+        try:
+            data = json.loads(text)
+        except ValueError:
+            return None, "Overpass answered with something that is not JSON (a busy-server page?)"
+        if data.get("remark") and "error" in str(data["remark"]).lower():
+            return None, f"Overpass remark: {data['remark']}"
+        for e in data.get("elements") or []:
+            tags = e.get("tags") or {}
+            if tags.get("leisure") == "pitch" and not re.search(r"soccer|football", tags.get("sport", "")):
+                continue
+            pos = (e.get("lat"), e.get("lon")) if e.get("type") == "node" else \
+                ((e.get("center") or {}).get("lat"), (e.get("center") or {}).get("lon"))
+            if pos[0] is None:
+                continue
+            el = {"ref": f"{e['type']}/{e['id']}", "pos": pos, "tags": tags}
+            for club, names in names_by_club.items():
+                strength, _via = best_strength(tags.get("name", ""), names, club_words_by_club.get(club, ()))
+                if strength == "exact" and all(x["ref"] != el["ref"] for x in found.get(club, [])):
+                    found.setdefault(club, []).append(el)
+    return found, None
 
 
 def stadiumdb_grounds(pc, args, country_label, probe):
@@ -581,9 +704,24 @@ def propose(pc, args, ctx, langs, failures):
                     "aliases": [a for a in aliases if a], "coord": coords[0] if coords else None,
                     "capacities": [s["value"] for s in caps if s["value"]]}
 
-    # --- the grounds' own English articles, and the clubs' infoboxes
-    article_pos = article_coordinates(pc, [r["ground_title"] for r in roster])
+    # --- the clubs' infoboxes, then the grounds' own English articles
     infobox = club_infobox_grounds(pc, [r["title"] for r in roster])
+
+    def primary(rec):
+        """(the ground's name, where it was read, the title of its article): the season table's;
+        only when the table gives none (the 2026-27 Challenger Pro League article has no stadium
+        table) the club article's infobox ground. Added 2026-10-21 after the Belgium run, where six
+        clubs had an empty ground and were searched for nothing."""
+        table_ground = clean_ground(rec["ground"])
+        box = infobox.get(rec["title"]) or {}
+        if table_ground:
+            return table_ground, "table", rec["ground_title"]
+        if box.get("name"):
+            return box["name"], "club article infobox", box.get("link")
+        return "", "", None
+
+    article_pos = article_coordinates(pc, [primary(r)[2] for r in roster])
+    prim_names = {r["team"]: primary(r)[0] for r in roster}
 
     # --- the best position of each club, for the OpenStreetMap search
     def wd_ground(rec):
@@ -596,17 +734,22 @@ def propose(pc, args, ctx, langs, failures):
     # so when it does not, the search is centred on the ground's own article
     # first (Farense: Wikidata names the Estadio Algarve, the table Sao Luis).
     centres, centre_of, need_search = [], {}, {}
+    club_words_of, has_pos, ground_names = {}, {}, {}
     for rec in roster:
         src = src_of(rec)
         wg = wd_ground(rec)
-        table_ground = clean_ground(rec["ground"])
+        table_ground, _how, g_title = primary(rec)
         wd_names = [n for g in wg for n in g["labels"] + g["aliases"]]
         cw = set(sdb.words(src["label"])) | set(sdb.words(rec["team"]))
         wd_same = bool(wg) and best_strength(table_ground, wd_names, cw)[0] is not None
-        need_search[rec["qid"]] = (not wd_same and not article_pos.get(rec["ground_title"]), table_ground, cw)
+        need_search[rec["qid"]] = (not wd_same and not article_pos.get(g_title), table_ground, cw)
+        club_words_of[rec["qid"]] = cw
+        has_pos[rec["qid"]] = bool((wd_same and wg and wg[0]["coord"]) or article_pos.get(g_title))
+        ground_names[rec["qid"]] = [n for n in (table_ground, re.sub(r"\s*\([^)]*\)\s*$", "", g_title or "").replace("_", " ").strip(),
+                                                (infobox.get(rec["title"]) or {}).get("name", "")) if n] + (wd_names if wd_same else [])
         wd_pos = ("Wikidata ground P625" + ("" if wd_same else " (a ground whose name differs)"),
                   wg[0]["coord"] if wg else None)
-        art_pos = ("the ground's English article", article_pos.get(rec["ground_title"]))
+        art_pos = ("the ground's English article", article_pos.get(g_title))
         club_pos = ("the club's P625", src["coord"] if src else None)
         ordered = [wd_pos, art_pos, club_pos] if wd_same else [art_pos, wd_pos, club_pos]
         found = []
@@ -627,20 +770,43 @@ def propose(pc, args, ctx, langs, failures):
 
     # Overpass: the published usage policy governs, not robots.txt (module docstring);
     # robots.txt is still read for every other non-Wikimedia host (StadiumDB, below).
-    osm, osm_status = {}, "not queried: no club position to search around"
+    # Two asks: (1) around every position some source gave; (2) by NAME across the country for the
+    # grounds no source positioned (2026-10-21: Lusitania, Sporting CP B, six Belgian clubs, Zakynthos
+    # were never searched because the search needed a position to start from).
+    asked_by_name = {}
+    unpositioned_asked = lambda q: q in asked_by_name
+    osm, osm_status, by_name, name_note = {}, "not queried: no club position to search around", {}, ""
+    asked_ok, failed_why = False, ""
     if centres:
         osm, error = overpass_elements(pc, centres)
         if error:
-            # Not a run failure (module docstring): said in the log, the .md and every row.
-            osm, osm_status = {}, f"asked and failed: {error}"
-            print(f"    WARNING: OpenStreetMap (Overpass) did not answer ({error}); the proposal is "
-                  f"written WITHOUT it and every row says so")
-            md.append(f"- **WARNING: OpenStreetMap (Overpass) did not answer ({error}). The grounds below "
-                      f"were proposed WITHOUT it; run the tool again to ask it.**")
+            osm, failed_why = {}, error
         else:
-            osm_status = "queried"
+            asked_ok = True
+    if not failed_why:
+        unpositioned = {q: ground_names[q] for q in ground_names
+                        if not has_pos.get(q) and not search_hits.get(q) and ground_names[q]}
+        asked_by_name.update(unpositioned)
+        if unpositioned:
+            res, error = overpass_by_name(pc, args.country, unpositioned, club_words_of)
+            if error:
+                failed_why = error
+            else:
+                by_name, asked_ok = res, True
+                name_note = (f"; {sum(1 for q in by_name)} of {len(unpositioned)} ground(s) with no other "
+                             f"position found an element of exactly that name by a search of the whole country")
+    if failed_why:
+        # Not a run failure (module docstring): said in the log, the .md and every row.
+        osm_status = f"asked and failed: {failed_why}"
+        print(f"    WARNING: OpenStreetMap (Overpass) did not answer ({failed_why}); the proposal is "
+              f"written WITHOUT it and every row says so")
+        md.append(f"- **WARNING: OpenStreetMap (Overpass) did not answer ({failed_why}). The grounds below "
+                  f"were proposed WITHOUT it; run the tool again to ask it.**")
+        osm, by_name = {}, {}
+    elif asked_ok:
+        osm_status = "queried"
     md.append(f"- OpenStreetMap: {osm_status}" + (f"; {len(osm)} named stadium / sports centre / "
-              f"soccer pitch elements within {RADIUS_M} m of {len(centres)} club position(s)" if osm_status == "queried" else "")
+              f"soccer pitch elements within {RADIUS_M} m of {len(centres)} club position(s)" + name_note if osm_status == "queried" else "")
               + f" [Overpass requests this run: {_overpass_used[0]} of the cap {OVERPASS_MAX_REQUESTS}]")
 
     # --- StadiumDB
@@ -661,16 +827,19 @@ def propose(pc, args, ctx, langs, failures):
         src = src_of(rec)
         if not src:
             continue
-        table_ground = clean_ground(rec["ground"])
+        table_ground, ground_from, g_title = primary(rec)
+        pkey = "table" if ground_from == "table" else "club article infobox"
         wg = wd_ground(rec)
         wd_names = [n for g in wg for n in g["labels"] + g["aliases"]]
-        box = infobox.get(rec["title"], "")
-        url = pc.enwiki_url(rec["ground_title"]) if rec["ground_title"] else pc.wd(q)
+        box = (infobox.get(rec["title"]) or {}).get("name", "") if pkey == "table" else ""
+        alias = re.sub(r"\s*\([^)]*\)\s*$", "", g_title or "").replace("_", " ").strip()
+        alias = alias if alias and alias != table_ground else ""
+        url = pc.enwiki_url(g_title) if g_title else pc.wd(q)
 
         # (a)+(b) the names, and which of them agree with each other
         club_words = set(sdb.words(src["label"])) | set(sdb.words(team))
         sdb_gr, sdb_note = (match_stadiumdb(src["label"], table_ground, sgrounds) if sgrounds else (None, "no StadiumDB page"))
-        places = {"table": [table_ground]}
+        places = {pkey: [table_ground] + ([alias] if alias else [])}
         if box:
             places["club article infobox"] = [box]
         if wg:
@@ -691,39 +860,72 @@ def propose(pc, args, ctx, langs, failures):
                     left.remove(other)
                     todo.append(other)
             groups.append(group)
-        table_group = next(g for g in groups if "table" in g)
-        other_groups = [g for g in groups if "table" not in g]
-        named_by = len(table_group)
-        agree_with_table = [x for x in table_group if x != "table"]
+        table_group = next(g for g in groups if pkey in g)
+        other_groups = [g for g in groups if pkey not in g]
         wd_agrees = "Wikidata P115" in table_group
-        odd_table = named_by < 2 and any(len(g) >= 2 for g in other_groups)
 
-        # (c) OSM elements named like the ground, within 3 km of the centre
+        # (c) OSM elements named like the ground: within 3 km of a centre, or found by NAME
         found = centre_of[q]
         c_label, c_pos = (found[0] if found else (None, None))
-        osm_hits = []
-        for el in osm.values():
-            near = min((haversine_m(pos, el["pos"]) for _l, pos in found), default=None)
-            if near is None or near > RADIUS_M:
-                continue
-            strength, _via = best_strength(el["tags"].get("name", ""), [table_ground] + (wd_names if wd_agrees else []), club_words)
-            if strength:
-                osm_hits.append(dict(el, strength=strength, near=near))
-        osm_hits.sort(key=lambda e: (e["strength"] != "exact", e["near"]))
+        by_hits = by_name.get(q, [])
+        by_spread = max((haversine_m(a["pos"], b["pos"]) for a in by_hits for b in by_hits), default=0)
+        by_ambiguous = len(by_hits) > 1 and by_spread > AGREE_M
+
+        def hits_for(names):
+            out = []
+            for el in osm.values():
+                near = min((haversine_m(pos, el["pos"]) for _l, pos in found), default=None)
+                if near is None or near > RADIUS_M:
+                    continue
+                strength, _via = best_strength(el["tags"].get("name", ""), names, club_words)
+                if strength:
+                    out.append(dict(el, strength=strength, near=near))
+            if not by_ambiguous:
+                for el in by_hits:
+                    if all(o["ref"] != el["ref"] for o in out):
+                        out.append(dict(el, strength="exact", near=0, by_name=True))
+            out.sort(key=lambda e: (e["strength"] != "exact", e["near"]))
+            return out
+        own_names = [n for n in (table_ground, alias, box) if n]
+        osm_hits = hits_for(own_names + (wd_names if wd_agrees else []))
         exact = [e for e in osm_hits if e["strength"] == "exact"]
+
+        # the SAME ground under two names: a Wikidata ground whose name differs from the table's
+        # but whose position is within 150 m of the table ground's own article or OpenStreetMap element
+        identity_note = ""
+        art_p = article_pos.get(g_title)
+        if wg and wg[0]["coord"] and not wd_agrees and table_ground:
+            refs = ([("the ground's English article", art_p)] if art_p else []) + \
+                   [(f"OpenStreetMap {e['ref']}", e["pos"]) for e in exact[:1]]
+            ds = [(haversine_m(wg[0]["coord"], pos), lab) for lab, pos in refs]
+            if ds and min(ds)[0] <= AGREE_M:
+                d, lab = min(ds)
+                wd_agrees = True
+                identity_note = (f"Wikidata's ground {wg[0]['label']!r} is the table's ground under another name: "
+                                 f"its position is {round(d)} m from {lab}")
+                for g in [g for g in other_groups if "Wikidata P115" in g]:
+                    table_group = table_group + g
+                other_groups = [g for g in other_groups if "Wikidata P115" not in g]
+                osm_hits = hits_for(own_names + wd_names)
+                exact = [e for e in osm_hits if e["strength"] == "exact"]
+        named_by = len(table_group)
+        agree_with_table = [x for x in table_group if x != pkey]
+        odd_table = named_by < 2 and any(len(g) >= 2 for g in other_groups)
 
         # (b)+(d) coordinates, ground-specific only
         coord_sources = []
         if wg and wg[0]["coord"] and wd_agrees:
             coord_sources.append(("Wikidata ground P625 " + wg[0]["qid"], wg[0]["coord"]))
-        if article_pos.get(rec["ground_title"]):
-            coord_sources.append(("the ground's English article", article_pos[rec["ground_title"]]))
+        if art_p:
+            coord_sources.append(("the ground's English article", art_p))
         hits_here = search_hits.get(q, [])
         for h in hits_here[:2]:
             coord_sources.append((f"Wikidata item {h['qid']} ({h['label']}) found by searching the ground's name",
                                   h["coord"]))
         if exact:
-            coord_sources.append((f"OpenStreetMap {exact[0]['ref']} (name equal)", exact[0]["pos"]))
+            coord_sources.append((f"OpenStreetMap {exact[0]['ref']} (name equal"
+                                  + (", found by a search of the whole country" if exact[0].get("by_name") else "") + ")",
+                                  exact[0]["pos"]))
         proposed_pos, agree_text = None, ""
         if coord_sources:
             proposed_pos = coord_sources[0][1]
@@ -754,7 +956,15 @@ def propose(pc, args, ctx, langs, failures):
             problems.append(f"TWO TRUTHY GROUNDS ({', '.join(g['label'] for g in wg)})")
         if wg:
             others = [t for t in shared.get(wg[0]["qid"], []) if t != team]
-            if others:
+            same_ground = [o for o in others if prim_names.get(o)
+                           and name_strength(table_ground, prim_names[o], club_words)]
+            if others and len(same_ground) == len(others):
+                notes_.append("its P115 is shared with " + ", ".join(others)
+                              + "; the table / club article names the same ground for them too (a genuinely shared ground)")
+            elif others and wd_agrees and not same_ground and not all(cr_markers(o) for o in others):
+                notes_.append("its P115 is also on " + ", ".join(others) + "'s item, whose own table / club-article "
+                              "ground is a different one: the shared P115 is probably theirs to correct")
+            elif others:
                 mine = bool(cr_markers(team))
                 theirs = [bool(cr_markers(o)) for o in others]
                 if mine and not all(theirs):
@@ -764,6 +974,13 @@ def propose(pc, args, ctx, langs, failures):
                     notes_.append("its P115 is also its reserve side's (" + ", ".join(others) + ")")
                 else:
                     problems.append("P115 shared with " + ", ".join(others))
+        if identity_note:
+            notes_.append(identity_note)
+        if by_ambiguous:
+            problems.append(f"{len(by_hits)} OpenStreetMap elements named exactly like the ground, up to "
+                            f"{round(by_spread)} m apart - none used")
+        if ground_from != "table" and table_ground:
+            notes_.append("the season article gives no ground for this club; the name is the club article's infobox")
         if wg and not wd_agrees:
             (notes_ if odd_table else problems).append(
                 f"Wikidata names {wg[0]['label']!r}, the table {table_ground!r}"
@@ -774,7 +991,9 @@ def propose(pc, args, ctx, langs, failures):
             problems.append(f"THE MAP WOULD BE {round(haversine_m(build_pos, proposed_pos))} m FROM THE PROPOSAL")
         if not build_pos:
             problems.append("UNPLACED by the build")
-        if named_by < 2 and not odd_table:
+        if not table_ground:
+            problems.append("NO ground named: neither the season article nor the club article's infobox gives one")
+        elif named_by < 2 and not odd_table:
             problems.append("the ground is named by ONE place only (rule: two independent places)")
         if not proposed_pos:
             problems.append("NO ground-specific position found" + ("" if osm_status == "queried"
@@ -783,8 +1002,9 @@ def propose(pc, args, ctx, langs, failures):
         verdict = "ok" if not problems else ("unplaced" if not build_pos else "attention")
         detail = pc.kv(
             verdict=verdict, flags=" | ".join(problems), notes=" | ".join(notes_),
-            ground_table=table_ground, named_by=f"{named_by} place(s): table" + "".join(f", {a}" for a in agree_with_table),
-            other_names="; ".join(f"{k}={' / '.join(v[:2])}" for k, v in places.items() if k != "table"),
+            ground_table=table_ground, ground_read_from=ground_from or "nowhere",
+            named_by=f"{named_by} place(s): {pkey}" + "".join(f", {a}" for a in agree_with_table),
+            other_names="; ".join(f"{k}={' / '.join(v[:2])}" for k, v in places.items() if k != pkey),
             proposed_venue=table_ground,
             proposed_position=(f"{proposed_pos[0]:.6f} / {proposed_pos[1]:.6f}" if proposed_pos else ""),
             position_sources="; ".join(f"{l} {p[0]:.6f}/{p[1]:.6f}" for l, p in coord_sources),
@@ -793,9 +1013,11 @@ def propose(pc, args, ctx, langs, failures):
             osm_candidates="; ".join(
                 f"{e['ref']} {e['tags'].get('name')!r} [{e['tags'].get('leisure')}"
                 f"{'/' + e['tags']['sport'] if e['tags'].get('sport') else ''}] {e['strength']}, "
-                f"{round(e['near'])} m from the nearest search centre" for e in osm_hits[:4]),
+                + ("found by a search of the country by name" if e.get("by_name") else
+                   f"{round(e['near'])} m from the nearest search centre") for e in osm_hits[:4]),
             osm=osm_status if osm_status != "queried" else "queried",
-            osm_search_centres="; ".join(l for l, _p in found) or "NONE: no position to search around")
+            osm_search_centres=("; ".join(l for l, _p in found) or "NONE: no position to search around")
+            + ("; the whole country by the ground's name" if q in by_name or unpositioned_asked(q) else ""))
         rows.append(pc.row("ground-proposal", tier, q, team, url,
                            f"{team}: ground {table_ground!r} - {verdict}", detail))
         if verdict != "ok":
@@ -805,6 +1027,7 @@ def propose(pc, args, ctx, langs, failures):
         wd_cap = wg[0]["capacities"][0] if wg and wg[0]["capacities"] else None
         big_other = max(other_groups, key=len) if other_groups else []
         sdb_same = bool(sdb_gr) and (name_strength(table_ground, sdb_gr["name"], club_words) is not None
+                                     or "StadiumDB" in table_group
                                      or (odd_table and "StadiumDB" in big_other))
         hit_caps = [h["cap"] for h in search_hits.get(q, []) if h.get("cap")]
         osm_caps = sorted({int(re.sub(r"\D", "", e["tags"]["capacity"])) for e in exact
