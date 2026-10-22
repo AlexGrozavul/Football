@@ -140,10 +140,11 @@ jobs:
               const st = r ? r.status() : 0;
               console.log('=== PAGE', u, 'status', st, 'server', r ? r.headers()['server'] : '');
               if (st >= 400) { console.log('STOP status', st); continue; }
-              const txt = (await pg.evaluate(() => (document.querySelector('main, article, .entry-content, #content') || document.body).innerText)).replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n');
-              console.log(txt.slice(0, +process.env.MAX || 7000));
+              const faq = u.endsWith('#faq');
+              const txt = (await pg.evaluate((faq) => { const el = document.querySelector('main, article, .entry-content, #content') || document.body; if (!faq) return el.innerText; const t = el.textContent; const i = t.indexOf('FAQs zu Tickets'); return t.slice(i < 0 ? 0 : i); }, faq)).replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n');
+              console.log(txt.slice(0, faq ? 14000 : (+process.env.MAX || 7000)));
               const links = await pg.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => a.href + ' | ' + a.innerText.trim().slice(0, 40)));
-              const want = links.filter(l => /ticket|mitglied|karte|dauerk|zweitmarkt|clubsale|club-sale|agb/i.test(l));
+              const want = links.filter(l => !/#/.test(l.split(' | ')[0]) && !/main-navigation/.test(l) && /ticket|zweitmarkt|clubsale|club-sale|agb|bedingung|pdf/i.test(l));
               console.log('LINKS', [...new Set(want)].slice(0, 40).join('\n'));
             } catch (e) { console.log('=== PAGE', u, 'ERR', e.message); }
             await pg.close(); await sleep(1000);
@@ -151,7 +152,13 @@ jobs:
           await b.close();
           EOF
           LIST="$(cat <<'L'
-          https://sv07elversberg.de/ursapharm-arena/tickets/
-          https://sv07elversberg.de/tickets-fuer-die-heimspiele-gegen-bayer-04-leverkusen-und-den-fc-bayern-muenchen/
+          https://www.ticket-onlineshop.com/ols/sv07elversberg/de
+          https://sv07elversberg.de/ursapharm-arena/tickets/#faq
+          https://sv07elversberg.de/informationen-zu-den-tagestickets-bei-den-bundesliga-heimspielen-2026-2027/
+          https://sv07elversberg.de/die-sve/mitgliedschaft/
+          https://sv07elversberg.de/tickets-fuer-die-heimspiele-gegen-den-fc-augsburg-und-den-1-fsv-mainz-05/
+          https://sv07elversberg.de/dauerkarten-verlaengerung-fuer-die-bundesliga-saison-2026-2027/
+          https://sv07elversberg.de/dauerkarten-vorverkauf-nach-der-ersten-phase-abgeschlossen/
+          https://sv07elversberg.de/ticket-vvk-und-fanbus-zum-auswaertsspiel-bei-borussia-dortmund-07-11-26/
           L
           )" MAX=7000 node probe.mjs
