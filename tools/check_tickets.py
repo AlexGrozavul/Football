@@ -421,7 +421,10 @@ KNOWN = {
         # AND members, not fan clubs.
         "season-ticket-and-members",
         # VfB Stuttgart, 2026-10-07: its Champions League and away phases.
-        "season-ticket-holders", "fan-clubs", "away-season-ticket"],
+        "season-ticket-holders", "fan-clubs", "away-season-ticket",
+        # SV Elversberg, 2026-10-22: an away phase open only to fans who
+        # attended an SVE home game in the two previous seasons.
+        "past-home-ticket-buyers"],
     (PRICES_FILE, "competition"): ["bundesliga", "dfb-pokal", "ucl",
                                    "2-bundesliga", "serie-a"],
     (PRICES_FILE, "stage"): ["regular", "early-rounds", "league-phase",
@@ -447,7 +450,10 @@ KNOWN = {
         # stands, and the one press price that names only a stand side.
         "kat-1-mitte-1", "kat-2-mitte-2", "kat-3-seite-1", "kat-4-seite-2",
         "kat-5-kurve-sitz-1", "kat-6-kurve-sitz-2", "kat-7-stehplatz",
-        "gegentribuene-seite"],
+        "gegentribuene-seite",
+        # SV Elversberg's own table rows (2026-10-22).
+        "stehplatz", "sitzplatz-kat-1", "sitzplatz-kat-2", "sitzplatz-kat-3",
+        "rollstuhlfahrer"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.

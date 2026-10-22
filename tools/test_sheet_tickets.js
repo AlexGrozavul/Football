@@ -4,7 +4,7 @@
 //   npm install playwright            (anywhere; it is not a dependency of this repo)
 //   node tools/test_sheet_tickets.js .   (serves the checkout itself; it changes no file)
 //
-// Opens the sheet of VfB, KSC, Kaiserslautern, Kickers, Poli, UTA, Bayern, Nürnberg and Inter
+// Opens the sheet of VfB, KSC, Kaiserslautern, Kickers, Poli, UTA, Bayern, Nürnberg, Inter, Frankfurt and Elversberg
 // and checks, against the files read here: "Your notes" (football-rules.json, joined through
 // data/football-rules-links.csv) shows exactly when a link exists, and every text field of the
 // entry is on the sheet as written; "Researched rules" (club-tickets.csv) shows exactly when a row
@@ -31,9 +31,11 @@ const tick = name => { const now = Date.now(); console.log(`TIME ${name}: ${((no
 
 const CLUBS = [['VfB Stuttgart', 'Q4512'], ['Karlsruher SC', 'Q105853'], ['1. FC Kaiserslautern', 'Q8466'],
   ['Stuttgarter Kickers', 'Q170105'], ['Poli Timișoara', 'Q4654417'], ['UTA Arad', 'Q680770'],
-  ['FC Bayern München', 'Q15789'], ['1. FC Nürnberg', 'Q15786'], ['Inter', 'Q631'], ['Eintracht Frankfurt', 'Q38245']];
-// Clubs whose every researched row is checked on the sheet, text against the files (2026-10-11).
-const FULL_ROWS = ['Q38245'];
+  ['FC Bayern München', 'Q15789'], ['1. FC Nürnberg', 'Q15786'], ['Inter', 'Q631'], ['Eintracht Frankfurt', 'Q38245'],
+  ['SV Elversberg', 'Q692691']];
+// Clubs whose every researched row is checked on the sheet, text against the files (2026-10-11;
+// SV Elversberg added 2026-10-22).
+const FULL_ROWS = ['Q38245', 'Q692691'];
 
 // A small CSV reader for the checks: quoted cells, doubled quotes.
 function csv(file){
