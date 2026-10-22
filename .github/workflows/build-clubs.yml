@@ -106,6 +106,7 @@ jobs:
           cd /tmp/pw
           cat > probe.mjs <<'EOF'
           import { chromium } from 'playwright';
+          import { execSync } from 'child_process';
           const UA = 'FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)';
           const urls = process.env.LIST.split(/\s+/).filter(Boolean);
           const robots = {};
@@ -115,7 +116,7 @@ jobs:
             let dis = [], st = 0;
             try {
               const r = await fetch('https://' + host + '/robots.txt', { headers: { 'User-Agent': UA }, redirect: 'follow' });
-              st = r.status; const t = await r.text();
+              st = r.status; const t = await r.text(); if (st >= 400 && st !== 404) dis = ['/'];
               let on = false;
               for (const l of t.split('\n')) {
                 const [k, ...v] = l.split(':'); const val = v.join(':').trim(); const key = k.trim().toLowerCase();
@@ -123,7 +124,12 @@ jobs:
                 else if (on && key === 'disallow' && val) dis.push(val);
               }
               console.log('ROBOTS', host, st, 'disallow:', JSON.stringify(dis).slice(0, 600));
-            } catch (e) { console.log('ROBOTS', host, 'ERR', e.message); }
+            } catch (e) {
+                console.log('ROBOTS', host, 'fetch ERR', e.message, (e.cause && e.cause.code) || '');
+                try { const out = execSync(`curl -sS -m 20 -A "${UA}" -o /dev/null -w "%{http_code} %{http_version}" https://${host}/robots.txt 2>&1`).toString(); console.log('ROBOTS-CURL', host, out); }
+                catch (e2) { console.log('ROBOTS-CURL', host, 'ERR', String(e2.stdout || e2.message).slice(0, 300)); }
+                console.log('-> robots unreadable: STOP host', host); dis = ['/'];
+              }
             await sleep(1000);
             return robots[host] = dis;
           }
@@ -140,8 +146,11 @@ jobs:
               const st = r ? r.status() : 0;
               console.log('=== PAGE', u, 'status', st, 'server', r ? r.headers()['server'] : '');
               if (st >= 400) { console.log('STOP status', st); continue; }
-              const faq = u.endsWith('#faq');
-              const txt = (await pg.evaluate((faq) => { const el = document.querySelector('main, article, .entry-content, #content') || document.body; if (!faq) return el.innerText; const t = el.textContent; const i = t.indexOf('FAQs zu Tickets'); return t.slice(i < 0 ? 0 : i); }, faq)).replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n');
+              const frag = decodeURIComponent(new URL(u).hash.slice(1));
+              const faq = frag.startsWith('faq') ? (frag.split('=')[1] || 'FAQs zu Tickets') : '';
+              const gre = frag.startsWith('grep=') ? new RegExp(frag.slice(5), 'i') : null;
+              let txt = (await pg.evaluate((faq) => { const el = document.querySelector('main, article, .entry-content, #content') || document.body; if (!faq) return el.innerText; const t = el.textContent; const i = t.indexOf(faq); return t.slice(i < 0 ? 0 : i); }, faq)).replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n');
+              if (gre) txt = txt.split('\n').filter(l => gre.test(l)).slice(0, 40).join('\n');
               console.log(txt.slice(0, faq ? 14000 : (+process.env.MAX || 7000)));
               const links = await pg.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => a.href + ' | ' + a.innerText.trim().slice(0, 40)));
               const want = links.filter(l => !/#/.test(l.split(' | ')[0]) && !/main-navigation/.test(l) && /ticket|zweitmarkt|clubsale|club-sale|agb|bedingung|pdf/i.test(l));
@@ -153,12 +162,10 @@ jobs:
           EOF
           LIST="$(cat <<'L'
           https://www.ticket-onlineshop.com/ols/sv07elversberg/de
-          https://sv07elversberg.de/ursapharm-arena/tickets/#faq
-          https://sv07elversberg.de/informationen-zu-den-tagestickets-bei-den-bundesliga-heimspielen-2026-2027/
-          https://sv07elversberg.de/die-sve/mitgliedschaft/
-          https://sv07elversberg.de/tickets-fuer-die-heimspiele-gegen-den-fc-augsburg-und-den-1-fsv-mainz-05/
-          https://sv07elversberg.de/dauerkarten-verlaengerung-fuer-die-bundesliga-saison-2026-2027/
-          https://sv07elversberg.de/dauerkarten-vorverkauf-nach-der-ersten-phase-abgeschlossen/
-          https://sv07elversberg.de/ticket-vvk-und-fanbus-zum-auswaertsspiel-bei-borussia-dortmund-07-11-26/
+          https://sv07elversberg.de/die-sve/mitgliedschaft/#faq=FAQs%20zur%20Mitgliedschaft
+          https://stadiumdb.com/news/2026/07/germany_elversberg_prepares_its_modest_stadium_for_the_bundesliga
+          https://de.wikipedia.org/wiki/Ursapharm-Arena_an_der_Kaiserlinde#grep=Plätze|Kapazität|Zuschauer|Sitzpl|Stehpl
+          https://www.wochenblatt-reporter.de/saarland/c-sport/sv-elversberg-startet-verlaengerung-der-dauerkarten_a796809
+          https://www.wochenblatt-reporter.de/saarland/c-sport/sv-elversberg-meldet-abschluss-des-dauerkarten-verkaufs_a818018
           L
           )" MAX=7000 node probe.mjs
