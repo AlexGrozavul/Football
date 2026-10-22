@@ -1189,6 +1189,39 @@ no price rows, 8 sources (`F1`-`F8`), no country row.
 - **Capacity**: 60,100 from 2026-27 (German Wikipedia; the sold-out Freiburg
   game), 53,800 international; the map holds 59,500.
 
+**SV Elversberg, 2026-10-22 - a non-member gets nothing through official
+channels.** Researched for an outside buyer (a member of no club, in Germany
+but not in Spiesen-Elversberg, two tickets together), Bundesliga 2026-27 home
+games, the club's first Bundesliga season; no DFB-Pokal. `Q692691`, the only
+Elversberg item on the map (tier 1, capacity 10,000, venue "Waldstadion
+Kaiserlinde"); **no `clubs` entry in `football-rules.json` and no link line**
+(only the bucket fixture `saarbrucken-v-sv-elversberg`, untouched). 1 club
+row, 3 windows, 6 phases, 18 rules, 24 prices, 1 demand row, 12 sources
+(`E1`-`E12`), no country row.
+- **Access.** The club's site is **sv07elversberg.de** (not sv07.de);
+  `robots.txt` disallows only `/wp-admin/`; every club page answered 200 on
+  a runner (temporary probe in `build-clubs.yml`, four dispatches, removed;
+  the file is byte for byte as before). FAQ answers sit in a hidden
+  accordion and were read as page text. **The ticket shop,
+  www.ticket-onlineshop.com/ols/sv07elversberg/de, refused twice** (HTTP/2
+  protocol error; then a timeout and an unreadable `robots.txt`, so the
+  host was not fetched again) and the Internet Archive holds no capture, so
+  the shop and its terms are unread. Both Wochenblatt Reporter leads were
+  opened (one outlet, one source); they print no prices.
+- **What it says.** 2026-27 home day tickets are a small members-only
+  contingent (standing block E1): a members' online application, one
+  ticket per member, a random draw, no free sale; no new season tickets;
+  Club Sale resale is members only, one per member. Membership EUR 66 a
+  year + EUR 7, usually active in 7 days, no further wait stated. So two
+  people need two memberships (or one family membership) and a win in the
+  draw. Day prices EUR 18 standing, EUR 35/41/47 seated (2026/2027 table).
+- **Two sources for prices and sale rules** (the brief): only the
+  members-only rule, the season-ticket renewal and update tracking have a
+  second source; the draw, limits, Club Sale, fees and all 24 prices rest
+  on the club alone and are `unverified`, said in each note.
+- **Not varied-by-fixture**: no source names a sold-out game or a
+  difference between games, so the 2026-27 demand row is `not-stated`.
+
 **Ticket info and the Bucket list, 2026-10-04: rules on one tab, dated
 reminders on the other.** Built on Alexandru's instruction.
 - **One renderer for a club's ticket information**, `clubTicketsHtml()`
