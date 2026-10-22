@@ -31,6 +31,7 @@ concurrency:
 
 jobs:
   clubs:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -87,3 +88,70 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           }
+
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+      - name: Probe
+        run: |
+          cd /tmp/pw
+          cat > probe.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          const UA = 'FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)';
+          const urls = process.env.LIST.split(/\s+/).filter(Boolean);
+          const robots = {};
+          const sleep = ms => new Promise(r => setTimeout(r, ms));
+          async function rules(host) {
+            if (robots[host]) return robots[host];
+            let dis = [], st = 0;
+            try {
+              const r = await fetch('https://' + host + '/robots.txt', { headers: { 'User-Agent': UA }, redirect: 'follow' });
+              st = r.status; const t = await r.text();
+              let on = false;
+              for (const l of t.split('\n')) {
+                const [k, ...v] = l.split(':'); const val = v.join(':').trim(); const key = k.trim().toLowerCase();
+                if (key === 'user-agent') on = (val === '*' || /footballplanner/i.test(val));
+                else if (on && key === 'disallow' && val) dis.push(val);
+              }
+              console.log('ROBOTS', host, st, 'disallow:', JSON.stringify(dis).slice(0, 600));
+            } catch (e) { console.log('ROBOTS', host, 'ERR', e.message); }
+            await sleep(1000);
+            return robots[host] = dis;
+          }
+          const allowed = (u, dis) => { const p = new URL(u).pathname + new URL(u).search;
+            return !dis.some(d => { const re = new RegExp('^' + d.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')); return re.test(p); }); };
+          const b = await chromium.launch();
+          const ctx = await b.newContext({ userAgent: UA, locale: 'de-DE' });
+          for (const u of urls) {
+            const host = new URL(u).host; const dis = await rules(host);
+            if (!allowed(u, dis)) { console.log('SKIP-ROBOTS', u); continue; }
+            const pg = await ctx.newPage();
+            try {
+              const r = await pg.goto(u, { waitUntil: 'networkidle', timeout: 45000 });
+              const st = r ? r.status() : 0;
+              console.log('=== PAGE', u, 'status', st, 'server', r ? r.headers()['server'] : '');
+              if (st >= 400) { console.log('STOP status', st); continue; }
+              const txt = (await pg.evaluate(() => (document.querySelector('main, article, .entry-content, #content') || document.body).innerText)).replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n');
+              console.log(txt.slice(0, +process.env.MAX || 7000));
+              const links = await pg.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => a.href + ' | ' + a.innerText.trim().slice(0, 40)));
+              const want = links.filter(l => /ticket|mitglied|karte|dauerk|zweitmarkt|clubsale|club-sale|agb/i.test(l));
+              console.log('LINKS', [...new Set(want)].slice(0, 40).join('\n'));
+            } catch (e) { console.log('=== PAGE', u, 'ERR', e.message); }
+            await pg.close(); await sleep(1000);
+          }
+          await b.close();
+          EOF
+          LIST="$(cat <<'L'
+          https://sv07elversberg.de/ursapharm-arena/tickets/
+          https://sv07elversberg.de/tickets-fuer-die-heimspiele-gegen-bayer-04-leverkusen-und-den-fc-bayern-muenchen/
+          L
+          )" MAX=7000 node probe.mjs
