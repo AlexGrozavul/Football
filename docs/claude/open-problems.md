@@ -18,9 +18,9 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
   two-source rule**: the draw, the one-ticket limit, Club Sale, fees,
   away phases and all 24 prices come from the club's own pages, read in
   full, but no second independent source was found (sr.de and
-  saarbruecker-zeitung.de cannot be searched from here). Alexandru's call
-  whether a club's own published price table may count as `confirmed`
-  alone. (3) **The club's FAQ disagrees with its own 2026/2027 table** on
+  saarbruecker-zeitung.de cannot be searched from here). Decided 2026-10-22
+  (primary-source rule, `conventions.md`): such rows are `confirmed`, so
+  see the next paragraph. (3) **The club's FAQ disagrees with its own 2026/2027 table** on
   the youth standing price (EUR 5 against EUR 6) and on under-6s (free
   without a seat against a lap ticket); the table is written. (4)
   `closesEarly` is blank, not `no`: the page has no label for `no`, and
@@ -29,6 +29,26 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
   der Kaiserlinde. Nothing was changed. (6)
   No risk classification or sector separation was found for a named home
   game, so none was written.
+
+- **SV Elversberg rows re-graded under the primary-source rule, 2026-10-22.**
+  **Single-source rows**, confirmed but resting on the club's own pages
+  only: 23 of the 24 prices (the club's day-ticket and season-ticket tables
+  headed 2026/2027, on the tickets page and in the renewal announcement),
+  the home day-ticket application and draw with its one-ticket limit
+  (home phases 1 and 2), the members-only eligibility and the draw
+  mechanism (rules `presale-eligibility`, `sales-mechanism`), and the
+  Dortmund away sale in two phases (away phases 1 and 2, one page).
+  **Left `unverified`**: the youth standing day price EUR 6 (the club's FAQ
+  says EUR 5), the minors row (same conflict), personalisation and ID (a
+  gap), Club Sale (home phase 3 and `resale-platform`: the tickets page
+  recommends it to everyone, the announcements say members only), `fees`
+  and `away-end` (the FAQ only, which is partly older text),
+  `away-allocation` (cites the tickets page next to the away page; the
+  session could not open either page and so did not separate the FAQ part),
+  and `purchase-limit` (its last sentence is this project's reading). The
+  "FAQ is outdated" caveat is `inferred` (the project's own reading); the
+  demand row is `unverified` because "not stated" is an absence. The
+  windows and club-level files have no confidence column and are unchanged.
 
 - **Overpass and robots.txt: resolved 2026-10-21, Alexandru's decision.** Found the same day: `https://overpass-api.de/robots.txt` has `User-agent: *` and `Disallow: /api/`, while the interpreter is `https://overpass-api.de/api/interpreter`, and `propose_grounds.py` (which read robots.txt of every non-Wikimedia host) therefore did not query it. **The decision:** the public Overpass API is a documented public API whose published usage policy governs, not robots.txt - a file written for crawlers, which contradicts the operator's own documentation telling users to send queries to that very path. **The rules for every tool that uses it:** the User-Agent `FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)`; one request at a time; wait and retry on HTTP 429 and 504 (and, see the last paragraph of this entry, 502 and 503); `propose_grounds.py` at most 60 requests per run (retries included, `OVERPASS_MAX_REQUESTS`); and never more than the regular-use guideline per day. **The guideline** (the OpenStreetMap wiki's page on the Overpass API, read 2026-10-21 through a search summary; the page itself was not opened): under 10,000 queries and 1 GB a day does not disturb other users, and anything used regularly should divide those numbers by 100 - **about 100 queries and 10 MB a day**, the figure used here; the wiki also says to pause 30 seconds after a 429 and to run no parallel scripts. robots.txt is still read before any other non-Wikimedia host (StadiumDB). **What each workflow costs, counted 2026-10-21 and kept so the next change knows its share of the day.** `crosscheck-capacity.yml` (monthly, the 4th), last complete run #45 of 2026-10-20 (21.6 min, all 13 countries `WRITTEN`): 13 queries and 5 busy answers (HTTP 502: AT twice, BE, CH, GB once each) = **18 requests**, counted from the log; the data volume is not logged and is an estimate of about 4 MB (11,003 stadium elements at roughly 350 bytes), so by volume about 2 runs a day and by count about 5. `propose-coordinates.yml` (monthly, the 11th), last run #19 of 2026-10-11 (93.5 min, Romania and seven other countries written, France left unchanged because 19 names were never looked up after the retries): the per-request lines are not in the part of the log that could be read, so the count is **an estimate from the code, about 40 to 60 requests** (per country with unplaced clubs: one stadium query, one place query per 120 names, one pitch query per 10 places, up to 3 tries each), so about 2 runs a day by count. `propose-country.yml` with the grounds step: **4 to 24 requests** a run for a country of 31 to 40 clubs (one query per 10 club positions, up to 6 tries each), a dispatch costing 55 s of wall clock on Portugal. All three share the same day's budget of about 100 queries, and a person dispatching several of them in a day should add the numbers. **What a 502 is, measured 2026-10-21 by a probe on a runner:** the first four live runs of the tool met `HTTP 502` on every try over several minutes, and the probe (a tiny `node(1)` query, the status endpoint, the real query shape, both User-Agents) got the same answer in 0.4 s from every variant but one: "This Overpass API server is currently at capacity. All query workers are busy and the request queue is full ... Retry your request using exponential backoff". The one request that got through (3 positions) waited 65 s in the queue and returned 200; the 20-position requests of the next live run all read-timed-out at 200 s, which is why a request now carries 10 positions. So it is the server's load on that day and not the query, the size or the User-Agent, and the backoff doubles for that reason. **502 and 503, a deviation from the decision's words, Alexandru's to confirm.** The decision said to retry only on 429 and 504 "as they do now", but `crosscheck_capacity.py` and `propose_coordinates.py` also wait and retry on 502 and 503, and all five retries of run #45 were 502s. The first live run of the new client, written to the letter, died on a 502 at its first request (`OpenStreetMap (Overpass) did not answer: HTTP 502`, nothing written), so `propose_grounds.py` retries 429, 502, 503 and 504, with the same 30 s wait and the same cap of 60 requests, which bounds what the change can cost. (The entry that stood here earlier said the two scheduled workflows run "weekly and monthly"; both are monthly.)
 
