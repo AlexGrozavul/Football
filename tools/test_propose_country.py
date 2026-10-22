@@ -184,7 +184,7 @@ pc.fetch_entities = fake_entities
 pg.ground_search = lambda pcm, wanted, langs, cw: {}
 pg.article_coordinates = lambda pcm, titles: {"Estadio de Sao Luis": (37.0228, -7.9286),
                                               "Estadio Municipal de Rio Maior": (39.3445, -8.9352)}
-pg.club_infobox_grounds = lambda pcm, titles: {"Casa Pia AC": "Estadio Pina Manique"}
+pg.club_infobox_grounds = lambda pcm, titles: {"Casa Pia AC": {"name": "Estadio Pina Manique", "link": None}}
 pg.overpass_elements = lambda pcm, centres: ({
     ("way", 1): {"ref": "way/1", "pos": (40.9302, -8.2501), "tags": {"name": "Estadio Arouca", "leisure": "stadium", "capacity": "5000"}},
     ("way", 2): {"ref": "way/2", "pos": (37.0229, -7.9285), "tags": {"name": "Estadio de Sao Luis", "leisure": "stadium"}},
@@ -229,31 +229,38 @@ for name, ok in more2:
 
 # --- three corrections found on the first real run
 GROUNDS.update({"G12": {"label": "Estadio da Luz", "coord": (38.7527, -9.1847), "cap": 64642, "aliases": ["Benfica Stadium"]},
-                "G13": {"label": "Estadio Municipal 22 de Junho", "coord": (41.4013, -8.5224), "cap": 5307}})
+                "G13": {"label": "Estadio Municipal 22 de Junho", "coord": (41.4013, -8.5224), "cap": 5307},
+                "G15": {"label": "Estadio Novo", "coord": (38.7000, -9.4000), "cap": 8000}})
 roster2 = [
     dict(base, qid="Q104", team="Benfica", title="S.L. Benfica", ground="Estadio da Luz", capacity=64642, ground_title="Estadio da Luz"),
     dict(base, qid="Q105", team="Benfica B", title="S.L. Benfica B", ground="Benfica Campus - Campo n.o 1", capacity=2644,
          ground_title="Benfica Campus"),
     dict(base, qid="Q106", team="Famalicao", title="F.C. Famalicao", ground="Estadio Municipal de Famalicao", capacity=5307,
          ground_title="Estadio Municipal de Famalicao"),
+    dict(base, qid="Q110", team="Estoril", title="G.D. Estoril Praia", ground="Estadio Antonio Coimbra da Mota", capacity=8000,
+         ground_title=None),
 ]
 G = lambda g: [{"value": g, "rank": "normal", "snaktype": "value", "start": None, "end": None}]
 ginfos2 = {
     "Q104": dict(info("Q104", "S.L. Benfica", [(L1, *N)]), grounds_all=G("G12"), grounds_truthy=G("G12")),
     "Q105": dict(info("Q105", "S.L. Benfica B", [(L2, *N)]), grounds_all=G("G12"), grounds_truthy=G("G12")),
     "Q106": dict(info("Q106", "F.C. Famalicao", [(L1, *N)]), grounds_all=G("G13"), grounds_truthy=G("G13")),
+    "Q110": dict(info("Q110", "G.D. Estoril Praia", [(L1, *N)]), grounds_all=G("G15"), grounds_truthy=G("G15")),
 }
 pg.article_coordinates = lambda pcm, titles: {"Benfica Campus": (38.6405, -9.0919), "Estadio Municipal de Famalicao": (41.4014, -8.5225),
                                               "Estadio da Luz": (38.7527, -9.1847)}
-pg.club_infobox_grounds = lambda pcm, titles: {"F.C. Famalicao": "Estadio Municipal 22 de Junho"}
+pg.club_infobox_grounds = lambda pcm, titles: {"F.C. Famalicao": {"name": "Estadio Municipal 22 de Junho", "link": None},
+                                               "G.D. Estoril Praia": {"name": "Estadio Novo", "link": None}}
 pg.stadiumdb_grounds = lambda pcm, args, label, probe: ([
-    pg.sdb.ground("Estadio Municipal 22 de Junho", "Vila Nova de Famalicao", "Famalicao", 5307)], "por", [], [])
+    pg.sdb.ground("Estadio Municipal 22 de Junho", "Vila Nova de Famalicao", "Famalicao", 5307),
+    pg.sdb.ground("Estadio Novo", "Estoril", "Estoril", 8000)], "por", [], [])
 robots_asked = []
 pg.robots_allows = lambda pcm, base, path: robots_asked.append(base) or (True, f"{base}/robots.txt: test")
 pg.ground_search = lambda pcm, wanted, langs, cw: {"Q107": [{"qid": "Q900", "label": "Complexo Desportivo FC Alverca",
                                                          "coord": (38.8988, -9.0368), "cap": None, "desc": "stadium"}]}
-asked = []
+asked, asked_names = [], []
 pg.overpass_elements = lambda pcm, centres: asked.append(1) or ({}, None)
+pg.overpass_by_name = lambda pcm, iso, names, cw: asked_names.append(sorted(names)) or ({}, None)
 gfail2 = []
 grows2 = pg.propose(pc, A, {"infos": ginfos2, "roster": roster2, "twin_of": {}, "country_label": "Portugal"}, [], gfail2)
 gd2 = {(r["kind"], r["clubQid"]): r["detail"] for r in grows2}
@@ -267,10 +274,15 @@ more3 = [
      "proposed_position=38.640500" in gd2[("ground-proposal", "Q105")]),
     ("Benfica (first team) is not flagged for sharing with its own reserve side",
      "verdict=ok" in gd2[("ground-proposal", "Q104")] and "also its reserve side's" in gd2[("ground-proposal", "Q104")]),
-    ("Famalicao: the table is the odd one out, a note and not a problem",
-     "verdict=ok" in gd2[("ground-proposal", "Q106")] and "odd one out" in gd2[("ground-proposal", "Q106")]),
-    ("Famalicao: the table is the odd one out, so Wikidata's capacity is this ground's and nothing is cleared",
+    ("Famalicao (position identity): a Wikidata ground with another NAME but 14 m from the table ground's article is the same ground",
+     "verdict=ok" in gd2[("ground-proposal", "Q106")] and "under another name" in gd2[("ground-proposal", "Q106")]
+     and "named_by=4 place(s)" in gd2[("ground-proposal", "Q106")]),
+    ("Famalicao: so Wikidata's and StadiumDB's capacity are this ground's and nothing is cleared",
      "verdict=agreed" in gd2[("capacity-proposal", "Q106")] and "CLEAR" not in gd2[("capacity-proposal", "Q106")]),
+    ("Estoril: the table is the odd one out (no article position to prove identity), a note and not a problem",
+     "odd one out" in gd2[("ground-proposal", "Q110")] and "ONE place only" not in gd2[("ground-proposal", "Q110")]),
+    ("Estoril: the table is the odd one out, so Wikidata's capacity is this ground's and nothing is cleared",
+     "CLEAR" not in gd2[("capacity-proposal", "Q110")] and "wikidata 8000" in gd2[("capacity-proposal", "Q110")]),
     ("a pitch number is not part of the ground's name",
      pg.name_strength("Benfica Campus - Campo n.° 1", "Caixa Futebol Campus", {"benfica"}) == "contained"),
     ("a name that is only the club's name is no agreement",
@@ -416,9 +428,68 @@ fail_rows = pg.propose(pc, A, {"infos": ginfos2, "roster": roster2, "twin_of": {
 fd = {(r["kind"], r["clubQid"]): r["detail"] for r in fail_rows}
 more6 = [
     ("Overpass failed: not a run failure, the rows are still written and say so",
-     not fail_f and len(fail_rows) == 6 and "osm=asked and failed: HTTP 502" in fd[("ground-proposal", "Q105")]),
+     not fail_f and len(fail_rows) == 8 and "osm=asked and failed: HTTP 502" in fd[("ground-proposal", "Q105")]),
 ]
 for name, ok in more6:
+    bad += not ok
+    print(("ok   " if ok else "FAIL ") + name)
+
+# --- Part C (2026-10-21): the bugs the Belgium and Greece hold-out runs exposed
+ib = pg.parse_infobox_ground
+more7 = [
+    ("infobox: [[Elindus Arena]], [[Lier, Belgium|Lier]] reads as the arena, not as 'Lier, Belgium'",
+     ib("{{Infobox football club\n| ground = [[Elindus Arena]], [[Lier, Belgium|Lier]]\n| capacity = 9,000\n}}") == ("Elindus Arena", "Elindus Arena")),
+    ("infobox: {{ill|A|fr|B}} reads as A, the footnote and the citation template go",
+     ib("| ground = {{ill|Stade du Pairay|fr|Stade du Pairay (Seraing)}}<ref>{{cite web|url=x}}</ref>\n| chair = X")[0] == "Stade du Pairay"),
+    ("infobox: [[Title|Shown]] is the name Shown with Title as the article",
+     ib("| stadium = [[Estadio Foo (Lisbon)|Estadio Foo]], Lisbon\n| league = Y") == ("Estadio Foo", "Estadio Foo (Lisbon)")),
+    ("infobox: a plain name with a town after the comma", ib("| ground = Foo Park, Bar Town\n| x = 1") == ("Foo Park", None)),
+    ("infobox: no ground parameter gives nothing", ib("| league = Y") == ("", None)),
+    ("the league fallback strips the season from an article title",
+     pc.season_free_title("2026\u201327 Super League Greece 2") == "Super League Greece 2"
+     and pc.season_free_title("2026 Allsvenskan") == "Allsvenskan" and pc.season_free_title("Bundesliga") == "Bundesliga"),
+]
+for name, ok in more7:
+    bad += not ok
+    print(("ok   " if ok else "FAIL ") + name)
+
+# by-name search: a club with NO table ground (infobox fallback) and no position anywhere
+GROUNDS_SAVE = dict(GROUNDS)
+roster4 = [
+    dict(base, qid="Q111", team="Lusitania", title="Lusitania FC", ground="", capacity=None, ground_title=None),
+    dict(base, qid="Q112", team="Dupla", title="Dupla FC", ground="Estadio Dois", capacity=None, ground_title=None),
+]
+ginfos4 = {"Q111": info("Q111", "Lusitania FC", [(L2, *N)]), "Q112": info("Q112", "Dupla FC", [(L2, *N)])}
+pg.article_coordinates = lambda pcm, titles: {}
+pg.club_infobox_grounds = lambda pcm, titles: {"Lusitania FC": {"name": "Estadio do Lusitania de Lourosa", "link": None}}
+pg.stadiumdb_grounds = lambda pcm, args, label, probe: ([], "por", [], [])
+pg.ground_search = lambda pcm, wanted, langs, cw: {}
+el = lambda ref, pos, name: {"ref": ref, "pos": pos, "tags": {"name": name, "leisure": "pitch", "sport": "soccer"}}
+by_calls = []
+pg.overpass_by_name = lambda pcm, iso, names, cw: by_calls.append(dict(names)) or ({
+    "Q111": [el("way/1", (40.987887, -8.543598), "Estadio do Lusitania de Lourosa"),
+             el("way/2", (40.987890, -8.543600), "Estadio da Lusitania Futebol Clube de Lourosa")],
+    "Q112": [el("way/3", (41.0, -8.0), "Estadio Dois"), el("way/4", (41.02, -8.0), "Estadio Dois")]}, None)
+pg.overpass_elements = lambda pcm, centres: ({}, None)
+g4f = []
+g4 = pg.propose(pc, A, {"infos": ginfos4, "roster": roster4, "twin_of": {}, "country_label": "Portugal"}, [], g4f)
+d4 = {(r["kind"], r["clubQid"]): r["detail"] for r in g4}
+more8 = [
+    ("by-name: an empty table ground falls back to the club article's infobox ground, and the row says so",
+     "ground_table=Estadio do Lusitania de Lourosa" in d4[("ground-proposal", "Q111")]
+     and "ground_read_from=club article infobox" in d4[("ground-proposal", "Q111")]),
+    ("by-name: a ground no source positioned is searched by name across the country",
+     by_calls and "Q111" in by_calls[0]),
+    ("by-name: the element is proposed, labelled as found by the country search",
+     "proposed_position=40.987887" in d4[("ground-proposal", "Q111")]
+     and "found by a search of the whole country" in d4[("ground-proposal", "Q111")]),
+    ("by-name: two exact elements 2 km apart are AMBIGUOUS: flagged and none is used as the position",
+     "up to 2224 m apart" in d4[("ground-proposal", "Q112")] and "none used" in d4[("ground-proposal", "Q112")]
+     and "proposed_position" not in d4[("ground-proposal", "Q112")]),
+    ("by-name: the row says the whole country was searched by name",
+     "the whole country by the ground's name" in d4[("ground-proposal", "Q111")]),
+]
+for name, ok in more8:
     bad += not ok
     print(("ok   " if ok else "FAIL ") + name)
 print("FAILED" if bad else "all passed")

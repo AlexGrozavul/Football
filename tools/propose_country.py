@@ -585,8 +585,23 @@ def find_league(tier, real_title, langs):
             hop, _ = cr.qids_for_titles([target])
             if hop.get(target):
                 return hop[target], f"infobox league link [[{target}]]"
-    return None, ("no P3450 on the season item and no infobox league link; pass "
-                  f"--league {tier}=Q... to name the league item")
+    # Route 3 (added 2026-10-21, Greece): the article's title without its season. A new season
+    # article often has neither P3450 nor an infobox yet (2026-27 Super League Greece), and
+    # every tracked league's article is named so. The league table prints the label and P17
+    # of what this found, for a person to check: it is a fallback, not proof.
+    stripped = season_free_title(real_title)
+    if stripped != real_title:
+        hop, _ = cr.qids_for_titles([stripped])
+        if hop.get(stripped):
+            return hop[stripped], (f"the article's title without the season, [[{stripped}]] "
+                                   f"(a fallback: check the label and P17 in this table)")
+    return None, ("no P3450 on the season item, no infobox league link and no article named like "
+                  f"the title without its season; pass --league {tier}=Q... to name the league item")
+
+
+def season_free_title(title):
+    """'2026–27 Super League Greece' -> 'Super League Greece'; '2026 Allsvenskan' -> 'Allsvenskan'."""
+    return re.sub(r"^\d{4}(?:\s*[\u2013\u2014-]\s*\d{2,4})?\s+", "", title or "").strip()
 
 
 def league_facts(league_qids, langs):
@@ -1393,7 +1408,14 @@ def main(argv=None):
         for r in rows:
             counts[r["kind"]] = counts.get(r["kind"], 0) + 1
 
-    if args.grounds:
+    if args.grounds and failures and not args.write_partial:
+        # A proposal that will not be written must not spend the Overpass operator's capacity
+        # (2026-10-21, Greece: league discovery failed and 8.6 minutes of Overpass were asked anyway).
+        print("\n[6b grounds and capacities] SKIPPED: the proposal already has failures and will not be written")
+        ctx["grounds_md"] = ["## Grounds and capacities", "",
+                             "Not read: the proposal already failed (see FAILURES above), and the public "
+                             "Overpass API's capacity is not spent on a proposal that will not be written.", ""]
+    elif args.grounds:
         with step("6b grounds and capacities"):
             import propose_grounds
             ctx["country_label"] = None
