@@ -258,6 +258,7 @@ robots_asked = []
 pg.robots_allows = lambda pcm, base, path: robots_asked.append(base) or (True, f"{base}/robots.txt: test")
 pg.ground_search = lambda pcm, wanted, langs, cw: {"Q107": [{"qid": "Q900", "label": "Complexo Desportivo FC Alverca",
                                                          "coord": (38.8988, -9.0368), "cap": None, "desc": "stadium"}]}
+REAL_BY_NAME = pg.overpass_by_name
 asked, asked_names = [], []
 pg.overpass_elements = lambda pcm, centres: asked.append(1) or ({}, None)
 pg.overpass_by_name = lambda pcm, iso, names, cw: asked_names.append(sorted(names)) or ({}, None)
@@ -488,6 +489,22 @@ more8 = [
      and "proposed_position" not in d4[("ground-proposal", "Q112")]),
     ("by-name: the row says the whole country was searched by name",
      "the whole country by the ground's name" in d4[("ground-proposal", "Q111")]),
+]
+# the Panathinaikos shape: a one-word name is not searched across the country
+by_q = []
+class _PC(object):
+    pass
+pg_post = pg.overpass_post
+pg.overpass_post = lambda pcm, body: by_q.append(body) or ('{"elements": [{"type": "way", "id": 7, "center": {"lat": 39.59, "lon": 22.44}, "tags": {"name": "Olympic Park", "leisure": "sports_centre"}}]}', None)
+res_one, err_one = REAL_BY_NAME(pc, "GR", {"Q1": ["Olympic Stadium"]}, {"Q1": {"panathinaikos"}})
+asked_one = len(by_q)
+res_two, err_two = REAL_BY_NAME(pc, "GR", {"Q1": ["Athens Olympic Stadium"]}, {"Q1": {"panathinaikos"}})
+pg.overpass_post = pg_post
+more8 += [
+    ("by-name: a ground name of one distinctive word is not searched across the country (Olympic Stadium / Olympic Park)",
+     res_one == {} and err_one is None and asked_one == 0),
+    ("by-name: 'Olympic Park' is only contained in 'Athens Olympic Stadium', not exact: no hit",
+     res_two == {} and err_two is None and len(by_q) == 1),
 ]
 for name, ok in more8:
     bad += not ok

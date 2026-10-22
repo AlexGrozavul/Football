@@ -565,6 +565,9 @@ def overpass_by_name(pc, iso, names_by_club, club_words_by_club):
     or (None, reason). Shares the request cap and the time budget with overpass_elements."""
     if not re.fullmatch(r"[A-Z]{2}", iso or ""):
         return {}, None
+    # a name of ONE distinctive word ("Olympic Stadium" = Athens' ground stripped of its qualifier,
+    # which matched the "Olympic Park" of Volos, 211 km away) is too generic to search a country by
+    names_by_club = {c: [n for n in names if len(core(n)) >= 2] for c, names in names_by_club.items()}
     tokens = {}
     for club, names in names_by_club.items():
         for n in names:
@@ -958,6 +961,9 @@ def propose(pc, args, ctx, langs, failures):
             if others and len(same_ground) == len(others):
                 notes_.append("its P115 is shared with " + ", ".join(others)
                               + "; the table / club article names the same ground for them too (a genuinely shared ground)")
+            elif others and wd_agrees and not same_ground and not all(cr_markers(o) for o in others):
+                notes_.append("its P115 is also on " + ", ".join(others) + "'s item, whose own table / club-article "
+                              "ground is a different one: the shared P115 is probably theirs to correct")
             elif others:
                 mine = bool(cr_markers(team))
                 theirs = [bool(cr_markers(o)) for o in others]
