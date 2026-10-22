@@ -30,7 +30,7 @@ for "inferred", "face_value" for "face-value" - sat in the file looking
 exactly like a checked fact, and the read-back convention this project
 relies on was not honoured for them. The other four were added on
 2026-09-23 for the derby PDF, whose structure the first three could not
-hold without losing something - see CLAUDE.md. The country file was
+hold without losing something - see docs/claude/conventions.md. The country file was
 added on 2026-09-24, to the design in docs/country-ticket-rules-design.md.
 
 This tool never writes to any of these files. It reads them, prints
@@ -53,7 +53,7 @@ Usage:  python3 tools/check_tickets.py [--full]
 TWO KINDS OF VOCABULARY, AND THE DIFFERENCE MATTERS
 ---------------------------------------------------
 
-CLOSED vocabularies are the ones CLAUDE.md actually lists. A value that
+CLOSED vocabularies are the ones docs/claude/conventions.md actually lists. A value that
 is not on the list is a typo or a misunderstanding, so the row is
 REJECTED and the allowed values are printed. These are dateSource,
 basis, cutoff, kind, priceBasis, and since 2026-09-23 confidence, scope
@@ -87,7 +87,7 @@ TICKETS_FILE = "data/club-tickets.csv"
 WINDOWS_FILE = "data/club-ticket-windows.csv"
 PRICES_FILE = "data/club-ticket-prices.csv"
 # Added 2026-09-23 for the derby PDF, whose structure the first three
-# could not hold without losing something. See CLAUDE.md.
+# could not hold without losing something. See docs/claude/conventions.md.
 PHASES_FILE = "data/club-ticket-phases.csv"
 RULES_FILE = "data/club-ticket-rules.csv"
 DEMAND_FILE = "data/club-ticket-demand.csv"
@@ -166,7 +166,7 @@ SCHEMA = {
         "key": ["clubQid", "team"],
     },
     WINDOWS_FILE: {
-        # dateSource and basis are required because CLAUDE.md says every
+        # dateSource and basis are required because docs/claude/conventions.md says every
         # window row carries both: one says how much to trust the date,
         # the other says where the pattern came from, and collapsing them
         # loses exactly the distinction that matters.
@@ -266,7 +266,7 @@ SCHEMA = {
         # The key has been one column short TWICE, and both times the
         # file already held the proof before anyone noticed.
         #
-        # kind was the first. CLAUDE.md described this file as one row
+        # kind was the first. docs/claude/conventions.md described this file as one row
         # per club per team per season per competition per stage per
         # category, and the FC Bayern rows carried a face value AND an
         # observed resale price for the same Bundesliga category 1 seat.
@@ -324,7 +324,7 @@ CONFIDENCE = ["confirmed", "inferred", "unverified"]
 BASIS = ["published", "observed-past-cycle", "user-supplied", "unknown"]
 SCOPE = ["general", "derby-home", "derby-away"]
 
-# ---- closed vocabularies: from CLAUDE.md, a row with anything else is
+# ---- closed vocabularies: from docs/claude/conventions.md, a row with anything else is
 #      rejected.
 CLOSED = {
     (WINDOWS_FILE, "dateSource"): ["confirmed", "inferred", "disputed"],
@@ -337,7 +337,7 @@ CLOSED = {
     # requires a consumer price to, and the booking and system fees are
     # added on top at checkout. Neither of the two values this list
     # started with can say that, and both of them say something false
-    # about the FC Bayern rows - see CLAUDE.md.
+    # about the FC Bayern rows - see docs/claude/conventions.md.
     (PRICES_FILE, "priceBasis"): ["excl-vat-fees", "incl-vat-fees",
                                   "incl-vat-excl-fees", "unknown"],
     (PRICES_FILE, "confidence"): CONFIDENCE,
@@ -512,7 +512,7 @@ KNOWN_TOKENS = {
 
 # ---- the columns that must never hold a date.
 #
-# CLAUDE.md: "No cell in this file ever holds a date." That is about the
+# docs/claude/files.md: "No cell in this file ever holds a date." That is about the
 # rule-bearing cells, not about checked (which is a date by design), not
 # about source (a URL may carry a year), and not about note (prose that
 # legitimately discusses past dates). So the check is aimed at the cells

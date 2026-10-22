@@ -38,7 +38,7 @@ WHAT IT READS, IN THIS ORDER
                the places a person must edit, with line numbers.
  5. Summary: counts per kind and every step's duration.
 
-THE ORDER OF USE FOR A NEW COUNTRY is in CLAUDE.md, "Adding a country".
+THE ORDER OF USE FOR A NEW COUNTRY is in docs/claude/conventions.md, "Adding a country".
 
 Usage (from the repo root):
     python3 tools/propose_country.py --country PT --country-qid Q45 \\

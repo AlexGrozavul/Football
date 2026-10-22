@@ -355,7 +355,7 @@ WHERE {
 # check, which joins on Q-ids, then read one club as two errors on every
 # run: its real Q-id missing, its MANUAL- id extra.
 #
-# This is the route CLAUDE.md described as "the one with no false
+# This is the route docs/claude/open-problems.md described as "the one with no false
 # findings": the club reaches the fetched clubs UNDER ITS OWN Q-ID, and
 # an ordinary clubQid hand row then corrects it - so apply_manual's guard
 # against a Q-id the queries did not return is untouched, exactly as it
@@ -1314,7 +1314,7 @@ def country_review(keep, club_countries, code, country_qid):
     Q154069, the German 3. Liga. Both were found by eye, months apart.
 
     Adding a country FILTER to the query was considered and rejected in
-    CLAUDE.md for a good reason: P17 is exactly the field the missing
+    docs/claude/open-problems.md for a good reason: P17 is exactly the field the missing
     clubs already lack, so a filter on it would quietly drop real ones.
     Reporting on it drops nobody. A club with no P17 whose coordinates
     are inside the box is never mentioned at all.
@@ -1325,7 +1325,7 @@ def country_review(keep, club_countries, code, country_qid):
       2. Wikidata's own P17. Catches a club sitting inside the box but
          belonging to another country.
 
-    CLAUDE.md used to say a bounding box alone would have caught both
+    docs/claude/open-problems.md used to say a bounding box alone would have caught both
     Veltheim and Triesenberg. It would not have. Veltheim is in
     Winterthur, near 47.51N 8.72E, and any rectangle wide enough to hold
     Germany also holds northern Switzerland, western Austria and the

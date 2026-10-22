@@ -43,11 +43,11 @@ OVERPASS: THE PUBLISHED USAGE POLICY GOVERNS, NOT robots.txt (Alexandru, 2026-10
   at most 60 requests
   per run (OVERPASS_MAX_REQUESTS, retries included; the run says how many it
   used); and never more than the regular-use guideline of the operator per day
-  (about 100 queries and 10 MB; CLAUDE.md, Known open problems, has the count
+  (about 100 queries and 10 MB; docs/claude/open-problems.md, Known open problems, has the count
   of every workflow). robots.txt IS still read first for every other
   non-Wikimedia host (StadiumDB).
 
-THE RULES IT APPLIES (CLAUDE.md, the place-clubs passes)
+THE RULES IT APPLIES (docs/claude/open-problems.md, the place-clubs passes)
 
   A ground is named by two independent places for 2026-27 (the season table,
   the club's own article, Wikidata, StadiumDB); where the names differ, a
@@ -60,7 +60,7 @@ THE RULES IT APPLIES (CLAUDE.md, the place-clubs passes)
 
   A capacity is proposed only where two INDEPENDENT sources agree within 5%.
   The league table and Wikidata are Wikipedia's and count as ONE source
-  (CLAUDE.md, Casa Pia: "7,000 appears only in Wikipedia and Wikidata (one
+  (docs/claude/open-problems.md, Casa Pia: "7,000 appears only in Wikipedia and Wikidata (one
   source)"); StadiumDB and OpenStreetMap are one source each. With no such
   agreement the cell is blank and every figure is listed (contested). The
   map's figure is what the build would show: Wikidata's P1083 on the P115

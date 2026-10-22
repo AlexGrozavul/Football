@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Read-back and checks for the Romanian translations of data-file text
-(data/ro/<source>.json). CLAUDE.md, "Romanian translations of data texts".
+(data/ro/<source>.json). docs/claude/conventions.md, "Romanian translations of data texts".
 
 A translation is DERIVED data: the English data file is the original and is
 never touched. An entry of data/ro/<source>.json is keyed by
