@@ -101,7 +101,21 @@ jobs:
           npm init -y >/dev/null
           npm install --no-audit --no-fund playwright@1.56.1 >/dev/null
           npx playwright install --with-deps chromium >/dev/null 2>&1
+      - name: Archive
+        run: |
+          UA="FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)"
+          echo "ARCHIVE-ROBOTS $(curl -sS -m 30 -A "$UA" -o /tmp/ar.txt -w '%{http_code}' https://web.archive.org/robots.txt)"; grep -i -m5 -E "^(user-agent|disallow)" /tmp/ar.txt || true
+          sleep 1
+          echo "CDX $(curl -sS -m 60 -A "$UA" -o /tmp/cdx.txt -w '%{http_code}' 'https://web.archive.org/cdx/search/cdx?url=ticket-onlineshop.com/ols/sv07elversberg/de*&filter=statuscode:200&collapse=urlkey&limit=40&fl=timestamp,original')"
+          head -40 /tmp/cdx.txt
+          last=$(grep -E ' https?://(www\.)?ticket-onlineshop\.com/ols/sv07elversberg/de/?$' /tmp/cdx.txt | tail -1)
+          echo "PICK $last"
+          if [ -n "$last" ]; then set -- $last; sleep 1
+            echo "CAPTURE $(curl -sS -m 60 -L -A "$UA" -o /tmp/cap.html -w '%{http_code}' "https://web.archive.org/web/${1}id_/${2}")"
+            python3 -c "import re,html;t=open('/tmp/cap.html',errors='ignore').read();t=re.sub(r'(?s)<(script|style).*?</\\1>',' ',t);t=html.unescape(re.sub(r'<[^>]+>',' ',t));print(re.sub(r'\\s+',' ',t)[:4000])"
+          fi
       - name: Probe
+        if: false
         run: |
           cd /tmp/pw
           cat > probe.mjs <<'EOF'
