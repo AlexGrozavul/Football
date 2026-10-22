@@ -1,6 +1,6 @@
 # Proposal for GR (Greece)
 
-Generated 2026-10-22 14:10 UTC by `tools/propose_country.py`. **Read-only evidence, not decisions**: nothing here was written to a hand-written file or a club file; a gap is a gap.
+Generated 2026-10-22 14:44 UTC by `tools/propose_country.py`. **Read-only evidence, not decisions**: nothing here was written to a hand-written file or a club file; a gap is a gap.
 
 ## Summary
 
@@ -18,7 +18,7 @@ Tagged but dissolved (not drawn by the build, no row): 0; tagged extras whose ta
 
 **Reader gaps: 1 roster row(s) the reader cannot read** (kind roster-unread).
 
-Step durations (s): 1 rosters 2.4, 2 leagues 7.9, 3 items 2.3, 4 rank cross-check 1.1, 5 evidence for extras 1.3, 6 candidates 0.0, 6b grounds and capacities 698.2, 7 wiring patch 0.4
+Step durations (s): 1 rosters 2.9, 2 leagues 8.6, 3 items 2.3, 4 rank cross-check 1.4, 5 evidence for extras 0.8, 6 candidates 0.0, 6b grounds and capacities 589.3, 7 wiring patch 0.9
 
 ## Leagues
 
@@ -120,16 +120,15 @@ Q63980269,GR,2,2026-27,2026–27 Super League Greece 2,
 ## Grounds and capacities
 
 - Wikidata name search for 4 ground(s) with no other position: 0 found an item with a position
-- OpenStreetMap: queried; 277 named stadium / sports centre / soccer pitch elements within 3000 m of 27 club position(s); 1 of 4 ground(s) with no other position found an element of exactly that name by a search of the whole country [Overpass requests this run: 8 of the cap 60]
+- OpenStreetMap: queried; 277 named stadium / sports centre / soccer pitch elements within 3000 m of 27 club position(s); 0 of 4 ground(s) with no other position found an element of exactly that name by a search of the whole country [Overpass requests this run: 6 of the cap 60]
 - https://stadiumdb.com/robots.txt read (1 disallow rule(s)); /stadiums/ is allowed
 - StadiumDB slug 'gre' answered a table of 29 grounds (29 with a capacity); tried: gre: answered (configured in crosscheck_stadiumdb.COUNTRY_PAGES)
 
-24 ground(s) agree everywhere and need nothing; 5 need a look:
+25 ground(s) agree everywhere and need nothing; 4 need a look:
 
 | verdict | club | table's ground | flags |
 |---|---|---|---|
-| attention | A.E. Kifisia | Leoforos Alexandras Stadium | P115 shared with Panathinaikos |
-| attention | Panathinaikos | Athens Olympic Stadium | P115 shared with A.E. Kifisia \| Wikidata names 'Apostolos Nikolaidis Stadium', the table 'Athens Olympic Stadium' \| THE MAP WOULD BE 211586 m FROM THE PROPOSAL |
+| attention | Panathinaikos | Athens Olympic Stadium | P115 shared with A.E. Kifisia \| Wikidata names 'Apostolos Nikolaidis Stadium', the table 'Athens Olympic Stadium' \| NO ground-specific position found |
 | unplaced | Hellas Syros | Ermoupoli Municipal Stadium | UNPLACED by the build \| the ground is named by ONE place only (rule: two independent places) \| NO ground-specific position found |
 | unplaced | Nestos Chrysoupoli | Chrysoupoli Municipal Stadium | UNPLACED by the build \| NO ground-specific position found |
 | unplaced | Zakynthos | Zakynthos Municipal Stadium | Wikidata names 'Δημοτικό Στάδιο Ζακύνθου', the table 'Zakynthos Municipal Stadium' \| UNPLACED by the build \| the ground is named by ONE place only (rule: two independent places) \| NO ground-specific position found |
@@ -202,7 +201,7 @@ Q63980269,GR,2,2026-27,2026–27 Super League Greece 2,
 | tier | club | label | evidence | detail |
 |---|---|---|---|---|
 | 1 | Q201584 | AEK Athens | AEK Athens: ground 'Agia Sophia Stadium' - ok | verdict=ok; ground_table=Agia Sophia Stadium; ground_read_from=table; named_by=4 place(s): table, Wikidata P115, StadiumDB, club article infobox; other_names=club article infobox=Agia Sophia Stadium; Wikidata P115=Agia Sophia Stadium / Γήπεδο «Αγιά Σοφιά»; Sta |
-| 1 | Q16245443 | A.E. Kifisia | A.E. Kifisia: ground 'Leoforos Alexandras Stadium' - attention | verdict=attention; flags=P115 shared with Panathinaikos; notes=Wikidata's ground 'Apostolos Nikolaidis Stadium' is the table's ground under another name: its position is 6 m from the ground's English article; ground_table=Leoforos Alexandras Stadium; ground_re |
+| 1 | Q16245443 | A.E. Kifisia | A.E. Kifisia: ground 'Leoforos Alexandras Stadium' - ok | verdict=ok; notes=its P115 is also on Panathinaikos's item, whose own table / club-article ground is a different one: the shared P115 is probably theirs to correct \| Wikidata's ground 'Apostolos Nikolaidis Stadium' is the table's ground under another name: its |
 | 1 | Q219926 | Aris | Aris: ground 'Kleanthis Vikelidis Stadium' - ok | verdict=ok; ground_table=Kleanthis Vikelidis Stadium; ground_read_from=table; named_by=4 place(s): table, StadiumDB, Wikidata P115, club article infobox; other_names=club article infobox=Kleanthis Vikelidis Stadium; Wikidata P115=Kleanthis Vikelidis Stadium / |
 | 1 | Q757320 | Asteras Tripolis | Asteras Tripolis: ground 'Theodoros Kolokotronis Stadium' - ok | verdict=ok; ground_table=Theodoros Kolokotronis Stadium; ground_read_from=table; named_by=4 place(s): table, StadiumDB, Wikidata P115, club article infobox; other_names=club article infobox=Theodoros Kolokotronis Stadium; Wikidata P115=Theodoros Kolokotronis S |
 | 1 | Q757754 | Atromitos | Atromitos: ground 'Peristeri Stadium' - ok | verdict=ok; ground_table=Peristeri Stadium; ground_read_from=table; named_by=3 place(s): table, Wikidata P115, club article infobox; other_names=club article infobox=Peristeri Stadium; Wikidata P115=Peristeri Stadium / Δημοτικό Στάδιο Περιστερίου; StadiumDB=St |
@@ -211,7 +210,7 @@ Q63980269,GR,2,2026-27,2026–27 Super League Greece 2,
 | 1 | Q824450 | Levadiakos | Levadiakos: ground 'Levadia Municipal Stadium' - ok | verdict=ok; ground_table=Levadia Municipal Stadium; ground_read_from=table; named_by=3 place(s): table, Wikidata P115, club article infobox; other_names=club article infobox=Levadia Municipal Stadium; Wikidata P115=Levadia Municipal Stadium / Δημοτικό Στάδιο Λ |
 | 1 | Q931704 | OFI | OFI: ground 'Pankritio Stadium' - ok | verdict=ok; ground_table=Pankritio Stadium; ground_read_from=table; named_by=3 place(s): table, Wikidata P115, club article infobox; other_names=club article infobox=Pankritio Stadium; Wikidata P115=Pankritio Stadium / Παγκρήτιο Στάδιο; proposed_venue=Pankriti |
 | 1 | Q19628 | Olympiacos | Olympiacos: ground 'Karaiskakis Stadium' - ok | verdict=ok; ground_table=Karaiskakis Stadium; ground_read_from=table; named_by=3 place(s): table, Wikidata P115, club article infobox; other_names=club article infobox=Georgios Karaiskakis Stadium; Wikidata P115=Karaiskakis Stadium / Στάδιο «Γεώργιος Καραϊσκάκ |
-| 1 | Q4122219 | Panathinaikos | Panathinaikos: ground 'Athens Olympic Stadium' - attention | verdict=attention; flags=P115 shared with A.E. Kifisia \| Wikidata names 'Apostolos Nikolaidis Stadium', the table 'Athens Olympic Stadium' \| THE MAP WOULD BE 211586 m FROM THE PROPOSAL; ground_table=Athens Olympic Stadium; ground_read_from=table; named_by=2 pl |
+| 1 | Q4122219 | Panathinaikos | Panathinaikos: ground 'Athens Olympic Stadium' - attention | verdict=attention; flags=P115 shared with A.E. Kifisia \| Wikidata names 'Apostolos Nikolaidis Stadium', the table 'Athens Olympic Stadium' \| NO ground-specific position found; ground_table=Athens Olympic Stadium; ground_read_from=table; named_by=2 place(s): ta |
 | 1 | Q1460053 | Panetolikos | Panetolikos: ground 'Panetolikos Stadium' - ok | verdict=ok; ground_table=Panetolikos Stadium; ground_read_from=table; named_by=3 place(s): table, Wikidata P115, club article infobox; other_names=club article infobox=Panetolikos Stadium; Wikidata P115=Panetolikos Stadium / Γήπεδο Παναιτωλικού; proposed_venue |
 | 1 | Q204888 | PAOK | PAOK: ground 'Toumba Stadium' - ok | verdict=ok; ground_table=Toumba Stadium; ground_read_from=table; named_by=4 place(s): table, StadiumDB, Wikidata P115, club article infobox; other_names=club article infobox=Toumba Stadium; Wikidata P115=Toumba Stadium / Γήπεδο Τούμπας; StadiumDB=Stádio Toumba |
 | 1 | Q43375974 | Volos | Volos: ground 'Panthessaliko Stadium' - ok | verdict=ok; ground_table=Panthessaliko Stadium; ground_read_from=table; named_by=3 place(s): table, Wikidata P115, club article infobox; other_names=club article infobox=Panthessaliko Stadium; Wikidata P115=Panthessaliko Stadium / Πανθεσσαλικό Στάδιο; proposed |
