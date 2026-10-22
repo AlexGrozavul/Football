@@ -1,0 +1,4861 @@
+# Known open problems
+
+Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new entries go here; CLAUDE.md keeps only rules and index lines. Grep this file for the name you need.
+
+---
+
+## Known open problems
+
+- **Overpass and robots.txt: resolved 2026-10-21, Alexandru's decision.** Found the same day: `https://overpass-api.de/robots.txt` has `User-agent: *` and `Disallow: /api/`, while the interpreter is `https://overpass-api.de/api/interpreter`, and `propose_grounds.py` (which read robots.txt of every non-Wikimedia host) therefore did not query it. **The decision:** the public Overpass API is a documented public API whose published usage policy governs, not robots.txt - a file written for crawlers, which contradicts the operator's own documentation telling users to send queries to that very path. **The rules for every tool that uses it:** the User-Agent `FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)`; one request at a time; wait and retry on HTTP 429 and 504 (and, see the last paragraph of this entry, 502 and 503); `propose_grounds.py` at most 60 requests per run (retries included, `OVERPASS_MAX_REQUESTS`); and never more than the regular-use guideline per day. **The guideline** (the OpenStreetMap wiki's page on the Overpass API, read 2026-10-21 through a search summary; the page itself was not opened): under 10,000 queries and 1 GB a day does not disturb other users, and anything used regularly should divide those numbers by 100 - **about 100 queries and 10 MB a day**, the figure used here; the wiki also says to pause 30 seconds after a 429 and to run no parallel scripts. robots.txt is still read before any other non-Wikimedia host (StadiumDB). **What each workflow costs, counted 2026-10-21 and kept so the next change knows its share of the day.** `crosscheck-capacity.yml` (monthly, the 4th), last complete run #45 of 2026-10-20 (21.6 min, all 13 countries `WRITTEN`): 13 queries and 5 busy answers (HTTP 502: AT twice, BE, CH, GB once each) = **18 requests**, counted from the log; the data volume is not logged and is an estimate of about 4 MB (11,003 stadium elements at roughly 350 bytes), so by volume about 2 runs a day and by count about 5. `propose-coordinates.yml` (monthly, the 11th), last run #19 of 2026-10-11 (93.5 min, Romania and seven other countries written, France left unchanged because 19 names were never looked up after the retries): the per-request lines are not in the part of the log that could be read, so the count is **an estimate from the code, about 40 to 60 requests** (per country with unplaced clubs: one stadium query, one place query per 120 names, one pitch query per 10 places, up to 3 tries each), so about 2 runs a day by count. `propose-country.yml` with the grounds step: **4 to 24 requests** a run for a country of 31 to 40 clubs (one query per 10 club positions, up to 6 tries each), a dispatch costing 55 s of wall clock on Portugal. All three share the same day's budget of about 100 queries, and a person dispatching several of them in a day should add the numbers. **What a 502 is, measured 2026-10-21 by a probe on a runner:** the first four live runs of the tool met `HTTP 502` on every try over several minutes, and the probe (a tiny `node(1)` query, the status endpoint, the real query shape, both User-Agents) got the same answer in 0.4 s from every variant but one: "This Overpass API server is currently at capacity. All query workers are busy and the request queue is full ... Retry your request using exponential backoff". The one request that got through (3 positions) waited 65 s in the queue and returned 200; the 20-position requests of the next live run all read-timed-out at 200 s, which is why a request now carries 10 positions. So it is the server's load on that day and not the query, the size or the User-Agent, and the backoff doubles for that reason. **502 and 503, a deviation from the decision's words, Alexandru's to confirm.** The decision said to retry only on 429 and 504 "as they do now", but `crosscheck_capacity.py` and `propose_coordinates.py` also wait and retry on 502 and 503, and all five retries of run #45 were 502s. The first live run of the new client, written to the letter, died on a 502 at its first request (`OpenStreetMap (Overpass) did not answer: HTTP 502`, nothing written), so `propose_grounds.py` retries 429, 502, 503 and 504, with the same 30 s wait and the same cap of 60 requests, which bounds what the change can cost. (The entry that stood here earlier said the two scheduled workflows run "weekly and monthly"; both are monthly.)
+
+- **Portugal's top two tiers are on the map, 2026-10-20 (a pilot, run to be measured): Primeira Liga 17 of 18, Liga Portugal 2 17 of 18, the two missing for a named reason each.** Same pipeline as Belgium; `PT.json`, 34 clubs. League items read by probe: `Q182994` Primeira Liga and `Q754488` Liga Portugal 2 (enwiki; *Segunda Liga* redirects to it), both P17 Portugal (`Q45`), neither with P3983; both 2026-27 articles are one stadiums table of 18 (three men's reserve sides among Liga Portugal 2's, Benfica B, Porto B and Sporting CP B, which stay like Rapid II). The box is Wikidata's own P1332-P1335 on `Q45` but those are **mainland points only**, so it is widened for Madeira and the Azores (two edges from memory, said in its comment). StadiumDB slug `por` (39 grounds). The checklist for the next country is "Adding a country: the places to touch".
+  - **First build 48 clubs (20 at tier 1, 28 at tier 2) against 18 and 18**, by the six shapes: shape 4, **18 `skip` rows** to the Hermannstadt standard (stale tags: 3 at tier 1, 15 at tier 2; reasons in each row from the club's article or the 2026-27 Liga 3 / Campeonato de Portugal article); tier by hand, 3 (Tondela and Penafiel to 2, Viseu to 1) and AVS (tier 2, placed); promoted clubs through the hand-named fallback, 3 (Amarante, F.C. Felgueiras 1932, Lusitânia); first-team grounds copied onto reserve sides (Benfica B, Sporting CP B) and a wrong ground (Porto B, Farense), corrected from two named places and one ground-specific coordinate; Alverca placed from its ground's Wikidata item; Arouca's capacity 5,600 to 5,000 (table and StadiumDB). **31 rows in `clubs-manual.csv`**, 1 in `fixture-links-manual.csv` (S.C. Braga to football-data 5613, the matcher's two candidates printed and Sporting CP already linked), 2 in `coordinate-reviews.csv`.
+  - **Left unplaced in the first pass, both placed in a second one (2026-10-20, a data PR; Wikipedia en and pt from the sandbox, one runner probe job, three dispatches, removed before the merge):** **Casa Pia** (Primeira Liga; tier 1; no ground on Wikidata) is now at the Estádio Municipal de Rio Maior, 39.344553 / -8.935249, capacity 7,000. The 2026-27 table names Rio Maior (its footnote is in the past tense), and a beIN SPORTS match page for Casa Pia v Benfica, matchday 2, 17 Aug 2026 (robots.txt read in full first and it allows the path), says 'Competition: Liga Portugal 2026/27 ... Stadium: Estádio Municipal de Rio Maior' - two sources for 2026-27. The club's English article and StadiumDB still give the Estádio Pina Manique, which they present as the club's own ground; the Portuguese article says it has no licence for professional league matches and gives Rio Maior as the venue of home matches. The position is OpenStreetMap relation/13900988 (the name equals the ground's name), 12 m from the ground article's coordinate and 7 m from Wikidata's item `Q2990539`. No league schedule or club page was opened: ESPN's match page answered 202 with no body, and the club's and the league's home pages said nothing on the venue. A source naming another ground for a 2026-27 home match would reopen it (delete its row to take it off). **Lusitânia** (tier 2 by hand) is now at OpenStreetMap way/870819809, a soccer pitch named `Estádio do Lusitânia de Lourosa` (40.987887 / -8.543598); that name equals the table's `Estádio do Lusitânia de Lourosa FC` once `FC` is set aside, and the ground is named twice (table and club article). The other element, way/305202095, is named `Estádio da Lusitânia Futebol Clube de Lourosa`, is 3.6 m away and was not counted; the table's location-map pin is 217 m away. The position rests on that one element. Their `open` and `held` rows in `coordinate-reviews.csv` are left as they were and are now inert. **Judgement calls to overrule:** Alverca's position is the Wikidata item's, and OpenStreetMap's near-named elements are 167 and 184 m from it (neither name is exact, so the 150 m test was not applied); Oliveirense's reason rests on the Liga 3 article alone (its own article is out of date), Fátima's on the Campeonato de Portugal article, Penafiel's tier on the two Liga Portugal 2 articles (its article names no league); Porto B's ground is the CTFD PortoGaia pitch, which Wikidata's Jorge Sampaio statement contradicts. The three reserve sides (Benfica B, Porto B, Sporting CP B) are in `club-parents.csv` since the second pass, each by the D2 rule (the opening sentence of its English article says it is the reserve team or side of the first team, and its name is the parent's plus `B`: `S.L. Benfica B` to `Q131499`, `FC Porto B` to `Q128446`, `Sporting CP B` to `Q75729`); a line is an identity claim, Alexandru's to overrule.
+  - **Third Portugal pass, 2026-10-21 (notes and one capacity; one probe dispatch).** Fátima's skip row now cites the complete 2026–27 Campeonato de Portugal article (56 clubs in four series of 14; Serie C, 10th of 14 on 11 Oct 2026) and Oliveirense's the complete 2026–27 Liga 3 article (20 stadiums-table rows; Serie B, 3rd of 10); Oliveirense's own English infobox now says Liga 3 (its lead sentence still says Liga Portugal 2). Penafiel unchanged (4th of 18 in the 2026–27 Liga Portugal 2 table, absent from the 18-row Primeira Liga table). **Casa Pia's capacity cell is now empty**: 7,000 appears only in Wikipedia and Wikidata (one source), StadiumDB has no Rio Maior row (its Casa Pia row is the Pina Manique, 2,574) and the OpenStreetMap relation has no capacity tag; its note says to re-check the ground and position if the venue changes. A comment in `index.html` now says the 1,865-club figure was a synthetic benchmark (565 real plus 1,300 generated).
+  - **Checks.** Roster check: 33 `ok` on the first run, then the two unplaced and one not-on-map clubs above. Rank diagnostic: no preferred `<novalue>`, no `<somevalue>` and no deprecated-rank tag on either league; query C lists Atlético CP, Boavista F.C. and Vitória F.C., named by no roster (bill 0). **League-tag end date:** 5 of the 22 wrong items (Aves, the old Felgueiras, Beira-Mar, Ovarense, Penafiel) get their tier from a tag that had ended; the other 17 carry no end date. Not-a-club: nothing but humans among the 76 items carrying either tag. Women's (rule 6): none of those 76 is typed, labelled, described or classed as women's; six women's items point at roster clubs through P361 or P749 and none carries either tag. Duplicates: the same-label items are sections, sports teams or untagged club items, none on the map; no club has two grounds at its best rank (Sporting CP, Porto and Benfica have a preferred current ground and older normal ones). StadiumDB: 8 rows, all the same shape (the map agrees with the league table, StadiumDB is the outlier; Vitória SC is ambiguous between Guimarães and Setúbal). OpenStreetMap capacity: Portugal 2 rows, both "neither source has a capacity". Fixtures: 17 of the 18 Primeira Liga teams linked (Casa Pia is not on the map). The real page opened headless: 33 Portuguese clubs (34 after the last placement), a sheet per tier, no script error. **The pull request's CI went red once, on `test_pwa.js`'s hand-counted twelve country files (fixed, above); every other step was green.**
+  - **Cost, from the session's own count: 14 dispatches** (5 probes, one of which failed on Wikidata's `maxlag` and one in which Overpass answered 502 three times; 3 builds; roster check twice; rank diagnostic, StadiumDB and capacity once each, plus one capacity rerun because Austria came back UNCHANGED), about 2 hours of wall clock (07:11 to 09:10 UTC); the build is 10-12 minutes, the capacity run 20. The most effort went into reconciling the stale tags and finding two sources per ground by hand. The Wikidata API refuses calls while the query service lags (use SPARQL); WebFetch-style reads of Wikipedia work from the sandbox, Wikidata, StadiumDB and Overpass only from a runner.
+- **The place-clubs pass 2, 2026-10-18 (a second pass over the eight clubs left off by the first): six placed, one already hand-held moved to a position, one left off.** Rules, Alexandru's: the ground must be named by TWO independent places for 2026-27 (the club's own Wikipedia article in any edition, the league's 2026-27 season table, the ground's tenant list, the league's own schedule or the club's own site), and where the two names differ a Wikidata alias or redirect must prove they are one ground; the coordinate needs ONE ground-specific source (the ground's own Wikipedia article or infobox, the ground's Wikidata P625, or an OpenStreetMap football element - stadium, pitch with sport=soccer, sports_centre - whose name equals the ground's name exactly; an unnamed pitch is never a source), two coordinate sources must agree within 150 m, and a coordinate on one source says so in the row; capacity only where two sources agree within 5%, else empty (a Wikipedia table and a Wikipedia ground article count as one source, as before). Read on a runner by two throwaway probes in `build-clubs.yml` (removed in the same branch) and from the sandbox with the Wikipedia API. **Placed, as hand rows in `clubs-manual.csv`, each row saying what it rests on:** (1) **A.P.S. Zakynthos `Q3292651`** at the Zakynthos Municipal Stadium, 37.770997 / 20.886793: the table says Municipal Stadium and the English infobox says 'Zakynthians Olympic Champions Ground'; the club's own P115 item `Q132566856` carries the Greek label 'Δημοτικό Στάδιο Ζακύνθου' and the Greek alias 'Στάδιο Ζακυνθίων Ολυμπιονικών και Παραολυμπιονικών' (the alias evidence: one ground under two names); the coordinate is OpenStreetMap way/141764449 (pitch, soccer, name equal to the Wikidata label) alone; capacity cleared (5,000 / 2,500 / 2,000, no two within 5%; `<clear>` drops Wikidata's 2,500). (2) **SC Popești-Leordeni `Q55593565`** at the Stadionul Clinceni, 44.377778 / 25.940833, where it plays its home matches in 2026-27: the Liga II table's footnote, the club's own site ('își dispută în prezent meciurile de pe teren propriu, temporar, pe stadionul din Clinceni') and a news report of a Clinceni 'în deplasare' match; coordinate from the ground's Wikidata P625, its English infobox and OpenStreetMap way/23600174 named 'Stadionul Clinceni' within 5 m; capacity empty. The infoboxes still name the Inter Gaz. (3) **CSC 1599 Șelimbăr `Q66424141`** at the Măgura Stadium in Cisnădie (table and the ground's tenant list), 45.710194 / 24.153139 from the ground's English infobox alone (the Romanian copy is identical; the nearby OpenStreetMap stadium is unnamed); capacity empty. (4) **CSL Ștefăneștii de Jos `Q18539440`** at the Stadionul Dumitru Mătărău (table and tenant list), 44.539250 / 26.202917 from the ground's infobox alone (the OpenStreetMap pitch is unnamed); capacity empty. (5) **A.S. Nestos Chrysoupolis `Q16845757`** at the Chrysoupoli Municipal Stadium (table and club infobox; europlan-online's 'Dimotiko Stadio Chrysoupolis' lists the club), 40.990763 / 24.688693 from europlan-online alone (an unnamed OpenStreetMap pitch is 4 m away); capacity 5,000 (table, infobox and europlan agree). (6) **FK Jedinstvo Ub `Q1388917`** (tier 2, not the tier 1 its SuperLiga tag would give) and **FK Zemun `Q1323373`** (its existing hand row now holds the position instead of `<clear>`, and `<clear>` capacity drops the Zemun City Stadium's 10,000) at the Stadion Dragan Džajić in Ub, 44.453014 / 20.071359 from europlan-online alone, which lists both clubs there; a named OpenStreetMap element could not be looked for (the Overpass request failed), the Serbian article and the Wikidata item `Q110045992` have no coordinate; capacity empty (4,000 against 3,214). The two share one marker, genuinely. **Not placed: Hellas Syros `Q12872753`.** The table and both infoboxes (English and Greek) name the Ermoupoli Municipal Stadium (2,500); europlan-online's page for the club's ground is 'Dimotiko Gípedo Podosfairou Ano Syrou' (37.427929 / 24.937678, 1,500) and Wikidata has no item for either, so nothing proves the two names are one ground (the named OpenStreetMap object nearby is the 'Δημήτριος Βικελάς' sports centre, 380 m from europlan's point). It still needs a source naming the Ermoupoli Municipal Stadium and its position (the ground's own article or item, or the league's schedule linking the name to a place). **Searched again, 2026-10-19 (a data PR; Wikipedia en and el from the sandbox, one probe job on a runner, one dispatch, nothing written): still not placed, and the one source found points somewhere else.** Neither Wikipedia has an article for the stadium or for the sports centre, and the Greek geosearch around the candidate (way/209001423, 37.43155 / 24.93678) lists no stadium; the Greek article on Syros names `Δημοτικό Γήπεδο Ερμούπολης` with no position. The probe opened (robots.txt first, one request a second) the municipality's sports page (`syros-ermoupolis.gr`: the complex `Δημήτριος Βικέλας` and the open stadium of Pefkakia, no football pitch listed in the complex), govmap.gr (the sports centre at 37.4319 / 24.9353), exploring-greece.gr (the centre, filed as `Στάδιο / Αθλητικό Κέντρο`, at 37.43225 / 24.93605), tenniscourts.gr (four hard courts at the centre), oloimazi.gr and 11888.gr (no usable position) and dafnostefanomenos.com, a match-statistics site, whose page `Δημοτικό Στάδιο Ερμούπολης` carries a Google Maps place link at **37.4279166 / 24.9351192**. That is the only source found that ties the stadium's name to a position, and it is **not** the candidate: it lies about 430 m south of way/209001423 and about 230 m west of the unnamed soccer pitch way/208927852 (37.42794 / 24.93772, the neighbourhood of europlan-online's `Ano Syros` point 37.427929 / 24.937678), so it agrees with no OpenStreetMap element within the 150 m the rule allows, and it is a third-party statistics page. OpenStreetMap's own tags: way/209001423 is `leisure=stadium`, `lit=yes`, no name, no sport tag; way/208927852 is `leisure=pitch`, `sport=soccer`, `lit=yes`, no name; way/209001410 is the named sports centre; no relation contains either stadium or pitch. **So three positions compete for one club and no source names the stadium at any of them** (the sports centre's stadium, the southern pitch, europlan's point); writing any would be a guess (rules 1 and 2). The probe was removed before the merge and this entry is the whole change. Rule 7: no identity or tier was decided here that was not the instruction's; the Popești ground, the Ub position and Nestos's position each rest on one source and say so in their row. Checked: `build-clubs.yml` and `check-rosters.yml` dispatched on the branch (green): the seven placed clubs are in `GR.json`, `RO.json` and `RS.json` at their tiers (Zemun 1, the other six 2) and all seven read `ok` in `roster-review.csv` (from `unplaced-no-coordinates`); no other club or country file changed. Three other roster rows (Roma, Inter, Torino) gained a `_rosterCapacity` figure with the same `ok` verdict: the live 2026-27 Serie A article was being edited during the run, and this branch does not touch `check_rosters.py`. `check_tickets.py` exits 0.
+- **The place-clubs pass, 2026-10-18: two of ten clubs placed, eight left off for a named reason each.** Instruction from Alexandru; rule: a ground must be named by two independent places for 2026-27 (the club's own Wikipedia article in any edition, and the league's 2026-27 season article or the ground's tenant list), a coordinate must come from the ground's Wikipedia article, its Wikidata P625 or an OpenStreetMap element with the ground's exact name (two sources must agree within 150 m; an unnamed pitch is never a source), a capacity only where two sources agree within 5%. Read on a runner by a throwaway probe in `build-clubs.yml` (removed in the same branch) plus the Wikipedia API from the sandbox. **Placed (two hand rows, `clubs-manual.csv`):** CSA Steaua București `Q39487082` at the Stadionul Steaua (the Liga II 2026-27 table and the club's English infobox name it; position = the ground item `Q65090741`'s P625, 44.413169 / 26.040313; OpenStreetMap way/858835474 `Stadionul Steaua / Steaua Stadium` is 11 m away and the Romanian article's infobox coordinate 38 m; capacity 31,254, the table, against StadiumDB's 31,350) and Carrarese `Q650365` at the Stadio dei Marmi (the Serie B 2026-27 table and the club's English infobox; position = the ground item `Q3967924`'s P625, 44.065328 / 10.076805, which the English article returns too, and OpenStreetMap way/27643000 is 22 m away; **capacity left empty**: 4,194 table and ground article, 3,520 club infobox, 5,587 Italian club article, 9,500 OpenStreetMap, no StadiumDB row - none two independent within 5%). **Not placed:** (1) **A.P.S. Zakynthos `Q3292651`** - names differ: the table says Zakynthos Municipal Stadium (5,000), the English infobox 'Zakynthians Olympic Champions Ground' (2,000), the Greek club article Δ.Α.Κ. Ζακύνθου; **but** Wikidata's item `Q132566856` (the club's own P115, Zakynthos Municipal Stadium) carries the Greek aliases 'Στάδιο Ζακυνθίων Ολυμπιονικών και Παραολυμπιονικών' and 'Δ.Α.Κ. Ζακύνθου', which reads as one ground under three names, and OpenStreetMap way/141764449 (leisure=pitch, soccer, name Δημοτικό Στάδιο Ζακύνθου, exact) at 37.770997 / 20.886793 is the only coordinate. Left held as the instruction said when the names differ; if Alexandru accepts the alias as the identity, the row is those coordinates, venue Δημοτικό Στάδιο Ζακύνθου, capacity empty (2,500 / 5,000 / 2,000 disagree). (2) **Nestos Chrysoupoli `Q16845757`** - ground agreed (table and English infobox: Municipal Stadium of Chrysoupoli, 5,000); no coordinate: no Wikipedia article or Wikidata item for it, and OpenStreetMap within 3 km has 6 stadium/pitch/sports-centre objects, 4 unnamed, the 2 named not the stadium. (3) **Hellas Syros `Q12872753`** - ground agreed (table and infobox: Ermoupoli Municipal Stadium, 2,500); no Wikidata item for the stadium (searched in English and Greek); OpenStreetMap names only the sports centre 'Αθλητικό Κέντρο Δήμου Σύρου «Δημήτριος Βικελάς»' (way/209001410, 37.431348 / 24.936195) and an unnamed stadium way/209001423 - neither is the municipal stadium by name. (4) **SC Popești-Leordeni `Q55593565`** - the club's English and Romanian infoboxes say Inter Gaz Stadium (`Q7596400`, 44.376750 / 26.203917); only the Liga II 2026-27 table says it plays at the Clinceni Stadium (`Q24969467`, 44.377778 / 25.940833) because Inter Gaz does not meet Liga II requirements; Clinceni's tenant list names only LPS HD Clinceni. One place for the 2026-27 ground, so not placed. (5) **CSC 1599 Șelimbăr `Q66424141`** - ground agreed in three places (Măgura Stadium in Cisnădie: table, English and Romanian infobox; the table's note says the Comunal in Șelimbăr is under renovation); the only coordinate is in the ground article's wikitext (45 42 36.7 N, 24 09 11.3 E; the English and Romanian copies are identical), which the Wikipedia API's coordinates property does not return, the ground item `Q131850818` has no P625 and OpenStreetMap has no named element within 1.5 km - one source. (6) **CSL Ștefăneștii de Jos `Q18539440`** - ground agreed (Dumitru Mătărău: table, English infobox); same shape: the article's wikitext holds 44 32 21.3 N, 26 12 10.5 E, the API returns none, the item `Q28230311` has no P625, no named OpenStreetMap element within 3 km. (7) **FK Zemun `Q1323373` and FK Jedinstvo Ub `Q1388917`** - the Ub ground is named by the SuperLiga and First League 2026-27 tables and both English infoboxes (Dragan Džajić, 4,000), but the Serbian ground article's coordinates are empty, `Q110045992` has no P625 and OpenStreetMap within 3.5 km has 18 objects, 17 unnamed, the named one not the stadium; Zemun's `<clear>` cells stay. **Still needed for each of the unplaced:** a named coordinate from one more source (a Wikidata P625 on the ground item, or an OpenStreetMap element carrying the ground's name); for Zakynthos, Alexandru's reading of the alias; for Popești, a second place naming Clinceni for 2026-27. A second, broader any-tag OpenStreetMap name search for the Greek, Șelimbăr, Ștefănești and Ub grounds was dispatched and cancelled after about an hour with no output (Overpass slow), so those four were searched only by leisure/building tags. Rule 7: nothing here is a decision of Alexandru's except the Zakynthos alias, which is left to him.
+- **The VfB research contradicts the hand-written VfB entries of
+  `football-rules.json` in several places - found 2026-10-07, nothing
+  changed: Alexandru decides** (no tool writes that file).
+  - **`vfb-presale-active`** (2026-11-30, inferred; "3 months after
+    joining"). **The rule is supported** - three months, since 1 Jul 2025,
+    for the e.V. and the kids' clubs alike (V1, V4, V6, V7). **The date
+    cannot hold**: `vfb.memberStatus` says "not a member - decision
+    pending", and a membership applied for on 7 Oct 2026 takes about two
+    weeks to process, so the right would activate around mid to late
+    January 2027 at the earliest. **It matters for the Bayern home game**:
+    matchday 18 is a placeholder at late January 2027, and by the
+    six-weeks pattern its members' sale would open in December 2026 -
+    before a membership taken out now would have its presale right.
+  - **`vfb.procedure.home`**: "High-demand fixtures use an application
+    lottery". **Since 2025-26 home games are not drawn**: every members'
+    sale is an online sale with a virtual queue, and applications with a
+    draw are used only for away games with a members' allocation under 500
+    (V1, V18). The lottery was 2024-25's Champions League practice (V16).
+  - **`vfb.procedure.pricing`**: "Member discount EUR 17". The **EUR 17 is
+    the season-ticket member discount** (V14). For day tickets the club's
+    help centre lists reductions for under-18s, 65+ and disability and says
+    "Weitere Ermäßigungen sind nicht vorgesehen" (V8) - no member discount
+    on a day ticket was found. On "verify whether they stack": on the
+    season-ticket list, member and reduced are alternative prices, not
+    stacked.
+  - **`vfb.procedure.membership`**: "Fritzle- und Jugendclub cheaper,
+    exact fee unconfirmed" - **EUR 33 a year each, plus EUR 18.93 joining
+    fee for the Fritzle-Club** (V5, V6, V7). The adult EUR 60 is right
+    (ages 26-64; 15-25 pay EUR 30).
+  - **`vfb.ageRules.note`**: "Under 18 joins the VfB Fritzle- und
+    Jugendclub, not the adult e.V." - **the e.V. has under-18 rates too**
+    (EUR 21 to 14, EUR 30 from 15; V5), so it is a choice, not a rule.
+  - **`vfb.ageRules.idAtGate: false`**: the ATGB (2.7) require carrying an
+    official photo ID and showing it on request, and proof of a reduction
+    must be shown unasked when buying (V8, V11) - the KSC finding again.
+  - **`vfb-regular`'s action** ("Join the Fritzle- und Jugendclub, then
+    wait three months") applies only to someone aged 5-18 (Fritzle 5-12,
+    Jugendclub 13-18); for an adult the route is the e.V. Which applies
+    depends on an age the files do not hold.
+  What the research **supports**: max 2 tickets; the three-month wait;
+  "home matches frequently sell out in the member presale" (with the
+  early-2026 free sales as the exception); the REWE family block for
+  kids'-club members only; "cheapest is standing"; VVS travel included.
+- **VfB rows left `unverified`, 2026-10-07, and why** - each a gap, not a
+  rule: **`price-category`** (whether prices depend on the opponent - no
+  source says); **`capacity`** (below); **`resale-prices`** (no credible
+  data; only asking prices on platforms the club bans); and the one
+  Bundesliga day price, **EUR 70** (one press report, category and price
+  class unstated). **Single-source rows**, confirmed but resting on one
+  source: the adult fee (the club's fee table; a 2019 press list gave the
+  pre-2022 EUR 48, so it is not a second source), personalisation and ID
+  (the ATGB), the 2026-27 sell-outs and "no free sale yet" (the shop's
+  live calendar), the season-ticket prices (the club's PDF). **The two
+  free-sale press reports are one newsroom** (Stuttgarter Nachrichten and
+  Stuttgarter Zeitung, one author), so the early-2026 free sales rest on
+  one press source.
+- **Which MHPArena capacity the sources use: they disagree, 2026-10-07.**
+  60,058 (German Wikipedia's infobox, the map, and English Wikipedia's
+  attendance for the Köln game, 4 Sep 2026); 60,449 (the 2011 figure, and
+  English Wikipedia's highest 2025-26 home attendance - above 60,058);
+  54,812 all-seated for international games (German Wikipedia), while
+  English Wikipedia gives 57,000-60,000 for European home games. No club
+  figure was read. The club gives 2024-25's average as 59,438.
+- **VfB's resale fee against Germany's DFL row - does not sit easily,
+  found 2026-10-07.** The DFL row (from the KSC session) caps the official
+  secondary market's service fee at 15% of the order value; VfB's
+  Ticketbörse keeps 20% from the seller (V1, V8, V12). Either VfB is not in
+  the DFL scheme (its page does not say every club takes part) or the 15%
+  is a buyer-side fee. Not settled. **Nothing else in the VfB research
+  contradicts the KSC or Nürnberg entries on German rules**: the private
+  handover caps differ (KSC +15%, Nürnberg +10%, VfB +20% plus EUR 5) but
+  each is a club rule, as their rows already say. **VfB's own pages
+  disagree** on that cap: the ATGB allow +20% plus EUR 5, the help centre
+  says "zum Originalpreis"; both are in the row.
+- **REMOVED 2026-10-07, on Alexandru's instruction: the three published VfB
+  sale reminders below** (`vfb-schalke-away-members-sale`,
+  `vfb-frankfurt-members-sale`, `vfb-lille-members-sale`) are out of
+  `football-rules.json` (git history has them); the paragraph is kept for the dates.
+- **The three published sale dates are in `football-rules.json` since
+  2026-10-07, hand-written on Alexandru's instruction** (no tool wrote them;
+  the ticket files still hold none). On 7 Oct 2026 the club's shop announced
+  the members' sale for Schalke away (21 Nov) Thu 8 Oct 2026 09:00, for VfB v
+  Frankfurt (28 Nov) Tue 13 Oct 2026 09:00 and for VfB v Lille (UCL, 9 Dec)
+  Tue 27 Oct 2026 09:00 (for members with no or one 4-package). They are
+  `ticketEvents` `vfb-schalke-away-members-sale`, `vfb-frankfurt-members-sale`
+  and `vfb-lille-members-sale`, `confirmed`, in the `local` feed (Schalke away
+  too, though Gelsenkirchen is not day-trip range - it is a VfB sale), lead
+  times 1, 3 and 7 days; the 09:00 is in the title, because a ticket event
+  has no time field and the calendar draws it as a whole day. **Each is a
+  members' sale**: it needs a presale right, which `vfb.memberStatus` ("not a
+  member - decision pending") does not give, and each event says so. They are
+  in no bucket entry (`bucket-links-manual.csv` was not touched), so they show
+  under Reminders; linking them to `vfb-regular` is Alexandru's call. **The
+  dates come from a live shop page read once**; if the club moves a sale, the
+  JSON is not updated by anything.
+- **The demand file's key cannot hold a non-derby fixture - found
+  2026-10-07, not changed (the brief said to use the existing schema).**
+  One general row per club per season; VfB's 2025-26 row is therefore
+  `varied-by-fixture`, with Bayern (sold out, December) and the January
+  free sales in its text. The fix, if wanted, is the familiar one: a
+  `fixture` column in the key (or letting a general row name an opponent),
+  and one line in the Sell-out record renderer. Alexandru's call.
+
+- **The KSC research contradicts the hand-written KSC entries of
+  `football-rules.json` in four places - found 2026-10-06, nothing
+  changed: Alexandru decides** (no tool writes that file).
+  - **`ksc-fck-sale`**: `dateEstimate` 2026-12-15 (inferred), derivation
+    "sales for a late-January fixture typically open around December".
+    In the four home derbies read the members' presale opened **26 to 34
+    days before kickoff**; mid-December is about six weeks before a
+    late-January kickoff, earlier than any of them. The evidence supports
+    **late December or early January**, and only the end of December, not
+    its middle. The 30-day lead time still puts the reminder in good time.
+  - **`ksc-fck-sale`'s action** ("Decide home end or away end FIRST. Away
+    end requires FCK membership arranged before release") implies the home
+    end is open to a non-member. **It has not been**: no free sale for the
+    home derby in four seasons, so the home end too needs a KSC membership
+    (or a season ticket) arranged before release - and a membership can
+    take up to 30 working days to process.
+  - **`ksc.ageRules.idAtGate: false`**: KSC's ticket terms (ATGB 2.6)
+    require carrying an official photo ID and showing it on request. No
+    derby announcement read mentions an ID check, so "false" may be what
+    happens at the gate, but the terms allow one.
+  - **`fck.procedure.away` and `sudwest-derby.ticketRoutes.awayEnd`**
+    ("requires FCK membership"): Kaiserslautern's own pages for the
+    2024-25 and 2025-26 derbies, read in passing, say FCK members
+    **and/or FCK season-ticket holders**. FCK's rules are not researched,
+    so this is a pointer, not a finding.
+  What the research **supports**: `ksc.procedure.home` (ordinary games in
+  general sale, the derby sells out), `ksc.procedure.away` (the away end
+  at KSC is allocated by the visitor), `sudwest-derby.nextFixture`
+  (matchday 19, late January; the fixture file's round is a placeholder)
+  and its `missed` (first leg at Kaiserslautern, 15 Aug 2026).
+
+- **KSC rows left `unverified`, 2026-10-06, and why** - all three are
+  gaps, recorded so they are not mistaken for rules: the derby's **sector
+  separation** (fans in away colours are refused in home areas, but no
+  source says whether home areas are otherwise separated; an ordinary
+  2026-27 game had separation only towards the guest area); the derby's
+  **capacity and attendance** (no source read gives either; see the next
+  item); and **resale prices** for the derby (none credible found).
+  `inferred`: the 2026-27 derby's price category (A, as in the two seasons
+  before) and the "routes in for a non-member" synthesis. **Single-source
+  rows**, confirmed but resting on one source only: the membership fees
+  (the club's page), the fees row, the 40/20/40 away split, the 2024-25
+  alcohol ban, the 2025-26 high-risk classification (press), the 2026-27
+  away-derby prices (press restating the club; the club's 2025-26 article
+  gives the same figures), and the DFB § 32 country row (the DFB's own
+  text).
+- **Which Wildpark capacity applies to the derby: none of the sources
+  says, 2026-10-06.** The figures in play: **33,180** (the club's
+  announced matchday capacity for 2025-26, on the map and on German
+  Wikipedia), **34,302** (English Wikipedia's 2026-27 table), **32,190**
+  (the largest 2024-25 home attendance, v 1. FC Köln, Die falsche 9), and
+  Wikidata's old **29,699** (repeated by news.de). No derby attendance was
+  read, and nothing says whether the derby is played with buffer blocks
+  (which DFB § 32 lists as a measure for high-risk matches).
+- **KSC's ticket terms page holds two wordings of clause 5.1, found
+  2026-10-06.** One makes children up to 14 "Kindertickets" and under-18s
+  reduced; the other makes every under-18 reduced. Which is current was
+  not settled; the rows cite only what both say. No "Stand" date was found.
+- **The DFB rules were read in the edition of 1 Feb 2023**; whether a
+  newer edition exists was not looked for. Both DFB country rows say
+  `appliesTo` `unknown`, because which competitions count as
+  "Bundesspiele" is defined in §§ 41-42 of the DFB-Spielordnung, not read.
+
+- **Competitions, 2026-10-08 - open for Alexandru.** (1) The DFB-Pokal rows
+  rest on search-result summaries: `dfb.de` answered "blocked by the network
+  egress proxy" twice, and the second summary was not attributable to one
+  page, so every row is `unverified` and none is `confirmed`; one source
+  counts the regional places differently (22 cup winners) and the row says
+  so. (2) A search-result summary gave a different day for the 2026-27 second
+  round draw than another; neither is written (rule 1). (3) 58 of 64
+  competitions show "Not researched yet". (4) `type` for the MLS Cup is
+  `playoff`, UEFA club competitions and the Copa Libertadores `international`,
+  super cups `supercup`: judgements, one cell each. (5) `level` of the
+  Brazilian and Portuguese top flights is 1 and neither has clubs on the map.
+  (6) The play-off rows copy the PR #65 entries' text, including a result of
+  the 2026 play-offs; none was re-checked. (7) The `season-window` rows of
+  those entries say "late May", "May", "May to early June", "June"; the
+  entries marked them inferred, the rows say `unverified`.
+- **A `requested` ticket shows "You hold tickets" - built as the brief
+  worded it, 2026-10-04, Alexandru's to confirm.** The brief says an
+  entry linked to "a held ticket" shows the phrase, and every record on
+  the Me tab's "Tickets held" list is one, whatever its status. So a
+  ticket only *requested* (a ballot entered, nothing won) and one
+  *transferred* (which may mean passed on to someone else) both put
+  "You hold tickets" on the entry; the statuses are shown beside the tag
+  so it never hides which. If he wants the phrase only for `won` and
+  `bought` (or not for `transferred`), it is one line in `heldFor()`.
+
+- **No movable school day is entered - found 2026-10-04, Alexandru's to
+  fill in.** The brief's holiday rows ended with a placeholder,
+  `[movable days: Beweglicher Ferientag,YYYY-MM-DD,YYYY-MM-DD,...]`,
+  which was never filled in. It was left out rather than guessed (rule
+  1), so `data/holidays-manual.csv` holds six blocks and the school
+  start, and the calendar says in every month of the span that movable
+  days are not entered. The ministry's page says the schools of
+  2026/2027 still have **four** movable days, chosen by each school - so
+  the dates have to come from his school calendar. One line each:
+  `Beweglicher Ferientag,2027-MM-DD,2027-MM-DD,school-holiday-movable,confirmed,school calendar photo,`.
+- **The ministry's footnotes 1 and 2, read 2026-10-04 on a GitHub runner
+  (no date changed because of them).** Footnote 1, on Herbstferien 2026:
+  "Am 31. Oktober ... 2026 ... (Reformationsfest) ist schulfrei" - 31 Oct
+  2026 is a Saturday, the day after the block ends. Footnote 2, on
+  Osterferien 2027: "Am ... 25. März 2027 ... (Gründonnerstag) ist
+  schulfrei" - Thursday 25 March, five days before the block starts on 30
+  March (26 March is Good Friday and 29 March Easter Monday, public
+  holidays the file does not hold either). **25 March 2027 is therefore
+  school-free and shows unshaded**; adding a row for it is his call.
+  Footnote 3 is about the movable days (above). Both notes are in the
+  rows' `note` cells. Every date in his rows matches the ministry's page.
+
+- **The map's top row at 390 px: nothing overlaps or is cut off at the
+  default text size, but it breaks at a larger phone font size, and the
+  search box is the reason - reported 2026-10-03, nothing changed:
+  Alexandru decides.** Measured in headless Chromium at 390x700, every
+  chip's rectangle compared with every other and each checked for text
+  wider than its box.
+  - **At the default text size: no overlap, no cut-off, nothing
+    off-screen.** The club-count chip and the search box sit side by side
+    with a 6 px gap and the search box shrinks to fit it (167 px wide at
+    z3, 161 at z7-9, 154 from z10, when the count reads "556 clubs · z10 ·
+    25 shared grounds"); the home chip, Route and Derbies (Near me since
+    the same day) sit on the row below. The home chip has room for about 45 characters of label before
+    it touches Route (the label is `settings.home.label`, "Leonberg, DE"
+    today). Real Android phones use Roboto, which is narrower than this
+    sandbox's fallback font, so there is probably a little more room there.
+  - **Re-measured 2026-10-03 after "Derbies" became "Near me"**, at
+    390x700 and 390x500, zooms 3, 8, 9, 10 and 13, by `test_nearme.js` on
+    every change since: **still no overlap, no cut-off and nothing off
+    screen** at the default text size, including the search placeholder.
+    Near me is 66 px wide against Derbies' 61, so the free space between
+    the home chip and Route went from 159 px to 154 px; nothing else on
+    the row moved. Nothing needed fixing. The larger-font breakage below
+    is unchanged and still Alexandru's to decide.
+  - **The search text really is larger than the chips, on purpose:** the
+    box is 16 px (the chips are 12 px) and 33 px tall against the chips'
+    31, because under 16 px iOS zooms the page when a box is focused.
+    Android Chrome does not, so the reason does not apply on Alexandru's
+    phone, but the page cannot know which phone it is on.
+  - **With the phone's font size raised, the row does break - emulated,
+    not seen on a device**: the page's text sizes were multiplied by 1.15,
+    1.3 and 1.5 (what Android's "font size" setting does to web text).
+    From **1.15** the club-count chip wraps to two lines and grows to 54
+    px, so the whole top block grows from 70 px to 94 px and covers more
+    map; at **1.3** the search box has shrunk to 133 px, and its
+    placeholder is **cut off - "Find a clu"** - which is exactly what the
+    screenshot showed; at 1.5 the box is 121 px. Even then no chip overlaps
+    another and none leaves the screen, so the only damage is the wrapped
+    count chip and the clipped placeholder.
+  - **"The Route button overlaps map labels" is the chips being slightly
+    see-through, not an overlap of chips.** Every chip is 94% opaque
+    (`rgba(22,27,34,.94)`) with an 8 px blur behind it, the search box 96%,
+    so a street or place name under Route shows through faintly. The
+    sandbox cannot load Stadia's tiles, so this was read from the style,
+    not seen on a real map.
+  - **Proposed fix, for him to choose between**: (a) put the search box on
+    its own full-width row above the chips, which gives the placeholder
+    room at any font size and moves nothing else - costs about 35 px of
+    map; (b) keep the row and shorten the count chip to "556 clubs · z9"
+    with the shared-ground count only in the coverage panel - the chip
+    stops wrapping at 1.15 and the search box keeps its width, but the
+    shared-ground count leaves the map; (c) make the chips fully opaque,
+    the cheap answer to the see-through complaint and independent of the
+    other two. (a) and (c) together would deal with everything above;
+    none is built.
+
+- **The Milan derby's first leg is 31 Oct 2026 in your notes since
+  2026-10-11 - was a one-day disagreement, found 2026-10-04.**
+  `football-rules.json`'s `derby-madonnina` gave the first leg as Sun 1
+  Nov 2026, matchday 10; football-data.org's Serie A file has AC Milan v
+  Inter, matchday 10, at 2026-10-31T19:45Z, status TIMED - Sat 31 Oct,
+  20:45 German time, a set kick-off. Per Alexandru, 1 Nov was the June
+  draw date, before the slot was assigned. On 2026-10-10 the entry was
+  set `disputed` (the Inter page could not be opened). On 2026-10-11, on
+  his instruction, the Milan-home fixture became `2026-10-31`,
+  `dateSource` `confirmed`, `checkedOn` 2026-10-11, `source` the inter.it
+  calendar page, with a `note` saying the page was read by his chat
+  assistant and **not opened by Code** and quoting «sabato 31 ottobre
+  alle 20:45 (Milan-Inter)». A fixture item has no `kickoff` field the
+  page reads (the entry-level one belongs to the entry's `date`), so 20:45
+  is in the note only. The 14 Feb 2027 fixture is unchanged.
+  `milan-derby-sale-nov`'s derivation changed from "Approx one month
+  before the 1 Nov fixture." to "Approx one month before the 31 Oct
+  fixture." - the words only; its `dateEstimate` (2026-10-01), lead time
+  and action are as they were, and the estimate is not recomputed (rule
+  1). `bucket-links-manual.csv` line 17's note names 31 Oct now.
+  The same day, on his instruction, eleven two-club entries of the stress
+  test's finding E2 (not `ostderby`) got their missing club in
+  `bucket-links-manual.csv`, by a looser rule than the exact-name one:
+  exactly one club in the country's file has a name containing the title's
+  club name as a whole word ("Nice" gives OGC Nice). Every one had exactly
+  one candidate per side, so none was skipped; the host stays empty. A line
+  is an identity claim; each says in its note how it was matched.
+
+- **The Inter card on the Ticket info tab states "phase 1 (open
+  worldwide)" flatly, and the researched rules contradict it - reported
+  2026-10-03, not changed: Alexandru decides.** *(Since 2026-10-04 that
+  card is on the Bucket list tab, inside the Derby della Madonnina entry
+  under "Ticket windows (reminders)", with the same disputed tag and
+  warning, and Inter's researched phases are in the same card under
+  "Ticket rules". Inter's notes now carry an "unverified" tag - but only
+  for Age rules, which is all the file marks.)* The card is
+  `football-rules.json`'s ticket event `inter-derby-phase1`, titled
+  "Inter home derby phase 1 (open worldwide)". It sits under "Past,
+  disputed or undated" with a red "disputed — do not trust" tag and its
+  warning about the year (13/21/24 August match 2026 and 2015). **Both
+  marks are about the DATE**; nothing on the card questions the claim in
+  its title. `club-ticket-phases.csv` (from Inter's own 2025-26
+  announcement, the derby PDF's I2) has four season-ticket-holder phases
+  first and no open-to-everyone phase before open sale - the
+  contradiction already listed under "The derby PDF contradicts
+  `football-rules.json` on Inter". The same claim is in the `inter` club
+  entry ("Phase 1 - OPEN TO EVERYONE WORLDWIDE") and the
+  `derby-madonnina` bucket item's `saleRoute`, both shown as written on
+  Inter's club sheet beside the researched phases, and on the Bucket list
+  tab. **Smallest honest fix, for him to choose**: either edit the three
+  texts in `football-rules.json` himself (no tool writes to it), or have
+  the page add one tag to a Ticket info card whose club has researched
+  phases that disagree - "unverified, see researched rules on the club
+  sheet" - which would be a page change keyed by hand to that event id,
+  since nothing machine-readable says the two disagree.
+
+- **Derbies, 2026-10-03: 248 rows, 197 with both clubs on the map,
+  102 of those with a fixture source on both sides.** Per country
+  (country of the clubs; a cross-border pair has its own line):
+
+  | | rows | both on map | fixture source both sides |
+  |---|---|---|---|
+  | AT | 8 | 6 | 0 |
+  | BE | 15 | 12 | 0 |
+  | CH | 13 | 10 | 0 |
+  | DE | 25 | 24 | 21 |
+  | ES | 17 | 15 | 11 |
+  | FR | 35 | 25 | 9 |
+  | GB (incl. Wales) | 50 | 37 | 37 |
+  | GR | 16 | 9 | 0 |
+  | IT | 16 | 13 | 10 |
+  | NL | 28 | 28 | 13 |
+  | RO | 15 | 11 | 0 |
+  | RS | 9 | 6 | 0 |
+  | DE/ES (Bayern v Real Madrid) | 1 | 1 | 1 |
+
+  76 of the 197 are in different divisions this season. 51 rows wait
+  with `offMap`. `check_derbies.py` exits 0. The panel was tested in
+  headless Chromium at 390x844 (`tools/test_derbies.js`, 16 checks):
+  4 derbies within 100 km of Leonberg (Stuttgart derby, Baden-
+  Württemberg derby, Südwestderby KSC v FCK, Ostalb derby), 171 within
+  1,500 km, every one opened: 70 show a meeting, 27 "no meeting in the
+  fixture data", 74 a club with no fixture source. `test_pwa.js` still
+  passes 22 of 22. **Not tested on a real phone.**
+  - **Well-known derbies with both clubs on the map and no fixture source
+    on at least one side**: every Austrian, Swiss, Romanian, Serbian,
+    Greek and Belgian derby (the Vienna derby, the Zürich derby, both
+    Eternal derbies, the Cluj derby, the Derby of the Eternal Enemies,
+    the Classico, Anderlecht v Club Brugge - Brugge is linked to the
+    Champions League only), the Stuttgart derby (Kickers, tier 4), the
+    Derby della Lanterna (Sampdoria, Serie B), Lyon v Saint-Étienne
+    (Ligue 2), the Asturian and Canary Islands derbies (Segunda), and
+    the Dutch derbies with an Eerste Divisie side.
+  - **The Südwestderby is ambiguous, and football-rules.json's
+    `sudwest-derby` was pointed at only one reading.** German Wikipedia
+    uses the name for KSC v Kaiserslautern (the KSC article), KSC v VfB
+    Stuttgart (the Baden-Württemberg-Derby article) and Kaiserslautern v
+    Waldhof Mannheim; English Wikipedia's German list uses it for
+    Kaiserslautern v Saarbrücken. The `rulesId` row is KSC v FCK, the
+    pair football-rules.json names. Which name Alexandru wants is his.
+  - **football-rules.json's derby entries, read and not written**: nine
+    of its derby-shaped bucketList entries have a row pointing at them.
+    The Ostderby (Dynamo Dresden v Hansa Rostock) has **no row**: no page
+    the probes read names it (the German list's Union v Hansa row is
+    unnamed). Old Firm, the Intercontinental Derby and the Prague derby
+    are outside the twelve countries. Both German fixture files put the
+    Frankenderby and KSC v FCK on Sun 31 Jan 2027 13:30, an OpenLigaDB
+    round at one kick-off, inside both entries' inferred windows.
+  - **Left out on purpose, so the next pass does not rediscover them**:
+    unnamed list lines (Dinamo v Rapid, OFK v Red Star and the other
+    Belgrade pairs, Union v Hansa, Gent v Lokeren, PSV v Feyenoord,
+    Roda v VVV and v MVV, Almere v Telstar, Sion v Lausanne, Xamax v
+    Sion); named but uncited ones (Lustenau, Vorarlberg and Lower Austria
+    derbies, Hunedoara derby, Severnobački derby, Serbian El Clasico,
+    the Southern Railway rivalry, Derby de Vaud, Derby Neuchâtelois,
+    Battle of Flanders, Hainaut derby, Vissersderby, Graafschap v Go
+    Ahead, the Bochum derby, most of the Greek and Italian lists); the
+    Holstein derby (Kiel is not linked as a club in the row); rowspan
+    rows of the German table; and Wikidata rivalry items with no article
+    found (Südderby Bayern v VfB `Q16637328`, Kölner Stadtderby,
+    Aris v Iraklis, PAOK v Iraklis, Kennemerland derby). Each needs a
+    source that names it before it goes in.
+  - **`check-derbies.yml` could not be dispatched on the branch**: a
+    new workflow file runs by `workflow_dispatch` only once it is on
+    `main`, so the branch check was its `pull_request` trigger.
+  - **Every row rests on Wikipedia** (articles, and lists' cited
+    entries). That is a third party's record of the rivalry, which is
+    what was asked for; no club's own page was read.
+
+- **Belgium's top two tiers are on the map, 2026-10-01: Pro League 18 of
+  18, exact; Challenger Pro League 13 drawn for 15, nothing at the wrong
+  tier, and the four U23 sides wait on four roster links that are
+  Alexandru's call.** *Since 2026-10-02 the Challenger Pro League is
+  **15 of 15**: the four links are in, Jong KAA Gent and RSCA Futures are
+  on the map, and the roster check reads Belgium **33 `ok`** and nothing
+  else (sub-entry "Jong KAA Gent and RSCA Futures" below).* Same pipeline and standard as the eleven countries
+  before it, run through six throwaway probes on a GitHub runner (removed
+  in the same branch); the sandbox still answers 403 to CONNECT for
+  Wikidata, Wikipedia, StadiumDB and Overpass. Tiers 1 and 2 only; the
+  Belgian Division 1 (third tier) and below were deliberately not touched.
+  The roster check reads **29 `ok` and 2 `extra-not-in-roster`**.
+  - **The file is `BE.json`. The league Q-ids were read, not
+    remembered**: `Q216022` Pro League (enwiki *Belgian Pro League*;
+    *Belgian First Division A* redirects to it) and `Q23925620` Challenger
+    Pro League (enwiki *Challenger Pro League*; *Belgian First Division B*
+    redirects to it). Neither carries `P3983`; both carry `P17` Belgium
+    (`Q31`), as does every club item read. **A trap worth naming:**
+    `Q233199` is labelled "Belgian First Division B" in English but is the
+    old Second Division (1909-2016, `P576` 2016, succeeded by
+    `Q23925620`). Six Belgian items carry it - Virton's and Lierse's as
+    their only tag, Lierse's at PREFERRED rank - and it is **not mapped and
+    must not be**: it is a league history. Labels are asked in English,
+    then Dutch, then French.
+  - **The country check is weak for BE, and that is written down rather
+    than fixed.** The box (`Q31`'s own `P1332`-`P1335`) holds Lille and
+    the French Nord, the north of Luxembourg, Zeelandic Flanders,
+    Maastricht and Aachen, so a neighbouring club carrying a Belgian tag
+    would be caught only by `P17`. It flagged no Belgian club.
+  - **The season articles.** The Pro League's is one stadiums table with a
+    matricule column, 18 of 18 resolved. **The Challenger Pro League's
+    stadiums table is not recognised by the parser** (the Swiss Super
+    League shape), so the reader takes the league table: 15 rows, 11 read
+    and resolved, and **four U23 sides left out and named** - "Club NXT
+    U23" and "RSCA Futures U23" link articles WITHOUT the U23 marker (the
+    reserve side's own article, so the guard refuses on the marker), and
+    "Jong Genk U23" and "Jong KAA Gent U23" link their PARENT clubs (the
+    Rapid II shape). The guard is right to refuse all four; the remedy is
+    a hand link.
+  - **Jong KAA Gent and RSCA Futures are on the map, 2026-10-02, on
+    Alexandru's instruction to add each only if two independent sources
+    confirm its ground** - lines 255-256 of `clubs-manual.csv`, the
+    hand-named fallback, tier 2 by hand, each under its own Q-id. Read on
+    a runner through three throwaway probes, removed in the same branch.
+    **Jong KAA Gent** (`Q117384089`) at the **Planet Group Arena**: Dutch
+    Wikipedia (from 2025-26, after three seasons at the Chillax Arena in
+    Oostakker) and europlan-online's ground page, which lists Jong KAA
+    Gent there at level 2 - and lists KAA Gent Ladies, not Jong, at the
+    old Oostakker ground. It shares KAA Gent's pin and figure exactly
+    (20,000), the reserve-side shape. **RSCA Futures** (`Q114056326`) at
+    the **Dakota Arena** in Deinze (formerly the Burgemeester Van de
+    Wielestadion): Dutch Wikipedia's article on the ground (since January
+    2025), the English season article's note, and europlan's ground page
+    listing RSCA FUTURES at level 2; position the ground's item
+    `Q2653249`, europlan's 10 m away. **Capacity blank**: 7,515 three
+    times against Dutch Wikipedia's reduced 3,482. **Two limits, said
+    out loud**: europlan is user-submitted and nobody has shown it did
+    not copy Wikipedia - it is this project's usual second source, not a
+    proven independent one; and the club's own article, *Het stadion van
+    Deinze blijft de thuisbasis van RSCA Futures*, is **unread** - rsca.be
+    answered HTTP 202 with an empty body from CloudFront (a bot challenge,
+    a stop) and the Internet Archive, which has 2026-05 captures, answered
+    429. kaagent.be's Jong pages name no ground in their text. The build
+    on the branch named both "surfaced by the hand-named fallback ... ON
+    THE MAP"; Belgium is **18 at tier 1 and 15 at tier 2**, and the
+    roster check on the branch moved exactly those two verdicts, from
+    `missing-from-wikidata` to `ok` - **33 `ok`**. No other country's
+    club file or verdict changed; `link_fixtures.py` re-run changes
+    nothing (neither club has a fixture source). The OpenStreetMap
+    capacity check left Belgium `UNCHANGED` on its first branch run (HTTP
+    504), which is not a pass; the second (19:48 UTC) wrote **all twelve
+    countries**, Belgium 33 clubs, adding one row: RSCA Futures, "neither
+    source has a capacity" - true, its cell is blank on purpose.
+  - **The four roster links are written, 2026-10-02, on Alexandru's
+    instruction**, lines 6-9 of `data/roster-links-manual.csv`. The roster
+    check on the branch read **Club NXT and Jong Genk `ok`**, and **Jong
+    KAA Gent and RSCA Futures `missing-from-wikidata`** - and no other
+    verdict moved. The instruction expected all four `ok`; two could not
+    be, for the reason the paragraph below already gave: neither club is
+    on the map, and a link only lets the roster name them. What each
+    still needs is a `clubs-manual.csv` row with country BE, tier 2 and a
+    ground, so the hand-named fallback brings it in - a tier and a ground
+    are Alexandru's to approve, and RSCA Futures' Deinze ground has still
+    not been read, so **neither row was written**. Until then the two read
+    `missing-from-wikidata` every run, which is true: they are named by
+    the division and not on the map. Belgium now reads **31 `ok` and 2
+    `missing-from-wikidata`**. As first written:
+  - **The four roster links, written up and NOT written (rule 7 - a
+    link is an identity claim and Alexandru's to make).** Each is one line
+    in `data/roster-links-manual.csv`, ready to paste:
+    `2026–27 Challenger Pro League,Club NXT U23,Q101625593,...`,
+    `2026–27 Challenger Pro League,Jong Genk U23,Q113884742,...`,
+    `2026–27 Challenger Pro League,Jong KAA Gent U23,Q117384089,...` and
+    `2026–27 Challenger Pro League,RSCA Futures U23,Q114056326,...`. What
+    each changes: **Club NXT and Jong Genk are on the map today** (both
+    carry a Challenger Pro League tag) and read `extra-not-in-roster`
+    until their line is in; **Jong KAA Gent and RSCA Futures are not on
+    the map at all** - neither carries a mapped tag, so only the
+    hand-named fallback can bring them in, and its third condition needs
+    the roster to name them, which needs the link. With the link each also
+    needs a `clubs-manual.csv` row with country BE and tier 2, and a ground:
+    Jong KAA Gent plays at the Planet Group Arena from 2025-26 (Dutch
+    article; the first team's pin), RSCA Futures in Deinze (the
+    Challenger Pro League article's note) - which Deinze ground nobody has
+    read.
+  - **What the first build brought, 23 clubs against 33 teams, and what
+    each difference was:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 17 | 6 |
+    | after this pass | **18** | **13** |
+
+    - **Dender** (`Q1065328`) arrived at tier 1 on a PREFERRED Pro League
+      tag from 2024 and is at **tier 2 by a hand row** (the FC Wil shape:
+      both articles complete, the Challenger article's Team changes table
+      and the club's own article say relegated via the play-off).
+    - **Lommel SK** (`Q1668203`) arrived at tier 2 on its only tag and had
+      no position; it is at **tier 1 by a hand row** (promoted via that
+      play-off) and placed at the Soevereinstadion.
+    - **Three `skip`ped to the Hermannstadt standard**, each drawn at tier
+      2 on a Challenger Pro League tag with no dates: **KSV Roeselare**
+      (dissolved 2020, English infobox; "opgeheven 2021", Dutch),
+      **Royale Union Tubize-Braine** (Nationale 1, third tier, French
+      article) and **SL16 FC**, Standard's U23 side (Eerste nationale per
+      its Dutch infobox; not in the 2025-26 Challenger Pro League either;
+      it also sat on Standard's own pin with two grounds, the Freiburg
+      shape). Shape 4.
+    - **Seven promoted clubs whose tags did not follow reach the map
+      through the hand-named fallback**, tier 2 by hand, each under its
+      own Q-id: **Francs Borains** (no `P118`), **Royal Excelsior Virton**
+      and **K. Lierse SK** (only the old Second Division item), **KSC
+      Lokeren** (the 2025 club, no `P118`; not the bankrupt Lokeren
+      `Q221940`, which `P576` drops), **Sporting Hasselt** (third tier
+      tag), **RFC Liège** (fourth tier tag) and **Patro Eisden
+      Maasmechelen** (third tier tag).
+    - **Three placed that the query returned with no coordinates**:
+      **RAAL La Louvière** at the Easi Arena (opened 2025; not the Stade
+      du Tivoli next door), **RFC Seraing** at the Stade du Pairay and
+      **Club NXT** at the Schiervelde in Roeselare - **that pin rests on
+      Wikipedia alone** (the club's English and Dutch articles); its row
+      says so.
+    - **RWDM Brussels** carries a preferred Challenger Pro League tag, no
+      ground and no `P576`; the Challenger article says it was relegated
+      to the Belgian Division 1 after being refused a licence. Off the map
+      at the coordinates gate, and now a whole-club `rejected` row in
+      `coordinate-reviews.csv` so the monthly run cannot offer it a ground
+      (shape 6's relegated relative, the Gilortul shape).
+  - **Rank blind spot, all three shapes, run by `diagnose-rank.yml` on
+    the branch: nothing owed.** Queries A and B: **KV Oostende** (every
+    statement deprecated, no `P576` on Wikidata, bankrupt in 2024 by its
+    infobox, no position) and **Royal Excel Mouscron** (deprecated,
+    `P576` 2022) - both rightly invisible, neither in either article.
+    Query C: no Belgian club; the bill has no BE line. The build's own
+    fallbacks found nothing hidden.
+  - **The league-tag end date (`P582`), measured for Belgium: zero.** Of
+    30 truthy Pro League or Challenger Pro League statements on items with
+    no dissolution date (two of them the Anderlecht season items), **none**
+    carries an end date. Every wrong item
+    above (Roeselare, Tubize, SL16, Dender, Lommel, RWDM) has a tag with no
+    end date at all, so honouring `P582` would have caught none of them -
+    the 2026-09-29 finding a third time.
+  - **Not-a-club: the England gaps and the Dutch season-naming gap,
+    looked for deliberately.** Two club SEASONS carry a Pro League tag -
+    *1991-92* and *1996-97 R.S.C. Anderlecht season*, typed "association
+    football team season" - and the net catches both by type; their names
+    are caught too, the English one by the 2026-10-01 Dutch fix (year
+    range ... "season") and the Dutch one, "RSC Anderlecht in het seizoen
+    1991/92", by the trailing year range. **No item carrying either tag at
+    any rank is typed "aspect of history", "fictional" or as a match**, so
+    England's two kinds and Spain's do not occur here. Because Belgium is
+    the first country whose labels can fall back to Dutch AND French,
+    **the Dutch word "seizoen" is now a type word and a title opening**
+    beside "saison"; checked before it went in, it matches no club name on
+    any of the 523 map entries, and the rebuild changed no other country's
+    file.
+  - **Women's club with a men's tag (rule 6): none, from four angles** -
+    see the rule.
+  - **Every duplicate shape, looked for rather than waited for.** Shapes 1
+    and 2: none - every label of the 33 roster clubs, in all four
+    languages, belongs to one club item only, and the roster check names
+    each club once. Shape 3: **KAA Gent has a multi-sport parent item**,
+    `Q2741852`, typed "sports club", carrying no league tag - never on the
+    map. Shape 4: Roeselare, Tubize, SL16 and RWDM, above; the dissolved
+    namesakes (Beerschot AC, the old Lommel, Lokeren, Seraing, RWD
+    Molenbeek, Excelsior Mouscron and seven more) carry `P576` and the gate
+    drops them. Shape 5: none - one club at a time, nothing typed "men's
+    association football team" points at a roster club; what does point at
+    them is an academy, a futsal club, an U19 side, two stadiums, a
+    streaming service and a German squad list. Shape 6: RWDM.
+    **One shared pin, genuine**: Club Brugge and Cercle Brugge at the Jan
+    Breydel.
+  - **Grounds - two wrong, and one copied.** **KAA Gent was drawn at the
+    Jules Ottenstadion**, its only `P115`, which carries `P576` 2014; it
+    is now at the **Planet Group Arena** (20,000). **Royal Antwerp was
+    drawn at the Stadion Broodstraat**, `P576` 1923; now at the
+    **Bosuilstadion** (21,000) - 54 m away, so the pin hardly moved, the
+    name and the capacity did. **Jong Genk sat on Genk's Cegeka Arena**,
+    a copied first-team ground; the Challenger article, its Dutch infobox
+    and the ground's Dutch article all say **De Leunen in Geel**, and its
+    capacity is cleared (10,524 twice, which Dutch Wikipedia says is the
+    pre-2016 figure; 8,000 since). Dender's ground is the same place under
+    its 2022 name, the Dender Football Complex. **Sporting Hasselt's pin
+    is OpenStreetMap's alone**: its ground's Wikidata item has no position.
+  - **Capacities, the UTA Arad rule - every source read, including the
+    ones that agree with the map.** Corrected, each where the Pro League
+    table and StadiumDB agree within 5% and the map sat outside:
+    **Charleroi** 14,891 -> **14,000**, **Mechelen** 13,213 -> **16,700**,
+    **OH Leuven** 9,493 -> **10,000**, **Union SG** 5,100 -> **9,400** and
+    **Zulte Waregem** 10,200 -> **12,500**; with the ground changes,
+    **Gent 20,000**, **Antwerp 21,000**; filled: **La Louvière 8,050**,
+    **Francs Borains 6,000**, **Hasselt 8,800**, **Lokeren 12,136**.
+    **Two against two, nothing changed, each with a note-only row** (the
+    AEL shape): **Genk** (25,000 and the table's 24,956 against 23,718 on
+    StadiumDB and the infobox) and **Beveren** (13,290 on Wikidata and
+    StadiumDB against 8,190 in the table and the infobox - possibly one
+    source, Wikipedia, twice). **Contested and left blank**: Lommel
+    (8,000 / 12,911), Seraing (8,207 / 14,328), RFC Liège (4,147 / 3,500
+    / 3,000), Jong Genk (above), Club NXT and Patro Eisden (one source
+    each). **Contested, the map's figure kept**: Dender (12,000 / 6,429 /
+    8,548) and Lierse (14,538 with the ground's infobox / 13,539 /
+    15,500). **The map stands** where it agrees with the table and
+    StadiumDB is the outlier: Anderlecht (StadiumDB's 28,063) and Standard
+    (StadiumDB's 27,670, which is the ground's limited capacity).
+    **Antwerp is worth a look**: Dutch Wikipedia says the Bosuil holds
+    24,500 since a stand reopened on 5 December 2025, newer than the
+    season table - one source, so not taken.
+  - **StadiumDB: 37 grounds; 9 agree, 3 differ, 19 not matched** on short
+    names ("Zulte", "St-Truiden VV", "Waasland-Beveren"). The three that
+    differ are Anderlecht, Standard and Lierse, all weighed above.
+  - **OpenStreetMap confirms almost nothing in Belgium**: 208 stadiums,
+    **4 with a capacity** - Romania's and Italy's shape. It confirmed
+    positions (Gent, Antwerp, La Louvière, Lommel, RFC Liège, Virton,
+    Eupen within tens of metres) and supplied Hasselt's. **The first run
+    on the branch left Belgium `UNCHANGED`** (HTTP 504, with France, the
+    Netherlands and Serbia), so it was not a pass; the second, on the final
+    layer (14:35 UTC), wrote Belgium: **31 clubs, 1 agree (Hasselt, 8,800),
+    0 differ, 20 Wikidata only, 6 neither, 6 with no OpenStreetMap stadium
+    within 500 m** - Club NXT's Schiervelde pin and Jong Genk's De Leunen pin
+    among them, so both rest on their Wikidata ground items and Wikipedia,
+    nothing else. Italy was `UNCHANGED` on that run. **Worth one look:**
+    the OpenStreetMap stadium 22 m from Seraing's Pairay pin is named
+    "Stade Hubert Freson" - most likely the same ground under another name,
+    not checked.
+  - **Fixtures: none.** football-data.org's free tier carries no Belgian
+    league and OpenLigaDB is German only; the club sheet says so, and was
+    opened in the real page for ten Belgian clubs. **Club Brugge plays
+    in the Champions League** and football-data's team 851 "Club Brugge KV"
+    is in the review file as `country-unknown` - a team seen only in the
+    Champions League is never linked by name. **One `link` row
+    (`Q190916,football-data,851,link`) would give Club Brugge its
+    Champions League fixtures - Alexandru's call, not written.** *Written
+    2026-10-02 on his instruction: the linker reads it back as `linked`,
+    and Club Brugge's sheet, opened in the real page (headless), lists its
+    eight league-phase matches - seven ahead (Inter, Lens, PSV, Liverpool,
+    Napoli, VfB Stuttgart, Bodø/Glimt) and Aston Villa played.
+    Its Pro League games are still not fetched, and the sheet's source line
+    says Champions League only.*
+  - **Merge, under rule 7, 2026-10-01 - and what it rests on.** Every
+    workflow dispatched on the branch is green (15 runs), no hand row was
+    rejected (the builder's reader first refused twelve Belgian rows for a
+    missing name - fixed before any build used them), `check_tickets.py`
+    exits 0, the roster check reads Belgium 29 `ok` and the two
+    `extra-not-in-roster` written up above and changed no other country's
+    verdict, the rank diagnostic owes nothing, and `link_fixtures.py`
+    re-run on the final files changes nothing. The real page was opened
+    headless (Leaflet from npm, tiles stubbed): all twelve country files
+    load, 31 Belgian clubs, no script error. **The OpenStreetMap capacity
+    check took four runs**: Belgium, France, the Netherlands and Serbia
+    `UNCHANGED` on the first (HTTP 504), Italy on the second, Germany,
+    France, Italy and the Netherlands on the third - each left byte for
+    byte. **The merge rests on the fourth, 15:15 UTC, on the final code:
+    all twelve countries `WRITTEN`.** Nothing that is Alexandru's call
+    was decided: the four roster links and the Club Brugge fixture link
+    are written up, not written, and every tier, skip and ground change
+    is a reviewable hand row that says how to undo it.
+  - **Found on the way**: the Overpass name search for the grounds to be
+    placed answered HTTP 504 three times and gave nothing; the per-club
+    positions rest on Wikidata's ground items, which the earlier
+    whole-country OpenStreetMap read confirmed where it could. And a
+    women's-team label identical to a men's club's (rule 6, above), which
+    is the case for never joining on a name.
+
+- **`index.html` has no automated check of its own - a known gap,
+  recorded 2026-10-01 on Alexandru's instruction, to be addressed later
+  and deliberately not now.** Every data file has a reader that turns a
+  run red: `check_tickets.py`, `check_rosters.py`, the club builder's
+  read-back. The page has nothing. No workflow opens it, loads the
+  country files through it, or opens a club sheet; a script error, a
+  country file missing from `COUNTRY_FILES`, or a sheet that says
+  "unavailable" for the wrong reason would reach `main` with every tick
+  green. **The last two UI fixes merged on manual headless testing
+  only**: "time not set" for placeholder kick-offs (#45, `b8367c8`) and
+  the Eerste Divisie fixtures message (`253020f`), and since 2026-10-02
+  the route panel. Each was checked by a
+  session opening the real page in headless Chromium (Leaflet from npm,
+  tiles stubbed) and reading the sheet text by eye - real, but not
+  repeatable, not run on a later change, and not part of rule 7's
+  "clean". The same is true of every country pass's "the real page was
+  opened" line, this one's included. What a check would need is written
+  here so the next session does not rediscover it: a local server for
+  the repo, Leaflet from a pinned local copy (unpkg is unreachable from
+  the sandbox), stubbed tiles, then load every country file and fail on
+  any page error, and open a sheet per country. Not built.
+  **Two pieces of it exist since 2026-10-02**: Leaflet is now a pinned
+  copy in `vendor/`, and `tools/test_pwa.js` is a repeatable headless
+  test of the installable app (local server, stubbed tiles, fails on any
+  page error, loads every country file). It does not open club sheets,
+  and **no workflow runs it**, so it is still not part of rule 7's
+  "clean" on its own - a session runs it by hand.
+  **Since 2026-10-03 a workflow runs the page tests**:
+  `.github/workflows/test-pages.yml` runs `test_pwa.js`,
+  `test_derbies.js` and the new `test_routes.js` on every push to `main`
+  and every pull request that touches `index.html`, `sw.js`, the manifest
+  or the tests, and a failure turns it red - so for a change to the page
+  those three are part of rule 7's "clean" from now on. **What is still
+  not covered**: no test opens a club sheet per country or checks a
+  sheet's "unavailable" reasons; every Stadia request is stubbed, so a
+  change on Stadia's side (a header, a status, CORS) shows up only on a
+  phone or in a probe like the one in Secrets; a data-only change (a
+  cron commit, `data/derbies.csv`) does not trigger it; and nothing has
+  run on a real phone.
+  **Since 2026-10-03 four more page tests run in the same workflow**:
+  `test_zoom.js` (every club drawn at z9, and every club file loaded -
+  which closes the "country file missing from `COUNTRY_FILES`" hole
+  above), `test_search.js`, `test_coverage.js` and
+  `test_sheet_tickets.js` (the ticket section of nine named clubs'
+  sheets). Still not covered: a sheet per country, and the fixtures
+  section's "unavailable" reasons. `test_legend.js` and, since the Near
+  me panel, `test_nearme.js` (its list checked against the club files,
+  the location kept off storage and the network, and the top row at
+  390x700 and 390x500) run there too.
+
+- **The Netherlands' top two tiers are on the map, 2026-10-01: Eredivisie
+  18 of 18 and Eerste Divisie 20 of 20, exact - nothing missing, nothing
+  extra, nothing at the wrong tier.** Same pipeline and standard as the
+  ten countries before it, run through five throwaway probes on a GitHub
+  runner (removed in the same branch); the sandbox still answers 403 to
+  CONNECT for Wikidata, Wikipedia and StadiumDB. Tiers 1 and 2 only; the
+  Tweede Divisie and below were deliberately not touched. The roster check
+  reads **all 38 `ok`**.
+  - **The file is `NL.json`.** The league Q-ids were read, not
+    remembered: `Q167541` Eredivisie (enwiki *Eredivisie*) and `Q610823`
+    Eerste Divisie (enwiki *Eerste Divisie*), neither carrying `P3983`.
+    `P17` is Netherlands (`Q55`) on both leagues and on every club item
+    read; the Kingdom of the Netherlands (`Q29999`) appears on one 2008-09
+    season item and nothing else. The 2026-27 articles are one
+    stadiums-and-locations table each: **18 of 18** resolved (17 directly,
+    one through a redirect) and **20 of 20**. Four of the twenty are
+    reserve sides with articles of their own - Jong Ajax, Jong AZ, Jong PSV
+    and Jong FC Utrecht - which the table says are not eligible for
+    promotion; they are men's football and are on the map like Rapid II.
+    Labels are asked in English first, then Dutch.
+  - **The country check is weak for NL, and that is written down rather
+    than fixed.** The box is Wikidata's own extreme points (north 53.55,
+    south 50.7504, west 3.3561, east 7.2274, with a margin) and holds the
+    north of Belgian Limburg and Antwerp, a strip of Wallonia and the west
+    of North Rhine-Westphalia, so a Belgian or German club carrying a Dutch
+    tag would pass it and be caught only by `P17`. `Q55` also carries
+    Bonaire's points at PREFERRED rank for south and west, which is why the
+    box uses the normal-rank European ones; a Caribbean club is nowhere
+    near any box. The check flagged no Dutch club.
+  - **What the tags looked like, 91 statements on 54 items, all
+    listed and read.** Dutch league tags are well kept - most clubs carry
+    a dated history with the current league preferred - but the club query
+    does not read an end date, and four items are drawn from a tag that has
+    ended. Volendam's is the subtle one.
+    | | what Wikidata says | what the 2026-27 articles say | done |
+    |---|---|---|---|
+    | FC Volendam `Q738060` | PREFERRED Eredivisie 2025-2026 (ended) over a normal Eerste Divisie 2026- | Eerste Divisie, and the Eredivisie article's own Team changes table says 'relegated' | tier **2** by a hand row; arrived at tier 1 |
+    | Achilles '29 `Q2426022` | Eerste Divisie 2013-2017 | neither; English article: the seventh-tier Tweede Klasse, Dutch infobox: 1e klasse (2026/27) | `skip` |
+    | VV DOS `Q784572` | Eredivisie 1956-1970, drawn at tier 1 on **FC Utrecht's pin** | neither; German and French articles: merged into FC Utrecht in 1970 | `skip` |
+    | Jong FC Twente `Q14229572` | Eerste Divisie, no dates | not listed; Dutch article: Reservecompetitie since 2018/19 | `skip` |
+    | VCV Zeeland `Q134609074` | Eerste Divisie 1990-1992, no ground, **no English label** | not listed; 'was een betaaldvoetbalclub' | whole-club `rejected`, never proposed a ground |
+
+    All three skips meet the Hermannstadt standard: both articles complete
+    (18 of 18 and 20 of 20), neither lists the club, and an independent
+    statement of the reason. **VV DOS carries a trap worth keeping:** its
+    ENGLISH article, titled *VV DOS*, describes DHSC, the 2007 merger that
+    dissolved in 2024 - a different club under this item's name - so the
+    reason was read from German, French and Dutch Wikipedia instead.
+    VCV Zeeland dies at the coordinates gate and would have been offered a
+    ground in Vlissingen by `propose_coordinates.py` next month; that is
+    shape 6. **Predicted before the build from the probe's read of the
+    tagged items, and not measured by a build without the hand rows**: they
+    would have brought 40 clubs, 19 at tier 1 and 21 at tier 2.
+  - **Rank blind spot, all three shapes, run by `diagnose-rank.yml` on the
+    branch: no Dutch club is hidden.** Queries A and B: the worldwide
+    census holds two Dutch items, ESV `Q13575023` and VV Concordia
+    `Q652605`, both preferred `<novalue>` and both dissolved (2011, 1891),
+    and neither carries either mapped league, so nothing is owed. Query C:
+    no Dutch club; the bill has no NL line.
+  - **The league-tag end date (`P582`), measured for the Netherlands.** Of
+    47 truthy Eredivisie or Eerste Divisie statements on items with no dissolution
+    date, **four**
+    get their tier from a tag that has ended - Volendam, Achilles '29,
+    VV DOS and VCV Zeeland - all four dealt with above. The fifth wrong
+    item, Jong FC Twente, carries **no end date at all**, so honouring
+    `P582` would not have caught it: the same finding as 2026-09-29, again.
+  - **Not-a-club: five club SEASONS, caught by type, and a gap in the name
+    fallback closed because of it.** *2007-08 AZ Alkmaar season*, the same
+    for Heracles Almelo and Vitesse, and two MVV Maastricht seasons are
+    typed 'association football team season', which the type word 'season'
+    catches. The NAME fallback - for an item whose type says nothing - did
+    not know them: it only matched names that START with 'season'. A name
+    that opens with a year range and ends in 'season' is now caught too.
+    Checked before it went in: it matches those five and no club name on
+    any of the 523 map entries, and the rebuild changed no other country's
+    file. **England's two kinds (a history article, a fictional club) were
+    looked for here and not found**: no item carrying either Dutch tag at
+    any rank is typed 'aspect of history' or 'fictional', so nothing new
+    was needed for them.
+  - **Women's club with a men's tag (rule 6), checked deliberately, from
+    four angles: none.** No item carrying either tag at any rank is typed,
+    labelled (English or Dutch - 'women', 'vrouwen', 'dames', 'ladies',
+    'WFC'), or classed (`P2094`) as women's. **The fourth angle came out
+    differently from England's, and the difference is worth knowing:** three
+    women's items DO point at big Dutch clubs with `P361` - SBV Excelsior
+    Vrouwen `Q29509701`, Go Ahead Eagles (vrouwenvoetbal) `Q138016367` and FC
+    Groningen (vrouwen) `Q132315919` - where England had none. None carries
+    either men's league tag, so nothing reaches the map; the Vrouwen
+    Eredivisie (`Q1785497`) exists on Wikidata and is not mapped. Two of the
+    first-pass queries answered HTTP 504 and were redone per club.
+  - **Every duplicate shape, looked for rather than waited for.** Shapes 1
+    and 2: none - every English label of the 38 roster clubs belongs to one
+    item only, no two pins share a ground (the closest pair is Jong FC
+    Utrecht and FC Utrecht, 280 m apart on two different grounds), and the
+    roster check names each club once. Shape 3: none - no multi-sport
+    parent; AFC Ajax's one item is typed club and 'public company' together.
+    Shape 4: the clubs above. Shape 5: none - no item typed 'men's
+    association football team' points at a roster club; the reserve sides
+    (ADO Den Haag II, De Graafschap II, Vitesse II, the U21s) carry no
+    league tag and are not on the map. Shape 6: VCV Zeeland, rejected.
+  - **Two grounds on one item (the Freiburg shape): one, pinned.** Vitesse
+    carries the GelreDome (from 1998) and Klarenbeek (dated 1896-1915, no
+    coordinates on its item) at the same rank, so the ground could have
+    alternated and Klarenbeek would have dropped the club off the map. The
+    GelreDome is pinned: the Eerste Divisie table and StadiumDB both say
+    21,248, and the position is the ground item's own.
+  - **Grounds - and one wrong one, found by the OpenStreetMap check.**
+    **SC Cambuur was drawn at a ground that no longer exists.** Wikidata's
+    only `P115` is the old Cambuur Stadion, which the club left in August
+    2024 and which was demolished in late 2025 (its English article, and the
+    club's own). OpenStreetMap's nearest stadium to the pin was the Kooi
+    Stadion, 3,134 m away; the club's article, Dutch Wikipedia, the
+    2026-27 table and StadiumDB all say the Kooi Stadion, 15,000. It is now
+    at the ground item's own position (`Q122459692`, which OpenStreetMap
+    puts within 10 m). The Brentford shape again. **The four Jong sides are
+    drawn at training complexes**, not stadiums: Jong Ajax at De Toekomst,
+    Jong PSV at De Herdgang, Jong FC Utrecht at Zoudenbalch (280 m from
+    FC Utrecht's Galgenwaard, a different ground), and **Jong AZ's pin rests
+    on one source** - Wikidata's 'AFAS Training Complex', where the club's
+    English infobox says 'Sportcomplex Kalverhoek'; OpenStreetMap has no
+    stadium within 12 km and nobody has checked they are the same place. Its
+    row says so. Wikidata's `P115` on the Cambuur item still names the old
+    ground; the hand row's note says how to go back.
+  - **Capacities, the UTA Arad rule - every source read, including the
+    ones that agree with the map.** OpenStreetMap carries a figure for only
+    five Dutch grounds, so the OpenStreetMap run (all eleven countries
+    `WRITTEN`) settled one row, and **a single-country probe printed
+    OpenStreetMap's figure for every club before any correction was
+    written**, because the review file lists disagreements only and the
+    England pass (Villa, Fulham, Stoke) showed what an unread agreement
+    costs. OpenStreetMap had no figure for four of the five corrected
+    clubs; Den Bosch's is the one that agrees with StadiumDB. **Corrected**, each where the league table and StadiumDB agree
+    within 5% and the map sat outside: **AZ Alkmaar** 17,023 -> **19,478**
+    (table, StadiumDB and the ground's article, identical), **Excelsior**
+    3,531 -> **4,500**, **Go Ahead Eagles** 6,700 -> **10,000** (StadiumDB's
+    10,400 not taken), **VVV-Venlo** 7,500 -> **8,000** (table and StadiumDB,
+    identical) and **FC Den Bosch** 9,000 -> **8,713** (the table; Open-
+    StreetMap and StadiumDB both say 8,500 and the table is within 2.5% of
+    both); and **Cambuur** with its ground, above. **Left contested, each
+    with a row listing every figure**: **PEC Zwolle** (12,500 on Wikidata,
+    14,000 in the table, 13,250 on StadiumDB - no two within 5%),
+    **FC Volendam** (6,200 on Wikidata, 7,384 in the table, 6,984 on StadiumDB
+    and in both English articles - the table and StadiumDB are 5.7% apart, and
+    Wikipedia's own two figures disagree with each other) and **Jong Ajax**
+    (5,000 for the whole complex against 2,250 in the table). **The map
+    stands where it agrees with a second source and the third is the
+    outlier**: Feyenoord (51,577 with StadiumDB's 51,117, the table's 47,500
+    the outlier), Telstar (5,200 with OpenStreetMap's 5,200 and the table's 5,338;
+    StadiumDB's 3,625 is the outlier, and the ground's own article says 6,000), FC Eindhoven,
+    Helmond Sport (StadiumDB's 4,200 is the old Lavans Stadion) and Ajax
+    (54,990, OpenStreetMap's 52,342 within 5%). Jong AZ's capacity is blank
+    on purpose: 1,000 appears in one source.
+  - **StadiumDB: a ground for 18 of 18 Eredivisie clubs and 16 of 20 Eerste
+    Divisie clubs**, the four without being the Jong sides. **It caught a
+    reserve side on its first run: "Jong AZ" was matched to AZ's own
+    stadium** - the Borussia Dortmund II failure on a prefix instead of a
+    suffix - because the matcher's reserve markers had no `jong`. It does
+    now (`TEAM_MARKERS`); no club name in any other country and no fixture
+    team name in any file contains the word, so nothing else moved, and
+    the Jong AZ row left the review file on the next run. Short names again:
+    "Exelsior" (sic), "Utrecht", "Roda" and "NEC" matched or were read by
+    hand where the matcher refused.
+  - **Fixtures: 13 of 18 Eredivisie clubs link to football-data.org's
+    DED**, which was already fetched. **Five are abbreviations the matcher
+    rightly refuses, and each needs one `link` row in
+    `fixture-links-manual.csv` - Alexandru's call, so none was written
+    (rule 7):** AZ Alkmaar (`Q191264` -> football-data 682 "AZ"), PSV
+    Eindhoven (`Q11938` -> 674 "PSV"), Excelsior Rotterdam (`Q370712` -> 670
+    "SBV Excelsior"), SC Cambuur (`Q875120` -> 1909 "SC Cambuur-Leeuwarden")
+    and Willem II (`Q332664` -> 672 "Willem II Tilburg"). Until then those
+    clubs' sheets say fixtures are unavailable. The Eerste Divisie has no
+    fixture source; the club sheet says so. **All five rows were added on
+    2026-10-01 on Alexandru's instruction**, the Le Mans way: each read
+    back as `linked`, the Eredivisie is 18 of 18 linked, and each club's
+    sheet was opened in the real page (headless) and lists its Eredivisie
+    fixtures - PSV's its Champions League ones too.
+  - **Found on the way, not Dutch**: two of the first-pass SPARQL queries
+    that look for items pointing at the roster clubs answered HTTP 504 with
+    zero rows, which is a failed query and not an empty answer; they were
+    rerun one club at a time.
+  - **Merge, under rule 7, 2026-10-01 - and what it rests on.** Every
+    workflow dispatched on the branch is green on the final code, nothing
+    was rejected, `check_tickets.py` exits 0 ("No problems. Every row was
+    read."), and the roster check reads **38 `ok`**. The club build is
+    green, the rank diagnostic is green (no Dutch club hidden), the StadiumDB
+    check is green with Jong AZ's false match gone, and `link_fixtures.py`
+    re-run on the final files changes nothing. The real page was opened
+    headless (Leaflet from npm, tiles stubbed): 38 Dutch clubs load with no
+    script error, Cambuur's sheet reads Kooi Stadion and 15,000, Ajax's and
+    Telstar's list their Eredivisie fixtures, and Volendam's and Jong AZ's
+    say why an Eerste Divisie club has none. **The OpenStreetMap capacity
+    check did NOT come back complete on its first three runs**, which is
+    the usual Overpass flakiness and not a pass: all eleven countries
+    `WRITTEN` at 11:10 UTC (before the corrections), then Romania
+    `UNCHANGED` (HTTP 504) at 11:46 and Greece `UNCHANGED` at 12:03 - a
+    different country each time, each left byte for byte as it was. **The
+    merge rests on the fourth, 12:21 UTC, on the final code: all eleven
+    `WRITTEN`.** Netherlands in that run: 38 clubs, 5 agree, 0 differ, 30
+    Wikidata only, 1 neither, 3 with no OpenStreetMap ground nearby (Jong
+    Ajax, Jong AZ and Jong PSV, drawn at training complexes - Cambuur has
+    one now). Nothing that is Alexandru's call was decided: the five
+    `fixture-links-manual.csv` rows above are written up, not written, and
+    the three skips and one tier correction are each reviewable and say how
+    to undo them.
+
+- **England's top two tiers are on the map, 2026-09-30: Premier League
+  20 of 20 and Championship 24 of 24, exact - nothing missing, nothing
+  extra, nothing at the wrong tier, on the first build.** Same pipeline
+  and standard as the nine countries before it, run through three
+  throwaway probes on a GitHub runner (removed in the same branch); the
+  sandbox still answers 403 to CONNECT for Wikidata, Wikipedia and
+  StadiumDB. Tiers 1 and 2 only; League One and below were deliberately
+  not touched.
+  - **The file is `GB.json`, and that was a choice.** Every other tool
+    already said GB for England - `link_fixtures.py` for PL and ELC,
+    `build_calendars.py` for the time zone - and the OpenStreetMap tools
+    ask Overpass for an ISO 3166-1 area, which England does not have. It
+    is England's league PYRAMID, the Monaco convention: three Welsh clubs
+    are in it. **If Scotland is ever added it needs a code of its own**;
+    GB is taken.
+  - **The league Q-ids were read, not remembered**: `Q9448` Premier
+    League (enwiki *Premier League*) and `Q19510` EFL Championship
+    (enwiki *EFL Championship*). Neither carries `P3983`. **Both carry
+    `P17` United Kingdom (`Q145`), not England (`Q21`)**, and so does
+    every English club item read, so the builder's country is `Q145`:
+    `Q21` would have discovered no league and flagged every club. The
+    rank diagnostic counts both as GB. The 2026-27 articles are one
+    stadiums-and-locations table each, **20 of 20 and 24 of 24
+    resolved**, and the Championship's Team changes table names the
+    three relegated to League One (Oxford United, Leicester City,
+    Sheffield Wednesday) and the three promoted from it (Lincoln City,
+    Cardiff City, Bolton Wanderers).
+  - **The country check is weak for GB, and that is written down rather
+    than fixed.** The box (Wikidata's `P1332`-`P1335` on `Q21`: Marshall
+    Meadows, the Isles of Scilly, Lowestoft Ness) holds all of Wales,
+    the Isle of Man, southern Scotland and the east of Northern Ireland,
+    and `P17` says United Kingdom for all four. A Scottish or Northern
+    Irish club carrying an English tag would pass unflagged. For tiers 1
+    and 2 the roster check covers it.
+  - **The three Welsh clubs are the Monaco shape** - Cardiff City,
+    Swansea City and Wrexham, all in the complete Championship article -
+    and, unlike Monaco and Vaduz, **the country check does not flag
+    them**, because their items say United Kingdom (Wrexham's also says
+    Wales). Each has a note-only row saying what the flag would have.
+  - **English tags are well kept.** Every item carrying either tag at
+    any rank was listed: 108 statements, about 60 items. Most clubs carry
+    a dated history with the current league preferred.
+    - **Rank blind spot, all three shapes, run by `diagnose-rank.yml`
+      on the branch.** Queries A and B: **no English item.**
+      Middlesbrough and Stoke carry the Premier League at deprecated
+      rank, but their normal-rank Championship tags are truthy, so
+      nothing is hidden. Query C: **eight** (Barnsley, Burton Albion,
+      Huddersfield Town, Leicester City, Luton Town, Oxford United,
+      Sheffield Wednesday, Wigan Athletic), every one relegated with its
+      new lower league correctly preferred; **bill 0**.
+    - **The league-tag end date (`P582`), measured for England: zero.**
+      No club's tier comes from a tag that has ended. Every mapped tag
+      with an end date sits under a preferred statement (the query C
+      eight), and the build reads past none of them.
+    - **Not-a-club, two new kinds, and the net now names both**:
+      *History of Rotherham United F.C.* (`Q16840698`, typed "aspect of
+      history") carries a Championship tag **and a ground**, so it would
+      have been drawn at tier 2 on the New York Stadium; *Melchester
+      Rovers* (`Q6811996`, Roy of the Rovers' club, typed "fictional
+      association football team") carries a Premier League tag and no
+      ground. Four club seasons (Manchester City 2022-23, three Leeds)
+      were caught by the season net, as before. Checked on the rebuild:
+      the two new words catch those two items and nothing else in any
+      country.
+    - **Every duplicate shape, looked for rather than waited for.**
+      Shapes 1 and 2: none - the roster check names each of the 44 once,
+      no two pins share a ground and none is within 2 km of another
+      (nearest: Fulham and Chelsea, 2.2 km). Shape 3: none - no
+      multi-sport parent carries either tag. Shape 4: none on the map;
+      New Brighton Tower carries a Championship tag and `P576` 1901, and
+      the gate drops it. Shape 5: none - Chelsea, Manchester United and
+      Wolves are typed "men's association football team" **on the one
+      item the roster links**, with no `P831`; there is no second item.
+      Shape 6: none - no English club dies at the coordinates gate.
+    - **Two grounds on one item (the Freiburg shape): none on the
+      map.** Arsenal (Emirates, Highbury), Tottenham (the new stadium,
+      White Hart Lane) and Oxford United carry two, at different ranks,
+      so the query yields one.
+    - **Women's club with a men's tag (rule 6), checked deliberately**:
+      none, from three angles - see the rule.
+  - **Grounds.** **Brentford was drawn at Griffin Park**, its only
+    `P115`, closed in August 2020 and demolished in 2021 (the ground's
+    infobox), and OpenStreetMap's check found no stadium within 500 m of
+    that pin. It is now at the **Gtech Community Stadium**, `Q4961609`'s
+    own position, 17,250 (the table, StadiumDB, the club's and the
+    stadium's infoboxes; not taken: 20,000 on the ground's item).
+    **Queens Park Rangers** came back from Wikidata **with no name** - no
+    English label - and has a name-only row from its Wikipedia title.
+  - **Capacities, the UTA Arad rule - and a correction undone the same
+    day, which is the part worth keeping.** Corrected, each where the
+    league table and StadiumDB agree within 5%, the map sat outside, and
+    OpenStreetMap does not disagree: **Manchester City** 52,900 →
+    **61,038** and **Wrexham** 13,341 → **10,771**. **Aston Villa,
+    Fulham and Stoke were corrected too, and undone**: the OpenStreetMap
+    re-run on the corrected map showed that OSM carries Wikidata's
+    figure for all three (Villa 42,640 / OSM 42,788 against the table's
+    36,887 and StadiumDB's 37,000; Fulham 25,700 / 25,700 against 28,107
+    / 27,782; Stoke 27,740 / 27,740 against 30,089 / 30,089). On the
+    first run OSM *agreed* with the map, so the rows never surfaced - and
+    agreement was not read. **Two against two is the AEL shape: nothing
+    changed**, and each club has a note-only row with all four figures.
+    That OSM equals Wikidata to the seat on two of them suggests a copy,
+    which would make it one source, not two - a judgement, and
+    Alexandru's. **The lesson: before applying the rule, read every
+    source's figure, including the ones that agree with the map.**
+    **Left alone, contested**: **Lincoln City** (10,120 on Wikidata,
+    11,400 in the table, 10,669 on StadiumDB - no two within 5%). **The
+    map stands** where it agrees with the table within 5%: Bournemouth
+    (12,000 / 12,357; StadiumDB's 11,307 is the outlier) and Chelsea
+    (41,875 / 40,044). **OpenStreetMap is the outlier** at Liverpool
+    (54,074 against 61,276 three times) and West Ham (66,000 against
+    62,500 three times).
+  - **StadiumDB: 44 clubs, 36 matched (28 agree, 3 differ, 5 name
+    clashes), 8 not matched** after the dotted-initialism fix (Brentford,
+    Derby, Preston, QPR, Stoke, West Brom, West Ham, Wolves - short
+    names like "Derby" and "WBA" that the town-only guard rightly
+    refuses). Unmatched is unchecked, never agreement; all eight have
+    the league table's figure beside the map's. The name clashes are
+    sponsors: Dean Court is the Vitality Stadium, Sincil Bank the
+    ProAmpac Stadium, the Liberty the Swansea.com Stadium, the Racecourse
+    Ground the STōK Cae Ras.
+  - **OpenStreetMap is better in England than anywhere but Germany and
+    France**: 1,040 stadiums in the UK, 98 with a usable capacity. First
+    run, every country `WRITTEN`: GB 44 clubs, 22 agree, 2 differ, 19
+    Wikidata only, 1 with no OSM ground nearby (Brentford, at Griffin
+    Park). On the final layer: 22 agree, 2 differ (Liverpool and West
+    Ham, OSM the outlier), 20 Wikidata only, **0 with no ground nearby**
+    - Brentford's new pin has one. Overpass dropped a different country
+    on three of the five branch runs (Germany and France on one, Spain
+    on the next, Serbia on the one after), each left `UNCHANGED` as it
+    should be. **The merge rests on the fifth, 2026-10-01 08:33 UTC: all
+    ten countries `WRITTEN`.**
+  - **Fixtures: 44 of 44**, from football-data.org's PL and ELC, both
+    already fetched - the first country whose second tier has a fixture
+    source as well. Five Premier League clubs link to the Champions
+    League too. It took the dotted-initialism fix (Conventions) and QPR's
+    name; no `fixture-links-manual.csv` row was needed.
+  - **Found on the way, not English, and FIXED 2026-10-01: a placeholder
+    kick-off was shown as a time.** football-data.org marks a match whose
+    kick-off is not set yet as `SCHEDULED` at **00:00 UTC**, and the club
+    sheet printed that as "01:00" German time (02:00 in summer), like a
+    real time. The sheet now says "time not set" on a second line under
+    the date. **The test is status AND midnight together, never midnight
+    alone**, and that was checked across every football-data file rather
+    than assumed: every `SCHEDULED` match in every file is at midnight UTC
+    and every `TIMED` one in the club-sheet files has a real time - but
+    Brazil's BSA has 3 `TIMED`, 13 `FINISHED` and 1 `POSTPONED` match at
+    00:00 UTC, and the World Cup file 6 `FINISHED`, which are genuine
+    (21:00 Brasília is 00:00 UTC) and keep their time. Counted on
+    2026-10-01 and all now labelled: Bundesliga 198, La Liga 280, Serie A
+    190, Championship 264 and **Ligue 1 192** (not on the original list,
+    same code path); also 100 Eredivisie and 198 Primeira Liga, which no
+    club sheet reads. None in the Premier League. OpenLigaDB never has the
+    problem: it writes no time as `null`, which already reads "date not
+    set". **Left as they were, on purpose**: a `POSTPONED` match at
+    midnight (BSA and Primeira Liga, neither read by a club sheet) - its
+    original time is unknowable, and a Brazilian one could be genuine, so
+    it keeps the "postponed" tag and its time. **A second bug in the same
+    function was fixed with it**: a `SCHEDULED` match later today sorted as
+    already played, because its placeholder midnight had passed, and got a
+    false "no result recorded" tag. A placeholder match now counts as
+    ahead until its date is over.
+
+- **Spain's top two tiers are on the map, 2026-09-30: La Liga 20 of 20
+  and Segunda División 22 of 22, exact - nothing missing, nothing extra,
+  nothing at the wrong tier.** Same pipeline and standard as the eight
+  countries before it, run through three throwaway probes on a GitHub
+  runner (removed in the same branch); the sandbox still answers 403 to
+  CONNECT for Wikidata, Wikipedia and StadiumDB. Tiers 1 and 2 only;
+  the Primera Federación and below were deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q324867` La Liga
+    (`P3983` 1, enwiki *La Liga*) and `Q35615` Segunda División (enwiki
+    *Segunda División*; its English label on Wikidata is "LaLiga 2", and
+    it carries **no** `P3983`). Both 2026–27 articles are one
+    stadiums-and-locations table, **20 of 20 and 22 of 22 resolved**, and
+    the Segunda one has a Team changes table naming the four clubs
+    relegated to the Primera Federación and the four promoted from it.
+    The country box's four edges are Wikidata's own `P1332`-`P1335` on
+    `Q29`; the Canaries make it wide enough to hold Portugal, Andorra,
+    Gibraltar, northern Morocco and southern France up to Toulouse, so
+    `P17` is the signal that catches a club across a border
+    (`COUNTRY_BOX`'s comment). Labels are asked in English first, then
+    Spanish, because the English label is the short form football-data
+    uses ("Villarreal CF") and the Spanish one the full legal name.
+  - **What the first build brought, 48 clubs against 42:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 20 | 28 (20 right, 8 extra, 2 missing) |
+    | after this pass | **20** | **22** |
+  - **Eight extras `skip`ped, seven of them to the Hermannstadt
+    standard** - both articles complete, neither lists the club, and the
+    club's **own English and Spanish articles** name the league it is in
+    now. (The English infoboxes are no help here: they fill `league`
+    from a template, `{{Spanish football updater}}`, so the reason was
+    read from each article's opening lines.) For four of them the
+    Segunda article's Team changes table says it too.
+    - **Relegated in 2026, tag stale**: Cultural Leonesa (a *preferred*
+      Segunda tag from 2025), CD Mirandés (a Segunda tag ending 2026) and
+      SD Huesca (a *preferred* Segunda tag dated 2021-2022) - all three
+      in the Team changes table as relegated to the Primera Federación.
+    - **Relegated earlier, one undated Segunda tag and nothing else**:
+      SD Ponferradina, Racing de Ferrol, FC Cartagena - each now in the
+      Primera Federación by its own article.
+    - **Jerez Industrial CF**, drawn at tier 2 on a Segunda tag dated
+      **1968-1969** - the end-date shape - is in the Primera Andaluza
+      Cádiz, the seventh tier.
+    - **Fundación Albacete (`Q15966154`) is a women's club** - typed only
+      "women's association football club", and its English article
+      says it is Albacete Balompié's women's section - drawn at tier 2 on
+      a Segunda tag on the **men's** league item. **Rule 6**, and the
+      rule's own paragraph now says so. A filter on type was measured
+      across every country and not built: it would also remove Atromitos
+      and Asteras Tripoli, the men's Greek clubs, whose items carry the
+      same type.
+  - **Two promoted clubs whose tags did not follow reach the map through
+    the hand-named fallback**, tier 2 by hand, the FC Wil standard (both
+    complete articles plus the club's own article; reviewable): **CE
+    Sabadell** (`Q12260`, only a Primera Federación tag) and **RC Celta
+    Fortuna** (`Q2311865`, Celta's reserve side, only a Segunda B tag).
+    **CD Tenerife** was surfaced automatically by the Vicenza shape - a
+    stale *preferred* tag naming an unmapped league over a normal-rank
+    Segunda one.
+  - **Rank blind spot, all three shapes, run by `diagnose-rank.yml` on
+    the branch.** Queries A and B: **no Spanish item** - no preferred
+    "no league" and no all-deprecated one. **SD Amorebieta** carries a
+    Segunda tag at deprecated rank, but its normal-rank Primera
+    Federación tag is truthy, so it is invisible and rightly so. Query C:
+    **ten Spanish clubs** (Alcorcón, Tenerife, Fuenlabrada, Lugo,
+    Numancia, Barcelona Atlètic, Hércules, Zaragoza, Logroñés, Xerez),
+    every one a relegated club with its new lower league correctly
+    preferred except Tenerife, which was promoted back; **bill 1,
+    Tenerife, surfaced and `ok`**.
+  - **The league-tag end date (`P582`), measured for Spain**: of 50 live
+    items with a truthy La Liga or Segunda tag, **two** get their tier
+    from a tag that has ended - Huesca and Jerez Industrial, both caught
+    by the roster and `skip`ped. The other five wrong men's extras carry
+    **no end date at all**, so honouring `P582` would not have caught
+    them - the same finding as the 2026-09-29 measurement. One boundary
+    case: Mirandés's Segunda tag ends "2026" at year precision, which the
+    measurement counts as still live.
+  - **Every duplicate shape, looked for rather than waited for.** Shape
+    1 and 2: none - no two items for one club, and the roster check names
+    each of the 42 clubs once. Shape 3: none - no multi-sport parent
+    carries either tag. Shape 4: the seven relegated clubs above, all on
+    the map until this pass. Shape 5: none - no map item has a `P831`,
+    and Espanyol's one item carries both "club" and "men's team" types.
+    Shape 6: none - no Spanish club dies at the coordinates gate (0
+    dropped), so none can be offered as a coordinate proposal. **One
+    shared pin, genuine**: Celta Vigo and Celta Fortuna at Balaídos. No
+    two other Spanish pins are within 2 km.
+  - **Not-a-club, a third kind: a match.** Three items typed "association
+    football club match" ("Real Madrid v Almería, 22 March 2009" and two
+    more) carry `P118` La Liga. They had no ground and died at the
+    coordinates gate, and `propose_coordinates.py` would have offered
+    them one next month. `fetch_clubs.py` now leaves them out and names
+    them. Checked on the rebuild: those three and nothing else, in any
+    country.
+  - **Grounds.** **Real Betis** is drawn at **La Cartuja**, where it
+    plays while the Benito Villamarín is rebuilt (the La Liga table, the
+    club's English infobox, StadiumDB and La Cartuja's tenant list; the
+    row says to empty it when Betis goes home). **FC Andorra** is drawn
+    at the **Estadi de la FAF** in Encamp, opened 2025 (Wikidata still
+    names the old Estadi Nacional), and is **the Monaco shape** - `P17`
+    Andorra, flagged every run, kept because it plays in the Spanish
+    pyramid; its row says so. **Celta Fortuna** is at Balaídos, not the
+    Barreiro its `P115` names. **RCD Espanyol** is the Freiburg shape
+    (the RCDE Stadium and the Estadi de Sarrià, demolished 1997) and is
+    pinned. **Rayo Vallecano** played at Butarque while its Vallecas
+    ground was closed; the La Liga article says the ban was lifted on 14
+    September 2026. The map already had Vallecas, and StadiumDB agrees.
+  - **Capacities, the UTA Arad rule.** Corrected: **Barcelona** 105,000
+    → **62,652** (Wikidata held the post-rebuild figure), **Cádiz**
+    26,000 → **20,724**, **Leganés** 11,454 → **14,422**, **Burgos**
+    16,000 → **12,194** (the table and OpenStreetMap's 12,642 agree;
+    StadiumDB's 11,380 not taken - without OpenStreetMap this one would
+    have stayed contested); filled:
+    **Eldense 5,776**; with the ground changes, **Betis 70,000** and
+    **Andorra 5,108**. **Left alone, contested**: Espanyol (Wikidata
+    and the ground's infobox 40,500 against the table and StadiumDB
+    37,776 - two and two, the AEL shape; pinned only so it cannot flap),
+    Villarreal (24,891 / 23,008 / 21,332), Almería (22,000 on Wikidata, 15,000 in the table, 18,331 on
+    StadiumDB and the club's infoboxes - a ground being rebuilt, and
+    Wikidata's label still names the old Juegos Mediterráneos) and Real
+    Sociedad B (blank; the table's 4,000 against 2,500 twice).
+    **The map stands where StadiumDB is the outlier**: Real Madrid,
+    Getafe, Celta and Celta Fortuna; and Mallorca, where the map and
+    StadiumDB agree (25,736) against the table's 23,142.
+  - **StadiumDB covers Spain well, and that was measured, not carried
+    over from another country.** `/stadiums/esp`: 89 grounds, a ground
+    for 40 of the 42 clubs (not FC Andorra, not Real Sociedad B). The
+    matcher paired 31: 25 agree, 6 differ, 11 not matched by name
+    (Mallorca's "Real CD Mallorca", Gijón's "Real Gijón" and the like).
+    Unmatched is still unchecked, never agreement.
+  - **OpenStreetMap, two runs on the branch.** The first: Spain
+    `WRITTEN`, 42 clubs, 6 agree, 3 differ - and **Austria `UNCHANGED`**
+    (HTTP 504), so it was not a pass. Burgos was the difference it
+    settled (above). The second, after the rebuild: **all nine countries
+    `WRITTEN`**; Spain 7 agree, 2 differ, 31 Wikidata only, 1 neither, 2
+    with no OpenStreetMap stadium within 500 m (one is Real Sociedad B,
+    4.7 km from the nearest - Zubieta is a training complex; nobody has
+    looked at which pitch the tags miss). The two that differ are
+    OpenStreetMap as the outlier: Barcelona (99,354, the post-rebuild
+    figure again) and Cádiz (25,033), against the table and StadiumDB.
+    Spain has more to compare than Italy or Romania: 1,829 stadiums, 68
+    with a usable capacity.
+  - **Fixtures: 15 of 20 La Liga clubs link to football-data.org's PD**,
+    which was already fetched. **Five are abbreviations the matcher
+    rightly refuses**, and each needs one `link` row in
+    `fixture-links-manual.csv` - **Alexandru's call**, so none was
+    written: Real Madrid (`Q8682` → football-data 86 "Real Madrid CF"),
+    Atlético Madrid (`Q8701` → 78 "Club Atlético de Madrid"), Osasuna
+    (`Q10286` → 79 "CA Osasuna"), Deportivo de A Coruña (`Q8760` → 560
+    "RC Deportivo La Coruña") and Racing de Santander (`Q12236` → 5335
+    "Real Racing Club de Santander"). The Segunda División has no
+    fixture source; the club sheet says so. **All five rows were added
+    on 2026-09-30 on Alexandru's instruction**, the Le Mans way, and La
+    Liga is 20 of 20 linked; each club's sheet was opened in the real
+    page and lists its fixtures (Real Madrid and Atlético their
+    Champions League ones too).
+  - **Found on the way, not Spanish: the roster reader ran a footnote
+    mark into a capacity.** `check_rosters.py` read a capacity cell as
+    every digit in it, so "19,840 [7]" became 198,407. Spanish tables
+    footnote nearly every capacity. It now sets the mark aside and gives
+    no figure for a cell with two ("14,500 14,708", Rayo's two grounds).
+    No other country's `roster-review.csv` row changed.
+
+- **The 2026-09-30 pass: Asteras Tripolis B linked, Lotru Brezoi and
+  Victoria Ineu off the map, and the capacity cross-check saved country
+  by country.** Three instructions from Alexandru. The Wikipedia reads
+  went through four throwaway probes on a runner (removed in the same
+  branch); the sandbox still answers 403 to CONNECT for Wikipedia.
+  - **Asteras Tripolis B is one club, `ok`.** The 2026-27 Super League
+    Greece 2 table row reads exactly "Asteras Tripolis B" and links the
+    parent club, Asteras Tripolis F.C. (`Q757320`) - read on a runner
+    with the roster reader's own functions before the line was written.
+    Line 5 of `data/roster-links-manual.csv` joins it to `Q135213959`.
+    The roster check on the branch moved exactly that verdict, from
+    `extra-not-in-roster` to `ok`, and nothing else in Greece.
+  - **CS Lotru Brezoi and Victoria Ineu are `skip`ped.** Checked first,
+    as asked, on each club's own Wikipedia pages at their current
+    revisions:
+    - **Victoria Ineu**: the English article's infobox says `league =
+      Liga VI` (its last season row is 2024-25, Liga VI); the Romanian
+      article's infobox says `Liga a VI-a`, and its lead says the club
+      plays in Liga a VI-a - Arad. Clear.
+    - **Lotru Brezoi has no English article.** Its only page is Romanian,
+      *CS Lotru Brezoi (fotbal)*: infobox `league = IV`, and the text
+      puts it in Liga a IV-a Vâlcea in 2024-25, 16th. Clear about the
+      league; the page names no season later than 2024-25.
+    - **Neither page states a 2026-27 season.** So the removal was
+      backed by one more read: neither club is named by the English
+      2025-26 or 2026-27 Liga III article, by the Romanian *Liga a III-a
+      2025-2026* or *2026-2027*, or by the 2025-26 or 2026-27 Liga II
+      article. One false alarm, recorded so it is not rediscovered: the
+      Romanian 2026-27 Liga III article does name **"Tricotaje Ineu"**,
+      Victoria Ineu's old name (it redirects there), but only in its
+      historical table of 2002-03 promotions.
+    - **The instruction's premise was not quite right, and it matters
+      for the next removal.** It called this "the same standard already
+      used for Hermannstadt and CSM Bacău". Hermannstadt's standard
+      rests on *complete* division lists agreeing on the absence plus an
+      independent reason. Liga III's list is not complete, so that
+      standard cannot be met here. CSM Bacău was never on the map, so it
+      got a whole-club rejection in `coordinate-reviews.csv`, not a
+      `skip`. What was applied is the **FC Bistrița standard**: the
+      club's own page plus Alexandru's instruction. Both rows say so.
+    - The club build on the branch removed exactly these two, both
+      `extra-not-in-roster` rows left `roster-review.csv`, and Romania's
+      tier 3 went from 40 clubs to 38.
+  - **`crosscheck_capacity.py` saves country by country** (Conventions).
+    Checked offline first, with Overpass mocked: a failing country's
+    rows stay byte-identical, every country failing leaves the file
+    byte-identical, and with no file a partial list is written and
+    labelled. **The first real run, across all eight countries, was the
+    test the instruction asked for, and Overpass supplied the failure**:
+    DE, IT and RO answered HTTP 504 and stayed `UNCHANGED`, their rows
+    byte for byte as before. AT, CH, FR, GR and RS were `WRITTEN`. The
+    file's only change was **Greece's first row**, G.S. Marko ("no
+    stadium in OSM within 500m"); the other four countries came back
+    with the same rows they already had. Under the old rule that run
+    would have written nothing.
+    **The second run, straight after, came back complete: all eight
+    `WRITTEN`**, the first complete capacity check since Greece was
+    added. After six failures in a row on 2026-09-29 and 2026-09-30,
+    this is the first run with nothing `UNCHANGED`. Its one change was
+    Victoria Ineu's row going, because the club is off the map. File
+    now: AT 2, CH 2, DE 12, FR 4, GR 1, IT 0, RO 28, RS 5. Greece: 27
+    clubs, 3 agree, 0 differ, 20 Wikidata only, 1 neither, 4 no OSM
+    ground nearby, the same as the two partial runs of 2026-09-29.
+    **Not changed, and worth the look the Greece entry asked for**: the
+    tool's retry behaviour is still the old one (60 s after a busy
+    answer, 30 s after a timeout, three tries, no backoff). Saving per
+    country makes a failure cost less. It does not make one less likely.
+
+- **The 2026-09-29 pass: Greece's top two tiers on the map, the
+  league-tag end date measured in every country, the shape-5 join
+  checked, and the Ub ground kept unplaced.** Four instructions from
+  Alexandru in one session, run through five throwaway probes on a
+  GitHub runner (removed in the same branch), because the sandbox still
+  answers 403 to CONNECT for Wikidata, Wikipedia, StadiumDB and
+  OpenStreetMap.
+  - **The Aue / Babelsberg / Augsburg join is structural, and the
+    premise that Augsburg "broke again" was not quite right.** The join
+    in `check_rosters.py` reads `P831` (parent club) on every map club a
+    roster does not name, in every country, and joins it to the roster's
+    club by Q-id; nothing in it names a club. Read back through the
+    history of `roster-review.csv`: **Augsburg never broke.** It read as
+    two findings (`missing-from-wikidata` under `Q15755`,
+    `extra-not-in-roster` under `Q97905916`) on every single run from
+    2026-09-20 until the join landed on 2026-09-27. What was "resolved"
+    on 2026-09-20 was the **map** - Augsburg drawn once, under the item
+    that works, and protected from cleanup - and that never changed. The
+    roster check's double count was **documented as permanent** then,
+    with `_sameNameOnMap` as the only mitigation, and that annotation
+    could not do the job: it compares names exactly and the `extra`
+    branch never looked at all. So the lesson is about wording: an
+    entry that says a club is settled should say *which* finding is
+    settled. **What the join still does not cover, so a fourth case is
+    loud rather than silent:** a team item with no `P831` (Babelsberg's
+    also has `P361`; a pair linked only that way would not join), and a
+    team item on the map at a different tier from the one its club
+    item's roster names - the join only looks within one country and
+    tier. Either reads as a missing club and an extra one, two findings
+    on every run, which is how the first three were found. Greece's team
+    items (AEK, Aris, Olympiacos, PAOK and others are all `men's
+    association football team` items with `P831` to a multi-sport
+    parent) are the items the rosters link, so nothing needed joining.
+  - **The league-tag end date (`P582`) was measured in all seven
+    countries, and it is NOT the main driver of Serbia's cleanup - the
+    earlier entry said so and was wrong.** Asked of Wikidata directly:
+    every club whose **truthy** mapped `P118` statements (what the club
+    query reads) decide its tier through a tag whose end date has passed,
+    dissolved clubs left out because the `P576` gate already drops them.
+
+    | | clubs with a truthy mapped tag | tier decided by an ended tag |
+    |---|---|---|
+    | DE | 167 | 3 |
+    | RO | 171 | 4 |
+    | FR | 43 | 2 |
+    | IT | 64 | 3 |
+    | CH | 26 | 3 |
+    | AT | 35 | 6 |
+    | RS | 46 | 6 |
+    | GR | 15 (measured before Super League 2 was mapped) | 0 of those; 2 more found at tier 2 later, Niki Volos and F.S. Kozani |
+
+    **Serbia**: 5 of its 14 skips (BSK Borča, Budućnost Banatski Dvor,
+    Proleter Novi Sad, Proleter Zrenjanin, Sloboda Užice) and 1 of its 6
+    tier corrections (Smederevo) rest on an ended tag. The other nine
+    skipped clubs carry **no end date at all** - honouring `P582` would
+    not have touched them. The Serbian cleanup was heavy because
+    Wikidata's Serbian tags are stale, not because they are dated.
+    **In the other six countries the shape is small and almost all of it
+    is already handled.** Of the 21: 11 already carry a `skip`, a
+    whole-club rejection or a hand tier (VSE St. Pölten, the five old
+    Vienna clubs, Anglo-American Club Zürich, FC Wil, FC Torinese, La
+    Dominante, Hermannstadt, VfR Garching, Babelsberg).
+    - **Two were trivial and the same shape as one already resolved,
+      and are done**: SC Fives (`Q1514915`, Ligue 1 1932-39, merged into
+      Lille in 1944) and the wartime ÉF Reims-Champagne (`Q3590859`,
+      Ligue 1 1943-44, dissolved 1944) - whole-club `rejected` rows in
+      `coordinate-reviews.csv`, the Anglo-American Club Zürich way.
+    - **Two are left, on purpose**: Società Ginnastica di Torino
+      (`Q116949682`, Serie A 1898-1902; its Italian article says only
+      that it "was" a club, no end stated) and ACS Voința Limpeziș
+      (`Q113573418`, Liga III tag ended 2023; no article at all). Both
+      die at the coordinates gate and neither is a confident proposal
+      today. A rejection would rest on the tag alone.
+    - **Two were on the map at tier 3 and wrong, and were Alexandru's
+      call** - *he made it on 2026-09-30 and both are `skip`ped; see the
+      2026-09-30 entry. As first written:* CS Lotru Brezoi (`Q141319965`) and Victoria Ineu
+      (`Q5014471`), both Liga III tags that ended (2006 and 2023), both
+      `extra-not-in-roster`, and their infoboxes say Liga IV Vâlcea and
+      Liga VI Arad. Not skipped, because the Liga III article is not a
+      complete division list, so the Hermannstadt standard cannot be
+      met - the same reason Liga III has been left alone throughout.
+    - **Two would be made WRONG by honouring `P582`**: FC Aarau
+      (Challenge League tag dated 2010-2013) and BSG Chemie Leipzig
+      (Regionalliga tags ending 2018) are both `ok` in their 2026-27
+      division - the end date is the stale part, not the tag. VfR
+      Garching (tier 7 by hand, no roster) would drop off the map
+      entirely, and FC Wil and Smederevo would survive only through the
+      hand-named fallback.
+    **So the fix is not worth doing now, and the scale is the answer.**
+    Switching the club query to honour `P582` would remove about as many
+    right clubs as wrong ones outside Serbia, needs the roster check to
+    catch the ones it wrongly drops, and interacts with LR Vicenza's
+    shape. Per country the remaining bill is two Romanian Liga III clubs
+    (Alexandru's) and two off-map items that harm nothing today. If it is
+    ever built, it is a report first - name each club whose tier rests on
+    an ended tag - not a filter.
+  - **The Ub ground stays unplaced, and the monthly run can no longer
+    offer it.** FK Zemun is off the map by its hand row's `<clear>` and
+    FK Jedinstvo Ub reads `unplaced-no-coordinates`, both confirmed in
+    this pass's build and roster check. But nothing stopped
+    `propose_coordinates.py` from matching "Ub" in a club's name to one
+    of the three unnamed pitches and calling it confident - the
+    Gilortul pitch was exactly that shape. Both clubs now have an `open`
+    row in `coordinate-reviews.csv`, so any proposal for them reads
+    "open - do not paste". The same was done for **Nestos Chrysoupoli**
+    (three unnamed pitches, no named ground) and **Hellas Syros** (one
+    unnamed stadium, six unnamed pitches).
+  - **Greece's top two tiers are on the map: Super League 14 of 14,
+    exact; Super League 2 13 drawn for 16, nothing at the wrong tier,
+    and the three not drawn are off for a named reason.** Same pipeline
+    and standard as the six countries before it; tiers 1 and 2 only.
+    - **The league Q-ids were read, not remembered**: `Q235114` Super
+      League (enwiki *Super League Greece*) and `Q63980269` Super League
+      2 (enwiki *Super League Greece 2*), neither carrying `P3983`. Both
+      2026-27 articles are one stadiums-and-locations table, 14 of 14 and
+      16 of 16 resolved. StadiumDB's slug is `gre` (29 grounds, only 17
+      of them in either division). The box's north, south and east edges
+      are Wikidata's `P1332`-`P1334` on `Q41`; its west edge is set by
+      hand because Wikidata's westernmost point is on the mainland and
+      Corfu lies west of it (written in `COUNTRY_BOX`'s comment).
+    - **Greek tags are the best-kept of the seven countries**: most
+      clubs carry a dated history with the current league preferred, so
+      the truthy tag is usually right. Every item carrying either tag at
+      any rank was listed and read. Two exceptions, both the end-date
+      shape: **Niki Volos** (`Q3180055`), whose only mapped tag is the
+      Super League 1961-1966 and which has no Super League 2 tag, is at
+      **tier 2 by a hand row** (the FC Wil shape: both articles complete,
+      the club's infobox says Super League 2); and **F.S. Kozani**
+      (`Q3292636`), drawn at tier 2 on a Super League 2 tag that ended in
+      2024, is **`skip`ped** - both articles complete, neither lists it,
+      and its infobox says it was relegated from the Gamma Ethniki to the
+      fourth tier.
+    - **One more rejected before it was proposed**: Kampaniakos
+      (`Q16842502`), Super League 2 tag 2023-2026, no position, infobox:
+      relegated in 2025-26, now in the Macedonia FCA First Division.
+    - **Not-a-club**: the season item *2016-17 Panionios G.S.S. season*
+      carries a Super League tag and would have sat on Panionios's pin;
+      the existing net caught it by type.
+    - **Duplicates: none.** Every tagged item is one club; the three
+      reserve sides (Olympiacos B, PAOK B, Asteras Tripolis B) are their
+      own items. Two genuine shared pins: PAOK B with Apollon Kalamaria
+      at the Kalamaria Stadium, and Asteras Tripolis B with Asteras.
+    - **The roster reader needed a new reserve marker, `b`.** The 2026-27
+      Super League 2 table links "Asteras Tripolis B" to the **parent**
+      club's article - the Rapid II shape - and without the marker the
+      row read as Asteras Tripolis at tier 2. `check_rosters.py` now
+      leaves it out and names it. Checked before it went in: no club on
+      the map or in any roster had "b" as a word of its name, and no
+      other country's verdict moved.
+    - **Asteras Tripolis B (`Q135213959`) was on the map but read
+      `extra-not-in-roster`, and one line would fix it - Alexandru's
+      call.** *He made it on 2026-09-30 and the line is in; see that
+      day's entry. As first written:* Its English label was just "Asteras Tripolis"; its Greek
+      label is "Αστέρας Τρίπολης Β΄", its description says reserve
+      section, its `P831` is the first team. A hand row gives it that
+      name, so the shared pin does not read as one club twice. The line
+      that would join the table row to it - `2026–27 Super League Greece
+      2,Asteras Tripolis B,Q135213959,...` in
+      `data/roster-links-manual.csv` - is an identity claim and was not
+      written.
+    - **Rank blind spot, all three shapes.** No deprecated or preferred
+      "no league" Greek item. Query C finds six (Apollon Smyrnis, PAS
+      Giannina, PAS Lamia, Makedonikos, Panargiakos, Tilikratis
+      Lefkadas), every one a relegated club with its new lower league
+      correctly preferred; **bill 0**.
+    - **Grounds**: **Panathinaikos** carries two grounds at the same
+      rank (the Freiburg shape; the query returned only one row this
+      time, so the run report did not name it) and is **pinned to the
+      Olympic Stadium, 69,618** - the table, the club's infobox and
+      StadiumDB agree; the Leoforos is Kifisia's from 2026 and Kifisia is
+      drawn there. **Not placed**: Nestos Chrysoupoli and Hellas Syros
+      (above), and **A.P.S. Zakynthos**, `held` on the one OpenStreetMap
+      pitch named "Zakynthos Municipal Stadium" - the table and Wikidata
+      name that ground, but the club's own infobox names a different one.
+    - **Capacities, the UTA Arad rule**: **AEK** 34,000/31,100 (Wikidata
+      carries both) → **32,500** (table and StadiumDB); **Asteras
+      Tripolis** (and its B side, same ground) 7,616 → **7,423** (table,
+      StadiumDB and both infoboxes). **Left alone, contested**: AEL
+      (Wikidata and the stadium infobox 17,118 against the table and
+      StadiumDB 16,118 - two and two), Atromitos (map 10,200 with
+      StadiumDB 10,000, against the table's 9,050), Karditsa (13,000 on
+      Wikidata against 3,500 three times, all Wikipedia) and Kallithea
+      (4,200 against 6,300, both Wikipedia's figure being one source).
+      Marko's is blank: 3,000 appears only on Wikipedia. StadiumDB's
+      review adds Panthrakikos (its 3,000 is the outlier against 6,198
+      twice) and Apollon Kalamaria (7,000 against 6,500, the map agreeing
+      with the table). **Silence is not agreement**: StadiumDB has
+      nothing for at least nine of the thirty clubs.
+    - **Fixtures: none.** football-data.org's free tier carries no Greek
+      competition; the club sheet says so.
+    - **Merged on Alexandru's instruction, 2026-09-30, although the
+      OpenStreetMap capacity check never came back complete.** Every
+      other check on the branch was green. `Cross-check capacities` ran
+      six times over two days and each run lost a different country to
+      Overpass HTTP 504s (CH; AT, FR and RS; AT; DE; FR; GR and RS), so
+      `capacity-review.csv` was left unchanged each time - correctly, and
+      not a pass by rule 7, so the merge was his call and he made it.
+      Greece was compared in two of the runs, identically both times: 27
+      clubs, 3 agree, 0 differ, 20 Wikidata only, 1 neither, 4 no OSM
+      ground nearby. **The structural point is the one to act on**: with
+      eight countries in one all-or-nothing run, a complete run gets less
+      likely with every country added. `coordinate-review.csv` has been
+      decided country by country since 2026-09-26; `crosscheck_capacity.py`
+      doing the same is the next step, and it is not built. *(Built
+      2026-09-30 - see that day's entry.)*
+
+- **The 2026-09-27 pass: the roster check's double count fixed
+  properly, Serbia's top two tiers on the map, and the Austrian and
+  German questions of 2026-09-26 settled.** Six instructions from
+  Alexandru in one session, all run through throwaway probes on a
+  GitHub runner (six of them, removed in the same branch) because the
+  sandbox still answers 403 to CONNECT for Wikidata, Wikipedia,
+  StadiumDB and OpenStreetMap - and WebFetch is refused for Wikidata too.
+  - **The double count, and the audit of every hand-row club.** The
+    ask: a club present through a hand row and under its real Wikidata
+    id should read as ONE club found. Three shapes were doing it, and
+    each is now joined id to id (see Conventions and Files):
+    - **Rapperswil-Jona and Stade Nyonnais**, the `MANUAL-` shape - now
+      under their real Q-ids through the hand-named fallback.
+    - **FC Erzgebirge Aue and SV Babelsberg 03**, both with hand rows,
+      and **FC Augsburg**, without one - the club-and-men's-team shape.
+      Documented, but still two findings each on every run. Joined on
+      each team item's own `P831` (parent club).
+    - **Young Violets Austria Wien**, a hand-row club reading as one
+      false `extra-not-in-roster` (its table row has no link). Joined by
+      a hand link.
+    **CSC Dumbrăvița was never affected**: its row has carried its real
+    Q-id `Q55618976` since the file's first commit, it corrects a club
+    the query returns, and its verdict was `ok` throughout. Nothing else
+    was silently double-counted. Checked row by row against
+    `roster-review.csv`: the other hand-row clubs with a finding
+    (FC Ismaning, FC Viktoria 1889 Berlin, FSV Optik Rathenow, Germania
+    Egestorf, SV Eichede, SV Heimstetten, TSV 1896 Rain, VfB Auerbach,
+    Wuppertaler SV) each carry ONE `extra-not-in-roster` - tier-4 churn,
+    a real question about the division, not one club counted twice.
+    **Bihor Oradea's pair stays two findings on purpose**: it is two
+    items the sources disagree about, the identity question recorded in
+    its own entry, and joining them would be deciding it. **CSM Olimpia
+    Satu Mare** reads twice under ONE Q-id (`wrong-tier` from Liga II,
+    `extra` from Liga III) - two divisions each saying something true,
+    no hand row involved; unchanged.
+  - **Austria, the seven 2. Liga clubs added** on Alexandru's
+    instruction, each confirmed by the complete 2026-27 2. Liga article
+    and its ground by **the league's own site**, 2liga.at (robots.txt
+    allows everything; one stadium page per team, name, address,
+    capacity). SKU Amstetten (Ertl Glas-Stadion, 3,030), SC Schwarz-Weiß
+    Bregenz (its own `P115`; capacity contested, 12,000 against the
+    league's 5,000, left as Wikidata has it), Floridsdorfer AC (FAC-Platz,
+    3,000), ASK Voitsberg (Münzer Bioindustrie Sportpark, the
+    Hans-Blümel-Stadion's item for the position; capacity blank), FC
+    Hertha Wels (EWW Stadion, 3,000 - the HUBER Arena item sits on the
+    same spot), SK Rapid Wien II (Allianz Stadion, Rapid's pin and
+    Rapid's 28,600) and SK Sturm Graz II (**Solarstadion Gleisdorf** - the
+    league site, the German infobox and article against the English
+    table's Merkur Arena; position from OpenStreetMap; capacity blank).
+    Rapid II and Sturm II are read by the roster check through hand
+    links, because the article links their parent clubs.
+  - **The Tivoli carries one figure, 16,008, on WSG Tirol and FC Wacker
+    Innsbruck.** The league's own pages for both clubs, the 2026-27
+    Bundesliga table and StadiumDB agree exactly. Not taken: 17,000,
+    which WSG's own stadium page gives as the total with standing places
+    (15,200 seats), and the 2. Liga table and the stadium's articles
+    repeat; 17,400, Wikidata's. Both rows say so.
+  - **FC Liefering's ground is the Red Bull Arena**, the map's all
+    along - the league's own team page is the third source that settles
+    the two-to-one split; the Untersberg-Arena was a tenancy in 2014-15
+    and 2018-20 (German article). Its capacity now matches Salzburg's
+    row for the same ground, 30,188, instead of Wikidata's 31,895.
+  - **The five old Vienna clubs are gone, checked rather than left
+    open**: FC Wien dissolved in 1973; SC Wacker Wien and SK Admira Wien
+    merged in 1971 into FC Admira/Wacker (on the map as Admira Wacker);
+    Brigittenauer AC's first team was dissolved in 1933 and the club
+    merged away in 2009, its name gone; the Vienna Cricket and
+    Football-Club still exists but plays no football. German Wikipedia
+    for each, read on a runner. Each has a whole-club `rejected` row in
+    `coordinate-reviews.csv`, the Wiener AC way - they have no
+    coordinates, so a `skip` is not needed while that holds.
+  - **BFC Dynamo is pinned to the Sportforum, capacity blank** -
+    Alexandru's decision to prefer Wikipedia's two infoboxes over
+    StadiumDB's Jahn-Sportpark listing at a tier where StadiumDB is
+    thin. The position is the Sportforum's own item `Q551837`.
+  - **Serbia's top two tiers are on the map: SuperLiga 13 of 14 and
+    First League 15 of 16 drawn, nothing extra and nothing at the wrong
+    tier, and the two not drawn are off for a named reason.** Same
+    pipeline and standard as the six countries before it; tiers 1 and 2
+    only, the Serbian League and below deliberately untouched.
+    - **The league Q-ids were read, not remembered**: `Q235307` SuperLiga
+      (`P3983` 1, enwiki *Serbian SuperLiga*) and `Q1813595` First League
+      (enwiki *Serbian First League*, **no** `P3983`). Both 2026–27
+      articles are one stadiums-and-locations table, 14 of 14 and 16 of
+      16 resolved directly, and each has a Team changes table that
+      turned out to be the most useful thing on the page. StadiumDB's
+      slug is `ser` (`srb` is a 404), 29 grounds - bare coverage, so
+      silence there is unchecked, never agreement. The country box's
+      north, east and west edges are Wikidata's own `P1332`/`P1334`/
+      `P1335` on `Q403`; its south edge sits below Preševo, because
+      Wikidata's southernmost point is in Kosovo. Labels are asked in
+      English first, then Serbian Latin (Conventions-level reasoning in
+      `COUNTRY_BOX`'s comment); Cyrillic is never asked for.
+    - **Serbia is where the club query's blindness to end dates bites
+      hardest.** Every item carrying either tag at any rank was listed
+      (86 statements, about sixty items) and read against both articles,
+      `P576` and its own English infobox. Most Serbian league tags carry
+      `P580`/`P582` qualifiers, and **the club query does not read
+      `P582`**, so a tag that ended in 2013 counts as current. The result
+      read before any build: **fourteen items would have been drawn**
+      in a division they left - five at tier 1 - and nine more would
+      have been offered as coordinate proposals next month.
+      - **`skip`ped, fourteen**, each to the Hermannstadt standard (both
+        articles complete, neither lists it, an infobox states the
+        reason): at tier 1 **FK BSK Borča** (Belgrade First League),
+        **FK Budućnost Banatski Dvor** (dissolved 2006),
+        **FK Proleter Novi Sad** (dissolved 2022, and it was on
+        Vojvodina's pin), **FK Proleter Zrenjanin** (dissolved 2005) and
+        **FK Sloboda Užice** (Serbian League West); at tier 2 **FK
+        Bežanija**, **FK Inđija**, **FK Mladost Novi Sad** (withdrew),
+        **FK Rad**, **FK Sloga Kraljevo** (dissolved 2025), **FK Timok**,
+        **OFK Bačka**, **OFK Mladenovac** and **RFK Novi Sad 1921**.
+      - **Rejected before they were ever proposed, nine**, whole-club
+        rows in `coordinate-reviews.csv`: OFK Bečej 1918, FK Bačinci
+        (merged 2010), FK Jedinstvo Putevi, FK Kolubara, FK Radnički
+        Nova Pazova, FK Sloga 33, FK Srem, FK Tekstilac Odžaci (relegated
+        to the Serbian League, the First League article's own Team
+        changes table says) and FK Zlatibor Čajetina.
+      - Three more carry `P576` and the gate already drops them: FK
+        Hajduk Kula, FK Banat Zrenjanin, FK Sevojno.
+      **Whether the club query should honour `P582` is Alexandru's call**
+      and is written here rather than built. It would have saved most of
+      the fourteen rows. *(Measured 2026-09-29 and that was wrong: five
+      of the fourteen skips, and one of the six tier corrections, rest on
+      an ended tag; the other nine skipped clubs carry no end date at
+      all. See the 2026-09-29 entry.)* It would also change what every country's
+      builder sees, and LR Vicenza's shape rests on a preferred tag with
+      an end date, so it needs measuring across all seven countries
+      before anyone switches it on.
+    - **Six tiers corrected by hand, all reviewable**, each on two
+      complete division lists plus the club's own infobox, and for five
+      of them the Team changes table too - the FC Wil shape: **FK Javor
+      Ivanjica, FK Napredak Kruševac, FK Spartak Subotica and FK TSC** to
+      tier 2 (relegated from the 2025–26 SuperLiga, their preferred
+      SuperLiga tags stale), **FK Smederevo 1924** to tier 2 (a SuperLiga
+      tag dated 2009–2013), and **FK Mačva Šabac** to tier 1 (promoted,
+      its preferred First League tag stale).
+    - **Seven promoted clubs whose tags did not follow reach the map
+      through the hand-named fallback**, each under its own Q-id: FK
+      Zemun (tier 1), FK Bor 1919, FK Loznica, FK Proleter 023 (a new
+      item for a club refounded on 9 July 2026 - not Proleter Zrenjanin),
+      GFK Dubočica, OFK Vršac and RFK Grafičar Beograd (tier 2).
+    - **Grounds are where the matches are played, read from the leagues'
+      own schedules.** superliga.rs and prvaliga.rs (robots.txt allows
+      the team and schedule pages) list a venue for every match, and for
+      four clubs that settled a disagreement between the club's
+      registered ground - Wikidata, the league's team page, the Serbian
+      infobox - and the one it actually uses in 2026–27:
+      **OFK Beograd** at the Serbian FA's centre in Stara Pazova (both
+      home games so far; the Omladinski is its own), **FK IMT** at the
+      Lagator in Loznica (sharing FK Loznica's pin, genuinely),
+      **FK Bor 1919** at the Mladost in Kruševac, 170 km from Bor (two of
+      its three home games, sharing Napredak's pin) and **FK Zemun** in
+      Ub, below. **FK Železničar Pančevo** (SC Mladost, all six home
+      games), **FK TSC**, **FK Mačva** and **OFK Vršac** were placed from
+      their own ground items or OpenStreetMap, and **RFK Grafičar** on
+      Red Star's auxiliary pitch, sharing Red Star's pin.
+    - **Two clubs are off the map, named, because nobody knows where
+      the ground is**: **FK Jedinstvo Ub** and **FK Zemun** play at the
+      Stadion "Dragan Džajić" in Ub. Its Wikidata item `Q110045992` has
+      no position and OpenStreetMap maps three unnamed full-size pitches
+      in Ub and no grandstand, so which is the stadium is a guess, and a
+      guess is not a pin. Zemun's hand row clears the position it would
+      otherwise take from its own ground in Zemun, where no 2026–27
+      match has been played; Jedinstvo has no position anywhere and is
+      `unplaced-no-coordinates`. Two halves of one coordinate, from any
+      source that names the Ub ground, bring both back.
+    - **Duplicates: none.** No men's-team item, no two items for one
+      club; three shared pins, each genuine (Lagator, Mladost Kruševac,
+      the Rajko Mitić complex). **Hidden leagues**: no preferred
+      `<novalue>`; query C's two Serbian candidates, FK Donji Srem and FK
+      Jagodina, are named by no roster - bill 0.
+    - **Capacities: nothing corrected, and the reasons are written
+      down.** StadiumDB's four Serbian rows: **FK Crvena zvezda** 55,538
+      (Wikidata) / 51,755 (StadiumDB) / 49,167 (the SuperLiga table) and
+      **FK Novi Pazar** 12,000 / 6,900 / 10,000 - no two within 5% in
+      either, so contested and unchanged; **FK Javor Ivanjica**, where the
+      map's 5,000 agrees with the table and StadiumDB's 3,000 is the
+      outlier; and **FK Proleter 023**, where StadiumDB matched the wrong
+      ground - its "Proleter" at the Karađorđe in Novi Sad is the
+      dissolved Proleter Novi Sad, and the map's Zrenjanin figure stands.
+      OpenStreetMap confirms almost nothing, Romania's and Italy's shape:
+      of 28 clubs, 1 agrees, 18 have a Wikidata figure only. Five
+      capacities are blank on purpose (Mačva, Železničar, OFK Beograd,
+      Vršac, Grafičar), each because its only figures are one source's.
+      The OpenStreetMap cross-check needed **three runs** on the branch
+      before one came back complete - Austria and Germany answered HTTP
+      504 on the first, Serbia on the second, and each time the review
+      file was rightly left alone. The complete run found no disagreement
+      in Austria, Switzerland or Serbia. It did find **no stadium within
+      500 m of OFK Beograd's SC FSS pin**, so that position rests on the
+      Serbian FA centre's own Wikidata item alone - worth a look. (It
+      also found OpenStreetMap's "Stadion im Sportforum" 63 m from BFC
+      Dynamo's new pin.)
+    - **Fixtures: none.** football-data.org's free tier carries no
+      Serbian competition; the club sheet says so.
+
+- **Austria's top two tiers are on the map, 2026-09-26: Bundesliga 12
+  of 12, exact; 2. Liga 9 of 16, with nothing extra and nothing at the
+  wrong tier, and each of the seven missing is missing for a named
+  reason.** Same pipeline and standard as the other five countries, run
+  on a GitHub runner through four throwaway probes (removed in the same
+  branch). Tiers 1 and 2 only; the Regionalliga and below were
+  deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q219592`
+    Bundesliga (`P3983` 1, enwiki *Austrian Football Bundesliga*) and
+    `Q650236` 2. Liga (enwiki *2. Liga (Austria)*; it carries **no**
+    `P3983`, and its 2025–26 season item's `P3450` points at it).
+    StadiumDB's slug is `aut` (`austria`, `at` and `ost` are 404s). The
+    2. Liga row in `league-rosters.csv`, parked since the design pass
+    under its corrected title, is now live. Both articles are one
+    stadiums-and-locations table: 12 of 12 resolved (one through a
+    redirect), and 16 rows in the 2. Liga table.
+  - **The 2. Liga table links three reserve sides wrongly, and the
+    roster check now says so instead of believing it.** Reserve sides
+    have no English article, so "SK Rapid II" links SK Rapid Wien,
+    "Sturm Graz II" links SK Sturm Graz, and "Austria Wien II" has no
+    link at all, so the row's first link was the **city of Vienna**. Read
+    as written, that made Rapid and Sturm `wrong-tier` and Vienna a
+    division member. `check_rosters.py` now leaves out both row shapes
+    and names them in its run summary (see Files). It changed five
+    Romanian verdicts too - see the Liga III entry.
+  - **What the first build brought, 25 clubs against 28 teams:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 14 | 11 |
+    | after this pass | **12** | **9** |
+  - **Two tier-1 extras.** **FC Blau-Weiß Linz `Q696525`** is at tier 2
+    by a hand row: its only `P118` is the Bundesliga, the complete
+    Bundesliga article omits it, the complete 2. Liga article lists it
+    and says it was relegated, and its infobox agrees - the FC Wil
+    shape, reviewable. **VSE St. Pölten `Q731715`** is `skip`ped: a
+    Bundesliga tag dated 1988–1994, no `P576`, drawn at tier 1 at the
+    Voithplatz; the German infobox says *aufgelöst 1998*. Shape 4.
+  - **Four tier-2 extras `skip`ped** to the Hermannstadt standard (both
+    articles complete, neither lists them, an infobox or the article
+    states the reason): **FC Gratkorn** `Q697322` (Unterliga Central),
+    **FC Juniors OÖ** `Q1387445` (Regionalliga), **FC Lustenau 07**
+    `Q692186` (Regionalliga West) and **SK Austria Klagenfurt**
+    `Q699184`, relegated to the third tier after an insolvency
+    application, which the 2. Liga article itself says.
+  - **SV Austria Salzburg `Q22866` placed** at the Max Aicher Stadion,
+    1,566 (2. Liga table, StadiumDB and infobox agree; the position is
+    the ground's own item, `Q20180568`). It was `unplaced-no-coordinates`.
+  - **Young Violets Austria Wien `Q60967849` is Austria Wien II and
+    stays.** The roster check will keep calling it `extra-not-in-roster`,
+    because its table row has no link and so names no Q-id. A note-only
+    row says so. *(Since 2026-09-27 a hand link in
+    `roster-links-manual.csv` joins that row to `Q60967849` and the check
+    reads one club in its division - see the 2026-09-27 entry.)*
+  - **The seven 2. Liga teams still missing, and why** - *all seven were
+    added on 2026-09-27, on Alexandru's instruction, through the
+    hand-named fallback; see the 2026-09-27 entry. What follows was true
+    when written:*
+    - **Five promoted clubs whose tags did not follow** - SKU Amstetten
+      `Q2206406`, SC Schwarz-Weiß Bregenz `Q699686`, Floridsdorfer AC
+      `Q696474`, ASK Voitsberg `Q297832` (each tagged with a Regionalliga
+      only) and FC Hertha Wels `Q63168427` (no `P118` at all). The
+      Rapperswil-Jona shape exactly: `missing-from-wikidata`, and only a
+      no-Q-id add row reaches them, at two false roster findings each.
+      **Not added**, because Alexandru's instruction to use that route
+      named the two Swiss clubs only. **His call.**
+    - **SK Rapid Wien II `Q98228613` and SK Sturm Graz II `Q98217947`**
+      exist on Wikidata but carry no 2. Liga tag, and the article links
+      their parents, so the roster check cannot name them either. Rapid
+      II plays at the Allianz Stadion (German infobox); Sturm II's
+      German infobox names the Solarstadion Gleisdorf **and** the
+      Stadion Donawitz, so its ground is not settled.
+  - **Capacities: seven written, and each note names every figure.**
+    By the UTA Arad rule: Red Bull Salzburg 31,895 → **30,188**, Grazer
+    AK and Sturm Graz 15,400 → **16,364** (they genuinely share the
+    Merkur Arena), TSV Hartberg 4,500 → **5,024**, WSG Tirol 17,400 →
+    **16,008**. Filled where Wikidata had none: SK Rapid Wien **28,600**,
+    FC Blau-Weiß Linz **5,595** (StadiumDB and infobox; OpenStreetMap's
+    5,565 on the first branch run agrees too). **LASK's ground was wrong**: Wikidata's
+    `P115` is the old Linzer Stadion (1952, 18,000); the club has played
+    at the **Raiffeisen Arena**, rebuilt on the same site, since 2023 -
+    19,080 on three sources, its own item `Q116693275` for the position.
+    **Left alone**: Admira Wacker (12,000 / 10,600 / 7,010, no two
+    agree), SC Austria Lustenau (8,800 on Wikidata against 5,138 on
+    English Wikipedia twice - one source), Wolfsberger AC, First Vienna
+    and Kapfenberg (the map agrees with one other source), and **FC
+    Wacker Innsbruck**, which shares the Tivoli with WSG Tirol: its own
+    division's table (17,000) agrees with Wikidata (17,400), so by the
+    same rule its figure stands - **one ground now carries two figures on
+    two rows**, written down in WSG's note rather than smoothed over.
+    *(Settled 2026-09-27 on Alexandru's instruction: 16,008 on both, the
+    league's own figure for both clubs - see the 2026-09-27 entry.)*
+    **FC Liefering** is drawn at the Red Bull Arena (Wikidata's `P115`,
+    a copied first-team ground); the 2. Liga table says the
+    Untersberg-Arena in Grödig, its English infobox lists both, and
+    StadiumDB has neither for Liefering. Two against one, not
+    corrected; worth a look. *(Settled 2026-09-27 by a third source, the
+    league's own team page: the Red Bull Arena, so the map was right; its
+    capacity now matches Salzburg's row for the same ground.)*
+  - **StadiumDB's Austrian page has 27 grounds, and is as thin as
+    measured in 2026-09-19.** It has nothing for SC Austria Lustenau,
+    Liefering's Untersberg-Arena or Wacker Innsbruck by name. After the
+    corrections its review file holds three Austrian rows: Admira
+    (contested), First Vienna (map agrees with the table) and Altach (a
+    sponsor's name). **Silence is not agreement**, as for Switzerland.
+  - **The rank blind spot, all three shapes.** Query C's only Austrian
+    candidate is SC Wiener Neustadt `Q134073`, bill 0 (1. Landesliga
+    per its infobox). No Austrian item carries a preferred `<novalue>`.
+    One carries a tracked league at deprecated rank, ASV Hertha Wien,
+    dissolved 1940.
+  - **The stale-active-club pattern (shape 6) was looked for.** Every
+    item carrying either Austrian tag at any rank was listed (61
+    statements, about fifty items) and
+    read against both articles, `P576` and its infobox. Three would have
+    been offered as coordinate proposals and now have whole-club
+    `rejected` rows in `coordinate-reviews.csv`: **SV Horn** `Q689889`
+    and **SV Lafnitz** `Q15137936` (alive, in the Regionalliga - the
+    relegated relative of shape 6) and **Wiener AC** `Q581990` (no
+    longer plays football). **Five more are Alexandru's call** -
+    *checked on his instruction on 2026-09-27 and all five are gone
+    (dissolved, merged away, or no longer playing football), each now a
+    whole-club rejection; see the 2026-09-27 entry. As first written:*
+    Brigittenauer AC, FC Wien, SC Wacker Wien, SK Admira Wien and the
+    Vienna Cricket and Football-Club carry Bundesliga tags **dated**
+    between 1911 and 1971, no `P576`, and no coordinates, so they are
+    off the map today and may be proposed next month. Their only
+    evidence of being gone is those dates and their absence from both
+    articles, and the La Dominante precedent looked for an infobox as
+    well - none of them has one that says so. **The club query does not
+    read `P582` on a league tag**; that is why a 1930s tag counts as
+    current.
+  - **Fixtures: none.** football-data.org's free tier carries no
+    Austrian competition and OpenLigaDB is German only; the club sheet
+    says so.
+
+- **Two truthy grounds on one club item - the SC Freiburg shape - was
+  looked for in every country on 2026-09-26, and it is on six clubs on
+  the map, not one.** CLAUDE.md said Freiburg's ground "moved" because
+  Wikidata was catching up; that was asserted, not checked, and it was
+  a flap (see the Italy entry). The question asked this time: which
+  club, in any mapped league of all six countries, carries two or more
+  `P115` values at its best rank. `fetch_clubs.py` builds a club from
+  whichever query row arrives first, and the query service promises no
+  order, so such a club's ground can change between rebuilds - and
+  worse, the builder can take the **name** from one ground's row and
+  the **capacity or position** from the other's. **Two clubs were
+  drawing exactly that mixed record** when looked at.
+  **Every rebuild now names these clubs** and says whether a hand row
+  pins each one. The remedy, as for Freiburg, is a hand row with venue,
+  capacity, lat and lon, and only on **three sources agreeing**.
+
+  | club | Wikidata's two grounds | what the map showed | now |
+  |---|---|---|---|
+  | SC Freiburg | Dreisamstadion; Europa-Park-Stadion | alternated | pinned 2026-09-26 (earlier pass) |
+  | Borussia Dortmund II | Rote Erde; Westfalenstadion | Rote Erde's name and capacity (a hand row), **the Westfalenstadion's position** | position pinned to Rote Erde's own item: StadiumDB, infobox and the item agree |
+  | VfB Stuttgart II | Robert-Schlienz-Stadion; Waldau | the Waldau, shared with Stuttgarter Kickers | **neither** - the 3. Liga table, StadiumDB and the infobox all say the WIRmachenDRUCK Arena in Aspach, 10,001 |
+  | FC Rapid București | Giulești; Regie | **the Regie**, 10,020 | Giulești, 14,047: Liga I table, StadiumDB and infobox |
+  | FC Lugano | Cornaredo (ends 2026); AIL Arena (starts 2026) | the Cornaredo | the AIL Arena, whose Wikidata item exists after all (`Q140038602`); capacity still cleared, 8,093 against 8,793 |
+  | BFC Dynamo | Sportforum Hohenschönhausen; Jahn-Sportpark | the Sportforum's name and pin **with the Jahn-Sportpark's 19,708** | capacity cleared; ground **pinned to the Sportforum on 2026-09-27**, Alexandru's decision: both Wikipedia infoboxes over StadiumDB, whose coverage at this tier is thin; capacity still blank |
+
+  **Also found, and not a flap today**: Olympique Lyonnais carries the
+  Parc OL and the Stade de Gerland (dated 1950–2015) at the same rank
+  when the statements are read one by one, but the club query itself
+  returned only the Parc OL on 2026-09-26, so nothing was pinned; the
+  rebuild report will say so if that changes. Știința Poli Timișoara
+  has two grounds and was already pinned by hand. **No Austrian club
+  has the shape.** The Waldau is now Stuttgarter Kickers' alone, which
+  corrects the old claim that it was genuinely shared.
+
+- **FC Rapperswil-Jona and FC Stade Nyonnais are on the map at tier 2,
+  2026-09-26, as hand-added clubs with no Q-id - on Alexandru's
+  instruction, and at a cost that is written down.** Switzerland's
+  Challenge League is now **10 of 10 drawn**. Both season articles were
+  re-read first, as he asked: the complete Challenge League article
+  lists both (with 2026-27 results for both), the Super League article
+  names neither except Nyon in its navigation box, under the Challenge
+  League. Rapperswil-Jona is at the **Stadion Grünfeld** (the ground's
+  own item `Q26868807` for the position; capacity **blank** - 2,500,
+  2,700, 3,200 and 4,350 in four places, no two independent ones
+  agreeing). Stade Nyonnais is at the **Stade de Colovray**, 7,200, the
+  ground on its own `P115`.
+  **The instruction's premise was not quite right, and it matters for
+  the next one.** It said to add them "the same way CSC Dumbrăvița was
+  originally added - blank clubQid". Dumbrăvița's row has carried its
+  Q-id, `Q55618976`, since the file's first commit: it **corrects** a
+  club the query already returned, which is why it costs nothing. A
+  row with no Q-id is a different thing - an **add** - and its cost is
+  the one the Switzerland entry named: the roster check joins on Q-ids,
+  so each club now reads as `missing-from-wikidata` under its real
+  Q-id **and** `extra-not-in-roster` under its `MANUAL-` id, on every
+  run. `_sameNameOnMap` does fire on the missing side, because the rows
+  use the article's exact names, so the pair at least points at itself.
+  **A route with no false findings exists and was not built**, because
+  it is a design change and his to choose: a third fallback shape that
+  surfaces a club a current roster names even when none of its tags is
+  mapped, **without a tier**, so that it stays off the map until an
+  ordinary `clubQid` hand row gives it one - the Inter Sibiu rule. It
+  would reach both Swiss clubs and the five Austrian ones above under
+  their own Q-ids.
+  **Built on 2026-09-27, on Alexandru's instruction, as the hand-named
+  fallback** - the same idea, driven by the hand row rather than by a
+  search: the candidates are the Q-ids a hand row names, and the hand
+  row gives the tier (Conventions). Both clubs now carry their real
+  Q-ids and each reads as one club, `ok`, in its division.
+
+- **Switzerland's top two tiers are on the map, 2026-09-26: Super
+  League 12 of 12, exact; Challenge League 8 of 10, nothing extra and
+  nothing at the wrong tier, and the two missing are missing for a
+  named reason.** Same pipeline and standard as Germany, Romania,
+  France and Italy, run on a GitHub runner through four throwaway
+  probes (removed in the same branch). Tiers 1 and 2 only; the
+  Promotion League and below were deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q202699` Super
+    League and `Q669073` Challenge League, each confirmed by its enwiki
+    sitelink and `P3983` 1 and 2. **`Q202699` carries `P17`
+    Liechtenstein** as well; nothing depends on it, because tier comes
+    from `league-tiers.csv`. StadiumDB's slug is `sui` (`swi`, `che`,
+    `switzerland` and `ch` are 404s). The Challenge League article is
+    one stadiums table, 10 of 10 resolved (2 through a redirect). **The
+    Super League article's stadiums table is laid out with the clubs as
+    its header row**, so `check_rosters.py` does not recognise it and
+    reads the league table instead: 12 of 12 resolved, but no capacity
+    column for that division. The table was read by hand in a probe.
+  - **What the first build brought, 24 clubs against 22:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 13 | 11 |
+    | after this pass | **12** | **8** |
+  - **Five tier-2 clubs carried a stale Challenge League tag and are
+    `skip`ped**: FC Biel-Bienne `Q674799`, FC Chiasso `Q668573`, FC
+    Gossau `Q690074`, FC Locarno `Q368675`, FC Wohlen `Q583599`. Each has
+    one `P118`, Challenge League, normal rank, no `P576`. The standard is
+    Orléans/Béziers/Martigues: both articles complete, neither lists
+    them, and each club's own infobox names a lower league (Promotion
+    League, 2. Liga Ticino, 2. Liga Interregional twice, 1. Liga
+    Classic). No tier is written; each row says how to bring the club
+    back.
+  - **FC Wil `Q187091` is at tier 2 by a hand row, and that one is
+    reviewable.** Its only truthy `P118` is Super League, so it arrived
+    at tier 1. The complete Super League article does not list it, the
+    complete Challenge League article does, and the club's infobox says
+    Challenge League. Three reads, two of them complete division lists:
+    the Babelsberg shape, not the Farul one, so it was written rather
+    than left. Still Alexandru's to overrule; emptying the cell puts it
+    back at tier 1.
+  - **Both are on the map since 2026-09-26, as hand-added clubs with
+    no Q-id, on Alexandru's instruction** - see the entry on the
+    Austria pass. What follows is why that was the only route, and what
+    it costs; it is kept as written.
+  - **The two Challenge League clubs still missing, and why neither is
+    fixable by a hand row today.** **FC Rapperswil-Jona `Q681483`**
+    carries only `Q672305` 1. Liga; **FC Stade Nyonnais `Q673268`**
+    carries only `Q25762` Promotion League. Both were promoted and
+    their tags did not follow, so the club query never sees them
+    (`missing-from-wikidata`). Mapping either league would be wrong,
+    since both are genuinely lower tiers. And `apply_manual` rejects a
+    `clubQid` the query did not return, so only an add row with no
+    Q-id would reach them, at the cost of two permanent false findings
+    each. That is the Farul obstacle before the fallback existed.
+    **Alexandru's call**; the roster check names both every run.
+  - **The stale-active-club pattern (shape 6) was looked for, not
+    waited for, and it is here once.** Every item carrying a Swiss tier
+    1 or 2 tag at any rank was listed (112 rows, most of them players,
+    which the `Q5` filter already drops) and each club was checked
+    against both articles, `P576` and its infobox. **Anglo-American Club
+    Zürich `Q339492`**: normal-rank Super League tag, no `P576`, no
+    coordinates, infobox *dissolved 1900*. It dies at the coordinates
+    gate today and would have been offered as a coordinate proposal on
+    the next monthly run; it now has a whole-club `rejected` row in
+    `data/coordinate-reviews.csv`. FC Neuchâtel `Q3063128` carries `P576`
+    1906 and the dissolution gate already drops it. No other Swiss item
+    has the shape.
+  - **The rank blind spot, all three shapes.** No Swiss item carries a
+    tracked league at deprecated rank, and the preferred-`<novalue>`
+    query found nothing. Query C found one: **AC Bellinzona `Q289112`**,
+    Challenge League at normal rank under a preferred statement naming
+    another league. Its bill is 0: the Challenge League article's team
+    changes and its own infobox both say it was relegated to the
+    Promotion League, so it stays off, correctly.
+  - **FC Vaduz is the Monaco shape** (see Conventions): flagged by the
+    country check every run because its `P17` is Liechtenstein, which is
+    true, and kept because it plays in the Super League. A note-only row
+    says so.
+  - **Grounds and capacities.**
+    - **FC Lausanne-Sport was on the wrong ground.** Wikidata's `P115`
+      is still the Pontaise, at 50,000, which the club left in 2020. It
+      is corrected to the **Stade de la Tuilière, 12,544** (Super League
+      table, StadiumDB and the ground's Wikidata item agree), at that
+      item's own `P625`.
+    - **FC Stade Lausanne-Ouchy `Q869907` was placed** at the Pontaise,
+      15,850. Its ground was named by the Challenge League table,
+      StadiumDB and the Pontaise's own tenant list; the coordinate is
+      the Pontaise item's `P625`. It is in the 2026–27 article with no
+      `P576`, checked before the row was written. So the Pontaise pin
+      moved from one Lausanne club to the other, and neither shares.
+    - **FC Sion 16,263 → 14,283**, the UTA Arad rule: the Super League
+      table and OpenStreetMap agree exactly; StadiumDB's 20,187 and
+      Wikidata's 16,263 are recorded as not taken.
+    - **FC Lugano: ground pinned to the AIL Arena on 2026-09-26, capacity
+      still cleared** - see the entry on two grounds. What follows was
+      true when written.
+    - **FC Lugano: capacity cleared, ground open.** No source supports
+      Wikidata's 15,000. The club infobox and the Super League table say
+      the club now plays at the **AIL Arena**, at 8,093 and 8,793
+      respectively (8% apart), and the AIL Arena has no enwiki article
+      or Wikidata item this pass found, so no coordinate. The pin and
+      venue name stay at the Cornaredo. What settles it is the AIL
+      Arena's position and one capacity two sources agree on.
+    - **Two figures, no arbiter, unchanged**: SC Kriens (5,360 on
+      Wikidata and the stadium's infobox, 3,500 in the Challenge League
+      table), Yverdon-Sport (6,600 against 4,200) and Étoile Carouge
+      (7,200 on Wikidata against 3,600 in both the table and the
+      stadium's infobox, which are one source, Wikipedia, twice).
+      **FC Aarau** is the Magdeburg case: 9,249 on the map, StadiumDB
+      and the stadium's infobox, against the table's 8,000.
+    - **FC Zürich and Grasshopper share the Letzigrund**, and that is
+      genuine: StadiumDB and the stadium's tenant list both say so.
+  - **StadiumDB covers Switzerland as thinly as measured in 2026-09-19,
+    and its silence is not agreement.** 17 grounds on the Swiss page. Of
+    the 20 clubs now on the map it has **no figure for eight**: FC
+    Lugano, FC Vaduz (Liechtenstein is not on the Swiss page), FC Wil,
+    Grasshopper (StadiumDB lists the Letzigrund under FC Zürich and
+    "Grasshoppers", and the matcher paired only FC Zürich), SC Kriens,
+    Yverdon-Sport, Étoile Carouge and FC Lausanne-Sport. StadiumDB
+    does list the Tuilière at 12,544, under the club name
+    "Lausanne-Sports", and the matcher, rightly, does not treat
+    "Sports" as "Sport"; that figure was read by hand for the row
+    above. After the corrections the check reads 20 clubs, 9 agree,
+    2 differ (Sion, where StadiumDB is the outlier, and Basel, 38,512
+    against 36,000, where the Super League table's 37,994 sides with
+    the map), 1 ground-name clash (Thun: Stockhorn Arena against
+    Visana Stadion, figures within 5%), 8 not matched. Those eight
+    clubs' capacities rest on Wikidata and at most Wikipedia.
+  - **OpenStreetMap confirms nothing in Switzerland either**: of 24
+    clubs on the first build, 0 agree, 1 differs (Sion, which is what
+    settled it), 18 have a Wikidata figure only and 5 have no OSM ground
+    nearby. Italy's and Romania's shape, not Germany's.
+  - **Fixtures: none.** football-data.org's free tier carries no Swiss
+    competition and OpenLigaDB is German only; the club sheet says so.
+  - **Found on the way, not Swiss**: SC Freiburg's flapping ground (see
+    the Italy entry, corrected), and the OpenStreetMap capacity
+    cross-check hitting HTTP 504 on Germany on its first branch run and
+    leaving its review file unchanged. It was re-run and came back
+    complete before the merge.
+
+- **Italy's top two tiers are on the map, 2026-09-25. Serie A came
+  back exact, 20 of 20; Serie B is 18 of 20 with nothing extra since
+  LR Vicenza was surfaced later the same day, and each of the two
+  still missing is missing for a different, named reason.** Same pipeline and same standard as Germany, Romania and
+  France, run on a GitHub runner because the sandbox still answers 403
+  to CONNECT for Wikidata, Wikipedia and StadiumDB. Tiers 1 and 2 only;
+  Serie C and below were deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q15804` Serie A
+    and **`Q194052`** Serie B, both `P17` Italy. The Serie B id first
+    written from memory, `Q15817`, **was wrong** — the second time in
+    two countries, after France's Ligue 2. The probe is not optional.
+    StadiumDB's slug is `ita` (`italy` and `it` are 404s). Both season
+    articles are one stadiums-and-locations table of 20; Serie B needed
+    the redirect hop for one title.
+  - **Inter and AC Milan: the club pipeline and the ticket files agree,
+    and there is no second candidate.** The club query returns
+    **`Q631`** for Inter and **`Q1543`** for AC Milan — the ids
+    `club-tickets.csv` has carried since 2026-09-24 — and the 2026–27
+    Serie A article's links resolve to the same two. To rule out a
+    duplicate rather than assume there was none, every item carrying a
+    Serie A or Serie B tag **at any rank** whose English or Italian
+    label contains "Inter" or "Milan" was listed: four came back, `Q631`,
+    `Q1543`, and two clubs that are neither — Internazionale Torino
+    (`Q1538737`, 1890s Turin) and US Internazionale Napoli (`Q728986`).
+    No shape-5 team item, no shape-1 duplicate. `link_fixtures.py`'s
+    ticket read-back now says `Q631 … on the map`, joined by Q-id; the
+    only difference it reports is the label, "FC Inter" on Wikidata
+    against "FC Internazionale Milano" in the ticket file, which is a
+    name and not an identity. The two share the San Siro pin, which is
+    right.
+  - **What the first build brought, 48 clubs against 40:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 23 | 25 |
+    | after this pass | **20** | **17** |
+    | after Vicenza, same day | **20** | **18** |
+  - **Eight of the extra items were club SEASONS, not clubs** —
+    *Palermo Football Club 2026-2027*, *Reggina 1914 2020-2021* and
+    six more, each on its club's pin. The Rennes shape in a second
+    spelling: the club's name, then a year range. The not-a-club net
+    in `fetch_clubs.py` now knows the Italian type word `stagione` and
+    a name ending in a year **range** (a club ends in one founding
+    year, "Como 1907", never two). Checked against all four country
+    files before it went in: those eight and nothing else.
+  - **Three were clubs that no longer play at either tier, and are
+    `skip`ped** to the Hermannstadt standard — both division articles
+    complete (20 of 20 each), neither lists them, and an independent
+    statement of the reason: **FC Torinese** `Q534448` (infobox:
+    dissolved 1906; its Serie A tag is dated 1898–1900 but the club
+    query does not read dates), **ChievoVerona** `Q2037` (a stale
+    *preferred* Serie B tag; infobox: Serie D Group B) and **AC La
+    Dominante** `Q3626037` (tag dated 1927–1931; no English article,
+    so the reason is the **Italian** infobox: *Scioglimento 1931*).
+    Chievo was sitting on the Bentegodi beside Hellas Verona, so that
+    shared pin went with it.
+  - **The three missing Serie B clubs were three different things.
+    Two are still missing, and neither is fixable by a hand row today;
+    Alexandru has said to leave both as they are:**
+    - **Carrarese** `Q650365` has no ground and no coordinates:
+      `unplaced-no-coordinates`, the `coordinate-review.csv` route.
+    - **Calcio Padova** `Q8428` carries **`P576` 2014**, so the
+      dissolution gate drops it — while its own infobox says *2025–26
+      Serie B, 10th of 20* and the 2026–27 article links this item.
+      A `P576` for a 2014 bankruptcy and refoundation, on the item that
+      now describes the refounded club. That gate is working as
+      designed and must not be loosened for one club *(SUPERSEDED
+      2026-10-18, on Alexandru's decision: the gate is not loosened, but
+      a hand row may carry `allowDissolved yes`, which lets the
+      hand-named fallback accept a P576 for that one row, roster-gated -
+      see the Conventions entry "The dissolution exception of the
+      hand-named fallback". Padova has that row)*; and
+      `apply_manual`'s guard rejects a `clubQid` the query did not
+      return, so no hand row reaches it *(true until the fallback was
+      built; the row now reaches it that way)*. **Alexandru's call**, and the
+      roster check's `missing-from-wikidata` verdict undersells it —
+      the club is on Wikidata, the gate that removes dead clubs removed
+      it.
+    - **LR Vicenza** `Q56542463` was **a new rank shape** and is now
+      **on the map at tier 2**, surfaced by the fallback's second
+      shape — see the next entry. The roster check reads it `ok`.
+  - **The rank blind spot was checked for Italy rather than assumed,
+    and the first answer was incomplete.** The diagnostic's queries A
+    and B found four Italian items, **all the deprecated shape** and
+    none the preferred-`<novalue>` one: AC Cesena and Nocerina
+    (dissolved, correctly hidden), Brescia Calcio and Lanciano (no
+    `P576`, but in neither 2026–27 article). By those two queries
+    Italy's bill was zero. **Vicenza showed it was not** — see below.
+  - **Capacities: three corrected, one contested, seven with no
+    arbiter.** The UTA Arad rule, exactly: **US Avellino** 10,125 →
+    **26,000** (Serie B table; StadiumDB 26,150 agrees), **Venezia**
+    10,500 → **12,048** (Serie A table and StadiumDB, identical),
+    **Benevento** 25,000 → **16,867** (table and StadiumDB,
+    identical). **Mantova** stays contested: 7,367 / 14,884 / 12,000,
+    no two within 5%. **Fiorentina** and **Cremonese** are the
+    Magdeburg case — the map agrees with a second source and the third
+    is the outlier (StadiumDB's 22,000 for the Franchi; the table's
+    20,641 for the Zini) — so nothing changed. Seven more differ from
+    the league table with no third figure at all: Atalanta, Cesena,
+    Pisa, Ascoli, Empoli, Juve Stabia, Hellas Verona. Two figures, no
+    arbiter, unchanged.
+  - **OpenStreetMap confirms almost nothing in Italy**: of 40 clubs,
+    **1 agrees and 38 have a Wikidata figure only**. Italy is Romania's
+    shape, not Germany's or France's — StadiumDB and the league table
+    are the only second opinions there are.
+  - **Fixtures: 20 of 20 Serie A clubs link to football-data.org's SA**
+    since the evening of 2026-09-25. Seventeen matched automatically;
+    the other three are abbreviations the matcher correctly refuses —
+    **Inter** (football-data 108 "FC Internazionale Milano" against
+    "FC Inter"), **Atalanta** (102 "Atalanta BC" against "Atalanta
+    Bergamasca Calcio") and **Sassuolo** (471 "US Sassuolo Calcio"
+    against "Unione Sportiva Sassuolo Calcio") — and each now has a
+    `link` row in `fixture-links-manual.csv`, added on Alexandru's
+    instruction, the Le Mans way. Checked in the real page: each
+    club's sheet lists its Serie A fixtures, and Inter's its Champions
+    League ones too, beside the ticket info it already had.
+    **The review file still lists all four hand-linked teams** (Le Mans
+    too) as `unmatched-team`: `link_fixtures.py` writes that row before
+    it applies the hand rows, and does not drop it afterwards. It is
+    the same trap as `coordinate-review.csv` offering resolved rows
+    again — the link is right, the review row is stale. Not fixed here.
+    Serie B has no fixture source; the club sheet says so.
+  - **Not Italian, but it moved in the same rebuild**: SC Freiburg's
+    ground went from the Dreisamstadion to the **Europa-Park-Stadion**
+    (34,700), where it has played since 2021. **This entry first said
+    that was Wikidata catching up. That was asserted without being
+    checked, and it was wrong.** It was not a move but a **flap**:
+    `Q106394` carries two truthy `P115` values with nothing between them
+    that the club query reads, and `fetch_clubs.py` keeps whichever row
+    the query service returns first, so the ground alternated on every
+    rebuild since 2026-09-25 (seven checked). A hand row pins the
+    Europa-Park-Stadion, 34,700 (the 2026–27 Bundesliga table, Wikidata's
+    figure for the ground and StadiumDB agree). **Freiburg was not the
+    only one**: the same shape was looked for in every country on
+    2026-09-26 and found on five more clubs on the map, two of them
+    drawing a mixed record - see the entry on two grounds under Known
+    open problems. The first-row-wins choice is still not changed; every
+    rebuild now names each club it touches instead.
+
+- **The 38 confident Romanian rows were judged, 2026-09-26, and the
+  judgement is now remembered.** `data/coordinate-reviews.csv` holds 31
+  decisions and `clubs-manual.csv` seven placements. Wikidata and
+  Wikipedia were read on a runner, the dispatch route, in two probes
+  that were removed in the same branch.
+  - **Placed, seven clubs, every one of them named by a 2026-27
+    roster:** ACS Mediaș 2022, CSO Băicoi and SCM Zalău (Alexandru's
+    instruction, the OpenStreetMap ground confirmed against each
+    club's infobox), CSM Vaslui (same ground as proposed, confirmed
+    by the stadium article's tenant list), and three where the
+    proposal was **wrong** and a different ground was placed:
+    **FC Bacău** at the Ruși-Ciutea Sportsbase (Liga II stadiums
+    table; the proposal was the Stadionul Municipal Bacău, **closed
+    since 2014**), **Gloria Bistrița** at the Jean Pădureanu (the
+    proposal was right; the coordinate is Wikidata's ground item, so
+    it shares one marker with FC Bistrița) and **ACS Înainte Modelu**
+    at the Vasile Enache (the proposal was Dunărea Călărași's own
+    pin). Capacities only where two sources agree: FC Bacău 700,
+    Gloria 7,814.
+  - **Rejected, and never proposed again:** ten grounds that were a
+    nearby but different town's own ground — six were matcher bugs,
+    below — plus Ștefăneștii de Jos's Afumați proposal, which is CS
+    Afumați's Comunal, not a shared ground. **CSL Ștefănești stays
+    unplaced**: its ground is the Stadionul Dumitru Mătărău (Liga II
+    table), whose Wikidata item `Q28230311` has no coordinates.
+    Rejected as whole clubs: **CSM Bacău** and **Sparta Râmnicu
+    Vâlcea** (both dissolved 2025 per English Wikipedia — the
+    Hermannstadt pattern), both Darabani items (the club is in Liga V)
+    and `Q74127553`, the thin Înainte Modelu duplicate.
+  - **Held, 16 rows:** the seven Batch D clubs, the eight Batch C
+    clubs and CS Sporting Juniorul Vaslui. The ground match is kept as
+    a lead and no coordinate was written.
+  - **Batch A and Batch C were not named in the instruction, and which
+    rows they are was inferred.** Batch A is the six rows the two
+    matcher bugs explain (ARO Muscelul Câmpulung, Cozia Călimănești,
+    Avântul Periam, Gilortul Târgu Cărbunești, Recolta Gheorghe Doja,
+    Flacăra Horezu); Batch C is the eight confident rows left over.
+    Every row's reason says which batch it was put in. **If the
+    inference is wrong, the fix is to edit `decision` on those rows.**
+  - **Five held clubs ARE in a 2026-27 roster**, so "no roster behind
+    it" does not hold for them: Bradul Putna (Batch D), CS Blejoi,
+    CSO Filiași, FC Pucioasa and Oltul Curtișoara (Batch C). They
+    are held as instructed. Each row says so. Two Batch C rows also
+    look like the rejected shape: Olimpic Zărnești's pitch is in the
+    **Buzău-county** Zărnești, and Oltul Curtișoara's is the
+    neighbouring village of Moșteni's pitch. The roster check also
+    labels `Q39058326` "FC Aninoasa", not FC Pucioasa.
+  - **Rejected is not the end for two clubs that are playing**: ARO
+    Muscelul Câmpulung and Recolta Gheorghe Doja are in the 2026-27
+    Liga III article and still need their real ground.
+  - **Two matcher bugs, fixed in `propose_coordinates.py`.** (1) A
+    place whose name was only **partly** in the club's name was
+    accepted on its first word: Periam Port, Târgu Jiu, Gheorghe
+    Lazăr, Câmpulung Moldovenesc. A partial match now counts only where
+    the rest of the place name is a German qualifier (`bei`, `am` …,
+    the Garching bei München case it was written for) or in brackets.
+    Romanian and French place names are deliberately **not**
+    shortened: Galda de Jos and Galda de Sus are two villages. (2) A
+    sports hall tagged `leisure=stadium` ("Sala de sport Treapt") was
+    accepted as a ground. An object whose `sport` tag names only other
+    sports, or whose name says hall, pool or rink, is now left out and
+    listed in the run summary. **`athletics` is not one of the "other
+    sports"**: the first real run left out 488 German, 291 French, 211
+    Italian and 13 Romanian objects, and athletics-only stadiums among
+    them, which is often a football ground with a track. Leaving the
+    true ground out can make a wrong one the only candidate, so
+    athletics now counts as possibly football.
+  - **What the rejections turned up on the real run.** With the wrong
+    grounds out of the way, two clubs got a new confident proposal:
+    **ARO Muscelul Câmpulung → Stadionul Muscelul** (OpenStreetMap links
+    that ground to the club's own Q-id — the strongest evidence the tool
+    has) and **Gilortul Târgu Cărbunești → a "Teren de Fotbal" in
+    Târgu Cărbunești**. Three rows are confident for the first time:
+    KSE Târgu Secuiesc, Șoimii Gura Humorului and Lotus Băile Felix,
+    and the last is a **"Teren Minifotbal"**, a small-sided pitch, which
+    is very probably not a club's ground. None of the five was applied;
+    they are new rows to judge.
+  - **Merged on Alexandru's instruction, 2026-09-26, although France
+    did not come back — the session had stopped short of merging.** Both proposal runs on the branch (2026-09-26, 11:01 and
+    11:52 UTC) wrote Germany, Romania and Italy and left France
+    `UNCHANGED`: the same batch of **19 French place names** timed out
+    at Overpass both times (HTTP 504, then a read timeout, on both
+    attempts of each run). The French place lookup runs before any code
+    this branch changed and asks the same names as before, so it is not
+    this branch's failure — but a review file left unchanged because a
+    fetch failed is not a pass, so the merge was his call, and he made
+    it. France's three rows are still run #10's. Twice
+    in a row is not a flake; if it recurs on the monthly run, the next
+    step is splitting France's place lookup into smaller requests, the
+    way Romania's pitch lookup was split.
+    **That next step was the wrong one, and France came back on
+    2026-09-26 — but not cleanly, and the cause is not proven.** Run
+    #13's log showed the failing step was one request of **19 names**,
+    while Germany's single request of 17 names came back in two
+    minutes, so a smaller batch would only have repeated it. The
+    change made instead: the place lookup also stays inside
+    `COUNTRY_BOX` from `fetch_clubs.py`, because France's national
+    boundary includes the overseas departments and its bounding box
+    spans half the globe. On the branch run (15:07 UTC) France was
+    **`WRITTEN`** and all four countries were complete, the first time
+    since run #10. **But France's lookup still timed out four times**
+    (three on the first pass, one on the retry) and came back on the
+    fifth attempt, 17 minutes in. So the box did not make the request
+    fast; it may have made it possible, or Overpass may simply have
+    been less busy. **One success after five attempts is not a fix
+    confirmed.** France's rows were written and are unchanged in
+    content from run #10. If the monthly run leaves France `UNCHANGED`
+    again, one untried idea is to ask for the place lookup with the box
+    alone and no country area. Nobody has measured whether the area is
+    the slow half, and without it a same-named place just over a border
+    could come back as a candidate, so it needs checking before it is
+    built.
+    **Run #16 (the push to `main` after PR #37, 15:18–16:00 UTC) made
+    two more findings, and together they point away from France.**
+    (1) **France came back complete a second time in a row** — `WRITTEN`
+    on #15 and again on #16, the first two in a row since run #10. It
+    was still not clean: the 19-name place request timed out twice
+    (15:38 and 15:42) and came back on the retry pass, 14 minutes in.
+    (2) **Germany's place lookup failed in the same run.** 17 names,
+    inside Germany's box (47.15–55.15 N, 5.75–15.15 E), a compact
+    request with no overseas departments in it: one HTTP 504, then a
+    read timeout, then "17 name(s) did not come back". It came back on
+    the retry pass and Germany was `WRITTEN`, so it failed the first
+    pass and not the run. In run #13 the same German request had come
+    back in two minutes. **It was not only those two**: Romania's
+    whole-country stadium request got three 504s and Romania was left
+    `UNCHANGED` (95 rows kept from the last good run). Italy hit two
+    504s on its place lookup and three on its pitch lookup before
+    finishing. Every country's Overpass steps struggled in that run.
+    **What this changes.** The earlier idea was that France's request
+    shape was the cause: its national area, its overseas bounding box,
+    its 19 names. A German request of about the same size and a much
+    smaller area failing the same way, in the same run, **weakens that
+    idea a lot**. The better-supported explanation is general Overpass
+    server load in a long, heavy run, which hits whichever country is
+    asking at the time. That is better supported, not proven: it rests
+    on one run's log. **So the next look at this tool should be at its
+    retry and backoff behaviour as a whole, not another per-country
+    fix aimed at whichever country failed last.** Three things in
+    `propose_coordinates.py` are worth that look, none of them changed
+    here: the waits are fixed (60 s after a busy answer, 30 s after a
+    timeout, `MAX_RETRIES` 3, a single retry pass) with no growing
+    backoff and no jitter; the client gives up after
+    `TIMEOUT_SECONDS` 180 s while the queries ask Overpass for
+    `[timeout:240]`, so an answer Overpass would deliver between 180
+    and 240 s is thrown away; and there is only one Overpass instance,
+    `overpass-api.de`. Whether any of these is the real limit has not
+    been measured. **The "box alone, no country area" idea above is
+    now less promising**, because it was aimed at France's shape.
+  - **New open questions this turned up, all Alexandru's:**
+    **FC Bistrița `Q24895825` is on the map at tier 3 and dissolved in
+    2017** (English Wikipedia; `roster-review.csv` already reads it
+    `extra-not-in-roster`). Shape 4: the next `skip`, once two division
+    articles and the infobox are read to the Hermannstadt standard.
+    It now shares its marker with Gloria Bistrița, the club really
+    playing there. **Q74127553** is a `skip` candidate (shape 1).
+    **CS Afumați** is drawn at its Comunal ground, but the Liga II
+    table says it plays 2026-27 at the CNAF in Buftea while the Comunal
+    is renovated. That is not changed here.
+  - **Second pass, same day, a separate session on Alexandru's
+    instruction — and what was already done before it.** Checked
+    first, from the files: FC Bistrița was **still in `RO.json` at
+    tier 3** with no hand row, and Q74127553 had its whole-club
+    `rejected` row in `coordinate-reviews.csv` (line 27) but **no
+    `skip` row** in `clubs-manual.csv`. So neither had been done as
+    asked. Everything below was read on a runner through a throwaway
+    probe, removed in the same branch.
+    - **`skip` rows added for both.** FC Bistrița: its English
+      infobox says *dissolved 2017*; no `P576`; neither 2026-27 Liga II
+      nor Liga III names it. The Liga III article is not a complete
+      division list, so this is **weaker than the Hermannstadt
+      standard** and rests on the infobox date, on Alexandru's
+      instruction — the row says so. Gloria Bistrița is now alone on
+      the Jean Pădureanu pin. Q74127553: 0 sitelinks, no `P159`, and
+      the Liga III article links `Q55864953` — shape 1.
+    - **Placed: ARO Muscelul Câmpulung** (Stadionul Muscelul; the OSM
+      way carries the club's own Q-id, and infoboxes, Wikidata's `P115`
+      and the Liga III map pin agree), **KSE Târgu Secuiesc** (Dr.
+      Sinkovits; infoboxes and map pin agree) and **Oltul Curtișoara**
+      (Stadionul Tineretului; the stadium article's coordinate and an
+      OSM pitch agree within 10 m). All three are in the 2026-27 Liga
+      III article with no `P576` and no withdrawal. Capacities blank:
+      each figure came from English and Romanian Wikipedia only.
+    - **Not placed, though asked for: Gilortul Târgu Cărbunești** —
+      *"Relegated to Liga IV"* in the 2026-27 Liga III article, so the
+      pitch would have drawn a Liga IV club at tier 3. **Șoimii Gura
+      Humorului** — *"had withdrawn and were formally excluded by the
+      FRF"*, and the article links a different item, `Q140089397`,
+      whose ground is the Areni in Suceava. Both are whole-club
+      rejections; Șoimii is the third instance of shape 6. **Lotus
+      Băile Felix**'s mini-pitch is rejected as a ground; the club
+      itself is fine.
+    - **Held → rejected, both.** Olimpic Zărnești's held pitch is in
+      Buzău county; the Liga III article (Series II) pins the club in
+      the **Brașov** Zărnești. So the earlier "held with roster
+      support" was half right: the club **is** in the 2026-27 article —
+      linked as a red link, which is why `roster-review.csv` never
+      resolved it and the list above missed it — and the ground is
+      wrong. Its real ground is **not known**: OSM has several unnamed
+      pitches in the Brașov town and nothing ties the club to one.
+      Oltul Curtișoara's Moșteni pitch is rejected and the club placed
+      at its real ground, above. **A Wikipedia map pin can be wrong**:
+      the Liga III article pins Oltul on the Curtișoara in Dolj, 30 km
+      from the Olt one where it plays.
+
+- **`coordinate-review.csv` is current again, 2026-09-26: all four
+  countries, 115 rows, from run #10.** It had been the 2026-09-18
+  German and Romanian file through four runs. #6 and #7 (after PR #31
+  fixed the crash on `build_clubs`' fifth return value), #8 and #9 all
+  went green and left the file alone, because Overpass did not answer
+  everything and the guard then discarded the whole run. What each run
+  missed was different except for one step: **Romania's pitch lookup
+  failed in every run that reached it** (#6, #7, #9), while Germany,
+  France and Italy sent one small pitch request each and got answers.
+  **Two changes, both in `propose_coordinates.py`:**
+  - `PLACES_PER_REQUEST` went from 50 to **10**, and a pitch batch that
+    does not come back is asked once more, the way the place lookup
+    already worked. In run #10 Romania's 53 places went as 6 requests
+    and **all 6 came back** — but batch 2 needed its third and last
+    attempt after two 504s. That is one run under visible load, not
+    proof the step can no longer fail. If it fails again, the next
+    change is a smaller batch or a longer wait. More retries would be
+    the wrong fix.
+  - The file is now **decided country by country** (see Conventions).
+    Run #10 did not exercise that path, because every country came
+    back. It was checked offline with Overpass mocked: a failing
+    Romanian pitch step left Romania's 107 old rows byte-identical and
+    wrote Germany, France and Italy; every country failing left the
+    whole file byte-identical.
+  **What the file now says:** Germany 3 (0 confident / 2 ambiguous /
+  1 nothing), Romania 106 (**38** / 31 / 37, against 31 / 32 / 44 in
+  the 2026-09-18 file), France 3 (0 / 2 / 1), Italy 3 (0 / 1 / 2).
+  Nothing was applied to any club file. Every confident row still
+  needs a person to read it before it goes into `clubs-manual.csv`.
+  Some rows describe clubs already dealt with elsewhere. Torgelower FC
+  Greif and Teutonia Watzenborn-Steinberg are the merged-away shape 4
+  and are Alexandru's call. TSV 1860 München II's ground was cleared
+  on purpose. Carrarese is the Italian club still missing from Serie B.
+  So the file is a list to judge, not a to-do list.
+
+- **A mapped league can be hidden under a preferred statement naming a
+  DIFFERENT league. That is a third rank shape, the diagnostic could
+  not see it until 2026-09-25, and it is much the biggest of the
+  three.** LR Vicenza `Q56542463` carries Serie B at **normal** rank
+  twice, and **Serie C Group A at preferred rank** (2022–2026, with an
+  end date). `wdt:P118` therefore yields Serie C, which is not mapped,
+  and the club never reaches the map — though its infobox reads
+  *2025–26 Serie C Group A, 1st (promoted)* and the 2026–27 Serie B
+  article lists it. It is not a `<novalue>`, so the novalue fallback
+  does not touch it, correctly; and query B asked only about clubs
+  with **no** truthy `P118` at all, so the diagnostic was blind to it
+  by construction.
+  **Query C now measures it, and the number is 63** — across all four
+  countries, 89 statements, answered in 2.5 s. Nearly all are exactly
+  the Vicenza pattern: a club promoted or relegated, the new league
+  added at normal rank, the old one left preferred. Italy (Perugia,
+  Reggiana, Reggina, Cittadella, Cosenza, Pescara, Bari, Spezia,
+  Ternana, Salernitana, Pordenone, SPAL and Vicenza), **France** (Ajaccio,
+  Amiens, Bordeaux, Caen, Bastia, Nîmes, Valenciennes, Gazélec
+  Ajaccio), **Germany** (KFC Uerdingen 05, no position) and some forty
+  Romanian clubs, most at Liga III.
+  **What it costs, measured against the rosters and not guessed: three
+  clubs, one of them in scope.** Of the 63, only three are named by a
+  2026–27 season article this project reads: **LR Vicenza** (Serie B),
+  and **FC Inter Sibiu** and **FCSB II** (Liga III — untouched
+  territory, and FCSB II has no position anyway). The eight French
+  clubs are absent from both complete Ligue articles, so France's
+  "exact" still holds for current clubs — **but "France measured a
+  clean absence at tiers 1–2" was a statement about queries A and B,
+  and the shape was there all along.** A clean result from a query is
+  a clean result for the question it asked.
+  **Alexandru chose the first option later on 2026-09-25**: the
+  fallback now reads through this shape under the same three
+  conditions (see the Conventions entry on the novalue fallback), and
+  Vicenza is on the map at **tier 2**, which its normal-rank Serie B
+  tags give and the Serie B roster agrees with. His instruction called
+  it "the same resolution as shape 5"; it is the same *outcome* — the
+  live league wins — by a different mechanism, since Augsburg needed
+  nothing read through. Of the 63, the roster confirms exactly
+  **three**: Vicenza, **FCSB II** (surfaced, but it has no position,
+  so still off the map) and **FC Inter Sibiu** `Q533005` — below.
+  **FC Inter Sibiu is left off, and its tier is Alexandru's call.**
+  The first build with the new shape drew it at **tier 2**, because its
+  normal-rank tags include Liga II — while the 2026–27 Liga III article
+  lists it and the Liga II one does not. Drawing a club at a tier its
+  own division contradicts is a wrong fact on the map, and writing
+  tier 3 off one table is the Farul decision, which was his. So the
+  fallback gained one rule the same day: **a surfaced club whose
+  ordinary-rule tier the roster contradicts stays off the map until a
+  hand row in `clubs-manual.csv` gives it a tier.** Farul has that row,
+  so nothing changed for it. For Inter Sibiu, one row — `Q533005`, tier
+  3 or whatever he decides — puts it on the map; the run summary names
+  it every run until then. Note also that the Liga III union is not a
+  clean division list (see the Liga III entry below), so tier 3 rests
+  on a weaker table than Farul's tier 1 did.
+
+- **Romania's Liga II moved between 2026-09-20 and 2026-09-25, and it
+  was Wikidata, not this project.** The figures above say seven
+  `unplaced-no-coordinates` and no wrong tier; the roster check now
+  says **six and one `wrong-tier`**. It is one club changing verdict:
+  **CSM Olimpia Satu Mare `Q99446805`**. Between the two runs Wikidata
+  gained a ground for it, the Stadionul Daniel Prodan, so the
+  coordinates gate let it through and the 2026-09-25 rebuild put it on
+  the map — **at tier 3**, because its truthy `P118` is Liga III only,
+  while the Liga II article lists it. (Its Liga II tag is not truthy;
+  query C does not list it, so the Liga III statement is not the
+  preferred-over-normal shape either — the rank detail was not read.)
+  **Nothing was corrected**, because both remedies are judgements: a
+  tier 2 would be written off one table, which Farul's row shows is
+  Alexandru's to write; and it now **shares a pin** with `Q629277`
+  "Olimpia MCMXXI Satu Mare", another tier-3 item on the same ground
+  that the Liga III article does not list either. Two items, one name,
+  one ground: shape 1, 2 or 4, and the shapes list says to find out
+  which before touching either. Worth a look; not urgent — the map is
+  no less right than it was, it shows one more club.
+
+- **France's top two tiers are on the map, 2026-09-25, and came back
+  exact: Ligue 1 18 of 18, Ligue 2 18 of 18, nothing missing, nothing
+  extra, nothing at the wrong tier.** Same pipeline and same standard
+  as Germany and Romania, all of it run on a GitHub runner because the
+  sandbox still answers 403 to CONNECT for Wikidata, Wikipedia and
+  StadiumDB. France is tiers 1 and 2 only; Ligue 3 and below were
+  deliberately not touched.
+  - **The league Q-ids were read, not remembered**: `Q13394` Ligue 1
+    and **`Q217374`** Ligue 2, both `P17` France. The Ligue 2 id first
+    written from memory was wrong, which is why a probe went first.
+    StadiumDB's slug is `fra` (`france`, `fr` and `fre` are 404s).
+    Both season articles are one stadiums-and-locations table of 18
+    clubs; Ligue 2 needed the redirect hop for one title.
+  - **What the first build brought, 40 clubs against 36:**
+    | | tier 1 | tier 2 |
+    |---|---|---|
+    | first build | 19 | 21 |
+    | after this pass | **18** | **18** |
+  - **The nineteenth tier-1 item was not a club.** *saison 2016-2017
+    du Stade rennais FC* (`Q24937450`) carries `P118` Ligue 1 and
+    borrowed Roazhon Park's coordinates, so it sat on Rennes' own pin.
+    It is the squad-list class, not one of the five duplicate shapes,
+    and the not-a-club net in `fetch_clubs.py` now names **seasons**
+    as well as lists, by type word and by a title anchored to "season"
+    plus a year. Checked against all three country files: it drops
+    that one item and nothing else.
+  - **Three tier-2 clubs carried a stale Ligue 2 tag and are
+    `skip`ped**: US Orléans (`Q369349`, now Ligue 3), AS Béziers
+    (`Q2619514`, Régional 1 Occitanie) and FC Martigues (`Q1132418`,
+    administratively relegated in 2024-25, now Départemental 3). Each
+    has exactly one `P118`, Ligue 2, normal rank, no dates. The
+    standard is the one Hermannstadt and Politehnica Iași were held
+    to: **both** division articles complete (18 of 18 resolved each),
+    **neither** lists them, and **each club's own infobox** states the
+    reason. No tier is written for any of them — France is tracked at
+    tiers 1-2 only and a tier is not written off one Wikipedia table —
+    and each row says how to bring the club back.
+  - **The rank pattern was looked for, and it does not recur in
+    France.** `diagnose_p118_rank.py` now counts France: no French item
+    is in the worldwide census of preferred-rank no-league statements,
+    no club in Ligue 1 or Ligue 2 is hidden by a deprecated or
+    suppressed `P118`, and the novalue fallback found no French
+    candidate, so no roster was fetched on its account. That is a
+    measurement for tiers 1-2 on 2026-09-25, not a promise about
+    Ligue 3. **It was also a measurement of queries A and B only**:
+    query C, added the same day in the Italy pass, found eight French
+    clubs hidden by a stale *preferred* league tag. None of the eight is
+    in either 2026–27 Ligue article, so France's 18 and 18 still stand.
+  - **No duplicate shape appeared.** No ground carries two French
+    clubs, no two pins are within a kilometre, and the roster check
+    reports no club twice, so there is no shape-5 club/men's-team
+    pair either. Three items with Ligue 1 or 2 tags die at the
+    coordinates gate and none is current: Sporting Club fivois, the
+    wartime *équipe fédérale Reims-Champagne*, and SC Bastia B.
+  - **AS Monaco is flagged by the country check on every run, and
+    that is correct and left alone.** Its `P17` is Monaco and its
+    ground is in Monaco; it is in `FR.json` because it plays in
+    Ligue 1. A note-only row in `clubs-manual.csv` says so, the Bihor
+    way. The file is France's league pyramid, not France's territory.
+  - **Capacities: eight corrected, three contested, one blank.** The
+    league's stadiums table is now the fourth figure beside Wikidata,
+    OpenStreetMap and StadiumDB, and the UTA Arad rule was applied
+    exactly. **Corrected**, each with every figure in its note: Angers
+    19,800, Clermont 11,980, Troyes 21,877, Metz 28,786, Red Star
+    10,000, Laval 18,607 (Wikidata said 11,107), Dunkerque 4,933, and
+    Pau 4,031 where Wikidata had nothing. **Contested, nothing
+    changed**, because no two sources agree: AS Monaco (18,523 against
+    the table's 16,360, and neither OpenStreetMap nor StadiumDB looks
+    in Monaco), RC Strasbourg (26,109 / 29,000 / 32,000 — the Meinau is
+    being rebuilt) and US Boulogne (6,600 / 15,034 / 9,534).
+    **Rodez** has only the table's 5,955 and stays blank: one source
+    is not two — and OpenStreetMap's nearest stadium to Rodez's pin is
+    8.8 km away, so either the Stade Paul-Lignon is untagged there or
+    the pin is off; nobody has looked. Auxerre, Lorient, Nantes and Reims show up in the
+    review files but the map's figure agrees with the table, so the
+    outlier is the other source. StadiumDB could not choose between two
+    Lille grounds and says so.
+  - **Fixtures: 17 of 18 Ligue 1 clubs link to football-data.org's
+    FL1**, which was already being fetched. **Le Mans is the
+    eighteenth**: football-data calls it "Le Mans FC", Wikidata "Le
+    Mans Football Club", and an abbreviation is not an equality. One
+    `link` row in `fixture-links-manual.csv` (football-data team 535)
+    settles it, and that file's entries are Alexandru's call. **He
+    made it on 2026-09-25 and the row is in**: Ligue 1 is now 18 of 18
+    linked. Ligue 2 has no fixture source; the club sheet says so.
+  - **Found on the way, and on `main` before this pass:** since
+    `fixture-links.json` landed in `data/clubs/` on 2026-09-25,
+    `check_tickets.py`, `check_rosters.py`, `crosscheck_capacity.py`
+    and `crosscheck_stadiumdb.py` all crashed on it, because each read
+    every `.json` in that folder as a country file. They now read only
+    two-letter country files (`check_tickets.py` skips anything whose
+    `clubs` is not a list). The scheduled runs of all four would have
+    gone red on their next run.
+
+- **Where `football-rules.json`'s Inter and Italy figures come from,
+  read 2026-10-03 and not changed.** The Italy-related content is the
+  `inter` and `milan` club entries, the `derby-madonnina` bucket item
+  (two confirmed fixture dates, 31 Oct 2026 at Milan (1 Nov until
+  2026-10-11) and 14 Feb 2027 at Inter, each with a `saleRoute`), and two
+  ticket events, `milan-derby-sale-nov` (inferred, 2026-10-01, "approx one
+  month before the 31 Oct fixture") and `inter-derby-phase1` (disputed: its own warning says the
+  source gave 13/21/24 August with no year, matching 2026 and 2015). **The
+  file names no source for any single Inter figure** - not the four
+  phases, not "up to 4 tickets", not "EUR 70-75" or "up to EUR 230".
+  What it does say is in `provenance`: facts from "the conversation" were
+  "established by checking club/UEFA/league sources directly", and
+  anything from "the bucket-list and derby documents" is "INSPIRATION,
+  NOT FACT" and enters as `verified:false`. Both Italian entries carry
+  `ageRules.verified: false`; neither says which of the two routes its
+  procedure came by. Since 2026-10-03 the Inter sheet shows these notes
+  beside the researched rows, unreconciled, so the disagreements below
+  are visible in the app.
+- **The derby PDF contradicts `football-rules.json` on Inter, and
+  nothing has been changed on either side.** Found 2026-09-23 while
+  incorporating the PDF. `football-rules.json` is hand-written and no
+  tool writes to it, so the contradictions are listed here for
+  Alexandru to settle:
+  - **Phase 1.** `football-rules.json` says Inter's home-derby phase 1
+    is *"OPEN TO EVERYONE WORLDWIDE, primo anello rosso/arancio only.
+    The route from abroad"*, and the `derby-madonnina` fixture's
+    `saleRoute` repeats it. The PDF's 2025-26 sequence, from the club's
+    own announcement (I2), has **four season-ticket-holder phases
+    first** and no open-to-everyone phase until open sale on the eighth.
+  - **The Siamo Noi phase.** `football-rules.json`: *"In 2025 the
+    allocation sold out after phase 2, so the SiamoNoi phase never
+    opened"*, *"up to 4 tickets"*, and *"the free card"*. The PDF: the
+    Siamo Noi phase ran 24–26 Oct 2025 with **2** tickets per holder,
+    the card costs **EUR 15** (I-4), and in 2024-25 the Siamo Noi
+    allocation ran out five days before that phase was due to close,
+    so it did open.
+  - **Name changes.** `ageRules.note` says no name changes for the
+    derby; I-16 says season-ticket holders could not transfer but
+    single PLUS tickets could change user once from 48 h before kickoff
+    (2025-26).
+  - **Prices.** `procedure.pricing` gives *"primo rosso centrale up to
+    EUR 230"*; the PDF's 2025-26 figures are Secondo Arancio Centrale
+    230, Primo Rosso Laterale 240 and Poltroncina Rossa 420–440, all
+    unverified and third-party.
+  - **The Frankenderby window.** `frankenderby.nextFixture` estimates
+    30 Jan–1 Feb 2027; the PDF's fixture table says 29–31 Jan 2027,
+    citing the DFL schedule (N1). Small, but they are not the same.
+  **The PDF also disagrees with itself once**, and both halves are kept:
+  I-20 says the 2025-26 Inter derby sold out before open sale, while its
+  own price table heads the 2025-26 column *"free sale, sectors still
+  available"*.
+  **The two Q-ids that rested on memory are verified, 2026-09-24.**
+  Inter `Q631` and AC Milan `Q1543` were written on 2026-09-23 without
+  being read from Wikidata. A throwaway probe dispatched through
+  `build-clubs.yml` read them on a runner: enwiki *Inter Milan*
+  resolves to `Q631` and *AC Milan* to `Q1543`, both typed association
+  football club (AC Milan also carries men's football team), `P17`
+  Italy, `P115` `Q133566` San Siro. Every Inter row's note now says
+  verified and how. The probe and its temporary job were removed in
+  the same branch.
+
+- **Both new checks are built and have run for real, 2026-09-20. These
+  are the numbers they left behind.** `crosscheck_stadiumdb.py` and
+  `check_rosters.py` are described under Files and Code; what follows is
+  what the first pass over Germany and Romania actually did.
+
+  | | tier 1 | tier 2 | tier 3 | tier 4 | 6 | 7 | 8 | on the map |
+  |---|---|---|---|---|---|---|---|---|
+  | **Germany** before | 18 | 18 | **22** | 83 | 3 | 1 | 1 | 146 |
+  | **Germany** after | 18 | 18 | **20** | 88 | 3 | 1 | 1 | **149** |
+  | **Romania** before | 16 | 16 | 32 | — | — | — | — | 64 |
+  | **Romania** after the tier 1/2 pass | 16 | **15** | 32 | — | — | — | — | **63** |
+
+  **Against the leagues' own membership, after the corrections.** The
+  Romanian rows are the second pass of 2026-09-20 — the tier 1 and
+  tier 2 one — and the figures the first pass left are kept beside them
+  because the difference is the point:
+
+  | division | roster | on the map | ok | extra | missing | wrong tier | unplaced |
+  |---|---|---|---|---|---|---|---|
+  | Bundesliga | 18 | 18 | 17 | 1 | 1 | — | — |
+  | 2. Bundesliga | 18 | 18 | **18** | — | — | — | — |
+  | 3. Liga | 20 | 20 | **20** | — | — | — | — |
+  | Regionalliga | 87 | 88 | 55 | 33 | 29 | 3 | — |
+  | Liga I *(first pass)* | 16 | 16 | 15 | 1 | — | 1 | — |
+  | **Liga I** | 16 | 16 | **16** | — | — | — | — |
+  | Liga II *(first pass)* | 22 | 16 | 14 | 2 | 1 | — | 7 |
+  | **Liga II** | 22 | **15** | 14 | 1 | 1 | — | 7 |
+  | Liga III *(unchanged)* | 69 | 32 | 18 | 14 | 13 | 4 | 34 |
+
+  **The 3. Liga is the headline.** It began this pass at 22 clubs
+  against a real 20 — the gap that motivated the whole design — and it
+  is now **20 of 20, nothing missing and nothing extra**. Six clubs were
+  sitting at tier 3 on a stale `P118`, two belonged there and were at
+  tier 4, and two were invisible to the club query altogether. The
+  2. Bundesliga is likewise exact.
+  **Romania's counts did not move in the first pass, and that was the
+  honest outcome at the time.** Liga II was 16 on the map against 22,
+  Liga III 32 against 69, and the reason is coordinates rather than
+  tags: 41 of those clubs are `unplaced-no-coordinates`, which is the
+  route `coordinate-review.csv` and europlan-online already exist for.
+  Nothing was trimmed to make a count look better.
+  **The second pass of the same day moved the tier 1 and tier 2 rows,
+  and the direction is worth reading carefully.** `Liga I` is now
+  **16 of 16, nothing extra, nothing missing, nothing at the wrong
+  tier** — the first Romanian division to come back exact. It took
+  three changes, not one: Farul surfaced by the novalue fallback,
+  Farul's tier hand-corrected to 1, and Hermannstadt removed because
+  the club no longer exists.
+  **`Liga II` went DOWN, from 16 on the map to 15, and that is an
+  improvement.** Politehnica Iași left because the division says it is
+  not in it. The `ok` count is unchanged at 14 and the seven
+  `unplaced-no-coordinates` are untouched, so nothing was gained or
+  lost in the part of the gap that is real; what changed is that the
+  map stopped claiming a club plays in a division it is out of. **A
+  count going down can be the map getting more accurate**, which is
+  the same lesson the 3. Liga's 22-against-20 taught from the other
+  direction.
+  **Liga III and everything below were deliberately not touched.**
+  **What the capacity pass changed:** eleven figures, every one of them
+  a case where two independent sources agreed against what the map held,
+  plus one copied ground. The StadiumDB review went from **27 rows to
+  19**. The template for recording a contested figure is in Conventions
+  above and UTA Arad is the worked example.
+
+- **What stayed contested after all three sources, and why.** Nineteen
+  rows survive in `stadiumdb-review.csv`, and they are not all the same
+  kind of thing.
+  - **Three where the map is corroborated and StadiumDB is the
+    outlier**, because StadiumDB matched a ground the club does not play
+    at: **1. FC Magdeburg** (30,098 on the map and on Wikipedia against
+    StadiumDB's 25,910), **FC Viktoria Köln** (8,343 twice against
+    10,000) and **FC ASA Târgu Mureș** (8,200 twice against 3,500 — and
+    StadiumDB's is the Stadionul Municipal while ours is the Stadionul
+    Trans-Sil). The tool's own `?ground-unchecked` marker flagged the
+    last of these before anyone looked. **A third opinion is a third
+    opinion, not a tie-breaker.**
+  - **Three where no two sources agree and nothing was changed**:
+    **FC Botoșani** 12,000 / 8,500 / 7,782, **SC Fortuna Köln** 13,750 /
+    14,944 / 11,748, and **VfB Oldenburg** 32,000 against 15,200, which
+    only became visible because `Q2188121` put the club on the map that
+    same day.
+  - **Seven with one source each way and no third**, all tier 4 or
+    below where Wikipedia has no stadiums table: BSG Chemie Leipzig,
+    FC 08 Homburg, FC Carl Zeiss Jena, TuS Koblenz, VfB Lübeck, VfR
+    Aalen, FC Hermannstadt. Two figures, no arbiter.
+  - **One with a single source at all**: Avântul Reghin, where only
+    StadiumDB has a figure (3,000) and neither Wikidata nor
+    OpenStreetMap has one.
+  - **Four that are not disagreements**: FSV Zwickau, SpVgg
+    Unterhaching, Jiul Petroșani, Sepsi OSK and UTA Arad, where the
+    figures agree and only the ground NAMES differ — a sponsor's name
+    against the old one. They stay in the file because a name clash is
+    worth one look, not because a number is in doubt.
+
+- **A Wikidata statement's RANK can hide a league from the club query
+  entirely, and until 2026-09-20 nothing here could see it.** This is
+  the most important thing the roster check found on its first real
+  run, and it is a new shape of invisibility rather than a new instance
+  of a known one.
+  `CLUB_QUERY` joins on `wdt:P118`. The `wdt:` prefix yields only
+  **truthy** statements: the preferred-rank ones if the item has any,
+  otherwise the normal-rank ones, and **never a deprecated one**. So a
+  club can carry exactly the right league and still never reach the map.
+  Two cases, both read from Wikidata on a runner:
+  - **FC Augsburg `Q15755`** has `P118` = `Q82595` Bundesliga at
+    **deprecated** rank. One statement, the right league, invisible.
+  - **SSC Farul Constanța `Q368104`** has `P118` = `Q1707697` Liga III
+    and `Q386384` Liga II, both at **normal** rank, and a third
+    statement with **no value at all** at **preferred** rank. The
+    preferred one suppresses both of the others, so `wdt:P118` yields
+    nothing and the club is invisible even though two mapped leagues sit
+    on the item.
+  **Neither leaves a trace anywhere else in the pipeline.** They are not
+  in `data/clubs/`, so no review file mentions them; the club query
+  simply never returns them. That is precisely the blind spot the roster
+  check exists for, and it is the first thing it found.
+  **HALF OF THIS IS NOW FIXED, and the half that is not is the half
+  that should not be.** Written when nothing had been changed for
+  either club; the novalue fallback was built later the same day and
+  the Conventions entry above is its rule. What changed:
+  - **Farul is on the map**, surfaced by the fallback, because a
+    preferred `<novalue>` suppressing two true tags on a club the
+    2026-27 Liga I article names is a mistake on Wikidata's side. Its
+    tier is hand-written, not read through — see its own entry below.
+  - **Augsburg is untouched and must stay untouched.** Its shape is
+    **deprecated**, not `<novalue>`, and the fallback is narrow to
+    `<novalue>`/`<somevalue>` precisely so that it cannot reach a
+    deprecated statement. Augsburg is on the map already under
+    `Q97905916`, and the remedy there would make it worse rather than
+    better; see the entry on the club-and-team shape below.
+  **The general fix is still not attempted, and the narrow one is not
+  a step towards it.** Dropping `wdt:` for `p:`/`ps:` would see every
+  statement including the deprecated and historical ones, which is how
+  a club gets put in a league it left in 1994 — the exact problem
+  `league-tiers.csv` and the truthy join exist to avoid. What the
+  fallback does instead is read through **one** shape of suppression,
+  **only** where a division's own membership list says the club is
+  playing, and **only** to decide whether the club is drawn at all.
+  Deciding what a deprecated league tag means is still Alexandru's,
+  and is still not a query change to slip in.
+
+- **The rank blind spot has been measured, 2026-09-20. It is 20 clubs,
+  and it costs this project exactly two of them.** The entry above was
+  written from two clubs found by accident. `tools/diagnose_p118_rank.py`
+  now asks the question deliberately, and the first two real runs are
+  what follows. It was run from a GitHub runner, because the sandbox
+  still answers 403 to CONNECT for `wikidata.org`.
+  **Two queries, because one question is a census and the other is a
+  bill.**
+  - **Query A, the census**: every item **anywhere** carrying a
+    preferred-rank `P118` that asserts no league. It is deliberately
+    **not** bounded by country — `P17` is exactly the field the missing
+    clubs already lack, so a country filter would drop the clubs the
+    query exists to find. **43 items worldwide**, in 168.2s with one
+    timeout and retry.
+  - **Query B, the bill**: clubs carrying one of the twelve leagues
+    `league-tiers.csv` maps, on a statement `wdt:P118` will not yield —
+    for any reason, a deprecated rank or a preferred `<novalue>` on top.
+    Bounded by the mapped leagues, so it needs no `P17` at all: the
+    league is the country signal. **18 clubs**, in 82.0s with one 504
+    and a retry.
+
+  **Twenty clubs in Germany and Romania are hidden from the club query
+  by rank.** Eighteen by a preferred `<novalue>`, two because every
+  statement on the item is deprecated.
+  **Every one of the eighteen is Romanian. Not one is German.** The
+  German half of this blind spot is the deprecated shape and FC
+  Augsburg is still its only instance. The remaining 25 of the
+  worldwide 43 are somebody else's problem — mostly American college
+  athletics programmes, a few Polish and Dutch clubs.
+  **Seventeen of the twenty leave no trace anywhere in the pipeline.**
+  Only three appear in `roster-review.csv` at all — Augsburg, Fotbal
+  Comuna Recea and Farul — and none of the twenty is in `data/clubs/`,
+  because none has a truthy `P118`. That is the blind spot stated as a
+  number rather than as a worry.
+
+  **A preferred `<novalue>` is NOT automatically an error, and treating
+  all eighteen as one would be the mistake this entry exists to
+  prevent.** Wikidata's `<novalue>` means *this item has no value for
+  this property*, and on a club that folded that is the **correct**
+  statement: the club is in no league because there is no club, and the
+  normal-rank league tags underneath it are history. Reading through
+  those would put a dead club on the map at the tier it last played in,
+  which is precisely what the truthy join exists to prevent. `P576` is
+  what separates the two, and the tool reads it.
+  **Twelve of the twenty carry `P576`**, with dissolution years from
+  1946 to 2026: ACS Poli Timișoara 2021, CA Câmpulung Moldovenesc 1953,
+  CS Mioveni 2025, Chinezul Timișoara 1946, FC Brașov Steagul Renaște
+  2023, FC Gloria Buzău 2025, FC Politehnica Iași 2026, FC Politehnica
+  Timișoara 2012, Fotbal Comuna Recea 2021, Gloria Bistrița 2015,
+  Turris-Oltul Turnu Măgurele 2021, Viitorul-Pandurii Târgu Jiu 2024.
+  On every one of them the `<novalue>` is right, and `CLUB_QUERY`
+  excludes dissolved clubs anyway, so nothing is owed.
+  **Two more have no position**: AFC Câmpulung Muscel `Q113816215`
+  (the second deprecated-only case) and FC Carmen București
+  `Q62562381`, which also hides nothing this project maps. Reading
+  their rank would not place them.
+
+  **Six are left**, and they are the only ones where reading the rank
+  would put a club on a map: FC Augsburg `Q15755` (hides tier 1 DE),
+  CS Balotești `Q12723213` (tier 2 RO), CS Gaz Metan Mediaș `Q856790`
+  (tier 1 RO), CSM Focșani `Q4683096` (tier 2 RO), FC Astra Giurgiu
+  `Q750322` (tier 1 RO) and SSC Farul Constanța `Q368104` (tier 2 RO).
+  **A missing `P576` is not evidence that a club is playing**, and this
+  is where that matters. It means only that nobody has recorded a
+  dissolution. The thing that says whether a club is in a division
+  **now** is the roster check, and of these six exactly **two** are
+  named by any 2026-27 season article this project reads: **FC
+  Augsburg**, in the Bundesliga article, and **SSC Farul Constanța**,
+  in the Liga I one. The other four are listed by no current-season
+  article at all, so nothing here says they are in a division, and
+  nothing should be written for them on the strength of an absent
+  property.
+  **So the rank blind spot costs this project two clubs today, and they
+  are the two that were already known.** That is a good outcome rather
+  than a dull one: the pair found by accident turns out to be the whole
+  current bill, it is now known rather than hoped, and the other
+  eighteen are written down so that the next run can tell a new one
+  from these.
+  **The bill is now ONE, and this list is what the fallback's third
+  condition was written against.** Of the six, Farul is the only
+  `<novalue>` case the roster confirms, and it is on the map from
+  2026-09-20. Augsburg is the other confirmed one and is the
+  **deprecated** shape, which the fallback deliberately does not
+  reach. **Balotești, Gaz Metan Mediaș, Focșani and Astra Giurgiu are
+  exactly the clubs condition 3 exists to leave out** — they carry no
+  `P576`, their `<novalue>` may well be wrong, and no current-season
+  article this project reads names any of them. The fallback finds all
+  five Romanian candidates on every run, surfaces the one the roster
+  confirms and **names the other four in the run summary as left
+  out**, so they stay visible as an open question rather than becoming
+  either a silent inclusion or a silent omission.
+
+  **Farul's `<novalue>` is being treated as an error rather than as
+  authority, and that decision is Alexandru's, taken on 2026-09-20.**
+  `Q368104` carries Liga III and Liga II at normal rank, both of them
+  true statements about a club that exists and is playing, and a
+  preferred-rank statement asserting no league sitting on top of them
+  and suppressing both. A statement that overrides two true ones with
+  an assertion that the club is in no league, about a club the Liga I
+  article lists this season, is a mistake on Wikidata's side. **The
+  suppressed tags are what this project reads for Farul.**
+  **What that does not settle is the tier, and it is worth being exact
+  about why.** Read through the `<novalue>` and the two tags give
+  **tier 2**, because the builder takes the most senior mapped league
+  and Liga II is it. The 2026-27 Liga I article says **tier 1**. So the
+  `<novalue>` is an error *and* the statements under it are stale, both
+  at once — correcting the first does not correct the second, and
+  reading the rank would put Farul on the map one division below where
+  it plays. Neither number may be written: tier 2 is contradicted by
+  the roster, and tier 1 rests on the English Wikipedia table alone.
+  **Asked directly on 2026-09-20, Alexandru's first answer was to leave
+  Farul off the map and settle the identity question first**, and the
+  reason was the right one: the tier is the *second* question. The
+  first is which club `Q368104` actually is — the old Farul, the 2021
+  Viitorul merger that took the name, or both depending on who edited
+  the item — and a tier written before that is a number attached to a
+  club nobody has identified.
+  **Later the same day he reversed that, and Farul is on the map at
+  tier 1.** The reversal is his and is recorded here so the two
+  decisions are not read as a contradiction: the earlier one was made
+  when putting Farul on the map at all meant either writing a tier the
+  roster contradicts or losing the Q-id, and the fallback removed both
+  of those costs. **The identity question is NOT settled by this** and
+  is unchanged — which club `Q368104` is remains open, and the row in
+  `clubs-manual.csv` says so in its own note.
+  **The mechanical obstacle that used to stand in the way is gone, and
+  how it went is the point.** `apply_manual` in `fetch_clubs.py`
+  **rejects** a row whose `clubQid` is not in the country's fetched
+  clubs — verified at the time by running it against a Farul-shaped
+  row, which came back *"Q368104 is not in this country's fetched
+  clubs"*. That is the right guard for a typo and it was exactly wrong
+  here, because not being in the fetched clubs was the whole problem.
+  The only row that worked then was an **add** row with no `clubQid`,
+  and it cost the Q-id: a synthetic `MANUAL-…` id, and
+  `check_rosters.py` joins on Q-ids, so the roster's `Q368104` would
+  have gone on reading as missing while the hand-added club read as
+  `extra-not-in-roster` — **two permanent false findings in place of
+  one true one**.
+  **The fix was not to weaken the guard.** The novalue fallback puts
+  `Q368104` into the fetched clubs, under its own Q-id, so an ordinary
+  `clubQid` correction row now finds it and `apply_manual` is
+  unchanged. That is the shape worth keeping: a club that could not be
+  corrected by hand because it was not there is fixed by **making it
+  be there**, not by letting a hand row invent a club the query never
+  saw. Every other rank-hidden club is still refused by the same
+  guard, and should be.
+
+- **Two Romanian clubs are one club's identity question each. One is
+  now drawn and still unidentified; the other is unchanged.** Both came
+  out of the roster check on 2026-09-20 and both are shape 2 — two real
+  items, not a duplicate — so `skip` is the wrong tool for either.
+  - **Farul Constanța.** The 2026-27 Liga I article lists a club whose
+    Wikidata item is `Q368104`, labelled "SSC Farul Constanța", English
+    sitelink "FCV Farul Constanța", 29 sitelinks. It used to be **not on
+    the map at all**, for the rank reason above: a `<novalue>` `P118` at
+    preferred rank hides its Liga II and Liga III tags. Meanwhile the
+    map's sixteenth Liga I club was **FC Hermannstadt `Q24884611`**,
+    which the Liga I article does not list. So the top flight had the
+    right *count* and one wrong *member*, which is exactly the failure a
+    count cannot see and this check was built to catch.
+    **Both halves of that swap are now done**: Farul is surfaced by the
+    novalue fallback and hand-corrected to tier 1, and Hermannstadt has
+    a `skip` row because the club was dissolved on 1 August 2026 — see
+    its own entry below.
+    **What is STILL not established** is which club `Q368104` is: the
+    old Farul, the Viitorul merger that took the name in 2021, or both
+    depending on who edited the item. Drawing it does not answer that,
+    and the hand row says so out loud rather than letting a pin imply
+    the question was settled.
+  - **Bihor Oradea, decided 2026-10-18: the roster row is joined to `Q1386940`** by a hand link (`data/roster-links-manual.csv`, Alexandru's decision), so the roster check reads one club, `ok`. The text below is the identity question as first found; it is **not** settled by the link, which only says which item the roster row is read as.
+  - **Bihor Oradea is two clubs with one name**, and the two sources
+    disagree about which is in Liga II. `Q1386940` is "established in
+    1958", 12 sitelinks, and carries Liga II at **preferred** rank — so
+    Wikidata says it is the Liga II club, and it is the one on the map.
+    `Q113541238` is "established in 2022", 2 sitelinks, **no `P118`, no
+    ground, no coordinates and no inception date** (re-read 2026-09-20),
+    and it is the one the Liga II article links.
+    **Neither source is obviously wrong** and acting on either loses
+    something: removing the 1958 club takes Bihor off the map entirely,
+    because the 2022 one has no coordinates. Left as it is, and now
+    **recorded on the club itself** — `clubs-manual.csv` carries a
+    note-only row for `Q1386940` that changes no value and explains why
+    nothing was changed, so the note travels into `RO.json` and is
+    there the next time somebody sees the two findings and reads them
+    as two errors.
+    **It is one of the two tier-2 extras and it is NOT the same kind of
+    thing as the other.** Both sources agree a club called Bihor Oradea
+    is in Liga II; they disagree only about which item it is. That is
+    the opposite of Politehnica Iași below, where the division itself
+    says the club is not in it.
+    **`_sameNameOnMap` does NOT fire for this pair, and that is a
+    shortcoming of the annotation rather than of the finding.** The
+    column exists exactly so that one club appearing twice does not
+    read as two errors, and here it is blank on both rows: the roster
+    calls the club **"FC Bihor Oradea"** and the map calls it
+    **"Bihor Oradea"**, because the map takes Wikidata's *Romanian*
+    label and the article links the English one. `same_name_on_map()`
+    compares folded names for **exact equality**, so a missing "FC"
+    is enough to miss it. It was left alone on purpose: loosening the
+    comparison is how Eutin 08 scored against FC 08 Homburg on a shared
+    "08", and renaming the club to make the annotation fire would be
+    engineering a weak signal to produce an answer already known. **The
+    note-only row is what carries the explanation instead**, and it
+    travels into `RO.json` where the annotation would have been read.
+    Worth fixing properly if a second pair turns up; not worth a fuzzy
+    matcher for one.
+    **The other blank is structural**: the `extra-not-in-roster` branch
+    of `check_rosters.py` hardcodes `_sameNameOnMap` to empty and never
+    looks, so even an exact name match would only ever annotate the
+    `missing-from-wikidata` side of a pair, never both.
+
+- **Two clubs were holding Romanian tier-1 and tier-2 slots they had
+  left, and in both cases Wikidata had simply not been told. Found and
+  removed 2026-09-20.** These are the two `skip` rows of that day's
+  Romanian pass, and they are worth keeping together because they are
+  the same failure arriving by two different routes: **a club stops
+  playing, its `P118` does not change, and nothing in the pipeline can
+  see the difference.**
+  - **FC Hermannstadt `Q24884611` no longer exists, and the direction
+    was not the one anybody expected.** It sat at **tier 1** because
+    Wikidata gives it `Q237753` SuperLiga and `Q386384` Liga II at
+    normal rank and the builder takes the most senior. The obvious
+    reading was a relegation, tier 1 down to tier 2 — and that reading
+    is **wrong**. All three tracked Romanian season articles were read
+    on 2026-09-20 and **none** of them lists the club: not
+    `2026–27 Liga I`, not `2026–27 Liga II`, not `2026–27 Liga III`.
+    The club's own English Wikipedia infobox says
+    *"2025–26 Liga I, 14th of 16 (relegated via play-offs)"* and then
+    **"Dissolved 1 August 2026"**, and the Liga II article cites
+    gsp.ro of 31 July 2026, *"Șoc! Hermannstadt s-a retras din noul
+    sezon de Liga a 2-a"* — Hermannstadt **withdrew** from the new
+    second-division season. So it was relegated and then ceased to
+    exist. **No tier is right, and tier 2 would have been an
+    invention.**
+    **Wikidata carries no `P576` on the item**, which is exactly why
+    nothing here could see it: `CLUB_QUERY`'s dissolution gate never
+    fired, and a club with a live league tag and no dissolution date is
+    indistinguishable from a club that is playing. Only the roster
+    could tell them apart.
+  - **Politehnica Iași `Q1024390` is out of Liga II on certification,
+    not relegated.** It sat at **tier 2** on a **preferred**-rank
+    `Q386384` Liga II tag — so this was not a stale normal-rank tag
+    being outvoted, it was the item's own best statement. The 2026-27
+    Liga II article does not list it. CLAUDE.md had left one innocent
+    explanation open — that the article links the club under a title
+    the sitelink hop could not resolve — and that is now **ruled out
+    rather than doubted**: the article's 22 linked titles resolved
+    **22 of 22** to Q-ids on 2026-09-20, a complete division with no
+    slot unaccounted for. The Liga I and Liga III articles do not list
+    it either.
+    The reason is in the Liga II article itself, which says its
+    participants *"were admitted through the FRF certification or
+    Liga I licensing procedures"* and cites frf.ro of 14 July 2026 on
+    certification for the 2026-27 Liga II together with sport.ro of
+    17 July 2026, *"Poli Iași, out din Liga 2!"*.
+    **Two items, and the useful one is the sibling.** `Q1024390`'s own
+    English sitelink is *FC Politehnica Iași (2010)*; `Q926152` is
+    *FC Politehnica Iași (1945)*, the same ground `Q2262973`, and it
+    **does** carry `P576` 2026. So the dissolution evidence exists on
+    Wikidata, on the wrong item of the pair.
+  **The shape to carry forward: a club that has stopped playing looks
+  exactly like a club that is playing, from inside this pipeline.**
+  Every gate `CLUB_QUERY` has — not a person, not dissolved, league in
+  `league-tiers.csv` — passes for both. The roster check is the only
+  thing that can tell them apart, and it can only do it for the tiers
+  that have a season article in `league-rosters.csv`. **Expect more of
+  these, and expect them to be invisible until a roster is read.**
+  **A single article saying a club is absent is still not evidence, and
+  neither of these rests on one.** The rule CLAUDE.md already had is
+  intact: what made these two actionable was a **complete** division
+  list (16 of 16 and 22 of 22 resolved, so there is no unaccounted
+  slot), **three** articles agreeing on the absence, and an independent
+  statement of the reason — an infobox dissolution date for one, the
+  league's own certification note and a cited report for the other.
+  Absence from one table on its own would still not have been enough.
+
+- **The roster check reads a redirect's target for the reserve marker too, 2026-10-18.** `table_rows()` already left out a row whose cell and linked title disagree on a reserve marker (the Rapid II shape). It did not look at where the link lands: "1. FC Magdeburg II", "FC St. Pauli II" and "SC Paderborn 07 II" are titles that agree with their cells but are **redirects to the parent club**, so the sitelink hop's redirect step read them as the first team, and the Regionalliga article seemed to put three tier 1-2 clubs at tier 4 (three `wrong-tier` rows). `qids_for_titles()` now applies `team_markers()` again to a redirect: one whose target has a different set of markers (`II`, `U23`, `B` and the rest of `RESERVE_MARKERS`) is **not followed**, is recorded in `REDIRECT_REFUSED`, and `main()` and `roster_qids()` leave the row out and name it ("a reserve side whose link redirects to ... the reserve marker does not agree after the redirect"). A hand link in `data/roster-links-manual.csv` still wins over this. Checked by the roster check dispatched on the branch and diffed against `main`: the three `wrong-tier` rows disappeared, the two Bihor rows became one `ok` row (the hand link above), and **no other row of `data/clubs/roster-review.csv` changed**.
+
+- **Three of the roster check's own bugs are worth keeping, because all
+  three failed SILENTLY and two were the same mistake.** Found and fixed
+  on 2026-09-20, on the first three runs.
+  1. **`props=sitelinks` under `formatversion=2` returns sitelinks as a
+     LIST**, `[{site, title}]`, not a dict keyed by site. The reader
+     expected the dict. Every title resolved to nothing, and the check
+     reported all 246 roster clubs as having no Wikidata item and all
+     205 mapped clubs as absent from their own division — **with a green
+     tick**.
+  2. **`wbgetentities` accepts `normalize` only when exactly one title
+     is given.** Sent with a batch of 40 it refuses the whole call and
+     answers HTTP 200 with an `error` object and no entities. With no
+     error check on that call, a refusal read as "Wikidata has never
+     heard of any of these clubs".
+  3. **A season article often links a club through a REDIRECT** — the
+     Liga II page links "FC Chindia Târgoviște", which redirects to
+     "Chindia Târgoviște". A redirect has no Wikidata item of its own,
+     so 15 clubs read as having no item. They now go through Wikipedia's
+     own redirect table and are tried again under what they point at;
+     **all 15 resolved**, and the `no-wikidata-item` verdict went to
+     zero.
+  **The lesson is the shape, not the three APIs.** The rule this project
+  already had — *a source that returns nothing is a failed fetch, not an
+  empty answer* — was written for the article fetch and had not been
+  applied to the two steps after it. It is now on all three: a batch
+  that resolves zero titles, and a call that returns no usable entity
+  for items Wikidata itself just named, are both failures, and a failure
+  keeps the last good review file. That guard is what caught bug 2 -
+  the run said which step had failed and left the file alone instead of
+  overwriting it with 455 wrong rows.
+  **And an API that answers 200 with an error object needs that object
+  read.** Two of the three bugs looked identical from the outside -
+  "zero results" - and only one of them was a shape problem. Printing
+  the error turned the second into a one-line fix.
+
+- **Germany's tier 4 is not a gap, it is churn, and the roster check
+  measured it for the first time on 2026-09-20.** Against the 2026-27
+  Regionalliga article's 87 clubs, the map had **49 of them right**, 34
+  clubs at tier 4 that the division does not list, and 30 of the
+  division's clubs missing. After that day's corrections it is **54
+  right**. The two directions are the same problem seen from both ends:
+  Wikidata's `P118` on German lower-league clubs is largely last
+  decade's.
+  **What the 30 missing ones actually carry was read rather than
+  guessed**, and it settles how to fix them: their `P118` names an
+  **Oberliga or a Landesliga**, not a Regionalliga. `Q878642` Oberliga
+  Baden-Württemberg has four of them, `Q15735` Fußball-Bayernliga three,
+  `Q316113` Oberliga Westfalen three, `Q316686` NOFV-Oberliga and
+  `Q317868` Oberliga Niedersachsen two each, and so on down. Those are
+  genuinely tier-5 leagues, so **adding them to `league-tiers.csv` would
+  be wrong** — the clubs were promoted and their tags did not follow.
+  The remedy is a per-club row in `clubs-manual.csv`, thirty of them,
+  each needing a look. That is not done here.
+  **Two of the unmapped league items are traps worth naming.**
+  `Q1477024` "Fußball-Regionalliga Süd" is described by Wikidata as a
+  ***women's* association football league** — mapping it would put this
+  project in breach of rule 6, and it is TSV Schwaben Augsburg's only
+  tag. `Q283009` DDR-Liga and `Q6954881` NOFV-Oberliga Süd are history,
+  not a current division.
+  **One of them was mapped, on purpose, and the cost was measured
+  rather than assumed.** `Q2188121` is the **generic** "Regionalliga"
+  item — Wikidata's own description is "fourth division of men's
+  association football in Germany" — and **eight** clubs carry it and
+  nothing else. It is now in `league-tiers.csv` at tier 4.
+  Of the eight, three are right: **VfB Oldenburg** really is in the
+  Regionalliga, and **SV Meppen** and **TSV Havelse** are in the 3. Liga
+  and have hand rows saying so. That closes the 3. Liga completely — it
+  now reads **20 of 20, nothing missing and nothing extra**.
+  **The other five arrived at tier 4 with nothing to support it**, and
+  they are `skip`ped: 1. FC Union Berlin II, BV Cloppenburg, FC
+  Oberneuland, SV Wilhelmshaven and Viktoria Aschaffenburg. The 2026-27
+  Regionalliga article lists none of them and the roster check found no
+  second Wikidata item for any of them, so tier 4 would have been an
+  invention — rule 2. They are off the map until somebody finds their
+  real tier, which is exactly where TSV 1860 München II is and for the
+  same kind of reason, and each row says how to bring the club back.
+  **A generic item is a league HISTORY, not a current division.** It
+  says a club has played at that level at some point and nothing about
+  now, which is why five of eight were wrong. Expect to have to say this
+  again for the next club that carries one, and expect the same split:
+  the item is worth mapping for the clubs it places correctly, and every
+  club it places has to be checked against a roster before it is
+  believed.
+  This closes the 3. Liga gap: CLAUDE.md has recorded since 2026-09-16
+  that "SV Meppen and 1. FC Schweinfurt are missing from the German
+  layer entirely ... there is no way to see which league Q-id they do
+  carry". Meppen's is `Q2188121`; Schweinfurt's is `Q15735`, the
+  Bayernliga.
+
+- **Romania's hole is coordinates, not tags, and it is much the bigger
+  one.** Of Liga III's 69 clubs the map has 18; **34 of the other 51 are
+  `unplaced-no-coordinates`** — the club query can see them, and neither
+  they nor their grounds have a position, so they are dropped at the
+  coordinates gate. Liga II adds seven more. That is the route
+  `coordinate-review.csv` and europlan-online already exist for, and it
+  matches what was already written down: 107 Romanian clubs have a tier
+  and no coordinates, against 64 on the map.
+  **The Liga III article's union is not a clean division list**, and the
+  check says so rather than pretending otherwise. The page has 20
+  standings tables — series plus play-off and play-out groups — and the
+  union comes to 69 clubs, fewer than Liga III actually fields, while
+  also picking up four clubs that are plainly not in it: FC Voluntari
+  and Sepsi OSK are in Liga I and come back `wrong-tier`, Știința Poli
+  Timișoara is in Liga II. Their own division's article gets them right,
+  so no harm is done - but a `wrong-tier` from the Liga III row alone is
+  not evidence, and nothing should be changed on the strength of one.
+  **Since 2026-09-26 those rows are no longer read at all.** The
+  Austria pass taught the roster check to leave out a row whose team
+  cell has no link of its own, and five Liga III rows had exactly that
+  shape: FC Voluntari, Sepsi OSK, SC Oțelul Galați, Știința Poli
+  Timișoara and FC Bacău, whose `wrong-tier` findings are gone. Checked
+  against the previous `roster-review.csv`: those five verdicts and
+  nothing else changed in Romania.
+
+- **Liga II's shortfall, taken apart club by club on 2026-09-20: it is
+  coordinates, and the figure of six hides how it is made.** The table
+  above reads 22 in the division against 16 on the map, and six is what
+  you get by subtracting. Six is not six clubs.
+  **Eight of the division's 22 are absent from the map, and two clubs
+  the division does not list are on it at tier 2. Those cancel to six.**
+  That is the arithmetic this whole check was built to distrust — a
+  count can come out nearly right while the membership is wrong, and
+  here it comes out two clubs closer to the truth than it should.
+  **Seven of the eight are coordinate-only, and nothing about their
+  tags needs touching.** Every one of them carries `Q386384` Liga II on
+  a statement `wdt:P118` yields, so the club query sees them and the
+  tier they would land at is right; they die at the coordinates gate
+  because neither the club nor its ground has a position:
+
+  | club | Q-id |
+  |---|---|
+  | CSA Steaua București | `Q39487082` |
+  | CSC 1599 Șelimbăr | `Q66424141` |
+  | CSL Ștefăneștii de Jos | `Q18539440` |
+  | CSM Olimpia Satu Mare | `Q99446805` |
+  | FC Bacău | `Q106779019` |
+  | Gloria Bistrița | `Q56677281` |
+  | SC Popești-Leordeni | `Q55593565` |
+
+  **The eighth is a tagging problem that fixing would not place.** FC
+  Bihor Oradea `Q113541238` comes back `missing-from-wikidata` because
+  it carries **no `P118` at all** — but it carries no ground and no
+  position either, so giving it a league would move it from one kind of
+  missing to the other and it would still not be drawn. It is also half
+  of the Bihor identity question recorded below: the club on the map at
+  tier 2 is `Q1386940`, the 1958 item, which carries Liga II at
+  preferred rank, and it is one of the two extras.
+  **So the answer to "how many of the six are a tagging problem the
+  roster check should resolve" is none of them.** Seven are the
+  coordinates gate and the eighth is blocked by the coordinates gate
+  underneath an identity question that is Alexandru's to settle. The
+  roster check has already done its job here: it named all eight and
+  said which kind each one is.
+  **The two extras are not one thing either, and they have now been
+  taken apart.** Both were named and settled later on 2026-09-20 — see
+  the entry on the two clubs holding slots they had left.
+  `Q1386940` **Bihor Oradea** is the other half of the identity
+  question and is **not** a spurious club — read the two Bihor items as
+  one club and the genuine absence is seven, all coordinate-only,
+  against one genuine extra. It keeps its pin and gains a note-only row
+  saying why nothing was changed.
+  The genuine one is **`Q1024390` Politehnica Iași**, and this entry
+  used to say of it: *"Either its `P118` is stale or the article links
+  it under a title the sitelink hop did not resolve. Nothing has been
+  changed for it, because a single article saying a club is absent is
+  not evidence that it is."* **The second half of that disjunction is
+  now ruled out** — the Liga II article's 22 titles resolved 22 of 22,
+  a complete division with no unaccounted slot — and the absence is
+  corroborated by the Liga I and Liga III articles and by the league's
+  own certification note. So the `P118` is stale, the club has a
+  `skip` row, and the caution the entry was written with was right to
+  hold until there was more than one source. There is now.
+  **The remedy already exists and has already worked once at this
+  tier.** CSC Dumbrăvița `Q55618976` is on the map at tier 2 only
+  because a hand row in `clubs-manual.csv` carries coordinates Wikidata
+  does not have — its `roster-review.csv` row still says
+  `_hasCoordinates: no` and its verdict is `ok`. That is exactly the
+  shape the other seven need: `coordinate-review.csv`, a second source,
+  then a hand row. How much of Romania europlan-online covers has never
+  been measured — the 20 clubs it settled were all German — so whether
+  it is the second source for these seven is an open question rather
+  than an assumption.
+  **Liga III and below stay where they are**, in the coordinate-review
+  queue at its current standard. The 34 Liga III clubs above are the
+  same coordinates gate and a much bigger pile of it, and a decision
+  taken here for 22 clubs in the second tier is not a decision about
+  69 in the third.
+
+- **Romania's top flight WAS roster-checked this pass, and it did not
+  come back 16 of 16.** Asked directly on 2026-09-20 and answered from
+  the file rather than from the counts: `roster-review.csv` holds **17
+  rows** for `SuperLiga Romaniei`, every one of them against
+  `2026–27 Liga I`, season `2026-27`. So the division was fetched,
+  parsed and compared like the others — it was not skipped, and it was
+  not merely left unflagged because nothing about it had changed.
+  **What it came back with is 15 of 16.** Fifteen `ok`, one
+  `wrong-tier` and one `extra-not-in-roster`. The roster's sixteenth
+  club is **SSC Farul Constanța `Q368104`**, which is not on the map at
+  all; the map's sixteenth tier-1 club is **FC Hermannstadt
+  `Q24884611`**, which the Liga I article does not list.
+  **The count is right and one member is wrong**, which is precisely
+  the failure a count cannot see and precisely why this check exists.
+  The table above already says so — `ok` 15, `extra` 1, `wrong tier` 1
+  — and the **16** in its "on the map" column is the size of the tier,
+  not a number of matches. Reading that 16 as agreement is the one
+  misreading the table invites, and it is worth saying out loud once.
+  **FIXED THE SAME DAY, and the fix needed three changes rather than
+  the one the "one wrong member" framing suggests.** Liga I now reads
+  **16 of 16, sixteen `ok` and nothing else** — no extra, nothing
+  missing, nothing at the wrong tier. It took: the **novalue
+  fallback** to make `Q368104` visible at all; a **hand row** to
+  correct its tier from the 2 its Wikidata tags give to the 1 the
+  roster says; and a **`skip` row** for `Q24884611`, because
+  Hermannstadt was not a club at the wrong tier, it was a club that
+  had ceased to exist. **Two of those three were invisible to the
+  count and to the tier column alike** — the count said 16 both before
+  and after, and it was wrong before and right after.
+  **The same 16 is still the size of the tier and not a number of
+  matches.** What makes it agreement now is the `ok` column reading 16
+  beside it, which is exactly the reading this entry was written to
+  insist on.
+
+- **Wikidata keeps a CLUB item and a MEN'S FIRST TEAM item for many
+  German clubs. That is a fifth shape, and it wants a different remedy
+  from all four above.** Found 2026-09-20 by the roster check, which
+  reported three German clubs twice each — once as missing from
+  Wikidata, once as extra on the map.
+  The two items split the facts between them:
+
+  | | club item | men's first team item |
+  |---|---|---|
+  | FC Augsburg | `Q15755`, **75 sitelinks**, `P118` Bundesliga at deprecated rank | `Q97905916`, **0 sitelinks**, `P118` Bundesliga at normal rank |
+  | FC Erzgebirge Aue | `Q141882`, 38 sitelinks, **no `P118` at all** | `Q97927365`, 0 sitelinks, eleven `P118` values |
+  | SV Babelsberg 03 | `Q571553`, 21 sitelinks, **no `P118` at all** | `Q97927380`, 0 sitelinks, `P118` Nordost + 3. Liga + DDR-Liga |
+
+  `P31` is what names the shape: the club item is an *association
+  football club*, the team item is a ***men's association football
+  team*** (`Q103229495`). Wikipedia links the **club** item; the map can
+  only see the **team** item.
+  **The remedy is to do nothing to the club files, and that is the
+  point.** `skip` on the team item would take Aue and Babelsberg off
+  the map for good, because their club items carry no league and would
+  never come back. This is the SSV Ulm lesson pointing the other way:
+  there the parent was the one to skip, here the "duplicate" is the only
+  one that works. **Getting the shape wrong deletes a real club.**
+  **The rule that decides which of the two items wins, written down so
+  a later cleanup pass cannot get it backwards: an item with a LIVE
+  `P118` beats a sibling item whose league tag is deprecated or absent
+  altogether. Never the reverse.** A live league tag is the only thing
+  that puts a club on the map at all, so the item carrying one is the
+  only item that works; an item with no usable league is not a tidier
+  copy of it, it is a copy that cannot be drawn. That holds whichever
+  item Wikipedia writes about, whichever is older, and whichever has
+  the fuller description.
+  **The sitelink count points the wrong way in all three pairs, and
+  that is the trap.** 75 against 0 for Augsburg, 38 against 0 for Aue,
+  21 against 0 for Babelsberg. The shapes list below already says to
+  use the sitelink count only to break a tie *after* the shape is
+  settled; this is the shape where using it to settle anything deletes
+  the club.
+  **These three pairs are verified correct as they stand, and they are
+  protected from any future duplicate cleanup pass.** That is a
+  standing instruction, not an observation:
+
+  | club | the item that must stay | the item that must NOT be preferred over it | why |
+  |---|---|---|---|
+  | FC Augsburg | `Q97905916`, the men's team item | `Q15755`, the club item | `Q15755`'s only `P118` is Bundesliga at **deprecated** rank, so `wdt:P118` yields nothing and the club query cannot see it. `skip` the team item and Augsburg leaves the map with nothing to bring it back |
+  | FC Erzgebirge Aue | `Q97927365`, the men's team item | `Q141882`, the club item | `Q141882` carries **no `P118` at all** |
+  | SV Babelsberg 03 | `Q97927380`, the men's team item | `Q571553`, the club item | `Q571553` carries **no `P118` at all**; the team item is the one whose tier is corrected by hand to 4 |
+
+  **None of the three needs a `skip` row and none may be given one.**
+  What makes them look like duplicates is not two pins on one ground —
+  the club item never reaches the map, so nothing on the map can show
+  it. It is the roster check reporting each club twice, once as missing
+  from Wikidata under the club item Wikipedia links and once as extra
+  on the map under the team item, and `_sameNameOnMap` exists exactly
+  so that one club appearing twice does not read as two errors.
+  **Rule 6 is satisfied rather than threatened by these items** — they
+  are explicitly the men's team, which is what this project wants.
+  **What did change is one tier.** SV Babelsberg 03's team item carries
+  both `Q548937` and `Q154069`, and the builder takes the lowest mapped
+  tier, so it arrived at 3. The 2026-27 Regionalliga article lists the
+  club and the 3. Liga article does not, so `clubs-manual.csv` now says
+  tier 4.
+  **And `roster-review.csv` now says so on the row.** A
+  `_sameNameOnMap` column names the other Q-id when a club of the same
+  name sits on the map at that tier. It is an **annotation and never a
+  decision** — the whole value of the sitelink hop is that the
+  comparison is id-to-id, and a name is too weak to join on. It is there
+  so one club appearing twice does not read as two errors.
+  **Since 2026-09-27 the three pairs read as one club each, `ok`, and
+  the join is id to id after all.** Read on a runner that day: each team
+  item names its club item in `P831` (parent club) - `Q97905916` →
+  `Q15755`, `Q97927365` → `Q141882`, `Q97927380` → `Q571553` (the last
+  in `P361` too). The club items point at nothing. `check_rosters.py` now
+  takes a map club the roster does not name, whose `P831` is a roster
+  club not on the map, with the same reserve marker, as that club. The
+  protection above is unchanged: nothing about which item stays moved.
+
+
+- **Both cases found by grouping clubs on their coordinates are now
+  closed.** Of the 10 shared grounds, two looked like one club entered
+  twice. Neither turned out to be an ordinary duplicate, and the two
+  went opposite ways. Both were settled on 2026-09-19 by reading
+  Wikidata from a **GitHub runner**, because the session doing the work
+  could not reach `wikidata.org` at all — see the entry on the
+  Actions-dispatch route below.
+  - **Dinamo București is two real clubs, and they are two pins at
+    last.** `Q204237` is the Liga 1 club at Stadionul Dinamo.
+    `Q113577526` is **CS Dinamo București**, a separate club currently
+    in Liga 2. What was wrong was Wikidata's data, not the item:
+    `Q113577526` carries `P115` `Q1226240`, the senior club's ground,
+    and its capacity and coordinates followed from that.
+    `clubs-manual.csv` corrected the name, venue and capacity on
+    2026-09-18, and now carries the coordinates too: **44.5481 /
+    25.9811**, which is `Q7596368` Stadionul Buftea's own `P625`. That
+    is **14.1 km** from Stadionul Dinamo, so the shared pin is gone.
+    **One thing was deliberately not resolved.** `Q7596368` says the
+    capacity is **450**; the file says **1,600**, which is Alexandru's
+    figure and wins, as hand-written data always does. The disagreement
+    is written into the row rather than argued away, because it may not
+    be a wrong number at all — it may mean `Q7596368` "Stadionul
+    Buftea" and the CNF Buftea pitch the club actually uses are two
+    different grounds in the same town. The coordinate is still trusted,
+    because that row had already named `Q7596368` as its source before
+    anyone could read it.
+    **There is now a theory for the 450, and it is a theory, not a
+    finding.** CNF Buftea is not a stadium, it is the federation's
+    national training centre: a complex of several pitches on one site.
+    Romanian sources give its main stadium **800 on each side**, which
+    is the **1,600** already in the row — so the hand-written figure and
+    the main stadium agree, and `Q7596368`'s 450 would then be a
+    *different pitch in the same complex*, not a contradiction of
+    anything. That would explain the gap without either number being
+    wrong, and it would explain why the coordinate can be right while
+    the capacity beside it is not.
+    **Nobody has verified it, so nothing has been changed.** What would
+    settle it is reading which ground `Q7596368` actually names, and
+    which pitch of the complex CS Dinamo plays on, from the federation
+    or the club rather than from a number that fits. Until then the
+    1,600 stands because it is hand-written, not because this theory is
+    right — and if the theory turns out to be right, the row still does
+    not change, it just stops looking like a disagreement.
+  - **SSV Ulm 1846 is decided, and it is not a duplicate either.** The
+    sitelink test prepared for it was run: **`Q14551982` has 21
+    Wikipedia sitelinks, `Q701290` has 14**, so the second of the two
+    prepared branches applies — the `tier 4` correction on `Q14551982`
+    stays, because its own tag is still the 3. Liga one, and `Q701290`
+    now has the `skip` row.
+    **The reason the test gave the right answer is not the reason the
+    entry assumed**, and that matters more than the answer. These are
+    not one club entered twice. `Q701290` is labelled "SSV Ulm 1846"
+    and typed *sports club* and *multisports club*; `Q14551982` is
+    labelled "SSV Ulm 1846 Fußball" and typed *association football
+    club*. That is a parent club beside its football department, which
+    is how a great many German clubs are organised — so expect this
+    shape again, and expect the sitelink count to keep pointing at the
+    football item simply because that is the one the Wikipedias write
+    about. On a football map both readings give the same instruction:
+    keep the football item, skip the parent.
+
+  **So there were never three duplicates, only two.** Hamburger SV and
+  1. FC Lokomotive Leipzig are genuine duplicate items and still have
+  their `skip` rows. Dinamo was a copied *coordinate*, Ulm is a parent
+  club beside its department. The lesson that survives all three
+  shapes: two pins on one ground is a *symptom*, not a diagnosis, and
+  the "2" marker is what makes the symptom visible at all. Before it,
+  the second pin sat exactly under the first and nothing counted it.
+
+  **The six shapes have names now, because the next one will not
+  arrive with a label on it.** The first three look identical on the
+  map — two items, one name, one ground — and each wants a different
+  remedy. The fourth and fifth never appear as two pins at all, because
+  one item of the pair never reaches the map: only the roster check can
+  see them, and it sees them as one club reported twice. The sixth
+  never reaches the map either, and arrives by a third route: as a
+  confident coordinate proposal.
+  Getting the shape wrong is not a cosmetic mistake: `skip` the wrong
+  item in the second shape and a real club disappears from the map for
+  good, with nothing to notice it had gone, and `skip` the wrong item
+  in the fifth and the same thing happens for the same reason.
+
+  1. **One club, two items — a true duplicate.** *Hamburger SV,
+     1. FC Lokomotive Leipzig.* Same name, same league, same ground,
+     same capacity, same coordinates, and one of the two items carries
+     almost no Wikipedia sitelinks. **Remedy: `skip` the thin item.**
+  2. **Two clubs, one name — separate real clubs.** *Dinamo București:
+     `Q204237` in Liga 1, `Q113577526` in Liga 2.* Both items are real
+     and both belong on the map. They landed on one pin because one
+     item was given the other's ground — `Q113577526`'s `P115` points
+     at Stadionul Dinamo, and the coordinates and capacity followed.
+     **Remedy: correct the wrong club's ground and coordinates in
+     `clubs-manual.csv`. Never `skip`.**
+  3. **One club, two items — parent and department.** *SSV Ulm 1846:
+     `Q701290` the multi-sport parent, `Q14551982` the football
+     department.* One organisation, two Wikidata items by design, which
+     is how a great many German clubs are structured. **Remedy: keep
+     the football item, `skip` the parent.**
+  4. **One club that is no longer a club — merged, dissolved or thrown
+     out of its division.** *Torgelower FC Greif `Q566179`, Teutonia
+     Watzenborn-Steinberg `Q21175456`, FC Hermannstadt `Q24884611`,
+     Politehnica Iași `Q1024390`.* The club stopped existing, or
+     stopped playing at any tracked level, and Wikidata still tags it
+     with the division it was in. **Remedy: Alexandru's, and it is a
+     `skip` or a rename, never a coordinate** — writing the merged
+     club's ground would put a club that has not existed since 2018 or
+     2022 onto the map at a tier it left.
+     **The two German ones never reached the map and the two Romanian
+     ones were ON it, which is the difference that matters.** Torgelow
+     and Teutonia have no coordinates, so they die at the coordinates
+     gate and no marker could ever reveal them. Hermannstadt was drawn
+     at **tier 1** and Politehnica Iași at **tier 2**, with grounds,
+     capacities and pins, looking exactly like checked facts. **Nothing
+     on the map can show this shape**, because a dead club's pin is
+     indistinguishable from a live one's — only a roster can, and only
+     where `league-rosters.csv` has an article for that tier.
+  5. **One club, two items — club and men's first team.** *FC Augsburg
+     `Q15755` / `Q97905916`, FC Erzgebirge Aue `Q141882` /
+     `Q97927365`, SV Babelsberg 03 `Q571553` / `Q97927380`.* Wikidata
+     keeps an *association football club* item and a ***men's
+     association football team*** item (`P31` = `Q103229495`) and they
+     split the facts between them: Wikipedia links the club item, the
+     usable league tag lives on the team item. **Remedy: keep the item
+     with a live `P118` — the team item in all three — and `skip`
+     neither. Never the reverse.** The entry above names these three
+     pairs as verified and protected from cleanup.
+  6. **A club recently gone, offered as a coordinate proposal.** Named
+     2026-09-26, at Alexandru's instruction. *Sparta Râmnicu Vâlcea
+     `Q130235269` (dissolved 2025), CSM Bacău `Q66423967` (dissolved
+     2025), Șoimii Gura Humorului `Q130234791` (withdrew and was
+     excluded by the FRF before 2026-27).* The club stopped playing in
+     the last season or two; Wikidata still carries its Liga III tag
+     and **no `P576`**, so the club query keeps it; it has no
+     coordinates, so it never reaches the map; and
+     `propose_coordinates.py` then finds it a perfectly plausible
+     ground and calls the row **confident**. Nothing about the row
+     looks wrong — the ground is usually real and in the right town.
+     **What is wrong is the club.** Applying the proposal is what would
+     create the error: a dead club drawn at tier 3 with a real pin.
+     **How it differs from shape 4.** Same underlying fact — a club
+     that stopped, a tag that did not — but shape 4's clubs were on the
+     map or hidden at the coordinates gate and needed a `skip`. These
+     are caught one step earlier, at judging time, and the remedy is a
+     **whole-club `rejected` row in `data/coordinate-reviews.csv`**
+     (blank `osmRef`), which stops the tool proposing anything for
+     them. A `skip` is not needed while they have no coordinates.
+     **A close relative, not the same thing:** a club *relegated* below
+     every tracked tier with the old tier still preferred on Wikidata —
+     Gilortul Târgu Cărbunești `Q20647345`, *"Relegated to Liga IV"* in
+     the 2026-27 Liga III article — is alive, just out of scope. Same
+     remedy, different reason, and the row says which.
+     **Standing practice from 2026-09-26: every `confident` or `held`
+     proposal is checked for dissolution before it is applied**, the
+     same way a `skip` is checked before it is written. Three reads, in
+     this order: the item's `P576`; the club's own Wikipedia infobox
+     (`dissolved`, and `league`/`season`/`position` for a relegation or
+     withdrawal); and the current-season division article, **including
+     its Team changes section** — that is where *withdrew*, *excluded*
+     and *relegated to* are written, and a club listed there is not in
+     the division even though its name is on the page. **A missing
+     `P576` proves nothing**: none of the three clubs above has one.
+
+  **What to look at, in this order.** `P31` first: *association
+  football club* on one item and *sports club* or *multisports club* on
+  the other is shape 3 and is nearly conclusive — a label ending in
+  "Fußball" says the same thing. Then the league and the tier: two
+  items in **different** divisions of the same pyramid, each with its
+  own history and its own current season, is shape 2. Only when both
+  items claim the same club in the same division is it shape 1.
+  `P31` names shape 5 just as plainly: ***men's association football
+  team*** (`Q103229495`) on one item against *association football
+  club* on the other. Where that is what you have, stop comparing the
+  items and read the **rank** of each one's `P118` instead — an item
+  can carry exactly the right league and still be invisible to the club
+  query, which is what `tools/diagnose_p118_rank.py` exists to say.
+
+  **The sitelink count is not the test it looks like.** It answers
+  "which item do the Wikipedias write about", which happens to be the
+  right question in shapes 1 and 3 and is the **wrong question in
+  shapes 2 and 5**. In shape 2 both items are real clubs and the senior
+  one always wins on sitelinks; in shape 5 the club item wins every
+  time — 75 to 0, 38 to 0, 21 to 0 — and it is the item that cannot be
+  drawn. It pointed at the football item for SSV Ulm for a
+  reason that had nothing to do with duplication. Use it to break a tie
+  *after* the shape is settled, never to settle the shape.
+
+  The remaining shared grounds are genuine. FCU Craiova and
+  Universitatea Craiova really do share the Stadionul Ion Oblemenco.
+  **This line used to say the Waldau-Stadion really is Stuttgarter
+  Kickers and VfB Stuttgart II. It was not**: the Waldau was one of two
+  truthy `P115` values on VfB Stuttgart II's item, and the club plays
+  its 2026-27 home games in Aspach (corrected 2026-09-26). The rest are a first team with its own reserve side.
+  The Grünwalder was three at once — TSV 1860 München, TSV 1860 München
+  II and FC Bayern München II — until TSV 1860 München II's ground was
+  cleared; it is two now, and the third was never really there, only
+  copied from the senior club.
+
+- **The Franz-Kremer-Stadion is in the data now.** It was not, when
+  this entry was written, and the rest of the entry explains why the
+  bug report that named it was not a marker problem. 1. FC Köln II now
+  has the ground by hand in `clubs-manual.csv`, from europlan-online —
+  see the entry on the 22 coordinate rows below. The women's team and
+  the U19s named in that bug report are still not in the data, and the
+  ground still carries exactly one club, so there is still nothing here
+  for the shared-marker feature to show.
+  What the original entry said, and it still holds as the reasoning:
+  the bug report that prompted the change named 1. FC Köln II, the
+  women's team and the U19s as three clubs sharing it, and at the time
+  none of the three was in `data/clubs/DE.json`. Only three
+  clubs in the German file have "Köln" in the name — 1. FC Köln at the
+  RheinEnergieStadion, SC Fortuna Köln at the Südstadion and FC Viktoria
+  Köln at the Sportpark Höhenberg — and no club anywhere in either file
+  had a Franz-Kremer venue. 1. FC Köln II was one of the 31
+  Regionalliga clubs listed below that Wikidata cannot place, so it
+  never reached the map to collide with anything. It was a candidate
+  for `clubs-manual.csv` by way of `coordinate-review.csv`, not a
+  marker problem — and that is exactly the route it took.
+
+- **The Actions-dispatch route to Wikidata still works, and it is the
+  only route this sandbox has.** Checked first thing on 2026-09-19. The
+  session's egress proxy answers **403 to CONNECT** for
+  `wikidata.org`, `query.wikidata.org`, `overpass-api.de` and
+  `europlan-online.de` — and also for `unpkg.com` and
+  `tile.openstreetmap.org`, so the app's own CDN and map tiles cannot
+  be loaded from here either. `api.github.com` **is** reachable.
+  GitHub's runners are not behind that proxy, so a
+  `workflow_dispatch` of `build-clubs.yml` against a working branch
+  reaches Wikidata normally. That is how the Dinamo coordinates, the
+  SSV Ulm sitelink counts and the Triesenberg confirmation were
+  obtained, and how europlan-online.de was read for the go/no-go
+  question below. The pattern, used repeatedly on 2026-09-19: add a
+  throwaway script plus a temporary step to `build-clubs.yml` **on the
+  working branch**, dispatch it with `ref` set to that branch, read the
+  answers out of the job log, then remove the script and the step in
+  the same branch.
+  **Two practical lessons from the europlan runs.** Put a temporary
+  job's own `if: false` on the `clubs` job while the probe runs, or the
+  dispatch also rebuilds and commits the club layer as a side effect of
+  asking a question. And **keep the printed output small**: the first
+  europlan probe dumped the site's ~1,000 homepage links, and the log
+  that could be read back no longer reached as far as the answer at the
+  top of it. Print the thing you are asking about first, and print it
+  again last.
+  **The one constraint worth writing down:** `workflow_dispatch` only
+  works for a workflow file that already exists on the **default
+  branch**. A brand-new workflow on a working branch cannot be
+  dispatched, which is why the temporary step goes inside
+  `build-clubs.yml` rather than into a file of its own.
+  Wikidata itself was slow but fine: the German discovery query took
+  180.8s across retries on the first run of the day (one 502, one
+  timeout) and 2 minutes total on the second.
+
+- **The Actions-dispatch route does not reach fcbayern.com, and that was
+  measured rather than assumed.** Established 2026-09-19 while writing
+  the first row of `club-tickets.csv`. The club's site sits behind
+  Akamai and refuses this infrastructure outright:
+  `fcbayern.com/robots.txt`, `fcbayern.com/de/tickets/info/preise-und-ermaessigungen`
+  and `tickets.fcbayern.com/documents/de/preisliste.pdf` all answer
+  **HTTP 403 with `server: AkamaiGHost`** and a 3,823-byte "FC Bayern
+  München - Support" page carrying `<meta name="robots"
+  content="noindex,nofollow">`.
+  **The control is what makes this conclusive.** From the same runner,
+  in the same step, `www.bundesliga.com` answered **HTTP 200 in 0.13s**
+  with 1.1 MB of HTML. So it is not the runner's network, not its
+  region (Azure westus), and not a transient failure. It is that site
+  refusing that traffic.
+  **Two shapes of the same refusal, and the first one wastes eight
+  minutes if you do not know about it.** With a scripted `User-Agent`,
+  Python's `urlopen` does not get a 403 at all - the TCP connection
+  opens and then no bytes ever arrive, so every request dies on the
+  read timeout. It was only switching to `curl` with an ordinary
+  browser `User-Agent` that turned the silence into a legible 403. If
+  a fetch against this site hangs rather than failing, that is the
+  block, not a slow page.
+  **`robots.txt` is itself a 403**, so unlike europlan-online - where
+  the missing file meant there were no path rules to obey - there is no
+  readable crawl policy here at all. What there is instead is an
+  explicit refusal, and it was not worked around. Rotating user agents,
+  residential proxies or TLS fingerprint spoofing would be evading an
+  access control the site operator deliberately put up, which is a
+  different thing from reading a page that is simply slow.
+  **What this cost, practically** - written when it was still the whole
+  story: the ticket facts in `club-tickets.csv`,
+  `club-ticket-windows.csv` and `club-ticket-prices.csv` for Bayern were
+  hand-written by Alexandru and corroborated only by search-engine
+  results quoting the club's pages, never by the pages themselves.
+  **That is no longer true of most of them.** The next entry is how the
+  pages were read - from the Internet Archive, which does not touch the
+  refusing server - and the price and window rows now rest on the club's
+  own words with a capture date on them. What is still uncorroborated
+  says so in its own note: the DFB-Pokal prices, and the
+  `bundesliga-away-block` window whose club page has no snapshot at all.
+  The URLs in the `source` columns are real and open normally in an
+  ordinary browser - which is still the route to confirming any of it.
+
+- **The club's pages have now been read, from the Internet Archive, and
+  that is a different thing from getting past Akamai.** Done on
+  2026-09-19. `fcbayern.com` was **not** retried: it answers 403 and a
+  bot-management refusal is a stop, not something to work around. What
+  was fetched instead is the Wayback Machine's own public copies, which
+  is the same category of source as the search-engine results this
+  project already leans on, only far better - the club's exact words,
+  with a capture date on them.
+  **This is now standing policy rather than a call made once**, and it
+  lives in Conventions above: a bot-management 403 is a stop, the
+  archive is a different source and not a way round it, and every
+  archive-sourced row carries the original URL in `source` and the
+  capture date in its note.
+  **What exists and what does not**, checked rather than assumed:
+  `/de/tickets/jahreskarten` (captured 2026-06-08),
+  `/de/tickets/faq-jahreskarten` (2026-06-14),
+  `/de/tickets/auswaerts-dauerkarte` (2026-06-13) and
+  `/de/tickets/info/preise-und-ermaessigungen` (2025-09-02, and three
+  older ones). The one page most wanted -
+  `/de/tickets/info/anfragen-fuer-die-neue-saison-2026-2027` - has **no
+  snapshot at all**; the CDX index answered HTTP 200 with an empty list.
+  So the page dated 2 June 2026 is still unread and probably always will
+  be.
+  **Two practical notes for next time.** The CDX index is slow and
+  flaky from a runner: several queries needed three attempts at a
+  70-second timeout, and one run spent seventeen minutes on five URLs.
+  And a `.../<timestamp>id_/<url>` fetch sometimes fails where the same
+  capture succeeds on a plain `.../<timestamp>/<url>` retry, so retry
+  without `id_` before believing a snapshot is unreadable.
+
+- **The Champions League price sets differ by OPPONENT, not by round,
+  and the theory that said otherwise was wrong.** This is the
+  correction worth keeping from 2026-09-19.
+  `club-ticket-prices.csv` used to argue that its 100/80/60/50/19 rows
+  were the league phase and that a higher 150/120/100/70/19 set search
+  results kept returning was a later knockout round - reasoning from
+  category 5 agreeing at 19 EUR in both. The archived price page shows
+  **two league-phase tables side by side**: "PREISE UEFA CHAMPIONS
+  LEAGUE GRUPPENPHASE FC BAYERN - CHELSEA FC" at 120/100/70/60/19, and
+  "... FC BAYERN - BRÜGGE / SPORTING LISSABON / SAINT-GILLOISE" at
+  100/80/60/50/19. Same round, different visitors.
+  **Both tables are now in the file**, as of 2026-09-19, under a new
+  `opponentTier` column that is part of the price key - see the
+  Conventions entry. Until then the file held only the cheaper set and
+  read like *the* Champions League league-phase price. **A single flat
+  figure for a club that prices by opponent was always going to be
+  incomplete**, and nothing in the file said so, which is the part worth
+  remembering: it was not wrong about a number, it was silently missing
+  half the answer.
+  **The category-5 clue was worthless and it is worth knowing why.**
+  19 EUR is the Südkurve standing price on *every* Champions League
+  table on that page, and 15 EUR on every Bundesliga one. Two Champions
+  League sets agreeing on category 5 therefore says only that both are
+  Champions League - it would have matched whatever the two sets were.
+  A constant is not a fingerprint. Use it to confirm a competition,
+  never a round.
+  **Prices do rise by round, so half the theory was right**, and the
+  archived Jahreskarten page proves it for the season-ticket add-on:
+  UCL Ligaphase 80/60/40/30/15, Achtelfinale 110/90/70/40/15,
+  Viertelfinale and Halbfinale both 160/120/80/60/15. Those are
+  Jahreskarten prices - a per-match add-on for season-ticket holders -
+  and **a different product from a day ticket**, so they do not belong
+  in the day-ticket rows. Bayern quotes at least three price families
+  for the same seat, and mixing them is the easy mistake here.
+  **The Bundesliga rows are confirmed exactly** against the same page:
+  80/70/50/40/15 for categories 1 to 5, Vollzahler, member discount
+  2,50 EUR.
+  **The season was the open problem and it is closed by relabelling,
+  not by research.** The page that matches every one of those rows is
+  the **2025|26** one and the rows said `2026-27`;
+  fussball-tickets-kaufen.de, read directly, says the club has not
+  published 26/27 prices at all. So the rows confirmed against that
+  page - the Bundesliga set and both Champions League sets - now say
+  `2025-26`, the season they were actually confirmed for. That is not a
+  downgrade: they are confirmed more firmly than before, against the
+  right year.
+  **What the file therefore no longer claims is a 26/27 Bundesliga
+  price**, and that gap is the honest state of things rather than
+  something to fill. The only rows left at `2026-27` are the DFB-Pokal
+  ones, whose sole source is Alexandru and which say so - the archived
+  price page carries no Pokal table at all, so there was nothing to
+  check them against.
+  The 150/120/100/70/19 set was on no page read and is still
+  unaccounted for.
+  **`priceBasis` is corrected too.** It said `excl-vat-fees`, which is
+  wrong twice over: a German consumer price includes VAT by law, and
+  the 1 EUR Vorverkaufsgebühr and 2-8 EUR Systemgebühren are added *on
+  top*. Neither of the two values that existed could say that, so
+  `incl-vat-excl-fees` was added to the closed vocabulary and the
+  confirmed rows carry it. The Pokal rows now say `unknown`, because
+  nothing was ever read for them.
+  **And the 120 EUR resale row has a likely explanation at last**,
+  which is the thing this correction bought. Alexandru's sighting was
+  FC Bayern v **RB Leipzig**, 24/25, on the club's member-only
+  Zweitmarkt, against an 80 EUR category 1 face value - which read as a
+  breach of the club's own no-more-than-face-value rule. If Bayern
+  tiers domestic prices by opponent the way it demonstrably tiers
+  Champions League ones, the face value for that fixture was probably
+  above 80 EUR and nothing was breached. **That is inferred and the row
+  says so**: the tiering actually read is Champions League, no
+  Bundesliga table showing two price sets has been seen, and no price
+  table for that match has been read at all. The 120 EUR matching the
+  top Champions League category 1 exactly is a coincidence worth
+  noting and is not evidence - different competition, different season.
+  `opponentTier` is left **blank** on that row for the same reason.
+
+- **The Bayern request windows were two clocks read as one, and that is
+  settled.** The `bundesliga-home` and `bundesliga-away` rows of
+  `club-ticket-windows.csv` used to end "Both cannot be right. Nothing
+  here picks a winner", over an apparent contradiction: a request page
+  dated 2 June 2026 against a DFL fixture list published 2 July 2026.
+  Both were right, about different products.
+  **The season-ticket clock** runs on the season ending, not on the
+  fixture list. From the club's own pages: the ADK order deadline for
+  26/27 "endete ... am 28.05.2026" with answers "Anfang Juni"; the
+  Reservierungsanschreiben goes out "ca. Anfang bis Mitte Juni", and
+  for 26/27 "voraussichtlich Mitte Juni 2026"; and "alle Änderungen für
+  die Jahreskarte können immer in der Saisonvorbereitung durchgeführt
+  werden, ca. Anfang Juni bis Ende Juni, dies hängt vom Saisonende ab".
+  A season runs 1 July to 30 June.
+  **The single-match clock** is the Ticket-Anfrageportal, "bereits vor
+  einer Saison für die Spiele Ihrer Wahl", with the lottery "ca. 6
+  Wochen vor jedem Spiel" - which also pins down the "four to six
+  weeks" in `club-tickets.csv` at about six. A request can be lodged
+  before the opponent is known, which is exactly the blind matchday
+  slot `football-rules.json` describes; a **match-specific** request
+  needs the schedule, which is why 26/27 league-phase requests opened
+  on 29 August 2026, two days after the draw.
+  **The single `late June` estimate has now been split, 2026-09-19**,
+  because one cell cannot answer for two clocks and leaving it whole
+  meant it was wrong for at least one of them. The file now carries
+  **five** window rows instead of three:
+  - `season-ticket-renewal` — the Jahreskarte cycle, `early to mid
+    June`, `inferred` / `observed-past-cycle`. It follows the season
+    ending, so the DFL's fixture list is irrelevant to it.
+  - `bundesliga-single-match` — the per-match home clock, `about six
+    weeks before each match`, `inferred` / `published`. **It has no
+    calendar date at all**, which is the point: a reminder built from
+    this row hangs off a fixture, never off a month.
+  - `bundesliga-away-block` — all away fixtures in one pre-season
+    window, moved from `late June` to `early July`, `inferred` /
+    `user-supplied`. A match-specific away request needs the schedule,
+    and Alexandru's own `football-rules.json` says the same from the
+    other side: check "from early July 2027", close 27 July. **That
+    cell is his figure moved across, not a new one invented here** —
+    rule 1 — and if he disagrees it is his to change.
+  - `away-season-ticket` — the ADK, `late May`, and the **only**
+    `confirmed` / `published` row in the file. The ADK page states its
+    own next cycle: "Ende Mai 2027 informieren wir Sie dann gerne
+    wieder über Bestellmöglichkeiten für die Saison 2027/28." A
+    published claim about a *future* window is exactly what `confirmed`
+    means, and nothing else in the file has one.
+  - `ucl-league-phase` — unchanged.
+  **One nuance the six-weeks row carries and nobody should lose**: the
+  club's "ca. 6 Wochen vor jedem Spiel" is when the **lottery draws**,
+  not when requests open. The portal takes them before the season
+  starts. So six weeks is the deadline side of that window and the
+  request has to be in *before* it, not made at it.
+  **What is confirmed about the ADK is narrower than the row looks.**
+  The club says it will *inform* members at the end of May 2027. It
+  does not say the ordering window opens then and does not say when it
+  closes, so `late May` is when to start watching and no deadline is
+  written anywhere in these files.
+
+- **TSV 1860 München II is off the map until somebody finds its real
+  ground, and that is the right place for it.** `Q7671747` is corrected
+  to **tier 5, Bayernliga Süd**, in `clubs-manual.csv` — Wikidata still
+  tags it `Q340179` Regionalliga Bayern, which is why it arrives at
+  tier 4 and needs the correction. Its **venue, lat and lon now read
+  `<clear>`**, which deletes Wikidata's `P115` `Q254903`, the
+  Grünwalder, and the coordinates that came with it. Those were the
+  senior club's, copied onto this item — the same shape of error as CS
+  Dinamo's, and none of it ever verified.
+  Until 2026-09-19 those cells were blank instead, and a blank leaves
+  the fetched value alone, so the club went on displaying the senior
+  club's ground as fact. That was the case that produced the `<clear>`
+  sentinel.
+  **The Grünwalder collision is gone.** Confirmed against the rebuild
+  of 2026-09-19, which was run on a GitHub runner because this sandbox
+  cannot reach Wikidata: `Q7671747` is no longer in `data/clubs/DE.json`
+  at all, Germany went from 127 clubs on the map to 126, tier 5 is now
+  empty, and the Grünwalder is a **"2"** — TSV 1860 München and FC
+  Bayern München II, both tier 4 — from z11 and at every zoom above it.
+  It never becomes a "3" again.
+  **The capacity cell was deliberately left alone.** 15,000 is the
+  Grünwalder's and just as wrong, but a club with no coordinates is not
+  written to `DE.json` at all, so that figure now reaches nothing.
+  Clear it too if the club ever comes back without a confirmed one.
+  **What is still not known is the ground itself.** Nothing here
+  establishes where this team plays; it says only that the map has
+  stopped claiming to know. Fill the three cells in with a real ground
+  and it returns.
+
+- **A blank cell still cannot clear a fetched value, and now it does
+  not have to.** This used to be an open problem: a blank said *leave
+  the fetched value alone* and nothing said *remove what Wikidata
+  claims here*, so a ground known to be wrong had to go on being
+  displayed. The sentinel that was sketched here is **built** — a cell
+  reading `<clear>` deletes the fetched value and puts nothing back.
+  The rules, the four cells that accept it and the reason a position
+  needs it in both `lat` and `lon` are in Conventions above. A blank
+  cell means exactly what it always meant; nothing already in
+  `clubs-manual.csv` changed meaning.
+  **What is still open is not the mechanism.** Nothing detects a
+  copied ground on its own. `<clear>` is how you act on one once a
+  person has spotted it, and the only thing that makes them visible is
+  still the shared-ground marker — which cannot help when the copied
+  ground belongs to a club that is not on the map at all.
+
+- **The map lag was profiled, and `drawClubs()` is not where it is.**
+  Measured on 2026-09-19 in headless Chromium at a 390x844 phone
+  viewport with **4x CPU throttling**, against the real `index.html`
+  (Leaflet served from a local copy and map tiles stubbed, because the
+  proxy blocks both). Numbers, not impressions:
+  - **Panning never calls `drawClubs()` at all.** Eight pans, zero
+    calls. The app binds it to `zoomend` and to nothing else, so the
+    premise that it runs on every pan is simply not true.
+  - `drawClubs()` costs **17–25 ms** per zoom change, worst case at z11
+    where all 182 markers are on. The whole call was 32.8 ms in a tight
+    loop.
+  - **The coordinate grouping is not the expensive part**: filtering by
+    tier and grouping 193 clubs by coordinate takes **0.32 ms**. It is
+    about 1% of the redraw.
+  - The rest is Leaflet adding and removing markers, not the app's own
+    code. Eager popup building — an HTML string for each of 172 solo
+    clubs and a full DOM subtree with a click listener for each of the
+    10 shared grounds, on every redraw, for popups that are mostly
+    never opened — accounts for **3.1 ms** of it. Waste, but not lag.
+  - Twenty pans at z11 cost **15.8 ms each**, and a 30-pan drag
+    produced **no long task over 50 ms**.
+  So at today's 191 clubs there is no lag in the drawing code to fix.
+  If the app feels slow on a phone, the remaining suspect is **tile
+  loading from `tile.openstreetmap.org`**, which is network and could
+  not be measured from here because the proxy blocks it.
+
+- *(2026-10-03: since every club is drawn from z9, all 556 are SVG
+  paths at z9 - 531 markers - where the old rule had 443. Still under
+  the crossover below; the timing is in Conventions, "Tier zoom
+  bands".)*
+- **The canvas renderer in `initMap()` has never been in effect.** The
+  line `L.layerGroup([], {renderer: L.canvas({padding:.5})})` does
+  nothing: `L.LayerGroup` has no `renderer` option and does not pass
+  its options to its children. Verified by inspecting the live map —
+  every club circle resolves to **`L.SVG`** with the default padding of
+  **0.1**, there are **172 SVG `<path>` elements** in the DOM and
+  **zero canvases**, and the `L.canvas()` object that is created is
+  thrown away. The comment above it claims a protection the map does
+  not have.
+  **It has not been fixed, and the measurement is why.** At today's
+  size canvas is *slower*: 20 pans cost 15.4 ms each on SVG against
+  18.4 ms on a real canvas. The crossover, measured by cloning the club
+  list:
+
+    | clubs | `drawClubs()` | per pan, SVG | per pan, canvas |
+    |---|---|---|---|
+    | 191 | 22 ms | 15.4 ms | 18.4 ms |
+    | 500 | 38 ms | 15.7 ms | 21.9 ms |
+    | 1,000 | 58 ms | 18.3 ms | 19.6 ms |
+    | 2,000 | 122 ms | 32.0 ms | 19.2 ms |
+    | 4,000 | 278 ms | 68.5 ms | 23.3 ms |
+
+  Canvas only starts winning somewhere between **1,000 and 2,000**
+  clubs. **Tier 5 does not get there**: the German leagues in
+  `unmapped-leagues.csv` that look like tier 5 carry about **254**
+  football clubs between them before the roughly one-in-three that have
+  no coordinates are dropped, so tier 5 in Germany would take the map
+  to something like 350–400. So this is a real bug that is currently
+  harmless, and fixing it today would make panning slightly worse. It
+  is recorded here so that whoever expands past about a thousand clubs
+  knows exactly which line to change and what it buys.
+
+- **The city field is always null.** `CLUB_QUERY` in `tools/fetch_clubs.py`
+  selects `?cityLabel` but never binds a `?city` variable anywhere in its
+  `WHERE` clause — there is no `?club wdt:P159 ?city` or similar triple, so
+  `SERVICE wikibase:label` has nothing to label and `?cityLabel` comes back
+  unbound on every row. `city = cell(row, "cityLabel")` is therefore always
+  `None`, and every club in `data/clubs/DE.json` and `data/clubs/RO.json`
+  carries `"city": null`, confirmed by inspecting both files directly.
+  `propose_coordinates.py`'s own `CITY_QUERY` binds `?city` correctly (via
+  `?club wdt:P159 ?city` / `wdt:P131 ?city`), so the fix pattern already
+  exists in this codebase — it was just never carried over to `CLUB_QUERY`.
+  Not fixed here; recorded only.
+- SV Meppen and 1. FC Schweinfurt are missing from the German layer
+  entirely: neither comes back from the club query at all, and until the
+  discovery query finishes there is no way to see which league Q-id they
+  do carry. Erzgebirge Aue is a different case — it does come back, as
+  `Q97927365`, and is dropped for the reason below.
+- **Two coordinate proposals were wrong and must not be pasted in.**
+  OpenStreetMap puts SV Heimstetten (`Q324983`) at "Sporttraum München"
+  (`way/388183624`), a commercial sports centre 0.8km from the club's own
+  Stadion im ATS-Sportpark; and ETSV Weiche (`Q831867`) at the
+  "GP JOULE Arena" (`way/25020637`), 3.3km from its Manfred-Werner-
+  Stadion. Both were checked against independent sources by Alexandru and
+  both are now corrected by hand in `clubs-manual.csv`, from
+  europlan-online, with the addresses and capacities in the note column.
+  That row also carries the club's current name, SC Weiche Flensburg 08 —
+  Wikidata still labels it ETSV Weiche.
+  Nothing in `propose_coordinates.py` remembers a rejection, so
+  `coordinate-review.csv` will offer both wrong grounds again next month.
+  The manual rows win, so the map is safe either way; the risk is only
+  that the review file still reads "confident" for two rows that are not.
+- FC Unirea Dej has plainly wrong coordinates in Wikidata — placed near
+  Bucharest, roughly 300km from Dej. FK Csíkszereda is the same kind of
+  error, 31km from the nearest ground OpenStreetMap knows about.
+- Wikidata carries two items for the same club more often than expected.
+  Hamburger SV was the first, 1. FC Lokomotive Leipzig the second:
+  `Q162317` with 39 Wikipedia sitelinks against `Q28936927` with 2, same
+  league, ground, capacity and coordinates. Both duplicates now have a
+  `skip` row in `clubs-manual.csv`. Nothing detects this automatically,
+  so the next one will again show up as two pins on one ground.
+- The cross-check has now been run for real. Of 185 clubs it compared,
+  20 agreed and 7 disagreed; the rest could not be compared because only
+  one source has a figure. Fortuna Düsseldorf (Wikidata 9,917 against
+  OpenStreetMap 54,600) and 1. FC Saarbrücken (35,303 against 16,003)
+  are the two worst. Preußen Münster was not among them — OpenStreetMap
+  has no capacity for its ground, so nothing could be checked.
+  **That 7 was 6 clubs, not 7.** Checked on 2026-09-19 against the run
+  that produced it: the 2026-09-16 file carried 1. FC Lokomotive Leipzig
+  twice, once as `Q162317` and once as `Q28936927`, the duplicate item —
+  same club, same two figures, counted twice. Since the `skip` row for
+  `Q28936927` the file has held **6** disagreements, and that is the
+  real number. Nobody has recounted the 20 agreements or the 185
+  comparisons the same way, so treat those two as upper bounds until a
+  run after the duplicate removals is counted. The lesson is worth more
+  than the arithmetic: a duplicate Wikidata item does not only put two
+  pins on one ground, it quietly inflates every count taken downstream
+  of the club layer.
+- Romanian capacities cannot be corroborated. OpenStreetMap has a usable
+  capacity for exactly one Romanian ground out of the 404 it knows about,
+  so the cross-check confirmed nothing there: 0 agreements, 0
+  disagreements, 0 figures OpenStreetMap could supply on its own. Every
+  Romanian capacity on the map is therefore either hand-entered or
+  single-sourced from Wikidata, and no second source exists to catch a
+  wrong one. Germany is only better by degree — 71 usable capacities out
+  of 2,960 grounds.
+- Both queries now exclude people with
+  `FILTER NOT EXISTS { ?club wdt:P31 wd:Q5 }`. That worked for what it
+  was aimed at: the German club count is unchanged apart from the
+  duplicate removed on purpose, and the "in more than one mapped tier"
+  figure fell from 4,104 to 3 for Germany and 1 for Romania. It did not
+  fix the discovery query. That was fixed separately — see the next
+  entry — and `unmapped-leagues.csv` now carries 108 German leagues.
+- **The discovery query has been turned round, and Germany is in the
+  seed list at last.** `unmapped-leagues.csv` carried no German league
+  at all until 2026-09-18; it now carries 108, alongside Romania's 53.
+  What the tool asks is now: which leagues does Wikidata place in this
+  country, and how many clubs does each have. The counting happens in a
+  subquery and the labels are added outside it, because the label
+  service cannot run inside an aggregate.
+  - **The trade-off, and it is a real one.** This finds leagues LOCATED
+    IN a country, not leagues that country's clubs PLAY IN. A club
+    playing in a league Wikidata places abroad no longer puts that
+    league in the seed list, and a domestic league with no `P17` at all
+    disappears from it too. The run summary prints this every time.
+  - Measured, not assumed: four Romanian leagues that were in the old
+    seed list are gone from the new one. Two are the trade-off exactly —
+    `Q257400` ABA League and `Q456092` Eurocupa ULEB, foreign basketball
+    competitions Romanian clubs take part in. One, `Q5282797`
+    "dizolvare", is junk and no loss. The fourth, `Q55452861` Liga a V-a
+    Dolj, is the case that should worry anyone extending this: a real
+    Romanian league that the new question cannot see because its
+    Wikidata item carries no country. One league arrived that was never
+    there before, `Q18417282` Cupa României. Net: 56 Romanian rows
+    became 53.
+  - No mapped league was lost. All 11 leagues in `league-tiers.csv`
+    came back, and the club layer was unchanged at 129 German and 64
+    Romanian clubs on the map.
+  - **It is not as fast as the probe suggested and it is not reliable
+    yet.** The probe measured 6.9 seconds; inside the tool the German
+    query took 23.7 seconds, and the run before that one failed
+    outright — HTTP 502, then 504, then 504, three attempts, no German
+    leagues. The ceiling is 60 seconds, so there is room but not much,
+    and the summary now prints how long the query took on every run.
+    When it does fail the seed file is left alone rather than
+    half-written. If this keeps failing, the next thing to try is
+    splitting it: the league list in one query, the club counts in a
+    second one bounded by `VALUES ?league`, with `clubsSeen` left blank
+    and reported when the count cannot be had. That has not been
+    measured and has not been built.
+- **What the 2026-09-16 probes measured**, kept because it is the
+  evidence the rewrite rests on. 20 timed probes. Stripped of
+  `SERVICE wikibase:label` the German query finishes in 8.9 seconds and
+  returns 967 rows. Exactly the same query with the label service put
+  back dies at the query service's 60-second ceiling, having streamed
+  324KB of a half-written answer. The German answer was never large:
+  967 rows, 138 different leagues. Romania's is 308 rows and 56 leagues
+  and takes 5.8 seconds, labels and all — Germany sits just over a line
+  Romania sits just under.
+  - Paging is the wrong remedy. The whole German answer is one page of
+    1,016 rows; `LIMIT 10000` returned all of it, and adding
+    `ORDER BY` made it slower (27–30s against 4.6s), not faster.
+  - Splitting by tier cannot be done: tier is what the discovery query
+    exists to find out. Splitting by region needs `P131` on the club,
+    which is exactly the data the missing clubs do not have.
+  - Forcing the join order with `hint:optimizer "None"` made it worse:
+    HTTP 504 after 65 seconds.
+  - What did work, measured: asking which leagues have Germany as their
+    country, counting clubs per league, instead of asking which clubs
+    are in Germany and collecting their leagues. 6.9 seconds, 118
+    leagues, labels included. This is the shape that was built.
+    The note here used to add that the same shape returns Romania's 56,
+    "the same 56 already in `unmapped-leagues.csv`, which is the
+    evidence that it loses nothing." That reading was wrong: 56 is the
+    total including the three leagues already mapped, so it was 53
+    unmapped against the file's 56, and the real run confirmed exactly
+    that. It loses four and gains one — named in the entry above.
+  - Adding a "is a football club by type" filter is faster still (3.5s)
+    but returns 74 leagues against 118. It drops 44, so it would undo
+    the deliberate decision not to filter by type. Not worth it.
+  - The trade-off in the turned-round version: it finds leagues *in*
+    Germany rather than leagues *German clubs play in*, so a German club
+    in a foreign league would no longer put that league in the seed
+    list. That was a measurement when it was written; it is now the
+    behaviour, and what it actually cost is listed above.
+- **Twenty of the 22 unresolved German coordinate rows are settled,
+  from europlan-online.** Done on 2026-09-19 through the
+  Actions-dispatch route, because the sandbox still answers 403 to
+  CONNECT for europlan-online.de. The 22 were the 19 `ambiguous` rows
+  and the 3 `no match` rows of `coordinate-review.csv`, once the five
+  Wikidata squad lists and SC Veltheim are set aside. Scale: 13 league
+  pages, 7 searches and 38 ground pages, which is the "few dozen pages"
+  end of the question left open above, not a country's worth.
+  **What settled them is the site's own club-to-ground link**, not a
+  ground name. A league page's table row pairs a club with its ground,
+  and the ground page's "Vereine, die in diesem Stadion spielen" says
+  the same thing from the other side, with the club's current league
+  and level. Both were required to agree before a row was written, and
+  the ground's own town was checked against the town Wikidata gives the
+  club. That last check earned its place immediately: **Eutin 08 scored
+  0.5 against FC 08 Homburg** on the shared "08" alone, and only the
+  town told them apart.
+  **The 14 found on league pages**: 1. FC Köln II (Franz-Kremer-
+  Stadion), 1. FC Nürnberg II (Max-Morlock-Platz), Borussia
+  Mönchengladbach II (Grenzlandstadion), FC Augsburg II
+  (Rosenaustadion), FC Erzgebirge Aue (eins Erzgebirgsstadion),
+  FC Ismaning (Prof. Erich Greipl Stadion), FC Schalke 04 II
+  (Parkstadion), FSV Optik Rathenow (Stadion Vogelgesang), Germania
+  Egestorf (Stadion An der Ammerke), SG Barockstadt Fulda-Lehnerz
+  (Stadion der Stadt Fulda), SpVgg Greuther Fürth II (Konrad-Ammon-
+  Platz), VfB Eichstätt (HIRSCH Sportpark), Hertha BSC II (Stadion auf
+  dem Wurfplatz) and TSV Steinbach Haiger (SIBRE-Sportzentrum
+  Haarwasen).
+  **The 6 found through the site's search**: Eutin 08 (Thies Hahn
+  Arena), FC Kray (KrayArena), Lupo Martini Wolfsburg (Lupo Stadio),
+  VfB Hüls (EVONIK Sportpark), VfR Garching (Sportplatz Schleißheimer
+  Straße) and FC Viktoria 1889 Berlin (Stadion Lichterfelde).
+  **Two of the three clubs OpenStreetMap could not place at all are
+  now placed**: Hertha BSC II and TSV Steinbach Haiger.
+
+- **A club can be unplaceable because it no longer exists, and nothing
+  here was looking for that.** The two of the 22 that did not resolve
+  are not missing data. Both clubs were merged out of existence, and
+  europlan says so on the ground page itself:
+  - **Torgelower FC Greif** (`Q566179`). The Gießerei-Arena in Torgelow
+    lists **SpVgg. Torgelow-Ueckermünde 22**, "Fusion 2022 aus
+    Torgelower FC Greif 1919 und FC Einheit Ueckermünde 1949", and
+    names Torgelower FC Greif 1919 under *former* clubs.
+  - **Teutonia Watzenborn-Steinberg** (`Q21175456`). The Waldstadion in
+    Gießen lists **FC Gießen 1927 Teutonia/1900 VfB**, "Fusion 2018 aus
+    VfB 1900 Gießen / SC-Teutonia Watzenborn-Steinberg". The club's old
+    ground, the Sportplatz an der Neumühle in
+    Pohlheim-Watzenborn-Steinberg, is still there and is now a side
+    pitch of the merged club.
+  **Neither was given coordinates, on purpose.** A ground is known for
+  both, and writing it would put a club that has not existed since 2018
+  or 2022 onto the map, at the Regionalliga tier Wikidata still tags it
+  with. That is a `skip` decision or a rename, and it is Alexandru's,
+  not something to settle by filling in a coordinate. Note that this is
+  a *fourth* shape to add to the three duplicate shapes above, and it
+  is the only one that a shared-ground marker can never reveal, because
+  the club never reaches the map at all.
+
+- **Six of the 20 are nowhere near the tier Wikidata gives them, and
+  the tier was deliberately not corrected.** europlan names each club's
+  current league and level on the ground page, and for these six it is
+  far below the Regionalliga tag that brought them into
+  `coordinate-review.csv` in the first place: FC Kray and Lupo Martini
+  Wolfsburg at level 6, Eutin 08 at level 6, VfR Garching at level 7,
+  VfB Hüls at level 8, and FC Viktoria 1889 Berlin's men's team not
+  found in any league page read. Each row says so in its note.
+  **Why nothing was changed.** `TIER_FROM_ZOOM` in `index.html` is
+  `{1:0, 2:7, 3:9, 4:11, 5:12}`, and `drawClubs()` skips a club whose
+  tier is not a key in it. So writing tier 6, 7 or 8 does not move a
+  club down the map, it **removes the club from the map entirely**, the
+  same way TSV 1860 München II left it. Leaving the tier blank instead
+  leaves Wikidata's stale tier 4, so these six will now appear at z11
+  among the Regionalliga clubs. Both are wrong in different directions
+  and the choice is a real one, so it is being put to Alexandru rather
+  than taken here.
+
+- **OpenStreetMap has now been asked where the unplaced clubs are**, by
+  `propose_coordinates.py`, first real run 2026-09-16. Of the 31
+  Regionalliga clubs with no coordinates: 9 got a confident proposal,
+  19 are ambiguous, 3 got nothing. **All 22 of the ambiguous and the
+  unplaceable have since been taken to europlan-online and 20 of them
+  settled** — see the entry above. What is left in this file for
+  Germany is therefore evidence that has been acted on, not evidence
+  waiting to be judged, and `propose_coordinates.py` will offer every
+  one of those rows again next month, because nothing in it remembers
+  that a row was resolved elsewhere. Same standing trap as the two
+  rejected rows below: the manual rows win, so the map is safe, and the
+  risk is only that the review file goes on reading "ambiguous" for
+  rows that are not. Five of the nine are certain enough
+  to be worth reading first — the OpenStreetMap ground names the club in
+  its `operator` tag (DJK Vilzing, SSV Jeddeloh, SV Rödinghausen,
+  TSV 1896 Rain, VfB Auerbach). The other four rest on a town match and
+  deserve a harder look. Six of the seven reserve teams are ambiguous on
+  purpose: their town is the first team's town and says nothing about
+  which of the club's grounds they play on — which is the question
+  europlan's club rows turned out to answer directly. Nothing had been
+  applied to any club file when this was written;
+  `data/clubs/coordinate-review.csv` is a list to judge, and its German
+  half has now been judged.
+- Romania turns out to be the bigger hole, and it was never written
+  down: 107 Romanian clubs have a tier and no coordinates, against 64 on
+  the map. 31 confident, 32 ambiguous, 44 nothing. Most of the 44 are
+  villages where OpenStreetMap has no named ground at all, which no
+  amount of matching can fix.
+- Romanian club names are full of words that are also village names —
+  Unirea, Progresul, Viitorul, Cetate, Petrolul. The town match finds
+  the wrong village and the club's town from Wikidata throws it out
+  again, which is what that check is for. A club with no town in
+  Wikidata has no such guard, so a row like that is worth more
+  suspicion than its wording suggests.
+- Four Romanian grounds are proposed for two clubs at once (Bacău,
+  Vaslui, Darabani, Modelu). Sharing a municipal ground is normal, so
+  the rows say so rather than being dropped — but "ACS Înainte Modelu"
+  and "Înainte Modelu" are almost certainly one club with two Wikidata
+  items, the same problem as Hamburger SV.
+- **The squad lists are filtered out now, by type.** Five German items
+  with a tier were Wikidata squad lists — "Kader der 2.
+  Fußball-Bundesliga 2019/20", "Mannschaftskader der deutschen
+  Fußball-Bundesliga 2013/14" and so on. They carry `P118` exactly as a
+  club does and are not people, so the `wdt:P31 wd:Q5` filter never
+  touched them, and they stayed off the map only because they happen to
+  have no coordinates — luck, not a rule.
+  The club query now asks for `P31` as well, which costs nothing there
+  because that query is bounded by the leagues in `league-tiers.csv`,
+  and an item whose type is a list is thrown out and named in the run
+  summary. In the real run of 2026-09-18 all five were caught by the
+  type, none needed the name fallback: four are a "list of participants
+  in sport tournament" and one is a "Mannschaftskader". The name
+  fallback exists for an item whose type says nothing, and it only
+  matches the shapes a list title has ("Kader …", "Mannschaftskader …",
+  "Liste …") and a club name does not.
+  This is not the "is a football club by type" filter that was
+  deliberately not added. That one would have said which items to keep
+  and dropped every club whose type is simply not filled in. This one
+  says what to throw out, and an item with no type at all passes
+  untouched.
+  They will keep their rows in `coordinate-review.csv` until
+  `propose_coordinates.py` next runs, which is monthly.
+- **SC Veltheim is not German.** It came through the club query
+  carrying the German 3. Liga item `Q154069`, and the map has no
+  country filter to stop it: the club query is bounded by league, not
+  by country, so any foreign club whose league tag points at a German
+  league item arrives as a German club. Two searches on 2026-09-18
+  agree it is the Swiss SC Veltheim, from the Veltheim district of
+  Winterthur, registered with the Fussballverband Region Zürich and
+  playing in the Swiss 2. Liga — so its tag most likely means the Swiss
+  3. Liga and is a wrong link. It is now removed by hand with a `skip`
+  row in `clubs-manual.csv`. Adding a country filter to the club query
+  was considered and not done: `P17` is exactly the kind of field the
+  missing clubs already lack, and a filter on it would quietly drop
+  real ones. Nothing detects the next case automatically.
+- **FC Triesenberg was not German and is now off the map.** `Q1387764`
+  sat in `data/clubs/DE.json` at tier 3, venue Sportanlage Leitawis,
+  capacity 800, coordinates 47.1145 / 9.5401 — which is in
+  **Liechtenstein**. It reached the German map the same way SC Veltheim
+  did: the club query is bounded by league rather than by country, and
+  its item carries `Q154069`, the German 3. Liga.
+  On 2026-09-19 the inference recorded here was **confirmed from the
+  item itself**, read on a GitHub runner: `P17` is `Q347`,
+  Liechtenstein; `P118` carries `Q24448` "2. Liga" alongside `Q154069`;
+  and the coordinates come from its ground `Q2135126` Sportanlage
+  Leitawis. Liechtenstein has no league of its own and its clubs play
+  in the Swiss pyramid, so `Q154069` is a wrong link — most likely the
+  Swiss 3. Liga, the same confusion as Veltheim's. That last step is
+  still inference, and the `skip` row does not depend on it: whichever
+  Swiss league is meant, the club does not belong on a German tier-3
+  map. It now has a `skip` row in `clubs-manual.csv`.
+- **Romania was checked for the same mistag pattern and came back
+  clean.** Every one of the 64 clubs in `data/clubs/RO.json` has
+  coordinates inside Romania, so no foreign club has arrived through a
+  Romanian league tag the way Veltheim and Triesenberg arrived through a
+  German one. Moldova was the case to worry about, because a crude
+  bounding box for Romania also covers Chișinău and Moldovan clubs have
+  Romanian-language names; the easternmost club in the file is
+  CS Medgidia at 28.2575, well inside Dobrogea, so nothing came through.
+  No club Q-id appears in both country files.
+  **What that check cannot see**, and nobody should read it as covering:
+  the other direction — a Romanian club tagged onto a *foreign* league.
+  The club query is bounded by the leagues in `league-tiers.csv`, so a
+  Romanian club carrying, say, a Hungarian league tag simply never
+  appears through that tag and leaves no trace in the output to find.
+  There is already evidence this direction is real: the old discovery
+  query put `Q257400` ABA League and `Q456092` Eurocupa ULEB into the
+  seed list precisely because Romanian clubs take part in them. Ruling
+  it out needs a Wikidata query listing every `P118` value on Romanian
+  clubs, which could not be run on 2026-09-19.
+  **The country check now watches this, within its limits.** Run against
+  the rebuild of 2026-09-19 it flags **nothing** in either country - but
+  that is because both known offenders have `skip` rows by then, so the
+  empty `country-review.csv` is the check agreeing with the hand
+  corrections, not evidence that it would catch anything. That it works
+  was established separately, against the files as they stood: the box
+  alone flags FC Triesenberg and nothing else, and the `P17` signal
+  flags SC Veltheim on Switzerland. The check runs on what actually
+  reaches the map, so a club removed by hand is not reported again
+  forever.
+- **Editing `clubs-manual.csv` now does rebuild the club layer — and
+  this entry claimed that a day before it was true.** The entry below
+  was written on 2026-09-19 saying `data/clubs-manual.csv` was in the
+  workflow's `paths`. It was not: `build-clubs.yml` on `main` still
+  listed only `league-tiers.csv`, `fetch_clubs.py` and the workflow
+  itself, and it was put in on **2026-09-20**. So for a day this file
+  described a fix that had been decided and not made.
+  **Two things went in at the same time, both of them the project's own
+  rules applied to a file that was breaking them.** The `paths` entry,
+  and `set -o pipefail` on the `Fetch clubs from Wikidata` step, which
+  pipes to `tee` and had no `pipefail` — exactly the shape the
+  Conventions entry says "has already caused one silent failure".
+  The original entry, still true in everything else it says:
+  Until 2026-09-19 `.github/workflows/build-clubs.yml` reran on a push
+  that touched `league-tiers.csv`, `fetch_clubs.py` or the workflow
+  itself — but not `clubs-manual.csv`, even though a hand correction
+  decides what is on the map just as directly. A correction therefore sat inert
+  until the Sunday 04:23 UTC cron or a manual "Run workflow". This was
+  not theoretical: the CS Dinamo correction was committed on 2026-09-18
+  and the map still did not show it a day later. `data/clubs-manual.csv`
+  is now in the workflow's `paths`, so a push that touches it rebuilds.
+  **What this does not cover**, and it is worth knowing: the `paths`
+  filter only applies to pushes on `main`. A correction pushed to a
+  working branch still needs a `workflow_dispatch` against that branch.
+- **The country sanity check is built, and the claim that used to sit
+  here was wrong.** This entry used to say that a bounding box would
+  have caught both SC Veltheim and FC Triesenberg automatically. It
+  would not have, and that was measured rather than argued before the
+  check was written.
+  `tools/fetch_clubs.py` now runs a country check over every club that
+  reaches the map and writes `data/clubs/country-review.csv`. It
+  **reports and never removes**, the same shape as
+  `capacity-review.csv`, and the run summary pastes it. It uses **two
+  signals, because one of them is not enough**:
+  1. **A hand-written rectangle** round each country, taken from the
+     country's own extreme points with a small margin (`COUNTRY_BOX` in
+     the tool). This catches FC Triesenberg, at 47.11°N, because
+     Liechtenstein lies south of Germany's southernmost point
+     (47.2701°N, the Haldenwanger Eck).
+  2. **Wikidata's own `P17`** on the club, compared against the country
+     file it is being written into.
+  **Why the box alone is not enough.** SC Veltheim is in Winterthur, at
+  roughly 47.51°N 8.72°E. Any rectangle wide enough to hold Germany
+  also holds northern Switzerland, western Austria and the whole of
+  Liechtenstein, and tightening it enough to exclude Winterthur would
+  cut off real German clubs in the far south. Run against the current
+  files, the box alone flags exactly **one** club — Triesenberg — and
+  flags Veltheim **not at all**. Signal 2 is what catches Veltheim: its
+  `P17` is `Q39`, Switzerland.
+  **Why using `P17` here does not contradict the decision not to filter
+  on it.** That decision stands and is still right: `P17` is exactly
+  the field the missing clubs already lack, so a *filter* on it would
+  quietly drop real clubs. A *report* cannot drop anybody — a club with
+  no `P17` whose coordinates sit inside the box is never mentioned at
+  all. That is also the check's blind spot, and the run summary prints
+  it every time: **nothing flagged does not mean nothing is wrong.**
+- The missing Regionalliga clubs are not a query problem, and the type
+  filter was never what stood in the way. The club query returns 95 clubs
+  tagged with one of the five mapped Regionalliga items. 31 of them have
+  no ground (`P115`) and no coordinates (`P625`) anywhere on the item, so
+  they are dropped at the coordinates gate; 64 survive, and 61 reached
+  the map once two were moved to tier 3 by hand and one duplicate was
+  skipped. That was the 2026-09-18 figure. Since the `skip` row for
+  `Q701290`, the second SSV Ulm item, the German file holds **68 clubs
+  at tier 4** - the Regionalliga survivors plus the ones given
+  coordinates by hand from `coordinate-review.csv` and europlan-online.
+  The 31 are seven reserve teams (1. FC Köln II, FC Schalke 04 II,
+  Hertha BSC II, Borussia Mönchengladbach II, FC Augsburg II,
+  1. FC Nürnberg II, SpVgg Greuther Fürth II) and 24 first teams,
+  including SV Rödinghausen, TSV Steinbach Haiger, FC Viktoria 1889
+  Berlin, SV Heimstetten and FC Erzgebirge Aue. The gap is missing data
+  in Wikidata, not a filter, so no change to the query will close it.
+  What can close it is a second source, which is what
+  `coordinate-review.csv` above offered for 28 of the 31 — and what
+  europlan-online has now actually closed for 20 of them, two of which
+  the review file could not place at all. Two more turned out to be
+  clubs that no longer exist. See the entries above.
+- **europlan-online as a second stadium source: the site has been read
+  at last, and what it says about automated access is nothing.** Two of
+  the three go/no-go questions are answered as of 2026-09-19, from the
+  site itself, through the Actions-dispatch route — the sandbox still
+  answers 403 to CONNECT for europlan-online.de, so a throwaway probe
+  went into `build-clubs.yml` on a working branch and was dispatched
+  three times. The probe read the legal and informational pages, plus
+  the homepage and one country, league and ground page to see what
+  robots directives those carry; it extracted no club or ground data
+  and kept nothing. Both it and the temporary job were removed again in
+  the same branch.
+  - **There is no `robots.txt`. It is a 404.** Both
+    `europlan-online.de/robots.txt` and
+    `www.europlan-online.de/robots.txt` return **HTTP 404** with the
+    server's generic 964-byte "404 Not Found" page — not an empty file,
+    not a file with no rules in it, no file at all. So there is **no
+    `User-agent` group, no `Disallow`, no `Allow`, no `Crawl-delay` and
+    no `Sitemap` line**, for any user agent, because there is no file
+    for them to be in. There is also no `sitemap.xml`.
+  - **There is no terms-of-use page, and this was proved rather than
+    assumed.** The site has exactly **four** pages that are not content:
+    Impressum, Datenschutz, FAQ and Kontakt. Everything else guessed at
+    — `?s=agb`, `?s=nutzungsbedingungen`, `?s=terms`, `?s=lizenz`,
+    `?s=copyright`, `?s=disclaimer`, `?s=info`, `?s=hilfe`, `?s=regeln`
+    — returns **HTTP 200 with the homepage**, and so does
+    `?s=thisdefinitelydoesnotexist`. That is the site's fallback, not a
+    page. The words "AGB", "Nutzungsbedingungen" and "Terms" appear
+    **zero** times in the homepage HTML, and the footer links only to
+    Bilder/Grounds hinzufügen, Fehler melden, FAQ, Presse, Kontakt,
+    Impressum and Datenschutz. So the earlier session was right that
+    `index.php?s=impressum` is generic legal boilerplate — and right to
+    keep looking, because now we know there is nowhere else to look.
+  - **Nothing on the site addresses automated or repeated access.** The
+    **complete** text of all four pages was swept — 6,888 characters of
+    Impressum, 42,931 of Datenschutz, 5,622 of FAQ, 4,436 of Kontakt —
+    for some forty German and English terms: *untersagt, verboten,
+    nicht gestattet, unzulässig, dürfen nicht, keine automatisierte,
+    systematisch, massenhaft, Roboter, crawl, scrap, spider, harvest,
+    data mining, rate limit, Zugriffsbeschränkung, nur für den
+    persönlichen Gebrauch, gewerblich, kommerziell* and the rest.
+    **Not one of them is there.** The handful of matches were substrings
+    inside unrelated German words — "agb" inside
+    *Datenübertragbarkeit*, "bots" inside *Botswana* in the country
+    dropdown — and GDPR boilerplate about processing personal data.
+  - **What the site does say is about copyright, not about access.** The
+    Impressum carries the standard eRecht24 paragraph: content created
+    by the operators is under German copyright, and "die
+    Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
+    Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der
+    schriftlichen Zustimmung des jeweiligen Autors". The Kontakt page
+    says the usage rights in the photographs belong **exclusively to
+    the person who submitted them** and that Europlan is not authorised
+    to license them on. Both are about republishing, neither is about
+    reading.
+  - **The one robots instruction that does exist says "index, follow",
+    and it must not be over-read.** Every page checked — homepage,
+    country page, league page and a ground page — carries
+    `<meta name="robots" content="index, follow">` and **no
+    `X-Robots-Tag` header**. That is an instruction to search engines to
+    index the page. It is not a grant of permission for anything else,
+    and nobody should cite it as one.
+
+  **So: it is silence, and silence is what it is.** The site expresses
+  no rule about automated reading — it neither permits it nor forbids
+  it, and there is no document on it that speaks to the question at
+  all. A missing `robots.txt` conventionally means a crawler has no
+  path-level rules to obey (RFC 9309), but that is a convention among
+  crawlers, not permission given by this site. Do not write "the site
+  allows it" anywhere. What is true is: **nothing there says not to.**
+
+  **What silence does not settle, and it is the real question.** German
+  law gives a database maker a right of its own (`§ 87a-b UrhG`,
+  *Datenbankherstellerrecht*) against extracting a **substantial part**
+  of a database, whether or not the individual facts in it are
+  copyrightable — and a ground's coordinates and capacity are facts.
+  Reading a few dozen pages to settle the 19 ambiguous coordinate rows
+  and the 3 unplaceable clubs is a different thing from taking a
+  country's worth of grounds for tier 5, and the difference is exactly
+  what that right is about. Nothing found on the site answers it,
+  because the site says nothing. This is flagged here as an open
+  question and is **not** a finding — nobody involved is a lawyer, and
+  it should not be settled by anybody guessing which side of "a
+  substantial part" a plan falls on. The cheap way past it is to ask:
+  the Kontakt page gives `info@europlan-online.de`, the site is run by
+  four named people, and a short mail describing exactly what is wanted
+  would replace all of this reasoning with an answer.
+
+  **The third go/no-go criterion is answered, and the answer is yes.**
+  Checked on 2026-09-19 across 38 ground pages read while settling the
+  22 clubs below. Every ground page carries its position in the same
+  place and the same shape — a Google Maps link,
+  `maps.google.de/maps?q=(<lat>, <lon>)` — and a second, rounded copy
+  in an `index.php?s=umkreis&lat=…&lon=…` link beside it. Precision is
+  not the problem: most are 14–15 decimal places, which is a click on a
+  map rather than a survey, and the four or five that matter are all
+  there. Capacity is `Kapazität: 12.345` in the Stadiondaten block,
+  German thousands separators, and the address sits above it under
+  Anschrift with a postcode and town. Layout did not vary once across
+  the 38.
+  **What the pages do NOT carry is a coordinate for the club** — only
+  for the ground. That is the right way round for this project, but it
+  means the club-to-ground link is what everything rests on.
+
+  **Notes for whoever does build the fetcher**, all measured on
+  2026-09-19:
+  - Everything redirects to `www.europlan-online.de`. nginx, PHP
+    7.4.33, a `PHPSESSID` cookie on every response, and
+    `Cache-Control: public, max-age=600`.
+  - **A 200 from this site does not mean the page exists.** An unknown
+    `?s=` value silently serves the homepage with HTTP 200. Any fetcher
+    must check the content, never the status code.
+  - The country page `index.php?s=land&id=1` is **504 KB** in one
+    response and the homepage is 176 KB. Whatever is built should be
+    slow and few-requests by design; there is no `Crawl-delay` to obey
+    precisely because there is no file to put one in.
+  - A real ground URL, confirmed live:
+    `/stadion-gladbeck-vestische-kampfbahn/stadion-5093.html`.
+
+  What was established earlier from a search engine's index of the
+  site's own pages rather than from the pages has now been checked
+  against the pages, and it was half right:
+  - The URL shapes are real. A ground is `/<name>/stadion-<id>.html`,
+    a league is `index.php?s=liga&id=<n>`, a country is
+    `index.php?s=land&id=1`, and leagues go down to Kreisliga level.
+    Germany's country page lists **2,382** league links, each labelled
+    with its level in brackets — `NOFV-Regionalliga Nordost (4)` — so
+    the level comes from the site rather than from reading a name.
+  - **`/<ground>/verein/<clubId>` does not exist.** It was the one
+    thing this entry was most confident about and it is wrong. Counted
+    on 2026-09-19: **zero** links of that shape on the homepage, on the
+    country page, on a league page or on a ground page. It was an
+    artefact of a search engine's index, which is exactly why this
+    entry said it was unverified — and the lesson is that an index can
+    show you a URL the site does not itself link, or does not serve at
+    all.
+  - **The real club-to-ground link is better, not worse.** A league
+    page is a table and every row pairs a club with the ground it plays
+    at. In the row: the club is a `<span translate="no">`, the ground
+    is a `<td class="liste_stadt">` link, the capacity is a
+    `<td class="kapazitaet">`, and the row's own map-zoom control
+    carries the position as `ol.proj.fromLonLat([lon, lat])`. So one
+    league page gives club, ground, capacity and coordinates for every
+    club in that division at once. A ground page then closes the loop
+    from the other side: **"Vereine, die in diesem Stadion spielen"**
+    names the clubs based there, with each one's current league and
+    level. Both are the site's own assertion, not a name match.
+  - **There is a search, and the form field is called `search`.**
+    `index.php?s=search&search=<term>` — a plain GET, placeholder
+    "Stadion / Verein suchen". It searches grounds, not clubs, so it
+    answers "which grounds are in this town" and the ground page's
+    club list is what picks between them. Five other parameter names
+    were guessed first and every one of them returned the search page
+    with no results rather than an error, which is the same trap as the
+    `?s=` fallback: **this site answers a wrong question with a page,
+    not with a 404.** Use a control term whose answer you already know.
+  - The eight clubs the index had named were all confirmed against the
+    site, and **the two it could not name are now named too**.
+    FC Schalke 04 II is at the **Parkstadion** in Gelsenkirchen-Buer —
+    the small current one, not the demolished 70,000 ground of the same
+    name. 1. FC Nürnberg II is at the **Max-Morlock-Platz**, which is
+    the one of the four Valznerweiher pitches that the club row points
+    at. The index could not choose between the four; the club row does
+    not have to, because the site itself made the link.
+    Two of the eight also needed correcting in passing: Eutin 08's
+    ground is the **Thies Hahn Arena**, which is the Eutina-Platz
+    renamed and still at that URL, and Aue's is the **eins
+    Erzgebirgsstadion**, whose URL still says `sparkassen-`.
+  - Two of those eight are grounds OpenStreetMap never offered at all.
+    The Gladbach II row proposed Borussia-Park and SparkassenPark, not
+    the Grenzlandstadion; the Viktoria Berlin row offered ten Berlin
+    stadiums, none of them Stadion Lichterfelde. If the site is right,
+    it settles rows that no amount of name-matching against
+    OpenStreetMap could settle.
+  - The same breadth is also the risk: side pitches, old grounds and
+    sports halls are separate entries — Aue alone returned six, and
+    Valznerweiher four. Matching on a ground's name would be exactly as
+    ambiguous as OpenStreetMap is. Only the club-to-ground link is
+    worth anything here.
+- **StadiumDB.com was evaluated as a second, OpenStreetMap-independent
+  capacity source on 2026-09-19, to the same standard europlan-online
+  got. It passes on terms and on format, and it fails on coverage —
+  so it is not the tier-2 cross-check that was wanted.** Everything
+  below was read from the site through the Actions-dispatch route; the
+  sandbox answers 403 to CONNECT for `stadiumdb.com` the same way it
+  does for Wikidata and europlan. **That 403 is this sandbox's egress
+  policy, not the site refusing anything**, which is the opposite of
+  the fcbayern.com case and must not be confused with it.
+  - **There is a real `robots.txt`, and it permits this.** 33 bytes,
+    `text/plain`, byte-identical on `stadiumdb.com`,
+    `www.stadiumdb.com`, `stadiony.net` and `www.stadiony.net` (the
+    www hosts redirect to the apex). In full:
+    `User-agent: *` / `Disallow: /lay-gfx/`. One disallowed path, and
+    it is the layout graphics directory. No `Crawl-delay`, no
+    `Sitemap` line, and `sitemap.xml` and `sitemap_index.xml` are both
+    404.
+    **This is a stronger answer than europlan gave and the difference
+    matters.** europlan has no `robots.txt` at all, so there were no
+    path rules to obey and the conclusion had to be "nothing there says
+    not to". StadiumDB *has* a crawl policy, and that policy allows
+    every content path. That is permission of a narrow and specific
+    kind — for crawling, under the robots convention — and it should
+    not be stretched into permission for anything else.
+  - **It 404s honestly, which europlan does not.** A bogus path returns
+    a genuine HTTP 404 with an 11.5 KB error page, clearly distinct
+    from the 54 KB homepage, at both `/xxx` and `/stadiums/xxx`.
+    europlan answers an unknown `?s=` with the homepage and HTTP 200,
+    so any fetcher there has to check content rather than status.
+    Here the status code can be trusted.
+  - **No `<meta name="robots">` on any page checked and no
+    `X-Robots-Tag` header**, on the homepage, the stadium index or
+    the about page. europlan carried `index, follow`; this carries
+    nothing at all.
+  - **There is no terms-of-use page, and the copyright page is empty.**
+    The footer links to Copyrights on both sites. The English
+    `/copyrights` is a **404**. The Polish `/prawa_autorskie` returns
+    **HTTP 200 with no body text whatsoever** — 1,324 characters, every
+    one of them navigation, the standard site blurb and the footer.
+    `/faq` is the same: HTTP 200, no FAQ on it. `/privacy_policy` is a
+    404 despite being linked, because those nav entries sit inside HTML
+    comments in the markup, which is why a link-scrape finds URLs the
+    site does not serve. `/contact_us` is real and names Grzegorz
+    Kaliciak as founder and owner. `/o_serwisie` is real and is the
+    site's history.
+  - **The only statement of rights anywhere is the footer line**:
+    "© 2001-now StadiumDB.com. All rights reserved." and its Polish
+    twin "Wszelkie prawa zastrzeżone." A sweep of the full text of
+    every non-content page on both sites for some forty English and
+    Polish terms — *prohibit, forbidden, not permitted, automated,
+    scrap, crawl, spider, harvest, data mining, systematic, bulk,
+    rate limit, personal use, commercial, zabronione, niedozwolone,
+    automatyczn, masowe, systematyczn, komercyjn, użytek osobisty,
+    baza danych* and the rest — matched **nothing about access**. The
+    two Polish hits were a gambling-licence disclaimer that appears in
+    the footer of every page.
+  - **So the open legal question is the same one europlan left open,
+    and it is not settled here either.** The operator is Polish, and
+    Poland implements the EU sui generis database right just as
+    Germany does, so extracting a substantial part of the database is
+    a different question from reading some pages, and `robots.txt`
+    does not speak to it. Nobody involved is a lawyer and this is not
+    a finding. The cheap way past it is the same: the contact page
+    names the owner, and a short mail describing exactly what is
+    wanted would replace the reasoning with an answer.
+  - **The page format is the most consistent this project has
+    evaluated.** 27 stadium pages were sampled across nine countries.
+    Capacity, Country, City and Clubs were present on **27 of 27**.
+    Inauguration on 23, Address on 21, Floodlights on 5. Layout did
+    not vary.
+    Better still, every page carries a single meta tag that holds the
+    whole record:
+    `<meta name="Description" content="Stadium: Stade des Costières,
+    Nîmes, France, capacity: 18482, club: -." />`
+    One regular expression over that line gives name, city, country,
+    capacity and club, with no HTML parsing at all. The capacity in
+    the page body uses non-breaking spaces as thousands separators
+    ("18 482"); the meta tag gives it as a bare integer.
+    A country page is even cheaper: it is one table,
+    **Name | City | Clubs | Capacity**, and **every row named a club**
+    — 69 of 69 for France, 109 of 109 for Germany, 314 of 314 for
+    Poland. One request per country gives the whole country.
+  - **What the pages do NOT carry is a coordinate. Zero of 27.** This
+    is the structural problem, not a detail. `crosscheck_capacity.py`
+    matches a club to a ground **by position, within 500 m,
+    deliberately not by name**, and this project has already been
+    bitten by name matching — Eutin 08 scored 0.5 against FC 08
+    Homburg on the shared "08" alone. A StadiumDB cross-check cannot
+    use the existing matcher and would have to match on club name plus
+    city, which is the technique the coordinate matcher exists to
+    avoid.
+  - **Coverage is where it fails, and the numbers are the answer.**
+    Counted from each country's own listing page:
+
+    | country | stadiums | under 6,000 | under 12,000 | under 20,000 |
+    |---|---|---|---|---|
+    | France | 69 | 5 | 15 | 40 |
+    | Italy | 69 | 7 | 18 | 36 |
+    | Switzerland | **17** | 2 | 7 | 12 |
+    | Austria | 27 | 8 | 17 | 23 |
+    | Serbia | 29 | 11 | 20 | 26 |
+    | Greece | 29 | 5 | 15 | 20 |
+    | Germany | 108 | 5 | 18 | 63 |
+    | Romania | 40 | 7 | 17 | 33 |
+    | Poland | **314** | 246 | 278 | 302 |
+
+    The whole database is **2,501 stadiums worldwide**, a figure the
+    site prints on its own pages. Poland having 314 of them, against
+    108 for Germany and 17 for Switzerland, is the shape of a Polish
+    site that grew out of `stadiony.net` in 2001 and added an English
+    edition in 2012. **Coverage is deep at home and thin abroad**, and
+    that is the finding.
+  - **Switzerland fails on arithmetic alone.** Seventeen stadiums in
+    the whole country is fewer grounds than the Super League and
+    Challenge League have clubs between them, so the second tier
+    cannot be complete no matter which 17 they are. Austria at 27,
+    Serbia at 29 and Greece at 29 are all in the same range as their
+    top two divisions' club counts, which means at best bare coverage
+    with no margin, and in practice less than that.
+  - **A name-based smoke test agrees, and it was the author's own
+    recollection rather than a source**, so it is corroboration and
+    not evidence: second-tier club and town names were found for
+    France 10 of 12 and Italy 10 of 12, but Switzerland 5 of 11,
+    Serbia 4 of 10, Austria 3 of 7 and **Greece 2 of 10**. The two
+    countries that pass the arithmetic are the two that pass the name
+    test, which is what makes the pattern worth reporting.
+  - **IT IS BUILT FOR GERMANY AND ROMANIA, 2026-09-20, and it earned
+    its place immediately.** `tools/crosscheck_stadiumdb.py` reads
+    `/stadiums/ger` and `/stadiums/rou` — both confirmed, and
+    `/stadiums/germany`, `/stadiums/de`, `/stadiums/rom`,
+    `/stadiums/romania` and `/stadiums/ro` are all genuine 404s — and
+    writes `data/clubs/stadiumdb-review.csv`. First run: **109 German
+    grounds against 146 clubs and 40 Romanian grounds against 64**,
+    producing 27 rows needing an eye. Coverage is exactly as thin as
+    this entry predicted: 81 of the 210 clubs matched at all.
+    **What it caught that nothing else could.** Preußen Münster was on
+    the map at **45,000** against a real 14,300 — and this entry already
+    recorded that OpenStreetMap has no capacity for that ground, so the
+    existing cross-check could never have found it. FSV Zwickau had no
+    Wikidata figure at all and OpenStreetMap and StadiumDB agree exactly
+    on 10,134. Borussia Dortmund II was carrying the first team's Signal
+    Iduna Park and its 81,359, which StadiumDB exposed by naming Stadion
+    Rote Erde for the reserve side separately.
+    **And it was wrong three times in a way worth knowing about**, all
+    three where StadiumDB matched a ground our club does not play at:
+    FC ASA Târgu Mureș, 1. FC Magdeburg and FC Viktoria Köln, where our
+    figure and Wikipedia's agree and StadiumDB is the outlier. The
+    tool's own `?ground-unchecked` marker flagged the first of them
+    before anyone looked. **A third opinion is a third opinion, not a
+    tie-breaker.**
+  - **So the verdict is: yes for France and Italy, no for
+    Switzerland, Austria, Serbia and Greece.** (Switzerland and Austria
+    were added to `crosscheck_stadiumdb.py` anyway on 2026-09-26, slugs
+    `sui` and `aut`, each as a thin third opinion, never as agreement by
+    silence - see their entries under Known open problems. Serbia
+    followed on 2026-09-27, slug `ser`, and Greece on 2026-09-29, slug
+    `gre`, on the same terms. **Spain, slug `esp`, 2026-09-30, was
+    measured for itself rather than assumed, and is the other way
+    round**: 89 grounds, and a StadiumDB ground for 40 of the 42 clubs in
+    its two 2026-27 divisions - see the Spain entry. **England, slug
+    `eng`, 2026-09-30, measured too, and as full**: 125 grounds, 41 of
+    the 44 clubs in its two divisions, and the other three - the Welsh
+    clubs - on `wal`, which the tool now reads for GB as well. **The
+    Netherlands, slug `ned`, 2026-10-01, measured too, and as full**: 45
+    grounds in two tables, a ground for 18 of 18 Eredivisie clubs and 16 of
+    20 Eerste Divisie clubs, the four without being the Jong sides. **Belgium,
+    slug `bel`, 2026-10-01**: 37 grounds; the matcher pairs 12 of the 31
+    clubs and 19 go unmatched on short names, all read by hand in the
+    Belgium pass.) As a second opinion on
+    a ground StadiumDB happens to hold it is excellent — clean to
+    parse, independent of both OpenStreetMap and Wikidata, and
+    editorially curated rather than crowd-sourced. As the systematic
+    tier-2 capacity cross-check for those six countries it does not
+    have the data, and no amount of parsing will conjure it.
+  - **What would fill the gap is already in hand.** The Wikipedia
+    current-season article for a league carries a "Stadiums and
+    locations" table with a capacity column, and its coverage is
+    exactly the league being checked, by construction — there is no
+    country where it is thin, because the table is the league. The
+    roster check described under "Planned, not built" reads those
+    tables anyway, so the capacity column is free once it exists: one
+    source doing two jobs. europlan-online remains the deeper source
+    for Germany and OpenStreetMap remains the position-matched one.
+    StadiumDB is worth keeping as a third opinion for the top flights
+    and for France and Italy, and is not worth building a pipeline
+    around.
+- Wikidata's Regionalliga season items carry no participant list
+  (`P1923`) for any of the five divisions, so there is no way inside
+  Wikidata to enumerate who should be in a division and compare it
+  against what came back.
+  **That was measured across seven countries on 2026-09-19 and it is
+  worse than the Regionalliga note suggested.** The latest season item
+  of each league was found through `P3450` and its `P1923` count
+  taken. **Zero participants** on the current season of the
+  Bundesliga (`Q138320695`, starts 2026-08-28), the Romanian SuperLiga
+  (`Q140134051`), Liga II, Liga III, the Austrian Bundesliga
+  (`Q138946873`), the Serbian SuperLiga, the Swiss Super League
+  (`Q138975892`) and the Challenge League. The only two leagues with
+  any participants at all are stale: 2. Bundesliga last has 18 on a
+  **2022-07-15** season, 3. Liga 19 on a **2024-08-02** one.
+  So `P1923` cannot be the roster source for any tier, in any of these
+  countries. This is a shame rather than a detail, because it is the
+  only candidate that would have returned **Q-ids** and so joined to
+  the club layer with no name matching at all.
+  `P3983` (league level) is no better as a way in: asked for every
+  league in France, Italy, Switzerland, Austria, Serbia and Greece at
+  level 1 or 2, it returns **six leagues**, none of them French or
+  Italian, and **two of the six are women's competitions**, which rule
+  6 excludes anyway.
+- Wikidata's `P3983` (league level) is not set on Bundesliga, so it
+  cannot be the sole source of tier data. It can generate a draft of
+  `league-tiers.csv` for review, which is the plan for expanding beyond
+  Germany and Romania.
+- **OpenLigaDB is wired up, 2026-09-24, and it covers less of the
+  Regionalliga than this file used to assume.** This entry used to say
+  it "would cover 2. Bundesliga, 3. Liga, DFB-Pokal and Regionalliga".
+  Three of the four are true. The fourth is **two of five divisions**.
+  Read from the API on a GitHub runner, because the sandbox answers 403
+  to CONNECT for `api.openligadb.de` the same way it does for Wikidata.
+  - **The API.** Base `https://api.openligadb.de` (the old
+    `https://www.openligadb.de/api` still answers identically).
+    `getavailableleagues` lists every league (832 on the day);
+    `getmatchdata/<shortcut>/<season>` gives one league-season's
+    matches; `getavailableteams/<shortcut>/<season>` its teams. Season is
+    the **start year**: `2026` is 2026/27. Keyless.
+  - **The shortcuts used, and what came back on 2026-09-24:**
+
+    | shortcut | OpenLigaDB's name | matches | played | teams | crests |
+    |---|---|---|---|---|---|
+    | `bl2` | 2. Fußball-Bundesliga 2026/2027 | 306 | 54 | 18 | 18 |
+    | `bl3` | 3. Liga 2026/2027 | 380 | 69 | 20 | 20 |
+    | `dfb` | DFB Pokal 2026/2027 | 48 | 32 | 64 | 64 |
+    | `rln` | Fußball-Regionalliga Nord | 306 | 90 | 18 | 18 |
+    | `rlno` | NOFV Regionalliga NordOst | 306 | 90 | 18 | 18 |
+
+    The Pokal's 48 is the first round (32, played) and the second (16,
+    scheduled); later rounds appear once they are drawn.
+  - **The Regionalliga is five divisions and OpenLigaDB carries two of
+    them this season.** Nord and Nordost are complete. **Bayern** is a
+    stub, `regio-bayern`: four teams, no matches — the tool watches it
+    and says so, and starts writing a file the day it fills.
+    **West and Südwest are not there under any name** — the full 2025
+    to 2027 league list was read, not searched for a guessed code.
+    West was carried in some past seasons (`rlw` 2023, `RLW` 2024) and
+    not in others, which is the shape of this site: its leagues are
+    maintained by volunteers, season by season.
+  - **Its league list is community-edited, and that is the founding
+    assumption that was most wrong.** Anyone can create a league: the
+    list carries test leagues, darts, ice hockey, and **copies** — `bl2h`
+    is a second 2. Bundesliga 2026/27 with the same 306 fixtures and no
+    results entered. So the tool **names its shortcuts by hand** and
+    never picks one by matching a league name.
+  - **"Nothing" looks like success.** `getmatchdata` answers **HTTP 200
+    with `[]`** for a shortcut that does not exist at all. So an empty
+    answer is a failed fetch, the last good file is kept, and the run
+    goes red — exactly the rule this project already had, applied to an
+    API that would otherwise make it easy to break.
+  - **A missing kickoff is written as `1970-01-01`.** Seen in a women's
+    league, not in any of ours today; the tool reads it as "no date",
+    leaves the field blank and counts it.
+  - **There is no match status**, only `matchIsFinished`, so the files
+    say `finished: true/false` and nothing is invented to fill
+    football-data.org's `SCHEDULED`/`POSTPONED`. The final score is the
+    result OpenLigaDB labels `Endergebnis` and nothing else.
+  - **Stadium is mostly absent**: 0 of 380 3. Liga matches carry one.
+  - **Crests: a URL on every team, and not a licensing answer.** 138
+    team entries, 138 with a crest. They are hotlinks to wherever each
+    image was found — 116 to `upload.wikimedia.org`, 13 to `i.imgur.com`,
+    4 to `derivates.kicker.de`, and single ones to fussballdaten.de,
+    dfb.de, bundesliga-reisefuehrer.de and openligadb.de. Many of the
+    Wikimedia ones will be the non-free crests the badge item already
+    rules out. So for badge work it is a second **list of URLs**, not a
+    second **source of usable images**; each would need its own licence
+    checked. The run summary prints this breakdown every day.
+  - **The ids are OpenLigaDB's own** and share nothing with
+    football-data.org's or Wikidata's. Joining a team to a club on the
+    map is not done and would need its own matching step.
+
+---
+

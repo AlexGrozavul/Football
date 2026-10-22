@@ -190,7 +190,7 @@ COUNTRY_PAGES = {
     "PT": ("por", "Portugal"),
 }
 
-# A country file is a league PYRAMID, not a territory (CLAUDE.md, the
+# A country file is a league PYRAMID, not a territory (docs/claude/conventions.md, the
 # Monaco entry), and StadiumDB files a ground under the country it
 # stands in. So a pyramid that crosses a border needs a second page, read
 # and added to the first. GB is the case it was written for, 2026-09-30:

@@ -1026,7 +1026,7 @@ def diagnose(qids):
     did not finish: the query service has a 60-second ceiling, this query
     joins five optional properties and the label service on top, and the
     run sat past 25 minutes retrying without producing a single answer.
-    CLAUDE.md already records the same service taking 180.8s across
+    docs/claude/open-problems.md already records the same service taking 180.8s across
     retries on the club discovery query, so this is its normal behaviour
     rather than one bad afternoon.
 
