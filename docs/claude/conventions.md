@@ -523,6 +523,13 @@ anybody is. `unverified` is also not `disputed`: disputed is "possibly
 the wrong year or the wrong event", unverified is "somebody looked and
 could not confirm it". The checker prints every `unverified` row in one
 list so an honest gap cannot hide inside a long read-back.
+**Primary-source rule, Alexandru's decision of 2026-10-22:** a ticket
+row read in full on the club's own page for the season in question is
+`confirmed` with basis `published` even when no second source exists; the
+two-source requirement applies only to rows that rest on press or other
+third parties, and several pages of one club count as one source. The
+first lines of the Elversberg research (PR #144) labelled such rows
+`unverified` because the prompt then demanded two sources.
 **One item fits the mapping badly and was mapped anyway**: N-14 (the
 derby is probably price category A) is reasoned from the club's labels
 for two *other* 2026-27 fixtures, not from a past cycle, so its
