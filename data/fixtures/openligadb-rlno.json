@@ -4220,7 +4220,7 @@
   },
   {
    "id": 86327,
-   "utcDate": "2026-10-24T11:00:00Z",
+   "utcDate": "2026-10-23T17:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4244,58 +4244,8 @@
    "viewers": null
   },
   {
-   "id": 86328,
-   "utcDate": "2026-10-24T11:00:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 1979,
-    "name": "FSV Zwickau",
-    "shortName": "Zwickau",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/0/01/FSV_Zwickau_Logo.svg/120px-FSV_Zwickau_Logo.svg.png"
-   },
-   "away": {
-    "id": 66,
-    "name": "Erzgebirge Aue",
-    "shortName": "Aue",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/1/13/Fc_erzgebirge_aue.svg/960px-Fc_erzgebirge_aue.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 86329,
-   "utcDate": "2026-10-24T11:00:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 5389,
-    "name": "Greifswalder FC",
-    "shortName": "Greifswald",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Greifswalder_FC_Logo.svg"
-   },
-   "away": {
-    "id": 2111,
-    "name": "Rot-Weiß Erfurt",
-    "shortName": "Erfurt",
-    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/61_20170721536.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 86330,
-   "utcDate": "2026-10-24T11:00:00Z",
+   "utcDate": "2026-10-23T17:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4319,8 +4269,58 @@
    "viewers": null
   },
   {
+   "id": 86335,
+   "utcDate": "2026-10-23T17:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 4600,
+    "name": "VSG Altglienicke Berlin",
+    "shortName": "Altglienicke",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e8/VSG_Altglienicke.svg"
+   },
+   "away": {
+    "id": 5798,
+    "name": "FSV 63 Luckenwalde",
+    "shortName": "Luckenwalde",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/FSV_63_Luckenwalde_Logo.svg/250px-FSV_63_Luckenwalde_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86328,
+   "utcDate": "2026-10-24T12:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 1979,
+    "name": "FSV Zwickau",
+    "shortName": "Zwickau",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/0/01/FSV_Zwickau_Logo.svg/120px-FSV_Zwickau_Logo.svg.png"
+   },
+   "away": {
+    "id": 66,
+    "name": "Erzgebirge Aue",
+    "shortName": "Aue",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/1/13/Fc_erzgebirge_aue.svg/960px-Fc_erzgebirge_aue.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 86331,
-   "utcDate": "2026-10-24T11:00:00Z",
+   "utcDate": "2026-10-24T12:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4344,8 +4344,58 @@
    "viewers": null
   },
   {
+   "id": 86334,
+   "utcDate": "2026-10-24T12:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 202,
+    "name": "Chemnitzer FC",
+    "shortName": "Chemnitz",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chemnitzer_FC_Logo.svg/120px-Chemnitzer_FC_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "away": {
+    "id": 7332,
+    "name": "1. FC Magdeburg II",
+    "shortName": "1. FC Magdeburg II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 86329,
+   "utcDate": "2026-10-24T14:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 5389,
+    "name": "Greifswalder FC",
+    "shortName": "Greifswald",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Greifswalder_FC_Logo.svg"
+   },
+   "away": {
+    "id": 2111,
+    "name": "Rot-Weiß Erfurt",
+    "shortName": "Erfurt",
+    "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/61_20170721536.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 86332,
-   "utcDate": "2026-10-24T11:00:00Z",
+   "utcDate": "2026-10-25T13:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4370,7 +4420,7 @@
   },
   {
    "id": 86333,
-   "utcDate": "2026-10-24T11:00:00Z",
+   "utcDate": "2026-10-25T13:00:00Z",
    "finished": false,
    "round": "14. Spieltag",
    "roundOrder": 14,
@@ -4385,56 +4435,6 @@
     "name": "1. FC Lok Leipzig",
     "shortName": "Lok Leipzig",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_1._FC_Lokomotive_Leipzig.svg/250px-Logo_1._FC_Lokomotive_Leipzig.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 86334,
-   "utcDate": "2026-10-24T11:00:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 202,
-    "name": "Chemnitzer FC",
-    "shortName": "Chemnitz",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chemnitzer_FC_Logo.svg/120px-Chemnitzer_FC_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
-   },
-   "away": {
-    "id": 7332,
-    "name": "1. FC Magdeburg II",
-    "shortName": "1. FC Magdeburg II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 86335,
-   "utcDate": "2026-10-24T11:00:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 4600,
-    "name": "VSG Altglienicke Berlin",
-    "shortName": "Altglienicke",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e8/VSG_Altglienicke.svg"
-   },
-   "away": {
-    "id": 5798,
-    "name": "FSV 63 Luckenwalde",
-    "shortName": "Luckenwalde",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/FSV_63_Luckenwalde_Logo.svg/250px-FSV_63_Luckenwalde_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
    "homeGoals": null,
    "awayGoals": null,
