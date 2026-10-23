@@ -3008,8 +3008,8 @@
   },
   {
    "id": 564748,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-20T20:00:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3032,9 +3032,109 @@
    "winner": null
   },
   {
+   "id": 564755,
+   "utcDate": "2026-11-21T13:00:00Z",
+   "status": "TIMED",
+   "matchday": 13,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 263,
+    "name": "Deportivo Alavés",
+    "shortName": "Alavés",
+    "tla": "ALA",
+    "crest": "https://crests.football-data.org/263.png"
+   },
+   "away": {
+    "id": 560,
+    "name": "RC Deportivo La Coruña",
+    "shortName": "Deportivo",
+    "tla": "DEP",
+    "crest": "https://crests.football-data.org/560.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564751,
+   "utcDate": "2026-11-21T15:15:00Z",
+   "status": "TIMED",
+   "matchday": 13,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 87,
+    "name": "Rayo Vallecano de Madrid",
+    "shortName": "Rayo Vallecano",
+    "tla": "RAY",
+    "crest": "https://crests.football-data.org/87.png"
+   },
+   "away": {
+    "id": 95,
+    "name": "Valencia CF",
+    "shortName": "Valencia",
+    "tla": "VAL",
+    "crest": "https://crests.football-data.org/95.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564756,
+   "utcDate": "2026-11-21T17:30:00Z",
+   "status": "TIMED",
+   "matchday": 13,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 559,
+    "name": "Sevilla FC",
+    "shortName": "Sevilla FC",
+    "tla": "SEV",
+    "crest": "https://crests.football-data.org/559.png"
+   },
+   "away": {
+    "id": 90,
+    "name": "Real Betis Balompié",
+    "shortName": "Real Betis",
+    "tla": "BET",
+    "crest": "https://crests.football-data.org/90.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564754,
+   "utcDate": "2026-11-21T20:00:00Z",
+   "status": "TIMED",
+   "matchday": 13,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 86,
+    "name": "Real Madrid CF",
+    "shortName": "Real Madrid",
+    "tla": "RMA",
+    "crest": "https://crests.football-data.org/86.png"
+   },
+   "away": {
+    "id": 558,
+    "name": "RC Celta de Vigo",
+    "shortName": "Celta",
+    "tla": "CEL",
+    "crest": "https://crests.football-data.org/558.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 564749,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-22T13:00:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3058,8 +3158,8 @@
   },
   {
    "id": 564750,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-22T15:15:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3082,34 +3182,9 @@
    "winner": null
   },
   {
-   "id": 564751,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 87,
-    "name": "Rayo Vallecano de Madrid",
-    "shortName": "Rayo Vallecano",
-    "tla": "RAY",
-    "crest": "https://crests.football-data.org/87.png"
-   },
-   "away": {
-    "id": 95,
-    "name": "Valencia CF",
-    "shortName": "Valencia",
-    "tla": "VAL",
-    "crest": "https://crests.football-data.org/95.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 564752,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-22T17:30:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3133,8 +3208,8 @@
   },
   {
    "id": 564753,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-22T20:00:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3157,84 +3232,9 @@
    "winner": null
   },
   {
-   "id": 564754,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 86,
-    "name": "Real Madrid CF",
-    "shortName": "Real Madrid",
-    "tla": "RMA",
-    "crest": "https://crests.football-data.org/86.png"
-   },
-   "away": {
-    "id": 558,
-    "name": "RC Celta de Vigo",
-    "shortName": "Celta",
-    "tla": "CEL",
-    "crest": "https://crests.football-data.org/558.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 564755,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 263,
-    "name": "Deportivo Alavés",
-    "shortName": "Alavés",
-    "tla": "ALA",
-    "crest": "https://crests.football-data.org/263.png"
-   },
-   "away": {
-    "id": 560,
-    "name": "RC Deportivo La Coruña",
-    "shortName": "Deportivo",
-    "tla": "DEP",
-    "crest": "https://crests.football-data.org/560.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 564756,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 13,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 559,
-    "name": "Sevilla FC",
-    "shortName": "Sevilla FC",
-    "tla": "SEV",
-    "crest": "https://crests.football-data.org/559.png"
-   },
-   "away": {
-    "id": 90,
-    "name": "Real Betis Balompié",
-    "shortName": "Real Betis",
-    "tla": "BET",
-    "crest": "https://crests.football-data.org/90.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 564757,
-   "utcDate": "2026-11-22T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-23T20:00:00Z",
+   "status": "TIMED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
