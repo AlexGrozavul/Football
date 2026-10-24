@@ -7759,7 +7759,7 @@
   {
    "id": 555052,
    "utcDate": "2026-10-23T23:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 32,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -7777,9 +7777,9 @@
     "tla": "CRE",
     "crest": "https://crests.football-data.org/4287.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555054,

@@ -1359,7 +1359,7 @@
   {
    "id": 565833,
    "utcDate": "2026-10-23T18:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 7,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1377,9 +1377,9 @@
     "tla": "BMG",
     "crest": "https://crests.football-data.org/18.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 565830,
