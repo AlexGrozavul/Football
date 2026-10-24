@@ -2601,7 +2601,7 @@
   {
    "id": 83648,
    "utcDate": "2026-10-23T16:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2616,9 +2616,20 @@
     "shortName": "St. Pauli",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2626,7 +2637,7 @@
   {
    "id": 83655,
    "utcDate": "2026-10-23T16:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2641,9 +2652,20 @@
     "shortName": "Wolfsburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/VfL_Wolfsburg_logo_2026.svg/960px-VfL_Wolfsburg_logo_2026.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
