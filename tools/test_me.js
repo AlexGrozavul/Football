@@ -3000,6 +3000,145 @@ function alarmAt(ev, al){
   }
   }
 
+  // ---- Export and Import on the Matches and Events tabs (2026-10-25): one suite, run for both tabs.
+  async function ioSuite(cfg){
+    const T = cfg.tab, L = cfg.list, N = cfg.name;
+    const sel = s => `#aIo-${T} ${s}`;
+    const A = cfg.mk('io-a'), B = cfg.mk('io-b');
+    const ctx = await newCtx();
+    await ctx.addInitScript(([i, p]) => {
+      if(!sessionStorage.getItem('ioSeeded')){ localStorage.setItem('football-attended-imported', i); localStorage.setItem('football-attended-personal', p); sessionStorage.setItem('ioSeeded', '1'); }
+    }, [JSON.stringify({version: 1, matches: T === 'matches' ? [A, B] : [], ...(T === 'events' ? {events: [A, B]} : {})}),
+        JSON.stringify({[cfg.pk('io-a')]: cfg.persA, [cfg.pk('io-b')]: cfg.persB, [cfg.fileId]: {note: 'file note'}})]);
+    const p = await ctx.newPage();
+    p.on('pageerror', e => errors.push(e.message));
+    await p.goto(BASE);
+    await p.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    await p.click('nav button[data-pane=me]');
+    const go = async () => { await p.click(cfg.tabBtn); await p.waitForSelector(`#aIo-${T}`); await p.waitForFunction(s => !/Loading/.test(document.querySelector(s).textContent), cfg.panel); };
+    await go();
+    const ls = () => p.evaluate(() => ({imp: JSON.parse(localStorage.getItem('football-attended-imported') || 'null'), pers: JSON.parse(localStorage.getItem('football-attended-personal') || '{}')}));
+    const items = s => (s.imp && s.imp[L]) || [];
+    const put = async content => {
+      await p.setInputFiles(sel('input[data-io=file]'), {name: 'in.json', mimeType: 'application/json', buffer: Buffer.from(typeof content === 'string' ? content : JSON.stringify(content))});
+      await p.waitForTimeout(300);
+    };
+    const msg = () => p.evaluate(s => (document.querySelector(s)?.textContent || '').trim(), sel('.amsg'));
+    const store = async () => { await p.click(sel('button[data-io=store]')); await p.waitForTimeout(300); };
+    const notes = (s, ids) => Object.fromEntries(ids.map(id => [id, Object.fromEntries(cfg.pf.map(f => [f, (s.pers[cfg.pk(id)] || {})[f] || '']))]));
+    const exportFile = (items, notesObj) => ({kind: cfg.kind, version: 1, exportedAt: '2026-10-04T10:00:00.000Z', [L]: items, notes: notesObj || {}});
+
+    // export: only the imported ones, exactly as stored, with their notes, no personal details
+    const s0 = await ls();
+    const ex = await download(p, () => p.click(sel('button[data-io=export]')));
+    const exd = JSON.parse(ex.text);
+    check(`${N}: Export downloads ${cfg.kind}-2026-10-04.json with kind, version 1, an ISO time, the stored ${L} and the notes`,
+      ex.name === `${cfg.kind}-2026-10-04.json` && exd.kind === cfg.kind && exd.version === 1 && /^\d{4}-\d\d-\d\dT[\d:.]+Z$/.test(exd.exportedAt) &&
+      JSON.stringify(exd[L]) === JSON.stringify([A, B]) && JSON.stringify(exd.notes) === JSON.stringify(cfg.expNotes), ex.name + ' ' + ex.text.slice(0, 300));
+    check(`${N}: ...and nothing else leaks into the file (not the ticket or seat, not the note of a file entry, not the other list)`,
+      !/T-1|"seat"|file note|"ticket"/.test(ex.text) && !(T === 'matches' ? 'events' in exd : 'matches' in exd), ex.text.slice(0, 200));
+    check(`${N}: the export says what it wrote`, /^Exported 2 imported/.test(await msg()) && new RegExp(cfg.kind).test(await msg()), await msg());
+
+    // layout at 360 px
+    await p.setViewportSize({width: 360, height: 740}); await p.waitForTimeout(200);
+    const lay = await p.evaluate(([T]) => {
+      const bs = [...document.querySelectorAll(`#aIo-${T} .aiob button`)].map(b => b.getBoundingClientRect()), add = document.querySelector(T === 'matches' ? '#aAdd' : '#aEvAdd').getBoundingClientRect();
+      return {bs: bs.map(r => [r.left, r.right, r.top, r.bottom].map(Math.round)), add: [add.top, add.left, add.right].map(Math.round), bottom: Math.max(...bs.map(r => r.bottom))};
+    }, [T]);
+    const [b1, b2] = lay.bs;
+    check(`${N}: at 360 px the Export and Import buttons are on screen, do not overlap each other and sit above the Add form`,
+      b1[0] >= 0 && b2[1] <= 360 && b1[3] > b1[2] && (b1[1] <= b2[0] || b1[3] <= b2[2] || b2[3] <= b1[2]) && lay.bottom <= lay.add[0], JSON.stringify(lay));
+    noSideways(`${N}: nothing scrolls sideways at 360 px`, await sideways(p));
+    await p.setViewportSize({width: W, height: H});
+
+    // round trip: clear the imported ones, import the file, stored records and notes are what they were
+    await p.evaluate(([L, ks]) => { const r = JSON.parse(localStorage.getItem('football-attended-imported')); r[L] = []; localStorage.setItem('football-attended-imported', JSON.stringify(r));
+      const pr = JSON.parse(localStorage.getItem('football-attended-personal')); for(const k of ks) delete pr[k]; localStorage.setItem('football-attended-personal', JSON.stringify(pr)); }, [L, ['io-a', 'io-b'].map(cfg.pk)]);
+    await p.reload(); await p.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    await p.click('nav button[data-pane=me]'); await go();
+    check(`${N}: with nothing imported the button reads "Nothing to export yet" and cannot be pressed`,
+      (await p.textContent(sel('button[data-io=export]'))).trim() === 'Nothing to export yet' && await p.isDisabled(sel('button[data-io=export]')));
+    await put(ex.text);
+    check(`${N}: Import asks first: "2 new, 0 skipped (already there), ${cfg.expK} notes", and nothing is stored yet`,
+      (await msg()).startsWith(`2 new, 0 skipped (already there), ${cfg.expK} notes.`) && items(await ls()).length === 0, await msg());
+    await p.click(sel('button[data-io=cancel]'));
+    check(`${N}: Cancel stores nothing and removes the question`, items(await ls()).length === 0 && !(await p.$(sel('button[data-io=store]'))));
+    await put(ex.text); await store();
+    const s1 = await ls();
+    check(`${N}: after Store the stored ${L} and their notes are deep-equal to before the round trip`,
+      JSON.stringify(items(s1)) === JSON.stringify([A, B]) && JSON.stringify(notes(s1, ['io-a', 'io-b'])) === JSON.stringify(notes(s0, ['io-a', 'io-b'])), JSON.stringify(notes(s1, ['io-a', 'io-b'])));
+    check(`${N}: ...and the list redraws with them`, (await p.$$eval(cfg.panel + ' .acard', cs => cs.map(c => c.textContent))).filter(x => x.includes(cfg.show)).length === 2 && /^Imported: 2 new/.test(await msg()), await msg());
+
+    // existing ids are skipped, never overwritten, and their notes with them
+    await p.evaluate(([k]) => { const pr = JSON.parse(localStorage.getItem('football-attended-personal')); pr[k].note = 'Changed on the device'; localStorage.setItem('football-attended-personal', JSON.stringify(pr)); }, [cfg.pk('io-a')]);
+    const s2 = await ls();
+    await put(exportFile([A, B], {'io-a': {note: 'From the file'}}));
+    check(`${N}: a file with only existing ids says "0 new, 2 skipped (already there), 0 notes", offers no Store and changes nothing`,
+      (await msg()).startsWith('0 new, 2 skipped (already there), 0 notes') && !(await p.$(sel('button[data-io=store]'))) && JSON.stringify(await ls()) === JSON.stringify(s2), await msg());
+    const C = cfg.mk('io-c'), F = cfg.mk(cfg.fileId);
+    await put(exportFile([A, C, F], {'io-a': {note: 'From the file'}, 'io-c': {note: 'Note C'}, [cfg.fileId]: {note: 'Overwritten?'}}));
+    check(`${N}: an id of data/attended.json or an imported id is skipped: "1 new, 2 skipped (already there), 1 notes"`, (await msg()).startsWith('1 new, 2 skipped (already there), 1 notes'), await msg());
+    await store();
+    const s3 = await ls();
+    check(`${N}: ...only the new one is stored, with its note; the stored note, the file entry's note and the stored record stay as they were`,
+      items(s3).length === 3 && JSON.stringify(items(s3)[0]) === JSON.stringify(A) && items(s3).some(x => x.id === 'io-c') && s3.pers[cfg.pk('io-c')].note === 'Note C' &&
+      s3.pers[cfg.pk('io-a')].note === 'Changed on the device' && s3.pers[cfg.fileId].note === 'file note' && !items(s3).some(x => x.id === cfg.fileId), JSON.stringify(s3.pers));
+
+    // a bad entry stores nothing, the refusal is the box's
+    const bad = {...cfg.mk('io-bad'), date: '2025-13-45'};
+    await put(exportFile([cfg.mk('io-d'), bad], {}));
+    check(`${N}: one bad entry refuses the whole file with the box's message and stores nothing`,
+      /^Not added, nothing was stored: .*io-bad/.test(await msg()) && !(await p.$(sel('button[data-io=store]'))) && JSON.stringify(await ls()) === JSON.stringify(s3), await msg());
+    await put(exportFile([cfg.mk('io-d')], {'io-d': {note: 5}}));
+    check(`${N}: a malformed note refuses the whole file too`, /^Not added, nothing was stored: notes for "io-d"/.test(await msg()) && JSON.stringify(await ls()) === JSON.stringify(s3), await msg());
+
+    // a plain list, as the box takes it, works (no notes)
+    await put([cfg.mk('io-p1'), cfg.mk('io-p2')]);
+    check(`${N}: a plain list of blocks reads "2 new, 0 skipped (already there), 0 notes"`, (await msg()).startsWith('2 new, 0 skipped (already there), 0 notes'), await msg());
+    await store();
+    check(`${N}: ...and stores both`, items(await ls()).length === 5);
+
+    // refusals change nothing
+    const s4 = await ls();
+    await put({kind: cfg.otherKind, version: 1, [cfg.otherList]: [], notes: {}});
+    const wrong = await msg();
+    await put('not json {');
+    const notJson = await msg();
+    await p.setInputFiles(sel('input[data-io=file]'), {name: 'big.json', mimeType: 'application/json', buffer: Buffer.alloc(5 * 1024 * 1024 + 1, 32)}); await p.waitForTimeout(500);
+    const big = await msg();
+    await put({...exportFile([A], {}), version: 2});
+    const ver = await msg();
+    check(`${N}: a file of the other tab's kind, invalid JSON, a file over 5 MB and another version are each refused with a clear message`,
+      wrong.startsWith(`Not imported: this file is of kind "${cfg.otherKind}"`) && wrong.includes(cfg.kind) && /not valid JSON/.test(notJson) && /larger than 5 MB/.test(big) && /version 2/.test(ver) &&
+      JSON.stringify(await ls()) === JSON.stringify(s4), [wrong, notJson, big, ver].join(' | ').slice(0, 400));
+
+    // limits: the 50 per paste does not apply to a file, the total does
+    await put(Array.from({length: 60}, (_, i) => cfg.mk('io-l' + i)));
+    check(`${N}: a file may hold more than 50 entries (60 new are offered)`, (await msg()).startsWith('60 new, 0 skipped'), await msg());
+    await p.click(sel('button[data-io=cancel]'));
+    await put(Array.from({length: cfg.limit + 1}, (_, i) => cfg.mk('io-t' + i)));
+    check(`${N}: more than ${cfg.limit} imported in all is refused and nothing is stored`, new RegExp(`at most ${cfg.limit} imported`).test(await msg()) && JSON.stringify(await ls()) === JSON.stringify(s4), await msg());
+
+    // empty state
+    await p.evaluate(() => { localStorage.setItem('football-attended-imported', JSON.stringify({version: 1, matches: []})); });
+    await p.reload(); await p.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    await p.click('nav button[data-pane=me]'); await go();
+    check(`${N}: the empty state shows "Nothing to export yet", disabled, beside a working Import`,
+      (await p.textContent(sel('button[data-io=export]'))).trim() === 'Nothing to export yet' && await p.isDisabled(sel('button[data-io=export]')) && !(await p.isDisabled(sel('button[data-io=import]'))));
+    await ctx.close();
+  }
+  {
+    const fid = ATTF.matches[0].id;
+    await ioSuite({name: 'Matches', tab: 'matches', list: 'matches', kind: 'football-planner-matches', otherKind: 'football-planner-events', otherList: 'events', tabBtn: '#meTabMatches', panel: '#meMatches',
+      mk: id => ({id, date: '2025-06-01', home: {name: 'Io Home ' + id}, away: {name: 'Io Away ' + id}, score: '2-1'}), show: 'Io Home', pk: id => 'imp:' + id, pf: ['note', 'supported'], limit: 300,
+      fileId: fid, persA: {note: 'Nota unu', supported: 'home', ticket: 'T-1'}, persB: {supported: 'away', seat: '12'},
+      expNotes: {'io-a': {note: 'Nota unu', supporter: 'home'}, 'io-b': {note: '', supporter: 'away'}}, expK: 2});
+    await ioSuite({name: 'Events', tab: 'events', list: 'events', kind: 'football-planner-events', otherKind: 'football-planner-matches', otherList: 'matches', tabBtn: '#meTabEvents', panel: '#meEvents',
+      mk: id => ({id, date: '2025-07-01', title: 'Io Event ' + id, place: 'Town', atStadium: false}), show: 'Io Event', pk: id => 'impev:' + id, pf: ['note'], limit: 100,
+      fileId: ATTF.events[0].id, persA: {note: 'Event note A', ticket: 'T-1'}, persB: {seat: '12'},
+      expNotes: {'io-a': {note: 'Event note A'}}, expK: 1});
+  }
+
   // A failed load says so.
   const ctx4 = await newCtx();
   await ctx4.route('**/data/attended.json', r => r.abort());

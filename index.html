@@ -597,6 +597,11 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   .att .amsg,#asheet .amsg{font-size:13px;line-height:1.5;margin:6px 0 10px;overflow-wrap:anywhere}
   .att .amsg.bad,#asheet .amsg.bad{color:var(--bad)}
   .att .amsg.ok,#asheet .amsg.ok{color:var(--t3)}
+  .att .aio{margin-bottom:10px}
+  .att .aio .aiob,.att .aio .acts{display:flex;flex-wrap:wrap;gap:6px}
+  .att .aio button.ab{flex:1 1 130px;padding:0 12px;text-align:center}
+  .att .aio button.ab:disabled{opacity:.6;cursor:default}
+  .att .aio .amsg{margin:8px 0 0}
   #asheet .amgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:6px 0 10px}
   #asheet .amcell{position:relative;padding:0;aspect-ratio:1/1;overflow:hidden;background:var(--field);border:1px solid var(--line);border-radius:8px;cursor:pointer;min-height:44px}
   #asheet .amcell img,#asheet .amcell video{width:100%;height:100%;object-fit:cover;display:block}
@@ -975,6 +980,28 @@ const I18N = {
     'ive.e.title': 'Enter a name.',
     'ive.tooMany': 'Not added: at most {max} events at a time.',
     'ive.tooManyTotal': 'Not added: this device can hold at most {max} imported events.',
+    'io.export': 'Export',
+    'io.exportNone': 'Nothing to export yet',
+    'io.import': 'Import',
+    'io.fileAria': 'Choose a JSON file to import',
+    'io.exportedM': 'Exported {n} imported match(es) and {k} note(s) to {name}. Photos, ticket details and companions are not in the file.',
+    'io.exportedE': 'Exported {n} imported event(s) and {k} note(s) to {name}. Photos and ticket details are not in the file.',
+    'io.tooBig': 'Not imported: the file is larger than {mb} MB. Nothing changed.',
+    'io.readFail': 'Not imported: the file could not be read. Nothing changed.',
+    'io.notJson': 'Not imported: this is not valid JSON. Nothing changed.',
+    'io.wrongKind': 'Not imported: this file is of kind "{kind}", but this tab takes "{want}" files or a plain JSON object or list. Nothing changed.',
+    'io.meFile': 'Not imported: this is the whole Me backup file, not a matches or events file. Nothing changed.',
+    'io.badVersion': 'Not imported: this file has version {v}; only version 1 is read. Nothing changed.',
+    'io.noList': 'Not imported: the file has no list "{key}". Nothing changed.',
+    'io.notesShape': '"notes" must be an object with one entry per id',
+    'io.noteBadM': 'notes for "{id}": must be an object with "note" (text, up to {max} characters) and "supporter" (home, neutral, away or empty)',
+    'io.noteBadE': 'notes for "{id}": must be an object with "note" (text, up to {max} characters)',
+    'io.counts': '{n} new, {m} skipped (already there), {k} notes',
+    'io.orphans': '{j} note(s) with no matching entry in the file are ignored.',
+    'io.confirm': '{counts}. Store them on this device?',
+    'io.store': 'Store them',
+    'io.nothingNew': '{counts}. Nothing new to store; nothing changed.',
+    'io.done': 'Imported: {counts}.',
     'ive.clashFile': 'the id "{id}" is already used by a match or an event in data/attended.json',
     'ive.clashDevice': 'the id "{id}" is already used by an imported match or event on this device',
     'ive.added': 'Added {n} imported event(s). They are marked "Imported on this device".',
@@ -2226,6 +2253,28 @@ const I18N = {
     'ive.e.title': 'Introdu un nume.',
     'ive.tooMany': 'Neadăugat: cel mult {max} evenimente odată.',
     'ive.tooManyTotal': 'Neadăugat: acest dispozitiv poate păstra cel mult {max} evenimente importate.',
+    'io.export': 'Exportă',
+    'io.exportNone': 'Încă nu ai ce exporta',
+    'io.import': 'Importă',
+    'io.fileAria': 'Alege un fișier JSON de importat',
+    'io.exportedM': 'Am exportat {n} meci(uri) importat(e) și {k} notițe în {name}. Pozele, datele biletului și însoțitorii nu sunt în fișier.',
+    'io.exportedE': 'Am exportat {n} eveniment(e) importat(e) și {k} notițe în {name}. Pozele și datele biletului nu sunt în fișier.',
+    'io.tooBig': 'Neimportat: fișierul depășește {mb} MB. Nu s-a schimbat nimic.',
+    'io.readFail': 'Neimportat: fișierul nu a putut fi citit. Nu s-a schimbat nimic.',
+    'io.notJson': 'Neimportat: nu este JSON valid. Nu s-a schimbat nimic.',
+    'io.wrongKind': 'Neimportat: acest fișier este de tip „{kind}”, dar această filă primește fișiere „{want}” sau un obiect ori o listă JSON simplă. Nu s-a schimbat nimic.',
+    'io.meFile': 'Neimportat: acesta este fișierul de rezervă complet din Eu, nu un fișier de meciuri sau evenimente. Nu s-a schimbat nimic.',
+    'io.badVersion': 'Neimportat: fișierul are versiunea {v}; se citește doar versiunea 1. Nu s-a schimbat nimic.',
+    'io.noList': 'Neimportat: fișierul nu are lista „{key}”. Nu s-a schimbat nimic.',
+    'io.notesShape': '„notes” trebuie să fie un obiect cu câte o intrare pentru fiecare id',
+    'io.noteBadM': 'notițe pentru „{id}”: trebuie să fie un obiect cu „note” (text, până la {max} de caractere) și „supporter” (home, neutral, away sau gol)',
+    'io.noteBadE': 'notițe pentru „{id}”: trebuie să fie un obiect cu „note” (text, până la {max} de caractere)',
+    'io.counts': '{n} noi, {m} sărite (existau deja), {k} notițe',
+    'io.orphans': '{j} notiță/notițe fără intrare corespunzătoare în fișier sunt ignorate.',
+    'io.confirm': '{counts}. Le păstrezi pe acest dispozitiv?',
+    'io.store': 'Păstrează-le',
+    'io.nothingNew': '{counts}. Nimic nou de păstrat; nu s-a schimbat nimic.',
+    'io.done': 'Importat: {counts}.',
     'ive.clashFile': 'id-ul „{id}” este deja folosit de un meci sau un eveniment din data/attended.json',
     'ive.clashDevice': 'id-ul „{id}” este deja folosit de un meci sau un eveniment importat pe acest dispozitiv',
     'ive.added': 'S-au adăugat {n} eveniment(e) importat(e). Sunt marcate „Importat pe acest dispozitiv”.',
@@ -8370,7 +8419,7 @@ async function renderTickets(rules){
    migrated from the old app. The chosen language is the only other thing
    kept. */
 
-const ATT = {sub: 'stats', data: null, side: 'home', edit: null, editEv: null, evMsg: null, evOpen: false};
+const ATT = {sub: 'stats', data: null, side: 'home', edit: null, editEv: null, evMsg: null, evOpen: false, ioMsg: null, ioPending: null};
 
 /* A value of the file as the page's language shows it. A name pair has
    nameEn; a text pair is {ro, en}. Nothing is filled in when absent. */
@@ -8494,8 +8543,8 @@ function renderAttStats(d){
 
 function renderAttMatches(d){
   const ms = attMatches(d);
-  if(!ms.length) return renderAttAdd() + `<p class="anote">${esc(t('att.noMatches'))}</p>`;
-  return renderAttAdd() + ms.map((m, i) =>
+  if(!ms.length) return renderAttIo('matches') + renderAttAdd() + `<p class="anote">${esc(t('att.noMatches'))}</p>`;
+  return renderAttIo('matches') + renderAttAdd() + ms.map((m, i) =>
     `<button type="button" class="acard" data-att="match" data-id="${esc(attKey(m))}"><span class="an">${i + 1}</span>` +
     `<span class="at"><span class="tm">${esc(attTeam(m.home))}</span><b>${esc(m.score ?? t('att.na'))}</b><span class="tm">${esc(attTeam(m.away))}</span></span>` +
     `<div class="am">${esc(attJoin([attL(m.competition), attL(m.stage)]))}</div>` +
@@ -8523,7 +8572,7 @@ function renderAttEvAdd(){
 }
 function renderAttEvents(d){
   const es = attEvents(d);
-  return renderAttEvAdd() + (!es.length ? `<p class="anote">${esc(t('att.noEvents'))}</p>` : es.map((e, i) =>
+  return renderAttIo('events') + renderAttEvAdd() + (!es.length ? `<p class="anote">${esc(t('att.noEvents'))}</p>` : es.map((e, i) =>
     `<button type="button" class="acard" data-att="event" data-id="${esc(attEvKey(e))}"><span class="an">${i + 1}</span>` +
     `<span class="at"><span class="tm">${esc(attL(e.title))}</span></span>` +
     `<div class="am">${esc(attJoin([attL(e.place), attDate(e.date)]))}${e._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join(''));
@@ -8552,6 +8601,7 @@ async function renderAtt(){
 
 function showMeSub(sub){
   ATT.sub = sub;
+  ATT.ioMsg = null; ATT.ioPending = null;
   if(sub !== 'matches'){ ATT.impMsg = null; ATT.impOpen = false; ATT.edit = null; }
   if(sub !== 'events'){ ATT.evMsg = null; ATT.evOpen = false; ATT.editEv = null; }
   const panel = {stats: 'meStats', matches: 'meMatches', events: 'meEvents', tix: 'meBody'};
@@ -8784,20 +8834,27 @@ function impCheckText(raw){
   const arr = Array.isArray(obj) ? obj : [obj];
   if(!arr.length) return {error: t('imp.none')};
   if(arr.length > IMP_MAX_BATCH) return {error: t('imp.tooMany', {max: IMP_MAX_BATCH})};
+  return impCheckList(arr, false);
+}
+/* The list of match objects, checked whole: the box and the file import both end here.
+   A match whose id is already in data/attended.json or imported is a problem (the box),
+   or, with skipExisting (a file), is left out and counted in `skipped`. */
+function impCheckList(arr, skipExisting){
   const fileIds = new Set((ATT.data?.matches || []).map(m => m.id)), onDevice = new Set(IMP.map(m => m.id)), pasted = new Set();
-  const problems = [], added = [];
+  const problems = [], added = [], skipped = [];
   arr.forEach((r, i) => {
     const c = attCheckMatch(r), id = isObj(r) && typeof r.id === 'string' ? r.id : '';
     const who = `${t('v.matchN', {n: i + 1})}${id ? ` ("${id.slice(0, 40)}")` : ''}`;
     if(c.errs){ problems.push(`${who}: ${c.errs.slice(0, 3).join('; ')}`); return; }
-    if(fileIds.has(id)) problems.push(`${who}: ${t('imp.clashFile', {id})}`);
+    if(skipExisting && (fileIds.has(id) || onDevice.has(id))) skipped.push(id);
+    else if(fileIds.has(id)) problems.push(`${who}: ${t('imp.clashFile', {id})}`);
     else if(onDevice.has(id)) problems.push(`${who}: ${t('imp.clashDevice', {id})}`);
     else if(pasted.has(id)) problems.push(`${who}: ${t('imp.clashTwice', {id})}`);
     else{ pasted.add(id); added.push(c.rec); }
   });
   if(problems.length) return {error: t('imp.rejected', {reasons: problems.slice(0, 5).join(' | ') + (problems.length > 5 ? ` | +${problems.length - 5}` : '')})};
   if(IMP.length + added.length > IMP_MAX_TOTAL) return {error: t('imp.tooManyTotal', {max: IMP_MAX_TOTAL})};
-  return {added};
+  return {added, skipped};
 }
 
 /* One event as the file has it (id, date, title, place, note, atStadium).
@@ -8830,19 +8887,134 @@ function impEvCheckText(raw){
   const arr = Array.isArray(obj) ? obj : [obj];
   if(!arr.length) return {error: t('imp.none')};
   if(arr.length > IMP_EV_MAX_BATCH) return {error: t('ive.tooMany', {max: IMP_EV_MAX_BATCH})};
-  const pasted = new Set(), problems = [], added = [];
+  return impEvCheckList(arr, false);
+}
+/* The events' twin of impCheckList(): the id must be free in all four spaces. */
+function impEvCheckList(arr, skipExisting){
+  const pasted = new Set(), problems = [], added = [], skipped = [];
   arr.forEach((r, i) => {
     const c = attCheckEvent(r), id = isObj(r) && typeof r.id === 'string' ? r.id : '';
     const who = `${t('v.eventN', {n: i + 1})}${id ? ` ("${id.slice(0, 40)}")` : ''}`;
     if(c.errs){ problems.push(`${who}: ${c.errs.slice(0, 3).join('; ')}`); return; }
     const taken = attEvIdTaken(id);
-    if(taken) problems.push(`${who}: ${taken}`);
+    if(skipExisting && taken) skipped.push(id);
+    else if(taken) problems.push(`${who}: ${taken}`);
     else if(pasted.has(id)) problems.push(`${who}: ${t('imp.clashTwice', {id})}`);
     else{ pasted.add(id); added.push(c.rec); }
   });
   if(problems.length) return {error: t('imp.rejected', {reasons: problems.slice(0, 5).join(' | ') + (problems.length > 5 ? ` | +${problems.length - 5}` : '')})};
   if(IMP_EV.length + added.length > IMP_EV_MAX_TOTAL) return {error: t('ive.tooManyTotal', {max: IMP_EV_MAX_TOTAL})};
-  return {added};
+  return {added, skipped};
+}
+
+/* ---- Export and Import on the Matches and Events tabs (2026-10-25). Backs up and restores
+   the matches / events imported on this device (football-attended-imported) with their
+   "My note" text and, for matches, the supporter choice. Photos, ticket details and
+   companions are not in the file. Every entry goes through the same validators as the
+   JSON box (impCheckList / impEvCheckList), whole or not at all; an id that already
+   exists is skipped, never overwritten, and its notes with it. */
+const IO_MAX_FILE = 5 * 1024 * 1024, IO_NOTE_MAX = 20000;
+const IO_TABS = {
+  matches: {kind: 'football-planner-matches', list: 'matches', cur: () => IMP, pkey: id => 'imp:' + id, pf: ['note', 'supported'],
+    check: impCheckList, exported: 'io.exportedM', noteBad: 'io.noteBadM'},
+  events: {kind: 'football-planner-events', list: 'events', cur: () => IMP_EV, pkey: id => 'impev:' + id, pf: ['note'],
+    check: impEvCheckList, exported: 'io.exportedE', noteBad: 'io.noteBadE'},
+};
+const ioFileKey = f => f === 'supported' ? 'supporter' : f;            // the file says "supporter", the stored record "supported"
+function renderAttIo(tab){
+  const n = IO_TABS[tab].cur().length, M = ATT.ioMsg && ATT.ioMsg.tab === tab ? ATT.ioMsg : null, P = ATT.ioPending && ATT.ioPending.tab === tab ? ATT.ioPending : null;
+  return `<div class="aio" id="aIo-${tab}"><div class="aiob">` +
+    `<button type="button" class="ab" data-io="export"${n ? '' : ' disabled'}>${esc(t(n ? 'io.export' : 'io.exportNone'))}</button>` +
+    `<button type="button" class="ab" data-io="import">${esc(t('io.import'))}</button>` +
+    `<input type="file" accept=".json,application/json" hidden data-io="file" aria-label="${esc(t('io.fileAria'))}"></div>` +
+    (P ? `<div class="amsg" role="status">${esc(P.text)}</div><div class="acts"><button type="button" class="ab go" data-io="store">${esc(t('io.store'))}</button>` +
+         `<button type="button" class="ab" data-io="cancel">${esc(t('gen.cancel'))}</button></div>`
+       : M ? `<div class="amsg ${M.kind}" role="status">${esc(M.text)}</div>` : '') + `</div>`;
+}
+function ioShow(tab, kind, text){                          // only this block is redrawn, so a half-typed form stays
+  ATT.ioMsg = text ? {tab, kind, text} : null;
+  const el = document.getElementById('aIo-' + tab);
+  if(el) el.outerHTML = renderAttIo(tab);
+}
+function ioNotesOf(S, list){
+  const notes = {};
+  for(const r of list){
+    const rec = {}; let any = false;
+    for(const f of S.pf){ const v = persGet(S.pkey(r.id), f); rec[ioFileKey(f)] = v; if(v) any = true; }
+    if(any) notes[r.id] = rec;
+  }
+  return notes;
+}
+function ioExport(tab){
+  const S = IO_TABS[tab]; persLoad(); impLoad();
+  const list = S.cur();
+  if(!list.length) return;
+  const notes = ioNotesOf(S, list);
+  const data = {kind: S.kind, version: 1, exportedAt: new Date().toISOString(), [S.list]: list, notes};
+  const name = `${S.kind}-${todayISO()}.json`;
+  meDownload(name, JSON.stringify(data, null, 1), 'application/json');
+  ioShow(tab, 'ok', t(S.exported, {n: list.length, k: Object.keys(notes).length, name}));
+}
+/* The parsed file or paste, checked whole: {added, skipped, notes: {id: {note, supported}}, counts, orphans} or {error}. */
+function ioPlan(tab, data){
+  const S = IO_TABS[tab];
+  let arr, rawNotes = null;
+  if(isObj(data) && data.format === ME_FORMAT) return {error: t('io.meFile')};
+  if(isObj(data) && 'kind' in data){
+    if(data.kind !== S.kind) return {error: t('io.wrongKind', {kind: String(data.kind).slice(0, 60), want: S.kind})};
+    if(data.version !== 1) return {error: t('io.badVersion', {v: String(data.version).slice(0, 20)})};
+    if(!Array.isArray(data[S.list])) return {error: t('io.noList', {key: S.list})};
+    arr = data[S.list]; rawNotes = data.notes;
+  }else arr = Array.isArray(data) ? data : [data];
+  if(!arr.length) return {error: t('imp.none')};
+  const c = S.check(arr, true);
+  if(c.error) return c;
+  const notes = {}, problems = [], ids = new Set(arr.map(r => isObj(r) ? r.id : null));
+  let orphans = 0;
+  if(rawNotes != null){
+    if(!isObj(rawNotes)) problems.push(t('io.notesShape'));
+    else for(const id of Object.keys(rawNotes)) {
+      const v = rawNotes[id], ok = isObj(v) && Object.keys(v).every(k => S.pf.map(ioFileKey).includes(k) && typeof v[k] === 'string' && v[k].length <= IO_NOTE_MAX) &&
+        (v.supporter == null || v.supporter === '' || SUPPORT_VALUES.includes(v.supporter));
+      if(!ok){ problems.push(t(S.noteBad, {id: id.slice(0, 40), max: attNum(IO_NOTE_MAX)})); continue; }
+      if(!ids.has(id)){ orphans++; continue; }
+      if(c.added.some(r => r.id === id)){
+        const rec = {};
+        for(const f of S.pf) if(v[ioFileKey(f)]) rec[f] = v[ioFileKey(f)];
+        if(Object.keys(rec).length) notes[id] = rec;
+      }
+    }
+  }
+  if(problems.length) return {error: t('imp.rejected', {reasons: problems.slice(0, 5).join(' | ') + (problems.length > 5 ? ` | +${problems.length - 5}` : '')})};
+  const counts = t('io.counts', {n: c.added.length, m: c.skipped.length, k: Object.keys(notes).length}) + (orphans ? ' · ' + t('io.orphans', {j: orphans}) : '');
+  return {added: c.added, skipped: c.skipped, notes, counts};
+}
+async function ioImportFile(tab, file){
+  ATT.ioPending = null;
+  if(file.size > IO_MAX_FILE) return ioShow(tab, 'bad', t('io.tooBig', {mb: 5}));
+  let text, data;
+  try{ text = await file.text(); }catch(e){ return ioShow(tab, 'bad', t('io.readFail')); }
+  try{ data = JSON.parse(text); }catch(e){ return ioShow(tab, 'bad', t('io.notJson')); }
+  impLoad(); persLoad();
+  const plan = ioPlan(tab, data);
+  if(plan.error) return ioShow(tab, 'bad', plan.error);
+  if(!plan.added.length) return ioShow(tab, 'ok', t('io.nothingNew', {counts: plan.counts}));
+  ATT.ioPending = {tab, data, text: t('io.confirm', {counts: plan.counts})};
+  ioShow(tab, 'ok', '');
+}
+function ioStore(tab){
+  const P = ATT.ioPending, S = IO_TABS[tab];
+  if(!P || P.tab !== tab) return;
+  ATT.ioPending = null;
+  impLoad(); persLoad();                                    // the plan is made again from what is stored now
+  const plan = ioPlan(tab, P.data);
+  if(plan.error) return ioShow(tab, 'bad', plan.error);
+  if(!plan.added.length) return ioShow(tab, 'ok', t('io.nothingNew', {counts: plan.counts}));
+  if(!(tab === 'matches' ? impSave(IMP.concat(plan.added)) : impSave(IMP, IMP_EV.concat(plan.added)))) return ioShow(tab, 'bad', t('imp.saveFailed'));
+  for(const id of Object.keys(plan.notes)) for(const f of Object.keys(plan.notes[id])) persSet(S.pkey(id), f, plan.notes[id][f]);
+  attTouched();
+  ATT.ioMsg = {tab, kind: 'ok', text: t('io.done', {counts: plan.counts})};
+  renderAtt();
 }
 
 /* ---- The Add / Edit a match form (2026-10-13). It builds the same record
@@ -9689,6 +9861,21 @@ function attSupport(m){
   sheetDrag(document.getElementById('asheet'), closeASheet);
   const body = document.getElementById('asheetBody');
   const openKey = () => (body.dataset.open || '').split(/:(.*)/)[1] || '';
+  for(const [tab, id] of [['matches', 'meMatches'], ['events', 'meEvents']]){                 // Export and Import (2026-10-25)
+    const box = document.getElementById(id);
+    box.addEventListener('click', e => {
+      const b = e.target.closest('#aIo-' + tab + ' button[data-io]'); if(!b) return;
+      if(b.dataset.io === 'export') ioExport(tab);
+      else if(b.dataset.io === 'import') b.closest('.aio').querySelector('input[data-io=file]').click();
+      else if(b.dataset.io === 'store') ioStore(tab);
+      else if(b.dataset.io === 'cancel'){ ATT.ioPending = null; ioShow(tab, 'ok', ''); }
+    });
+    box.addEventListener('change', e => {
+      const inp = e.target.closest('#aIo-' + tab + ' input[data-io=file]'); if(!inp) return;
+      const f = inp.files && inp.files[0]; inp.value = '';
+      if(f) ioImportFile(tab, f);
+    });
+  }
   const me = document.getElementById('meEvents');
   me.addEventListener('submit', e => {                                          // the event form: checked whole, then stored on this device only
     const form = e.target.closest('#aEvForm'); if(!form) return;
