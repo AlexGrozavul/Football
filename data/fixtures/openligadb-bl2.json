@@ -2673,7 +2673,7 @@
   {
    "id": 83645,
    "utcDate": "2026-10-24T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2688,9 +2688,20 @@
     "shortName": "Cottbus",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2698,7 +2709,7 @@
   {
    "id": 83650,
    "utcDate": "2026-10-24T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2713,9 +2724,20 @@
     "shortName": "Bielefeld",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Arminia_Bielefeld_Logo_2021%E2%80%93.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2723,7 +2745,7 @@
   {
    "id": 83659,
    "utcDate": "2026-10-24T11:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2738,9 +2760,20 @@
     "shortName": "Karlsruhe",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 6,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 6,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2748,7 +2781,7 @@
   {
    "id": 83652,
    "utcDate": "2026-10-24T18:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2763,9 +2796,20 @@
     "shortName": "Kaiserslautern",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
