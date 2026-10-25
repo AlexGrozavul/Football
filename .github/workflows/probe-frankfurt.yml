@@ -33,8 +33,8 @@ jobs:
           # Empty: stage 1 (robots.txt, landing page, its ticket links).
           # One URL per line: stage 2 (robots.txt, then these pages only).
           PAGES: |
-            links https://www.eintracht.de/
-            archive links https://www.eintracht.de/tickets/
+            follow 10 https://stores.eintracht.de/tickets/
+            https://mitglied.eintracht.de/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -44,7 +44,7 @@ jobs:
           const UA = 'FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)';
           const MAX = 60000;
           const sleep = ms => new Promise(r => setTimeout(r, ms));
-          let n = 0;
+          let n = 0, lastLinks = [];
           function post(body) {
             fs.writeFileSync(`c${++n}.md`, body);
             execFileSync('gh', ['api', `repos/${process.env.REPO}/issues/${process.env.PR}/comments`,
@@ -130,6 +130,7 @@ jobs:
                 const s = (h + ' ' + t).toLowerCase();
                 if (/ticket|karten|mitglied|dauerkarte|gast|auswaerts|auswärts/.test(s) && !seen.has(h)) { seen.add(h); links.push(`- ${h} — ${t.slice(0, 80)}`); }
               }
+              lastLinks = all;
               post(`### LINKS on ${finalUrl} (${links.length} matching${links.length > 60 ? ', first 60 shown' : ''})\n${links.slice(0, 60).join('\n')}`);
             }
             await page.close();
@@ -143,7 +144,29 @@ jobs:
             for (const line of pages) {
               const w = line.split(/\s+/), url = w[w.length - 1];
               const links = w.includes('links');
-              if (w.includes('archive')) {
+              if (w[0] === 'follow') {
+                // Landing page, then up to N of its links, ranked by the
+                // persona's topics; men's first team only.
+                const N = +w[1];
+                if (!(await render(browser, url, true))) continue;
+                const score = s => [/faq|fragen|hilfe|info/, /mitglied/, /preis/, /heimspiel|bundesliga|profis|tagesticket|einzel/,
+                  /ticketb(oe|ö)rse|zweitmarkt|weiterverkauf|resale|marktplatz/, /agb|bedingung|ordnung/, /dauerkarte/,
+                  /gast|auswaerts|auswärts/, /kind|jugend|famil|ermaessig|ermäßig/].reduce((t, re) => t + (re.test(s) ? 1 : 0), 0);
+                const skip = /frauen|u21|u19|u17|nachwuchs|rugby|tennis|handball|basketball|esport|trikot|fanshop|jobs|stadionfuehrung|museum|login|account|cart|checkout|warenkorb/;
+                const seen = new Set([url]), picked = [];
+                for (const [h, t] of lastLinks) {
+                  let hu; try { hu = new URL(h); } catch { continue; }
+                  const k = hu.origin + hu.pathname;
+                  if (!/(^|\.)eintracht\.de$/.test(hu.hostname) || seen.has(k)) continue;
+                  seen.add(k);
+                  const s = (k + ' ' + t).toLowerCase();
+                  if (!skip.test(s) && score(s) > 0) picked.push([score(s), k]);
+                }
+                picked.sort((a, b) => b[0] - a[0]);
+                const chosen = picked.slice(0, N).map(x => x[1]);
+                post(`### FOLLOWING ${chosen.length} links of ${url} (rule: persona-topic keywords, men's team only)\n${chosen.map(c => '- ' + c).join('\n')}`);
+                for (const c of chosen) await render(browser, c, false);
+              } else if (w.includes('archive')) {
                 const a = await archived(url);
                 if (a) await render(browser, a[0], links, `ARCHIVE (capture ${a[1]}, original ${url})`);
               } else await render(browser, url, links);
