@@ -1,0 +1,67 @@
+name: probe-pages-live
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Probe live site against main
+        run: |
+          set +e
+          UA="FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)"
+          B=https://alexgrozavul.github.io/Football
+          MAIN=$(git rev-parse origin/main)
+          echo "PROBE main=$MAIN"
+          FILES="data/country-ticket-rules.csv data/club-tickets.csv data/club-ticket-windows.csv data/club-ticket-phases.csv data/club-ticket-rules.csv data/club-ticket-demand.csv data/club-ticket-prices.csv data/football-rules-links.csv index.html sw.js"
+          fetch() { # url outprefix
+            curl -s --retry 3 -A "$UA" -D "$2.h" -o "$2.b" "$1"; sleep 1
+          }
+          BAD=""
+          for f in $FILES; do
+            n=$(echo "$f" | tr '/' '_')
+            fetch "$B/$f" "/tmp/p_$n"
+            fetch "$B/$f?probe=$RANDOM$RANDOM" "/tmp/q_$n"
+            m=$(git show origin/main:$f | sha256sum | cut -c1-12)
+            p=$(sha256sum < /tmp/p_$n.b | cut -c1-12)
+            q=$(sha256sum < /tmp/q_$n.b | cut -c1-12)
+            sp=$(head -1 /tmp/p_$n.h | tr -d '\r'); sq=$(head -1 /tmp/q_$n.h | tr -d '\r')
+            [ "$p" = "$m" ] && yp=yes || yp=no
+            [ "$q" = "$m" ] && yq=yes || yq=no
+            echo "PROBE $f | plain=$yp ($sp) | probe=$yq ($sq) | main=$m live=$p live?=$q"
+            if [ "$yp" = no ] || [ "$yq" = no ]; then BAD="$BAD $f"; fi
+            if [ "$f" = data/club-tickets.csv ]; then
+              for k in p q; do
+                echo "PROBE hdr[$k]: $(head -1 /tmp/${k}_$n.h | tr -d '\r') | $(grep -i -E '^(age|etag|last-modified|cache-control|x-served-by):' /tmp/${k}_$n.h | tr -d '\r' | tr '\n' ';')"
+                echo "PROBE Q692691 count[$k]=$(grep -c Q692691 /tmp/${k}_$n.b) lines=$(wc -l < /tmp/${k}_$n.b) mainQ=$(git show origin/main:$f | grep -c Q692691) mainLines=$(git show origin/main:$f | wc -l)"
+              done
+            fi
+          done
+          echo "PROBE mismatching:${BAD:- none}"
+          for f in $BAD; do
+            n=$(echo "$f" | tr '/' '_')
+            p=$(sha256sum < /tmp/p_$n.b | cut -c1-12); q=$(sha256sum < /tmp/q_$n.b | cut -c1-12)
+            found=""
+            for c in $(git log --format=%h -n 15 origin/main -- $f); do
+              h=$(git show $c:$f 2>/dev/null | sha256sum | cut -c1-12)
+              if [ "$h" = "$p" ] || [ "$h" = "$q" ]; then
+                found="$found $c($(git log -1 --format=%cI $c))[$([ "$h" = "$p" ] && echo plain)$([ "$h" = "$q" ] && echo probe)]"
+              fi
+            done
+            echo "PROBE match $f -> ${found:- none of last 15 commits}"
+          done
+          A="-s -A \"$UA\""
+          api() { curl -s -A "$UA" -w '\nHTTP %{http_code}\n' "https://api.github.com$1"; sleep 1; }
+          echo "PROBE deployments:"
+          curl -s -A "$UA" "https://api.github.com/repos/AlexGrozavul/Football/deployments?environment=github-pages&per_page=5" -o /tmp/d.json -w 'PROBE deployments HTTP %{http_code}\n'; sleep 1
+          for id in $(jq -r '.[0:5][]?.id' /tmp/d.json 2>/dev/null); do
+            st=$(curl -s -A "$UA" "https://api.github.com/repos/AlexGrozavul/Football/deployments/$id/statuses?per_page=1" | jq -r '.[0].state // "?"'); sleep 1
+            echo "PROBE dep $(jq -r ".[]|select(.id==$id)|\"\(.sha[0:7]) \(.created_at)\"" /tmp/d.json) state=$st"
+          done
+          curl -s -A "$UA" "https://api.github.com/repos/AlexGrozavul/Football/actions/runs?event=dynamic&per_page=5" -o /tmp/r.json -w 'PROBE runs HTTP %{http_code}\n'; sleep 1
+          jq -r '.workflow_runs[0:5][]? | "PROBE run \(.name) \(.head_sha[0:7]) \(.conclusion) \(.created_at)"' /tmp/r.json
+          curl -s -A "$UA" "https://api.github.com/repos/AlexGrozavul/Football/pages" -o /tmp/pg.json -w 'PROBE pages HTTP %{http_code}\n'
+          jq -r 'if .source then "PROBE pages source=\(.source.branch)\(.source.path) build_type=\(.build_type) status=\(.status)" else "PROBE pages body=\(.message // "?")" end' /tmp/pg.json
