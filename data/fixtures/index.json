@@ -14,7 +14,8 @@
    "matches": 380,
    "teams": 20,
    "seasonStart": null,
-   "seasonEnd": null
+   "seasonEnd": null,
+   "lastFetchFailed": true
   },
   "CL": {
    "name": "UEFA Champions League",
@@ -63,7 +64,8 @@
    "matches": 380,
    "teams": 20,
    "seasonStart": null,
-   "seasonEnd": null
+   "seasonEnd": null,
+   "lastFetchFailed": true
   },
   "PPL": {
    "name": "Primeira Liga",
@@ -84,7 +86,8 @@
    "matches": 104,
    "teams": 48,
    "seasonStart": null,
-   "seasonEnd": null
+   "seasonEnd": null,
+   "lastFetchFailed": true
   }
  }
 }

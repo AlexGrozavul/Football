@@ -2059,7 +2059,7 @@
   {
    "id": 558862,
    "utcDate": "2026-10-24T14:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2077,14 +2077,14 @@
     "tla": "ZWO",
     "crest": "https://crests.football-data.org/684.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 558861,
    "utcDate": "2026-10-24T16:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2102,14 +2102,14 @@
     "tla": "CAM",
     "crest": "https://crests.football-data.org/1909.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 6,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558860,
    "utcDate": "2026-10-24T19:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2127,9 +2127,9 @@
     "tla": "HEE",
     "crest": "https://crests.football-data.org/673.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558859,

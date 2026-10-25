@@ -2284,7 +2284,7 @@
   {
    "id": 564718,
    "utcDate": "2026-10-24T12:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2302,14 +2302,14 @@
     "tla": "ELC",
     "crest": "https://crests.football-data.org/285.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 564727,
    "utcDate": "2026-10-24T14:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2327,14 +2327,14 @@
     "tla": "ESP",
     "crest": "https://crests.football-data.org/80.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 564722,
    "utcDate": "2026-10-24T16:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2352,14 +2352,14 @@
     "tla": "VIL",
     "crest": "https://crests.football-data.org/94.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 564724,
    "utcDate": "2026-10-24T19:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2377,9 +2377,9 @@
     "tla": "DEP",
     "crest": "https://crests.football-data.org/560.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 564720,
