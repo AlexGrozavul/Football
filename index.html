@@ -9482,7 +9482,7 @@ function attStatsPane(m){
   if(Array.isArray(xg) && xg.length === 2 && xg.every(num)) bar(xg[0], xg[1], attDec(xg[0]), attDec(xg[1]), 'xg');
   if(Array.isArray(sv) && sv.length === 2 && sv.every(num)) bar(sv[0], sv[1], sv[0], sv[1], 'saves');
   if(Array.isArray(ps) && ps.length === 2 && ps.every(q => Array.isArray(q) && q.length === 2 && q.every(num)))
-    bar(ps[0][0], ps[1][0], attPassTxt(ps[0]), attPassTxt(ps[1]), 'passes');
+    bar(...ps.map(q => q[1] > 0 ? q[0] / q[1] * 100 : 0), attPassTxt(ps[0]), attPassTxt(ps[1]), 'passes');   // each bar follows its own percentage; a total of 0 has none
   if(!h) return '';
   if(m.statsSource) h += `<p class="anote">${esc(t('sx.source'))}: ${esc(m.statsSource)}</p>`;
   return `<h4>${esc(t('sx.title'))}</h4><div id="aStats">${h}</div>`;

@@ -1258,7 +1258,8 @@ function alarmAt(ev, al){
   const xiOf = (tag, rated) => Array.from({length: 11}, (_, i) => Object.assign({no: i + 1, name: `${tag} Player${i + 1}`}, rated && i < 4 ? {rating: [6.5, 7.4, 9, 10][i]} : {}));
   const luHome = {formation: '4-4-2', coach: 'Coach H', xi: xiOf('H', true), subs: [{minute: 60, on: 'H Sub Rated', off: 'H Player5', onRating: 6.8}, {minute: 70, on: 'H Sub Plain', off: 'H Player6'}]};
   const luAway = {coach: 'Coach A', xi: xiOf('A', true), subs: [{minute: 75, on: 'A Sub Rated', off: 'A Player5', onRating: 7.1}]};
-  const mNew = mk(NEWID, {stats: {possession: [58, 42], xg: [1.84, 0.62], saves: [3, 7], passes: [[532, 606], [310, 402]]}, lineups: {home: luHome, away: luAway}});
+  const PASS_FX = [[532, 606], [220, 294]];
+  const mNew = mk(NEWID, {stats: {possession: [58, 42], xg: [1.84, 0.62], saves: [3, 7], passes: PASS_FX}, lineups: {home: luHome, away: luAway}});
   const mNew2 = mk(NEW2, {stats: {passes: [[0, 0], [5, 10]]}});
   const mOld = mk(OLDID, {stats: {possession: [58, 42], shots: [12, 9]}, lineups: {home: Object.assign({}, luHome, {xi: xiOf('H', false), subs: [{minute: 60, on: 'H Sub Plain', off: 'H Player5'}]})}});
   const sheetNew = async id => {
@@ -1275,8 +1276,14 @@ function alarmAt(ev, al){
     check(`Pasting a match with ${w} is accepted`, /^Added 1 imported match/.test(msg), msg);
   }
   let sh = await sheetNew(NEWID);
-  check('The stats pane draws the six old rows first, then xG, Saves and Passes: "1.84|xG|0.62", "3|Saves|7", passes as the app-worked-out percentage with the counts "88% (532/606)" and "77% (310/402)"',
-    JSON.stringify(sh.rows) === JSON.stringify(['58|Possession|42', '1.84|xG|0.62', '3|Saves|7', '88% (532/606)|Passes|77% (310/402)']), JSON.stringify(sh.rows));
+  check('The stats pane draws the six old rows first, then xG, Saves and Passes: "1.84|xG|0.62", "3|Saves|7", passes as the app-worked-out percentage with the counts "88% (532/606)" and "75% (220/294)"',
+    JSON.stringify(sh.rows) === JSON.stringify(['58|Possession|42', '1.84|xG|0.62', '3|Saves|7', '88% (532/606)|Passes|75% (220/294)']), JSON.stringify(sh.rows));
+  const widths = await p5.evaluate(() => [...document.querySelectorAll('#aStats .abar')].map(b => [...b.querySelectorAll('.tr i')].map(i => i.getBoundingClientRect().width)));
+  const pc = PASS_FX.map(q => q[0] / q[1]), wP = widths[widths.length - 1], wX = widths[1], wS = widths[2];
+  check('The passes bars are in the ratio of the two percentages worked out from the fixture (532/606 against 220/294), within 2%, on the same scale',
+    Math.abs((wP[0] / wP[1]) / (pc[0] / pc[1]) - 1) < 0.02, JSON.stringify({wP, want: pc[0] / pc[1]}));
+  check('xG and Saves keep the sizing of the existing rows: each bar is its value\'s share of the two values added up (1.84 : 0.62, 3 : 7), within 2%',
+    Math.abs(wX[0] / (wX[0] + wX[1]) - 1.84 / (1.84 + 0.62)) < 0.02 && Math.abs(wS[0] / (wS[0] + wS[1]) - 3 / 10) < 0.02, JSON.stringify({wX, wS}));
   check('The pitch picture shows the four ratings beside the players (6.5, 7.4, 9.0, 10.0), nothing for the other seven; the names are still all there (11)',
     JSON.stringify(sh.rt) === JSON.stringify(['6.5', '7.4', '9.0', '10.0']) && sh.pitchTexts === 11, JSON.stringify([sh.rt, sh.pitchTexts]));
   check('The subs list shows 6.8 beside the rated player who came on and nothing beside the unrated one', JSON.stringify(sh.arat) === JSON.stringify(['6.8']), JSON.stringify(sh.arat));
@@ -1312,6 +1319,8 @@ function alarmAt(ev, al){
   sh = await sheetNew(NEW2);
   check('Passes with a total of 0 draw a dash, not 0% or NaN, and a total above 0 still draws its percentage: "–|Passes|50% (5/10)"; no xG, no Saves row',
     JSON.stringify(sh.rows) === JSON.stringify(['–|Passes|50% (5/10)']), JSON.stringify(sh.rows));
+  const w0 = await p5.evaluate(() => [...document.querySelectorAll('#aStats .abar .tr i')].map(i => i.getBoundingClientRect().width));
+  check('...and the side with total 0 has no bar (width 0) while the other side has one', w0[0] === 0 && w0[1] > 0, JSON.stringify(w0));
   await closeSheet5();
   sh = await sheetNew(OLDID);
   check('A match without any new field draws unchanged: two stat rows, no rating on the pitch, in the subs or anywhere, and no ".arat" in the sheet',
