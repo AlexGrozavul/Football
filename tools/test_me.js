@@ -159,7 +159,7 @@ function alarmAt(ev, al){
   await new Promise(r => server.listen(PORT, r));
   const browser = await chromium.launch({executablePath: process.env.CHROMIUM_PATH || undefined, headless: true});
   const errors = [], requests = [];
-  async function newCtx({blockStorage = false, width = W} = {}){
+  async function newCtx({blockStorage = false, width = W, seedShowFile = true} = {}){
     const ctx = await browser.newContext({viewport: {width, height: H}, isMobile: true, hasTouch: true,
       deviceScaleFactor: 2, serviceWorkers: 'block', timezoneId: 'Europe/Berlin', acceptDownloads: true});
     await ctx.clock.setFixedTime(new Date('2026-10-04T10:00:00Z'));
@@ -168,6 +168,9 @@ function alarmAt(ev, al){
     if(blockStorage) await ctx.addInitScript(() => {
       Object.defineProperty(window, 'localStorage', {get(){ throw new Error('storage blocked'); }});
     });
+    // Since 2026-10-25 "Show built-in matches and events" (football-planner-showfile) is off on a device with nothing stored; the fixtures below
+    // expect the file's matches, so they start with the switch on. seedShowFile: false leaves the key unset (the default is then worked out by the page).
+    if(seedShowFile) await ctx.addInitScript(() => { try{ if(localStorage.getItem('football-planner-showfile') === null) localStorage.setItem('football-planner-showfile', '1'); }catch(e){} });
     ctx.on('request', req => requests.push({url: req.url(), method: req.method(), body: req.postData() || '',
       headers: JSON.stringify(req.headers())}));
     return ctx;
@@ -1418,6 +1421,7 @@ function alarmAt(ev, al){
   await p6.goto(BASE);
   await p6.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
   await p6.click('nav button[data-pane=me]');
+  await p6.click('#settingsBtn'); await p6.click('#showFileBtn'); await p6.click('#ssheetClose');    // blocked storage cannot hold the switch: the default is off, so it is turned on for the visit
   await p6.waitForSelector('#meStats .astat');
   await p6.click('#meTabMatches'); await p6.waitForSelector('#meMatches .acard');
   await p6.click('#aAdd summary');
@@ -3337,6 +3341,268 @@ function alarmAt(ev, al){
   await p4.waitForSelector('#meStats .aerr');
   check('A failed load of the file says so and shows no numbers', /Could not load data\/attended\.json/.test(await p4.textContent('#meStats')) && !(await p4.$('#meStats .astat')), await p4.textContent('#meStats'));
   await ctx4.close();
+
+  // ---- "Show built-in matches and events" (2026-10-25): football-planner-showfile hides the matches and events of data/attended.json on this device.
+  {
+    const SK = 'football-planner-showfile', PK = 'football-attended-personal', IK = 'football-attended-imported';
+    const attLtest = o => o == null ? '' : typeof o === 'string' ? o : (o.en || o.ro || '');
+    const fileIds = new Set(ATTF.matches.map(m => m.id).concat(ATTF.events.map(e => e.id)));
+    const fileMatch = ATTF.matches[0], fileEvent = ATTF.events[0];
+    const mini = (id, extra) => Object.assign({id, date: '2025-05-01', home: {name: 'Sf Casa ' + id}, away: {name: 'Sf Oaspeti ' + id}, score: '1-0'}, extra || {});
+    // A page on a fresh context (switch NOT seeded) with optional seed values, written only when the key is still absent. spy: the first keys written to storage, in order.
+    async function sfPage(seed, {lang, width} = {}){
+      const ctx = await newCtx({seedShowFile: false, width: width || W});
+      await ctx.addInitScript(([seed, lang]) => {
+        window.__writes = [];
+        const sv = Storage.prototype.setItem;
+        Storage.prototype.setItem = function(k, v){ window.__writes.push(k); return sv.call(this, k, v); };
+        for(const k in seed){ try{ if(localStorage.getItem(k) === null) sv.call(localStorage, k, seed[k]); }catch(e){} }
+        if(lang){ try{ if(localStorage.getItem('football-planner-lang') === null) sv.call(localStorage, 'football-planner-lang', lang); }catch(e){} }
+      }, [seed || {}, lang || null]);
+      const p = await ctx.newPage();
+      p.on('pageerror', e => errors.push(e.message));
+      await p.goto(BASE);
+      await p.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+      await p.click('nav button[data-pane=me]');
+      return {ctx, p};
+    }
+    const sfTab = async (p, sel, panel) => { await p.click(sel); await p.waitForFunction(s => { const e = document.querySelector(s); return e && !/Loading|Se încarcă/.test(e.textContent); }, panel); };
+    const sfStore = p => p.evaluate(k => localStorage.getItem(k), SK);
+    const sfCards = (p, panel) => p.$$eval(`${panel} .acard`, xs => xs.length);
+    const sfSwitch = p => p.evaluate(() => document.getElementById('showFileBtn').getAttribute('aria-pressed'));
+    const sfOpenSettings = async p => { await p.click('#settingsBtn'); await p.waitForSelector('#ssheet:not([hidden])'); };
+
+    // 1. A fresh device: off, written down as "0" before any other write; the three sub-tabs show the empty states.
+    {
+      const {ctx, p} = await sfPage({});
+      check('Show built-in: a fresh device stores "0" (nothing was there to hold)', await sfStore(p) === '0', String(await sfStore(p)));
+      check('Show built-in: the switch is the first thing written to storage', (await p.evaluate(() => window.__writes[0])) === SK, JSON.stringify(await p.evaluate(() => window.__writes.slice(0, 3))));
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      const mt = (await p.textContent('#meMatches')).replace(/\s+/g, ' ');
+      check('Show built-in off: Matches lists none, says none are added yet, how to add one, and that built-in matches are hidden and can be shown in Settings',
+        await sfCards(p, '#meMatches') === 0 && /No matches added yet\. To add one, open “Add a match” above\./.test(mt) && /built-in matches and events are hidden\. You can show them in Settings/.test(mt) && !/in the file/.test(mt), mt.slice(0, 300));
+      await sfTab(p, '#meTabEvents', '#meEvents');
+      const et = (await p.textContent('#meEvents')).replace(/\s+/g, ' ');
+      check('Show built-in off: Events says the same for events', await sfCards(p, '#meEvents') === 0 && /No events added yet\. To add one, open “Add an event” above\./.test(et) && /hidden\. You can show them in Settings/.test(et) && !/in the file/.test(et), et.slice(0, 300));
+      await sfTab(p, '#meTabStats', '#meStats');
+      const st = await p.evaluate(() => ({tiles: [...document.querySelectorAll('#meStats .astat b')].map(b => b.textContent.trim()), best: !!document.getElementById('aBest'), text: document.getElementById('meStats').textContent.length}));
+      check('Show built-in off: Stats still draws its tiles with zeros, and no Best performance box', st.tiles.length > 0 && st.tiles[0] === '0' && !st.best, JSON.stringify(st));
+      await sfOpenSettings(p);
+      check('Settings: "Show built-in matches and events" is off', (await sfSwitch(p)) === 'false' && /Show built-in matches and events/.test(await p.textContent('#showFileBtn')), '');
+      await ctx.close();
+    }
+
+    // 2. The default is worked out from what the device holds: personal fields or imported matches/events make it "1"; empty records and photos alone do not.
+    const defaults = [
+      ['personal fields', {[PK]: JSON.stringify({[fileMatch.id]: {note: 'x'}})}, '1'],
+      ['an imported match', {[IK]: JSON.stringify({version: 1, matches: [mini('d-a')]})}, '1'],
+      ['an imported event only', {[IK]: JSON.stringify({version: 1, matches: [], events: [{id: 'd-e', date: '2025-05-01', title: 'E'}]})}, '1'],
+      ['empty records ({} and no matches)', {[PK]: '{}', [IK]: JSON.stringify({version: 1, matches: []})}, '0'],
+      ['a stored value that is neither "1" nor "0" (not a stored choice)', {[SK]: 'yes', [PK]: JSON.stringify({a: {note: 'n'}})}, '1'],
+    ];
+    for(const [what, seed, want] of defaults){
+      const {ctx, p} = await sfPage(seed);
+      check(`Show built-in default: a device with ${what} stores "${want}"`, await sfStore(p) === want, String(await sfStore(p)));
+      if(want === '1'){ await sfTab(p, '#meTabMatches', '#meMatches'); check(`...and then the file's ${fx.n} matches are listed (${what})`, await sfCards(p, '#meMatches') >= fx.n, String(await sfCards(p, '#meMatches'))); }
+      await ctx.close();
+    }
+    // A device with only photos (IndexedDB) defaults to "0".
+    {
+      const ctxP = await newCtx({seedShowFile: false});
+      const pp = await ctxP.newPage(); pp.on('pageerror', e => errors.push(e.message));
+      await pp.goto(BASE);
+      await pp.evaluate(id => new Promise(res => { const rq = indexedDB.open('football-attended-media', 1); rq.onupgradeneeded = () => rq.result.createObjectStore('items', {keyPath: 'key', autoIncrement: true}).createIndex('entryId', 'entryId'); rq.onsuccess = () => { const tx = rq.result.transaction('items', 'readwrite'); tx.objectStore('items').add({entryId: id, name: 'p.png', kind: 'image', size: 1, blob: new Blob(['x'])}); tx.oncomplete = () => { rq.result.close(); res(); }; }; }), fileMatch.id);
+      await pp.evaluate(k => localStorage.removeItem(k), SK);
+      await pp.reload(); await pp.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+      check('Show built-in default: a device with only photos stores "0"', await sfStore(pp) === '0', String(await sfStore(pp)));
+      await ctxP.close();
+    }
+
+    // 3. Once stored, the choice is not worked out again.
+    {
+      const {ctx, p} = await sfPage({});
+      check('Show built-in: stored "0" on a fresh device', await sfStore(p) === '0', '');
+      await p.evaluate(([k, v]) => localStorage.setItem(k, v), [PK, JSON.stringify({[fileMatch.id]: {note: 'later'}})]);
+      await p.reload(); await p.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+      check('Show built-in: personal fields appearing later do not flip the stored "0" on the next start', await sfStore(p) === '0', String(await sfStore(p)));
+      check('...and the switch is not written again by that start', (await p.evaluate(() => window.__writes.filter(k => k === 'football-planner-showfile').length)) === 0, '');
+      await ctx.close();
+      const b = await sfPage({[SK]: '0', [PK]: JSON.stringify({a: {note: 'n'}})});
+      check('Show built-in: a stored "0" wins over personal fields already on the device', await sfStore(b.p) === '0', '');
+      await sfTab(b.p, '#meTabMatches', '#meMatches');
+      check('...and the file matches stay hidden', await sfCards(b.p, '#meMatches') === 0, '');
+      await b.ctx.close();
+    }
+
+    // 4. Toggling off then on restores the lists; notes, imported matches and photos are untouched; Stats and sheets follow.
+    {
+      const pers = {[fileMatch.id]: {note: 'my note', supported: 'home'}, 'imp:keep-1': {note: 'imp note'}};
+      const imp = {version: 1, matches: [mini('keep-1')], events: [{id: 'keep-ev', date: '2025-06-01', title: 'Mine'}]};
+      const {ctx, p} = await sfPage({[SK]: '1', [PK]: JSON.stringify(pers), [IK]: JSON.stringify(imp)});
+      const snap = () => p.evaluate(() => new Promise(res => {
+        const ls = {pers: localStorage.getItem('football-attended-personal'), imp: localStorage.getItem('football-attended-imported')};
+        const rq = indexedDB.open('football-attended-media');
+        rq.onerror = () => res({ls, idb: 'none'});
+        rq.onupgradeneeded = () => { rq.transaction.abort(); res({ls, idb: 'none'}); };
+        rq.onsuccess = () => { const db = rq.result; if(!db.objectStoreNames.contains('items')){ db.close(); return res({ls, idb: 'none'}); }
+          const g = db.transaction('items').objectStore('items').getAll(); g.onsuccess = () => { db.close(); res({ls, idb: g.result.map(x => x.key + ':' + x.entryId + ':' + x.name)}); }; };
+      }));
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      check('Show built-in on: the file matches and the imported one are listed', await sfCards(p, '#meMatches') === fx.n + 1, String(await sfCards(p, '#meMatches')));
+      // put a photo on a file match (the sheet opens the media database)
+      await p.click(`#meMatches .acard[data-id="${fileMatch.id}"]`); await p.waitForSelector('#asheet:not([hidden])'); await p.waitForTimeout(400);
+      await p.evaluate(([id]) => new Promise(res => { const rq = indexedDB.open('football-attended-media'); rq.onsuccess = () => { const tx = rq.result.transaction('items', 'readwrite'); tx.objectStore('items').add({entryId: id, name: 'keep.png', kind: 'image', size: 1, blob: new Blob(['x'])}); tx.oncomplete = () => { rq.result.close(); res(); }; }; }), [fileMatch.id]);
+      await p.click('#asheetClose');
+      const before = await snap();
+      check('Show built-in: a photo is on the file match before the switch is used', Array.isArray(before.idb) && before.idb.length === 1, JSON.stringify(before.idb));
+      await sfOpenSettings(p); await p.click('#showFileBtn');
+      check('Show built-in: switching off stores "0" and the button is no longer pressed', await sfStore(p) === '0' && (await sfSwitch(p)) === 'false', '');
+      await p.click('#ssheetClose');
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      check('Show built-in off: only the imported match is listed, with its tag', await sfCards(p, '#meMatches') === 1 && /Imported on this device/.test(await p.textContent('#meMatches')) && !(await p.$(`#meMatches .acard[data-id="${fileMatch.id}"]`)), String(await sfCards(p, '#meMatches')));
+      await sfTab(p, '#meTabEvents', '#meEvents');
+      check('Show built-in off: only the imported event is listed', await sfCards(p, '#meEvents') === 1 && /Mine/.test(await p.textContent('#meEvents')), String(await sfCards(p, '#meEvents')));
+      await sfTab(p, '#meTabStats', '#meStats');
+      const off = await p.evaluate(() => [...document.querySelectorAll('#meStats .astat b')].map(b => b.textContent.trim()));
+      check('Show built-in off: Stats count the imported match only (1 match)', off[0] === '1', JSON.stringify(off.slice(0, 3)));
+      const mid = await snap();
+      await sfOpenSettings(p); await p.click('#showFileBtn'); await p.click('#ssheetClose');
+      check('Show built-in: switching on again stores "1"', await sfStore(p) === '1', '');
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      check('Show built-in on again: the file matches and the imported one are back', await sfCards(p, '#meMatches') === fx.n + 1 && !!(await p.$(`#meMatches .acard[data-id="${fileMatch.id}"]`)), String(await sfCards(p, '#meMatches')));
+      await sfTab(p, '#meTabEvents', '#meEvents');
+      check('Show built-in on again: the file events and the imported one are back', await sfCards(p, '#meEvents') === fx.ne + 1, String(await sfCards(p, '#meEvents')));
+      await sfTab(p, '#meTabStats', '#meStats');
+      const on = await p.evaluate(() => [...document.querySelectorAll('#meStats .astat b')].map(b => b.textContent.trim()));
+      check(`Show built-in on again: Stats count ${fx.n + 1} matches`, on[0] === String(fx.n + 1), JSON.stringify(on.slice(0, 3)));
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      await p.click(`#meMatches .acard[data-id="${fileMatch.id}"]`); await p.waitForSelector('#asheet:not([hidden])');
+      check('Show built-in on again: the file match opens its sheet with the note and the supporter choice, as before', /my note/.test(await p.evaluate(() => document.getElementById('asheetBody').innerHTML + [...document.querySelectorAll('#asheetBody textarea')].map(x => x.value).join('')) ) && (await p.$$eval('#asheetBody .asup [aria-pressed=true], #asheetBody button[aria-pressed=true]', xs => xs.length)) >= 1, '');
+      await p.click('#asheetClose');
+      const after = await snap();
+      check('Show built-in: personal fields, imported record and photo keys are byte-identical before, while hidden and after', JSON.stringify(before) === JSON.stringify(mid) && JSON.stringify(mid) === JSON.stringify(after), JSON.stringify([before.idb, mid.idb, after.idb]));
+      // a hidden file match cannot be opened from a stale link either: with the switch off the sheet is not offered
+      await ctx.close();
+    }
+
+    // 5. The id-clash checks use the file while it is hidden.
+    {
+      const {ctx, p} = await sfPage({[SK]: '0', [IK]: JSON.stringify({version: 1, matches: [mini('own-1')]})});
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      await p.click('#aAdd summary');
+      await p.fill('#aImpBox', JSON.stringify(mini(fileMatch.id))); await p.click('#aImpBtn');
+      const m1 = (await p.textContent('#aImpMsg')).trim();
+      check('Show built-in off: pasting a match whose id is a file match id is refused with the clash message', /already used by a match in data\/attended\.json/.test(m1) && await sfCards(p, '#meMatches') === 1, m1.slice(0, 200));
+      await p.fill('#aImpBox', JSON.stringify(mini('fresh-1'))); await p.click('#aImpBtn'); await p.waitForTimeout(300);
+      check('...while a new id is accepted', await sfCards(p, '#meMatches') === 2, String(await sfCards(p, '#meMatches')));
+      await sfTab(p, '#meTabEvents', '#meEvents');
+      await p.click('#aEvAdd summary');
+      await p.fill('#aEvBox', JSON.stringify([{id: fileEvent.id, date: '2025-05-01', title: 'Clash'}])); await p.click('#aEvBtn');
+      const e1 = (await p.textContent('#aEvMsg')).trim();
+      check('Show built-in off: pasting an event whose id is a file event id is refused with the clash message', /already used by a match or an event in data\/attended\.json/.test(e1), e1.slice(0, 200));
+      await p.fill('#aEvBox', JSON.stringify([{id: fileMatch.id, date: '2025-05-01', title: 'Clash'}])); await p.click('#aEvBtn');
+      const e2 = (await p.textContent('#aEvMsg')).trim();
+      check('...and so is an event using a file MATCH id', /already used by a match or an event in data\/attended\.json/.test(e2), e2.slice(0, 200));
+      // replacing an imported match with a file match id
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      await p.click('#meMatches .acard[data-id="imp:own-1"]'); await p.waitForSelector('#aImpReplace');
+      await p.click('#aImpReplace'); await p.fill('#aImpRepText', JSON.stringify(mini(fileMatch.id))); await p.click('#aImpRepGo'); await p.waitForTimeout(350);
+      const r1 = (await p.textContent('#aImpRepMsg')).trim();
+      check('Show built-in off: Replace with JSON refuses a file match id', /already used by a match in data\/attended\.json/.test(r1), r1.slice(0, 200));
+      const lsAfter = await p.evaluate(k => JSON.parse(localStorage.getItem(k)).matches.map(m => m.id), IK);
+      check('...and the stored matches are unchanged by every refusal', JSON.stringify(lsAfter) === JSON.stringify(['own-1', 'fresh-1']), JSON.stringify(lsAfter));
+      // ids generated by the form never equal a file id
+      await ctx.close();
+    }
+
+    // 6. Export and Import behave the same with the switch on and off.
+    {
+      const A = mini('x-a'), B = mini('x-b');
+      const outs = {};
+      for(const sw of ['1', '0']){
+        const {ctx, p} = await sfPage({[SK]: sw, [IK]: JSON.stringify({version: 1, matches: [A, B]}), [PK]: JSON.stringify({'imp:x-a': {note: 'na'}})});
+        await sfTab(p, '#meTabMatches', '#meMatches');
+        const ex = await download(p, () => p.click('#aIo-matches button[data-io=export]'));
+        const exd = JSON.parse(ex.text);
+        const exMsg = (await p.textContent('#aIo-matches .amsg')).trim();
+        await p.setInputFiles('#aIo-matches input[data-io=file]', {name: 'in.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({kind: 'football-planner-matches', version: 1, exportedAt: '2026-10-04T10:00:00.000Z', matches: [mini('x-c')], notes: {}}))});
+        await p.waitForTimeout(300);
+        await p.click('#aIo-matches button[data-io=store]'); await p.waitForTimeout(300);
+        const imMsg = (await p.textContent('#aIo-matches .amsg')).trim();
+        const kept = await p.evaluate(k => JSON.parse(localStorage.getItem(k)).matches.map(m => m.id), IK);
+        // Me backup export
+        await p.click('#meTabTix');
+        const bk = await download(p, () => p.click('button[data-act=export]'));
+        const bkd = JSON.parse(bk.text);
+        outs[sw] = {name: ex.name, text: ex.text, exMsg, imMsg, kept, backup: JSON.stringify({imp: bkd.importedMatches, per: bkd.attendedPersonal || bkd.personal || null})};
+        check(`Show built-in ${sw === '1' ? 'on' : 'off'}: Export holds exactly the two imported matches and their note, Import adds one, the backup holds the imported matches`,
+          exd.matches.length === 2 && exd.notes['x-a'] && JSON.stringify(kept) === JSON.stringify(['x-a', 'x-b', 'x-c']) && !!bkd.importedMatches && bkd.importedMatches.length === 3, ex.text.slice(0, 200) + ' | ' + imMsg);
+        await ctx.close();
+      }
+      check('Export file, its message, the Import message, the stored result and the Me backup are identical with the switch on and off',
+        outs['1'].text === outs['0'].text && outs['1'].exMsg === outs['0'].exMsg && outs['1'].imMsg === outs['0'].imMsg && JSON.stringify(outs['1'].kept) === JSON.stringify(outs['0'].kept) && outs['1'].backup === outs['0'].backup, JSON.stringify([outs['1'].exMsg, outs['0'].exMsg, outs['1'].imMsg, outs['0'].imMsg]));
+    }
+
+    // 7. The stadium, competition and team suggestions follow the switch.
+    {
+      const {ctx, p} = await sfPage({[SK]: '1', [IK]: JSON.stringify({version: 1, matches: [mini('sg-1', {stadium: 'Sg Own Ground', competition: {ro: 'Sg Own Cup', en: 'Sg Own Cup'}, home: {name: 'Sg Own Home'}})]})});
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      const names = kind => p.evaluate(k => sugItems(k).map(i => i.name), kind);
+      const fold = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/[ßøđłæœıþð]/g, c => ({'ß':'ss', 'ø':'o', 'đ':'d', 'ł':'l', 'æ':'ae', 'œ':'oe', 'ı':'i', 'þ':'th', 'ð':'d'})[c]).replace(/[^\p{L}\p{N}]+/gu, ' ').trim();     // the page's fold()
+      const res = {};
+      for(const [label, want] of [['on', true], ['off', false]]){
+        if(!want){ await sfOpenSettings(p); await p.click('#showFileBtn'); await p.click('#ssheetClose'); }
+        res[label] = {stadium: await names('stadium'), comp: await names('competition'), team: await names('team')};
+      }
+      const fileStad = new Set(ATTF.matches.map(m => fold(m.stadium || '')).filter(Boolean));
+      const onSet = k => new Set(res.on[k].map(fold)), offSet = k => new Set(res.off[k].map(fold));
+      const onlyOn = k => [...onSet(k)].filter(x => !offSet(k).has(x));
+      check('Suggestions, switch on: stadiums include the file matches\' grounds', [...fileStad].every(x => onSet('stadium').has(x)), '');
+      check('Suggestions, switch off: stadiums lose the grounds only the file uses and keep the imported match\'s ground',
+        onlyOn('stadium').length > 0 && onlyOn('stadium').every(x => fileStad.has(x)) && offSet('stadium').has('sg own ground') && onSet('stadium').has('sg own ground'), JSON.stringify(onlyOn('stadium').slice(0, 5)));
+      const fileComp = new Set(ATTF.matches.map(m => fold(attLtest(m.competition))).filter(Boolean));
+      check('Suggestions, switch off: competitions lose the names only the file uses and keep the imported match\'s',
+        onlyOn('comp').every(x => fileComp.has(x)) && offSet('comp').has('sg own cup') && [...fileComp].every(x => onSet('comp').has(x)), JSON.stringify(onlyOn('comp').slice(0, 5)));
+      const nTeams = ATTF.matches.flatMap(m => [m.home, m.away]).map(tm => fold((tm && (tm.nameEn || tm.name)) || '')).filter(Boolean);
+      check('Suggestions, switch off: teams lose the ones only the file uses and keep the imported match\'s home team',
+        onlyOn('team').every(x => nTeams.includes(x) || ATTF.matches.some(m => [m.home, m.away].some(tm => tm && fold(tm.name || '') === x))) && offSet('team').has('sg own home'), JSON.stringify(onlyOn('team').slice(0, 5)));
+      check('Suggestions: the file adds at least one stadium, one competition or team that the club layer and the CSV do not already offer', onlyOn('stadium').length + onlyOn('comp').length + onlyOn('team').length > 0, '');
+      await ctx.close();
+    }
+
+    // 8. Layout of the Settings sheet at 360 px, English and Romanian.
+    for(const lang of ['en', 'ro']){
+      const {ctx, p} = await sfPage({[SK]: '1'}, {lang, width: 360});
+      await sfOpenSettings(p);
+      const lay = await p.evaluate(() => {
+        const sh = document.getElementById('ssheet'), body = document.getElementById('ssheetBody');
+        const rows = [...body.children].map(e => { const r = e.getBoundingClientRect(); return [e.tagName, r.top, r.bottom, r.left, r.right]; });
+        const b = document.getElementById('showFileBtn').getBoundingClientRect();
+        const overlaps = rows.some((a, i) => rows.some((c, j) => j > i && a[2] > c[1] + 0.5 && a[1] < c[2] - 0.5 && Math.abs(a[2] - c[2]) > 0 && c[1] < a[2] - 0.5));
+        const vw = document.documentElement.clientWidth;
+        return {vw, doc: document.documentElement.scrollWidth, sw: body.scrollWidth, cw: body.clientWidth, btn: [b.left, b.right, b.height], overlaps, right: Math.max(...rows.map(r => r[4])), hs: [...body.querySelectorAll('h4')].map(h => h.textContent.trim()), btnText: document.getElementById('showFileBtn').textContent.trim(), note: body.querySelector('[data-i18n="set.fileNote"]').textContent.trim().slice(0, 60)};
+      });
+      check(`Settings at 360 px (${lang}): the new switch row is inside the sheet, at least 44 px tall, overlaps no other row and nothing scrolls sideways`,
+        lay.vw === 360 && lay.doc <= 360 && lay.sw <= lay.cw && lay.btn[0] >= 0 && lay.btn[1] <= 360 && lay.btn[2] >= 44 && !lay.overlaps && lay.right <= 360, JSON.stringify(lay));
+      check(`Settings (${lang}): the row is last, under its heading and note, in the page's language`,
+        lang === 'en' ? lay.hs[lay.hs.length - 1] === 'Built-in matches and events' && lay.btnText === 'Show built-in matches and events'
+                      : lay.hs[lay.hs.length - 1] === 'Meciuri și evenimente incluse' && lay.btnText === 'Arată meciurile și evenimentele incluse' && /^Meciurile și evenimentele care vin cu aplicația/.test(lay.note), JSON.stringify(lay.hs) + lay.btnText);
+      await ctx.close();
+    }
+
+    // 9. Romanian empty states with the switch off.
+    {
+      const {ctx, p} = await sfPage({}, {lang: 'ro'});
+      await sfTab(p, '#meTabMatches', '#meMatches');
+      const mt = (await p.textContent('#meMatches')).replace(/\s+/g, ' ');
+      await sfTab(p, '#meTabEvents', '#meEvents');
+      const et = (await p.textContent('#meEvents')).replace(/\s+/g, ' ');
+      check('Romanian, switch off: Matches and Events say none are added, how to add one, and that the built-in ones are hidden and can be shown in Setări',
+        /Niciun meci adăugat încă\. Ca să adaugi unul, deschide „Adaugă un meci” mai sus\./.test(mt) && /Niciun eveniment adăugat încă\. Ca să adaugi unul, deschide „Adaugă un eveniment” mai sus\./.test(et) &&
+        /ascunse\. Le poți afișa din Setări\./.test(mt) && /ascunse\. Le poți afișa din Setări\./.test(et) && !/în fișier/.test(mt + et), mt.slice(0, 200));
+      await ctx.close();
+    }
+  }
 
   check('no script error', !errors.length, errors.slice(0, 3).join(' | '));
   await browser.close(); server.close();

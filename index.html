@@ -871,6 +871,11 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
           <button type="button" id="txOrigBtn" aria-pressed="false" data-i18n="set.txOrig">Show original English for data texts</button>
         </div>
         <p class="sub" data-i18n="set.txNote">In Romanian, some texts from the data files have an automatic translation; the rest stays in English. Turn this on to see the English original everywhere. Kept on this device only.</p>
+        <h4 data-i18n="set.file">Built-in matches and events</h4>
+        <div class="lsw" role="group" aria-label="Built-in matches and events" data-i18n-aria="set.file">
+          <button type="button" id="showFileBtn" aria-pressed="false" data-i18n="set.showFile">Show built-in matches and events</button>
+        </div>
+        <p class="sub" data-i18n="set.fileNote">The matches and events that come with the app (data/attended.json). Turn this off to see only what you added on this device. Nothing is deleted. Kept on this device only.</p>
       </div>
     </div>
   </div>
@@ -904,7 +909,8 @@ const I18N = {
     'me.tab.stats': 'Stats', 'me.tab.matches': 'Matches', 'me.tab.events': 'Events', 'me.tab.tix': 'Tickets/Memberships',
     'att.close': 'Close', 'att.loading': 'Loading…',
     'att.loadFailed': 'Could not load data/attended.json — {err}',
-    'att.noMatches': 'No matches in the file.', 'att.noEvents': 'No events in the file.',
+    'att.noMatches': 'No matches added yet. To add one, open “Add a match” above.', 'att.noEvents': 'No events added yet. To add one, open “Add an event” above.',
+    'att.builtinHidden': 'The built-in matches and events are hidden. You can show them in Settings.',
     'att.na': 'not recorded', 'att.sheet.aria': 'Attended match or event',
     'att.date': 'Date', 'att.score': 'Score', 'att.competition': 'Competition', 'att.stage': 'Stage',
     'att.stadium': 'Stadium', 'att.city': 'City', 'att.country': 'Country', 'att.place': 'Place',
@@ -2060,6 +2066,9 @@ const I18N = {
     "set.tx": "Texts from the data files",
     "set.txOrig": "Show original English for data texts",
     "set.txNote": "In Romanian, some texts from the data files have an automatic translation; the rest stays in English. Turn this on to see the English original everywhere. Kept on this device only.",
+    "set.file": "Built-in matches and events",
+    "set.showFile": "Show built-in matches and events",
+    "set.fileNote": "The matches and events that come with the app (data/attended.json). Turn this off to see only what you added on this device. Nothing is deleted. Kept on this device only.",
     "tx.note": "Automatic translation, English is the original.",
     /* Codes from the ticket and competition files, as the interface says them. English is the code as the file wrote it, so the English view is unchanged; a code with no key here is shown as written. */
     "tp.sales-channel": "sales-channel",
@@ -2186,7 +2195,8 @@ const I18N = {
     'me.tab.stats': 'Statistici', 'me.tab.matches': 'Meciuri', 'me.tab.events': 'Evenimente', 'me.tab.tix': 'Bilete/Abonamente',
     'att.close': 'Închide', 'att.loading': 'Se încarcă…',
     'att.loadFailed': 'Nu s-a putut încărca data/attended.json — {err}',
-    'att.noMatches': 'Niciun meci în fișier.', 'att.noEvents': 'Niciun eveniment în fișier.',
+    'att.noMatches': 'Niciun meci adăugat încă. Ca să adaugi unul, deschide „Adaugă un meci” mai sus.', 'att.noEvents': 'Niciun eveniment adăugat încă. Ca să adaugi unul, deschide „Adaugă un eveniment” mai sus.',
+    'att.builtinHidden': 'Meciurile și evenimentele incluse în aplicație sunt ascunse. Le poți afișa din Setări.',
     'att.na': 'neînregistrat', 'att.sheet.aria': 'Meci sau eveniment la care ai fost',
     'att.date': 'Data', 'att.score': 'Scor', 'att.competition': 'Competiție', 'att.stage': 'Fază',
     'att.stadium': 'Stadion', 'att.city': 'Oraș', 'att.country': 'Țara', 'att.place': 'Locul',
@@ -3343,6 +3353,9 @@ const I18N = {
     "set.tx": "Texte din fișierele de date",
     "set.txOrig": "Arată originalul în engleză pentru textele din date",
     "set.txNote": "În română, unele texte din fișierele de date au o traducere automată; restul rămâne în engleză. Activează ca să vezi originalul în engleză peste tot. Se păstrează doar pe acest dispozitiv.",
+    "set.file": "Meciuri și evenimente incluse",
+    "set.showFile": "Arată meciurile și evenimentele incluse",
+    "set.fileNote": "Meciurile și evenimentele care vin cu aplicația (data/attended.json). Dezactivează ca să vezi doar ce ai adăugat pe acest dispozitiv. Nu se șterge nimic. Se păstrează doar pe acest dispozitiv.",
     "tx.note": "Traducere automată, originalul este în engleză.",
     /* RO unchecked by the user: labels for the codes of the ticket files. */
     "tp.sales-channel": "canal de vânzare",
@@ -3486,6 +3499,7 @@ function syncSettingsButtons(){
   document.querySelectorAll('#ssheet button[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
   document.querySelectorAll('#ssheet button[data-theme]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.theme === THEME)));
   document.getElementById('txOrigBtn')?.setAttribute('aria-pressed', String(TX_ORIG));
+  document.getElementById('showFileBtn')?.setAttribute('aria-pressed', String(SHOWFILE));
 }
 function setTheme(th){
   if(th !== 'light' && th !== 'dark') return;
@@ -3525,6 +3539,7 @@ function applyLang(){
   document.getElementById('asheet').setAttribute('aria-label', t('att.sheet.aria'));
   document.querySelectorAll('#ssheet button[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
   document.getElementById('txOrigBtn')?.setAttribute('aria-pressed', String(TX_ORIG));
+  document.getElementById('showFileBtn')?.setAttribute('aria-pressed', String(SHOWFILE));
   /* The few words the page writes itself into the markup. */
   if(!HOME) document.getElementById('homeChip').textContent = t('map.homeNotSet');
   if(!document.getElementById('offlineBanner').hidden) showOfflineBanner();
@@ -3592,6 +3607,26 @@ const vocab = (prefix, v) => hasKey(prefix + v) ? t(prefix + v) : v;
 const TX_ORIG_KEY = 'football-planner-tx-original';
 let TX_ORIG = false;                       // "Show original English for data texts"
 try{ TX_ORIG = localStorage.getItem(TX_ORIG_KEY) === '1'; }catch(e){ /* blocked: off */ }
+/* "Show built-in matches and events" (Settings): whether the matches and events of data/attended.json are drawn on the Me tab
+   and offered in the Add forms' suggestions. The file is fetched either way (the id-clash checks need it). Kept on this device
+   only. With no valid choice stored it is worked out once, here, before anything else writes to storage, and written down:
+   on when the device already holds personal fields or imported matches/events, off otherwise. Never worked out again. */
+const SHOWFILE_KEY = 'football-planner-showfile';
+let SHOWFILE = false;
+(function(){
+  const held = k => {
+    const raw = localStorage.getItem(k); if(raw == null || !raw.trim()) return false;
+    let v; try{ v = JSON.parse(raw); }catch(e){ return true; }       // unreadable but not empty: something is there
+    if(k === 'football-attended-personal') return !!v && typeof v === 'object' && Object.keys(v).length > 0;
+    return !!v && typeof v === 'object' && ((Array.isArray(v.matches) && v.matches.length > 0) || (Array.isArray(v.events) && v.events.length > 0));
+  };
+  try{
+    const v = localStorage.getItem(SHOWFILE_KEY);
+    if(v === '1' || v === '0'){ SHOWFILE = v === '1'; return; }
+    SHOWFILE = held('football-attended-personal') || held('football-attended-imported');
+    localStorage.setItem(SHOWFILE_KEY, SHOWFILE ? '1' : '0');
+  }catch(e){ /* blocked: off for this visit */ }
+})();
 const RO_SOURCES = ['football-rules', 'derbies', 'club-ticket-windows', 'club-ticket-phases', 'club-ticket-rules',
   'club-ticket-demand', 'country-ticket-rules', 'event-ticket-rules', 'competition-info'];
 let RO_TX = null, RO_LOADING = null;
@@ -3633,6 +3668,13 @@ function txh(source, row, field, en){
 }
 /* Escaped text, in a span carrying its language when it is one tx() translated or left in English on purpose. */
 const txSpan = X => X.a ? `<span${X.a}>${esc(X.s)}</span>` : esc(X.s);
+function setShowFile(on){
+  SHOWFILE = !!on;
+  try{ localStorage.setItem(SHOWFILE_KEY, SHOWFILE ? '1' : '0'); }catch(e){ /* blocked: this visit only */ }
+  syncSettingsButtons();
+  SUG.cache = {};
+  if(ATT.sub !== 'tix' && ATT.data) renderAtt();
+}
 function setTxOriginal(on){
   TX_ORIG = !!on;
   try{ localStorage.setItem(TX_ORIG_KEY, on ? '1' : '0'); }catch(e){ /* blocked: this visit only */ }
@@ -8588,7 +8630,7 @@ function renderAttStats(d){
 
 function renderAttMatches(d){
   const ms = attMatches(d);
-  if(!ms.length) return renderAttIo('matches') + renderAttAdd() + `<p class="anote">${esc(t('att.noMatches'))}</p>`;
+  if(!ms.length) return renderAttIo('matches') + renderAttAdd() + `<p class="anote">${esc(t('att.noMatches'))}${SHOWFILE ? '' : ' ' + esc(t('att.builtinHidden'))}</p>`;
   return renderAttIo('matches') + renderAttAdd() + ms.map((m, i) =>
     `<button type="button" class="acard" data-att="match" data-id="${esc(attKey(m))}"><span class="an">${i + 1}</span>` +
     `<span class="at"><span class="tm">${esc(attTeam(m.home))}</span><b>${esc(m.score ?? t('att.na'))}</b><span class="tm">${esc(attTeam(m.away))}</span></span>` +
@@ -8617,7 +8659,7 @@ function renderAttEvAdd(){
 }
 function renderAttEvents(d){
   const es = attEvents(d);
-  return renderAttIo('events') + renderAttEvAdd() + (!es.length ? `<p class="anote">${esc(t('att.noEvents'))}</p>` : es.map((e, i) =>
+  return renderAttIo('events') + renderAttEvAdd() + (!es.length ? `<p class="anote">${esc(t('att.noEvents'))}${SHOWFILE ? '' : ' ' + esc(t('att.builtinHidden'))}</p>` : es.map((e, i) =>
     `<button type="button" class="acard" data-att="event" data-id="${esc(attEvKey(e))}"><span class="an">${i + 1}</span>` +
     `<span class="at"><span class="tm">${esc(attL(e.title))}</span></span>` +
     `<div class="am">${esc(attJoin([attL(e.place), attDate(e.date)]))}${e._imp ? `<span class="aimp">${esc(t('imp.tag'))}</span>` : ''}</div></button>`).join(''));
@@ -9335,7 +9377,7 @@ function sugStadiums(){
     if(ctry) (fromClub ? e.ctry : e.mctry).add(ctry);
   };
   CLUBS.forEach(c => add(c.venue, c.name || c.id, countryName(c.country), true));
-  (ATT.data?.matches || []).concat(IMP).forEach(m => add(m.stadium, '', attL(m.country), false));
+  (attFile()?.matches || []).concat(IMP).forEach(m => add(m.stadium, '', attL(m.country), false));
   return [...by.values()].map(e => {
     const cl = e.clubs.length > 3 ? e.clubs.slice(0, 3).join(', ') + ` +${e.clubs.length - 3}` : e.clubs.join(', ');
     const ct = [...(e.ctry.size ? e.ctry : e.mctry)].join(', ');
@@ -9355,7 +9397,7 @@ function sugCompetitions(){
   add('Exhibition', '', {label: t('sug.exhibition'), exhibition: true});
   (SUG_COMPS || []).forEach(r => add(r.name, [r.country ? countryName(r.country) : '', COMP_TYPE[r.type] || r.type].filter(Boolean).join(' · ')));
   coverage().groups.filter(g => g.recorded).forEach(g => add(g.name, countryName(g.country)));
-  (ATT.data?.matches || []).concat(IMP).forEach(m => add(attL(m.competition), ''));
+  (attFile()?.matches || []).concat(IMP).forEach(m => add(attL(m.competition), ''));
   return out;
 }
 /* Team names for the Home and Away team fields: every club of CLUBS (all countries, the name as the club file has it; one row per folded name and country) plus the teams of the file's and the imported matches that no club of CLUBS carries (the English text, nameEn when there is one; a national team is one). Second line: country and competition as the club search shows them, or "Used in your matches" for a team only in his matches, which has no country and no tier. */
@@ -9372,7 +9414,7 @@ function sugTeams(){
     by.set(key, it); out.push(it);
   });
   const mine = new Map();
-  (ATT.data?.matches || []).concat(IMP).forEach(m => ['home', 'away'].forEach(side => {
+  (attFile()?.matches || []).concat(IMP).forEach(m => ['home', 'away'].forEach(side => {
     const tm = m[side]; if(!tm) return;
     const nm = teamText(tm.nameEn) || teamText(tm.name), f = fold(nm), f2 = fold(teamText(tm.name));
     if(!f || clubFolds.has(f) || mine.has(f)) return;
@@ -9382,7 +9424,7 @@ function sugTeams(){
   return out;
 }
 function sugItems(kind){
-  const sig = [kind, LANG, CLUBS.length, IMP.length, ATT.data ? ATT.data.matches.length : -1, SUG_COMPS ? SUG_COMPS.length : -1,
+  const sig = [kind, LANG, CLUBS.length, IMP.length, ATT.data ? ATT.data.matches.length : -1, SHOWFILE ? 1 : 0, SUG_COMPS ? SUG_COMPS.length : -1,
     kind === 'team' ? IMP.map(m => teamText(m.home && m.home.nameEn) + teamText(m.home && m.home.name) + '/' + teamText(m.away && m.away.nameEn) + teamText(m.away && m.away.name)).join('|') : ''].join('|');
   const c = SUG.cache[kind];
   if(c && c.sig === sig) return c.items;
@@ -9594,11 +9636,14 @@ function attEvFormSubmit(form){
   renderAtt();
 }
 
+/* The file's matches and events as the Me tab and the suggestions see them: all of them, or none while "Show built-in matches
+   and events" is off. The id-clash checks read ATT.data itself and are not affected. */
+const attFile = () => SHOWFILE ? ATT.data : {matches: [], events: []};
 /* The file's matches and events with the device's imported ones after
    them. An imported match carries _imp, which attKey() turns into its own
    id space; an imported event does too, through attEvKey(). */
 function attMerged(){
-  const f = ATT.data;
+  const f = attFile();
   return {matches: f.matches.concat(IMP.map(m => Object.assign({}, m, {_imp: true}))),
     events: f.events.concat(IMP_EV.map(e => Object.assign({}, e, {_imp: true})))};
 }
@@ -10114,6 +10159,7 @@ function attSupport(m){
     const th = e.target.closest('button[data-theme]');
     if(th) setTheme(th.dataset.theme);
     if(e.target.closest('#txOrigBtn')) setTxOriginal(!TX_ORIG);
+    if(e.target.closest('#showFileBtn')) setShowFile(!SHOWFILE);
   });
   document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
   sheetDrag(sheet, close);

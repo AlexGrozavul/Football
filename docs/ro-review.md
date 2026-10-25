@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1380 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1384 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -16,8 +16,9 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `att.close` | Close | Închide |
 | `att.loading` | Loading… | Se încarcă… |
 | `att.loadFailed` | Could not load data/attended.json — {err} | Nu s-a putut încărca data/attended.json — {err} |
-| `att.noMatches` | No matches in the file. | Niciun meci în fișier. |
-| `att.noEvents` | No events in the file. | Niciun eveniment în fișier. |
+| `att.noMatches` | No matches added yet. To add one, open “Add a match” above. | Niciun meci adăugat încă. Ca să adaugi unul, deschide „Adaugă un meci” mai sus. |
+| `att.noEvents` | No events added yet. To add one, open “Add an event” above. | Niciun eveniment adăugat încă. Ca să adaugi unul, deschide „Adaugă un eveniment” mai sus. |
+| `att.builtinHidden` | The built-in matches and events are hidden. You can show them in Settings. | Meciurile și evenimentele incluse în aplicație sunt ascunse. Le poți afișa din Setări. |
 | `att.na` | not recorded | neînregistrat |
 | `att.sheet.aria` | Attended match or event | Meci sau eveniment la care ai fost |
 | `att.date` | Date | Data |
@@ -1271,6 +1272,9 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `set.tx` | Texts from the data files | Texte din fișierele de date |
 | `set.txOrig` | Show original English for data texts | Arată originalul în engleză pentru textele din date |
 | `set.txNote` | In Romanian, some texts from the data files have an automatic translation; the rest stays in English. Turn this on to see the English original everywhere. Kept on this device only. | În română, unele texte din fișierele de date au o traducere automată; restul rămâne în engleză. Activează ca să vezi originalul în engleză peste tot. Se păstrează doar pe acest dispozitiv. |
+| `set.file` | Built-in matches and events | Meciuri și evenimente incluse |
+| `set.showFile` | Show built-in matches and events | Arată meciurile și evenimentele incluse |
+| `set.fileNote` | The matches and events that come with the app (data/attended.json). Turn this off to see only what you added on this device. Nothing is deleted. Kept on this device only. | Meciurile și evenimentele care vin cu aplicația (data/attended.json). Dezactivează ca să vezi doar ce ai adăugat pe acest dispozitiv. Nu se șterge nimic. Se păstrează doar pe acest dispozitiv. |
 | `tx.note` | Automatic translation, English is the original. | Traducere automată, originalul este în engleză. |
 | `tp.sales-channel` | sales-channel | canal de vânzare |
 | `tp.membership` | membership | calitatea de membru |
