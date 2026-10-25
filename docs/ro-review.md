@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1367 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1377 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -137,6 +137,16 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `imp.remove` | Remove this imported match | Șterge acest meci importat |
 | `imp.removeAsk` | Remove this imported match from this device? Its notes and its photos and videos here are deleted too. | Ștergi acest meci importat de pe acest dispozitiv? Se șterg și notițele lui și pozele și filmările de aici. |
 | `imp.blocked` | This browser blocks storage, so imported matches last only until the page is closed. | Acest browser blochează stocarea, deci meciurile importate rămân doar până închizi pagina. |
+| `rep.btn` | Replace with JSON | Înlocuiește cu JSON |
+| `rep.title` | Replace this match with JSON | Înlocuiește acest meci cu JSON |
+| `rep.hint` | Paste ONE match object (not a list). It replaces the data of this match. Notes, photos and supporter choice stay. The id must be "{id}" or left out. | Lipește UN SINGUR obiect de meci (nu o listă). Înlocuiește datele acestui meci. Notițele, pozele și echipa susținută rămân. Id-ul trebuie să fie „{id}” sau lipsă. |
+| `rep.go` | Replace | Înlocuiește |
+| `rep.notJson` | Not replaced, nothing was changed: this is not valid JSON. | Neînlocuit, nu s-a schimbat nimic: nu este JSON valid. |
+| `rep.needObject` | Not replaced, nothing was changed: it must be one match object, not a list. | Neînlocuit, nu s-a schimbat nimic: trebuie să fie un singur obiect de meci, nu o listă. |
+| `rep.rejected` | Not replaced, nothing was changed: {reasons} | Neînlocuit, nu s-a schimbat nimic: {reasons} |
+| `rep.idDiff` | the pasted id "{pasted}" is not the id of this match ("{id}"); use "{id}" or leave the id out | id-ul lipit „{pasted}” nu este id-ul acestui meci („{id}”); folosește „{id}” sau lasă id-ul deoparte |
+| `rep.saveFailed` | Not replaced: this browser refused to store it (storage is blocked or full). | Neînlocuit: acest browser a refuzat să-l păstreze (stocarea este blocată sau plină). |
+| `rep.ask` | Replace this match? Old: {od} · {oh} {os} {oa} New: {nd} · {nh} {ns} {na} Notes, photos and supporter choice stay. | Înlocuiești acest meci? Vechi: {od} · {oh} {os} {oa} Nou: {nd} · {nh} {ns} {na} Notițele, pozele și echipa susținută rămân. |
 | `imf.edit` | Edit this match | Modifică acest meci |
 | `imf.editTitle` | Edit this match | Modifică acest meci |
 | `imf.editHint` | Only the fields below change. Line-ups, timeline, stats, your notes, your supporter choice and your photos and videos stay as they are. | Se schimbă doar câmpurile de mai jos. Formațiile, cronologia, statisticile, notițele tale, echipa susținută și pozele și filmările rămân cum sunt. |

@@ -596,6 +596,10 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   #asheet button.ab.del{color:var(--bad);border-color:var(--bad-line)}
   .att .amsg,#asheet .amsg{font-size:13px;line-height:1.5;margin:6px 0 10px;overflow-wrap:anywhere}
   .att .amsg.bad,#asheet .amsg.bad{color:var(--bad)}
+  #asheet .arep{margin:4px 0 8px;min-width:0}
+  #asheet .arep textarea{display:block;width:100%;max-width:100%;min-height:120px;box-sizing:border-box;background:var(--field);border:1px solid var(--line);
+    border-radius:8px;color:var(--ink);font:inherit;font-size:16px;padding:9px 10px;resize:vertical}
+  #asheet .arep .acts{display:flex;flex-wrap:wrap}
   .att .amsg.ok,#asheet .amsg.ok{color:var(--t3)}
   .att .aio{margin-bottom:10px}
   .att .aio .aiob,.att .aio .acts{display:flex;flex-wrap:wrap;gap:6px}
@@ -955,6 +959,14 @@ const I18N = {
     'imp.skipped': '{n} stored imported match(es) could not be read and were left out.',
     'imp.remove': 'Remove this imported match', 'imp.removeAsk': 'Remove this imported match from this device? Its notes and its photos and videos here are deleted too.',
     'imp.blocked': 'This browser blocks storage, so imported matches last only until the page is closed.',
+    'rep.btn': 'Replace with JSON', 'rep.title': 'Replace this match with JSON',
+    'rep.hint': 'Paste ONE match object (not a list). It replaces the data of this match. Notes, photos and supporter choice stay. The id must be "{id}" or left out.',
+    'rep.go': 'Replace', 'rep.notJson': 'Not replaced, nothing was changed: this is not valid JSON.',
+    'rep.needObject': 'Not replaced, nothing was changed: it must be one match object, not a list.',
+    'rep.rejected': 'Not replaced, nothing was changed: {reasons}',
+    'rep.idDiff': 'the pasted id "{pasted}" is not the id of this match ("{id}"); use "{id}" or leave the id out',
+    'rep.saveFailed': 'Not replaced: this browser refused to store it (storage is blocked or full).',
+    'rep.ask': 'Replace this match?\n\nOld: {od} · {oh} {os} {oa}\nNew: {nd} · {nh} {ns} {na}\n\nNotes, photos and supporter choice stay.',
     'imf.edit': 'Edit this match', 'imf.editTitle': 'Edit this match',
     'imf.editHint': 'Only the fields below change. Line-ups, timeline, stats, your notes, your supporter choice and your photos and videos stay as they are.',
     'imf.kickoff': 'Kick-off (optional)', 'imf.kickoffHint': 'The local time at the ground.',
@@ -2228,6 +2240,14 @@ const I18N = {
     'imp.skipped': '{n} meci(uri) importate păstrate nu au putut fi citite și au fost lăsate deoparte.',
     'imp.remove': 'Șterge acest meci importat', 'imp.removeAsk': 'Ștergi acest meci importat de pe acest dispozitiv? Se șterg și notițele lui și pozele și filmările de aici.',
     'imp.blocked': 'Acest browser blochează stocarea, deci meciurile importate rămân doar până închizi pagina.',
+    'rep.btn': 'Înlocuiește cu JSON', 'rep.title': 'Înlocuiește acest meci cu JSON',
+    'rep.hint': 'Lipește UN SINGUR obiect de meci (nu o listă). Înlocuiește datele acestui meci. Notițele, pozele și echipa susținută rămân. Id-ul trebuie să fie „{id}” sau lipsă.',
+    'rep.go': 'Înlocuiește', 'rep.notJson': 'Neînlocuit, nu s-a schimbat nimic: nu este JSON valid.',
+    'rep.needObject': 'Neînlocuit, nu s-a schimbat nimic: trebuie să fie un singur obiect de meci, nu o listă.',
+    'rep.rejected': 'Neînlocuit, nu s-a schimbat nimic: {reasons}',
+    'rep.idDiff': 'id-ul lipit „{pasted}” nu este id-ul acestui meci („{id}”); folosește „{id}” sau lasă id-ul deoparte',
+    'rep.saveFailed': 'Neînlocuit: acest browser a refuzat să-l păstreze (stocarea este blocată sau plină).',
+    'rep.ask': 'Înlocuiești acest meci?\n\nVechi: {od} · {oh} {os} {oa}\nNou: {nd} · {nh} {ns} {na}\n\nNotițele, pozele și echipa susținută rămân.',
     'imf.edit': 'Modifică acest meci', 'imf.editTitle': 'Modifică acest meci',
     'imf.editHint': 'Se schimbă doar câmpurile de mai jos. Formațiile, cronologia, statisticile, notițele tale, echipa susținută și pozele și filmările rămân cum sunt.',
     'imf.kickoff': 'Ora de start (opțional)', 'imf.kickoffHint': 'Ora locală de pe stadion.',
@@ -9230,6 +9250,40 @@ function attFormSubmit(form){
   renderAtt();
 }
 
+/* Replace an imported match by one pasted object (2026-10-25). The same attCheckMatch() as
+   Add a match; the pasted id must be the stored id or left out; its notes, supporter choice
+   and photos are keyed by that id and are not touched. Any refusal changes nothing. */
+function attReplaceSubmit(oldId){
+  impLoad();
+  const out = document.getElementById('aImpRepMsg');
+  const msg = text => { out.className = 'amsg bad'; out.textContent = text; };
+  const refuse = reasons => msg(t('rep.rejected', {reasons}));
+  const raw = document.getElementById('aImpRepText').value;
+  if(!raw.trim()) return msg(t('imp.empty'));
+  if(raw.length > IMP_MAX_TEXT) return msg(t('imp.tooBig', {max: attNum(IMP_MAX_TEXT)}));
+  let obj;
+  try{ obj = JSON.parse(raw); }catch(e){ return msg(t('rep.notJson')); }
+  if(!isObj(obj)) return msg(t('rep.needObject'));
+  const i = IMP.findIndex(m => m.id === oldId);
+  if(i < 0) return msg(t('imf.gone'));
+  if(obj.id === undefined) obj = Object.assign({id: oldId}, obj);
+  else if(typeof obj.id === 'string' && obj.id !== oldId){
+    const id = obj.id;
+    if((ATT.data?.matches || []).some(m => m.id === id)) return refuse(t('imp.clashFile', {id}));
+    if(IMP.some(m => m.id === id)) return refuse(t('imp.clashDevice', {id}));
+    return refuse(t('rep.idDiff', {pasted: id.slice(0, 80), id: oldId}));
+  }
+  const c = attCheckMatch(obj);
+  if(c.errs) return refuse(c.errs.join('; '));
+  const old = IMP[i], line = m => ({d: m.date, h: attTeam(m.home), s: m.score, a: attTeam(m.away)});
+  const o = line(old), n = line(c.rec);
+  if(!confirm(t('rep.ask', {od: o.d, oh: o.h, os: o.s, oa: o.a, nd: n.d, nh: n.h, ns: n.s, na: n.a}))) return;
+  const list = IMP.slice(); list[i] = c.rec;
+  if(!impSave(list)) return msg(t('rep.saveFailed'));
+  attTouched(); ATT.impMsg = null;
+  renderAtt().then(() => openASheet('match', 'imp:' + oldId));
+}
+
 /* ---- Suggestions under the Competition and Stadium fields of the match form
    (2026-10-15), in the style of the map's club search: matching by fold(),
    names that start with what was typed first, then a word that does, then the
@@ -9817,7 +9871,11 @@ function openASheet(kind, id){
       row('att.stage', attL(m.stage)) + row('att.stadium', m.stadium) + row('att.city', attL(m.city)) + row('att.country', attL(m.country)) +
       opt('att.attendance', att) + opt('att.referee', m.referee) + attSupport(m) +
       attLineups(m) + attTimeline(m) + attStatsPane(m) + attNotePane(m) + attPersonal(id, true) + attMediaPane() +
-      (m._imp ? `<button type="button" class="ab" id="aImpEdit">${esc(t('imf.edit'))}</button><button type="button" class="ab del" id="aImpRemove">${esc(t('imp.remove'))}</button>` : '');
+      (m._imp ? `<button type="button" class="ab" id="aImpEdit">${esc(t('imf.edit'))}</button><button type="button" class="ab" id="aImpReplace">${esc(t('rep.btn'))}</button><button type="button" class="ab del" id="aImpRemove">${esc(t('imp.remove'))}</button>` +
+        `<div class="arep" id="aImpRep" hidden><h4>${esc(t('rep.title'))}</h4><p class="anote">${esc(t('rep.hint', {id: m.id}))}</p>` +
+        `<textarea id="aImpRepText" spellcheck="false" aria-label="${esc(t('rep.title'))}" placeholder="${esc(t('imp.placeholder'))}"></textarea>` +
+        `<div class="amsg" id="aImpRepMsg" role="status"></div><div class="acts"><button type="button" class="ab go" id="aImpRepGo">${esc(t('rep.go'))}</button>` +
+        `<button type="button" class="ab" id="aImpRepCancel">${esc(t('gen.cancel'))}</button></div></div>` : '');
   }else{
     impLoad();
     const e = attMerged().events.find(x => attEvKey(x) === id); if(!e) return;
@@ -9933,6 +9991,17 @@ function attSupport(m){
       ATT.edit = key.slice(4); ATT.impMsg = null;
       closeASheet(); renderAtt();
       document.getElementById('pane-me').scrollTop = 0;
+      return;
+    }
+    if(e.target.closest('#aImpReplace') || e.target.closest('#aImpRepCancel')){
+      const box = document.getElementById('aImpRep'); if(!box) return;
+      box.hidden = !!e.target.closest('#aImpRepCancel') || !box.hidden;
+      if(!box.hidden) box.querySelector('textarea').focus({preventScroll: true});
+      return;
+    }
+    if(e.target.closest('#aImpRepGo')){
+      const key = openKey();
+      if(key.startsWith('imp:')) attReplaceSubmit(key.slice(4));
       return;
     }
     if(e.target.closest('#aEvEdit')){

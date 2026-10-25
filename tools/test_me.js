@@ -1654,6 +1654,64 @@ function alarmAt(ev, al){
     canon(persAfter) === canon(persBefore) && persAfter.note === 'Keep me ' + TAG && persAfter.supported === 'away' && (await pF.$eval('#asheetBody', b => b.dataset.open)) === 'match:' + EKEY, JSON.stringify(persAfter));
   check('...and the photo is still attached', media0 === 1 && (await idbCount()) === 1 && (await pF.$$('#aMgrid .amcell')).length === 1, String(media0));
   check('...and the sheet shows the new score and stadium', /3-2/.test(await pF.$eval('#asheetHead', h => h.innerText)) && /New Ground/.test(await pF.$eval('#asheet', s => s.innerText)), '');
+
+  // Replace with JSON (2026-10-25): the stored match is overwritten, its notes, supporter choice and photos stay.
+  await pF.evaluate(() => { window.__dlg = []; window.__ans = true; window.__oc = window.confirm; window.confirm = m => { window.__dlg.push(m); return window.__ans; }; });
+  const dlgs = () => pF.evaluate(() => window.__dlg.slice());
+  const repTry = async json => {
+    if(await pF.$eval('#aImpRep', b => b.hidden)) await pF.click('#aImpReplace');
+    await pF.fill('#aImpRepText', typeof json === 'string' ? json : JSON.stringify(json)); await pF.click('#aImpRepGo'); await pF.waitForTimeout(350);
+    return (await pF.$('#aImpRepMsg')) ? (await pF.textContent('#aImpRepMsg')).trim() : '';
+  };
+  const persNow = async () => canon(JSON.parse(await pF.evaluate(k => localStorage.getItem(k), SUPK))[EKEY]);
+  const repBefore = canon(await stored()), repPers = await persNow();
+  check('An imported match\'s sheet has "Replace with JSON"; its box starts closed and opens on a tap',
+    (await pF.textContent('#aImpReplace')).trim() === 'Replace with JSON' && await pF.$eval('#aImpRep', b => b.hidden) && !(await pF.click('#aImpReplace').then(() => pF.$eval('#aImpRep', b => b.hidden))), '');
+  const unchanged = async (what, re, m) => check(what, re.test(m) && canon(await stored()) === repBefore && await persNow() === repPers && (await idbCount()) === 1 && (await dlgs()).length === 0, m);
+  await unchanged('A list is refused (even a list of one), nothing changes and no confirmation is asked', /Not replaced, nothing was changed: it must be one match object, not a list/, await repTry([mj(EID)]));
+  await unchanged('Text that is not JSON is refused, nothing changes', /Not replaced.*not valid JSON/, await repTry('{ nope'));
+  await unchanged('A different, unused id is refused with both ids named, nothing changes', new RegExp(`Not replaced, nothing was changed: the pasted id "other-${TAG}" is not the id of this match \\("${EID}"\\)`), await repTry(mj('other-' + TAG)));
+  await unchanged('The id of another imported match is refused as already imported, nothing changes', new RegExp(`Not replaced, nothing was changed: the id "${exId}" is already imported on this device`), await repTry(mj(exId)));
+  await unchanged('The id of a match of data/attended.json is refused as already used, nothing changes', /the id ".+" is already used by a match in data\/attended\.json/, await repTry(mj(attOrder[3].id)));
+  await unchanged('An invalid block (a bad score, an unknown field) is refused with the validator\'s reasons, the stored match stays identical', /Not replaced, nothing was changed: .*"score".*unknown field "bonus"|Not replaced, nothing was changed: .*unknown field "bonus".*"score"/, await repTry(mj(EID, {score: 'x', bonus: 1})));
+  await unchanged('...and so is a block without a date or a team', /Not replaced, nothing was changed:/, await repTry({score: '1-0'}));
+  // 360 px: the open box with a long refusal on screen pushes nothing off the page.
+  const vp0 = pF.viewportSize();
+  await pF.setViewportSize({width: 360, height: 740}); await pF.waitForTimeout(300);
+  await repTry(mj('o'.repeat(70) + TAG));
+  const lay = await pF.evaluate(() => { const r = id => document.getElementById(id).getBoundingClientRect(), sh = document.getElementById('asheet'), b = document.getElementById('asheetBody');
+    return {doc: document.documentElement.scrollWidth, sheet: sh.scrollWidth - sh.clientWidth, body: b.scrollWidth - b.clientWidth, box: r('aImpRep').right, text: r('aImpRepText').right, go: r('aImpRepGo').right, cancel: r('aImpRepCancel').right,
+      btn: r('aImpReplace').right, btnH: r('aImpReplace').height, msg: r('aImpRepMsg').right}; });
+  check('At 360 px the button, the box and a long refusal fit: no sideways scroll, nothing right of the screen, buttons at least 44 px tall',
+    lay.doc <= 360 && lay.sheet <= 0 && lay.body <= 0 && Math.max(lay.box, lay.text, lay.go, lay.cancel, lay.btn, lay.msg) <= 360 && lay.btnH >= 44, JSON.stringify(lay));
+  await pF.setViewportSize(vp0); await pF.waitForTimeout(200);
+  // Cancelling the confirmation changes nothing; the text names old and new and what stays.
+  const NEWM = {date: '2025-07-07', home: {name: 'Rep Casa ' + TAG}, away: {name: 'Rep Oaspeți ' + TAG}, score: '0-1', stadium: 'Rep Ground'};
+  await pF.evaluate(() => { window.__ans = false; });
+  await repTry(NEWM);
+  const asked = await dlgs();
+  check('Asked to confirm, with old and new date, teams and score and "Notes, photos and supporter choice stay"; answering no changes nothing',
+    asked.length === 1 && asked[0].includes(orig.date) && asked[0].includes('Edit Home ' + TAG) && asked[0].includes('3-2') && asked[0].includes('2025-07-07') && asked[0].includes('Rep Casa ' + TAG) && asked[0].includes('0-1') &&
+    asked[0].includes('Notes, photos and supporter choice stay') && canon(await stored()) === repBefore && await persNow() === repPers, asked.join('|').slice(0, 200));
+  // Accepting, with the id left out: the record is exactly the pasted block plus the stored id.
+  await pF.evaluate(() => { window.__ans = true; window.__dlg = []; });
+  const idx0 = (await stored()).findIndex(x => x.id === EID), n0 = (await stored()).length;
+  await repTry(NEWM);
+  const after = await stored();
+  check('Accepted with the id omitted: the stored match is exactly the pasted block with the stored id filled in (old fields gone), at the same place in the list, no other match touched',
+    canon(after[idx0]) === canon(Object.assign({id: EID}, NEWM)) && after.length === n0 && canon(after.filter((x, i) => i !== idx0)) === canon(JSON.parse(repBefore).filter((x, i) => i !== idx0)), JSON.stringify(after[idx0]));
+  check('...the sheet redraws on the same match with the new data, the box closed', (await pF.$eval('#asheetBody', b => b.dataset.open)) === 'match:' + EKEY && /Rep Casa/.test(await pF.$eval('#asheetHead', h => h.innerText)) && /Rep Ground/.test(await pF.$eval('#asheet', s => s.innerText)) && await pF.$eval('#aImpRep', b => b.hidden), '');
+  check('...and the notes, the supporter choice and the photo are untouched',
+    await persNow() === repPers && JSON.parse(repPers).note === 'Keep me ' + TAG && JSON.parse(repPers).supported === 'away' && (await idbCount()) === 1 && (await pF.$$('#aMgrid .amcell')).length === 1, repPers);
+  // Accepting with the stored id written out: it is not "already imported" for the match itself.
+  await repTry(exp);
+  check('The stored id written out is accepted (the "already imported" check does not fire for the match itself); the record equals the pasted block',
+    canon((await stored()).find(x => x.id === EID)) === canon(exp) && (await stored()).length === n0 && await persNow() === repPers, '');
+  check('One confirmation was asked per accepted replacement', (await dlgs()).length === 2, String((await dlgs()).length));
+  await pF.evaluate(() => { window.confirm = window.__oc; });
+  await pF.click('#asheetClose'); await openCardF(attOrder[3].id);
+  check('The sheet of a match of data/attended.json has no "Replace with JSON"', !(await pF.$('#aImpReplace')) && !(await pF.$('#aImpRep')), '');
+  await pF.click('#asheetClose'); await openCardF(EKEY);
   await pF.click('#asheetClose');
   await openCardF(EKEY); await pF.click('#aImpEdit'); await pF.waitForSelector('#aForm:not([data-edit=""])');
   await pF.fill('#aForm [name=home]', '');
