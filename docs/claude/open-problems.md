@@ -6,6 +6,8 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
 
 ## Known open problems
 
+- **GitHub Pages did not deploy from 21 Oct 2026 15:18 UTC until the `.nojekyll` fix (2026-10-25); the live site stayed on the deploy of 6a99c9c.** Cause: the "Build with Jekyll" step failed with a Liquid syntax error in `data/clubs/proposal-PT.md`, which contains `{{`.
+- **Fix:** an empty `.nojekyll` at the repo root, so Jekyll never runs; `proposal-PT.md` and `_config.yml` were not touched. Whether the site is live again is confirmed by the "pages build and deployment" run for the merge commit, not by the sandbox (it cannot reach github.io).
 - **SV Elversberg ticket research, 2026-10-22: what is left open.**
   (1) **The ticket shop is unread**: www.ticket-onlineshop.com refused the
   runner twice (HTTP/2 protocol error, then a timeout with `robots.txt`

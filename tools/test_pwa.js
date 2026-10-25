@@ -85,6 +85,7 @@ const check = (name, ok, detail='') => { results.push([ok, name, detail]); conso
   const cdp = await ctx.newCDPSession(page);
   const inst = await cdp.send('Page.getInstallabilityErrors');
   check('Chrome installability errors: none', inst.installabilityErrors.length === 0, JSON.stringify(inst.installabilityErrors));
+  check('.nojekyll sits next to index.html (GitHub Pages must not run Jekyll)', fs.existsSync(path.join(SITE, '.nojekyll')) && fs.statSync(path.join(SITE, '.nojekyll')).isFile());
   const man = await cdp.send('Page.getAppManifest');
   check('manifest parsed without errors', man.errors.length === 0, man.url + ' ' + JSON.stringify(man.errors));
   let parsed = null;
