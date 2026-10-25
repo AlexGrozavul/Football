@@ -140,7 +140,8 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest became 26.04, which Playwright 1.56.1 does not support.
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
 
     steps:
