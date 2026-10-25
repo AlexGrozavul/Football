@@ -80,6 +80,7 @@ Q9086321,,Primera Catalana,ES,22
 Q2990902,,Highland Football League,GB,21
 Q3066961,,Galician trainera league,ES,21
 Q322918,,Fußball-Oberliga Niederrhein,DE,21
+Q922935,,Serie A,IT,21
 Q1126104,,Liga ACB,ES,20
 Q1132191,,All-Ireland League,GB,20
 Q2398542,,Vijfde Klasse,NL,20
@@ -96,7 +97,6 @@ Q561845,,Rugby-Bundesliga,DE,19
 Q5798,,championnat de France de rugby à XV,FR,19
 Q609757,,Frauen-Bundesliga,DE,19
 Q616724,,LNFS,ES,19
-Q922935,,Serie A,IT,19
 Q100486967,,Tercera Federación,ES,18
 Q1088927,,Coppa Italia,IT,18
 Q113159,,2. Frauen-Bundesliga,DE,18
@@ -250,6 +250,7 @@ Q1476475,,Fußball-Landesliga Mittelrhein,DE,6
 Q1477028,,Fußball-Regionalliga West,DE,6
 Q1477036,,Verbandsliga Saarland,DE,6
 Q1541887,,Liga Nacional de Hockey Hielo,ES,6
+Q16331968,,Greek C Women's Football League,GR,6
 Q16642,,Six Nations Championship,FR;GB;IT,6
 Q1824566,,Liga a IV-a,RO,6
 Q1824570,,Primera FEB,ES,6
@@ -280,9 +281,9 @@ Q1477019,,Fußball-Regionalliga Nord,DE,5
 Q1477021,,Fußball-Regionalliga Nordost,DE,5
 Q15461558,,Liga Española de Béisbol,ES,5
 Q1601662,,FA Women's Premier League National Division,GB,5
-Q16331968,,Greek C Women's Football League,GR,5
 Q16624689,,Second Division of Andalusia,ES,5
 Q16737393,,Greek B Women's Football League,GR,5
+Q16835366,,Lowland Football League,GB,5
 Q17652315,,Serie A2,IT,5
 Q1801613,,South of Scotland Football League,GB,5
 Q2436235,,Tiroler Landesliga,AT,5
@@ -313,7 +314,6 @@ Q1400146,,Dutch Basketball League,NL,4
 Q1477024,,Fußball-Regionalliga Süd,DE,4
 Q15145680,,Central Macedonia Basketball Clubs Association,GR,4
 Q167364,,Premier Academy League,GB,4
-Q16835366,,Lowland Football League,GB,4
 Q16846238,,North Caledonian Football League,GB,4
 Q177138,,Scottish Football League First Division,GB,4
 Q18548570,,Liga a IV-a Timiș,RO,4
