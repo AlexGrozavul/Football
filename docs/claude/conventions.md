@@ -2497,6 +2497,15 @@ women's team's and the reserve side's, so there is no level to put in
 the cell. A blank stays blank rather than guessing tier 4 is wrong or
 right.
 
+- **A merge is not live until Pages says so (2026-10-25).** The site is
+  published from the repo root by GitHub's "pages build and deployment"
+  workflow, and `.nojekyll` next to `index.html` keeps Jekyll out of it
+  (`test_pwa.js` fails without it). After a merge, the latest run named
+  "pages build and deployment" for the merge commit must have conclusion
+  `success`; until then the merge is not live. Check with
+  `curl -s "https://api.github.com/repos/AlexGrozavul/Football/actions/runs?per_page=5" | jq -r '.workflow_runs[] | [.name, .head_sha, .conclusion] | @tsv'`
+  (curl has no `--jq` option; that is `gh`, which is not authenticated here).
+
 ---
 
 ## Adding a country: the places to touch
