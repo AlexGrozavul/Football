@@ -1223,6 +1223,106 @@ function alarmAt(ev, al){
   const oldRec = JSON.parse(await lsGet(SUPK))[rowMatch.id];
   check('An older file without "row" imports; the seat "Row 8 Seat 8" stays exactly as written and nothing is moved into Row', !v2r.msg.includes('Not imported') && JSON.stringify(oldRec) === JSON.stringify({block: 'B3', seat: OLDSEAT}), JSON.stringify(oldRec) + v2r.msg.slice(0, 100));
 
+  // ---- xG, saves, passes and player ratings (2026-10-25)
+  const base2 = {id: 'v', date: '2026-01-01', score: '1-0', home: {name: 'A'}, away: {name: 'B'}};
+  const newStats = {xg: [1.84, 0.62], saves: [3, 7], passes: [[532, 606], [310, 402]]};
+  const vrun = await p5.evaluate(b => {
+    const run = ex => { const c = attCheckMatch(Object.assign({}, b, ex)); return c.rec ? 'ok' : c.errs.join('; '); };
+    const xi = r => Array.from({length: 11}, (_, i) => Object.assign({no: i + 1, name: 'X' + i}, i === 0 && r !== undefined ? {rating: r} : {}));
+    const st = ex => run({stats: Object.assign({xg: [1.8, 0.6], saves: [3, 7], passes: [[532, 606], [310, 402]]}, ex)});
+    return {
+      all: run({stats: {possession: [55, 45], xg: [1.84, 0.62], saves: [3, 7], passes: [[532, 606], [310, 402]]}, lineups: {home: {formation: '4-4-2', xi: xi(7.4), subs: [{minute: 60, on: 'S', off: 'X1', onRating: 6.8}], bench: [{no: 12, name: 'Bn'}]}}}),
+      old: run({stats: {possession: [55, 45], shots: [10, 8]}, lineups: {home: {xi: xi(), bench: [{no: 12, name: 'Bn'}]}}}),
+      nulls: run({stats: {xg: null, saves: null, passes: null}, lineups: {home: {xi: xi(null), subs: [{minute: 60, on: 'S', off: 'X1', onRating: null}]}}}),
+      zeroTotal: st({passes: [[0, 0], [5, 10]]}), edge: st({xg: [0, 100], saves: [0, 1000], passes: [[0, 5000], [5000, 5000]]}),
+      madeOverTotal: st({passes: [[607, 606], [310, 402]]}), xg101: st({xg: [1, 101]}), xgNeg: st({xg: [-0.1, 1]}), saves15: st({saves: [1.5, 7]}), saves1001: st({saves: [3, 1001]}),
+      passes5001: st({passes: [[1, 5001], [1, 2]]}), passesDec: st({passes: [[1.5, 6], [1, 2]]}), passesFlat: st({passes: [532, 606]}), xgOne: st({xg: [1.8]}),
+      r11: run({lineups: {home: {xi: xi(11)}}}), rNeg: run({lineups: {home: {xi: xi(-1)}}}), rStr: run({lineups: {home: {xi: xi('7')}}}), r10: run({lineups: {home: {xi: xi(10)}}}), r0: run({lineups: {home: {xi: xi(0.5)}}}),
+      bench: run({lineups: {home: {xi: xi(), bench: [{no: 12, name: 'Bn', rating: 6}]}}}),
+      onR11: run({lineups: {home: {xi: xi(), subs: [{minute: 60, on: 'S', off: 'X1', onRating: 11}]}}}),
+      subRating: run({lineups: {home: {xi: xi(), subs: [{minute: 60, on: 'S', off: 'X1', rating: 6}]}}}),
+      unknownStat: run({stats: {xgot: [1, 2]}}),
+    };
+  }, base2);
+  check('The validator accepts a block with all the new fields (xg, saves, passes, a rating on an xi item, onRating on a sub), the old shape without them, and nulls as absent',
+    vrun.all === 'ok' && vrun.old === 'ok' && vrun.nulls === 'ok', JSON.stringify([vrun.all, vrun.old, vrun.nulls]));
+  check('...the limits are inclusive: xg 0 and 100, saves 0 and 1000, passes 0 and 5000, total 0 with made 0, a rating of 0.5 and of 10',
+    vrun.edge === 'ok' && vrun.zeroTotal === 'ok' && vrun.r10 === 'ok' && vrun.r0 === 'ok', JSON.stringify([vrun.edge, vrun.zeroTotal, vrun.r10, vrun.r0]));
+  const refusedWith = [['madeOverTotal', /stats\.passes.*made not above total/], ['passes5001', /stats\.passes/], ['passesDec', /stats\.passes/], ['passesFlat', /stats\.passes/],
+    ['xg101', /stats\.xg.*0 to 100/], ['xgNeg', /stats\.xg/], ['xgOne', /stats\.xg/], ['saves15', /stats\.saves.*whole numbers/], ['saves1001', /stats\.saves/],
+    ['r11', /xi 1: "rating" must be a number from 0 to 10/], ['rNeg', /"rating"/], ['rStr', /"rating"/], ['onR11', /subs 1: "onRating" must be a number from 0 to 10/],
+    ['bench', /bench 1.*unknown field "rating"/], ['subRating', /subs 1.*unknown field "rating"/], ['unknownStat', /"stats" has an unknown field "xgot"/]];
+  check('...and refuses made above total, rating 11 (also -1 and a text), saves 1.5, xg 101, a rating on a bench item or a sub, an unknown stat key, each with a reason that names the field',
+    refusedWith.every(([k, re]) => re.test(vrun[k])), JSON.stringify(refusedWith.filter(([k, re]) => !re.test(vrun[k])).map(([k]) => [k, vrun[k]])));
+  const NEWID = 'newfields-' + TAG, NEW2 = 'newfields2-' + TAG, OLDID = 'oldfields-' + TAG;
+  const xiOf = (tag, rated) => Array.from({length: 11}, (_, i) => Object.assign({no: i + 1, name: `${tag} Player${i + 1}`}, rated && i < 4 ? {rating: [6.5, 7.4, 9, 10][i]} : {}));
+  const luHome = {formation: '4-4-2', coach: 'Coach H', xi: xiOf('H', true), subs: [{minute: 60, on: 'H Sub Rated', off: 'H Player5', onRating: 6.8}, {minute: 70, on: 'H Sub Plain', off: 'H Player6'}]};
+  const luAway = {coach: 'Coach A', xi: xiOf('A', true), subs: [{minute: 75, on: 'A Sub Rated', off: 'A Player5', onRating: 7.1}]};
+  const mNew = mk(NEWID, {stats: {possession: [58, 42], xg: [1.84, 0.62], saves: [3, 7], passes: [[532, 606], [310, 402]]}, lineups: {home: luHome, away: luAway}});
+  const mNew2 = mk(NEW2, {stats: {passes: [[0, 0], [5, 10]]}});
+  const mOld = mk(OLDID, {stats: {possession: [58, 42], shots: [12, 9]}, lineups: {home: Object.assign({}, luHome, {xi: xiOf('H', false), subs: [{minute: 60, on: 'H Sub Plain', off: 'H Player5'}]})}});
+  const sheetNew = async id => {
+    await openCard('#meTabMatches', '#meMatches', 'imp:' + id);
+    return p5.evaluate(() => ({
+      rows: [...document.querySelectorAll('#aStats .abar')].map(b => [...b.querySelectorAll('.lb b, .lb span')].map(e => e.textContent.trim()).join('|')),
+      rt: [...document.querySelectorAll('#asheet svg.apitch .rt')].map(e => e.textContent),
+      pitchTexts: document.querySelectorAll('#asheet svg.apitch .nm').length,
+      arat: [...document.querySelectorAll('#asheet .arat')].map(e => e.textContent), html: document.getElementById('asheet').innerHTML}));
+  };
+  await sub5('#meTabMatches', '#meMatches'); if(!(await p5.$eval('#aAdd', d => d.open))) await p5.click('#aAdd summary');
+  for(const [m, w] of [[mNew, 'all new fields'], [mNew2, 'passes with a total of 0'], [mOld, 'no new fields']]){
+    const msg = await paste(m);
+    check(`Pasting a match with ${w} is accepted`, /^Added 1 imported match/.test(msg), msg);
+  }
+  let sh = await sheetNew(NEWID);
+  check('The stats pane draws the six old rows first, then xG, Saves and Passes: "1.84|xG|0.62", "3|Saves|7", passes as the app-worked-out percentage with the counts "88% (532/606)" and "77% (310/402)"',
+    JSON.stringify(sh.rows) === JSON.stringify(['58|Possession|42', '1.84|xG|0.62', '3|Saves|7', '88% (532/606)|Passes|77% (310/402)']), JSON.stringify(sh.rows));
+  check('The pitch picture shows the four ratings beside the players (6.5, 7.4, 9.0, 10.0), nothing for the other seven; the names are still all there (11)',
+    JSON.stringify(sh.rt) === JSON.stringify(['6.5', '7.4', '9.0', '10.0']) && sh.pitchTexts === 11, JSON.stringify([sh.rt, sh.pitchTexts]));
+  check('The subs list shows 6.8 beside the rated player who came on and nothing beside the unrated one', JSON.stringify(sh.arat) === JSON.stringify(['6.8']), JSON.stringify(sh.arat));
+  const geom = async () => p5.evaluate(() => {
+    const sheet = document.getElementById('asheet'), out = {over: sheet.scrollWidth > sheet.clientWidth + 1, clip: [], overlap: []};
+    const svg = sheet.querySelector('svg.apitch');
+    if(svg){
+      const els = [...svg.querySelectorAll('.nm, .rt')].map(e => { const b = e.getBBox(); return {c: e.getAttribute('class'), x: b.x, y: b.y, w: b.width, h: b.height, t: e.textContent}; });
+      els.forEach(e => { if(e.x < 0 || e.y < 0 || e.x + e.w > 300 || e.y + e.h > 400) out.clip.push(e.t); });
+      for(let i = 0; i < els.length; i++) for(let j = i + 1; j < els.length; j++){
+        const a = els[i], b = els[j];
+        if(a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h) out.overlap.push(a.t + '/' + b.t);
+      }
+    }
+    sheet.querySelectorAll('.arow .k, .aev .tx').forEach(e => { const r = e.getBoundingClientRect(), sr = sheet.getBoundingClientRect(); if(r.left < sr.left - 1 || r.right > sr.right + 1) out.clip.push(e.textContent.slice(0, 20)); });
+    return out;
+  });
+  await p5.setViewportSize({width: 360, height: 844}); await p5.waitForTimeout(300);
+  let g = await geom();
+  check('At 360 px wide the pitch picture and the stats pane do not scroll sideways, no name or rating leaves the picture, and no rating overlaps a name or another rating',
+    !g.over && !g.clip.length && !g.overlap.length, JSON.stringify(g));
+  const statLb = await p5.evaluate(() => [...document.querySelectorAll('#aStats .abar .lb')].map(l => l.scrollWidth <= l.clientWidth + 1));
+  check('...and no stats row is wider than its box at 360 px (the passes row with both percentages included)', statLb.every(Boolean), JSON.stringify(statLb));
+  await p5.click('#asheet .asw button[data-side=away]'); await p5.waitForTimeout(200);
+  const away = await p5.evaluate(() => ({arat: [...document.querySelectorAll('#aluSide .arat')].map(e => e.textContent), pitch: !!document.querySelector('#aluSide svg.apitch'),
+    rows: [...document.querySelectorAll('#aluSide .arow .k')].map(e => e.textContent.replace(/\s+/g, ' ').trim()).slice(0, 5)}));
+  check('The away side has no formation, so it is a list: the ratings sit beside the names (6.5, 7.4, 9.0, 10.0) and 7.1 beside the player who came on',
+    !away.pitch && JSON.stringify(away.arat) === JSON.stringify(['6.5', '7.4', '9.0', '10.0', '7.1']) && away.rows[0] === 'A Player16.5', JSON.stringify(away));
+  g = await geom();
+  check('At 360 px the list view (names with ratings) stays inside the sheet', !g.over && !g.clip.length, JSON.stringify(g));
+  await p5.setViewportSize({width: W, height: H}); await p5.waitForTimeout(200);
+  await closeSheet5();
+  sh = await sheetNew(NEW2);
+  check('Passes with a total of 0 draw a dash, not 0% or NaN, and a total above 0 still draws its percentage: "–|Passes|50% (5/10)"; no xG, no Saves row',
+    JSON.stringify(sh.rows) === JSON.stringify(['–|Passes|50% (5/10)']), JSON.stringify(sh.rows));
+  await closeSheet5();
+  sh = await sheetNew(OLDID);
+  check('A match without any new field draws unchanged: two stat rows, no rating on the pitch, in the subs or anywhere, and no ".arat" in the sheet',
+    JSON.stringify(sh.rows) === JSON.stringify(['58|Possession|42', '12|Shots|9']) && !sh.rt.length && !sh.arat.length && !/arat/.test(sh.html) && sh.pitchTexts === 11, JSON.stringify([sh.rows, sh.rt, sh.arat]));
+  await closeSheet5();
+  for(const id of [NEWID, NEW2, OLDID]){
+    await openCard('#meTabMatches', '#meMatches', 'imp:' + id); await p5.click('#aImpRemove');
+    await p5.waitForFunction(() => document.getElementById('asheet').hidden, null, {timeout: 5000}).catch(() => {}); await p5.waitForTimeout(300);
+  }
+  check('...the three test matches are removed again (the list is back to the file\'s matches plus the one imported earlier)', (await p5.$$('#meMatches .acard')).length === fx.n + 1, '');
+
   // ---- Removing an imported match
   await openCard('#meTabMatches', '#meMatches', IMPKEY);
   await p5.click('#aImpRemove');
@@ -2327,7 +2427,7 @@ function alarmAt(ev, al){
   {
   // ---- 2026-10-09: the whole interface in two languages. The dictionary, the Settings sheet, the choice kept on the device, every
   //      main tab and the four Me sub-tabs in Romanian at 390 px, no English left outside the data's own text, and a live change.
-  const NAMES_SAME = new Set(['tl.pen', 'st.redSplit', 'imp.placeholder', 'md.video', 'sheet.club', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',
+  const NAMES_SAME = new Set(['tl.pen', 'sx.xg', 'st.redSplit', 'imp.placeholder', 'md.video', 'sheet.club', 'tk.link', 'tk.max', 'rt.cost.km', 'rt.cost.l100', 'cn.AT', 'cn.RS',
     'oc.sold-out', 'cov.club.one', 'cnm.Austria', 'cnm.Argentina', 'cnm.Serbia', 'cnm.Bulgaria', 'cnm.Chile', 'cnm.Slovenia', 'cnm.Uruguay', 'iso.AR', 'iso.AT', 'iso.BG', 'iso.CL',
     'iso.RS', 'iso.SI', 'iso.UY', 'kind.derby', 'ctopic.format', 'me.cost', 'me.plus', 'bk.tabCal', 'nl.context', 'nl.bonus', 'nl.realism']);       // names, units and abbreviations that are the same word in Romanian
   const ctxL = await newCtx();
