@@ -77,6 +77,8 @@ const server = http.createServer((req, res) => {
     deviceScaleFactor: 2, serviceWorkers: 'block'});
   await ctx.route('https://tiles.stadiamaps.com/**', r => r.fulfill({status:200, contentType:'image/png', headers: {'Access-Control-Allow-Origin': '*'}, body: PNG}));
   await ctx.route('https://api.stadiamaps.com/**', r => r.abort());
+  // The Me tab's match sheet needs the file's matches: "Show built-in matches and events" is off on a device with nothing stored (2026-10-25).
+  await ctx.addInitScript(() => { try{ if(localStorage.getItem('football-planner-showfile') === null) localStorage.setItem('football-planner-showfile', '1'); }catch(e){} });
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
