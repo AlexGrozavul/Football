@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1336 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1344 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -89,6 +89,9 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `sx.fouls` | Fouls | Faulturi |
 | `sx.corners` | Corners | Cornere |
 | `sx.offsides` | Offsides | Ofsaiduri |
+| `sx.xg` | xG | xG |
+| `sx.saves` | Saves | Parade |
+| `sx.passes` | Passes | Pase |
 | `sx.source` | Source | Sursa |
 | `nt.title` | Factual note | Notă factuală |
 | `nt.unverified` | Written by an assistant from memory, not yet verified | Scrisă de un asistent din memorie, încă neverificată |
@@ -1136,6 +1139,10 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `v.team` | "team" must be "home" or "away" | „team” trebuie să fie „home” sau „away” |
 | `v.cardType` | "type" must be yellow, red or second-yellow | „type” trebuie să fie yellow, red sau second-yellow |
 | `v.twoNums` | "{k}" must be two numbers | „{k}” trebuie să fie două numere |
+| `v.xg` | "{k}" must be two numbers from 0 to 100 | „{k}” trebuie să fie două numere de la 0 la 100 |
+| `v.saves` | "{k}" must be two whole numbers from 0 to 1000 | „{k}” trebuie să fie două numere întregi de la 0 la 1000 |
+| `v.passes` | "{k}" must be [[made, total], [made, total]], whole numbers from 0 to 5000, made not above total | „{k}” trebuie să fie [[reușite, total], [reușite, total]], numere întregi de la 0 la 5000, reușite nu mai mari decât total |
+| `v.rating` | "{k}" must be a number from 0 to 10 | „{k}” trebuie să fie un număr de la 0 la 10 |
 | `v.mustObject` | {w} must be an object | {w} trebuie să fie un obiect |
 | `v.formation` | "formation" must look like "4-3-3" | „formation” trebuie să arate ca „4-3-3” |
 | `v.matchN` | match {n} | meciul {n} |

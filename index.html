@@ -551,6 +551,7 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   #asheet .aev .tx em{font-style:normal;color:var(--dim);font-size:12.5px}
   #asheet .aev.away{flex-direction:row-reverse;text-align:right}
   #asheet .aev.away .tx{text-align:right}
+  #asheet .arat{display:inline-block;margin-left:6px;padding:0 6px;border-radius:8px;background:var(--line);color:var(--dim);font-size:11px;font-weight:700;white-space:nowrap}
   #asheet .abar{margin-bottom:12px}
   #asheet .abar .lb{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px}
   #asheet .abar .lb span{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;text-align:center}
@@ -917,7 +918,7 @@ const I18N = {
     'lu.xi': 'Starting eleven', 'lu.uncertain': 'pairing unconfirmed', 'lu.pitch': 'Pitch: {team}, {formation}',
     'tl.title': 'Timeline', 'tl.pen': 'pen.', 'tl.secondYellow': 'second yellow',
     'sx.title': 'Stats', 'sx.possession': 'Possession', 'sx.shots': 'Shots', 'sx.onTarget': 'Shots on target',
-    'sx.fouls': 'Fouls', 'sx.corners': 'Corners', 'sx.offsides': 'Offsides', 'sx.source': 'Source',
+    'sx.fouls': 'Fouls', 'sx.corners': 'Corners', 'sx.offsides': 'Offsides', 'sx.xg': 'xG', 'sx.saves': 'Saves', 'sx.passes': 'Passes', 'sx.source': 'Source',
     'nt.title': 'Factual note', 'nt.unverified': 'Written by an assistant from memory, not yet verified',
     'pf.title': 'My notes and details', 'pf.note': 'My notes', 'pf.ticket': 'Ticket', 'pf.seat': 'Seat', 'pf.block': 'Block', 'pf.row': 'Row',
     'pf.withWho': 'Who I went with',
@@ -1919,6 +1920,10 @@ const I18N = {
     "v.team": "\"team\" must be \"home\" or \"away\"",
     "v.cardType": "\"type\" must be yellow, red or second-yellow",
     "v.twoNums": "\"{k}\" must be two numbers",
+    "v.xg": "\"{k}\" must be two numbers from 0 to 100",
+    "v.saves": "\"{k}\" must be two whole numbers from 0 to 1000",
+    "v.passes": "\"{k}\" must be [[made, total], [made, total]], whole numbers from 0 to 5000, made not above total",
+    "v.rating": "\"{k}\" must be a number from 0 to 10",
     "v.mustObject": "{w} must be an object",
     "v.formation": "\"formation\" must look like \"4-3-3\"",
     "v.matchN": "match {n}",
@@ -2164,7 +2169,7 @@ const I18N = {
     'lu.xi': 'Primul unsprezece', 'lu.uncertain': 'pereche neconfirmată', 'lu.pitch': 'Teren: {team}, {formation}',
     'tl.title': 'Cronologie', 'tl.pen': 'pen.', 'tl.secondYellow': 'al doilea galben',
     'sx.title': 'Statistici', 'sx.possession': 'Posesie', 'sx.shots': 'Șuturi', 'sx.onTarget': 'Șuturi pe poartă',
-    'sx.fouls': 'Faulturi', 'sx.corners': 'Cornere', 'sx.offsides': 'Ofsaiduri', 'sx.source': 'Sursa',
+    'sx.fouls': 'Faulturi', 'sx.corners': 'Cornere', 'sx.offsides': 'Ofsaiduri', 'sx.xg': 'xG', 'sx.saves': 'Parade', 'sx.passes': 'Pase', 'sx.source': 'Sursa',
     'nt.title': 'Notă factuală', 'nt.unverified': 'Scrisă de un asistent din memorie, încă neverificată',
     'pf.title': 'Notițele și datele mele', 'pf.note': 'Notițele mele', 'pf.ticket': 'Bilet', 'pf.seat': 'Loc', 'pf.block': 'Bloc', 'pf.row': 'Rând',
     'pf.withWho': 'Cu cine am fost',
@@ -3167,6 +3172,10 @@ const I18N = {
     "v.team": "„team” trebuie să fie „home” sau „away”",
     "v.cardType": "„type” trebuie să fie yellow, red sau second-yellow",
     "v.twoNums": "„{k}” trebuie să fie două numere",
+    "v.xg": "„{k}” trebuie să fie două numere de la 0 la 100",
+    "v.saves": "„{k}” trebuie să fie două numere întregi de la 0 la 1000",
+    "v.passes": "„{k}” trebuie să fie [[reușite, total], [reușite, total]], numere întregi de la 0 la 5000, reușite nu mai mari decât total",
+    "v.rating": "„{k}” trebuie să fie un număr de la 0 la 10",
     "v.mustObject": "{w} trebuie să fie un obiect",
     "v.formation": "„formation” trebuie să arate ca „4-3-3”",
     "v.matchN": "meciul {n}",
@@ -8642,6 +8651,7 @@ function impSave(list, events = IMP_EV){
 
 const isStr = (v, max) => typeof v === 'string' && v.length <= max;
 const isInt = (v, lo, hi) => Number.isInteger(v) && v >= lo && v <= hi;
+const isNum10 = hi => n => typeof n === 'number' && Number.isFinite(n) && n >= 0 && n <= hi;   // decimals allowed
 const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
 const isLoc = (v, max) => isStr(v, max) || (isObj(v) && Object.keys(v).length > 0 && Object.keys(v).every(k => (k === 'ro' || k === 'en') && isStr(v[k], max)));
 const SCORE_RE = /^\d{1,2}-\d{1,2}$/;
@@ -8710,11 +8720,16 @@ function attCheckMatch(r){
   if(r.stats != null){
     if(!isObj(r.stats)) bad(V('object', {k: 'stats'}));
     else{
-      only(r.stats, ATT_STATS, '"stats"');
+      only(r.stats, ATT_STATS.concat(ATT_STATS_X), '"stats"');
       for(const k of ATT_STATS){
         const v = r.stats[k];
         if(v != null && !(Array.isArray(v) && v.length === 2 && v.every(n => typeof n === 'number' && n >= 0 && n <= 1000))) bad(V('twoNums', {k: 'stats.' + k}));
       }
+      const xs = r.stats;
+      if(xs.xg != null && !(Array.isArray(xs.xg) && xs.xg.length === 2 && xs.xg.every(isNum10(100)))) bad(V('xg', {k: 'stats.xg'}));
+      if(xs.saves != null && !(Array.isArray(xs.saves) && xs.saves.length === 2 && xs.saves.every(n => isInt(n, 0, 1000)))) bad(V('saves', {k: 'stats.saves'}));
+      if(xs.passes != null && !(Array.isArray(xs.passes) && xs.passes.length === 2 &&
+        xs.passes.every(q => Array.isArray(q) && q.length === 2 && isInt(q[0], 0, 5000) && isInt(q[1], 0, 5000) && q[0] <= q[1]))) bad(V('passes', {k: 'stats.passes'}));
     }
   }
   if(r.lineups != null){
@@ -8739,13 +8754,17 @@ function attCheckMatch(r){
           });
         };
         const pl = (p, pw) => { if(!isStr(p.name, 80) || !p.name) bad(`${pw}: ${V('text', {k: 'name'})}`); if(p.no != null && !isInt(p.no, 0, 999)) bad(`${pw}: ${V('int', {k: 'no'})}`); };
-        plist('xi', 11, ['no', 'name'], pl);
+        plist('xi', 11, ['no', 'name', 'rating'], (p, pw) => {
+          pl(p, pw);
+          if(p.rating != null && !isNum10(10)(p.rating)) bad(`${pw}: ${V('rating', {k: 'rating'})}`);
+        });
         plist('bench', 30, ['no', 'name'], pl);
-        plist('subs', 15, ['minute', 'added', 'on', 'onNo', 'off', 'uncertain'], (p, pw) => {
+        plist('subs', 15, ['minute', 'added', 'on', 'onNo', 'onRating', 'off', 'uncertain'], (p, pw) => {
           if(!isInt(p.minute, 0, 150)) bad(`${pw}: ${V('int', {k: 'minute'})}`);
           if(p.added != null && !isInt(p.added, 0, 30)) bad(`${pw}: ${V('int', {k: 'added'})}`);
           for(const f of ['on', 'off']) if(!isStr(p[f], 80) || !p[f]) bad(`${pw}: ${V('text', {k: f})}`);
           if(p.onNo != null && !isInt(p.onNo, 0, 999)) bad(`${pw}: ${V('int', {k: 'onNo'})}`);
+          if(p.onRating != null && !isNum10(10)(p.onRating)) bad(`${pw}: ${V('rating', {k: 'onRating'})}`);
           if(p.uncertain != null && typeof p.uncertain !== 'boolean') bad(`${pw}: ${V('bool', {k: 'uncertain'})}`);
         });
       }
@@ -9332,6 +9351,11 @@ function attMerged(){
 }
 
 const ATT_STATS = ['possession', 'shots', 'onTarget', 'fouls', 'corners', 'offsides'];
+const ATT_STATS_X = ['xg', 'saves', 'passes'];        // drawn after the six, only when the match has them
+const attDec = n => String(Math.round(n * 100) / 100);
+const attRate = n => typeof n === 'number' && Number.isFinite(n) ? `<span class="arat">${n.toFixed(1)}</span>` : '';
+/* A pass count as "88% (532/606)", the percentage worked out here; a total of 0 gives a dash. */
+const attPassTxt = q => q[1] > 0 ? `${Math.round(q[0] / q[1] * 100)}% (${q[0]}/${q[1]})` : '–';
 const attSurname = n => { const p = String(n).trim().split(/\s+/); return p.length > 1 ? p[p.length - 1] : p[0]; };
 const attMin = e => e.minute + (e.added ? '+' + e.added : '') + "'";
 
@@ -9374,6 +9398,7 @@ function attPitch(m, lu, side){
     g += `<g class="aplr" data-name="${esc(o.p.name)}"><circle cx="${cx}" cy="${cy}" r="11" style="fill:var(--pitch-disc);stroke:var(--pitch-ink)" stroke-width="1.5"/>` +
       `<text class="no" x="${cx}" y="${(+cy + 4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--pitch-ink)">${o.p.no == null ? '?' : esc(o.p.no)}</text>` +
       `<text class="nm" x="${cx}" y="${(+cy + 23).toFixed(1)}" text-anchor="middle" font-size="${fs.toFixed(2)}" style="fill:var(--pitch-ink);stroke:var(--pitch-halo)" stroke-width="2.2" paint-order="stroke">${esc(nm)}</text>`;
+    if(typeof o.p.rating === 'number' && Number.isFinite(o.p.rating)) g += `<text class="rt" x="${(+cx - 13).toFixed(1)}" y="${(+cy + 9).toFixed(1)}" text-anchor="end" font-size="9" font-weight="700" style="fill:var(--pitch-ink);stroke:var(--pitch-halo)" stroke-width="2.2" paint-order="stroke">${o.p.rating.toFixed(1)}</text>`;
     attBadges(m, o.p.name, lu).forEach((b, i) => {
       const bx = +cx + BADGE_SLOT[i][0], by = +cy + BADGE_SLOT[i][1];
       if(b.k === 'g') g += `<text x="${bx}" y="${by + 9}" font-size="10">⚽${b.n > 1 ? `<tspan font-size="7" style="fill:var(--pitch-ink)">${b.n}</tspan>` : ''}</text>`;
@@ -9391,11 +9416,11 @@ function attLineupSide(m, side){
   const lu = m.lineups[side]; if(!lu) return '';
   let h = attRows(lu) ? attPitch(m, lu, side)
     : `<div class="aeyes">${esc(t('lu.xi'))}</div><div class="alist">${(lu.xi || []).map(p =>
-        `<div class="arow"><span class="k">${esc(p.name)}${lu.captain === p.name ? ' (C)' : ''}</span><span class="v">${p.no == null ? '?' : esc(p.no)}</span></div>`).join('')}</div>`;
+        `<div class="arow"><span class="k">${esc(p.name)}${lu.captain === p.name ? ' (C)' : ''}${attRate(p.rating)}</span><span class="v">${p.no == null ? '?' : esc(p.no)}</span></div>`).join('')}</div>`;
   h += `<div class="acoach">${esc(t('lu.coach'))}: ${esc(lu.coach || t('att.na'))}</div>`;
   if(lu.subs && lu.subs.length){
     h += `<div class="aeyes">${esc(t('lu.subs'))}</div><div class="alist">` + lu.subs.map(s =>
-      `<div class="aev"><div class="m">${esc(s.minute)}'</div><div class="tx"><div>↑ ${esc(s.on)}</div><em>↓ ${esc(s.off)}${s.uncertain ? ' · ' + esc(t('lu.uncertain')) : ''}</em></div></div>`).join('') + '</div>';
+      `<div class="aev"><div class="m">${esc(s.minute)}'</div><div class="tx"><div>↑ ${esc(s.on)}${attRate(s.onRating)}</div><em>↓ ${esc(s.off)}${s.uncertain ? ' · ' + esc(t('lu.uncertain')) : ''}</em></div></div>`).join('') + '</div>';
   }
   if(lu.bench && lu.bench.length){
     h += `<div class="aeyes">${esc(t('lu.bench'))}</div><div class="alist">` + lu.bench.map(b =>
@@ -9447,6 +9472,17 @@ function attStatsPane(m){
     h += `<div class="abar"><div class="lb"><b>${esc(a)}</b><span>${esc(t('sx.' + k))}</span><b>${esc(b)}</b></div>` +
       `<div class="tr"><i style="width:${(a / tot * 100).toFixed(1)}%"></i><i style="width:${(b / tot * 100).toFixed(1)}%"></i></div></div>`;
   });
+  const bar = (a, b, ta, tb, k) => {
+    const tot = (a + b) || 1;
+    h += `<div class="abar"><div class="lb"><b>${esc(ta)}</b><span>${esc(t('sx.' + k))}</span><b>${esc(tb)}</b></div>` +
+      `<div class="tr"><i style="width:${(a / tot * 100).toFixed(1)}%"></i><i style="width:${(b / tot * 100).toFixed(1)}%"></i></div></div>`;
+  };
+  const num = n => typeof n === 'number' && Number.isFinite(n);
+  const xg = m.stats.xg, sv = m.stats.saves, ps = m.stats.passes;
+  if(Array.isArray(xg) && xg.length === 2 && xg.every(num)) bar(xg[0], xg[1], attDec(xg[0]), attDec(xg[1]), 'xg');
+  if(Array.isArray(sv) && sv.length === 2 && sv.every(num)) bar(sv[0], sv[1], sv[0], sv[1], 'saves');
+  if(Array.isArray(ps) && ps.length === 2 && ps.every(q => Array.isArray(q) && q.length === 2 && q.every(num)))
+    bar(...ps.map(q => q[1] > 0 ? q[0] / q[1] * 100 : 0), attPassTxt(ps[0]), attPassTxt(ps[1]), 'passes');   // each bar follows its own percentage; a total of 0 has none
   if(!h) return '';
   if(m.statsSource) h += `<p class="anote">${esc(t('sx.source'))}: ${esc(m.statsSource)}</p>`;
   return `<h4>${esc(t('sx.title'))}</h4><div id="aStats">${h}</div>`;
