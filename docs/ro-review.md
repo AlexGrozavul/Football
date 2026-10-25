@@ -55,7 +55,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `st.mostPlayer` | Most-seen player | Jucătorul văzut cel mai des |
 | `st.noPlayers` | Calculated from line-ups; none are recorded. | Se calculează din formații; nu este înregistrată niciuna. |
 | `st.best` | Best performance seen | Cea mai bună performanță văzută |
-| `st.bestLine` | {team} vs {opp} | {team} vs {opp} |
+| `st.bestLine` | {team} against {opp} | {team} contra {opp} |
 | `st.bestMore` | +{n} more | + încă {n} |
 | `st.biggest` | Biggest crowd | Cea mai mare asistență |
 | `st.smallest` | Smallest crowd | Cea mai mică asistență |

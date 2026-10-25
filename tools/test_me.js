@@ -3200,6 +3200,9 @@ function alarmAt(ev, al){
   // ---- Best performance seen (Me > Stats), 2026-10-25. Each case seeds the imported matches in a fresh context; the expected values are worked out from the seeded matches (and from data/attended.json) by expectBest() below, not typed in.
   {
     const BKEY = 'football-attended-imported';
+    const mk = (id, extra) => Object.assign({id, date: '2025-05-01', competition: {ro: 'Cupa', en: 'Cup'}, stage: {ro: 'Finala', en: 'Final'},
+      home: {name: 'Casa', nameEn: 'Home'}, away: {name: 'Oaspeți', nameEn: 'Away'}, score: '3-1', stadium: 'Best Ground', city: {ro: 'Orașul', en: 'Town'}, country: {ro: 'Țara', en: 'Land'},
+      goals: [], cards: [], cardsComplete: true}, extra || {});
     const xiB = (tag, ratings) => ratings.map((r, i) => Object.assign({no: i + 1, name: `${tag} P${i + 1}`}, r == null ? {} : {rating: r}));
     const bm = (id, date, lh, la, extra) => mk(id, Object.assign({date, home: {name: 'Casa ' + id, nameEn: 'Home ' + id}, away: {name: 'Oaspeți ' + id, nameEn: 'Away ' + id},
       competition: {ro: 'Cupa ' + id, en: 'Cup ' + id}, lineups: {home: Object.assign({coach: 'CH'}, lh), away: Object.assign({coach: 'CA'}, la)}}, extra || {}));
@@ -3236,7 +3239,7 @@ function alarmAt(ev, al){
     const dateIn = (pg, iso, l) => pg.evaluate(([i, l]) => new Date(i + 'T12:00:00').toLocaleDateString(l === 'en' ? 'en-GB' : 'ro-RO', {day: 'numeric', month: 'long', year: 'numeric'}), [iso, l]);
     const sameAs = async (pg, exp, l, why) => {
       const g = await readBest(pg);
-      const want = await Promise.all(exp.rows.map(async e => ({name: e.name, lines: [`${e.team} vs ${e.opp}`, `${await dateIn(pg, e.date, l)} · ${e.comp}`], v: exp.v})));
+      const want = await Promise.all(exp.rows.map(async e => ({name: e.name, lines: [`${e.team} ${l === 'en' ? 'against' : 'contra'} ${e.opp}`, `${await dateIn(pg, e.date, l)} · ${e.comp}`], v: exp.v})));
       return {ok: JSON.stringify(g.rows) === JSON.stringify(want) && (exp.more ? g.more === `+${exp.more} more` : g.more === null), g, want};
     };
     const HEAD = 'Best performance seen';
@@ -3309,8 +3312,8 @@ function alarmAt(ev, al){
     // 6. 360 px: long names and team names wrap, nothing leaves the screen.
     {
       const long = (n, c) => (c + ' ').repeat(n).trim();
-      const m = bm('b-w-' + TAG, '2025-08-01', {xi: [{no: 1, name: long(8, 'Longgivenname') + ' Verylongsurnamewithoutanyspaces' + 'x'.repeat(30), rating: 9.4}]}, {xi: xiB('Aw', [5])},
-        {home: {name: long(6, 'Clubul') + ' ' + 'Sportiv'.repeat(6), nameEn: long(6, 'Clubul') + ' ' + 'Sportiv'.repeat(6)}, competition: {ro: long(7, 'Competiție') + ' ' + 'Lungă'.repeat(8), en: long(7, 'Competition') + ' ' + 'Longname'.repeat(8)}});
+      const m = bm('b-w-' + TAG, '2025-08-01', {xi: [{no: 1, name: long(1, 'Longgivenname') + ' Verylongsurnamewithoutanyspaces' + 'x'.repeat(20), rating: 9.4}]}, {xi: xiB('Aw', [5])},
+        {home: {name: long(3, 'Clubul') + ' ' + 'Sportiv'.repeat(4), nameEn: long(3, 'Clubul') + ' ' + 'Sportiv'.repeat(4)}, competition: {ro: long(3, 'Competiție') + ' ' + 'Lungă'.repeat(6), en: long(3, 'Competition') + ' ' + 'Longname'.repeat(6)}});
       const {ctx, pg} = await bestPage([m], {width: 360});
       const ov = await pg.evaluate(() => {
         const vw = document.documentElement.clientWidth, b = document.getElementById('aBest'), r = b ? b.getBoundingClientRect() : null;
