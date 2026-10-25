@@ -519,6 +519,9 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   .att .arow:first-child{border-top:0}
   .att .arow .k{min-width:0;overflow-wrap:anywhere}
   .att .arow .v{flex-shrink:0;color:var(--dim)}
+  .att .abest .k b{display:block;font-weight:600}
+  .att .abest .abl{display:block;color:var(--dim);font-size:12.5px}
+  .att .abest .v{font-weight:700;color:var(--ink)}
   .att .anote{color:var(--faint);font-size:12.5px;line-height:1.5;margin:6px 0}
   .att .acard{display:block;width:100%;text-align:left;background:var(--surf2);border:1px solid var(--line);border-radius:10px;
     color:var(--ink);font:inherit;padding:10px 12px;margin-bottom:8px;min-height:44px;cursor:pointer}
@@ -918,6 +921,7 @@ const I18N = {
     'st.partial': 'Complete data currently exists for {a} of {b} matches. The figures below count only the completed ones.',
     'st.mostTeam': 'Most-seen team', 'st.mostPlayer': 'Most-seen player',
     'st.noPlayers': 'Calculated from line-ups; none are recorded.',
+    'st.best': 'Best performance seen', 'st.bestLine': '{team} vs {opp}', 'st.bestMore': '+{n} more',
     'st.biggest': 'Biggest crowd', 'st.smallest': 'Smallest crowd', 'st.unofficial': '* unofficial figure',
     'st.stadiums': 'Stadiums', 'st.cities': 'Cities', 'st.countries': 'Countries', 'st.comps': 'Competitions',
     'st.noData': 'No data.',
@@ -2199,6 +2203,7 @@ const I18N = {
     'st.partial': 'Datele complete există momentan pentru {a} din {b} meciuri. Cifrele de mai jos numără doar meciurile completate.',
     'st.mostTeam': 'Echipa văzută cel mai des', 'st.mostPlayer': 'Jucătorul văzut cel mai des',
     'st.noPlayers': 'Se calculează din formații; nu este înregistrată niciuna.',
+    'st.best': 'Cea mai bună performanță văzută', 'st.bestLine': '{team} vs {opp}', 'st.bestMore': '+ încă {n}',
     'st.biggest': 'Cea mai mare asistență', 'st.smallest': 'Cea mai mică asistență', 'st.unofficial': '* cifră neoficială',
     'st.stadiums': 'Stadioane', 'st.cities': 'Orașe', 'st.countries': 'Țări', 'st.comps': 'Competiții',
     'st.noData': 'Fără date.',
@@ -8471,7 +8476,7 @@ function loadAttended(){
 
 function attStats(d){
   const ms = d.matches, S = {n: ms.length, nReal: 0, goals: 0, goalsShort: 0, goalsShortN: 0, exclGoals: 0, pens: 0, yellow: 0, red: 0, second: 0, cardsOk: 0, luOk: 0,
-    stad: {}, city: {}, ctry: {}, comp: {}, team: {}, plr: {}, big: null, small: null, rec: {n: 0, w: 0, d: 0, l: 0}};
+    stad: {}, city: {}, ctry: {}, comp: {}, team: {}, plr: {}, best: null, big: null, small: null, rec: {n: 0, w: 0, d: 0, l: 0}};
   const inc = (o, k) => { if(k) o[k] = (o[k] || 0) + 1; };
   ms.forEach(m => {
     // Goals are the two numbers of the score; the goals list only feeds the penalty count and the scorer lists.
@@ -8508,14 +8513,33 @@ function attStats(d){
     }
     if(m.lineups){
       S.luOk++;
+      // Best performance seen: only a stored player rating counts (xi rating, a sub's onRating); a team rating, a missing rating and a bench item never do. Compared as numbers.
+      const rate = (v, name, side) => {
+        if(typeof v !== 'number' || !Number.isFinite(v)) return;
+        if(!S.best || v > S.best.v) S.best = {v, list: []}; else if(v < S.best.v) return;
+        S.best.list.push({name, m, side});
+      };
       ['home', 'away'].forEach(side => {
         const lu = m.lineups[side]; if(!lu) return;
-        (lu.xi || []).forEach(p => inc(S.plr, p.name));
-        (lu.subs || []).forEach(s => inc(S.plr, s.on));
+        (lu.xi || []).forEach(p => { inc(S.plr, p.name); rate(p.rating, p.name, side); });
+        (lu.subs || []).forEach(s => { inc(S.plr, s.on); rate(s.onRating, s.on, side); });
       });
     }
   });
   return S;
+}
+
+/* The "Best performance seen" section: the highest stored player rating, every entry at that value (oldest match first, at most 5, then "+N more"). Not drawn at all when no rating is stored. */
+const ATT_BEST_MAX = 5;
+function attBestHtml(best, sec){
+  const list = best.list.slice().sort((a, b) => a.m.date < b.m.date ? -1 : a.m.date > b.m.date ? 1 : 0);
+  const row = e => {
+    const o = e.m[e.side === 'home' ? 'away' : 'home'];
+    return `<div class="arow abest"><span class="k"><b>${esc(e.name)}</b><span class="abl">${esc(t('st.bestLine', {team: attTeam(e.m[e.side]), opp: attTeam(o)}))}</span>` +
+      `<span class="abl">${esc(attJoin([attDate(e.m.date), attL(e.m.competition)]))}</span></span><span class="v">${esc(best.v.toFixed(1))}</span></div>`;
+  };
+  return sec('st.best', `<div id="aBest">${list.slice(0, ATT_BEST_MAX).map(row).join('')}` +
+    (list.length > ATT_BEST_MAX ? `<p class="anote" id="aBestMore">${esc(t('st.bestMore', {n: list.length - ATT_BEST_MAX}))}</p>` : '') + `</div>`);
 }
 
 function renderAttStats(d){
@@ -8554,6 +8578,7 @@ function renderAttStats(d){
       `<p class="anote">${esc(t('st.recordHint'))}</p>`) +
     sec('st.mostTeam', topRows(top(S.team))) +
     sec('st.mostPlayer', tp ? topRows(tp) + partial(S.luOk, S.n) : `<p class="anote">${esc(t('st.noPlayers'))}</p>`);
+  if(S.best) h += attBestHtml(S.best, sec);
   if(S.big) h += sec('st.biggest', crowd(S.big));
   if(S.small) h += sec('st.smallest', crowd(S.small));
   if([S.big, S.small].some(o => o && o.ms.some(m => m.attendance.approx))) h += `<p class="anote">${esc(t('st.unofficial'))}</p>`;

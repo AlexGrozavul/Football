@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1377 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1380 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -54,6 +54,9 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `st.mostTeam` | Most-seen team | Echipa văzută cel mai des |
 | `st.mostPlayer` | Most-seen player | Jucătorul văzut cel mai des |
 | `st.noPlayers` | Calculated from line-ups; none are recorded. | Se calculează din formații; nu este înregistrată niciuna. |
+| `st.best` | Best performance seen | Cea mai bună performanță văzută |
+| `st.bestLine` | {team} vs {opp} | {team} vs {opp} |
+| `st.bestMore` | +{n} more | + încă {n} |
 | `st.biggest` | Biggest crowd | Cea mai mare asistență |
 | `st.smallest` | Smallest crowd | Cea mai mică asistență |
 | `st.unofficial` | * unofficial figure | * cifră neoficială |
