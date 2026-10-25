@@ -1242,6 +1242,13 @@ function alarmAt(ev, al){
       onR11: run({lineups: {home: {xi: xi(), subs: [{minute: 60, on: 'S', off: 'X1', onRating: 11}]}}}),
       subRating: run({lineups: {home: {xi: xi(), subs: [{minute: 60, on: 'S', off: 'X1', rating: 6}]}}}),
       unknownStat: run({stats: {xgot: [1, 2]}}),
+      tBoth: run({lineups: {home: {teamRating: 7.2, xi: xi()}, away: {teamRating: 6.3, xi: xi()}}}),
+      tOne: run({lineups: {home: {teamRating: 7.2, xi: xi()}, away: {xi: xi()}}}),
+      tNull: run({lineups: {home: {teamRating: null, xi: xi()}}}),
+      tEdge: run({lineups: {home: {teamRating: 0, xi: xi()}, away: {teamRating: 10, xi: xi()}}}),
+      t11: run({lineups: {home: {teamRating: 11, xi: xi()}}}), tNeg: run({lineups: {home: {teamRating: -1, xi: xi()}}}),
+      tStr: run({lineups: {home: {teamRating: '7.2', xi: xi()}}}),
+      tOnXi: run({lineups: {home: {xi: Array.from({length: 11}, (_, i) => ({no: i + 1, name: 'X' + i, teamRating: 7}))}}}),
     };
   }, base2);
   check('The validator accepts a block with all the new fields (xg, saves, passes, a rating on an xi item, onRating on a sub), the old shape without them, and nulls as absent',
@@ -1254,24 +1261,30 @@ function alarmAt(ev, al){
     ['bench', /bench 1.*unknown field "rating"/], ['subRating', /subs 1.*unknown field "rating"/], ['unknownStat', /"stats" has an unknown field "xgot"/]];
   check('...and refuses made above total, rating 11 (also -1 and a text), saves 1.5, xg 101, a rating on a bench item or a sub, an unknown stat key, each with a reason that names the field',
     refusedWith.every(([k, re]) => re.test(vrun[k])), JSON.stringify(refusedWith.filter(([k, re]) => !re.test(vrun[k])).map(([k]) => [k, vrun[k]])));
-  const NEWID = 'newfields-' + TAG, NEW2 = 'newfields2-' + TAG, OLDID = 'oldfields-' + TAG;
+  check('The validator accepts "teamRating" on both sides, on one side only, as null (absent) and at the limits 0 and 10; a block without it is still accepted',
+    ['tBoth', 'tOne', 'tNull', 'tEdge'].every(k => vrun[k] === 'ok') && vrun.old === 'ok', JSON.stringify(['tBoth', 'tOne', 'tNull', 'tEdge'].map(k => vrun[k])));
+  const teamRefused = [['t11', /"lineups.home": "teamRating" must be a number from 0 to 10/], ['tNeg', /"teamRating"/], ['tStr', /"teamRating"/], ['tOnXi', /xi 1.*unknown field "teamRating"/]];
+  check('...and refuses a team rating of 11, of -1, of "7.2" as text and a "teamRating" on an xi item, each with a reason that names the field',
+    teamRefused.every(([k, re]) => re.test(vrun[k])), JSON.stringify(teamRefused.filter(([k, re]) => !re.test(vrun[k])).map(([k]) => [k, vrun[k]])));
+  const NEWID = 'newfields-' + TAG, NEW2 = 'newfields2-' + TAG, OLDID = 'oldfields-' + TAG, ONEID = 'onerated-' + TAG;
   const xiOf = (tag, rated) => Array.from({length: 11}, (_, i) => Object.assign({no: i + 1, name: `${tag} Player${i + 1}`}, rated && i < 4 ? {rating: [6.5, 7.4, 9, 10][i]} : {}));
-  const luHome = {formation: '4-4-2', coach: 'Coach H', xi: xiOf('H', true), subs: [{minute: 60, on: 'H Sub Rated', off: 'H Player5', onRating: 6.8}, {minute: 70, on: 'H Sub Plain', off: 'H Player6'}]};
-  const luAway = {coach: 'Coach A', xi: xiOf('A', true), subs: [{minute: 75, on: 'A Sub Rated', off: 'A Player5', onRating: 7.1}]};
+  const luHome = {formation: '4-4-2', coach: 'Coach H', teamRating: 7.2, xi: xiOf('H', true), subs: [{minute: 60, on: 'H Sub Rated', off: 'H Player5', onRating: 6.8}, {minute: 70, on: 'H Sub Plain', off: 'H Player6'}]};
+  const luAway = {coach: 'Coach A', teamRating: 6.3, xi: xiOf('A', true), subs: [{minute: 75, on: 'A Sub Rated', off: 'A Player5', onRating: 7.1}]};
   const PASS_FX = [[532, 606], [220, 294]];
   const mNew = mk(NEWID, {stats: {possession: [58, 42], xg: [1.84, 0.62], saves: [3, 7], passes: PASS_FX}, lineups: {home: luHome, away: luAway}});
   const mNew2 = mk(NEW2, {stats: {passes: [[0, 0], [5, 10]]}});
-  const mOld = mk(OLDID, {stats: {possession: [58, 42], shots: [12, 9]}, lineups: {home: Object.assign({}, luHome, {xi: xiOf('H', false), subs: [{minute: 60, on: 'H Sub Plain', off: 'H Player5'}]})}});
+  const mOld = mk(OLDID, {stats: {possession: [58, 42], shots: [12, 9]}, lineups: {home: Object.assign({}, luHome, {teamRating: undefined, xi: xiOf('H', false), subs: [{minute: 60, on: 'H Sub Plain', off: 'H Player5'}]})}});
+  const mOne = mk(ONEID, {lineups: {home: luHome, away: Object.assign({}, luAway, {teamRating: null})}});
   const sheetNew = async id => {
     await openCard('#meTabMatches', '#meMatches', 'imp:' + id);
     return p5.evaluate(() => ({
       rows: [...document.querySelectorAll('#aStats .abar')].map(b => [...b.querySelectorAll('.lb b, .lb span')].map(e => e.textContent.trim()).join('|')),
       rt: [...document.querySelectorAll('#asheet svg.apitch .rt')].map(e => e.textContent),
       pitchTexts: document.querySelectorAll('#asheet svg.apitch .nm').length,
-      arat: [...document.querySelectorAll('#asheet .arat')].map(e => e.textContent), html: document.getElementById('asheet').innerHTML}));
+      trat: [...document.querySelectorAll('#aluSide .ateamrat')].map(e => e.textContent), arat: [...document.querySelectorAll('#asheet .arat')].map(e => e.textContent), html: document.getElementById('asheet').innerHTML}));
   };
   await sub5('#meTabMatches', '#meMatches'); if(!(await p5.$eval('#aAdd', d => d.open))) await p5.click('#aAdd summary');
-  for(const [m, w] of [[mNew, 'all new fields'], [mNew2, 'passes with a total of 0'], [mOld, 'no new fields']]){
+  for(const [m, w] of [[mNew, 'all new fields'], [mNew2, 'passes with a total of 0'], [mOld, 'no new fields'], [mOne, 'a team rating on the home side only']]){
     const msg = await paste(m);
     check(`Pasting a match with ${w} is accepted`, /^Added 1 imported match/.test(msg), msg);
   }
@@ -1287,6 +1300,8 @@ function alarmAt(ev, al){
   check('The pitch picture shows the four ratings beside the players (6.5, 7.4, 9.0, 10.0), nothing for the other seven; the names are still all there (11)',
     JSON.stringify(sh.rt) === JSON.stringify(['6.5', '7.4', '9.0', '10.0']) && sh.pitchTexts === 11, JSON.stringify([sh.rt, sh.pitchTexts]));
   check('The subs list shows 6.8 beside the rated player who came on and nothing beside the unrated one', JSON.stringify(sh.arat) === JSON.stringify(['6.8']), JSON.stringify(sh.arat));
+  check('The home side header shows "Team rating 7.2" (one decimal) once, under the coach line',
+    JSON.stringify(sh.trat) === JSON.stringify(['Team rating 7.2']), JSON.stringify(sh.trat));
   const geom = async () => p5.evaluate(() => {
     const sheet = document.getElementById('asheet'), out = {over: sheet.scrollWidth > sheet.clientWidth + 1, clip: [], overlap: []};
     const svg = sheet.querySelector('svg.apitch');
@@ -1298,7 +1313,7 @@ function alarmAt(ev, al){
         if(a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h) out.overlap.push(a.t + '/' + b.t);
       }
     }
-    sheet.querySelectorAll('.arow .k, .aev .tx').forEach(e => { const r = e.getBoundingClientRect(), sr = sheet.getBoundingClientRect(); if(r.left < sr.left - 1 || r.right > sr.right + 1) out.clip.push(e.textContent.slice(0, 20)); });
+    sheet.querySelectorAll('.arow .k, .aev .tx, .acoach, .aform, .ateamrat').forEach(e => { const r = e.getBoundingClientRect(), sr = sheet.getBoundingClientRect(); if(r.left < sr.left - 1 || r.right > sr.right + 1) out.clip.push(e.textContent.slice(0, 20)); });
     return out;
   });
   await p5.setViewportSize({width: 360, height: 844}); await p5.waitForTimeout(300);
@@ -1312,6 +1327,8 @@ function alarmAt(ev, al){
     rows: [...document.querySelectorAll('#aluSide .arow .k')].map(e => e.textContent.replace(/\s+/g, ' ').trim()).slice(0, 5)}));
   check('The away side has no formation, so it is a list: the ratings sit beside the names (6.5, 7.4, 9.0, 10.0) and 7.1 beside the player who came on',
     !away.pitch && JSON.stringify(away.arat) === JSON.stringify(['6.5', '7.4', '9.0', '10.0', '7.1']) && away.rows[0] === 'A Player16.5', JSON.stringify(away));
+  const awayTr = await p5.evaluate(() => ({t: [...document.querySelectorAll('#aluSide .ateamrat')].map(e => e.textContent), h: [...document.querySelectorAll('#aluSide .ateamrat')].map(e => e.getBoundingClientRect().height)}));
+  check('The away side header shows "Team rating 6.3", on one line at 360 px', JSON.stringify(awayTr.t) === JSON.stringify(['Team rating 6.3']) && awayTr.h[0] < 24, JSON.stringify(awayTr));
   g = await geom();
   check('At 360 px the list view (names with ratings) stays inside the sheet', !g.over && !g.clip.length, JSON.stringify(g));
   await p5.setViewportSize({width: W, height: H}); await p5.waitForTimeout(200);
@@ -1322,15 +1339,21 @@ function alarmAt(ev, al){
   const w0 = await p5.evaluate(() => [...document.querySelectorAll('#aStats .abar .tr i')].map(i => i.getBoundingClientRect().width));
   check('...and the side with total 0 has no bar (width 0) while the other side has one', w0[0] === 0 && w0[1] > 0, JSON.stringify(w0));
   await closeSheet5();
+  sh = await sheetNew(ONEID);
+  const sideTr = async sd => { await p5.click(`#asheet .asw button[data-side=${sd}]`); await p5.waitForTimeout(200); return p5.evaluate(() => [...document.querySelectorAll('#aluSide .ateamrat')].map(e => e.textContent)); };
+  const oneHome = await sideTr('home'), oneAway = await sideTr('away');
+  check('A team rating on the home side only (away null) draws the label on the home side and nothing on the away side', JSON.stringify(oneHome) === JSON.stringify(['Team rating 7.2']) && oneAway.length === 0, JSON.stringify([oneHome, oneAway]));
+  await sideTr('home');
+  await closeSheet5();
   sh = await sheetNew(OLDID);
   check('A match without any new field draws unchanged: two stat rows, no rating on the pitch, in the subs or anywhere, and no ".arat" in the sheet',
-    JSON.stringify(sh.rows) === JSON.stringify(['58|Possession|42', '12|Shots|9']) && !sh.rt.length && !sh.arat.length && !/arat/.test(sh.html) && sh.pitchTexts === 11, JSON.stringify([sh.rows, sh.rt, sh.arat]));
+    JSON.stringify(sh.rows) === JSON.stringify(['58|Possession|42', '12|Shots|9']) && !sh.rt.length && !sh.arat.length && !/arat/.test(sh.html) && !/ateamrat/.test(sh.html) && !sh.trat.length && sh.pitchTexts === 11, JSON.stringify([sh.rows, sh.rt, sh.arat]));
   await closeSheet5();
-  for(const id of [NEWID, NEW2, OLDID]){
+  for(const id of [NEWID, NEW2, OLDID, ONEID]){
     await openCard('#meTabMatches', '#meMatches', 'imp:' + id); await p5.click('#aImpRemove');
     await p5.waitForFunction(() => document.getElementById('asheet').hidden, null, {timeout: 5000}).catch(() => {}); await p5.waitForTimeout(300);
   }
-  check('...the three test matches are removed again (the list is back to the file\'s matches plus the one imported earlier)', (await p5.$$('#meMatches .acard')).length === fx.n + 1, '');
+  check('...the four test matches are removed again (the list is back to the file\'s matches plus the one imported earlier)', (await p5.$$('#meMatches .acard')).length === fx.n + 1, '');
 
   // ---- Removing an imported match
   await openCard('#meTabMatches', '#meMatches', IMPKEY);
