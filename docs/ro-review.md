@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1345 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1367 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -185,6 +185,28 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `ive.e.title` | Enter a name. | Introdu un nume. |
 | `ive.tooMany` | Not added: at most {max} events at a time. | Neadăugat: cel mult {max} evenimente odată. |
 | `ive.tooManyTotal` | Not added: this device can hold at most {max} imported events. | Neadăugat: acest dispozitiv poate păstra cel mult {max} evenimente importate. |
+| `io.export` | Export | Exportă |
+| `io.exportNone` | Nothing to export yet | Încă nu ai ce exporta |
+| `io.import` | Import | Importă |
+| `io.fileAria` | Choose a JSON file to import | Alege un fișier JSON de importat |
+| `io.exportedM` | Exported {n} imported match(es) and {k} note(s) to {name}. Photos, ticket details and companions are not in the file. | Am exportat {n} meci(uri) importat(e) și {k} notițe în {name}. Pozele, datele biletului și însoțitorii nu sunt în fișier. |
+| `io.exportedE` | Exported {n} imported event(s) and {k} note(s) to {name}. Photos and ticket details are not in the file. | Am exportat {n} eveniment(e) importat(e) și {k} notițe în {name}. Pozele și datele biletului nu sunt în fișier. |
+| `io.tooBig` | Not imported: the file is larger than {mb} MB. Nothing changed. | Neimportat: fișierul depășește {mb} MB. Nu s-a schimbat nimic. |
+| `io.readFail` | Not imported: the file could not be read. Nothing changed. | Neimportat: fișierul nu a putut fi citit. Nu s-a schimbat nimic. |
+| `io.notJson` | Not imported: this is not valid JSON. Nothing changed. | Neimportat: nu este JSON valid. Nu s-a schimbat nimic. |
+| `io.wrongKind` | Not imported: this file is of kind "{kind}", but this tab takes "{want}" files or a plain JSON object or list. Nothing changed. | Neimportat: acest fișier este de tip „{kind}”, dar această filă primește fișiere „{want}” sau un obiect ori o listă JSON simplă. Nu s-a schimbat nimic. |
+| `io.meFile` | Not imported: this is the whole Me backup file, not a matches or events file. Nothing changed. | Neimportat: acesta este fișierul de rezervă complet din Eu, nu un fișier de meciuri sau evenimente. Nu s-a schimbat nimic. |
+| `io.badVersion` | Not imported: this file has version {v}; only version 1 is read. Nothing changed. | Neimportat: fișierul are versiunea {v}; se citește doar versiunea 1. Nu s-a schimbat nimic. |
+| `io.noList` | Not imported: the file has no list "{key}". Nothing changed. | Neimportat: fișierul nu are lista „{key}”. Nu s-a schimbat nimic. |
+| `io.notesShape` | "notes" must be an object with one entry per id | „notes” trebuie să fie un obiect cu câte o intrare pentru fiecare id |
+| `io.noteBadM` | notes for "{id}": must be an object with "note" (text, up to {max} characters) and "supporter" (home, neutral, away or empty) | notițe pentru „{id}”: trebuie să fie un obiect cu „note” (text, până la {max} de caractere) și „supporter” (home, neutral, away sau gol) |
+| `io.noteBadE` | notes for "{id}": must be an object with "note" (text, up to {max} characters) | notițe pentru „{id}”: trebuie să fie un obiect cu „note” (text, până la {max} de caractere) |
+| `io.counts` | {n} new, {m} skipped (already there), {k} notes | {n} noi, {m} sărite (existau deja), {k} notițe |
+| `io.orphans` | {j} note(s) with no matching entry in the file are ignored. | {j} notiță/notițe fără intrare corespunzătoare în fișier sunt ignorate. |
+| `io.confirm` | {counts}. Store them on this device? | {counts}. Le păstrezi pe acest dispozitiv? |
+| `io.store` | Store them | Păstrează-le |
+| `io.nothingNew` | {counts}. Nothing new to store; nothing changed. | {counts}. Nimic nou de păstrat; nu s-a schimbat nimic. |
+| `io.done` | Imported: {counts}. | Importat: {counts}. |
 | `ive.clashFile` | the id "{id}" is already used by a match or an event in data/attended.json | id-ul „{id}” este deja folosit de un meci sau un eveniment din data/attended.json |
 | `ive.clashDevice` | the id "{id}" is already used by an imported match or event on this device | id-ul „{id}” este deja folosit de un meci sau un eveniment importat pe acest dispozitiv |
 | `ive.added` | Added {n} imported event(s). They are marked "Imported on this device". | S-au adăugat {n} eveniment(e) importat(e). Sunt marcate „Importat pe acest dispozitiv”. |
