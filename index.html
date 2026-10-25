@@ -544,6 +544,7 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   #asheet .apitch{display:block;width:100%;height:auto;border-radius:8px;overflow:hidden}
   #asheet .aform{text-align:center;font-weight:700;font-size:15px;margin:6px 0 2px}
   #asheet .acoach{text-align:center;color:var(--dim);font-size:12.5px;margin-bottom:6px}
+  #asheet .ateamrat{text-align:center;color:var(--dim);font-size:12.5px;font-weight:700;margin:-2px 0 6px;overflow-wrap:anywhere}
   #asheet .aev{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
   #asheet .aev .m{flex:0 0 46px;font-weight:700;color:var(--dim)}
   #asheet .aev .ic{flex:0 0 18px;text-align:center}
@@ -914,7 +915,7 @@ const I18N = {
     'att.kickoff': 'Kick-off {time} (local time)',
     'att.attendance': 'Attendance', 'att.referee': 'Referee', 'att.after90': 'After 90 minutes', 'att.atStadium': 'At the stadium',
     'att.yes': 'yes', 'att.no': 'no', 'att.soldOut': 'sold out', 'att.fullHouse': 'full house', 'att.approx': 'approximate',
-    'lu.title': 'Line-ups', 'lu.coach': 'Coach', 'lu.bench': 'Unused substitutes', 'lu.subs': 'Substitutions',
+    'lu.title': 'Line-ups', 'lu.coach': 'Coach', 'lu.teamRating': 'Team rating {n}', 'lu.bench': 'Unused substitutes', 'lu.subs': 'Substitutions',
     'lu.xi': 'Starting eleven', 'lu.uncertain': 'pairing unconfirmed', 'lu.pitch': 'Pitch: {team}, {formation}',
     'tl.title': 'Timeline', 'tl.pen': 'pen.', 'tl.secondYellow': 'second yellow',
     'sx.title': 'Stats', 'sx.possession': 'Possession', 'sx.shots': 'Shots', 'sx.onTarget': 'Shots on target',
@@ -2165,7 +2166,7 @@ const I18N = {
     'att.kickoff': 'Ora de start {time} (ora locală)',
     'att.attendance': 'Asistență', 'att.referee': 'Arbitru', 'att.after90': 'După 90 de minute', 'att.atStadium': 'La stadion',
     'att.yes': 'da', 'att.no': 'nu', 'att.soldOut': 'sold-out', 'att.fullHouse': 'tribune pline', 'att.approx': 'aproximativ',
-    'lu.title': 'Formații', 'lu.coach': 'Antrenor', 'lu.bench': 'Rezerve neutilizate', 'lu.subs': 'Schimbări',
+    'lu.title': 'Formații', 'lu.coach': 'Antrenor', 'lu.teamRating': 'Rating echipă {n}', 'lu.bench': 'Rezerve neutilizate', 'lu.subs': 'Schimbări',
     'lu.xi': 'Primul unsprezece', 'lu.uncertain': 'pereche neconfirmată', 'lu.pitch': 'Teren: {team}, {formation}',
     'tl.title': 'Cronologie', 'tl.pen': 'pen.', 'tl.secondYellow': 'al doilea galben',
     'sx.title': 'Statistici', 'sx.possession': 'Posesie', 'sx.shots': 'Șuturi', 'sx.onTarget': 'Șuturi pe poartă',
@@ -8741,9 +8742,10 @@ function attCheckMatch(r){
         if(lu == null) continue;
         const w = `"lineups.${sd}"`;
         if(!isObj(lu)){ bad(V('mustObject', {w})); continue; }
-        only(lu, ['formation', 'coach', 'captain', 'xi', 'subs', 'bench'], w);
+        only(lu, ['formation', 'coach', 'captain', 'teamRating', 'xi', 'subs', 'bench'], w);
         if(lu.formation != null && !(typeof lu.formation === 'string' && /^\d(-\d){1,5}$/.test(lu.formation))) bad(`${w}: ${V('formation')}`);
         for(const f of ['coach', 'captain']) if(lu[f] != null && !isStr(lu[f], 80)) bad(`${w}: ${V('text', {k: f})}`);
+        if(lu.teamRating != null && !isNum10(10)(lu.teamRating)) bad(`${w}: ${V('rating', {k: 'teamRating'})}`);
         const plist = (k, max, keys, fn) => {
           if(lu[k] == null) return;
           if(!Array.isArray(lu[k]) || lu[k].length > max){ bad(`${w}: ${V('list', {k, max})}`); return; }
@@ -9418,6 +9420,7 @@ function attLineupSide(m, side){
     : `<div class="aeyes">${esc(t('lu.xi'))}</div><div class="alist">${(lu.xi || []).map(p =>
         `<div class="arow"><span class="k">${esc(p.name)}${lu.captain === p.name ? ' (C)' : ''}${attRate(p.rating)}</span><span class="v">${p.no == null ? '?' : esc(p.no)}</span></div>`).join('')}</div>`;
   h += `<div class="acoach">${esc(t('lu.coach'))}: ${esc(lu.coach || t('att.na'))}</div>`;
+  if(typeof lu.teamRating === 'number' && Number.isFinite(lu.teamRating)) h += `<div class="ateamrat">${esc(t('lu.teamRating', {n: lu.teamRating.toFixed(1)}))}</div>`;
   if(lu.subs && lu.subs.length){
     h += `<div class="aeyes">${esc(t('lu.subs'))}</div><div class="alist">` + lu.subs.map(s =>
       `<div class="aev"><div class="m">${esc(s.minute)}'</div><div class="tx"><div>↑ ${esc(s.on)}${attRate(s.onRating)}</div><em>↓ ${esc(s.off)}${s.uncertain ? ' · ' + esc(t('lu.uncertain')) : ''}</em></div></div>`).join('') + '</div>';

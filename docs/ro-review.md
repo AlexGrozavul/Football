@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1344 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1345 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -74,6 +74,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `att.approx` | approximate | aproximativ |
 | `lu.title` | Line-ups | Formații |
 | `lu.coach` | Coach | Antrenor |
+| `lu.teamRating` | Team rating {n} | Rating echipă {n} |
 | `lu.bench` | Unused substitutes | Rezerve neutilizate |
 | `lu.subs` | Substitutions | Schimbări |
 | `lu.xi` | Starting eleven | Primul unsprezece |
