@@ -32,7 +32,9 @@ jobs:
           LANDING: https://www.eintracht.de/tickets/
           # Empty: stage 1 (robots.txt, landing page, its ticket links).
           # One URL per line: stage 2 (robots.txt, then these pages only).
-          PAGES: ""
+          PAGES: |
+            links https://www.eintracht.de/
+            archive links https://www.eintracht.de/tickets/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -80,7 +82,19 @@ jobs:
             }
             return best ? [best[0] === 'allow', best] : [true, null];
           }
-          async function render(browser, url, wantLinks) {
+          // Latest capture with status 200 in the Internet Archive, raw (id_) copy.
+          async function archived(url) {
+            await robotsFor('web.archive.org');
+            await sleep(1000);
+            try {
+              const r = await fetch(`https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&filter=statuscode:200&limit=-1&fl=timestamp,original`, { headers: { 'User-Agent': UA } });
+              const j = await r.json();
+              if (j.length < 2) { post(`### ARCHIVE ${url}\nno capture with status 200`); return null; }
+              const [ts, orig] = j[j.length - 1];
+              return [`https://web.archive.org/web/${ts}id_/${orig}`, ts];
+            } catch (e) { post(`### ARCHIVE ${url}\nCDX lookup failed: ${e.message}`); return null; }
+          }
+          async function render(browser, url, wantLinks, label = 'PAGE') {
             const u = new URL(url);
             const rb = await robotsFor(u.host);
             if (!rb.ok) { post(`### STOPPED ${url}\nrobots.txt of ${u.host} answered ${rb.status}; page not fetched.`); return null; }
@@ -107,7 +121,7 @@ jobs:
               await page.close(); return null;
             }
             const cut = text.length > MAX;
-            post(`### PAGE ${url}\nfinal URL ${finalUrl} - HTTP ${status} - title "${title}" - network idle: ${idle} - ${text.length} chars${cut ? `, CUT at ${MAX}` : ''}\n\n\`\`\`\n${text.slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
+            post(`### ${label} ${url}\nfinal URL ${finalUrl} - HTTP ${status} - title "${title}" - network idle: ${idle} - ${text.length} chars${cut ? `, CUT at ${MAX}` : ''}\n\n\`\`\`\n${text.slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
             let links = null;
             if (wantLinks) {
               const all = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => [a.href, a.textContent.replace(/\s+/g, ' ').trim()]));
@@ -125,7 +139,15 @@ jobs:
             const browser = await chromium.launch();
             const pages = (process.env.PAGES || '').split('\n').map(s => s.trim()).filter(Boolean).slice(0, 12);
             if (!pages.length) await render(browser, process.env.LANDING, true);
-            for (const p of pages) await render(browser, p, false);
+            // A line is "[archive] [links] URL".
+            for (const line of pages) {
+              const w = line.split(/\s+/), url = w[w.length - 1];
+              const links = w.includes('links');
+              if (w.includes('archive')) {
+                const a = await archived(url);
+                if (a) await render(browser, a[0], links, `ARCHIVE (capture ${a[1]}, original ${url})`);
+              } else await render(browser, url, links);
+            }
             await browser.close();
           })().catch(e => { console.error(e); process.exit(1); });
           JS
