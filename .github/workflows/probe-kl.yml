@@ -34,23 +34,40 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             fck.de
-            www.fck.de
             support.fck.de
           FULL: |
-            https://support.fck.de/support/solutions
-            https://fck.de/blog/faninfos-fckboc2627/
-            https://fck.de/blog/faninfos-fcksgs2627/
-            https://fck.de/blog/saisonkampagne-mitglieder2627/
+            https://support.fck.de/support/solutions/articles/103000261927-preise-tagestickets
+            https://support.fck.de/support/solutions/articles/103000261951-wie-kann-ich-tickets-erwerben-
+            https://support.fck.de/support/solutions/articles/103000261962-ben%C3%B6tige-ich-f%C3%BCr-mein-kind-eine-eintrittskarte-
+            https://support.fck.de/support/solutions/articles/103000261965-kann-ich-tickets-stornieren-
+            https://support.fck.de/support/solutions/articles/103000262374-wer-erh%C3%A4lt-eine-erm%C3%A4%C3%9Figung-
+            https://support.fck.de/support/solutions/articles/103000262377-wo-bekomme-ich-am-spieltag-tickets-
+            https://support.fck.de/support/solutions/articles/103000262393-was-kostet-eine-dauerkarte-
+            https://support.fck.de/support/solutions/articles/103000266786-wie-funktioniert-der-exklusive-vorverkauf-f%C3%BCr-mitglieder-
+            https://support.fck.de/support/solutions/articles/103000288011-wie-funktioniert-die-warteschlange-beim-vorverkauf-
+            https://support.fck.de/support/solutions/articles/103000295963-informationen-zum-dauerkartenverkauf-2026-27
+            https://support.fck.de/support/solutions/articles/103000408319-physische-und-digitale-tickets-im-%C3%BCberblick
+            https://support.fck.de/support/solutions/articles/103000408723-wie-leite-ich-ein-ticket-weiter-
+            https://support.fck.de/support/solutions/folders/103000618078
+            https://support.fck.de/support/solutions/folders/103000618198
           PDFS: |
           NOTICES: |
-            https://support.fck.de/support/home
           DISCOVER: |
           PAGES: |
-            https://support.fck.de/support/home
-            https://support.fck.de/support/solutions
-            https://fck.de/blog/faninfos-fckboc2627/
-            https://fck.de/blog/faninfos-fcksgs2627/
-            https://fck.de/blog/saisonkampagne-mitglieder2627/
+            https://support.fck.de/support/solutions/articles/103000261927-preise-tagestickets
+            https://support.fck.de/support/solutions/articles/103000261951-wie-kann-ich-tickets-erwerben-
+            https://support.fck.de/support/solutions/articles/103000261962-ben%C3%B6tige-ich-f%C3%BCr-mein-kind-eine-eintrittskarte-
+            https://support.fck.de/support/solutions/articles/103000261965-kann-ich-tickets-stornieren-
+            https://support.fck.de/support/solutions/articles/103000262374-wer-erh%C3%A4lt-eine-erm%C3%A4%C3%9Figung-
+            https://support.fck.de/support/solutions/articles/103000262377-wo-bekomme-ich-am-spieltag-tickets-
+            https://support.fck.de/support/solutions/articles/103000262393-was-kostet-eine-dauerkarte-
+            https://support.fck.de/support/solutions/articles/103000266786-wie-funktioniert-der-exklusive-vorverkauf-f%C3%BCr-mitglieder-
+            https://support.fck.de/support/solutions/articles/103000288011-wie-funktioniert-die-warteschlange-beim-vorverkauf-
+            https://support.fck.de/support/solutions/articles/103000295963-informationen-zum-dauerkartenverkauf-2026-27
+            https://support.fck.de/support/solutions/articles/103000408319-physische-und-digitale-tickets-im-%C3%BCberblick
+            https://support.fck.de/support/solutions/articles/103000408723-wie-leite-ich-ein-ticket-weiter-
+            https://support.fck.de/support/solutions/folders/103000618078
+            https://support.fck.de/support/solutions/folders/103000618198
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -61,6 +78,10 @@ jobs:
           const FORBIDDEN = /acquista|carrello|accedi|registrati|ticketone|vivaticket|eventim|kaufen|buy|bestellen|warenkorb|cart|checkout|login|anmelden|registrier|konto|account|queue|warteraum|warteschlange|waiting|sitzplan|saalplan|placeSelection/i;
           // The organiser's own hosts; web.archive.org only for labelled archive copies.
           const bare = h => h.replace(/^www\./, '');
+          // Run 4: the club's read-only knowledge-base articles explain the queue and buying;
+          // they are not a queue or a shop, so only they are exempt from the word list.
+          const KB = /^https:\/\/support\.fck\.de\/support\/solutions\/(articles|folders)\/[0-9]+/;
+          const isForbidden = u => FORBIDDEN.test(u) && !KB.test(u);
           const sleep = ms => new Promise(r => setTimeout(r, ms));
           let n = 0;
           function post(body) {
@@ -110,7 +131,7 @@ jobs:
 
           async function render(browser, url) {
             const u = new URL(url);
-            if (FORBIDDEN.test(url)) { post(`### STOPPED ${url}\nForbidden URL (buy/cart/checkout/login/queue/seat plan); not opened.`); return; }
+            if (isForbidden(url)) { post(`### STOPPED ${url}\nForbidden URL (buy/cart/checkout/login/queue/seat plan); not opened.`); return; }
             const [ok, why] = allowed(u.host, u.pathname + u.search);
             if (!ok) { post(`### STOPPED ${url}\nrobots.txt: ${why}; not opened.`); return; }
             let resp, err = '', used = 0;
@@ -120,7 +141,7 @@ jobs:
               ctx = await browser.newContext({ userAgent: UA, locale: 'de-DE' });
               page = await ctx.newPage();
               // Never follow a navigation (link, redirect, script) to a forbidden URL.
-              await page.route('**/*', r => (r.request().isNavigationRequest() && FORBIDDEN.test(r.request().url())) ? r.abort() : r.continue());
+              await page.route('**/*', r => (r.request().isNavigationRequest() && isForbidden(r.request().url())) ? r.abort() : r.continue());
               await sleep(1000);
               try { resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: limit }); err = ''; used = limit; break; }
               catch (e) { err = `${e.message.split('\n')[0]} (limit ${limit / 1000} s)`; }
@@ -138,7 +159,7 @@ jobs:
             const status = resp ? resp.status() : 'none';
             const final = page.url();
             // A server redirect is not seen by page.route: refuse to record it.
-            if (FORBIDDEN.test(final)) { post(`### STOPPED ${url}\nRedirected to a forbidden URL (login/checkout/queue); nothing recorded.`); await ctx.close(); return; }
+            if (isForbidden(final)) { post(`### STOPPED ${url}\nRedirected to a forbidden URL (login/checkout/queue); nothing recorded.`); await ctx.close(); return; }
             if (bare(new URL(final).host) !== bare(u.host)) { post(`### STOPPED ${url}\nRedirected to another host (${new URL(final).host}); nothing recorded.`); await ctx.close(); return; }
             const title = await page.title();
             const text0 = await page.evaluate(() => {
@@ -173,14 +194,14 @@ jobs:
 
           async function pdf(url) {
             const u = new URL(url);
-            if (FORBIDDEN.test(url)) { post(`### STOPPED ${url}\nForbidden URL; not fetched.`); return; }
+            if (isForbidden(url)) { post(`### STOPPED ${url}\nForbidden URL; not fetched.`); return; }
             if (!robots[u.host]) await fetchRobots(u.host);
             const [ok, why] = allowed(u.host, u.pathname + u.search);
             if (!ok) { post(`### STOPPED ${url}\nrobots.txt: ${why}; not fetched.`); return; }
             await sleep(1000);
             const r = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(90000) });
             const final = r.url;
-            if (r.status !== 200 || FORBIDDEN.test(final) || bare(new URL(final).host) !== bare(u.host)) {
+            if (r.status !== 200 || isForbidden(final) || bare(new URL(final).host) !== bare(u.host)) {
               post(`### STOPPED ${url}\nHTTP ${r.status}, final URL ${final}; nothing recorded.`); return; }
             const name = `p${++n}.pdf`;
             fs.writeFileSync(name, Buffer.from(await r.arrayBuffer()));
