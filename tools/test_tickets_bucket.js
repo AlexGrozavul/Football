@@ -19,7 +19,7 @@
 //    Bucket list still does;
 //  - the Bucket list shows every bucketList entry; since 2026-10-08 it has NO Reminders section and draws no
 //    ticketEvents entry at all (the data is kept), and a club block still shows "Typically opens";
-//  - the Frankenderby entry shows Nürnberg (host) then Fürth, Fürth "not researched"; the Milan
+//  - the Frankenderby entry shows Nürnberg (host) then Fürth, Fürth's researched rules (from the files); the Milan
 //    derby entry shows AC Milan and Inter; every entry says event rules are not researched yet;
 //  - no inferred (or disputed) date is shown at day level anywhere on either tab;
 //  - no script error.
@@ -222,7 +222,14 @@ const server = http.createServer((req, res) => {
   const frank = B.inside.find(c => c.id === 'frankenderby');
   check('Frankenderby: shows Nürnberg, host, first, then Fürth', !!frank && frank.clubs.map(c => c.qid).join() === 'Q15786,Q153539' &&
     /host/.test(frank.clubs[0].head), frank ? frank.clubs.map(c => c.head).join(' | ') : 'no card');
-  check('Frankenderby: Fürth "not researched"', !!frank && /No ticket rules researched for SpVgg Greuther Fürth yet\./.test(frank.clubs[1]?.text || ''));
+  // Until its own ticket research (2026-10-26) Fürth's block said "No ticket rules researched for ... yet"; once it has rows of
+  // its own, the block must show them. Read from the files.
+  const sgfRules = csv('data/club-ticket-rules.csv').filter(r => r.clubQid === 'Q153539' && (r.team || 'men') === 'men' && (r.scope || 'general') === 'general');
+  check(sgfRules.length ? "Frankenderby: Fürth's researched rules are shown" : 'Frankenderby: Fürth "not researched"',
+    !!frank && (sgfRules.length
+      ? /Researched rules/.test(frank.clubs[1]?.text || '') && sgfRules.every(r => norm(frank.clubs[1].text).includes(norm(r.rule)))
+      : /No ticket rules researched for SpVgg Greuther Fürth yet\./.test(frank.clubs[1]?.text || '')),
+    frank ? (frank.clubs[1]?.text || '').slice(0, 200) : 'no card');
   check('Bucket list: a club block keeps its "Typically opens" (month-level pattern; only the ticketEvents reminders are gone)',
     !!frank && /Typically opens/.test(frank.clubs[0].text));
   check("Frankenderby: Nürnberg's researched rules are shown, Germany's national line on top",
