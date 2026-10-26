@@ -33,20 +33,19 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            en.wikipedia.org
+            www.figc.it
           FULL: |
-            https://en.wikipedia.org/wiki/2026%E2%80%9327_Serie_A
-            https://en.wikipedia.org/wiki/Serie_A
+            https://www.figc.it/it/federazione/norme
+            https://www.figc.it/it/federazione/comunicati-ufficiali
+            https://www.figc.it/it/federazione
           PDFS: |
+            https://files.figc.it/version/c:ZmUzYzk0MzUtMzU0Zi00:YTk3YzZiZGEtYmExYi00/244%20-%20Deroga%20art.%2051%20NOIF%20-%20Determinazione%20classifica%20Campionato%20Serie%20A%20ss%202026%20-%202027.pdf
           NOTICES: |
           DISCOVER: |
-            https://en.wikipedia.org/wiki/Italian_Football_Federation
-            https://en.wikipedia.org/wiki/UEFA_Champions_League
           PAGES: |
-            https://en.wikipedia.org/wiki/2026%E2%80%9327_Serie_A
-            https://en.wikipedia.org/wiki/Serie_A
-            https://en.wikipedia.org/wiki/Italian_Football_Federation
-            https://en.wikipedia.org/wiki/UEFA_Champions_League
+            https://www.figc.it/it/federazione/norme
+            https://www.figc.it/it/federazione/comunicati-ufficiali
+            https://www.figc.it/it/federazione
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
