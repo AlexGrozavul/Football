@@ -35,24 +35,22 @@ jobs:
           ROBOTS: |
             fck.de
             www.fck.de
-            shop.fck.de
+            support.fck.de
           FULL: |
-            https://shop.fck.de/Informationen/ATGB/
-            https://fck.de/fans/stadionbesuch/
-            https://fck.de/fck/fritz-walter-stadion/
-            https://fck.de/fck/mitgliedschaft/
+            https://support.fck.de/support/solutions
+            https://fck.de/blog/faninfos-fckboc2627/
+            https://fck.de/blog/faninfos-fcksgs2627/
+            https://fck.de/blog/saisonkampagne-mitglieder2627/
           PDFS: |
           NOTICES: |
+            https://support.fck.de/support/home
           DISCOVER: |
           PAGES: |
-            https://shop.fck.de/Informationen/AGB/
-            https://shop.fck.de/Informationen/ATGB/
-            https://fck.de/fans/stadionbesuch/
-            https://fck.de/fck/fritz-walter-stadion/
-            https://fck.de/fck/mitgliedschaft/
-            https://fck.de/fck/mitgliedschaft/mitglied-werden/
-            https://fck.de/news/
-            https://fck.de/fans/fans-beim-fck/fanbetreuung/
+            https://support.fck.de/support/home
+            https://support.fck.de/support/solutions
+            https://fck.de/blog/faninfos-fckboc2627/
+            https://fck.de/blog/faninfos-fcksgs2627/
+            https://fck.de/blog/saisonkampagne-mitglieder2627/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -206,7 +204,7 @@ jobs:
                   // Run 1: the host's legal or terms notice, taken from the landing page's own link list.
                   if (links && lines(process.env.NOTICES).includes(url)) {
                     const host = new URL(url).host;
-                    const legal = [...new Set(links.filter(l => /impressum|nutzungsbedingungen|agb|rechtlich|legal|terms|disclaimer/i.test(l.split(' | ')[0]))
+                    const legal = [...new Set(links.filter(l => /impressum|nutzungsbedingungen|agb|rechtlich|legal|terms|disclaimer|datenschutz|privacy/i.test(l.split(' | ')[0]))
                       .map(l => l.split(' | ').pop()).filter(h => { try { return bare(new URL(h).host) === bare(host); } catch { return false; } }))].slice(0, 4);
                     post(`### Notice links chosen from the link list of ${url}\n${legal.join('\n') || 'none found'}`);
                     for (const l of legal) {
@@ -232,7 +230,7 @@ jobs:
                       const site = byHost[h].href;
                       if (!robots[h]) await fetchRobots(h);
                       const own = await render(browser, site);
-                      const legal = [...new Set((own || []).filter(l => /impressum|nutzungsbedingungen|agb|rechtlich|legal|terms|disclaimer/i.test(l.split(' | ')[0]))
+                      const legal = [...new Set((own || []).filter(l => /impressum|nutzungsbedingungen|agb|rechtlich|legal|terms|disclaimer|datenschutz|privacy/i.test(l.split(' | ')[0]))
                         .map(l => l.split(' | ').pop()).filter(x => { try { return new URL(x).host === h; } catch { return false; } }))].slice(0, 3);
                       post(`### Notice links chosen from the link list of ${site}\n${legal.join('\n') || 'none found'}`);
                       for (const l of legal) {
