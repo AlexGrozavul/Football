@@ -34,17 +34,19 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             www.sgf1903.de
+            res.cloudinary.com
           FULL: |
-            https://www.sgf1903.de/das-kleeblatt/verein/faq
-            https://www.sgf1903.de/das-kleeblatt/verein/mitglied-werden
+            https://www.sgf1903.de/news/abseits-des-rasens/infos-zum-heimspiel-gegen-braunschweig
+            https://www.sgf1903.de/news/abseits-des-rasens/infos-zum-heimspiel-gegen-magdeburg
+            https://www.sgf1903.de/news/abseits-des-rasens/tickets-fuer-die-naechsten-partien
           PDFS: |
           RAW: |
-            https://www.sgf1903.de/sitemap-0.xml
           NOTICES: |
           DISCOVER: |
           PAGES: |
-            https://www.sgf1903.de/das-kleeblatt/verein/faq
-            https://www.sgf1903.de/das-kleeblatt/verein/mitglied-werden
+            https://www.sgf1903.de/news/abseits-des-rasens/infos-zum-heimspiel-gegen-braunschweig
+            https://www.sgf1903.de/news/abseits-des-rasens/infos-zum-heimspiel-gegen-magdeburg
+            https://www.sgf1903.de/news/abseits-des-rasens/tickets-fuer-die-naechsten-partien
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
