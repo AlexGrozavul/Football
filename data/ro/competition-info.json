@@ -110,13 +110,13 @@
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C29;C30#text": {
-  "en": "f6f47690",
-  "ro": "Bilete pentru finală, cum s-a procedat la finala 2025-26 (nimic publicat pentru 2027 pe paginile citite): fiecare finalistă a primit un contingent și și-a informat suporterii despre vânzare pe propriile canale; biletele pentru vânzarea publică au fost atribuite prin tragere la sorți între solicitanți după o fază de înscriere; spectatorii cu dizabilități au solicitat printr-un formular separat; biletele VIP s-au vândut pe portalul de bilete DFB. Peluza suporterilor fiecărei finaliste a fost trasă la sorți la întâlnirea semifinalistelor.",
+  "en": "e6b9a7a7",
+  "ro": "Biletele pentru finala din 2025-26 (FC Bayern München - VfB Stuttgart, mai 2026, Olympiastadion Berlin), așa cum le-a descris DFB în aprilie 2026: fiecare finalistă a primit un contingent și și-a anunțat suporterii despre vânzare pe propriile canale; biletele pentru vânzarea publică au fost repartizate prin tragere la sorți între solicitanți, după o fază de înscriere; spectatorii cu dizabilități s-au înscris printr-un formular separat; biletele VIP s-au vândut în portalul de bilete al DFB. Peluza fiecărei finaliste a fost trasă la sorți la întâlnirea semifinalistelor. Acest rând nu spune nimic despre finala din 2026-27.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C29;C30#basis": {
-  "en": "8ae091b9",
-  "ro": "observat în ciclul trecut: știrile DFB din aprilie 2026 despre finala 2025-26",
+  "en": "41a6a245",
+  "ro": "publicat: două știri datate ale DFB din aprilie 2026 despre finala din 2025-26",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C25;C26;C24#text": {
@@ -125,23 +125,23 @@
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C25;C26;C24#basis": {
-  "en": "be1e918f",
-  "ro": "publicat: lista câștigătorilor până la 2025/2026; eticheta Stand a tabelului de recorduri (mai 2024) este depășită",
+  "en": "3131d6c6",
+  "ro": "O singură sursă: C25, C26 și C24 sunt toate pagini ale DFB, deci contează ca o singură sursă, și niciuna nu arată o dată actuală pentru aceste fapte (lista câștigătoarelor nu are dată Stand; eticheta Stand a tabelului recordurilor, mai 2024, este depășită). Lista câștigătoarelor până la 2025/2026.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C31;C33#text": {
-  "en": "89640b1d",
-  "ro": "Informațiile pentru fani la finală vin de la DFB cu puțin înainte de finală, pe o pagină de informații pentru fani; în 2026 au acoperit drumul spre stadion, ce se poate introduce, problemele cu biletele, accesibilitatea, punctele de întâlnire ale fanilor și contactele responsabililor cu fanii ai cluburilor și ai DFB. Și finalistele își publică propriile informații pentru fani. La data verificării pagina pentru 2027 conține doar data și Berlinul.",
+  "en": "974d5632",
+  "ro": "Informațiile pentru suporteri la finala din 2025-26 (mai 2026): DFB le-a publicat ca știre în mai 2026, despre drumul spre stadion, ce se poate aduce, probleme cu biletele, accesibilitate, punctele de întâlnire ale suporterilor și contactele responsabililor cu suporterii ai cluburilor și ai DFB. La data verificării, pagina DFB cu informații pentru suporteri la finala din 2027 arată doar data și Berlinul.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C31;C33#basis": {
-  "en": "40f44f1b",
-  "ro": "observat în ciclul trecut: știrea cu informații pentru fani din 2026; pagina pentru 2027 spune că informațiile vin cu puțin înainte de finală",
+  "en": "349506a2",
+  "ro": "publicat: știrea datată a DFB din mai 2026 cu informații pentru suporteri la finala din 2025-26; pagina DFB cu informații pentru suporteri la finala din 2027, la data verificării",
   "status": "machine-unchecked"
  },
  "de-bundesliga|format|C35;C34#text": {
-  "en": "91ed21fa",
-  "ro": "18 cluburi în 2026-27: calendarul-cadru al DFB vorbește despre seriile de 18 cluburi ale Bundesligii și ale 2. Bundesliga. Sezonul are un tur (Hinrunde) și un retur (Rückrunde). Punctajul, criteriile de departajare și numărul de meciuri pe club nu sunt precizate pe nicio pagină care a putut fi citită; regulamentul propriu al ligii (Ligastatut al DFL) nu a putut fi deschis.",
+  "en": "d068b949",
+  "ro": "18 cluburi în 2026-27, conform calendarului-cadru al DFB, care vorbește despre seriile de 18 cluburi ale Bundesligii și ale 2. Bundesliga și împarte sezonul într-un tur (Hinrunde) și un retur (Rückrunde). Punctajul, criteriile de departajare și numărul de meciuri pe club nu sunt precizate pe nicio pagină care a putut fi citită; regulamentul propriu al ligii (Ligastatut al DFL) nu a putut fi deschis.",
   "status": "machine-unchecked"
  },
  "de-bundesliga|format|C35;C34#basis": {
@@ -150,8 +150,8 @@
   "status": "machine-unchecked"
  },
  "de-bundesliga|qualification|C34#text": {
-  "en": "6eab0245",
-  "ro": "Un club are nevoie de o licență de la DFL ca să joace în Bundesliga: DFL acordă licențele cluburilor și societăților lor pe propria răspundere, după criterii sportive, tehnice, organizatorice și economice, și emite pentru aceasta un statut propriu. Locurile câștigate pe teren sunt la promovare și retrogradare.",
+  "en": "8d67f4f6",
+  "ro": "Potrivit statutului DFB, un club are nevoie de o licență de la DFL ca să joace în Bundesliga: DFL acordă licențele cluburilor și societăților lor pe propria răspundere, după criterii sportive, tehnice, organizatorice și economice, și emite pentru aceasta un statut propriu. Locurile câștigate pe teren sunt la promovare și retrogradare.",
   "status": "machine-unchecked"
  },
  "de-bundesliga|qualification|C34#basis": {
@@ -160,8 +160,8 @@
   "status": "machine-unchecked"
  },
  "de-bundesliga|promotion-relegation|C34;C20;C35#text": {
-  "en": "6110d88d",
-  "ro": "Statutul DFB obligă DFL să asigure suficientă promovare și retrogradare între Bundesliga și 2. Bundesliga, iar regulamentul de joc al DFB enumeră meciurile de baraj (Relegationsspiele) dintre cele două printre meciurile organizate de DFL. În 2026-27 ele trebuie încheiate până la începutul lui iunie 2027. Câte cluburi retrogradează direct și ce loc joacă barajul nu este precizat pe nicio pagină a organizatorului care a putut fi citită (vezi rândul din Wikipedia).",
+  "en": "543cafad",
+  "ro": "Statutul DFB obligă DFL să asigure suficientă promovare și retrogradare între Bundesliga și 2. Bundesliga, iar regulamentul de joc al DFB enumeră meciurile de baraj (Relegationsspiele) dintre cele două printre meciurile organizate de DFL. Conform calendarului-cadru al DFB, în 2026-27 ele trebuie încheiate până la începutul lui iunie 2027. Câte cluburi retrogradează direct și ce loc joacă barajul nu este precizat pe nicio pagină a organizatorului care a putut fi citită (vezi rândul din Wikipedia).",
   "status": "machine-unchecked"
  },
  "de-bundesliga|promotion-relegation|C34;C20;C35#basis": {
@@ -170,8 +170,8 @@
   "status": "machine-unchecked"
  },
  "de-bundesliga|season-window|C35#text": {
-  "en": "eccfd9e5",
-  "ro": "2026-27: începe la sfârșitul lui august 2026. Ultimele meciuri din 2026 sunt la sfârșitul lui decembrie, când liga intră în pauza de iarnă după etapa 14, cu turul încă neterminat; se reia în al doilea weekend din ianuarie 2027, urmat imediat de o etapă în mijlocul săptămânii. Se încheie la sfârșitul lui mai 2027, cu o săptămână înaintea finalei DFB-Pokal, cu toate meciurile ultimei etape jucate în același timp. Turul nu are etape în mijlocul săptămânii; weekendul de 1 Mai din 2027 este ținut liber de meciuri printr-un acord cu autoritățile de securitate, ceea ce adaugă o etapă în mijlocul săptămânii în retur. Doar la nivel de lună; zilele sunt pe pagina citată.",
+  "en": "a05d3143",
+  "ro": "2026-27, conform calendarului-cadru al DFB: începe la sfârșitul lui august 2026. Ultimele meciuri din 2026 sunt la sfârșitul lui decembrie, când liga intră în pauza de iarnă după etapa 14, cu turul încă neterminat; se reia în al doilea weekend din ianuarie 2027, urmat imediat de o etapă în mijlocul săptămânii. Se încheie la sfârșitul lui mai 2027, cu o săptămână înaintea finalei DFB-Pokal, cu toate meciurile ultimei etape jucate în același timp. Turul nu are etape în mijlocul săptămânii; weekendul de 1 Mai din 2027 este ținut liber de meciuri printr-un acord cu autoritățile de securitate, ceea ce adaugă o etapă în mijlocul săptămânii în retur. Doar la nivel de lună; zilele sunt pe pagina citată.",
   "status": "machine-unchecked"
  },
  "de-bundesliga|season-window|C35#basis": {
@@ -180,13 +180,13 @@
   "status": "machine-unchecked"
  },
  "de-bundesliga|schedule-announcement|C35;C34#text": {
-  "en": "77883a42",
-  "ro": "Prezidiul DFB a adoptat calendarul-cadru masculin (Rahmenterminkalender) pentru 2026-27 în noiembrie 2025, în singurul ciclu citit; potrivit statutului DFB, DFL îl întocmește în acord cu DFB. Când apar etapele, cine stabilește ora de start exactă și cu cât timp înainte nu s-a citit: paginile proprii ale ligii nu au putut fi deschise.",
+  "en": "75b9e78f",
+  "ro": "Prezidiul DFB a adoptat calendarul-cadru masculin (Rahmenterminkalender) pentru 2026-27 în noiembrie 2025 (știre DFB); potrivit statutului DFB, DFL îl întocmește în acord cu DFB.",
   "status": "machine-unchecked"
  },
  "de-bundesliga|schedule-announcement|C35;C34#basis": {
-  "en": "8f9c6fec",
-  "ro": "observat în ciclul trecut: știrea DFB din noiembrie 2025; DFB-Satzung § 16a Nr. 5",
+  "en": "090a33d4",
+  "ro": "publicat: știrea DFB din noiembrie 2025 despre calendarul-cadru 2026/2027; DFB-Satzung § 16a Nr. 5",
   "status": "machine-unchecked"
  },
  "de-bundesliga|tracking|C39;C35;C36#text": {
@@ -200,8 +200,8 @@
   "status": "machine-unchecked"
  },
  "de-bundesliga|other|C34;C20;C35#text": {
-  "en": "7c2ad555",
-  "ro": "Identitate. O competiție masculină: statutul DFB trece Bundesliga printre competițiile proprii ale DFB (Vereinseinrichtungen) și o lasă în grija DFL Deutsche Fußball Liga. DFL este asociația cluburilor licențiate din Bundesliga și 2. Bundesliga; ea stabilește campionul Germaniei și cluburile pentru competițiile europene, licențiază cluburile și valorifică drepturile în nume propriu, în timp ce organele DFB se ocupă de justiția sportivă și de arbitri. Regulamentul de joc al DFB numește meciurile din Bundesliga meciuri organizate de DFL, după Ligastatut al DFL.",
+  "en": "ed02a720",
+  "ro": "Identitate. O competiție masculină: statutul DFB trece Bundesliga printre competițiile proprii ale DFB (Vereinseinrichtungen) și o lasă în grija DFL Deutsche Fußball Liga. Potrivit statutului DFB, DFL este asociația cluburilor licențiate din Bundesliga și 2. Bundesliga; ea stabilește campionul Germaniei și cluburile pentru competițiile europene, licențiază cluburile și valorifică drepturile în nume propriu, în timp ce organele DFB se ocupă de justiția sportivă și de arbitri. Regulamentul de joc al DFB numește meciurile din Bundesliga meciuri organizate de DFL, după Ligastatut al DFL.",
   "status": "machine-unchecked"
  },
  "de-bundesliga|other|C34;C20;C35#basis": {
@@ -210,8 +210,8 @@
   "status": "machine-unchecked"
  },
  "de-bundesliga|other|C34;C20#text": {
-  "en": "0f498e41",
-  "ro": "Locuri europene. DFL stabilește ce cluburi din Bundesliga merg în competițiile europene, iar campionul Germaniei are dreptul să fie înscris de DFB în competițiile UEFA. Ce poziții finale din 2026-27 duc în ce competiție UEFA și în ce fază în 2027-28 nu este precizat pe nicio pagină a organizatorului sau a UEFA care a putut fi citită.",
+  "en": "334c4f18",
+  "ro": "Locuri europene. Potrivit statutului DFB, DFL stabilește ce cluburi din Bundesliga merg în competițiile europene; potrivit regulamentului DFB pentru meciuri (Spielordnung), campionul Germaniei are dreptul să fie înscris de DFB în competițiile UEFA. Ce poziții finale din 2026-27 duc în ce competiție UEFA și în ce fază în 2027-28 nu este precizat pe nicio pagină a organizatorului sau a UEFA care a putut fi citită.",
   "status": "machine-unchecked"
  },
  "de-bundesliga|other|C34;C20#basis": {
@@ -237,6 +237,46 @@
  "de-bundesliga|other|C36;C37;C38#basis": {
   "en": "b9e6bb71",
   "ro": "Articolele Wikipedia despre ligă și sezon, în engleză și germană, o singură sursă.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|format|C20;C21#text": {
+  "en": "67ad53e6",
+  "ro": "64 de echipe într-o cupă eliminatorie: cinci tururi și o finală. Turul 1 și turul 2: două urne, una cu cluburile din Bundesliga și 2. Bundesliga și una cu echipele de amatori; se extrage întâi o bilă din urna amatorilor, apoi din cealaltă, iar echipa extrasă prima joacă mereu acasă, așa că în aceste tururi o echipă de amatori trasă la sorți cu un club licențiat joacă acasă datorită ordinii tragerii, nu printr-o regulă separată. Din optimi (runda celor 16): o singură urnă, echipa extrasă prima joacă acasă, dar între o echipă licențiată și una de amatori joacă acasă echipa de amatori, ca regulă explicită. La egalitate după timpul regulamentar: prelungiri de 2 x 15 minute, apoi lovituri de departajare. Finala se joacă pe stadionul stabilit de DFB GmbH & Co. KG.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|format|C20;C21#basis": {
+  "en": "4415cdc7",
+  "ro": "publicat: Spielordnung (Stand 1 iulie 2026) § 46 Nr. 2.1, Durchführungsbestimmungen (Stand 1 iulie 2026) § 49",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|qualification|C20#text": {
+  "en": "a1b52145",
+  "ro": "Participanți (64 de echipe): cluburile din Bundesliga și 2. Bundesliga din sezonul abia încheiat, campioana și următoarele trei din 3. Liga din sezonul abia încheiat și câștigătoarele cupelor celor 21 de asociații regionale. Locurile rămase până la 64 revin asociațiilor cu cele mai multe echipe masculine, cel mult unul în plus fiecare, după decizia Fachgruppe Spielbetriebe a DFB pe baza statisticii actuale a membrilor. Echipele secunde ale cluburilor licențiate nu se pot înscrie. O câștigătoare de cupă regională care este echipă secundă sau deja calificată este înlocuită de următoarea echipă eligibilă din acea cupă; o calificată din 3. Liga care este echipă secundă sau deja calificată prin cupa ei regională este înlocuită de următoarea echipă eligibilă din 3. Liga sau de următoarea echipă eligibilă din acea cupă.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|qualification|C20#basis": {
+  "en": "5b05076d",
+  "ro": "publicat: Spielordnung (Stand 1 iulie 2026) § 45 Nr. 1.3",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|schedule-announcement|C22;C32;C27#text": {
+  "en": "f6cd2f60",
+  "ro": "În 2026-27, tragerea la sorți pentru primul tur a fost în iunie 2026, iar cea pentru turul al doilea într-o sâmbătă din septembrie 2026. Pagina DFB despre modul de desfășurare spune că ora de start exactă a meciurilor se publică pe DFB.de la circa una-două săptămâni după tragere, stabilite împreună cu cluburile, biroul de informații al poliției (ZIS), DFL și partenerii TV.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|schedule-announcement|C22;C32;C27#basis": {
+  "en": "c9328499",
+  "ro": "Cele două trageri la sorți din 2026-27 provin din pagina de date 2026/2027 a DFB și dintr-o știre datată a DFB; intervalul de una-două săptămâni provine doar din pagina DFB despre modul de desfășurare, care nu arată niciun sezon și nicio dată Stand, așa că rândul este neverificat.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|tracking|C24;C23;C22#text": {
+  "en": "1019c34a",
+  "ro": "Paginile proprii ale DFB pentru cupa masculină pe dfb.de: pagina principală DFB-Pokal, pagina cu informații despre competiție și pagina de date (Rahmentermine), fiecare arătând sezonul 2026/2027. Nu s-a căutat nicio aplicație și niciun newsletter.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|tracking|C24;C23;C22#basis": {
+  "en": "7c133776",
+  "ro": "publicat: pagina principală DFB-Pokal, pagina cu informații despre competiție și pagina de date ale DFB, fiecare deschisă și fiecare arătând sezonul 2026/2027",
   "status": "machine-unchecked"
  }
 }
