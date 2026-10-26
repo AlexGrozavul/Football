@@ -300,7 +300,7 @@ Moved byte for byte from CLAUDE.md (old lines 148-1007, 2026-10-22). Long new en
   tries, so everything is from search-result summaries; the schedule row is
   `inferred`) and five play-off competitions, whose formats and sources are
   copied from the PR #65 bucket entries, `unverified`. Nothing else is
-  researched.
+  researched. On 2026-10-26 (PR #158) 14 DFB-Pokal `other` rows were added from the DFB's own pages and regulations (sources C20 to C33, `officialUrl` filled); the five older rows are unchanged.
 - `data/competition-sources.csv` — added 2026-10-08. `sourceId`, `url`,
   `title`, `retrievedOn` (blank where the page was not opened), `note`.
 

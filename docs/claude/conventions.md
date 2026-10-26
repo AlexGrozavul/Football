@@ -2698,5 +2698,15 @@ save, and place-search answers for 7 days. What Stadia's terms say, and
 how each rests on them, is in Conventions, "The installable app" and
 "Saved routes". Read both before changing either.
 
----
+## Competition research procedure
 
+Written 2026-10-26 after the DFB-Pokal pass (PR #158); reuse it for the other competitions, one competition per session.
+- **Where it goes**: `data/competition-info.csv` (topics closed; only `other` may repeat, and each `other` row needs its own `sourceId` list, because `competitionId|topic|sourceId` is the row key of `data/ro/competition-info.json`), sources in `data/competition-sources.csv`, `officialUrl` in `data/competitions.csv` once opened. No new columns or files: what has no place is a schema gap in the report.
+- **Existing rows are never edited**, only blank cells filled; a difference with what was read goes to the report as a conflict for Alexandru.
+- **What to look for**: identity and organiser, holder on the checked date, entry routes per level and the field size, format (rounds, legs, extra time, penalties, draw, home right, seeding, neutral grounds) as the regulation states it, calendar, what the winner gains and published prize money, ticket rules at competition level, history from the organiser or two independent sources, fan rules the organiser states.
+- **Reading**: a temporary `probe-competition.yml` on the draft PR's own `pull_request` trigger renders pages with Playwright and posts text and full link lists as comments (60,000 characters each; PDFs through `pdftotext`). User-Agent `FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)`, robots.txt first (Disallow, 403 or challenge stops the host; a timeout does not), one request per second, never a buy, cart, login or seat-plan link, final URL checked. Run 1 is robots and the organiser's landing pages; later runs only pages from link lists already read; at most 5 runs; every comment read before the next run; the workflow is removed before merge.
+- **Source order**: the organiser's pages and regulations for the season, then other primary bodies (UEFA, the league body, clubs), then Wikipedia (en and de are one source), press and aggregators.
+- **Tags** (`status`): `confirmed` = the organiser's page or regulation for that season showing the season, a version or a Stand date, or two independent sources; `inferred` = follows from confirmed facts, the reasoning in `basis` (`observed-past-cycle` for last season's pattern); `unverified` = one third-party source, an organiser page with no season or date (the Frankfurt standard), or sources that are not independent. Several pages of one body are one source. The organiser wins a disagreement.
+- **Never written**: a sale date, an application window, a deadline (also one counted back from the match), or a future day-level date; calendar rows are month level and the day-level dates stay on the cited page. Romanian for every new text goes into `data/ro/competition-info.json` (`machine-unchecked`) and `docs/ro-review.md`; `check_competitions.py`, `check_translations.py` and `test_competitions.js` must pass.
+
+---
