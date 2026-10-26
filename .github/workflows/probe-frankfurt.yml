@@ -32,6 +32,30 @@ jobs:
           ROBOTS: |
             stores.eintracht.de
             mitglied.eintracht.de
+            ticketing.eintrachttech.de
+          PAGES: |
+            https://stores.eintracht.de/tickets/info-service/ticketinformation/
+            https://stores.eintracht.de/tickets/info-service/unsere-ticketboerse/
+            https://stores.eintracht.de/rechtliches/atgb-maenner/
+            https://mitglied.eintracht.de/vorteile/
+            https://mitglied.eintracht.de/preise/
+            https://mitglied.eintracht.de/haeufige-fragen/
+            https://stores.eintracht.de/tickets/info-service/dauerkarten/
+            https://ticketing.eintrachttech.de/placeSelection/web/69cbaac1cb2aee065802eca3
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          ROBOTS: |
+            stores.eintracht.de
+            mitglied.eintracht.de
           PAGES: |
             https://stores.eintracht.de/tickets/profis/bundesliga/heimspiel-gegen-hamburg/
             https://stores.eintracht.de/tickets/profis/bundesliga/Heimspiel-gegen-hoffenheim/
