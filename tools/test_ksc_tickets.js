@@ -165,10 +165,13 @@ const kscWindows = csv('data/club-ticket-windows.csv').filter(r => r.clubQid ===
   check("Südwestderby: Germany's national rules above KSC's researched rules",
     k.indexOf(deRows.length ? 'Country rules: Germany' : 'No national rules researched for Germany') >= 0 &&
     k.indexOf(deRows.length ? 'Country rules: Germany' : 'No national rules researched for Germany') < k.indexOf('Researched rules') && germanyOk(k));
-  // Kaiserslautern has hand-written notes (football-rules.json's fck), so its block says "Researched rules - Not researched
-  // yet" rather than "No ticket rules researched for ... yet", which is the line for a club with neither source.
-  check('Südwestderby: Kaiserslautern "not researched"', /Researched rules[\s\S]*Not researched yet\./.test(f) ||
-    /No ticket rules researched for 1\. FC Kaiserslautern yet\./.test(f), f.slice(0, 200));
+  // Kaiserslautern has hand-written notes (football-rules.json's fck). Until its own ticket research its block said "Researched
+  // rules - Not researched yet"; since 2026-10-26 it has rows of its own, so the block must show them. Read from the files.
+  const fckRules = csv('data/club-ticket-rules.csv').filter(r => r.clubQid === 'Q8466' && (r.team || 'men') === 'men' && (r.scope || 'general') === 'general');
+  check(fckRules.length ? "Südwestderby: Kaiserslautern's researched rules are shown" : 'Südwestderby: Kaiserslautern "not researched"',
+    fckRules.length ? /Researched rules/.test(f) && !/Not researched yet\./.test(f) && fckRules.every(r => norm(f).includes(norm(r.rule)))
+      : /Researched rules[\s\S]*Not researched yet\./.test(f) || /No ticket rules researched for 1\. FC Kaiserslautern yet\./.test(f),
+    f.slice(0, 200));
   days = await dayLevelIn('details.bucket[data-id="sudwest-derby"]');
   check('Südwestderby: no inferred or disputed date shown to the day', !days.length, JSON.stringify(days).slice(0, 300));
   check('Bucket list: no sideways scroll with every card open', await noSideways());
