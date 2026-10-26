@@ -6,6 +6,14 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
 
 ## Known open problems
 
+- **Data hygiene part 2, 2026-10-26: what stays unverified and why** (data only, no page opened).
+  (1) **14 ticket rows rest on one third-party source** and went from confirmed to unverified (note starts "SINGLE THIRD-PARTY SOURCE"): Nürnberg 4 (personalisation N10, away-end N11 = Greuther Fürth's page, derby demand 2023-24 N13 and 2024-25 N12), Inter 3 (source-caveat I15, derby demand I12, I15), KSC 7 (risk-classification K22, derby-away phase 1 and three Gastblock prices K26, derby demand K18 and K23). Each needs the club's own page for the season or a second independent source.
+  (2) **Bayern's 21 price rows are unverified** because no row of `data/ticket-sources.csv` records the page they come from; their notes say the 2025|26 Bundesliga figures were read from an archived club page. A source record for it would let them be judged again; the 2026-27 DFB-Pokal rows cite the same 2025|26 page and would still not confirm.
+  (3) **Elversberg**: membership is unverified (page E8 shows no season); purchase-limit stays unverified. Still open and not changed here: the minors rule row still calls the EUR 5 (FAQ) against EUR 6 (2026/2027 table) conflict Alexandru's call, though the youth price row is now confirmed at EUR 6; and the confirmed price rows and two confirmed rules (presale-eligibility, sales-mechanism) keep an old note ending "ONE SOURCE (the club) ... so unverified", which contradicts their tag.
+  (4) **DFB-Pokal**: schedule-announcement is unverified because the one-to-two-week kick-off lead time is on the mode page only (no season or Stand date); history is unverified because its three sources are all DFB pages (one body) and none shows a current date. The Berlin-since-1985 and until-2030 statements of the old format row (search results only, C3) were dropped from it; the first is still in the history row.
+  (5) **Bundesliga tracking** stays unverified (unchanged): the league's own sites stop bots in robots.txt, so it says to check them by hand.
+  (6) **CLAUDE.md rule 9 says schedule rows are `inferred` only**; this pass tagged them by the source policy instead, so the Bundesliga schedule row is confirmed and the DFB-Pokal one unverified. Rule 9 needs Alexandru's wording.
+
 - **GitHub Pages did not deploy from 21 Oct 2026 15:18 UTC until the `.nojekyll` fix (2026-10-25); the live site stayed on the deploy of 6a99c9c.** Cause: the "Build with Jekyll" step failed with a Liquid syntax error in `data/clubs/proposal-PT.md`, which contains `{{`.
 - **Fix:** an empty `.nojekyll` at the repo root, so Jekyll never runs; `proposal-PT.md` and `_config.yml` were not touched. Whether the site is live again is confirmed by the "pages build and deployment" run for the merge commit, not by the sandbox (it cannot reach github.io).
 - **SV Elversberg ticket research, 2026-10-22: what is left open.**
