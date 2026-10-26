@@ -1171,7 +1171,8 @@ and "Your notes" show under one club. Written in the shape of the KSC rows:
   `timing` and note. Alexandru's call (Known open problems).
 
 **Eintracht Frankfurt, 2026-10-11 - mostly unverified, because no club
-page could be opened.** Researched for an outside buyer (a member of no
+page could be opened (true on that day; since 2026-10-26 the club's own
+pages are read, see the last bullet).** Researched for an outside buyer (a member of no
 club, in Germany but not Frankfurt, two tickets together), Bundesliga home
 games only: the 2026-27 season article lists no European competition.
 `Q38245`, the only Frankfurt item on the map; **no `clubs` entry in
@@ -1195,6 +1196,17 @@ no price rows, 8 sources (`F1`-`F8`), no country row.
   source says sold out).
 - **Capacity**: 60,100 from 2026-27 (German Wikipedia; the sold-out Freiburg
   game), 53,800 international; the map holds 59,500.
+- **The club's own pages, read 2026-10-26 (PR #156, temporary probe on a
+  runner, removed).** Sources `F10` (the five 2026-27 home-game pages),
+  `F11` (ATGB Männer, Version September 2026, valid from 21 Sep 2026),
+  `F12` (Ticketbörse pages, undated; AGB-Ticketbörse July 2025) and `F13`
+  (membership pages, undated) - one club, one source. Per game: members'
+  sale (two per member, from 7) or free sale; mobile only; the "24-hour"
+  members' sale of the press is corrected (it runs until matchday).
+  Resale cap and transfer from the ATGB. 13 rule rows `confirmed`, 6
+  `unverified` (undated pages or press-only parts). No price figure: the
+  seat plan needs a login. Details: the Frankfurt entry of
+  `docs/claude/open-problems.md`.
 
 **SV Elversberg, 2026-10-22 - a non-member gets nothing through official
 channels.** Researched for an outside buyer (a member of no club, in Germany
