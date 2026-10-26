@@ -35,34 +35,14 @@ jobs:
           ROBOTS: |
             sscnapoli.it
           FULL: |
-            https://sscnapoli.it/campagna-abbonamenti-2026-27/
-            https://sscnapoli.it/faq-abbonamenti-2026-27/
-            https://sscnapoli.it/fidelity-card-ssc-napoli-fan-stadium-card/
-            https://sscnapoli.it/cambio-utilizzatore/
-            https://sscnapoli.it/elenco-punti-vendita/
-            https://sscnapoli.it/ingressi-gratuiti-minori-14/
-            https://sscnapoli.it/procedura-di-accredito-per-tifosi-con-disabilita/
-            https://sscnapoli.it/tribuna-family/
-            https://sscnapoli.it/regolamento-duso-dellimpianto-stadio-diego-armando-maradona/
-            https://sscnapoli.it/normativa-striscioni/
-            https://sscnapoli.it/codice-di-condotta/
-            https://sscnapoli.it/news/
+            https://sscnapoli.it/nota-del-club-7/
+            https://sscnapoli.it/en/news/
           PDFS: |
           NOTICES: |
           DISCOVER: |
           PAGES: |
-            https://sscnapoli.it/campagna-abbonamenti-2026-27/
-            https://sscnapoli.it/faq-abbonamenti-2026-27/
-            https://sscnapoli.it/fidelity-card-ssc-napoli-fan-stadium-card/
-            https://sscnapoli.it/cambio-utilizzatore/
-            https://sscnapoli.it/elenco-punti-vendita/
-            https://sscnapoli.it/ingressi-gratuiti-minori-14/
-            https://sscnapoli.it/procedura-di-accredito-per-tifosi-con-disabilita/
-            https://sscnapoli.it/tribuna-family/
-            https://sscnapoli.it/regolamento-duso-dellimpianto-stadio-diego-armando-maradona/
-            https://sscnapoli.it/normativa-striscioni/
-            https://sscnapoli.it/codice-di-condotta/
-            https://sscnapoli.it/news/
+            https://sscnapoli.it/nota-del-club-7/
+            https://sscnapoli.it/en/news/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -210,7 +190,6 @@ jobs:
               for (const h of lines(process.env.ROBOTS)) await fetchRobots(h);
               const { chromium } = require('/tmp/pw/node_modules/playwright');
               browser = await chromium.launch();
-              // cdn.sscnapoli.it answered 403 to robots.txt in run 3: a stop, never fetched again.
               for (const url of lines(process.env.PAGES)) {
                 try {
                   const links = await render(browser, url);
