@@ -41,25 +41,6 @@ jobs:
             https://www.dfl.de/de/hintergrund/ticketzweitmarkt/
             https://www.bundesliga.com/de/bundesliga/news/relegation-alle-infos-termine-modus-abstieg-aufstieg-3008
         run: |
-          mkdir -p /tmp/pw && cd /tmp/pw
-          npm init -y >/dev/null
-          npm install --no-audit --no-fund playwright@1.56.1
-          npx playwright install --with-deps chromium
-
-      - name: Probe
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-          PR: ${{ github.event.pull_request.number }}
-          ROBOTS: |
-            www.dfb.de
-            assets.dfb.de
-          FULL: |
-          PDFS: |
-            https://assets.dfb.de/uploads/000/336/416/original_Heft_04_Spielordnung_Schiedsrichterordnung_20260701.pdf?1784280450
-            https://assets.dfb.de/uploads/000/337/006/original_Heft_05_Durchfuehrungsbestimmungen_20260701.pdf?1786373160
-          PAGES: |
-        run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
           const { execFileSync } = require('child_process');
