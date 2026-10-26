@@ -14,8 +14,9 @@
 //  - a researched competition's sheet (the DFB-Pokal, among the rest) shows the seven topics in the fixed order,
 //    each researched row with its status label ("Confirmed", "Estimated, based on past seasons" or
 //    "Not yet verified"), its source link to the URL in the sources file, and "Checked on <date>";
-//  - since 2026-10-26 the DFB-Pokal sheet links its officialUrl, shows every repeated "other" row in
-//    file order with its status, and labels exactly its confirmed rows "Confirmed";
+//  - since 2026-10-26 the DFB-Pokal and Bundesliga sheets link their officialUrl (or none when it is
+//    blank), show every repeated "other" row in file order with its status, and label exactly their
+//    confirmed rows "Confirmed";
 //  - no day-level FUTURE date renders anywhere in the list or in any sheet;
 //  - the country filter and the name search narrow the list, an empty result says "No competitions
 //    match", and "Show all" resets; no sideways scroll; no script error.
@@ -155,19 +156,21 @@ const server = http.createServer((req, res) => {
     await close();
   }else check('there is an unresearched competition to check', false, 'every competition has info rows');
 
-  const pokal = comps.find(c => c.id === 'de-dfb-pokal');
-  check('data has a DFB-Pokal competition with researched rows', !!pokal && researched.has('de-dfb-pokal'));
-  if(pokal){
-    // Added 2026-10-26 (DFB-Pokal research, PR #158): the official link and the repeated "other" rows, read from the files.
-    const mine = info.filter(r => r.competitionId === pokal.id), other = mine.filter(r => r.topic === 'other');
-    const o = await open(pokal.id);
+  // Added 2026-10-26 (DFB-Pokal research, PR #158; the Bundesliga since PR #159): the official link
+  // (none for the Bundesliga, whose own site was not opened) and the repeated "other" rows, read from the files.
+  for(const id of ['de-dfb-pokal', 'de-bundesliga']){
+    const comp = comps.find(c => c.id === id), name = comp ? comp.name : id;
+    check(`data has a ${name} competition with researched rows`, !!comp && researched.has(id));
+    if(!comp) continue;
+    const mine = info.filter(r => r.competitionId === comp.id), other = mine.filter(r => r.topic === 'other');
+    const o = await open(comp.id);
     const official = await page.$$eval('#csheetBody > p.sub a', as => as.map(a => a.href));
-    check('DFB-Pokal: the sheet links the officialUrl of competitions.csv', pokal.officialUrl ? official.includes(new URL(pokal.officialUrl).href) : !official.length, official.join(' | '));
+    check(`${name}: the sheet links the officialUrl of competitions.csv`, comp.officialUrl ? official.includes(new URL(comp.officialUrl).href) : !official.length, official.join(' | '));
     const shown = o.blocks.filter(b => b.topic === 'other');
-    check(`DFB-Pokal: every "other" row is shown, in file order, with its status (${other.length})`,
+    check(`${name}: every "other" row is shown, in file order, with its status (${other.length})`,
       shown.length === other.length && other.every((r, i) => shown[i].status === r.status && shown[i].text.startsWith(r.text.slice(0, 40))), `${shown.length} shown`);
     const conf = mine.filter(r => r.status === 'confirmed').length;
-    check(`DFB-Pokal: exactly the confirmed rows say "${STATUS.confirmed}" (${conf})`, o.blocks.filter(b => b.label === STATUS.confirmed).length === conf);
+    check(`${name}: exactly the confirmed rows say "${STATUS.confirmed}" (${conf})`, o.blocks.filter(b => b.label === STATUS.confirmed).length === conf);
     await close();
   }
   let allFuture = [];
