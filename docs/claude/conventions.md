@@ -530,6 +530,10 @@ two-source requirement applies only to rows that rest on press or other
 third parties, and several pages of one club count as one source. The
 first lines of the Elversberg research (PR #144) labelled such rows
 `unverified` because the prompt then demanded two sources.
+**Ticket research procedure for one club (Napoli pass, PR #162)**: start from the club file's URL or a URL cited in the repo, else one web search; a probe on the draft PR (as for competitions, below) reads robots.txt, the legal or terms notice and the landing page of each club host in its own run before any content page (at most 5 runs; a Disallow, 403, challenge or a notice banning automated access stops that host; a club CDN is its own host); open only URLs from link lists or page text and never a partner shop, cart or login.
+Map each finding to the existing topics (channels, membership or card, personalisation and transfer, phases, prices and reductions, away fans, limits, demand, access, season tickets); a blank is reported, never filled.
+Tag `confirmed` only when the club's page read in full shows the season; an undated page or one for an earlier season gives `unverified`, with `season` set to what the page shows; a conflict between the club's pages writes the more specific row `unverified` and reports it.
+Register every page as a `ticket-sources.csv` row (a new club prefix plus a number, the season the page shows in `published`), then run `check_tickets.py` and add the club to `FULL_ROWS` in `tools/test_sheet_tickets.js`.
 **One item fits the mapping badly and was mapped anyway**: N-14 (the
 derby is probably price category A) is reasoned from the club's labels
 for two *other* 2026-27 fixtures, not from a past cycle, so its
