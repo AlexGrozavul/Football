@@ -32,16 +32,13 @@ jobs:
           ROBOTS: |
             stores.eintracht.de
             mitglied.eintracht.de
-            ticketing.eintrachttech.de
-          PAGES: |
-            https://stores.eintracht.de/tickets/info-service/ticketinformation/
-            https://stores.eintracht.de/tickets/info-service/unsere-ticketboerse/
+          FULL: |
             https://stores.eintracht.de/rechtliches/atgb-maenner/
-            https://mitglied.eintracht.de/vorteile/
-            https://mitglied.eintracht.de/preise/
-            https://mitglied.eintracht.de/haeufige-fragen/
-            https://stores.eintracht.de/tickets/info-service/dauerkarten/
-            https://ticketing.eintrachttech.de/placeSelection/web/69cbaac1cb2aee065802eca3
+            https://stores.eintracht.de/rechtliches/agb-ticketboerse/
+          PAGES: |
+            https://stores.eintracht.de/rechtliches/atgb-maenner/
+            https://stores.eintracht.de/rechtliches/agb-ticketboerse/
+            https://mitglied.eintracht.de/vorteile/tickets-dauerkarten/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -120,6 +117,8 @@ jobs:
             await sleep(3000);
             const status = resp ? resp.status() : 'none';
             const final = page.url();
+            // A server redirect is not seen by page.route: refuse to record it.
+            if (FORBIDDEN.test(final)) { post(`### STOPPED ${url}\nRedirected to a forbidden URL (login/checkout/queue); nothing recorded.`); await ctx.close(); return; }
             const title = await page.title();
             const text = await page.evaluate(() => {
               const b = document.body.cloneNode(true);
@@ -133,7 +132,11 @@ jobs:
             }
             const head = `URL: ${url}\nFinal URL: ${final}\nHTTP ${status}; title "${title}"; network idle: ${idle}; load limit used ${used / 1000} s\n`;
             const cut = text.length > MAX;
-            post(`### (a) TEXT ${url}\n${head}Length ${text.length} characters${cut ? `, CUT at ${MAX}` : ', not cut'}.\n\n\`\`\`\n${text.slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
+            // FULL pages: the whole text, in parts of MAX characters each.
+            const full = lines(process.env.FULL).includes(url);
+            const parts = full ? Math.ceil(text.length / MAX) : 1;
+            for (let i = 0; i < parts; i++)
+              post(`### (a) TEXT${parts > 1 ? ` part ${i + 1} of ${parts}` : ''} ${url}\n${head}Length ${text.length} characters${full ? `, characters ${i * MAX} to ${Math.min(text.length, (i + 1) * MAX)}` : cut ? `, CUT at ${MAX}` : ', not cut'}.\n\n\`\`\`\n${text.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
             const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a =>
               `${(a.textContent || a.getAttribute('aria-label') || a.title || '').replace(/\s+/g, ' ').trim()} | ${a.href}`));
             const uniq = [...new Set(links)];
