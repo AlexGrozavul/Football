@@ -51,26 +51,43 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
   "FAQ is outdated" caveat is `inferred` (the project's own reading); the
   demand row is `unverified` because "not stated" is an absence. The
   windows and club-level files have no confidence column and are unchanged.
-  **Eintracht Frankfurt, 2026-10-25: no single-source row, because no
-  club page that was read states a sale rule.** Re-check on the club's own
-  pages (PR #155; temporary `probe-frankfurt.yml`, three runs, removed).
-  `robots.txt` of www, stores, profis and mitglied.eintracht.de allowed
-  every page tried; `https://www.eintracht.de/tickets/` timed out in
-  headless Chromium (stopped, not retried) and the Internet Archive's only
-  capture of it (2019) is navigation only. Read live: the ticket landing
-  `https://stores.eintracht.de/tickets/`, the men's home page `/tickets/profis/`,
-  `/tickets/info-service/` (one source, `F9`), `https://mitglied.eintracht.de/`
-  and two away-ticket news items. They list the 2026-27 home games and name
-  the Ticketbörse, but state no phase, eligibility, limit, price,
-  personalisation or minors rule, so **every Frankfurt row stays
-  `unverified`** (only `ticketUrl` was filled, with three notes). **Pages
-  to paste from a phone**: the five home-match pages
-  `https://stores.eintracht.de/tickets/profis/bundesliga/heimspiel-gegen-hamburg/`,
-  `.../Heimspiel-gegen-hoffenheim/`, `.../heimspiel-gegen-bremen/`,
-  `.../heimspiel-gegen-schalke/`, `.../heimspiel-gegen-die-bayern/`; the
-  "Tagestickets" and "Ticketbörse" entries of `/tickets/info-service/`
-  (their URLs were not captured); "ATGB Tickets Männer" in the shop's
-  footer; and the "Vorteile" page of `https://mitglied.eintracht.de/`.
+  **Eintracht Frankfurt, 2026-10-26: read on the club's own pages (PR #156;
+  temporary `probe-frankfurt.yml`, four runs, removed).** The 2026-10-25
+  pass (PR #155) had used its runs before the rule pages; this one opened
+  them. `robots.txt` of stores.eintracht.de, mitglied.eintracht.de and
+  ticketing.eintrachttech.de allowed every page tried; no 403, no bot
+  challenge, no timeout. Read live, in full: the five 2026-27 home-game
+  pages (`F10`, each headed "Bundesliga 2026/27"), ATGB Männer (`F11`,
+  Version September 2026, valid from 21 Sep 2026, 105,344 characters in two
+  parts), the Ticketbörse page, AGB-Ticketbörse (Version July 2025) and
+  "Rund um Dein Ticket" (`F12`, no season), and the membership pages
+  Vorteile, Tickets & Dauerkarten, Preise and Häufige Fragen (`F13`, no
+  season). Probe run 2 was wasted (an edit of the workflow left the old
+  page list in force), so the "run 2" pages were read in run 3.
+  - **What the pages say for the persona**: Hoffenheim and Bremen were in
+    free sale on 26 Oct; Hamburg, Schalke and Bayern members only (two per
+    member, from 7; Bayern "no tickets available"). Ticketbörse tickets
+    are members-only during a members' sale (undated pages), so a
+    non-member can only buy once a game reaches free sale. Mobile only;
+    forwarding needs an Eintracht account; resale above the price paid
+    plus 10% is forbidden, any unauthorised platform is forbidden.
+  - **Rows**: rules 13 `confirmed` (12 of them from the club; capacity
+    still rests on Wikipedia alone) and 6 `unverified` (`sales-mechanism`,
+    `access`, `membership`, `risk-classification`, `presale-rights`,
+    `fees` - press-only parts or undated pages); 5 rule rows added. The 3
+    phase rows stay `unverified` (press dates); phase 1's "for 24 hours"
+    was corrected (the members' sale runs until matchday). The press "up
+    to 4 for Bremen" is left out of `purchase-limit` (the club page shows
+    a free sale and no limit). The two demand rows and `capacity` stay
+    `confirmed` on Wikipedia alone, which does not meet the 22 Oct policy
+    (one third-party source): **Alexandru's call** whether to downgrade.
+  - **Not readable, for Alexandru to paste from his phone**: the seat plan
+    with prices, `https://ticketing.eintrachttech.de/placeSelection/web/69cbaac1cb2aee065802eca3`
+    (Hamburg; the probe was redirected to a login page and read only that
+    page's text, no form touched; the guard now refuses such redirects).
+    No price figure and no season-ticket share is on any club page read;
+    the fee pages show no season, so `membership` and `fees` stay
+    `unverified` until a page states 2026-27.
 
 - **Overpass and robots.txt: resolved 2026-10-21, Alexandru's decision.** Found the same day: `https://overpass-api.de/robots.txt` has `User-agent: *` and `Disallow: /api/`, while the interpreter is `https://overpass-api.de/api/interpreter`, and `propose_grounds.py` (which read robots.txt of every non-Wikimedia host) therefore did not query it. **The decision:** the public Overpass API is a documented public API whose published usage policy governs, not robots.txt - a file written for crawlers, which contradicts the operator's own documentation telling users to send queries to that very path. **The rules for every tool that uses it:** the User-Agent `FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)`; one request at a time; wait and retry on HTTP 429 and 504 (and, see the last paragraph of this entry, 502 and 503); `propose_grounds.py` at most 60 requests per run (retries included, `OVERPASS_MAX_REQUESTS`); and never more than the regular-use guideline per day. **The guideline** (the OpenStreetMap wiki's page on the Overpass API, read 2026-10-21 through a search summary; the page itself was not opened): under 10,000 queries and 1 GB a day does not disturb other users, and anything used regularly should divide those numbers by 100 - **about 100 queries and 10 MB a day**, the figure used here; the wiki also says to pause 30 seconds after a 429 and to run no parallel scripts. robots.txt is still read before any other non-Wikimedia host (StadiumDB). **What each workflow costs, counted 2026-10-21 and kept so the next change knows its share of the day.** `crosscheck-capacity.yml` (monthly, the 4th), last complete run #45 of 2026-10-20 (21.6 min, all 13 countries `WRITTEN`): 13 queries and 5 busy answers (HTTP 502: AT twice, BE, CH, GB once each) = **18 requests**, counted from the log; the data volume is not logged and is an estimate of about 4 MB (11,003 stadium elements at roughly 350 bytes), so by volume about 2 runs a day and by count about 5. `propose-coordinates.yml` (monthly, the 11th), last run #19 of 2026-10-11 (93.5 min, Romania and seven other countries written, France left unchanged because 19 names were never looked up after the retries): the per-request lines are not in the part of the log that could be read, so the count is **an estimate from the code, about 40 to 60 requests** (per country with unplaced clubs: one stadium query, one place query per 120 names, one pitch query per 10 places, up to 3 tries each), so about 2 runs a day by count. `propose-country.yml` with the grounds step: **4 to 24 requests** a run for a country of 31 to 40 clubs (one query per 10 club positions, up to 6 tries each), a dispatch costing 55 s of wall clock on Portugal. All three share the same day's budget of about 100 queries, and a person dispatching several of them in a day should add the numbers. **What a 502 is, measured 2026-10-21 by a probe on a runner:** the first four live runs of the tool met `HTTP 502` on every try over several minutes, and the probe (a tiny `node(1)` query, the status endpoint, the real query shape, both User-Agents) got the same answer in 0.4 s from every variant but one: "This Overpass API server is currently at capacity. All query workers are busy and the request queue is full ... Retry your request using exponential backoff". The one request that got through (3 positions) waited 65 s in the queue and returned 200; the 20-position requests of the next live run all read-timed-out at 200 s, which is why a request now carries 10 positions. So it is the server's load on that day and not the query, the size or the User-Agent, and the backoff doubles for that reason. **502 and 503, a deviation from the decision's words, Alexandru's to confirm.** The decision said to retry only on 429 and 504 "as they do now", but `crosscheck_capacity.py` and `propose_coordinates.py` also wait and retry on 502 and 503, and all five retries of run #45 were 502s. The first live run of the new client, written to the letter, died on a 502 at its first request (`OpenStreetMap (Overpass) did not answer: HTTP 502`, nothing written), so `propose_grounds.py` retries 429, 502, 503 and 504, with the same 30 s wait and the same cap of 60 requests, which bounds what the change can cost. (The entry that stood here earlier said the two scheduled workflows run "weekly and monthly"; both are monthly.)
 
