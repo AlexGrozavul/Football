@@ -35,14 +35,24 @@ jobs:
           ROBOTS: |
             fck.de
             www.fck.de
+            shop.fck.de
           FULL: |
+            https://shop.fck.de/Informationen/ATGB/
+            https://fck.de/fans/stadionbesuch/
+            https://fck.de/fck/fritz-walter-stadion/
+            https://fck.de/fck/mitgliedschaft/
           PDFS: |
           NOTICES: |
-            https://fck.de/
           DISCOVER: |
-            https://fck.de/
           PAGES: |
-            https://fck.de/
+            https://shop.fck.de/Informationen/AGB/
+            https://shop.fck.de/Informationen/ATGB/
+            https://fck.de/fans/stadionbesuch/
+            https://fck.de/fck/fritz-walter-stadion/
+            https://fck.de/fck/mitgliedschaft/
+            https://fck.de/fck/mitgliedschaft/mitglied-werden/
+            https://fck.de/news/
+            https://fck.de/fans/fans-beim-fck/fanbetreuung/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
