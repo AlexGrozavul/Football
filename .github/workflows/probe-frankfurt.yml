@@ -43,29 +43,6 @@ jobs:
             https://stores.eintracht.de/tickets/info-service/dauerkarten/
             https://ticketing.eintrachttech.de/placeSelection/web/69cbaac1cb2aee065802eca3
         run: |
-          mkdir -p /tmp/pw && cd /tmp/pw
-          npm init -y >/dev/null
-          npm install --no-audit --no-fund playwright@1.56.1
-          npx playwright install --with-deps chromium
-
-      - name: Probe
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-          PR: ${{ github.event.pull_request.number }}
-          ROBOTS: |
-            stores.eintracht.de
-            mitglied.eintracht.de
-          PAGES: |
-            https://stores.eintracht.de/tickets/profis/bundesliga/heimspiel-gegen-hamburg/
-            https://stores.eintracht.de/tickets/profis/bundesliga/Heimspiel-gegen-hoffenheim/
-            https://stores.eintracht.de/tickets/profis/bundesliga/heimspiel-gegen-bremen/
-            https://stores.eintracht.de/tickets/profis/bundesliga/heimspiel-gegen-schalke/
-            https://stores.eintracht.de/tickets/profis/bundesliga/heimspiel-gegen-die-bayern/
-            https://stores.eintracht.de/tickets/info-service/
-            https://stores.eintracht.de/tickets/
-            https://mitglied.eintracht.de/
-        run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
           const { execFileSync } = require('child_process');
