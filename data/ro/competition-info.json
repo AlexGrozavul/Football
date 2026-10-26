@@ -1,1 +1,142 @@
-{}
+{
+ "de-dfb-pokal|other|C20;C21;C24#text": {
+  "en": "405348ce",
+  "ro": "Identitate. Regulamentele DFB o numesc DFB-Vereinspokal (Herren); paginile proprii o numesc DFB-Pokal der Männer. O competiție masculină la nivel național (DFB), organizată de DFB; regulamentele fac din DFB GmbH & Co. KG organizatorul finalei, care închiriază stadionul și stabilește locul. Cupele celor 21 de asociații regionale (Verbandspokal) alimentează competiția.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C20;C21;C24#basis": {
+  "en": "e6dad32e",
+  "ro": "publicat: Spielordnung § 45 Nr. 1.3 și § 46 Nr. 2.1, Durchführungsbestimmungen § 52",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C25;C24#text": {
+  "en": "29de6f3a",
+  "ro": "Deținătoarea trofeului la data verificării: FC Bayern München, câștigătoarea ediției 2025-26 (finala în mai 2026 pe Olympiastadion Berlin, 3:0 cu VfB Stuttgart). Paginile DFB pentru 2026-27 numesc Bayern deținătoarea titlului (Titelverteidiger) și câștigătoarea eventului.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C25;C24#basis": {
+  "en": "a8dc580f",
+  "ro": "publicat: lista câștigătorilor merge până la 2025/2026",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C20#text": {
+  "en": "8b30b4d9",
+  "ro": "Reguli de participare: 64 de echipe. Cluburile din Bundesliga și 2. Bundesliga din sezonul încheiat, câștigătoarele cupelor celor 21 de asociații regionale și campioana plus următoarele trei din 3. Liga din sezonul încheiat. Locurile rămase până la 64 revin asociațiilor cu cele mai multe echipe masculine, cel mult unul în plus fiecare, decis de Fachgruppe Spielbetriebe a DFB pe baza statisticii actuale a membrilor; fiecare asociație trebuie să trimită cel puțin o echipă de amatori. Echipele secunde ale cluburilor licențiate nu pot participa (din 2008-09), niciun club nu poate înscrie două echipe (din 2009-10) și contează statutul clubului în sezonul care se joacă. O câștigătoare de cupă regională care este echipă secundă sau deja calificată este înlocuită de următoarea echipă eligibilă din acea cupă; o calificată din 3. Liga care este echipă secundă sau deja calificată prin cupa regională este înlocuită de următoarea echipă eligibilă din 3. Liga sau de următoarea echipă eligibilă din acea cupă. Echipele comasate (Spielgemeinschaften) nu pot participa. Fiecare participantă trebuie să declare un stadion fără reclame pentru un meci transmis în direct, care nu trebuie să fie în propriul oraș.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C20#basis": {
+  "en": "0b29452f",
+  "ro": "publicat: Spielordnung § 45 Nr. 1.3",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C28;C23#text": {
+  "en": "c1a853f3",
+  "ro": "Participanții 2026-27: 64 de echipe, 32 de meciuri în primul tur (30 în august 2026, două la începutul lui septembrie 2026 pentru cele două cluburi din Supercupă). DFB numără 13 cluburi care joacă în 3. Liga în 2026-27 la tragerea la sorți a primului tur, un record; doar patru locuri din 3. Liga vin prin campionat, celelalte au venit prin cupele regionale. În primul tur toate cele 13 au jucat acasă cu un club din Bundesliga sau 2. Bundesliga.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C28;C23#basis": {
+  "en": "2a49648c",
+  "ro": "publicat: știrea DFB din iunie 2026 și pagina de informații 2026/2027",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C20;C21#text": {
+  "en": "d498c29d",
+  "ro": "Tragerea la sorți și dreptul de gazdă. Turul 1 și 2: două urne, una cu cluburile din Bundesliga și 2. Bundesliga și una cu echipele de amatori, după statutul din sezonul care se joacă; în turul 1 cluburile promovate în 2. Bundesliga și locul 15 din 2. Bundesliga al sezonului trecut (și locul 16, dacă s-a menținut prin baraj) intră în urna amatorilor. Se extrage întâi o bilă din urna amatorilor, apoi din cealaltă; când o urnă se golește, restul se trag unul împotriva altuia; echipa extrasă prima joacă mereu acasă. Optimi, sferturi și semifinale: o singură urnă, echipa extrasă prima joacă acasă, dar între o echipă licențiată și una de amatori joacă acasă echipa de amatori. Dreptul de gazdă nu poate fi cedat; două echipe care au indicat același stadion și sunt trase la sorți una cu alta nu înseamnă o cedare. Finala are loc unde stabilește DFB GmbH & Co. KG. Egalitate după timpul regulamentar: prelungiri de 2 x 15 minute, apoi lovituri de departajare. Cinci tururi și o finală. Nu se menționează nicio clasare a capilor de serie și niciun teren neutru în afară de finală.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C20;C21#basis": {
+  "en": "7ba34487",
+  "ro": "publicat: Spielordnung § 46 Nr. 2.1, Durchführungsbestimmungen § 49",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C20;C27#text": {
+  "en": "8d751308",
+  "ro": "Fiecare dublă este un singur meci, fără manșă retur.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C20;C27#basis": {
+  "en": "75ddf0b3",
+  "ro": "Raționament: regulamentul vorbește despre un singur meci de cupă pentru fiecare pereche și trece direct de la egalitate după timpul regulamentar la prelungiri și lovituri de departajare; nicio manșă retur și niciun scor general nu apar nicăieri în § 46 Nr. 2.1, iar pagina nedatată a formatului spune același lucru.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C22;C31#text": {
+  "en": "f4d3e0bf",
+  "ro": "Calendarul 2026-27, la nivel de lună (pagina de termene DFB pentru 2026/2027 are zilele): tragerea la sorți a primului tur în iunie 2026; primul tur în august 2026 plus două meciuri la începutul lui septembrie 2026, jucate până la data verificării; turul doi la sfârșitul lui octombrie 2026, încă nejucat la data verificării; optimile (turul cu 16 echipe) la începutul lui decembrie 2026; sferturile în februarie 2027 (două perechi de zile de joc); semifinalele în aprilie 2027; finala în mai 2027 la Berlin. Terenul pentru 2027 nu este numit pe paginile citite.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C22;C31#basis": {
+  "en": "a35f5560",
+  "ro": "publicat: pagina de termene pentru 2026/2027; pagina de informații pentru fani numește data finalei din 2027 și Berlinul",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C27;C32#text": {
+  "en": "2f26a589",
+  "ro": "Tragerile la sorți și ora de start. Tragerea la sorți a primului tur se fixează la câteva săptămâni după finală, după încheierea cupelor regionale; tragerile pentru turul 2 până la semifinale sunt de regulă în duminica de după tur, cu excepții posibile, transmise în direct de ARD sau ZDF din Muzeul German al Fotbalului din Dortmund. Ora de start exactă a fiecărui meci este publicată pe DFB.de la circa una până la două săptămâni după tragere, stabilite cu cluburile, biroul de informații al poliției (ZIS), DFL și partenerii TV. În 2026-27 tragerea la sorți a turului doi a fost într-o sâmbătă din septembrie 2026, în emisiunea ARD Sportschau.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C27;C32#basis": {
+  "en": "ff3aa7a7",
+  "ro": "Pagina formatului nu arată niciun sezon sau dată Stand; doar tragerea din 2026-27 vine dintr-o știre DFB datată.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C23#text": {
+  "en": "ba1d4b3e",
+  "ro": "TV în 2026-27: Sky transmite toate cele 63 de meciuri; ARD și ZDF își împart 15 date în televiziunea gratuită, printre ele ambele semifinale și finala; DAZN arată rezumate.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C23#basis": {
+  "en": "4b238531",
+  "ro": "publicat: pagina de informații 2026/2027",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C23;C21#text": {
+  "en": "5583439d",
+  "ro": "Ce câștigă învingătoarea și premiile în bani. Supercupa 2026-27 s-a jucat între vicecampioana din ligă, Borussia Dortmund, și câștigătoarea eventului, FC Bayern. Un loc european pentru câștigătoarea cupei nu este menționat pe nicio pagină citită. Premiile pe tur nu sunt publicate pe paginile citite; regulamentul spune că 90 % din veniturile din drepturi media și reclamă pe panouri încasate de DFB GmbH & Co. KG se plătesc cluburilor ca taxă de participare și că DFB GmbH & Co. KG păstrează de regulă o treime din venitul net al finalei.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C23;C21#basis": {
+  "en": "f93c0fc7",
+  "ro": "publicat: pagina de informații 2026/2027; Durchführungsbestimmungen §§ 51 și 52",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C21#text": {
+  "en": "cdfd3c6c",
+  "ro": "Bilete pentru un meci. Clubul gazdă îl organizează, iar veniturile din bilete și din reclama pe panouri se împart între cele două cluburi după TVA, 15 % costuri de organizare (primul tur 25 %) și costurile arbitrilor și ale tehnologiei pe linia porții. Clubul oaspete are dreptul la 10 % din biletele pe scaune și 10 % din cele în picioare (la un meci de cupă acasă al unui club din Bundesliga cel puțin 100 dintre ele bilete pentru sponsori, la unul din 2. Bundesliga cel puțin 30, sub acoperiș); fără locuri în picioare în sectorul oaspeților, cel puțin 600 de alte bilete la prețuri reduse; suporterii oaspeți nu pot plăti mai mult decât cei gazdă; 10 % din locurile pentru spectatori cu dizabilități revin clubului oaspete. Abonamentele de sezon ale ligilor sunt valabile doar pentru meciurile de campionat, nu pentru meciurile de cupă.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C21#basis": {
+  "en": "d59b571a",
+  "ro": "publicat: Durchführungsbestimmungen § 25 și § 50",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C29;C30#text": {
+  "en": "f6f47690",
+  "ro": "Bilete pentru finală, cum s-a procedat la finala 2025-26 (nimic publicat pentru 2027 pe paginile citite): fiecare finalistă a primit un contingent și și-a informat suporterii despre vânzare pe propriile canale; biletele pentru vânzarea publică au fost atribuite prin tragere la sorți între solicitanți după o fază de înscriere; spectatorii cu dizabilități au solicitat printr-un formular separat; biletele VIP s-au vândut pe portalul de bilete DFB. Peluza suporterilor fiecărei finaliste a fost trasă la sorți la întâlnirea semifinalistelor.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C29;C30#basis": {
+  "en": "8ae091b9",
+  "ro": "observat în ciclul trecut: știrile DFB din aprilie 2026 despre finala 2025-26",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C25;C26;C24#text": {
+  "en": "2e9caafd",
+  "ro": "Istoric. Prima ediție a fost 1934-35, numită atunci DFB-Vereinspokalmeisterschaft (finala în decembrie 1935 la Düsseldorf, 1. FC Nürnberg 2:0 FC Schalke 04). Lista DFB are 83 de sezoane până la 2025-26, niciunul între 1943-44 și 1951-52, iar DFB a numit finala din mai 2026 a 83-a. Recordul de titluri: FC Bayern München, 21 de titluri în 25 de finale; apoi Werder Bremen 6 (10 finale) și FC Schalke 04, Borussia Dortmund și Eintracht Frankfurt cu câte 5. Toate finalele din 1985 încoace s-au jucat pe Olympiastadion Berlin; prima finală la Berlin a fost în 1937.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C25;C26;C24#basis": {
+  "en": "be1e918f",
+  "ro": "publicat: lista câștigătorilor până la 2025/2026; eticheta Stand a tabelului de recorduri (mai 2024) este depășită",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C31;C33#text": {
+  "en": "89640b1d",
+  "ro": "Informațiile pentru fani la finală vin de la DFB cu puțin înainte de finală, pe o pagină de informații pentru fani; în 2026 au acoperit drumul spre stadion, ce se poate introduce, problemele cu biletele, accesibilitatea, punctele de întâlnire ale fanilor și contactele responsabililor cu fanii ai cluburilor și ai DFB. Și finalistele își publică propriile informații pentru fani. La data verificării pagina pentru 2027 conține doar data și Berlinul.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C31;C33#basis": {
+  "en": "40f44f1b",
+  "ro": "observat în ciclul trecut: știrea cu informații pentru fani din 2026; pagina pentru 2027 spune că informațiile vin cu puțin înainte de finală",
+  "status": "machine-unchecked"
+ }
+}
