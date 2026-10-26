@@ -138,5 +138,105 @@
   "en": "40f44f1b",
   "ro": "observat în ciclul trecut: știrea cu informații pentru fani din 2026; pagina pentru 2027 spune că informațiile vin cu puțin înainte de finală",
   "status": "machine-unchecked"
+ },
+ "de-bundesliga|format|C35;C34#text": {
+  "en": "91ed21fa",
+  "ro": "18 cluburi în 2026-27: calendarul-cadru al DFB vorbește despre seriile de 18 cluburi ale Bundesligii și ale 2. Bundesliga. Sezonul are un tur (Hinrunde) și un retur (Rückrunde). Punctajul, criteriile de departajare și numărul de meciuri pe club nu sunt precizate pe nicio pagină care a putut fi citită; regulamentul propriu al ligii (Ligastatut al DFL) nu a putut fi deschis.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|format|C35;C34#basis": {
+  "en": "e2491c69",
+  "ro": "publicat: calendarul-cadru 2026/2027, adoptat de Prezidiul DFB; statutul DFB face din Bundesliga o competiție a DFB condusă de DFL",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|qualification|C34#text": {
+  "en": "6eab0245",
+  "ro": "Un club are nevoie de o licență de la DFL ca să joace în Bundesliga: DFL acordă licențele cluburilor și societăților lor pe propria răspundere, după criterii sportive, tehnice, organizatorice și economice, și emite pentru aceasta un statut propriu. Locurile câștigate pe teren sunt la promovare și retrogradare.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|qualification|C34#basis": {
+  "en": "42b8b5ea",
+  "ro": "publicat: DFB-Satzung (Stand 28 November 2025) § 16a Nr. 3",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|promotion-relegation|C34;C20;C35#text": {
+  "en": "6110d88d",
+  "ro": "Statutul DFB obligă DFL să asigure suficientă promovare și retrogradare între Bundesliga și 2. Bundesliga, iar regulamentul de joc al DFB enumeră meciurile de baraj (Relegationsspiele) dintre cele două printre meciurile organizate de DFL. În 2026-27 ele trebuie încheiate până la începutul lui iunie 2027. Câte cluburi retrogradează direct și ce loc joacă barajul nu este precizat pe nicio pagină a organizatorului care a putut fi citită (vezi rândul din Wikipedia).",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|promotion-relegation|C34;C20;C35#basis": {
+  "en": "a40da30f",
+  "ro": "publicat: DFB-Satzung § 16b Nr. 2, Spielordnung (Stand 1 July 2026) § 41 Nr. 1.1, calendarul-cadru 2026/2027",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|season-window|C35#text": {
+  "en": "eccfd9e5",
+  "ro": "2026-27: începe la sfârșitul lui august 2026. Ultimele meciuri din 2026 sunt la sfârșitul lui decembrie, când liga intră în pauza de iarnă după etapa 14, cu turul încă neterminat; se reia în al doilea weekend din ianuarie 2027, urmat imediat de o etapă în mijlocul săptămânii. Se încheie la sfârșitul lui mai 2027, cu o săptămână înaintea finalei DFB-Pokal, cu toate meciurile ultimei etape jucate în același timp. Turul nu are etape în mijlocul săptămânii; weekendul de 1 Mai din 2027 este ținut liber de meciuri printr-un acord cu autoritățile de securitate, ceea ce adaugă o etapă în mijlocul săptămânii în retur. Doar la nivel de lună; zilele sunt pe pagina citată.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|season-window|C35#basis": {
+  "en": "3453e8f2",
+  "ro": "publicat: știrea DFB din noiembrie 2025 despre calendarul-cadru 2026/2027",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|schedule-announcement|C35;C34#text": {
+  "en": "77883a42",
+  "ro": "Prezidiul DFB a adoptat calendarul-cadru masculin (Rahmenterminkalender) pentru 2026-27 în noiembrie 2025, în singurul ciclu citit; potrivit statutului DFB, DFL îl întocmește în acord cu DFB. Când apar etapele, cine stabilește ora de start exactă și cu cât timp înainte nu s-a citit: paginile proprii ale ligii nu au putut fi deschise.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|schedule-announcement|C35;C34#basis": {
+  "en": "8f9c6fec",
+  "ro": "observat în ciclul trecut: știrea DFB din noiembrie 2025; DFB-Satzung § 16a Nr. 5",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|tracking|C39;C35;C36#text": {
+  "en": "3f83fbae",
+  "ro": "Site-urile proprii ale ligii, dfl.de și bundesliga.com, spun în robots.txt că niciun program automat nu are voie să le acceseze, așa că această cercetare nu le-a citit pe niciunul; verifică-le de mână. DFB publică calendarul-cadru ca știre pe dfb.de, iar centrul de date DFB are pagini de meciuri Bundesliga 2026-2027 (văzute doar ca linkuri, nedeschise).",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|tracking|C39;C35;C36#basis": {
+  "en": "4c3ef8bc",
+  "ro": "Listele de linkuri ale paginilor citite; paginile proprii ale ligii nu au fost deschise.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|other|C34;C20;C35#text": {
+  "en": "7c2ad555",
+  "ro": "Identitate. O competiție masculină: statutul DFB trece Bundesliga printre competițiile proprii ale DFB (Vereinseinrichtungen) și o lasă în grija DFL Deutsche Fußball Liga. DFL este asociația cluburilor licențiate din Bundesliga și 2. Bundesliga; ea stabilește campionul Germaniei și cluburile pentru competițiile europene, licențiază cluburile și valorifică drepturile în nume propriu, în timp ce organele DFB se ocupă de justiția sportivă și de arbitri. Regulamentul de joc al DFB numește meciurile din Bundesliga meciuri organizate de DFL, după Ligastatut al DFL.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|other|C34;C20;C35#basis": {
+  "en": "a1ff27f3",
+  "ro": "publicat: DFB-Satzung § 4 Nr. 1 g, § 16 și § 16a Nr. 1 - 3; Spielordnung §§ 40 și 41; calendarul-cadru masculin",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|other|C34;C20#text": {
+  "en": "0f498e41",
+  "ro": "Locuri europene. DFL stabilește ce cluburi din Bundesliga merg în competițiile europene, iar campionul Germaniei are dreptul să fie înscris de DFB în competițiile UEFA. Ce poziții finale din 2026-27 duc în ce competiție UEFA și în ce fază în 2027-28 nu este precizat pe nicio pagină a organizatorului sau a UEFA care a putut fi citită.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|other|C34;C20#basis": {
+  "en": "27e80054",
+  "ro": "publicat: DFB-Satzung § 16a Nr. 1; Spielordnung § 58 Nr. 1",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|other|C36;C37#text": {
+  "en": "7aecd45a",
+  "ro": "Deținătorul titlului și componența, doar din Wikipedia: FC Bayern München este campioana en titre, din 2025-26. Promovate pentru 2026-27: Schalke 04 și SV Elversberg direct, iar SC Paderborn prin barajul cu VfL Wolfsburg; retrogradate: VfL Wolfsburg, 1. FC Heidenheim și FC St. Pauli.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|other|C36;C37#basis": {
+  "en": "63c9c530",
+  "ro": "Articolele de sezon din Wikipedia în engleză și germană, o singură sursă; paginile proprii ale ligii nu au putut fi deschise.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|other|C36;C37;C38#text": {
+  "en": "dd5a2b4c",
+  "ro": "Formatul, doar din Wikipedia: fiecare club joacă cu fiecare alt club acasă și în deplasare, 34 de etape și 306 meciuri; trei puncte pentru o victorie, unul pentru un egal. Ultimele două retrogradează direct, iar a 16-a joacă un baraj în două manșe cu a 3-a din 2. Bundesliga. Ordinea criteriilor de departajare este dată diferit în două articole Wikipedia și este lăsată deoparte.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga|other|C36;C37;C38#basis": {
+  "en": "b9e6bb71",
+  "ro": "Articolele Wikipedia despre ligă și sezon, în engleză și germană, o singură sursă.",
+  "status": "machine-unchecked"
  }
 }
