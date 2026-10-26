@@ -36,13 +36,22 @@ jobs:
             www.dfb.de
             dfb.de
           FULL: |
-            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/modus
-            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/wettbewerbsinformationen
+            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/rahmentermine
+            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/statistik/bisherige-sieger
+            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/statistik/rekordsieger
+            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/statistik/alle-wettbewerbe
           PDFS: |
           PAGES: |
-            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/modus
-            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/wettbewerbsinformationen
-            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/
+            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/rahmentermine
+            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/statistik/bisherige-sieger
+            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/statistik/rekordsieger
+            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/statistik/alle-wettbewerbe
+            https://www.dfb.de/news/neuer-rekord-13-drittligaklubs-im-dfb-pokal-am-start
+            https://www.dfb.de/news/schweinsteiger-lost-zweite-dfb-pokalrunde-aus
+            https://www.dfb.de/news/ticketbewerbungen-fuers-pokalfinale-in-berlin-ab-15-april
+            https://www.dfb.de/news/fc-bayern-gegen-vfb-hier-gibts-die-fan-infos-zum-pokalfinale-in-berlin
+            https://www.dfb.de/news/pokalfinale-bayern-anhaenger-in-der-ostkurve-vfb-fans-am-marathontor
+            https://www.dfb.de/ueber-uns/verbandsrecht/sperren
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
