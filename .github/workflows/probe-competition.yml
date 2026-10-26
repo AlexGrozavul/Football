@@ -33,15 +33,20 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            www.legaseriea.it
             en.wikipedia.org
           FULL: |
+            https://en.wikipedia.org/wiki/2026%E2%80%9327_Serie_A
+            https://en.wikipedia.org/wiki/Serie_A
           PDFS: |
           NOTICES: |
-            https://www.legaseriea.it/
+          DISCOVER: |
+            https://en.wikipedia.org/wiki/Italian_Football_Federation
+            https://en.wikipedia.org/wiki/UEFA_Champions_League
           PAGES: |
-            https://www.legaseriea.it/
-            https://en.wikipedia.org/wiki/Lega_Serie_A
+            https://en.wikipedia.org/wiki/2026%E2%80%9327_Serie_A
+            https://en.wikipedia.org/wiki/Serie_A
+            https://en.wikipedia.org/wiki/Italian_Football_Federation
+            https://en.wikipedia.org/wiki/UEFA_Champions_League
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -194,6 +199,24 @@ jobs:
                     for (const l of legal) {
                       try { await render(browser, l); }
                       catch (e) { post(`### ERROR ${l}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+                    }
+                  }
+                  // A new host: the "Official website" link of a Wikipedia article's own link list;
+                  // only its robots.txt, its landing page and its notice links are read.
+                  if (links && lines(process.env.DISCOVER).includes(url)) {
+                    const site = links.filter(l => /^official website$/i.test(l.split(' | ')[0].trim())).map(l => l.split(' | ').pop())[0];
+                    post(`### Official website taken from the link list of ${url}\n${site || 'none found'}`);
+                    if (site) {
+                      const h = new URL(site).host;
+                      if (!robots[h]) await fetchRobots(h);
+                      const own = await render(browser, site);
+                      const legal = [...new Set((own || []).filter(l => /note legali|legal|termini|condizioni|terms|copyright/i.test(l.split(' | ')[0]))
+                        .map(l => l.split(' | ').pop()).filter(x => { try { return new URL(x).host === h; } catch { return false; } }))].slice(0, 3);
+                      post(`### Notice links chosen from the link list of ${site}\n${legal.join('\n') || 'none found'}`);
+                      for (const l of legal) {
+                        try { await render(browser, l); }
+                        catch (e) { post(`### ERROR ${l}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+                      }
                     }
                   }
                 }
