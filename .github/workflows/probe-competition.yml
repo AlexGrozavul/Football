@@ -33,18 +33,16 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            en.wikipedia.org
-            de.wikipedia.org
             www.dfb.de
+            www.uefa.com
+            documents.uefa.com
           FULL: |
-            https://de.wikipedia.org/wiki/Fu%C3%9Fball-Bundesliga_2026/27
-            https://en.wikipedia.org/wiki/Bundesliga
+            https://www.dfb.de/en/leagues/bundesliga/history/
           PDFS: |
           PAGES: |
-            https://www.dfb.de/news/rahmenterminkalender-fuer-saison-2026/2027-festgelegt
-            https://de.wikipedia.org/wiki/Fu%C3%9Fball-Bundesliga_2026/27
-            https://en.wikipedia.org/wiki/Bundesliga
-            https://en.wikipedia.org/wiki/2027%E2%80%9328_UEFA_Champions_League#League_phase
+            https://www.dfb.de/en/leagues/bundesliga/history/
+            https://www.uefa.com/nationalassociations/uefarankings/country/
+            https://documents.uefa.com/r/Regulations-of-the-UEFA-Champions-League-2026/27-Online
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
