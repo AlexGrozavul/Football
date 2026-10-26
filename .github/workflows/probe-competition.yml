@@ -33,13 +33,16 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            www.dfl.de
-            www.bundesliga.com
+            en.wikipedia.org
+            www.dfb.de
+            assets.dfb.de
           FULL: |
+            https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga
           PDFS: |
+            https://assets.dfb.de/uploads/000/328/560/original_Heft_01_Satzung_Geschaeftsordnung_DFB_DFL_Grundlagenvertrag_20251128.pdf?1769517033
+            https://www.dfb.de/uploads/media/Richtlinien-Verbesserung-Sicherheit-Bundesspielen-12-2011.pdf
           PAGES: |
-            https://www.dfl.de/de/hintergrund/ticketzweitmarkt/
-            https://www.bundesliga.com/de/bundesliga/news/relegation-alle-infos-termine-modus-abstieg-aufstieg-3008
+            https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
