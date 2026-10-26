@@ -33,16 +33,22 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            sgf1903.de
             www.sgf1903.de
           FULL: |
           PDFS: |
+          RAW: |
+            https://www.sgf1903.de/sitemap.xml
           NOTICES: |
-            https://sgf1903.de/
           DISCOVER: |
-            https://sgf1903.de/
           PAGES: |
-            https://sgf1903.de/
+            https://www.sgf1903.de/matchcenter/spiele/q92uvvf8njmtj00wgmblbawn/spielinfos
+            https://www.sgf1903.de/matchcenter/spiele/ado0n090v0i0qn2u1z9bb6k8/spielinfos
+            https://www.sgf1903.de/matchcenter/spiele/u53h3thsdarxg8nx3jiwd014/spielinfos
+            https://www.sgf1903.de/matchcenter
+            https://www.sgf1903.de/news
+            https://www.sgf1903.de/das-kleeblatt/verein
+            https://www.sgf1903.de/fanabteilung
+            https://www.sgf1903.de/kontakt
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -195,6 +201,7 @@ jobs:
             let browser;
             try {
               for (const h of lines(process.env.ROBOTS)) await fetchRobots(h);
+              // Run 2 onwards: robots.txt was read in run 1 and is re-read above for the hosts listed.
               const { chromium } = require('/tmp/pw/node_modules/playwright');
               browser = await chromium.launch();
               for (const url of lines(process.env.PAGES)) {
@@ -243,6 +250,21 @@ jobs:
                   }
                 }
                 catch (e) { post(`### ERROR ${url}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+              }
+              // Raw text files (a sitemap named in robots.txt): fetched, robots-checked, posted as they are.
+              for (const url of lines(process.env.RAW)) {
+                try {
+                  const u = new URL(url);
+                  if (!robots[u.host]) await fetchRobots(u.host);
+                  const [ok, why] = allowed(u.host, u.pathname + u.search);
+                  if (!ok) { post(`### STOPPED ${url}\nrobots.txt: ${why}; not fetched.`); continue; }
+                  await sleep(1000);
+                  const r = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(90000) });
+                  const t = (await r.text()).replace(/<\/?(urlset|url|lastmod|changefreq|priority|sitemapindex|sitemap)[^>]*>/g, ' ').replace(/<loc>/g, '\n').replace(/<\/loc>/g, '').replace(/[ \t]+/g, ' ').replace(/```/g, "'''");
+                  const parts = Math.min(10, Math.max(1, Math.ceil(t.length / MAX)));
+                  for (let i = 0; i < parts; i++)
+                    post(`### (r) RAW part ${i + 1} of ${parts} ${url}\nHTTP ${r.status}; final URL ${r.url}; length ${t.length}${t.length > 10 * MAX ? ', CUT after 10 parts' : ''}\n\n\`\`\`\n${t.slice(i * MAX, (i + 1) * MAX)}\n\`\`\``);
+                } catch (e) { post(`### ERROR ${url}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
               }
               for (const url of lines(process.env.PDFS)) {
                 try { await pdf(url); }
