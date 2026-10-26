@@ -40,7 +40,8 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
   (home phases 1 and 2), the members-only eligibility and the draw
   mechanism (rules `presale-eligibility`, `sales-mechanism`), and the
   Dortmund away sale in two phases (away phases 1 and 2, one page).
-  **Left `unverified`**: the youth standing day price EUR 6 (the club's FAQ
+  **Left `unverified`** (on 2026-10-22; Club Sale and `away-allocation`
+  were confirmed on 2026-10-26, see the next paragraph): the youth standing day price EUR 6 (the club's FAQ
   says EUR 5), the minors row (same conflict), personalisation and ID (a
   gap), Club Sale (home phase 3 and `resale-platform`: the tickets page
   recommends it to everyone, the announcements say members only), `fees`
@@ -51,6 +52,38 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
   "FAQ is outdated" caveat is `inferred` (the project's own reading); the
   demand row is `unverified` because "not stated" is an absence. The
   windows and club-level files have no confidence column and are unchanged.
+  **Re-read on the club's own pages, 2026-10-26 (PR #157; temporary
+  `probe-elversberg.yml`, two runs, removed).** `robots.txt` of
+  sv07elversberg.de and www.sv07elversberg.de: only `Disallow: /wp-admin/`.
+  Read live, in full, no page stopped: E1-E8 again, and three new club
+  pages - "Infos für Heimfans" (`E13`, headed "Bundesliga-Saison 2026/27"),
+  "Infos für Gästefans" (`E14`, no season) and the Stadionordnung (`E15`,
+  "Stand: Januar 2025"). The ticket terms (AGB) and Club Sale are on
+  www.ticket-onlineshop.com, not a club domain, and were not opened, so
+  (1) above still holds. **Changed**: Club Sale (home phase 3) and
+  `away-allocation` are `confirmed` (every part on the dated 2026-27
+  announcements E2, E4, E7 and E5; the tickets page recommending Club Sale
+  to "fans who could not buy" does not say non-members may buy, so it is
+  no contradiction); `sector-rules` was "away colours not allowed in C1"
+  (FAQ) and is now the 2026/27 page's wording (away fans barred from C1, E1,
+  E2; home fans from A1/A2); `personalisation` said the reduced-ticket
+  proof is shown "if asked" - the 2026/27 page says without being asked,
+  plus the membership card. Notes added to `minors` (under-14s only with an
+  adult; lap tickets only on the main stand), `away-end` (1,500 guest
+  tickets, print@home only, no season shown), `fees`, `resale-platform`
+  and `ticket-format`. **Still `unverified`, with the reason in each note**:
+  the youth standing price and `minors` (the 2026/2027 table says EUR 6,
+  the FAQ on the same current page EUR 5 - **Alexandru's call**),
+  `personalisation` (name, ID and passing-on not stated), `away-end` and the
+  FAQ parts of `fees` and `resale-platform` (no season shown), the demand
+  row (an absence), and `purchase-limit`: its last sentence is this
+  project's reading, and the rules key (club, team, scope, opponent, topic,
+  `ref`, season) can hold a second `purchase-limit` row only with an
+  invented `ref`, which means a source's item number - so it was not split;
+  **Alexandru's call** whether to allow that. **Season-less confirmed rows
+  (the Frankfurt standard), counted and not changed**: `membership` rests
+  only on the undated membership page (E8); the payment and "no
+  reservation" parts of `ticket-format` rest only on the FAQ.
   **Eintracht Frankfurt, 2026-10-26: read on the club's own pages (PR #156;
   temporary `probe-frankfurt.yml`, four runs, removed).** The 2026-10-25
   pass (PR #155) had used its runs before the rule pages; this one opened
@@ -71,16 +104,19 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
     non-member can only buy once a game reaches free sale. Mobile only;
     forwarding needs an Eintracht account; resale above the price paid
     plus 10% is forbidden, any unauthorised platform is forbidden.
-  - **Rows**: rules 13 `confirmed` (12 of them from the club; capacity
-    still rests on Wikipedia alone) and 6 `unverified` (`sales-mechanism`,
-    `access`, `membership`, `risk-classification`, `presale-rights`,
-    `fees` - press-only parts or undated pages); 5 rule rows added. The 3
+  - **Rows**: rules 12 `confirmed` (all from the club) and 7 `unverified`
+    (`sales-mechanism`, `access`, `membership`, `risk-classification`,
+    `presale-rights`, `fees` - press-only parts or undated pages - and
+    `capacity`, Wikipedia alone, downgraded 2026-10-26 in PR #157); 5 rule rows added. The 3
     phase rows stay `unverified` (press dates); phase 1's "for 24 hours"
     was corrected (the members' sale runs until matchday). The press "up
     to 4 for Bremen" is left out of `purchase-limit` (the club page shows
-    a free sale and no limit). The two demand rows and `capacity` stay
-    `confirmed` on Wikipedia alone, which does not meet the 22 Oct policy
-    (one third-party source): **Alexandru's call** whether to downgrade.
+    a free sale and states no limit: not stated, which is not "no
+    limit"; the row says so since PR #157). The two demand rows and
+    `capacity` rested on Wikipedia alone, which does not meet the 22 Oct
+    policy (one third-party source); on Alexandru's instruction they were
+    set to `unverified` on 2026-10-26 (PR #157), notes "single third-party
+    source".
   - **Not readable, for Alexandru to paste from his phone**: the seat plan
     with prices, `https://ticketing.eintrachttech.de/placeSelection/web/69cbaac1cb2aee065802eca3`
     (Hamburg; the probe was redirected to a login page and read only that
