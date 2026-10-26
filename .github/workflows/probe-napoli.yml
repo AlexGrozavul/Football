@@ -33,15 +33,15 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            archivio.sscnapoli.it
+            sscnapoli.it
           FULL: |
           PDFS: |
           NOTICES: |
-            https://archivio.sscnapoli.it/
+            https://sscnapoli.it
           DISCOVER: |
-            https://archivio.sscnapoli.it/
+            https://sscnapoli.it
           PAGES: |
-            https://archivio.sscnapoli.it/
+            https://sscnapoli.it
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -211,7 +211,7 @@ jobs:
                     for (const l of links) {
                       const href = l.split(' | ').pop();
                       let h; try { h = new URL(href).host; } catch { continue; }
-                      if (h === here || !/(^|\.)sscnapoli\.it$/.test(h)) continue;
+                      if (h === here || bare(h) === bare(here) || !/(^|\.)sscnapoli\.it$/.test(h) || /store|shop/i.test(h)) continue;
                       const p = new URL(href).pathname || '/';
                       if (!byHost[h] || (p === '/' && byHost[h].p !== '/')) byHost[h] = { href, p };
                     }
