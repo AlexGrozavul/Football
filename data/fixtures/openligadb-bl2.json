@@ -2817,7 +2817,7 @@
   {
    "id": 83658,
    "utcDate": "2026-10-25T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2832,9 +2832,20 @@
     "shortName": "Dresden",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2842,7 +2853,7 @@
   {
    "id": 83660,
    "utcDate": "2026-10-25T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2857,9 +2868,20 @@
     "shortName": "Hannover",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2867,7 +2889,7 @@
   {
    "id": 83661,
    "utcDate": "2026-10-25T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "9. Spieltag",
    "roundOrder": 9,
    "home": {
@@ -2882,9 +2904,20 @@
     "shortName": "Fürth",
     "crest": "https://i.imgur.com/pwuVbKr.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

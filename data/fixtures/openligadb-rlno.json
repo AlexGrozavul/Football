@@ -4473,7 +4473,7 @@
   {
    "id": 86332,
    "utcDate": "2026-10-25T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4488,9 +4488,20 @@
     "shortName": "Hertha II",
     "crest": "https://storage.fussballdaten.de/source/1/vereinhaupt/279/originale/hertha-bsc_2.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4498,7 +4509,7 @@
   {
    "id": 86333,
    "utcDate": "2026-10-25T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4513,9 +4524,20 @@
     "shortName": "Lok Leipzig",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_1._FC_Lokomotive_Leipzig.svg/250px-Logo_1._FC_Lokomotive_Leipzig.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

@@ -3588,7 +3588,7 @@
     "shortName": null,
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
    },
-   "homeGoals": 2,
+   "homeGoals": 1,
    "awayGoals": 1,
    "results": [
     {
@@ -3598,7 +3598,7 @@
     },
     {
      "name": "Endergebnis",
-     "home": 2,
+     "home": 1,
      "away": 1
     }
    ],
@@ -3861,7 +3861,7 @@
   {
    "id": 84853,
    "utcDate": "2026-10-25T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "11. Spieltag",
    "roundOrder": 11,
    "home": {
@@ -3876,9 +3876,20 @@
     "shortName": "Saarbrücken",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/f/ff/1._FC_Saarbr%C3%BCcken.svg/960px-1._FC_Saarbr%C3%BCcken.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3886,7 +3897,7 @@
   {
    "id": 84846,
    "utcDate": "2026-10-25T15:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "11. Spieltag",
    "roundOrder": 11,
    "home": {
@@ -3901,9 +3912,20 @@
     "shortName": "Fortuna Köln",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg/250px-SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3911,7 +3933,7 @@
   {
    "id": 84850,
    "utcDate": "2026-10-25T18:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "11. Spieltag",
    "roundOrder": 11,
    "home": {
@@ -3926,9 +3948,20 @@
     "shortName": "TSG 1899 Hoffenheim II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
