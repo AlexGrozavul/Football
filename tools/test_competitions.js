@@ -156,9 +156,9 @@ const server = http.createServer((req, res) => {
     await close();
   }else check('there is an unresearched competition to check', false, 'every competition has info rows');
 
-  // Added 2026-10-26 (DFB-Pokal research, PR #158; the Bundesliga since PR #159): the official link
+  // Added 2026-10-26 (DFB-Pokal research, PR #158; the Bundesliga since PR #159; Serie A since PR #161): the official link
   // (none for the Bundesliga, whose own site was not opened) and the repeated "other" rows, read from the files.
-  for(const id of ['de-dfb-pokal', 'de-bundesliga']){
+  for(const id of ['de-dfb-pokal', 'de-bundesliga', 'it-serie-a']){
     const comp = comps.find(c => c.id === id), name = comp ? comp.name : id;
     check(`data has a ${name} competition with researched rows`, !!comp && researched.has(id));
     if(!comp) continue;

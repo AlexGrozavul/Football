@@ -278,5 +278,85 @@
   "en": "7c133776",
   "ro": "publicat: pagina principală DFB-Pokal, pagina cu informații despre competiție și pagina de date ale DFB, fiecare deschisă și fiecare arătând sezonul 2026/2027",
   "status": "machine-unchecked"
+ },
+ "it-serie-a|format|C42#text": {
+  "en": "3f411c24",
+  "ro": "Clasamentul final în 2026-27, așa cum a decis Consiliul Federal al FIGC pe 26 mai 2026 la propunerea Lega Calcio Serie A, derogând pentru acest sezon de la art. 51 din NOIF. Dacă două echipe termină la egalitate de puncte pe primul loc, titlul (Campione d'Italia) revine câștigătoarei unui baraj într-un singur meci, pe terenul echipei mai bine clasate în minitabelul (classifica avulsa); la egalitate după timpul regulamentar nu se joacă prelungiri și decid loviturile de departajare. Când mai mult de două echipe sunt la egalitate, și pentru toate celelalte locuri din clasament, decide classifica avulsa în această ordine: a) punctele din meciurile directe dintre echipele în cauză, b) golaverajul din acele meciuri, c) golaverajul din întregul campionat, d) golurile marcate în întregul campionat, e) tragerea la sorți. Dacă o echipă care ar juca barajul este finalistă într-o competiție UEFA, decide în schimb classifica avulsa. Numărul de cluburi, meciurile per club și punctele pentru o victorie nu sunt menționate pe nicio pagină a organizatorului sau a federației care a putut fi citită (vezi rândul Wikipedia).",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|format|C42#basis": {
+  "en": "ed5f7fe3",
+  "ro": "publicat: FIGC Comunicato Ufficiale n. 244/A pentru sezonul 2026/2027, citit integral",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|promotion-relegation|C42#text": {
+  "en": "dd29e3b6",
+  "ro": "Conform comunicatului FIGC pentru 2026-27: dacă echipele de pe locurile 17 și 18 termină la egalitate de puncte, un baraj în dublă manșă (spareggio) decide care rămâne în Serie A. Echipa mai bine clasată în classifica avulsa joacă manșa a doua acasă; câștigă echipa cu mai multe goluri în cele două manșe; la egalitate de goluri nu se joacă prelungiri și decid loviturile de departajare. Dacă mai mult de două echipe sunt la egalitate, classifica avulsa le alege pe cele două; dacă una dintre ele este finalistă într-o competiție UEFA, decide în schimb classifica avulsa. Câte cluburi retrogradează și câte promovează din Serie B nu este menționat pe nicio pagină a organizatorului sau a federației care a putut fi citită (vezi rândul Wikipedia).",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|promotion-relegation|C42#basis": {
+  "en": "ed5f7fe3",
+  "ro": "publicat: FIGC Comunicato Ufficiale n. 244/A pentru sezonul 2026/2027, citit integral",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|qualification|C44#text": {
+  "en": "d09ed78b",
+  "ro": "Participanții în 2026-27, doar din Wikipedia: 20 de echipe, primele șaptesprezece (17) din 2025-26 și trei promovate din Serie B (Venezia, Frosinone și Monza), în locul echipelor Cremonese, Hellas Verona și Pisa, care au retrogradat.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|qualification|C44#basis": {
+  "en": "f0292b81",
+  "ro": "Articolul Wikipedia în engleză despre sezon, o singură sursă; paginile proprii ale ligii nu au putut fi citite.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|season-window|C44#text": {
+  "en": "5907c0e8",
+  "ro": "2026-27, doar din Wikipedia: a început la sfârșitul lui august 2026 și este programat să se încheie la sfârșitul lui mai 2027. O pauză de iarnă și numărul de etape pentru acest sezon nu sunt menționate pe nicio pagină care a putut fi citită.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|season-window|C44#basis": {
+  "en": "49cbf2fa",
+  "ro": "Articolul Wikipedia în engleză despre sezon, o singură sursă; doar la nivel de lună, datele exacte rămân pe pagina citată.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|tracking|C40;C41;C42#text": {
+  "en": "6f965cde",
+  "ro": "Site-ul propriu al ligii, legaseriea.it, interzice în condițiile de utilizare (versiunea din 1 decembrie 2025, § 5.2) data mining, roboții și instrumentele similare de extragere, iar condițiile uefa.com interzic roboții, spiderii și scripturile; această cercetare nu le-a citit dincolo de condiții (și de pagina principală a ligii, nefolosită); verifică-le manual. FIGC își publică comunicatele oficiale (Comunicati Ufficiali) pe figc.it, unde regulile pentru clasamentul final 2026-27 au apărut ca n. 244/A.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|tracking|C40;C41;C42#basis": {
+  "en": "f660dd4f",
+  "ro": "Listele de linkuri și notele legale ale paginilor citite; paginile proprii ale ligii nu au fost citite.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|other|C42;C43#text": {
+  "en": "976e704a",
+  "ro": "Identitate. Comunicatul FIGC îl numește Campionato di Serie A; site-ul FIGC listează separat Serie A Women, competiția feminină. Organismul ligii, Lega Calcio Serie A, a propus regulile pentru clasamentul final 2026-27, iar Consiliul Federal al FIGC le-a adoptat în baza art. 27 din statutul federal, ca derogare de la regulile federației (NOIF); site-ul FIGC în engleză listează Lega Calcio Serie A printre ligile și asociațiile sale.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|other|C42;C43#basis": {
+  "en": "06a74636",
+  "ro": "publicat: FIGC Comunicato Ufficiale n. 244/A pentru sezonul 2026/2027; pagina principală FIGC în engleză (fără sezon afișat) doar pentru listare",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|other|C44;C46#text": {
+  "en": "1bb74723",
+  "ro": "Deținătoarea titlului și detalii de identitate, doar din Wikipedia: Inter (Inter Milano) este campioana en titre, cu al 21-lea titlu în 2025-26. Liga este condusă de Lega Serie A, cu sediul la Milano, a cărei organizație-mamă este FIGC; în Italia se numește Serie A Enilive din motive de sponsorizare.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|other|C44;C46#basis": {
+  "en": "ec414905",
+  "ro": "Articole Wikipedia în engleză, o singură sursă; paginile proprii ale ligii nu au putut fi citite.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|other|C45;C44#text": {
+  "en": "7bee6b46",
+  "ro": "Format, doar din Wikipedia: 20 de cluburi din 2004-05; fiecare club joacă cu fiecare celălalt acasă și în deplasare, 38 de meciuri per club, cu un calendar asimetric din 2021-22; trei puncte pentru victorie, unul pentru egal, niciunul pentru înfrângere din 1994-95. Ultimele trei clasate retrogradează în Serie B și trei echipe din Serie B promovează.",
+  "status": "machine-unchecked"
+ },
+ "it-serie-a|other|C45;C44#basis": {
+  "en": "0306e498",
+  "ro": "Articolele Wikipedia în engleză despre ligă și sezon, o singură sursă.",
+  "status": "machine-unchecked"
  }
 }
