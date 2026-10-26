@@ -34,8 +34,8 @@ const CLUBS = [['VfB Stuttgart', 'Q4512'], ['Karlsruher SC', 'Q105853'], ['1. FC
   ['FC Bayern München', 'Q15789'], ['1. FC Nürnberg', 'Q15786'], ['Inter', 'Q631'], ['Eintracht Frankfurt', 'Q38245'],
   ['SV Elversberg', 'Q692691'], ['SSC Napoli', 'Q2641']];
 // Clubs whose every researched row is checked on the sheet, text against the files (2026-10-11;
-// SV Elversberg added 2026-10-22, SSC Napoli 2026-10-26).
-const FULL_ROWS = ['Q38245', 'Q692691', 'Q2641'];
+// SV Elversberg added 2026-10-22, SSC Napoli and 1. FC Kaiserslautern 2026-10-26).
+const FULL_ROWS = ['Q38245', 'Q692691', 'Q2641', 'Q8466'];
 
 // A small CSV reader for the checks: quoted cells, doubled quotes.
 function csv(file){
