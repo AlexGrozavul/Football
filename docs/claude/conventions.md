@@ -536,6 +536,8 @@ Tag `confirmed` only when the club's page read in full shows the season; an unda
 Register every page as a `ticket-sources.csv` row (a new club prefix plus a number, the season the page shows in `published`), then run `check_tickets.py` and add the club to `FULL_ROWS` in `tools/test_sheet_tickets.js`.
 A club subdomain found in a content run's link list (a shop, a support portal) gets its robots.txt and notice check in the next run; one with no notice of its own is reported, not silently treated as open (Kaiserslautern pass, PR #163).
 The probe's challenge check counts only a challenge page's title, an interstitial phrase ("verify you are human", "checking your browser") or HTTP 403/429/503, not the bare word "captcha": a support portal's feedback form carries that word on every article (support.fck.de; narrowed at Alexandru's instruction, PR #164). A flagged page still stays unread.
+When a club's link lists hold no ticket-information page, the probe may fetch the sitemap that the host's robots.txt names, as raw text, and content pages are chosen from that list; a sitemap can be incomplete (sgf1903.de's omits `/fans/`), so a page linked from a read page still counts (Fürth pass, PR #165). A stopped page is posted with its title and text length.
+A price stated for one fixture, or as a minimum ("ab"), is not a `club-ticket-prices.csv` row (a general row cannot name an opponent, nothing marks a minimum); it goes into a `price-list` rule in the page's terms and under schema gaps (Fürth pass, PR #165).
 **One item fits the mapping badly and was mapped anyway**: N-14 (the
 derby is probably price category A) is reasoned from the club's labels
 for two *other* 2026-27 fixtures, not from a past cycle, so its
