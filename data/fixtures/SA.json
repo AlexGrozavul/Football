@@ -1884,7 +1884,7 @@
   {
    "id": 558563,
    "utcDate": "2026-10-25T11:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1902,14 +1902,14 @@
     "tla": "FIO",
     "crest": "https://crests.football-data.org/99.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558562,
    "utcDate": "2026-10-25T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1927,14 +1927,14 @@
     "tla": "FRO",
     "crest": "https://crests.football-data.org/470.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 4,
+   "winner": "DRAW"
   },
   {
    "id": 558568,
    "utcDate": "2026-10-25T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1952,14 +1952,14 @@
     "tla": "VEN",
     "crest": "https://crests.football-data.org/454.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558566,
    "utcDate": "2026-10-25T17:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1977,14 +1977,14 @@
     "tla": "JUV",
     "crest": "https://crests.football-data.org/109.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558559,
    "utcDate": "2026-10-25T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2002,9 +2002,9 @@
     "tla": "MIL",
     "crest": "https://crests.football-data.org/98.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558556,

@@ -1909,7 +1909,7 @@
   {
    "id": 567336,
    "utcDate": "2026-10-25T15:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1927,14 +1927,14 @@
     "tla": "MOR",
     "crest": "https://crests.football-data.org/583.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 567330,
    "utcDate": "2026-10-25T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1952,14 +1952,14 @@
     "tla": "FAM",
     "crest": "https://crests.football-data.org/5531.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 4,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 567334,
    "utcDate": "2026-10-25T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1977,14 +1977,14 @@
     "tla": "SCB",
     "crest": "https://crests.football-data.org/5613.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 567332,
    "utcDate": "2026-10-25T20:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2002,9 +2002,9 @@
     "tla": "ACV",
     "crest": "https://crests.football-data.org/5527.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 567331,
