@@ -35,20 +35,16 @@ jobs:
           ROBOTS: |
             www.sgf1903.de
           FULL: |
+            https://www.sgf1903.de/das-kleeblatt/verein/faq
+            https://www.sgf1903.de/das-kleeblatt/verein/mitglied-werden
           PDFS: |
           RAW: |
-            https://www.sgf1903.de/sitemap.xml
+            https://www.sgf1903.de/sitemap-0.xml
           NOTICES: |
           DISCOVER: |
           PAGES: |
-            https://www.sgf1903.de/matchcenter/spiele/q92uvvf8njmtj00wgmblbawn/spielinfos
-            https://www.sgf1903.de/matchcenter/spiele/ado0n090v0i0qn2u1z9bb6k8/spielinfos
-            https://www.sgf1903.de/matchcenter/spiele/u53h3thsdarxg8nx3jiwd014/spielinfos
-            https://www.sgf1903.de/matchcenter
-            https://www.sgf1903.de/news
-            https://www.sgf1903.de/das-kleeblatt/verein
-            https://www.sgf1903.de/fanabteilung
-            https://www.sgf1903.de/kontakt
+            https://www.sgf1903.de/das-kleeblatt/verein/faq
+            https://www.sgf1903.de/das-kleeblatt/verein/mitglied-werden
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
