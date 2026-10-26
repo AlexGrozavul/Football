@@ -535,7 +535,7 @@ Map each finding to the existing topics (channels, membership or card, personali
 Tag `confirmed` only when the club's page read in full shows the season; an undated page or one for an earlier season gives `unverified`, with `season` set to what the page shows; a conflict between the club's pages writes the more specific row `unverified` and reports it.
 Register every page as a `ticket-sources.csv` row (a new club prefix plus a number, the season the page shows in `published`), then run `check_tickets.py` and add the club to `FULL_ROWS` in `tools/test_sheet_tickets.js`.
 A club subdomain found in a content run's link list (a shop, a support portal) gets its robots.txt and notice check in the next run; one with no notice of its own is reported, not silently treated as open (Kaiserslautern pass, PR #163).
-The probe's challenge check looks for words such as "captcha" in a page's first 3000 characters, and a support portal's feedback form can trip it on a page served normally (support.fck.de, PR #163). Leaving frame text out was not enough, so test a new portal's article pages in an early run; a flagged page stays unread.
+The probe's challenge check counts only a challenge page's title, an interstitial phrase ("verify you are human", "checking your browser") or HTTP 403/429/503, not the bare word "captcha": a support portal's feedback form carries that word on every article (support.fck.de; narrowed at Alexandru's instruction, PR #164). A flagged page still stays unread.
 **One item fits the mapping badly and was mapped anyway**: N-14 (the
 derby is probably price category A) is reasoned from the club's labels
 for two *other* 2026-27 fixtures, not from a past cycle, so its
