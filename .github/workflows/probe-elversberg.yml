@@ -34,14 +34,10 @@ jobs:
             www.sv07elversberg.de
           FULL: |
           PAGES: |
-            https://sv07elversberg.de/ursapharm-arena/tickets/
-            https://sv07elversberg.de/tickets-fuer-die-heimspiele-gegen-bayer-04-leverkusen-und-den-fc-bayern-muenchen/
-            https://sv07elversberg.de/informationen-zu-den-tagestickets-bei-den-bundesliga-heimspielen-2026-2027/
-            https://sv07elversberg.de/tickets-fuer-die-heimspiele-gegen-den-fc-augsburg-und-den-1-fsv-mainz-05/
-            https://sv07elversberg.de/dauerkarten-verlaengerung-fuer-die-bundesliga-saison-2026-2027/
-            https://sv07elversberg.de/dauerkarten-vorverkauf-nach-der-ersten-phase-abgeschlossen/
-            https://sv07elversberg.de/ticket-vvk-und-fanbus-zum-auswaertsspiel-bei-borussia-dortmund-07-11-26/
-            https://sv07elversberg.de/die-sve/mitgliedschaft/
+            https://sv07elversberg.de/infos-fuer-heimfans/
+            https://sv07elversberg.de/infos-fuer-gaestefans/
+            https://sv07elversberg.de/ursapharm-arena/stadionordnung/
+            https://sv07elversberg.de/fans/fanbetreuung/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
