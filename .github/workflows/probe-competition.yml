@@ -34,15 +34,17 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             en.wikipedia.org
+            de.wikipedia.org
             www.dfb.de
-            assets.dfb.de
           FULL: |
-            https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga
+            https://de.wikipedia.org/wiki/Fu%C3%9Fball-Bundesliga_2026/27
+            https://en.wikipedia.org/wiki/Bundesliga
           PDFS: |
-            https://assets.dfb.de/uploads/000/328/560/original_Heft_01_Satzung_Geschaeftsordnung_DFB_DFL_Grundlagenvertrag_20251128.pdf?1769517033
-            https://www.dfb.de/uploads/media/Richtlinien-Verbesserung-Sicherheit-Bundesspielen-12-2011.pdf
           PAGES: |
-            https://en.wikipedia.org/wiki/2026%E2%80%9327_Bundesliga
+            https://www.dfb.de/news/rahmenterminkalender-fuer-saison-2026/2027-festgelegt
+            https://de.wikipedia.org/wiki/Fu%C3%9Fball-Bundesliga_2026/27
+            https://en.wikipedia.org/wiki/Bundesliga
+            https://en.wikipedia.org/wiki/2027%E2%80%9328_UEFA_Champions_League#League_phase
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -147,7 +149,11 @@ jobs:
             const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a =>
               `${(a.textContent || a.getAttribute('aria-label') || a.title || '').replace(/\s+/g, ' ').trim()} | ${a.href}`));
             const uniq = [...new Set(links)];
-            post(`### (b) LINKS ${url}\n${uniq.length} distinct links${uniq.length > 400 ? ', showing the first 400' : ''}.\n\n\`\`\`\n${uniq.slice(0, 400).join('\n').replace(/```/g, "'''")}\n\`\`\``);
+            // The whole link list, in parts of MAX characters each.
+            const all = uniq.join('\n').replace(/```/g, "'''");
+            const lparts = Math.max(1, Math.ceil(all.length / MAX));
+            for (let i = 0; i < lparts; i++)
+              post(`### (b) LINKS${lparts > 1 ? ` part ${i + 1} of ${lparts}` : ''} ${url}\n${uniq.length} distinct links.\n\n\`\`\`\n${all.slice(i * MAX, (i + 1) * MAX)}\n\`\`\``);
             await ctx.close();
           }
 
