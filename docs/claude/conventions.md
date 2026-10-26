@@ -1203,8 +1203,10 @@ no price rows, 8 sources (`F1`-`F8`), no country row.
   (membership pages, undated) - one club, one source. Per game: members'
   sale (two per member, from 7) or free sale; mobile only; the "24-hour"
   members' sale of the press is corrected (it runs until matchday).
-  Resale cap and transfer from the ATGB. 13 rule rows `confirmed`, 6
-  `unverified` (undated pages or press-only parts). No price figure: the
+  Resale cap and transfer from the ATGB. 12 rule rows `confirmed`, 7
+  `unverified` (undated pages or press-only parts; since 2026-10-26, PR
+  #157, also `capacity`, which rests on Wikipedia alone, as do the two
+  demand rows, now `unverified` too). No price figure: the
   seat plan needs a login. Details: the Frankfurt entry of
   `docs/claude/open-problems.md`.
 
