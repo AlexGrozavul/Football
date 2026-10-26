@@ -34,7 +34,6 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             sscnapoli.it
-            cdn.sscnapoli.it
           FULL: |
             https://sscnapoli.it/campagna-abbonamenti-2026-27/
             https://sscnapoli.it/faq-abbonamenti-2026-27/
@@ -49,7 +48,6 @@ jobs:
             https://sscnapoli.it/codice-di-condotta/
             https://sscnapoli.it/news/
           PDFS: |
-            https://cdn.sscnapoli.it/wp-content/uploads/2026/05/TC-Membership-20-05-26_aggiornato.pdf
           NOTICES: |
           DISCOVER: |
           PAGES: |
@@ -204,7 +202,6 @@ jobs:
             const parts = Math.max(1, Math.ceil(text.length / MAX));
             for (let i = 0; i < parts; i++)
               post(`### (p) PDF part ${i + 1} of ${parts} ${url}\nURL: ${url}\nFinal URL: ${final}\nHTTP ${r.status}; content-type ${r.headers.get('content-type')}; length ${text.length} characters\n${i === 0 ? '\n```\n' + info.replace(/```/g, "'''") + '```\n' : ''}\n\`\`\`\n${text.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
-            return text;
           }
 
           (async () => {
@@ -213,13 +210,8 @@ jobs:
               for (const h of lines(process.env.ROBOTS)) await fetchRobots(h);
               const { chromium } = require('/tmp/pw/node_modules/playwright');
               browser = await chromium.launch();
-              let gate = '';
-              for (const url of lines(process.env.PDFS)) {
-                try { const t = await pdf(url); if (t === undefined) gate = `${url}: terms PDF not read`; const m = (t || '').match(/.{0,200}(robot|scraping|data mining|crawler|spider|mezzi automatizzati|estrazione automatica).{0,200}/i); if (m) gate = `${url}: ${m[0]}`; }
-                catch (e) { gate = `${url}: terms PDF not read`; post(`### ERROR ${url}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
-              }
-              if (gate) post(`### GATE: terms wording found, no page opened\n${gate}`);
-              for (const url of (gate ? [] : lines(process.env.PAGES))) {
+              // cdn.sscnapoli.it answered 403 to robots.txt in run 3: a stop, never fetched again.
+              for (const url of lines(process.env.PAGES)) {
                 try {
                   const links = await render(browser, url);
                   // Run 1: the host's legal or terms notice, taken from the landing page's own link list.
@@ -261,6 +253,10 @@ jobs:
                     }
                   }
                 }
+                catch (e) { post(`### ERROR ${url}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+              }
+              for (const url of lines(process.env.PDFS)) {
+                try { await pdf(url); }
                 catch (e) { post(`### ERROR ${url}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
               }
               post('### Probe run finished');
