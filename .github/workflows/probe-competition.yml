@@ -36,12 +36,10 @@ jobs:
             www.dfb.de
             dfb.de
           FULL: |
-            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/fan-infos-pokalfinale
-            https://www.dfb.de/ueber-uns/verbandsrecht
+            https://www.dfb.de/ueber-uns/verbandsrecht/satzung-und-ordnungen
           PDFS: |
           PAGES: |
-            https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/fan-infos-pokalfinale
-            https://www.dfb.de/ueber-uns/verbandsrecht
+            https://www.dfb.de/ueber-uns/verbandsrecht/satzung-und-ordnungen
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
