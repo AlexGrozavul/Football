@@ -38,7 +38,6 @@ jobs:
           GATE: |
           FULL: |
           TABLES: |
-            https://www.fcaugsburg.de/page/mitgliedsbeitraege-447
           PDFS: |
           RAW: |
           NOTICES: |
@@ -46,14 +45,12 @@ jobs:
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.fcaugsburg.de/article/alles-wichtige-zum-stadionbesuch-gegen-union-berlin-23589
-            https://www.fcaugsburg.de/article/vorverkauf-auswartsspiele-in-frankfurt-und-bremen-23333
-            https://www.fcaugsburg.de/article/vorverkauf-auswaerts-in-leipzig-und-sinsheim-23554
-            https://www.fcaugsburg.de/article/vorverkauf-fuer-spiel-in-elversberg-startet-23489
-            https://www.fcaugsburg.de/page/mitgliedsbeitraege-447
-            https://www.fcaugsburg.de/page/mitglieder-dokumente-faq-512
-            https://www.fcaugsburg.de/page/stadionverbote-35
-            https://www.fcaugsburg.de/news/rund-ums-Spiel
+            https://www.fcaugsburg.de/page/fca-app-129
+            https://www.fcaugsburg.de/leichte-sprache
+            https://www.fcaugsburg.de/article/heimspiel-viererpack-vorverkauf-startet-22551
+            https://www.fcaugsburg.de/article/vorverkauf-fuer-die-naechsten-heimspiele-startet-22364
+            https://www.fcaugsburg.de/article/vorverkaufsstart-heimspiele-gegen-bayern-und-mainz-22188
+            https://www.fcaugsburg.de/article/auswaerts-in-koeln-mitglieder-vorverkauf-startet-22391
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
