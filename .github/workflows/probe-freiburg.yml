@@ -35,24 +35,16 @@ jobs:
           ROBOTS: |
             www.scfreiburg.com
           FULL: |
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/heimspiel-gegen-wolfsburg-im-dfb-pokal
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/playoffs-gegen-den-fc-motherwell
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/auftakt-gegen-jablonec-abschluss-in-litauen
-            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/aktuelle-anreiseinfos-bayern-muenchen
-            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/vorfreudige-fans-und-treue-mitglieder
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/zweite-pokalrunde-zeitgenau-angesetzt
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2025/26/freier-vorverkauf-darmstadt-und-salzburg
           PDFS: |
+            https://www.scfreiburg.com/fileadmin/01_Content/01_Bilder/05_Stadion/Inhaltsseiten/Tribuenenplan_Stadion_Quer_NEU.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
           PAGES: |
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/heimspiel-gegen-wolfsburg-im-dfb-pokal
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/playoffs-gegen-den-fc-motherwell
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/auftakt-gegen-jablonec-abschluss-in-litauen
-            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/aktuelle-anreiseinfos-bayern-muenchen
-            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/vorfreudige-fans-und-treue-mitglieder
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/zweite-pokalrunde-zeitgenau-angesetzt
-            https://www.scfreiburg.com/digitale-dauerkarte/
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2025/26/freier-vorverkauf-darmstadt-und-salzburg
+            https://www.scfreiburg.com/matchcenter/uebersicht/
+            https://www.scfreiburg.com/fans/faninfos/fans-mit-behinderung/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
