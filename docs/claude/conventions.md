@@ -1600,7 +1600,13 @@ four sub-tabs, in this order: **Stats**, **Matches**, **Events**, **Tickets**
   personal fields; for an event, the `atStadium` flag, one "Factual note" (its `note`, line breaks kept; before 2026-10-13 two sections, What it was and Why it mattered) and the
   personal fields. **Not reproduced: photos and videos (step 3).** The pitch is
   drawn only where the formation's rows add up to the ten outfield players of an
-  eleven-man list; otherwise the starting eleven is listed with no pitch. **A
+  eleven-man list; otherwise the starting eleven is listed with no pitch. **The
+  name under a disc is the surname, 2026-10-27** (`attSurname()`, pitch label only):
+  trailing words that are just an initial ("Husic L.", "Rieder F. J.", "Özil M.")
+  are dropped and the last word left is shown; a name that is only initials shows
+  its original last word ("H."); "(C)" is added after it. Every other place (the
+  list of the XI, subs, bench, timeline, the disc's `data-name`) shows the name as
+  stored. **A
   formation is never inferred.** On 2026-10-09 the file holds 21 matches with
   line-ups (40 teams, every one with a formation that draws), 15 with stats.
   The assistant-written factual notes (`note` on a match or an event)

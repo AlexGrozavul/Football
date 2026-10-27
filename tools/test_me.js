@@ -3330,6 +3330,76 @@ function alarmAt(ev, al){
     }
   }
 
+  // ---- Pitch label: the surname when a stored name ends in an initial (2026-10-27). Only the label under the disc changes; the stored name is shown as stored in the list, subs, bench and timeline.
+  {
+    const BKEY = 'football-attended-imported';
+    const SN = [['Husic L.', 'Husic'], ['L. Husic', 'Husic'], ['Luka Husic', 'Husic'], ['Young-Woo', 'Young-Woo'], ['Rieder F. J.', 'Rieder'], ['H.', 'H.'],
+      ['van Dijk V.', 'Dijk'], ['Özil M.', 'Özil'], ['Kane', 'Kane'], ['Matsima', 'Matsima'], ['Demir Ö', 'Demir']];
+    const CAPT = 'Husic L.';
+    const mkS = (id, extra) => Object.assign({id, date: '2025-05-01', competition: {ro: 'Cupa', en: 'Cup'}, stage: {ro: 'Finala', en: 'Final'},
+      home: {name: 'Casa ' + id, nameEn: 'Home ' + id}, away: {name: 'Oaspeți ' + id, nameEn: 'Away ' + id}, score: '3-1', stadium: 'Label Ground', city: {ro: 'Orașul', en: 'Town'}, country: {ro: 'Țara', en: 'Land'},
+      goals: [], cards: [], cardsComplete: true}, extra || {});
+    const xiS = names => names.map((n, i) => ({no: i + 1, name: n}));
+    const names11 = SN.map(r => r[0]), want11 = SN.map(r => r[1]);                // the eleven players of a line-up
+    const ID = 'lbl-' + TAG, IDNO = 'lblno-' + TAG;
+    const mLu = mkS(ID, {goals: [{team: 'home', player: CAPT, minute: 10}], cards: [{team: 'home', player: 'Rieder F. J.', minute: 30, type: 'yellow'}],
+      lineups: {home: {formation: '4-4-2', coach: 'CH', captain: CAPT, xi: xiS(names11), subs: [{minute: 60, on: 'Sub Z.', off: 'Özil M.'}], bench: [{no: 12, name: 'Bench B.'}]},
+        away: {coach: 'CA', captain: 'van Dijk V.', xi: xiS(names11), bench: [{no: 13, name: 'Rieder F. J.'}]}}});
+    const mNoLu = mkS(IDNO, {goals: [{team: 'home', player: 'Husic L.', minute: 10}]});
+    const openLabel = async (width, id, side) => {
+      const ctx = await newCtx({width});
+      await ctx.addInitScript(([k, r]) => { try{ if(localStorage.getItem(k) === null) localStorage.setItem(k, r); }catch(e){} }, [BKEY, JSON.stringify({version: 1, matches: [mLu, mNoLu]})]);
+      const pg = await ctx.newPage();
+      pg.on('pageerror', e => errors.push(e.message));
+      await pg.goto(BASE);
+      await pg.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+      await pg.click('nav button[data-pane=me]');
+      await pg.click('#meTabMatches'); await pg.waitForSelector('#meMatches .acard');
+      await pg.click(`#meMatches .acard[data-id="imp:${id}"]`); await pg.waitForSelector('#asheet:not([hidden])'); await pg.waitForTimeout(350);
+      if(side === 'away'){ await pg.click('#asheet .asw button[data-side=away]'); await pg.waitForTimeout(200); }
+      return {ctx, pg};
+    };
+    const read = pg => pg.evaluate(() => {
+      const sheet = document.getElementById('asheet'), svg = sheet.querySelector('svg.apitch');
+      const els = svg ? [...svg.querySelectorAll('text.nm')].map(e => { const b = e.getBBox(); return {t: e.textContent, x: b.x, y: b.y, w: b.width, h: b.height}; }) : [];
+      const over = [], clip = [];
+      els.forEach(e => { if(e.x < 0 || e.y < 0 || e.x + e.w > 300 || e.y + e.h > 400) clip.push(e.t); });
+      for(let i = 0; i < els.length; i++) for(let j = i + 1; j < els.length; j++){ const a = els[i], b = els[j]; if(a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h) over.push(a.t + '/' + b.t); }
+      const txt = sel => [...sheet.querySelectorAll(sel)].map(e => e.textContent.replace(/\s+/g, ' ').trim());
+      return {pitch: !!svg, labels: els.map(e => e.t), widths: els.map(e => e.w), over, clip, discs: svg ? [...svg.querySelectorAll('g.aplr')].map(g => g.dataset.name) : [],
+        sideScroll: sheet.scrollWidth > sheet.clientWidth + 1, rows: txt('#aluSide .alist .arow .k'), evs: txt('#aluSide .aev .tx'), tl: txt('#asheet .aev'), hasForm: !!sheet.querySelector('.aform'), hasSide: !!sheet.querySelector('#aluSide')};
+    });
+    const j = JSON.stringify;
+    for(const width of [W, 360]){
+      const {ctx, pg} = await openLabel(width, ID, 'home');
+      const r = await read(pg);
+      const wantLab = want11.map((w, i) => names11[i] === CAPT ? w + ' (C)' : w);
+      check(`Pitch label (${width} px): the eleven labels are the surname - "Husic L." -> "Husic" (with " (C)" for the captain), "L. Husic", "Luka Husic" -> "Husic", "Young-Woo", "Kane", "Matsima" unchanged, "Rieder F. J." -> "Rieder", "H." -> "H.", "van Dijk V." -> "Dijk", "Özil M." -> "Özil", "Demir Ö" -> "Demir"`,
+        r.pitch && j(r.labels) === j(wantLab), j({got: r.labels, want: wantLab}));
+      check(`Pitch label (${width} px): the disc keeps the stored name as its data (the badges follow it) and the goal badge still sits on the captain`, j(r.discs) === j(names11), j(r.discs));
+      check(`Pitch label (${width} px): no label is wider than the 54-unit cap the font fitting already gave, none leaves the picture or overlaps another, and the sheet does not scroll sideways`,
+        r.widths.every(w => w <= 54.5) && !r.clip.length && !r.over.length && !r.sideScroll, j({widths: r.widths.map(w => +w.toFixed(1)), clip: r.clip, over: r.over, sideScroll: r.sideScroll}));
+      const tl = r.tl.join(' | ');
+      check(`Pitch label (${width} px): the subs, bench and timeline show the stored names unchanged ("Özil M.", "Sub Z.", "Bench B.", "Husic L.", "Rieder F. J.")`,
+        r.evs.some(x => /Sub Z\./.test(x) && /Özil M\./.test(x)) && r.rows.includes('Bench B.') && /Husic L\./.test(tl) && /Rieder F\. J\./.test(tl) && !r.labels.some(l => /\bL\.$/.test(l)), j({evs: r.evs, rows: r.rows, tl}));
+      await ctx.close();
+    }
+    {
+      const {ctx, pg} = await openLabel(W, ID, 'away');
+      const r = await read(pg);
+      check('Pitch label: the away side has no formation, so its list view shows every stored name unchanged (including the captain "van Dijk V. (C)") and its bench "Rieder F. J."',
+        !r.pitch && j(r.rows.slice(0, 11)) === j(names11.map(n => n === 'van Dijk V.' ? n + ' (C)' : n)) && r.rows.includes('Rieder F. J.'), j(r));
+      await ctx.close();
+    }
+    {
+      const {ctx, pg} = await openLabel(W, IDNO, 'home');
+      const r = await read(pg);
+      check('Pitch label: a match without line-ups is unaffected - no pitch, no line-up pane, and the goal in the timeline still reads "Husic L."',
+        !r.pitch && !r.hasForm && !r.hasSide && r.tl.some(x => /Husic L\./.test(x)), j(r));
+      await ctx.close();
+    }
+  }
+
   // A failed load says so.
   const ctx4 = await newCtx();
   await ctx4.route('**/data/attended.json', r => r.abort());
