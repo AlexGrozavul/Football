@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1389 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1395 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -1333,11 +1333,17 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `ot.price-list-2` | price-list-2 | lista de prețuri 2 |
 | `ot.price-list-3` | price-list-3 | lista de prețuri 3 |
 | `ot.family-matchday` | family-matchday | meciul familiilor |
+| `ot.topf-a` | Topf A | coloana de preț Topf A |
+| `ot.topf-b` | Topf B | coloana de preț Topf B |
+| `ot.topf-c` | Topf C | coloana de preț Topf C |
+| `ot.topf-d` | Topf D | coloana de preț Topf D |
 | `pcl.normal` | normal | preț normal |
 | `pcl.member` | member | membru |
 | `pcl.reduced` | reduced | redus |
 | `pcl.child` | child | copil |
 | `pcl.youth` | youth | tânăr (13-18) |
+| `pcl.child-teen` | child/teen | copil/adolescent |
+| `pcl.teensclub` | TeensClub (14-17) | TeensClub (14-17 ani) |
 | `pk.face-value` | face-value | valoare nominală |
 | `pk.resale-observed` | resale-observed | revânzare observată |
 | `pb.excl-vat-fees` | excl-vat-fees | fără TVA și taxe |
