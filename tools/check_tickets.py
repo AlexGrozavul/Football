@@ -455,7 +455,20 @@ KNOWN = {
         "stehplatz", "sitzplatz-kat-1", "sitzplatz-kat-2", "sitzplatz-kat-3",
         "rollstuhlfahrer",
         # 1. FSV Mainz 05, 2026-10-27: the club's own category numbers.
-        "7", "komfort"],
+        "7", "komfort",
+        # FC Augsburg, 2026-10-27: the club's own seat categories, each
+        # also with its slightly restricted (leicht sichteingeschraenkt)
+        # and restricted-view (sichteingeschraenkt) rows, and the places
+        # for B/Bl-mark holders. Standing and wheelchair rows use the
+        # existing stehplatz and rollstuhlfahrer.
+        "kat-1a", "kat-1a-leicht-sichteingeschraenkt",
+        "kat-1a-sichteingeschraenkt", "kat-1b",
+        "kat-1b-leicht-sichteingeschraenkt", "kat-1b-sichteingeschraenkt",
+        "kat-2", "kat-2-leicht-sichteingeschraenkt",
+        "kat-2-sichteingeschraenkt", "kat-3",
+        "kat-3-leicht-sichteingeschraenkt", "kat-3-sichteingeschraenkt",
+        "familienblock", "familienblock-leicht-sichteingeschraenkt",
+        "familienblock-sichteingeschraenkt", "merkzeichen-b-bl"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
@@ -465,14 +478,22 @@ KNOWN = {
                                     # is assigned a Preisliste 1 to 3, and
                                     # one family matchday has its own list.
                                     "price-list-1", "price-list-2",
-                                    "price-list-3", "family-matchday"],
+                                    "price-list-3", "family-matchday",
+                                    # FC Augsburg, 2026-10-27: the day-ticket
+                                    # table's four columns, headed Topf A-D.
+                                    "topf-a", "topf-b", "topf-c", "topf-d"],
     (PRICES_FILE, "placeType"): ["standing", "seat"],
     # reduced and child are Karlsruher SC's 'Ermäßigt' and 'Kind'
     # (2026-10-06): one seat, three prices, so the key needs them.
     (PRICES_FILE, "priceClass"): ["normal", "member", "reduced", "child",
                                   # 1. FSV Mainz 05, 2026-10-27: a youth
                                   # price (13-18) beside reduced and child.
-                                  "youth"],
+                                  "youth",
+                                  # FC Augsburg, 2026-10-27: a row headed
+                                  # 'Kind/ Teen' (no ages given), and the
+                                  # season-ticket price for the members'
+                                  # TeensClub (14 to 17).
+                                  "child-teen", "teensclub"],
     (RULES_FILE, "topic"): [
         "sales-channel", "membership", "presale-rights", "fees",
         "update-tracking", "queue", "sector-separation", "personalisation",

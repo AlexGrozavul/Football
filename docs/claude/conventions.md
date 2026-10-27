@@ -541,6 +541,8 @@ When the club's shop is a partner domain, `ticketUrl` may hold the club's own ho
 A price stated for one fixture, or as a minimum ("ab"), is not a `club-ticket-prices.csv` row (a general row cannot name an opponent, nothing marks a minimum); it goes into a `price-list` rule in the page's terms and under schema gaps (Fürth pass, PR #165).
 A terms document or regulation confirms a row for the season only if it carries a "Stand" date from the last 12 months **and** is linked from the club's current ticket page; when the ticket section links an older version than another club page, its rows stay `unverified` (Mainz pass, PR #167: ATGB of 1 May 2025 against 15 May 2026).
 A current sale status ("game X is in free sale today") is a snapshot: it goes into the chat report only, never into a data row; the phases and dates a page states for a named game may be written as a rule "stated for the home game against X" (Mainz pass, PR #167).
+When a consent dialog (Cookiebot) buries a page's text, the probe removes the dialog from its own copy of the page before reading, never clicking or consenting, and reads the legal notice first as a gate: no content page is read in that run if the notice is empty or mentions bots or automated access (FC Augsburg pass, PR #168).
+A terms PDF with no text layer (FC Augsburg's ATGB) gives no row; it is listed under pictures, and the rows it would have backed stay blank or rest on the FAQ as `unverified` (PR #168).
 **One item fits the mapping badly and was mapped anyway**: N-14 (the
 derby is probably price category A) is reasoned from the club's labels
 for two *other* 2026-27 fixtures, not from a past cycle, so its
