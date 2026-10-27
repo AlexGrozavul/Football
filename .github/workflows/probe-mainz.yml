@@ -36,21 +36,26 @@ jobs:
             www.mainz05.de
             servicecenter.mainz05.de
           FULL: |
+            https://www.mainz05.de/tickets/faq
+            https://servicecenter.mainz05.de/de/support/solutions/204000045719
+          TABLES: |
             https://www.mainz05.de/tickets/heimspiele
           PDFS: |
-            https://www.mainz05.de/getContentAsset/44f20cd8-e591-41b6-b40c-9876ee96e77e/66cc9516-7a55-417b-9548-be5642e94a58/Gasteinfo_Homepage.pdf?language=de-DE
-            https://www.mainz05.de/getmedia/249bf2f3-f298-43c9-9ad2-35ab40bd2b35/Stadionordnung-MEWA-ARENA-26_27.pdf
+            https://www.mainz05.de/getmedia/bb098904-a230-48bf-bf00-fbe4a1918c2d/Tageskarten-Preisubersicht-2026_27_A4_1.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
           PAGES: |
             https://www.mainz05.de/tickets/heimspiele
-            https://www.mainz05.de/tickets/zweitmarkt
-            https://www.mainz05.de/tickets/kontakt
-            https://www.mainz05.de/tickets/schwerbehindertenbereich
-            https://servicecenter.mainz05.de/de/support/solutions
-            https://www.mainz05.de/tickets/vip-karten
-            https://www.mainz05.de/tickets/dauerkarte-herren
+            https://servicecenter.mainz05.de/de/support/solutions/204000045719
+            https://www.mainz05.de/tickets/faq
+            https://www.mainz05.de/tickets/tickets-fuer-kinder-jugendliche
+            https://www.mainz05.de/tickets/infos-zum-stadionbesuch
+            https://www.mainz05.de/tickets/atgb
+            https://servicecenter.mainz05.de/de/support/solutions/204000045937
+            https://www.mainz05.de/mitglied-werden
+            https://www.mainz05.de/tickets/11er-karte
+            https://www.mainz05.de/tickets/preise
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -166,6 +171,12 @@ jobs:
             const parts = full ? Math.ceil(text.length / MAX) : 1;
             for (let i = 0; i < parts; i++)
               post(`### (a) TEXT${parts > 1 ? ` part ${i + 1} of ${parts}` : ''} ${url}\n${head}Length ${text.length} characters${full ? `, characters ${i * MAX} to ${Math.min(text.length, (i + 1) * MAX)}` : cut ? `, CUT at ${MAX}` : ', not cut'}.\n\n\`\`\`\n${text.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
+            // TABLES pages: every table, one row per line, cells separated by ' | '.
+            if (lines(process.env.TABLES).includes(url)) {
+              const tables = await page.evaluate(() => [...document.querySelectorAll('table')].map((t, i) =>
+                `[table ${i + 1}]\n` + [...t.rows].map(r => [...r.cells].map(c => c.innerText.replace(/\s+/g, ' ').trim() || '(empty)').join(' | ')).join('\n')).join('\n\n'));
+              post(`### (t) TABLES ${url}\n\n\`\`\`\n${(tables || 'no table element').slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
+            }
             const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a =>
               `${(a.textContent || a.getAttribute('aria-label') || a.title || '').replace(/\s+/g, ' ').trim()} | ${a.href}`));
             const uniq = [...new Set(links)];
