@@ -33,17 +33,29 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            scfreiburg.com
             www.scfreiburg.com
           FULL: |
+            https://www.scfreiburg.com/heimtickets/
+            https://www.scfreiburg.com/tickets/faq/
+            https://www.scfreiburg.com/fans/faninfos/fuer-unsere-gaeste/
+            https://www.scfreiburg.com/stadion/europa-park-stadion/stadionverordnung/
           PDFS: |
+            https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/001_AGBS___ATGBS/ATGB_2026_final.pdf
           RAW: |
+            https://www.scfreiburg.com/typo3temp/sitemapindex.xml
           NOTICES: |
-            https://www.scfreiburg.com/
           DISCOVER: |
-            https://www.scfreiburg.com/
           PAGES: |
-            https://www.scfreiburg.com/
+            https://www.scfreiburg.com/tickets/
+            https://www.scfreiburg.com/heimtickets/
+            https://www.scfreiburg.com/tickets/faq/
+            https://www.scfreiburg.com/ticketzweitmarkt/
+            https://www.scfreiburg.com/fans/faninfos/fuer-unsere-gaeste/
+            https://www.scfreiburg.com/ticket-angebote/
+            https://www.scfreiburg.com/inklusionstickets/
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/
+            https://www.scfreiburg.com/stadion/europa-park-stadion/stadionverordnung/
+            https://www.scfreiburg.com/mitgliedschaft/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
