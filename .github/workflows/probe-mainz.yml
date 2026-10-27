@@ -36,25 +36,21 @@ jobs:
             www.mainz05.de
             servicecenter.mainz05.de
           FULL: |
-            https://www.mainz05.de/tickets
+            https://www.mainz05.de/tickets/heimspiele
           PDFS: |
-            https://www.mainz05.de/getmedia/f2802258-3536-4648-9f32-bc5c55b5f322/ATGB-1-FSV-Mainz-05_2026.pdf
-            https://www.mainz05.de/getmedia/d828dc34-6a4d-41e2-9251-d3492e2a9196/Veranderungen-ATGB-alt_ATGB-neu.pdf
+            https://www.mainz05.de/getContentAsset/44f20cd8-e591-41b6-b40c-9876ee96e77e/66cc9516-7a55-417b-9548-be5642e94a58/Gasteinfo_Homepage.pdf?language=de-DE
+            https://www.mainz05.de/getmedia/249bf2f3-f298-43c9-9ad2-35ab40bd2b35/Stadionordnung-MEWA-ARENA-26_27.pdf
           RAW: |
-            https://www.mainz05.de/sitemap.xml
           NOTICES: |
-            https://servicecenter.mainz05.de/de/support/solutions/folders/204000127722
           DISCOVER: |
           PAGES: |
-            https://servicecenter.mainz05.de/de/support/solutions/folders/204000127722
-            https://www.mainz05.de/tickets
-            https://www.mainz05.de/willkommen-in-mainz
-            https://www.mainz05.de/allgemeine-infos
-            https://www.mainz05.de/mitgliedschaft-im-ueberblick
-            https://www.mainz05.de/fanverhaltensregeln
-            https://www.mainz05.de/arena
-            https://www.mainz05.de/team-barrierefrei
-            https://www.mainz05.de/news
+            https://www.mainz05.de/tickets/heimspiele
+            https://www.mainz05.de/tickets/zweitmarkt
+            https://www.mainz05.de/tickets/kontakt
+            https://www.mainz05.de/tickets/schwerbehindertenbereich
+            https://servicecenter.mainz05.de/de/support/solutions
+            https://www.mainz05.de/tickets/vip-karten
+            https://www.mainz05.de/tickets/dauerkarte-herren
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
