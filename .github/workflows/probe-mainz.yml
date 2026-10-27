@@ -33,21 +33,28 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            www.mainz05.de
             servicecenter.mainz05.de
           FULL: |
           TABLES: |
           PDFS: |
-            https://www.mainz05.de/getmedia/684d2209-be2f-49b2-be3d-8712a66bdc2f/ATGB-Mainz05_2025.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
           PAGES: |
-            https://servicecenter.mainz05.de/de/support/solutions/folders/204000100987
-            https://servicecenter.mainz05.de/de/support/solutions/folders/204000100981
-            https://servicecenter.mainz05.de/de/support/solutions/folders/204000126045
-            https://servicecenter.mainz05.de/de/support/solutions/folders/204000123154
-            https://servicecenter.mainz05.de/de/support/solutions/folders/204000127206
+            https://servicecenter.mainz05.de/de/support/solutions/204000062058
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000047945-wann-startet-der-vorverkauf-der-heimspiele-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000063409-wer-gilt-als-bestandskunde-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000047820-wie-kann-ich-tickets-kaufen-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000047844-wie-viel-kosten-tickets-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000082949-welche-preisliste-gilt-bei-welchem-heimspiel-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000064298-welche-ticketerm%C3%A4%C3%9Figungen-gibt-es-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000067765-wie-weise-ich-meine-erm%C3%A4%C3%9Figung-nach-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000068368-welche-beitragsstufen-gibt-es-bei-der-mitgliedschaft-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000067713-wie-kann-ich-mitglied-werden-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000067714-was-sind-die-vorteile-der-mitgliedschaft-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000074351-wann-kann-ich-meine-tickets-tageskarten-und-dauerkarten-weiterleiten-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000080332-bis-wann-kann-ich-mein-ticket-auf-dem-05er-zweitmarkt-verkaufen-
+            https://servicecenter.mainz05.de/de/support/solutions/articles/204000080344-wie-teuer-ist-ein-ticket-wenn-ich-es-%C3%BCber-den-05er-zweitmarkt-kaufe-
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
