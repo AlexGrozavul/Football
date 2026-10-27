@@ -37,27 +37,23 @@ jobs:
             www.fcaugsburg.de
           GATE: |
           FULL: |
-            https://www.fcaugsburg.de/page/dauerkarten-21
           TABLES: |
-            https://www.fcaugsburg.de/page/dauerkarten-21
-            https://www.fcaugsburg.de/article/ticketpreise-fuer-die-saison-2026-27-23154
+            https://www.fcaugsburg.de/page/mitgliedsbeitraege-447
           PDFS: |
-            https://www.fcaugsburg.de/atgb
-            https://www.fcaugsburg.de/media/download/65972
-            https://www.fcaugsburg.de/stadionordnung
           RAW: |
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.fcaugsburg.de/article/ticket-vorverkauf-heimspiele-gegen-schalke-und-leverkusen-23287
-            https://www.fcaugsburg.de/article/heimspiel-gegen-schalke-ausverkauft-23388
-            https://www.fcaugsburg.de/article/heimspiel-gegen-bayern-muenchen-ausverkauft-1-23463
-            https://www.fcaugsburg.de/article/ticketpreise-fuer-die-saison-2026-27-23154
-            https://www.fcaugsburg.de/article/ab-dienstag-freier-dauerkarten-vorverkauf-23166
-            https://www.fcaugsburg.de/page/dauerkarten-21
-            https://www.fcaugsburg.de/page/allgemeine-infos-zur-barrierefreiheit-590
+            https://www.fcaugsburg.de/article/alles-wichtige-zum-stadionbesuch-gegen-union-berlin-23589
+            https://www.fcaugsburg.de/article/vorverkauf-auswartsspiele-in-frankfurt-und-bremen-23333
+            https://www.fcaugsburg.de/article/vorverkauf-auswaerts-in-leipzig-und-sinsheim-23554
+            https://www.fcaugsburg.de/article/vorverkauf-fuer-spiel-in-elversberg-startet-23489
+            https://www.fcaugsburg.de/page/mitgliedsbeitraege-447
+            https://www.fcaugsburg.de/page/mitglieder-dokumente-faq-512
+            https://www.fcaugsburg.de/page/stadionverbote-35
+            https://www.fcaugsburg.de/news/rund-ums-Spiel
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
