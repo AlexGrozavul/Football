@@ -40,21 +40,12 @@ jobs:
           RAW: |
           NOTICES: |
           DISCOVER: |
+          FOLLOW: |
+            https://servicecenter.mainz05.de/de/support/solutions/folders/204000127057
           PAGES: |
-            https://servicecenter.mainz05.de/de/support/solutions/204000062058
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000047945-wann-startet-der-vorverkauf-der-heimspiele-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000063409-wer-gilt-als-bestandskunde-
+            https://servicecenter.mainz05.de/de/support/solutions/folders/204000127057
             https://servicecenter.mainz05.de/de/support/solutions/articles/204000047820-wie-kann-ich-tickets-kaufen-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000047844-wie-viel-kosten-tickets-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000082949-welche-preisliste-gilt-bei-welchem-heimspiel-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000064298-welche-ticketerm%C3%A4%C3%9Figungen-gibt-es-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000067765-wie-weise-ich-meine-erm%C3%A4%C3%9Figung-nach-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000068368-welche-beitragsstufen-gibt-es-bei-der-mitgliedschaft-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000067713-wie-kann-ich-mitglied-werden-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000067714-was-sind-die-vorteile-der-mitgliedschaft-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000074351-wann-kann-ich-meine-tickets-tageskarten-und-dauerkarten-weiterleiten-
             https://servicecenter.mainz05.de/de/support/solutions/articles/204000080332-bis-wann-kann-ich-mein-ticket-auf-dem-05er-zweitmarkt-verkaufen-
-            https://servicecenter.mainz05.de/de/support/solutions/articles/204000080344-wie-teuer-ist-ein-ticket-wenn-ich-es-%C3%BCber-den-05er-zweitmarkt-kaufe-
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -65,7 +56,9 @@ jobs:
           const FORBIDDEN = /acquista|carrello|accedi|registrati|ticketone|vivaticket|eventim|kaufen|buy|bestellen|warenkorb|cart|checkout|login|anmelden|registrier|konto|account|queue|warteraum|warteschlange|waiting|sitzplan|saalplan|placeSelection/i;
           // The organiser's own hosts; web.archive.org only for labelled archive copies.
           const bare = h => h.replace(/^www\./, '');
-          const isForbidden = u => FORBIDDEN.test(u);
+          // Run 7: a service-centre FAQ article is an information page even when its slug contains 'kaufen'.
+          const FAQ_ARTICLE = /^https:\/\/servicecenter\.mainz05\.de\/de\/support\/solutions\/articles\/\d+-[a-z0-9%-]+$/;
+          const isForbidden = u => FORBIDDEN.test(u) && !FAQ_ARTICLE.test(u);
           const sleep = ms => new Promise(r => setTimeout(r, ms));
           let n = 0;
           function post(body) {
@@ -219,6 +212,15 @@ jobs:
               for (const url of lines(process.env.PAGES)) {
                 try {
                   const links = await render(browser, url);
+                  // Run 7: every FAQ article linked from a chosen service-centre folder page.
+                  if (links && lines(process.env.FOLLOW).includes(url)) {
+                    const arts = [...new Set(links.map(l => l.split(' | ').pop()).filter(h => FAQ_ARTICLE.test(h)))].slice(0, 15);
+                    post(`### Articles taken from the link list of ${url}\n${arts.join('\n') || 'none found'}`);
+                    for (const a of arts) {
+                      try { await render(browser, a); }
+                      catch (e) { post(`### ERROR ${a}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+                    }
+                  }
                   // Run 1: the host's legal or terms notice, taken from the landing page's own link list.
                   if (links && lines(process.env.NOTICES).includes(url)) {
                     const host = new URL(url).host;
