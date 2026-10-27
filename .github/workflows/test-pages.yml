@@ -299,15 +299,23 @@ jobs:
           set -o pipefail
           python3 tools/check_translations.py 2>&1 | tee /tmp/test_check_translations.log
 
+      # GitHub refuses a summary over 1024 KB and fails the job (PR #167: 1537 KB, almost all of
+      # it the check_tickets.py read-back), so each log is capped at its last 40000 bytes here;
+      # 21 logs x 40000 bytes stays under the limit. The full log is in its own step's output.
       - name: Write the run summary
         if: always()
         run: |
           {
             for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets competitions check_tickets check_holidays check_competitions check_club_culture check_translations; do
+              f=/tmp/test_$t.log
               echo "## test_$t.js"
               echo
+              if [ -f "$f" ] && [ "$(wc -c < "$f")" -gt 40000 ]; then
+                echo "Only the last 40000 of $(wc -c < "$f") bytes are shown; the full log is in this step's output in the job log."
+                echo
+              fi
               echo '```'
-              cat /tmp/test_$t.log 2>/dev/null || echo "did not run"
+              if [ -f "$f" ]; then tail -c 40000 "$f"; else echo "did not run"; fi
               echo '```'
             done
           } >> "$GITHUB_STEP_SUMMARY"

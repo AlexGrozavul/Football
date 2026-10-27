@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1384 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1389 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -1329,10 +1329,15 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `ot.standard-opponent` | standard-opponent | adversar obișnuit |
 | `ot.category-a` | category-a | categoria A |
 | `ot.category-b` | category-b | categoria B |
+| `ot.price-list-1` | price-list-1 | lista de prețuri 1 |
+| `ot.price-list-2` | price-list-2 | lista de prețuri 2 |
+| `ot.price-list-3` | price-list-3 | lista de prețuri 3 |
+| `ot.family-matchday` | family-matchday | meciul familiilor |
 | `pcl.normal` | normal | preț normal |
 | `pcl.member` | member | membru |
 | `pcl.reduced` | reduced | redus |
 | `pcl.child` | child | copil |
+| `pcl.youth` | youth | tânăr (13-18) |
 | `pk.face-value` | face-value | valoare nominală |
 | `pk.resale-observed` | resale-observed | revânzare observată |
 | `pb.excl-vat-fees` | excl-vat-fees | fără TVA și taxe |

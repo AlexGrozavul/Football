@@ -539,6 +539,8 @@ The probe's challenge check counts only a challenge page's title, an interstitia
 When a club's link lists hold no ticket-information page, the probe may fetch the sitemap that the host's robots.txt names, as raw text, and content pages are chosen from that list; a sitemap can be incomplete (sgf1903.de's omits `/fans/`), so a page linked from a read page still counts (Fürth pass, PR #165). A stopped page is posted with its title and text length.
 When the club's shop is a partner domain, `ticketUrl` may hold the club's own home-ticket page instead (Freiburg, PR #166); sale phases with only one dated start are rules, not a window, since a window needs an estimate.
 A price stated for one fixture, or as a minimum ("ab"), is not a `club-ticket-prices.csv` row (a general row cannot name an opponent, nothing marks a minimum); it goes into a `price-list` rule in the page's terms and under schema gaps (Fürth pass, PR #165).
+A terms document or regulation confirms a row for the season only if it carries a "Stand" date from the last 12 months **and** is linked from the club's current ticket page; when the ticket section links an older version than another club page, its rows stay `unverified` (Mainz pass, PR #167: ATGB of 1 May 2025 against 15 May 2026).
+A current sale status ("game X is in free sale today") is a snapshot: it goes into the chat report only, never into a data row; the phases and dates a page states for a named game may be written as a rule "stated for the home game against X" (Mainz pass, PR #167).
 **One item fits the mapping badly and was mapped anyway**: N-14 (the
 derby is probably price category A) is reasoned from the club's labels
 for two *other* 2026-27 fixtures, not from a past cycle, so its

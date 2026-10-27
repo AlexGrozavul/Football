@@ -32,10 +32,11 @@ const tick = name => { const now = Date.now(); console.log(`TIME ${name}: ${((no
 const CLUBS = [['VfB Stuttgart', 'Q4512'], ['Karlsruher SC', 'Q105853'], ['1. FC Kaiserslautern', 'Q8466'],
   ['Stuttgarter Kickers', 'Q170105'], ['Poli Timișoara', 'Q4654417'], ['UTA Arad', 'Q680770'],
   ['FC Bayern München', 'Q15789'], ['1. FC Nürnberg', 'Q15786'], ['Inter', 'Q631'], ['Eintracht Frankfurt', 'Q38245'],
-  ['SV Elversberg', 'Q692691'], ['SSC Napoli', 'Q2641'], ['SpVgg Greuther Fürth', 'Q153539'], ['SC Freiburg', 'Q106394']];
+  ['SV Elversberg', 'Q692691'], ['SSC Napoli', 'Q2641'], ['SpVgg Greuther Fürth', 'Q153539'], ['SC Freiburg', 'Q106394'],
+  ['1. FSV Mainz 05', 'Q105254']];
 // Clubs whose every researched row is checked on the sheet, text against the files (2026-10-11;
-// SV Elversberg added 2026-10-22, SSC Napoli, 1. FC Kaiserslautern and SpVgg Greuther Fürth 2026-10-26, SC Freiburg 2026-10-27).
-const FULL_ROWS = ['Q38245', 'Q692691', 'Q2641', 'Q8466', 'Q153539', 'Q106394'];
+// SV Elversberg added 2026-10-22, SSC Napoli, 1. FC Kaiserslautern and SpVgg Greuther Fürth 2026-10-26, SC Freiburg and 1. FSV Mainz 05 2026-10-27).
+const FULL_ROWS = ['Q38245', 'Q692691', 'Q2641', 'Q8466', 'Q153539', 'Q106394', 'Q105254'];
 
 // A small CSV reader for the checks: quoted cells, doubled quotes.
 function csv(file){

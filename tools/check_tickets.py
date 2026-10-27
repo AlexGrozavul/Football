@@ -453,16 +453,26 @@ KNOWN = {
         "gegentribuene-seite",
         # SV Elversberg's own table rows (2026-10-22).
         "stehplatz", "sitzplatz-kat-1", "sitzplatz-kat-2", "sitzplatz-kat-3",
-        "rollstuhlfahrer"],
+        "rollstuhlfahrer",
+        # 1. FSV Mainz 05, 2026-10-27: the club's own category numbers.
+        "7", "komfort"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
     (PRICES_FILE, "opponentTier"): ["top-opponent", "standard-opponent",
-                                    "category-a", "category-b"],
+                                    "category-a", "category-b",
+                                    # 1. FSV Mainz 05, 2026-10-27: each game
+                                    # is assigned a Preisliste 1 to 3, and
+                                    # one family matchday has its own list.
+                                    "price-list-1", "price-list-2",
+                                    "price-list-3", "family-matchday"],
     (PRICES_FILE, "placeType"): ["standing", "seat"],
     # reduced and child are Karlsruher SC's 'Ermäßigt' and 'Kind'
     # (2026-10-06): one seat, three prices, so the key needs them.
-    (PRICES_FILE, "priceClass"): ["normal", "member", "reduced", "child"],
+    (PRICES_FILE, "priceClass"): ["normal", "member", "reduced", "child",
+                                  # 1. FSV Mainz 05, 2026-10-27: a youth
+                                  # price (13-18) beside reduced and child.
+                                  "youth"],
     (RULES_FILE, "topic"): [
         "sales-channel", "membership", "presale-rights", "fees",
         "update-tracking", "queue", "sector-separation", "personalisation",
