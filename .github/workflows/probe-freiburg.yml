@@ -35,23 +35,24 @@ jobs:
           ROBOTS: |
             www.scfreiburg.com
           FULL: |
-            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/neuerungen-beim-ticketverkauf-zur-saison-2026/27/
-            https://www.scfreiburg.com/joker-phase/
-            https://www.scfreiburg.com/fans/faninfos/fuer-unsere-gaeste/zu-besuch-im-europa-park-stadion/
-            https://www.scfreiburg.com/fans/faninfos/daheim/europa-park-stadion/
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/heimspiel-gegen-wolfsburg-im-dfb-pokal
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/playoffs-gegen-den-fc-motherwell
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/auftakt-gegen-jablonec-abschluss-in-litauen
+            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/aktuelle-anreiseinfos-bayern-muenchen
+            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/vorfreudige-fans-und-treue-mitglieder
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/zweite-pokalrunde-zeitgenau-angesetzt
           PDFS: |
-            https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/03_Fans/03_Tickets/2026_U__bersicht_Vorverkaufsphasen_A4_02.pdf
-            https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/03_Fans/03_Tickets/2023_03_Anleitung-Mitgliedervorverkaufsphase.pdf
           RAW: |
-            https://www.scfreiburg.com/typo3temp/sitemap0.xml
           NOTICES: |
           DISCOVER: |
           PAGES: |
-            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/neuerungen-beim-ticketverkauf-zur-saison-2026/27/
-            https://www.scfreiburg.com/joker-phase/
-            https://www.scfreiburg.com/fans/faninfos/fuer-unsere-gaeste/zu-besuch-im-europa-park-stadion/
-            https://www.scfreiburg.com/fans/faninfos/daheim/europa-park-stadion/
-            https://www.scfreiburg.com/dauerkarte/
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/heimspiel-gegen-wolfsburg-im-dfb-pokal
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/playoffs-gegen-den-fc-motherwell
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/auftakt-gegen-jablonec-abschluss-in-litauen
+            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/aktuelle-anreiseinfos-bayern-muenchen
+            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/vorfreudige-fans-und-treue-mitglieder
+            https://www.scfreiburg.com/aktuell/nachrichten/profis/news/2026/27/zweite-pokalrunde-zeitgenau-angesetzt
+            https://www.scfreiburg.com/digitale-dauerkarte/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
