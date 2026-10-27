@@ -9676,7 +9676,15 @@ const attDec = n => String(Math.round(n * 100) / 100);
 const attRate = n => typeof n === 'number' && Number.isFinite(n) ? `<span class="arat">${n.toFixed(1)}</span>` : '';
 /* A pass count as "88% (532/606)", the percentage worked out here; a total of 0 gives a dash. */
 const attPassTxt = q => q[1] > 0 ? `${Math.round(q[0] / q[1] * 100)}% (${q[0]}/${q[1]})` : '–';
-const attSurname = n => { const p = String(n).trim().split(/\s+/); return p.length > 1 ? p[p.length - 1] : p[0]; };
+/* The pitch label only: the stored name stays as stored everywhere else. Trailing words that are just an
+   initial ("Husic L.", "Rieder F. J.") are dropped and the last word left is shown; a name that is only
+   initials shows its original last word ("H."). */
+const attSurname = n => {
+  const p = String(n).trim().split(/\s+/);
+  let k = p.length;
+  while(k > 0 && /^\p{L}\p{M}*\.?$/u.test(p[k - 1])) k--;
+  return k ? p[k - 1] : p[p.length - 1];
+};
 const attMin = e => e.minute + (e.added ? '+' + e.added : '') + "'";
 
 /* The formation as the pitch needs it, or null. Never inferred: a missing
