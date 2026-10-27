@@ -35,27 +35,23 @@ jobs:
           ROBOTS: |
             www.scfreiburg.com
           FULL: |
-            https://www.scfreiburg.com/heimtickets/
-            https://www.scfreiburg.com/tickets/faq/
-            https://www.scfreiburg.com/fans/faninfos/fuer-unsere-gaeste/
-            https://www.scfreiburg.com/stadion/europa-park-stadion/stadionverordnung/
+            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/neuerungen-beim-ticketverkauf-zur-saison-2026/27/
+            https://www.scfreiburg.com/joker-phase/
+            https://www.scfreiburg.com/fans/faninfos/fuer-unsere-gaeste/zu-besuch-im-europa-park-stadion/
+            https://www.scfreiburg.com/fans/faninfos/daheim/europa-park-stadion/
           PDFS: |
-            https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/001_AGBS___ATGBS/ATGB_2026_final.pdf
+            https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/03_Fans/03_Tickets/2026_U__bersicht_Vorverkaufsphasen_A4_02.pdf
+            https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/03_Fans/03_Tickets/2023_03_Anleitung-Mitgliedervorverkaufsphase.pdf
           RAW: |
-            https://www.scfreiburg.com/typo3temp/sitemapindex.xml
+            https://www.scfreiburg.com/typo3temp/sitemap0.xml
           NOTICES: |
           DISCOVER: |
           PAGES: |
-            https://www.scfreiburg.com/tickets/
-            https://www.scfreiburg.com/heimtickets/
-            https://www.scfreiburg.com/tickets/faq/
-            https://www.scfreiburg.com/ticketzweitmarkt/
-            https://www.scfreiburg.com/fans/faninfos/fuer-unsere-gaeste/
-            https://www.scfreiburg.com/ticket-angebote/
-            https://www.scfreiburg.com/inklusionstickets/
-            https://www.scfreiburg.com/aktuell/nachrichten/profis/
-            https://www.scfreiburg.com/stadion/europa-park-stadion/stadionverordnung/
-            https://www.scfreiburg.com/mitgliedschaft/
+            https://www.scfreiburg.com/aktuell/nachrichten/verein/2026/27/neuerungen-beim-ticketverkauf-zur-saison-2026/27/
+            https://www.scfreiburg.com/joker-phase/
+            https://www.scfreiburg.com/fans/faninfos/fuer-unsere-gaeste/zu-besuch-im-europa-park-stadion/
+            https://www.scfreiburg.com/fans/faninfos/daheim/europa-park-stadion/
+            https://www.scfreiburg.com/dauerkarte/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
