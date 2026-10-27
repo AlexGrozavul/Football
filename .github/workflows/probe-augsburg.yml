@@ -35,18 +35,30 @@ jobs:
           ROBOTS: |
             fcaugsburg.de
             www.fcaugsburg.de
+          GATE: |
+            https://www.fcaugsburg.de/page/impressum-179
+            https://www.fcaugsburg.de/page/datenschutz-176
           FULL: |
+            https://www.fcaugsburg.de/page/ticket-faq-27
           TABLES: |
+            https://www.fcaugsburg.de/page/ticket-heimspiele-15
+            https://www.fcaugsburg.de/page/sonderkarten-19
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.fcaugsburg.de/
           DISCOVER: |
-            https://www.fcaugsburg.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.fcaugsburg.de/
+            https://www.fcaugsburg.de/page/ticket-heimspiele-15
+            https://www.fcaugsburg.de/page/ticket-faq-27
+            https://www.fcaugsburg.de/page/sonderkarten-19
+            https://www.fcaugsburg.de/page/gaeste-infos-37
+            https://www.fcaugsburg.de/atgb
+            https://www.fcaugsburg.de/page/tickets-vorverkaufsstellen-139
+            https://www.fcaugsburg.de/search/tag/tickets
+            https://www.fcaugsburg.de/page/mitglied-vorteile-237
+            https://www.fcaugsburg.de/page/stadion-stadionordnung-242
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -61,7 +73,7 @@ jobs:
           const FAQ_ARTICLE = new RegExp(process.env.FOLLOW_RE || '^$');
           const isForbidden = u => FORBIDDEN.test(u);
           const sleep = ms => new Promise(r => setTimeout(r, ms));
-          let n = 0;
+          let n = 0, lastText = '';
           function post(body) {
             fs.writeFileSync(`c${++n}.md`, body);
             execFileSync('gh', ['api', `repos/${process.env.REPO}/issues/${process.env.PR}/comments`,
@@ -142,11 +154,14 @@ jobs:
             const title = await page.title();
             const text0 = await page.evaluate(() => {
               const b = document.body.cloneNode(true);
-              b.querySelectorAll('script,style,noscript').forEach(e => e.remove());
+              // The Cookiebot consent dialog (over a million characters of partner lists) is removed from
+              // this copy only; nothing on the page is clicked or accepted.
+              b.querySelectorAll('script,style,noscript,#CybotCookiebotDialog,#CybotCookiebotDialogBodyUnderlay,#CookiebotWidget,[id^="Cybot"]').forEach(e => e.remove());
               return b.textContent.replace(/[ \t\r\f\v ]+/g, ' ').replace(/\s*\n\s*/g, '\n').trim();
             });
             // Frame text is left out (a feedback form's reCAPTCHA frame is not page content).
             const text = text0;
+            lastText = text;
             // Narrowed 2026-10-26 at Alexandru's instruction: a challenge page shows itself in its TITLE or with an
             // interstitial phrase; the bare word 'captcha' in an article's feedback form no longer counts.
             const challenge = /just a moment|attention required|captcha|verify|security check|access denied|are you a robot/i.test(title)
@@ -170,7 +185,7 @@ jobs:
                 `[table ${i + 1}]\n` + [...t.rows].map(r => [...r.cells].map(c => c.innerText.replace(/\s+/g, ' ').trim() || '(empty)').join(' | ')).join('\n')).join('\n\n'));
               post(`### (t) TABLES ${url}\n\n\`\`\`\n${(tables || 'no table element').slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
             }
-            const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a =>
+            const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].filter(a => !a.closest('#CybotCookiebotDialog,#CookiebotWidget,[id^="Cybot"]')).map(a =>
               `${(a.textContent || a.getAttribute('aria-label') || a.title || '').replace(/\s+/g, ' ').trim()} | ${a.href}`));
             const uniq = [...new Set(links)];
             // The whole link list, in parts of MAX characters each.
@@ -210,6 +225,19 @@ jobs:
               // Run 2 onwards: robots.txt was read in run 1 and is re-read above for the hosts listed.
               const { chromium } = require('/tmp/pw/node_modules/playwright');
               browser = await chromium.launch();
+              // Run 2: the legal notice is read first; content pages are read only if its text is there and
+              // says nothing about bots or automated access (any mention stops the run for a person to judge).
+              let gateOk = true;
+              for (const g of lines(process.env.GATE)) {
+                lastText = '';
+                try { await render(browser, g); } catch (e) { post(`### ERROR ${g}\n${e.message}`); }
+                const hits = (lastText.match(/.{0,120}(automatisiert|crawl|robot|\bbots?\b|scrap|spider|data.?mining|text- und data|§\s*44b|maschinenlesbar|nutzungsvorbehalt|vervielfältig|datenbank).{0,120}/gi) || []);
+                post(`### GATE ${g}\ntext length ${lastText.length}; matches ${hits.length}\n\n\`\`\`\n${hits.join('\n').slice(0, 20000).replace(/\`\`\`/g, "'''")}\n\`\`\``);
+                // Only the first GATE page (the Impressum) can stop the run: a privacy page names bot-protection
+                // services, which is not a rule about this probe; its matches are posted for a person to read.
+                if (g === lines(process.env.GATE)[0] && (lastText.length < 800 || /automatisiert|crawl|robot|\bbots?\b|scrap|spider|data.?mining|text- und data|§\s*44b|maschinenlesbar|nutzungsvorbehalt/i.test(lastText))) gateOk = false;
+              }
+              if (!gateOk) { post('### GATE STOP: content pages and PDFs not read in this run'); process.env.PAGES = ''; process.env.PDFS = ''; process.env.RAW = ''; }
               for (const url of lines(process.env.PAGES)) {
                 try {
                   const links = await render(browser, url);
