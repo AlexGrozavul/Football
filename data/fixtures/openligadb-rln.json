@@ -3526,7 +3526,7 @@
   {
    "id": 87132,
    "utcDate": "2026-10-04T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3541,9 +3541,20 @@
     "shortName": "SSV Jeddeloh",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Logo_SSV_Jeddeloh.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 7,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 4,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 7,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3551,7 +3562,7 @@
   {
    "id": 87133,
    "utcDate": "2026-10-04T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3566,34 +3577,20 @@
     "shortName": "Eimsbütteler TV",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/1/14/Eimsb%C3%BCtteler_TV_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 87134,
-   "utcDate": "2026-10-04T13:00:00Z",
-   "finished": false,
-   "round": "12. Spieltag",
-   "roundOrder": 12,
-   "home": {
-    "id": 1761,
-    "name": "Hamburger SV II",
-    "shortName": "Hamburger SV II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg"
-   },
-   "away": {
-    "id": 135,
-    "name": "Werder Bremen II",
-    "shortName": "Bremen II",
-    "crest": "https://www.openligadb.de/images/teamicons/Werder_Bremen.gif"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3601,7 +3598,7 @@
   {
    "id": 87135,
    "utcDate": "2026-10-04T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3616,9 +3613,20 @@
     "shortName": "SVT",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/1/1d/SVTodesfelde_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3626,7 +3634,7 @@
   {
    "id": 87136,
    "utcDate": "2026-10-04T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3641,9 +3649,20 @@
     "shortName": "FSV Schöningen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d7/FSV_Sch%C3%B6ningen_2011.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3676,7 +3695,7 @@
   {
    "id": 87138,
    "utcDate": "2026-10-04T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3691,9 +3710,20 @@
     "shortName": "VfB Oldenburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/bc/VfB_Oldenburg.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3701,7 +3731,7 @@
   {
    "id": 87139,
    "utcDate": "2026-10-04T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3716,9 +3746,20 @@
     "shortName": "Phönix Lübeck",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9b/1._FC_Phoenix_Luebeck_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4075,7 +4116,7 @@
   {
    "id": 87146,
    "utcDate": "2026-10-12T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -4090,9 +4131,20 @@
     "shortName": "VfB Lübeck",
     "crest": "http://upload.wikimedia.org/wikipedia/de/8/86/VfB_L%C3%BCbeck.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4424,7 +4476,7 @@
   {
    "id": 87159,
    "utcDate": "2026-10-24T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4439,9 +4491,20 @@
     "shortName": "Kickers Emden",
     "crest": "https://upload.wikimedia.org/wikipedia/de/2/24/Kickers_Emden_Logo_07-26.svg?utm_source=de.wikipedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4449,7 +4512,7 @@
   {
    "id": 87161,
    "utcDate": "2026-10-24T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4464,9 +4527,20 @@
     "shortName": "SSV Jeddeloh",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Logo_SSV_Jeddeloh.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4474,7 +4548,7 @@
   {
    "id": 87166,
    "utcDate": "2026-10-24T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4489,9 +4563,20 @@
     "shortName": null,
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/EintrachtNorderstedtWappen.gif"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4499,7 +4584,7 @@
   {
    "id": 87162,
    "utcDate": "2026-10-24T16:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4514,9 +4599,20 @@
     "shortName": "SVT",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/1/1d/SVTodesfelde_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 5,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 5,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4524,7 +4620,7 @@
   {
    "id": 87163,
    "utcDate": "2026-10-24T16:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4539,9 +4635,20 @@
     "shortName": "HSC Hannover",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Hannoverscher_SC_Logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4549,7 +4656,7 @@
   {
    "id": 87160,
    "utcDate": "2026-10-25T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4564,9 +4671,20 @@
     "shortName": "Hamburger SV II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 3,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4574,7 +4692,7 @@
   {
    "id": 87164,
    "utcDate": "2026-10-25T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4589,9 +4707,20 @@
     "shortName": "SV Atlas Delmenhorst",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Atlas-DEL.jpg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4614,9 +4743,20 @@
     "shortName": "VfB Lübeck",
     "crest": "http://upload.wikimedia.org/wikipedia/de/8/86/VfB_L%C3%BCbeck.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4624,7 +4764,7 @@
   {
    "id": 87167,
    "utcDate": "2026-10-25T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4638,6 +4778,42 @@
     "name": "SC Weiche Flensburg 08",
     "shortName": "Weiche Flensburg 08",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/5/57/SC_Weiche_Flensburg_08.svg"
+   },
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 0
+    }
+   ],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 88688,
+   "utcDate": "2026-10-28T14:00:00Z",
+   "finished": false,
+   "round": "12. Spieltag",
+   "roundOrder": 12,
+   "home": {
+    "id": 135,
+    "name": "Werder Bremen II",
+    "shortName": "Bremen II",
+    "crest": "https://www.openligadb.de/images/teamicons/Werder_Bremen.gif"
+   },
+   "away": {
+    "id": 1761,
+    "name": "Hamburger SV II",
+    "shortName": "Hamburger SV II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg"
    },
    "homeGoals": null,
    "awayGoals": null,

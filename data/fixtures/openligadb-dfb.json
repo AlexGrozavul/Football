@@ -1211,7 +1211,7 @@
   {
    "id": 87618,
    "utcDate": "2026-10-27T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1226,9 +1226,20 @@
     "shortName": "Augsburg",
     "crest": "https://i.imgur.com/sdE62e2.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 4,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 4
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1236,7 +1247,7 @@
   {
    "id": 87620,
    "utcDate": "2026-10-27T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1251,9 +1262,20 @@
     "shortName": "Leipzig",
     "crest": "https://i.imgur.com/Rpwsjz1.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1261,7 +1283,7 @@
   {
    "id": 87624,
    "utcDate": "2026-10-27T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1276,9 +1298,20 @@
     "shortName": "Mainz",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Logo_Mainz_05.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1286,7 +1319,7 @@
   {
    "id": 87625,
    "utcDate": "2026-10-27T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1301,9 +1334,20 @@
     "shortName": "Frankfurt",
     "crest": "https://i.imgur.com/X8NFkOb.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1311,7 +1355,7 @@
   {
    "id": 87621,
    "utcDate": "2026-10-27T19:45:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1326,9 +1370,20 @@
     "shortName": "Union Berlin",
     "crest": "https://assets.dfb.de/uploads/000/018/232/small_union-Berlin.jpg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 5,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 5,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1336,7 +1391,7 @@
   {
    "id": 87623,
    "utcDate": "2026-10-27T19:45:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1351,9 +1406,20 @@
     "shortName": "Bremen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/be/SV-Werder-Bremen-Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1361,7 +1427,7 @@
   {
    "id": 87626,
    "utcDate": "2026-10-27T19:45:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1376,9 +1442,20 @@
     "shortName": "Karlsruhe",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1386,7 +1463,7 @@
   {
    "id": 87632,
    "utcDate": "2026-10-27T19:45:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1401,9 +1478,20 @@
     "shortName": "Darmstadt",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e5/SV_Darmstadt_98_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
