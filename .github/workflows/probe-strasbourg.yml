@@ -33,21 +33,25 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            rcstrasbourgalsace.fr
             www.rcstrasbourgalsace.fr
+            billetterie.rcstrasbourgalsace.fr
           GATE: |
+            https://www.rcstrasbourgalsace.fr/conditions-generale-dutilisation/
           FULL: |
           TABLES: |
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.rcstrasbourgalsace.fr/
+            https://billetterie.rcstrasbourgalsace.fr/
           DISCOVER: |
-            https://www.rcstrasbourgalsace.fr/
           FOLLOW: |
-          FOLLOW_RE: '^$'
+            https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ
+          FOLLOW_RE: '^https://billetterie\.rcstrasbourgalsace\.fr/fr/aide/'
           PAGES: |
-            https://www.rcstrasbourgalsace.fr/
+            https://billetterie.rcstrasbourgalsace.fr/
+            https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ
+            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/acces-stationnement
+            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/probleme-jour-de-match/que-faire
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
