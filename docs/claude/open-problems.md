@@ -6,6 +6,159 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
 
 ## Known open problems
 
+- **Hygiene part 3a, 2026-10-28: re-tags from the existing source records (data only, no page opened, no fetch).** Tag policy as now written in conventions.md (ticket research procedure). Counts are confirmed/inferred/unverified; phases, windows, demand and the club rows did not change (phases 39/3/4, windows by `dateSource` 3 confirmed/21 inferred, demand 11/0/10).
+
+  | club | rules before | rules after | prices before | prices after |
+  |---|---|---|---|---|
+  | SSC Napoli | 9/0/9 | 10/0/8 | 38/0/0 | 38/0/0 |
+  | 1. FC Kaiserslautern | 6/0/22 | 6/0/22 | 0/0/0 | 0/0/0 |
+  | SpVgg Greuther Fürth | 5/0/4 | 5/0/4 | 0/0/0 | 0/0/0 |
+  | SC Freiburg | 13/0/13 | 17/0/9 | 0/0/0 | 0/0/0 |
+  | 1. FSV Mainz 05 | 13/0/9 | 16/0/6 | 100/0/0 | 100/0/0 |
+  | FC Augsburg | 13/0/9 | 14/0/8 | 190/0/0 | 190/0/0 |
+  | RC Strasbourg Alsace | 19/0/3 | 19/0/3 | 0/0/0 | 0/0/0 |
+  | SV Elversberg | 10/1/7 | 10/1/7 | 24/0/0 | 24/0/0 |
+  | FC Bayern München | 0/0/0 | 0/0/0 | 0/0/21 | 0/0/21 |
+
+  **SSC Napoli** (row | pages and the season or date each shows | action):
+
+  | row | pages | action |
+  |---|---|---|
+  | sales-channel | SN1 page headed "Campagna Abbonamenti 2026/27"; SN2 page headed "FAQ ABBONAMENTI 2026/27" | kept |
+  | fidelity-card | SN2 page headed "FAQ ABBONAMENTI 2026/27" | kept |
+  | fees | SN1 page headed "Campagna Abbonamenti 2026/27" | kept |
+  | ticket-types | SN1 page headed "Campagna Abbonamenti 2026/27"; SN2 page headed "FAQ ABBONAMENTI 2026/27" | kept |
+  | price-list | SN1 page headed "Campagna Abbonamenti 2026/27"; SN2 page headed "FAQ ABBONAMENTI 2026/27" | kept |
+  | presale-rights | SN1 page headed "Campagna Abbonamenti 2026/27"; SN2 page headed "FAQ ABBONAMENTI 2026/27" | kept |
+  | transfer | SN1 page headed "Campagna Abbonamenti 2026/27"; SN2 page headed "FAQ ABBONAMENTI 2026/27"; SN4 undated page | unverified to confirmed |
+  | minors | SN6 page naming the "stagione 26/27" matches | kept |
+  | update-tracking | SN6 page naming the "stagione 26/27" matches | kept |
+  | legal-framework | SN1 page headed "Campagna Abbonamenti 2026/27" | kept |
+  | phase 1 | SN1 page headed "Campagna Abbonamenti 2026/27"; SN2 page headed "FAQ ABBONAMENTI 2026/27" | kept |
+  | phase 2 | SN1 page headed "Campagna Abbonamenti 2026/27"; SN2 page headed "FAQ ABBONAMENTI 2026/27" | kept |
+  | 38 prices | SN1 page headed "Campagna Abbonamenti 2026/27" | kept |
+
+  **1. FC Kaiserslautern** (row | pages and the season or date each shows | action):
+
+  | row | pages | action |
+  |---|---|---|
+  | box-office | FK5 14 Oct 2026 | kept |
+  | ticket-format | FK5 14 Oct 2026 | kept |
+  | transfer | FK5 14 Oct 2026 | kept |
+  | minors | FK5 14 Oct 2026 | kept |
+  | presale-rights | FK8 article states "Zur Saison 2026/27" | kept |
+  | ticket-types | FK8 article states "Zur Saison 2026/27" | kept |
+
+  **SpVgg Greuther Fürth** (row | pages and the season or date each shows | action):
+
+  | row | pages | action |
+  |---|---|---|
+  | sales-channel | GF3 7 Oct 2026; GF7 shows So. 01.11.26 12:30, 2. Bundesliga | kept |
+  | presale-rights | GF3 7 Oct 2026; GF7 shows So. 01.11.26 12:30, 2. Bundesliga | kept |
+  | box-office | GF4 15 Oct 2026; GF5 17 Sep 2026 | kept |
+  | price-list | GF3 7 Oct 2026; GF7 shows So. 01.11.26 12:30, 2. Bundesliga | kept |
+  | access | GF4 15 Oct 2026; GF5 17 Sep 2026 | kept |
+
+  **SC Freiburg** (row | pages and the season or date each shows | action):
+
+  | row | pages | action |
+  |---|---|---|
+  | SC-1 presale-rights | SC2 21 Jul 2026; SC1 2026-27; SC3 no season printed; SC17 30 Aug 2026 | kept |
+  | SC-2 presale-eligibility | SC1 2026-27; SC4 undated | kept |
+  | SC-4 free-sale-reached | SC1 2026-27; SC13 14 Aug 2026 | kept |
+  | SC-5 sales-mechanism | SC2 21 Jul 2026 | kept |
+  | SC-6 presale-rights | SC10 2026-27; SC12 10 Sep 2026 | kept |
+  | SC-7 sales-channel | SC1 2026-27 | kept |
+  | SC-9 box-office | SC1 2026-27; SC9 undated | kept |
+  | SC-11 resale-platform | SC2 21 Jul 2026; SC1 2026-27; SC5 undated | kept |
+  | SC-13 resale-price-cap | SC7 "Stand Juni 2026"; SC4 undated | unverified to confirmed |
+  | SC-14 transfer | SC1 2026-27 | kept |
+  | SC-15 transfer | SC7 "Stand Juni 2026" | unverified to confirmed |
+  | SC-16 personalisation | SC7 "Stand Juni 2026"; SC8 undated | unverified to confirmed |
+  | SC-18 minors | SC1 2026-27; SC4 undated | kept |
+  | SC-19 ticket-types | SC7 "Stand Juni 2026"; SC1 2026-27 | unverified to confirmed |
+  | SC-20 access | SC1 2026-27; SC10 2026-27 | kept |
+  | SC-22 update-tracking | SC1 2026-27; SC12 10 Sep 2026; SC4 undated | kept |
+  | SC-23 ticket-types | SC10 2026-27 | kept |
+  | SC-27 demand | SC1 2026-27; SC13 14 Aug 2026; SC16 25 Nov 2025 | kept |
+
+  **1. FSV Mainz 05** (row | pages and the season or date each shows | action):
+
+  | row | pages | action |
+  |---|---|---|
+  | MZ-1 presale-rights | MZ1 2026-27; MZ3 2026-27 | kept |
+  | MZ-2 presale-eligibility | MZ1 2026-27; MZ5 undated | kept |
+  | MZ-3 purchase-limit | MZ1 2026-27; MZ3 2026-27; MZ7 "15. Mai 2026" at the end | kept |
+  | MZ-4 update-tracking | MZ3 2026-27; MZ1 2026-27 | kept |
+  | MZ-5 sales-channel | MZ1 2026-27; MZ27 undated; MZ28 undated; MZ7 "15. Mai 2026" at the end | kept |
+  | MZ-7 personalisation | MZ7 "15. Mai 2026" at the end; MZ8 "1. Mai 2025" at the end; MZ14 "Stand: August 2026" | unverified to confirmed |
+  | MZ-8 transfer | MZ7 "15. Mai 2026" at the end; MZ8 "1. Mai 2025" at the end; MZ6 undated; MZ21 undated | unverified to confirmed |
+  | MZ-10 resale-price-cap | MZ7 "15. Mai 2026" at the end; MZ8 "1. Mai 2025" at the end | unverified to confirmed |
+  | MZ-12 price-list | MZ4 2026-27; MZ24 2026-27; MZ1 2026-27; MZ10 2026-27 | kept |
+  | MZ-13 price-list | MZ2 2026-27; MZ18 2026-27; MZ9 2026-27; MZ10 2026-27; MZ25 undated | kept |
+  | MZ-14 price-category | MZ2 2026-27; MZ9 2026-27 | kept |
+  | MZ-15 ticket-types | MZ10 2026-27; MZ9 2026-27; MZ1 2026-27; MZ12 undated | kept |
+  | MZ-16 minors | MZ9 2026-27; MZ10 2026-27; MZ18 2026-27; MZ7 "15. Mai 2026" at the end | kept |
+  | MZ-17 presale-eligibility | MZ11 2026-27 | kept |
+  | MZ-20 ticket-format | MZ1 2026-27 | kept |
+  | MZ-22 ticket-types | MZ15 2026-27; MZ16 2026-27; MZ17 2026-27; MZ9 2026-27 | kept |
+  | MZ-23 demand | MZ1 2026-27; MZ3 2026-27; MZ6 undated | kept |
+  | 100 prices | MZ2 2026-27; MZ4 2026-27 | kept |
+
+  **FC Augsburg** (row | pages and the season or date each shows | action):
+
+  | row | pages | action |
+  |---|---|---|
+  | FCA-1 sales-channel | FCA1 2026-27; FCA3 27 Jul 2026; FCA6 28 Aug 2026; FCA8 16 Sep 2026; FCA12 undated | kept |
+  | FCA-2 presale-rights | FCA1 2026-27; FCA4 26 May 2026; FCA9 undated | kept |
+  | FCA-3 presale-rights | FCA3 27 Jul 2026 | kept |
+  | FCA-4 purchase-limit | FCA3 27 Jul 2026 | kept |
+  | FCA-5 price-category | FCA4 26 May 2026; FCA3 27 Jul 2026; FCA1 2026-27 | kept |
+  | FCA-6 price-list | FCA1 2026-27; FCA4 26 May 2026 | kept |
+  | FCA-7 ticket-types | FCA6 28 Aug 2026; FCA8 16 Sep 2026 | kept |
+  | FCA-8 box-office | FCA1 2026-27 | kept |
+  | FCA-10 ticket-format | FCA1 2026-27 | kept |
+  | FCA-13 resale-platform | FCA4 26 May 2026; FCA6 28 Aug 2026; FCA8 16 Sep 2026; FCA10 1 Jun 2026 | kept |
+  | FCA-15 access | FCA15 22 Oct 2026 | kept |
+  | FCA-16 access | FCA11 'Augsburg, Mai 2026' at the end | unverified to confirmed |
+  | FCA-17 sector-rules | FCA1 2026-27; FCA5 2026-27 | kept |
+  | FCA-21 ticket-types | FCA4 26 May 2026; FCA10 1 Jun 2026; FCA5 2026-27 | kept |
+  | FCA-D1 demand | FCA6 28 Aug 2026; FCA8 16 Sep 2026; FCA3 27 Jul 2026; FCA15 22 Oct 2026 | kept |
+  | 172 prices | FCA1 2026-27; FCA4 26 May 2026 | kept |
+  | 18 prices | FCA5 2026-27 | kept |
+
+  **RC Strasbourg Alsace** (row | pages and the season or date each shows | action):
+
+  | row | pages | action |
+  |---|---|---|
+  | RCS-1 sales-channel | RCS8 2026-27; RCS4 undated page; RCS1 undated page; RCS7 2026-27 | kept |
+  | RCS-2 personalisation | RCS8 2026-27; RCS5 undated | kept |
+  | RCS-3 ticket-format | RCS8 2026-27; RCS5 undated; RCS20 undated | kept |
+  | RCS-4 transfer | RCS8 2026-27; RCS5 undated | kept |
+  | RCS-5 unofficial-resale | RCS8 2026-27; RCS10 13 Oct 2026; RCS4 undated page | kept |
+  | RCS-6 resale-platform | RCS9 2026-27; RCS10 13 Oct 2026; RCS4 undated page; RCS3 2026-27 header | kept |
+  | RCS-7 resale-price-cap | RCS9 2026-27; RCS3 2026-27 header | kept |
+  | RCS-9 price-category | RCS4 undated page | kept |
+  | RCS-10 price-list | RCS8 2026-27; RCS4 undated page | kept |
+  | RCS-11 fees | RCS8 2026-27 | kept |
+  | RCS-12 box-office | RCS8 2026-27; RCS6 undated; RCS4 undated page | kept |
+  | RCS-13 sales-mechanism | RCS8 2026-27; RCS4 undated page | kept |
+  | RCS-14 minors | RCS8 2026-27; RCS4 undated page; RCS6 undated; RCS17 'Mise a jour decembre 2023' | kept |
+  | RCS-15 access | RCS8 2026-27; RCS6 undated; RCS16 11 Sep 2026; RCS19 undated | kept |
+  | RCS-16 away-end | RCS8 2026-27; RCS4 undated page | kept |
+  | RCS-17 away-end | RCS11 15 Oct 2026 | kept |
+  | RCS-18 sector-rules | RCS8 2026-27 | kept |
+  | RCS-19 ticket-types | RCS14 2026-27; RCS15 undated | kept |
+  | RCS-20 ticket-types | RCS9 2026-27; RCS2 2026-27; RCS3 2026-27 header | kept |
+  | RCS-D1 demand | RCS10 13 Oct 2026; RCS12 2026-27; RCS4 undated page | kept |
+
+  (1) **Part A, every confirmed row of the seven clubs checked against its pages**: none rested only on an undated page or one showing another season, so **none moved down**. Moved up (9 rules): Napoli `transfer` (the 2026/27 pages SN1, SN2 give 10 games Full and 5 Italia; the undated SN4's 5 is in the note only; the records do not split the 24-hour cut-off by page); Freiburg SC-13, SC-15, SC-16, SC-19 (ATGB SC7, "Stand Juni 2026", linked from the club's AGB page); Mainz MZ-7, MZ-8, MZ-10 (ATGB of 15 May 2026, MZ7, linked from the club's AGB/ATGB page; MZ-8's forwarding deadline, from the undated MZ21 only, moved from the rule to the note); Augsburg FCA-16 (stadium rules FCA11, May 2026, linked from the Stadion menu). **Left unverified, listed for Alexandru**: Freiburg SC-17 (its Joker-quota sentence rests on the undated SC6 only); Mainz MZ-11 (the platform list, law firm and report form are not traced to the ATGB in the records; MZ6 undated); Augsburg FCA-14 and FCA-18 (stadium rules mixed with the undated FAQ FCA2; the records do not say which sentence comes from which). Kept confirmed although one clause rests on an undated page, each naming it: Freiburg SC-22 (website as a channel, SC4), Strasbourg RCS-14 (free under-3 ticket, RCS4). Candidates not asked for and not moved: Mainz MZ-18 and MZ-19 rest partly on the stadium rules MZ14 ("Stand: August 2026", linked from the guest and arena pages) and partly on undated or 2024/2025 pages.
+  (2) **Kaiserslautern, PR #164**: 14 articles read; 11 became `FK10`-`FK20` (Wie kann ich Tickets erwerben?, Darf ich Tickets weiterverkaufen?, Benötige ich für mein Kind eine Eintrittskarte?, Müssen Tickets personalisiert werden?, Kann ich Tickets stornieren?, Wer erhält eine Ermäßigung?, Wo bekomme ich am Spieltag Tickets?, Kann ich aktuell eine Dauerkarte erwerben?, Welche Spiele sind im Vorverkauf?, Wie funktioniert der exklusive Vorverkauf für Mitglieder?, Wie funktioniert die Warteschlange beim Vorverkauf?). **No source id**: Preise Tagestickets and Was kostet eine Dauerkarte? (the content is an image whose address is in neither the link list nor the text, so nothing was read) and Informationen zum Dauerkartenverkauf 2026/27 (it only points to a shop.fck.de listing, not opened). All 6 confirmed rows rest on FK5 or FK8.
+  (3) **Part B, one-match wording** (9 notes): Kaiserslautern box-office, ticket-format, transfer, minors (FK5, the fan-info page for the home game against VfL Bochum on 17 Oct 2026; for the last three the record does not say whether the page limits them to that game); Fürth sales-channel, presale-rights, price-list (Holstein Kiel, Sun 1 Nov 2026), box-office and the 2026-27 access row (Magdeburg and Braunschweig, articles of 17 Sep and 15 Oct 2026); Freiburg SC-1 now gives the club's wording: the Joker phase is part of every presale day, each member may use it once per season (SC6, SC3, no season). Nothing was downgraded. **Strasbourg conflicts**: (a) box office before match day (RCS-1, RCS-12) and (b) unaccompanied minors (RCS-14) already followed the dated 2026/2027 terms; (c) cup games was a conflict by wording (RCS3 says cup games are "not included in the season ticket", against RCS9 art. 3.1 and RCS2), and RCS-6 followed the FAQ; **fixed**: the rule now says matches included in the season ticket (art. 13.2.1; art. 3.1 includes home Coupe de France games).
+  (4) **Part C**: Napoli's window row holds no date the pages did not state (`opensEstimate` "not estimated"; `pastCycle` 10 Jul-2 Aug and 3-16 Aug 2026, the same as the confirmed phase rows from SN1/SN2); unchanged. Augsburg: no row links a game to a Topf column: the 190 prices are general per Topf A-D (no `opponentQid`), and Schalke (A) and Leverkusen (B) appear only as "price category" in FCA-3 and FCA-5, whose note already says no page equates Topf and Preiskategorie; unchanged, so the app cannot say which prices applied to those games. **Mainz price lists** (MZ-12, from MZ4, 2026-27): list 1 FC Bayern München, Borussia Dortmund; list 2 Bayer 04 Leverkusen, SV Werder Bremen, 1. FC Köln, Hamburger SV, Borussia Mönchengladbach, FC Schalke 04, RB Leipzig; list 3 1. FC Union Berlin, SC Freiburg, TSG Hoffenheim, SV Elversberg, FC Augsburg; VfB Stuttgart "list 1 or list 2" (**not usable per game until stated**); family matchday SC Paderborn (matchday 1); home games before 10 Oct 2026 other than Paderborn, Eintracht Frankfurt among them, **not stated**. The 100 prices are general per list and usable for the named games only. **check_tickets.py in PRs #167 and #168**: only additions to the open vocabulary `KNOWN` (unknown values there are reported, never rejected): #167 category `7`, `komfort`; opponentTier `price-list-1`-`3`, `family-matchday`; priceClass `youth`; #168 category `kat-1a`, `kat-1b`, `kat-2`, `kat-3`, `familienblock` (each also `-leicht-sichteingeschraenkt`, `-sichteingeschraenkt`), `merkzeichen-b-bl`; opponentTier `topf-a`-`d`; priceClass `child-teen`, `teensclub`. No check was removed or weakened.
+  (5) **Part D**: Elversberg's 23 price notes and the presale-eligibility and sales-mechanism notes no longer say "so unverified"; they say why the rows are confirmed (the table headed 2026/2027; dated articles E3, E2, E4; the Monday/Wednesday times are from E2 and E4, each for its own pair of games). Minors row: EUR 6 as Alexandru decided; the FAQ's EUR 5 stays in the note as showing no season; the row stays unverified (E8 undated, E15 Jan 2025). Bayern: source `FCB1` added (original URL, archive capture 2 Sep 2025, read 19 Sep 2026, labelled ARCHIVE COPY; the archive address itself was never recorded and was not reconstructed), linked from the 15 Bundesliga and Champions League rows; the 5 DFB-Pokal rows (Alexandru's figures) and the resale row are not from that page; all 21 stay unverified. DFB-Pokal holder row to unverified (C25, C24: one body, no current date for the fact); DFB-Pokal and Bundesliga schedule-announcement rows to `inferred` (rule 9; this settles item (6) of Hygiene part 2); 3 Romanian basis strings and their 3 ro-review rows replaced. football-rules.json not touched.
+  (6) **Checks**: check_tickets.py reports 156 items (was 165: 9 tag/basis mismatches gone), nothing rejected; check_competitions.py and check_translations.py 0 problems.
+
 - **Data hygiene part 2, 2026-10-26: what stays unverified and why** (data only, no page opened).
   (1) **14 ticket rows rest on one third-party source** and went from confirmed to unverified (note starts "SINGLE THIRD-PARTY SOURCE"): Nürnberg 4 (personalisation N10, away-end N11 = Greuther Fürth's page, derby demand 2023-24 N13 and 2024-25 N12), Inter 3 (source-caveat I15, derby demand I12, I15), KSC 7 (risk-classification K22, derby-away phase 1 and three Gastblock prices K26, derby demand K18 and K23). Each needs the club's own page for the season or a second independent source.
   (2) **Bayern's 21 price rows are unverified** because no row of `data/ticket-sources.csv` records the page they come from; their notes say the 2025|26 Bundesliga figures were read from an archived club page. A source record for it would let them be judged again; the 2026-27 DFB-Pokal rows cite the same 2025|26 page and would still not confirm.
