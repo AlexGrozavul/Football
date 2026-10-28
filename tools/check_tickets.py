@@ -468,7 +468,12 @@ KNOWN = {
         "kat-2-sichteingeschraenkt", "kat-3",
         "kat-3-leicht-sichteingeschraenkt", "kat-3-sichteingeschraenkt",
         "familienblock", "familienblock-leicht-sichteingeschraenkt",
-        "familienblock-sichteingeschraenkt", "merkzeichen-b-bl"],
+        "familienblock-sichteingeschraenkt", "merkzeichen-b-bl",
+        # 1. FC Heidenheim 1846, 2026-10-28: the stands its 2026/27
+        # season-ticket table names (standing and wheelchair rows use the
+        # existing stehplatz and rollstuhlfahrer).
+        "suedtribuene-sitz", "suedtribuene-sitz-sichteingeschraenkt",
+        "haupttribuene"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.

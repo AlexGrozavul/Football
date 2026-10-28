@@ -33,7 +33,7 @@ One table of every German club of tier 1 and tier 2 for 2026/27, in the order a 
 | 10 | Q692691 | SV Elversberg | Bundesliga | 149 | done |  |  | ticket rows checked up to 2026-10-26 |
 | 11 | Q4512 | VfB Stuttgart | Bundesliga | 16 | redo |  |  | ticket rows checked up to 2026-10-07 |
 | 12 | Q22707 | TSG 1899 Hoffenheim | Bundesliga | 50 | blocked: robots.txt 403 | #173 | 2026-10-28 | robots.txt of tsg-hoffenheim.de and www.tsg-hoffenheim.de answered HTTP 403; no page read; 0 confirmed, 0 unverified, 0 inferred; see open-problems.md |
-| 13 | Q162251 | 1. FC Heidenheim 1846 | 2. Bundesliga | 84 | pending |  |  |  |
+| 13 | Q162251 | 1. FC Heidenheim 1846 | 2. Bundesliga | 84 | done | #174 | 2026-10-28 | 33 confirmed (14 rules, 18 season-ticket prices, 1 demand), 12 unverified, 0 inferred; day-ticket prices only in a price-list rule (presale and box-office prices, schema gap); see open-problems.md |
 | 14 | Q479351 | SV Darmstadt 98 | 2. Bundesliga | 120 | pending |  |  |  |
 | 15 | Q104770 | 1. FC Köln | Bundesliga | 282 | pending |  |  |  |
 | 16 | Q104761 | Bayer 04 Leverkusen | Bundesliga | 287 | pending |  |  |  |
