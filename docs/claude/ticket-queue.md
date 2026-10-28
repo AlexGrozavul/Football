@@ -32,7 +32,7 @@ One table of every German club of tier 1 and tier 2 for 2026/27, in the order a 
 | 9 | Q153539 | SpVgg Greuther Fürth | 2. Bundesliga | 163 | done |  |  | ticket rows checked up to 2026-10-26 |
 | 10 | Q692691 | SV Elversberg | Bundesliga | 149 | done |  |  | ticket rows checked up to 2026-10-26 |
 | 11 | Q4512 | VfB Stuttgart | Bundesliga | 16 | redo |  |  | ticket rows checked up to 2026-10-07 |
-| 12 | Q22707 | TSG 1899 Hoffenheim | Bundesliga | 50 | pending |  |  |  |
+| 12 | Q22707 | TSG 1899 Hoffenheim | Bundesliga | 50 | blocked: robots.txt 403 | #173 | 2026-10-28 | robots.txt of tsg-hoffenheim.de and www.tsg-hoffenheim.de answered HTTP 403; no page read; 0 confirmed, 0 unverified, 0 inferred; see open-problems.md |
 | 13 | Q162251 | 1. FC Heidenheim 1846 | 2. Bundesliga | 84 | pending |  |  |  |
 | 14 | Q479351 | SV Darmstadt 98 | 2. Bundesliga | 120 | pending |  |  |  |
 | 15 | Q104770 | 1. FC Köln | Bundesliga | 282 | pending |  |  |  |
