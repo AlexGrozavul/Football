@@ -543,6 +543,9 @@ A terms document or regulation confirms a row for the season only if it carries 
 A current sale status ("game X is in free sale today") is a snapshot: it goes into the chat report only, never into a data row; the phases and dates a page states for a named game may be written as a rule "stated for the home game against X" (Mainz pass, PR #167).
 When a consent dialog (Cookiebot) buries a page's text, the probe removes the dialog from its own copy of the page before reading, never clicking or consenting, and reads the legal notice first as a gate: no content page is read in that run if the notice is empty or mentions bots or automated access (FC Augsburg pass, PR #168).
 A terms PDF with no text layer (FC Augsburg's ATGB) gives no row; it is listed under pictures, and the rows it would have backed stay blank or rest on the FAQ as `unverified` (PR #168).
+Since the Strasbourg pass (PR #170) a terms document or regulation also confirms when it is dated within 12 months (or headed with the season) and linked from any current page of the club's own site (ticket page, terms page or site menu), not only the ticket page; the overlay removal covers Didomi, OneTrust, Axeptio, tarteaucitron, Usercentrics, Sirdata and consentmanager as well as Cookiebot, still never clicking.
+An image-only PDF may be run through OCR in the probe (tesseract with pdftoppm, French and English); the comment and the report say the text came from OCR. A two-column PDF is read column by column from the posted `pdftotext -layout` text, not fetched again (PR #170).
+The probe's buy/login URL filter may exempt a help section whose slugs name buying or the account (billetterie.rcstrasbourgalsace.fr's `/fr/aide/`); the exemption is listed in the report as a decision (PR #170).
 **One item fits the mapping badly and was mapped anyway**: N-14 (the
 derby is probably price category A) is reasoned from the club's labels
 for two *other* 2026-27 fixtures, not from a past cycle, so its
