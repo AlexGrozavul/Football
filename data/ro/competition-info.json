@@ -15,8 +15,8 @@
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C25;C24#basis": {
-  "en": "a8dc580f",
-  "ro": "publicat: lista câștigătorilor merge până la 2025/2026",
+  "en": "11c67884",
+  "ro": "O singură sursă, ca la rândul despre istorie: C25 și C24 sunt amândouă pagini DFB, deci contează ca o singură sursă. Lista câștigătorilor (C25) nu are dată Stand, iar pagina principală (C24) arată selectorul de sezon 2026/2027, dar știrile scurte de pe ea sunt datate doar prin conținut. Lista câștigătorilor merge până la 2025/2026.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C20#text": {
@@ -185,8 +185,8 @@
   "status": "machine-unchecked"
  },
  "de-bundesliga|schedule-announcement|C35;C34#basis": {
-  "en": "090a33d4",
-  "ro": "publicat: știrea DFB din noiembrie 2025 despre calendarul-cadru 2026/2027; DFB-Satzung § 16a Nr. 5",
+  "en": "a8afa598",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile despre program sunt la nivel de lună și numai deduse; ciclu anterior observat): știrea DFB din noiembrie 2025 despre calendarul-cadru 2026/2027; DFB-Satzung § 16a Nr. 5. Descrie cum a fost anunțat calendarul 2026-27, nu o dată pentru următorul.",
   "status": "machine-unchecked"
  },
  "de-bundesliga|tracking|C39;C35;C36#text": {
@@ -265,8 +265,8 @@
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|schedule-announcement|C22;C32;C27#basis": {
-  "en": "c9328499",
-  "ro": "Cele două trageri la sorți din 2026-27 provin din pagina de date 2026/2027 a DFB și dintr-o știre datată a DFB; intervalul de una-două săptămâni provine doar din pagina DFB despre modul de desfășurare, care nu arată niciun sezon și nicio dată Stand, așa că rândul este neverificat.",
+  "en": "11a166db",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile despre program sunt la nivel de lună și numai deduse; ciclu anterior observat): cele două trageri la sorți din 2026-27 provin din pagina de date 2026/2027 a DFB și dintr-o știre datată a DFB; intervalul de una-două săptămâni provine doar din pagina DFB despre modul de desfășurare, care nu arată niciun sezon și nicio dată Stand. Descrie cum au fost anunțate turele din 2026-27, nu o dată pentru o tură ulterioară.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|tracking|C24;C23;C22#text": {
