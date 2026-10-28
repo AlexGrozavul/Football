@@ -33,21 +33,32 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            fc-heidenheim.de
             www.fc-heidenheim.de
+            assets.fc-heidenheim.de
           GATE: |
+            https://www.fc-heidenheim.de/rechtliches/impressum
           FULL: |
+            https://www.fc-heidenheim.de/tickets-overview
+            https://www.fc-heidenheim.de/heimspiele
+            https://www.fc-heidenheim.de/infos-fuer-gaestefans
           TABLES: |
+            https://www.fc-heidenheim.de/tickets-overview
+            https://www.fc-heidenheim.de/heimspiele
           PDFS: |
+            https://assets.fc-heidenheim.de/asset/503561443546/document_aloadg588l7s972boriecis97p/?content-disposition=inline
           RAW: |
           NOTICES: |
-            https://www.fc-heidenheim.de/
           DISCOVER: |
-            https://www.fc-heidenheim.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.fc-heidenheim.de/
+            https://www.fc-heidenheim.de/tickets-overview
+            https://www.fc-heidenheim.de/heimspiele
+            https://www.fc-heidenheim.de/infos-fuer-gaestefans
+            https://www.fc-heidenheim.de/news/detail/tagestickets-fur-unser-heimspiel-gegen-hannover-96-im-freien-verkauf?cHash=7768189ad7250008c47ae6c1fb41fd15
+            https://www.fc-heidenheim.de/mitgliedschaft
+            https://www.fc-heidenheim.de/voith-arena
+            https://www.fc-heidenheim.de/news/search/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
