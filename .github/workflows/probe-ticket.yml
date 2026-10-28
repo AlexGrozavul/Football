@@ -34,35 +34,28 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             www.fc-heidenheim.de
-            assets.fc-heidenheim.de
           GATE: |
             https://www.fc-heidenheim.de/rechtliches/impressum
           FULL: |
-            https://www.fc-heidenheim.de/tickets-overview/tageskarten
-            https://www.fc-heidenheim.de/tickets-overview/ticket-zweitmarkt
-            https://www.fc-heidenheim.de/tickets-overview/dauerkarten
           TABLES: |
-            https://www.fc-heidenheim.de/tickets-overview/tageskarten
-            https://www.fc-heidenheim.de/tickets-overview/dauerkarten
-            https://www.fc-heidenheim.de/mitgliedschaft/vorteile-und-beitraege
           PDFS: |
-            https://assets.fc-heidenheim.de/asset/503561443546/document_267hjlhg0h499bfvfe5cldgg4s/?content-disposition=inline
-            https://assets.fc-heidenheim.de/asset/503561443546/document_32levui5pl4ipch9fe0mo3ud7v/?content-disposition=inline
           RAW: |
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.fc-heidenheim.de/tickets-overview/tageskarten
-            https://www.fc-heidenheim.de/tickets-overview/ticket-zweitmarkt
-            https://www.fc-heidenheim.de/news/detail/ab-montag-tagestickets-fur-unser-heimspiel-gegen-den-1-fc-nurnberg?cHash=8d82fd70d0ca04cf076358e3b206bb89
-            https://www.fc-heidenheim.de/news/detail/die-faninfos-zum-heimspiel-gegen-energie-cottbus-noch-tickets-verfugbar?cHash=77917994f9fe0847cced46ff949f61ca
-            https://www.fc-heidenheim.de/news/detail/sichert-euch-noch-tagestickets-fur-unser-heimspiel-gegen-energie-cottbus?cHash=314670c0fbcbbc85686ce660f43b02df
-            https://www.fc-heidenheim.de/news/search/?page=1&search=&tag=Tickets&cHash=cddbf11d0a34a79762e4bfeb020eee6d
-            https://www.fc-heidenheim.de/fanbetreuung/fans-mit-handicap
-            https://www.fc-heidenheim.de/mitgliedschaft/vorteile-und-beitraege
-            https://www.fc-heidenheim.de/tickets-overview/dauerkarten
+            https://www.fc-heidenheim.de/news/detail/jetzt-tickets-fur-das-heimspiel-gegen-kiel-am-sonntag-sichern?cHash=5aa1ad5d1e2bcdedfae719d46a1e6e7d
+            https://www.fc-heidenheim.de/news/detail/tagestickets-fur-unser-heimspiel-gegen-hannover-96-im-mitgliedervorverkauf?cHash=92961fd850a84e595c17274e50b3f4c7
+            https://www.fc-heidenheim.de/news/detail/tagestickets-fur-unser-heimspiel-gegen-holstein-kiel?cHash=7307c9df2d1e20c246d15a2082a28573
+            https://www.fc-heidenheim.de/news/detail/tagestickets-fur-unsere-heimspiele-gegen-kaiserslautern-und-cottbus-ab-donnerstag-im-verkauf?cHash=1aa1e0519f86e6ca7b5891ae740e1875
+            https://www.fc-heidenheim.de/news/detail/tickets-fur-den-zweitliga-auftakt-gegen-den-vfl-osnabruck-sichern?cHash=e3b5f7c419b2e670d6bb7d46522da67b
+            https://www.fc-heidenheim.de/news/detail/tickets-fur-unser-heimspiel-gegen-dresden-und-das-auswartsspiel-in-furth-erhaltlich?cHash=5675470aab8856fd68bc13ee0d40010a
+            https://www.fc-heidenheim.de/news/detail/tickets-fur-unseren-zweitligastart-im-freien-verkauf?cHash=5701cf57cabe9b93a5f9da709c1944cd
+            https://www.fc-heidenheim.de/news/detail/verlangerungsphase-der-fch-dauerkarten-fur-die-saison-202627-gestartet?cHash=93b590a6384973e165391e4d70a9c222
+            https://www.fc-heidenheim.de/news/detail/wie-in-der-bundesliga-erneut-uber-9000-fch-dauerkarten-verkauft?cHash=5e9c3ca1f9d0a82bf04092fbc6836c64
+            https://www.fc-heidenheim.de/mitgliedschaft/bestimmungen-und-faq
+            https://www.fc-heidenheim.de/news/search/?page=2&search=&tag=Tickets&cHash=76db5f0b87084e6b97184579aea5e992
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
