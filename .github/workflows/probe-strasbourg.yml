@@ -38,26 +38,22 @@ jobs:
           GATE: |
             https://www.rcstrasbourgalsace.fr/conditions-generale-dutilisation/
           FULL: |
-            https://billetterie.rcstrasbourgalsace.fr/fr/aide/mentions-legales/cgv-cgu
           TABLES: |
-            https://billetterie.rcstrasbourgalsace.fr/fr/aide/mentions-legales/cgv-cgu
           PDFS: |
-            https://billetterie.rcstrasbourgalsace.fr/media/TUTO_PRET_OFFICIEL.pdf
+            https://billetterie.rcstrasbourgalsace.fr/media/2026/08/cgv_rcsa_billetterie_et_hospitalites_ponctuelles_vf2026_2027.pdf
+            https://billetterie.rcstrasbourgalsace.fr/media/2026/08/cgv_rcsa_abonnements_grand_public_vf2026_2027.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://billetterie.rcstrasbourgalsace.fr/fr/aide/mentions-legales/cgv-cgu
-            https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ/acheter-un-billet
-            https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ/mon-compte
-            https://billetterie.rcstrasbourgalsace.fr/fr/calendrier
-            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/objets-interdits-consignes
-            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/telecharger-billet
-            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/probleme-jour-de-match
-            https://www.rcstrasbourgalsace.fr/categories/actualites/
-            https://www.rcstrasbourgalsace.fr/categories/actualites-stade/
+            https://www.rcstrasbourgalsace.fr/racing-paris-sg-j7-a-guichets-fermes-vigilance-face-a-la-multiplication-des-cas-de-reventes-illegales/
+            https://www.rcstrasbourgalsace.fr/arrete-prefectoral-pour-racing-paris-sg-j7/
+            https://www.rcstrasbourgalsace.fr/categories/actualites/page/2/
+            https://www.rcstrasbourgalsace.fr/le-stade/
+            https://www.rcstrasbourgalsace.fr/lancement-de-la-family-zone/
+            https://www.rcstrasbourgalsace.fr/saison-26-27/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
