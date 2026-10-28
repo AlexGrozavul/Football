@@ -38,20 +38,26 @@ jobs:
           GATE: |
             https://www.rcstrasbourgalsace.fr/conditions-generale-dutilisation/
           FULL: |
+            https://billetterie.rcstrasbourgalsace.fr/fr/aide/mentions-legales/cgv-cgu
           TABLES: |
+            https://billetterie.rcstrasbourgalsace.fr/fr/aide/mentions-legales/cgv-cgu
           PDFS: |
+            https://billetterie.rcstrasbourgalsace.fr/media/TUTO_PRET_OFFICIEL.pdf
           RAW: |
           NOTICES: |
-            https://billetterie.rcstrasbourgalsace.fr/
           DISCOVER: |
           FOLLOW: |
-            https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ
-          FOLLOW_RE: '^https://billetterie\.rcstrasbourgalsace\.fr/fr/aide/'
+          FOLLOW_RE: '^$'
           PAGES: |
-            https://billetterie.rcstrasbourgalsace.fr/
-            https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ
-            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/acces-stationnement
-            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/probleme-jour-de-match/que-faire
+            https://billetterie.rcstrasbourgalsace.fr/fr/aide/mentions-legales/cgv-cgu
+            https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ/acheter-un-billet
+            https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ/mon-compte
+            https://billetterie.rcstrasbourgalsace.fr/fr/calendrier
+            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/objets-interdits-consignes
+            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/telecharger-billet
+            https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/probleme-jour-de-match
+            https://www.rcstrasbourgalsace.fr/categories/actualites/
+            https://www.rcstrasbourgalsace.fr/categories/actualites-stade/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -64,7 +70,9 @@ jobs:
           const bare = h => h.replace(/^www\./, '');
           // FOLLOW takes article links from a chosen page only if they match FOLLOW_RE.
           const FAQ_ARTICLE = new RegExp(process.env.FOLLOW_RE || '^$');
-          const isForbidden = u => FORBIDDEN.test(u);
+          // Help articles of the ticket site (/fr/aide/) are information pages, not buying pages, even when their
+          // slug names buying or the account (acheter-un-billet, mon-compte).
+          const isForbidden = u => FORBIDDEN.test(u) && !/^https:\/\/billetterie\.rcstrasbourgalsace\.fr\/fr\/aide\//.test(u);
           const sleep = ms => new Promise(r => setTimeout(r, ms));
           let n = 0, lastText = '';
           function post(body) {
