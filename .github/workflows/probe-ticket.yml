@@ -38,27 +38,31 @@ jobs:
           GATE: |
             https://www.fc-heidenheim.de/rechtliches/impressum
           FULL: |
-            https://www.fc-heidenheim.de/tickets-overview
-            https://www.fc-heidenheim.de/heimspiele
-            https://www.fc-heidenheim.de/infos-fuer-gaestefans
+            https://www.fc-heidenheim.de/tickets-overview/tageskarten
+            https://www.fc-heidenheim.de/tickets-overview/ticket-zweitmarkt
+            https://www.fc-heidenheim.de/tickets-overview/dauerkarten
           TABLES: |
-            https://www.fc-heidenheim.de/tickets-overview
-            https://www.fc-heidenheim.de/heimspiele
+            https://www.fc-heidenheim.de/tickets-overview/tageskarten
+            https://www.fc-heidenheim.de/tickets-overview/dauerkarten
+            https://www.fc-heidenheim.de/mitgliedschaft/vorteile-und-beitraege
           PDFS: |
-            https://assets.fc-heidenheim.de/asset/503561443546/document_aloadg588l7s972boriecis97p/?content-disposition=inline
+            https://assets.fc-heidenheim.de/asset/503561443546/document_267hjlhg0h499bfvfe5cldgg4s/?content-disposition=inline
+            https://assets.fc-heidenheim.de/asset/503561443546/document_32levui5pl4ipch9fe0mo3ud7v/?content-disposition=inline
           RAW: |
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.fc-heidenheim.de/tickets-overview
-            https://www.fc-heidenheim.de/heimspiele
-            https://www.fc-heidenheim.de/infos-fuer-gaestefans
-            https://www.fc-heidenheim.de/news/detail/tagestickets-fur-unser-heimspiel-gegen-hannover-96-im-freien-verkauf?cHash=7768189ad7250008c47ae6c1fb41fd15
-            https://www.fc-heidenheim.de/mitgliedschaft
-            https://www.fc-heidenheim.de/voith-arena
-            https://www.fc-heidenheim.de/news/search/
+            https://www.fc-heidenheim.de/tickets-overview/tageskarten
+            https://www.fc-heidenheim.de/tickets-overview/ticket-zweitmarkt
+            https://www.fc-heidenheim.de/news/detail/ab-montag-tagestickets-fur-unser-heimspiel-gegen-den-1-fc-nurnberg?cHash=8d82fd70d0ca04cf076358e3b206bb89
+            https://www.fc-heidenheim.de/news/detail/die-faninfos-zum-heimspiel-gegen-energie-cottbus-noch-tickets-verfugbar?cHash=77917994f9fe0847cced46ff949f61ca
+            https://www.fc-heidenheim.de/news/detail/sichert-euch-noch-tagestickets-fur-unser-heimspiel-gegen-energie-cottbus?cHash=314670c0fbcbbc85686ce660f43b02df
+            https://www.fc-heidenheim.de/news/search/?page=1&search=&tag=Tickets&cHash=cddbf11d0a34a79762e4bfeb020eee6d
+            https://www.fc-heidenheim.de/fanbetreuung/fans-mit-handicap
+            https://www.fc-heidenheim.de/mitgliedschaft/vorteile-und-beitraege
+            https://www.fc-heidenheim.de/tickets-overview/dauerkarten
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
