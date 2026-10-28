@@ -1832,33 +1832,8 @@
    "winner": null
   },
   {
-   "id": 559639,
-   "utcDate": "2026-10-30T20:05:00Z",
-   "status": "TIMED",
-   "matchday": 9,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 521,
-    "name": "Lille OSC",
-    "shortName": "Lille",
-    "tla": "LIL",
-    "crest": "https://crests.football-data.org/521.png"
-   },
-   "away": {
-    "id": 546,
-    "name": "Racing Club de Lens",
-    "shortName": "RC Lens",
-    "tla": "RCL",
-    "crest": "https://crests.football-data.org/546.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 559646,
-   "utcDate": "2026-10-31T16:15:00Z",
+   "utcDate": "2026-10-30T18:00:00Z",
    "status": "TIMED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
@@ -1882,50 +1857,25 @@
    "winner": null
   },
   {
-   "id": 559640,
-   "utcDate": "2026-10-31T19:45:00Z",
+   "id": 559639,
+   "utcDate": "2026-10-30T20:05:00Z",
    "status": "TIMED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 523,
-    "name": "Olympique Lyonnais",
-    "shortName": "Olympique Lyon",
-    "tla": "LYO",
-    "crest": "https://crests.football-data.org/523.png"
+    "id": 521,
+    "name": "Lille OSC",
+    "shortName": "Lille",
+    "tla": "LIL",
+    "crest": "https://crests.football-data.org/521.png"
    },
    "away": {
-    "id": 532,
-    "name": "Angers SCO",
-    "shortName": "Angers SCO",
-    "tla": "ANG",
-    "crest": "https://crests.football-data.org/532.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 559641,
-   "utcDate": "2026-10-31T19:45:00Z",
-   "status": "TIMED",
-   "matchday": 9,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 525,
-    "name": "FC Lorient",
-    "shortName": "Lorient",
-    "tla": "FCL",
-    "crest": "https://crests.football-data.org/525.png"
-   },
-   "away": {
-    "id": 512,
-    "name": "Stade Brestois 29",
-    "shortName": "Brest",
-    "tla": "BRE",
-    "crest": "https://crests.football-data.org/512.png"
+    "id": 546,
+    "name": "Racing Club de Lens",
+    "shortName": "RC Lens",
+    "tla": "RCL",
+    "crest": "https://crests.football-data.org/546.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -1982,6 +1932,31 @@
    "winner": null
   },
   {
+   "id": 559640,
+   "utcDate": "2026-11-01T16:15:00Z",
+   "status": "TIMED",
+   "matchday": 9,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 523,
+    "name": "Olympique Lyonnais",
+    "shortName": "Olympique Lyon",
+    "tla": "LYO",
+    "crest": "https://crests.football-data.org/523.png"
+   },
+   "away": {
+    "id": 532,
+    "name": "Angers SCO",
+    "shortName": "Angers SCO",
+    "tla": "ANG",
+    "crest": "https://crests.football-data.org/532.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 559642,
    "utcDate": "2026-11-01T16:15:00Z",
    "status": "TIMED",
@@ -2026,6 +2001,31 @@
     "shortName": "Toulouse",
     "tla": "TOU",
     "crest": "https://crests.football-data.org/511.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 559641,
+   "utcDate": "2026-11-02T19:45:00Z",
+   "status": "TIMED",
+   "matchday": 9,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 525,
+    "name": "FC Lorient",
+    "shortName": "Lorient",
+    "tla": "FCL",
+    "crest": "https://crests.football-data.org/525.png"
+   },
+   "away": {
+    "id": 512,
+    "name": "Stade Brestois 29",
+    "shortName": "Brest",
+    "tla": "BRE",
+    "crest": "https://crests.football-data.org/512.png"
    },
    "homeGoals": null,
    "awayGoals": null,
