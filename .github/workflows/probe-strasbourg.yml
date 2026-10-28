@@ -40,20 +40,17 @@ jobs:
           FULL: |
           TABLES: |
           PDFS: |
-            https://billetterie.rcstrasbourgalsace.fr/media/2026/08/cgv_rcsa_billetterie_et_hospitalites_ponctuelles_vf2026_2027.pdf
-            https://billetterie.rcstrasbourgalsace.fr/media/2026/08/cgv_rcsa_abonnements_grand_public_vf2026_2027.pdf
+            https://billetterie.rcstrasbourgalsace.fr/media/R%C3%A8glement%20int%C3%A9rieur%20Stade%20de%20la%20Meinau.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.rcstrasbourgalsace.fr/racing-paris-sg-j7-a-guichets-fermes-vigilance-face-a-la-multiplication-des-cas-de-reventes-illegales/
-            https://www.rcstrasbourgalsace.fr/arrete-prefectoral-pour-racing-paris-sg-j7/
-            https://www.rcstrasbourgalsace.fr/categories/actualites/page/2/
-            https://www.rcstrasbourgalsace.fr/le-stade/
-            https://www.rcstrasbourgalsace.fr/lancement-de-la-family-zone/
-            https://www.rcstrasbourgalsace.fr/saison-26-27/
+            https://www.rcstrasbourgalsace.fr/tout-sur-les-animations-et-votre-venue-a-la-meinau-pour-racing-as-monaco-j4/
+            https://www.rcstrasbourgalsace.fr/inauguration-de-la-nouvelle-tribune-sud-de-la-meinau-un-symbole-dambition-et-daudace-partagee/
+            https://www.rcstrasbourgalsace.fr/categories/actualites/page/3/
+            https://billetterie.rcstrasbourgalsace.fr/fr/OffresGP/ssh?_token=045117b0e0a11a242b9765e79cbf113f
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
