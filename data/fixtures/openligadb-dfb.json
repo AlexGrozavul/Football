@@ -1499,7 +1499,7 @@
   {
    "id": 87619,
    "utcDate": "2026-10-28T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1514,9 +1514,20 @@
     "shortName": "Hertha",
     "crest": "https://i.imgur.com/apFwbYZ.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1524,7 +1535,7 @@
   {
    "id": 87622,
    "utcDate": "2026-10-28T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1539,9 +1550,20 @@
     "shortName": "S04",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/9/97/FC_Schalke_04_Logo.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1549,7 +1571,7 @@
   {
    "id": 87630,
    "utcDate": "2026-10-28T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1564,9 +1586,20 @@
     "shortName": "Stuttgart",
     "crest": "https://i.imgur.com/v0tkpNx.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1574,7 +1607,7 @@
   {
    "id": 87631,
    "utcDate": "2026-10-28T17:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1589,9 +1622,20 @@
     "shortName": "Wolfsburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/VfL_Wolfsburg_logo_2026.svg/960px-VfL_Wolfsburg_logo_2026.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1599,7 +1643,7 @@
   {
    "id": 87627,
    "utcDate": "2026-10-28T19:45:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1614,9 +1658,30 @@
     "shortName": "Hoffenheim",
     "crest": "https://i.imgur.com/gF0PfEl.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Verlängerung",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Elfmeterschießen",
+     "home": 5,
+     "away": 4
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1624,7 +1689,7 @@
   {
    "id": 87628,
    "utcDate": "2026-10-28T19:45:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1639,9 +1704,20 @@
     "shortName": "Nürnberg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 5,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 5,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1649,7 +1725,7 @@
   {
    "id": 87629,
    "utcDate": "2026-10-28T19:45:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1664,9 +1740,20 @@
     "shortName": "Kaiserslautern",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -1674,7 +1761,7 @@
   {
    "id": 87633,
    "utcDate": "2026-10-28T19:45:00Z",
-   "finished": false,
+   "finished": true,
    "round": "2. Runde",
    "roundOrder": 2,
    "home": {
@@ -1689,9 +1776,20 @@
     "shortName": "Magdeburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 6,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 6,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
