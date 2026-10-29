@@ -34,12 +34,10 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             www.sv98.de
-            wirlilien.sv98.de
           GATE: |
             https://www.sv98.de/impressum/
           FULL: |
           TABLES: |
-            https://www.sv98.de/verein/mitgliedschaft/
           PDFS: |
           RAW: |
           NOTICES: |
@@ -47,20 +45,12 @@ jobs:
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.sv98.de/mitglieder-vvk-fuers-hannover-heimspiel-startet-mittwoch/
-            https://www.sv98.de/ab-mittwoch-mitglieder-vvk-fuers-erste-heimspiel-gegen-kiel/
-            https://www.sv98.de/ab-mittwoch-mitglieder-vvk-fuer-dresden/
-            https://www.sv98.de/ab-freitag-mitglieder-vvk-fuer-jena/
-            https://www.sv98.de/verein/mitgliedschaft/
-            https://wirlilien.sv98.de/wissen/wo-kann-ich-tickets-f%C3%BCr-heimspiele-des-sv-darmstadt-98-kaufen
-            https://wirlilien.sv98.de/wissen/wie-bekomme-ich-meine-anmeldedaten-im-online-ticketshop
-            https://wirlilien.sv98.de/wissen/wie-l%C3%A4uft-die-dauerkartenverl%C3%A4ngerung-ab
-            https://wirlilien.sv98.de/wissen/gibt-es-dauerkarten-f%C3%BCr-die-saison-2025/26
-            https://wirlilien.sv98.de/wissen/welche-rabattstufen-gibt-es-f%C3%BCr-dauerkarten
-            https://wirlilien.sv98.de/wissen/kann-ich-tickets-und-dauerkarten-aufwerten-1
-            https://www.sv98.de/dauerkarten-fuer-die-saison-2026-27-alle-infos-gibts-hier/
-            https://www.sv98.de/fuer-mitglieder-dauerkartenverkauf-startet-freitag/
-            https://www.sv98.de/fans/faninfos/
+            https://www.sv98.de/orga-hinweise-zum-heimspiel-gegen-st-pauli-2/
+            https://www.sv98.de/orga-hinweise-zum-heimspiel-gegen-cottbus/
+            https://www.sv98.de/orga-hinweise-zum-heimspiel-gegen-bielefeld-2/
+            https://www.sv98.de/stadion/stadionbesuch/mit-kind-ins-stadion/
+            https://www.sv98.de/stadion/stadionbesuch/barrierefrei-ins-stadion-neu/
+            https://www.sv98.de/category/fans/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
