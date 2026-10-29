@@ -1,0 +1,327 @@
+# TEMPORARY: reads SV Darmstadt 98's own pages for the ticket research PR and
+# posts their text and links as PR comments. Deleted before merge.
+name: Probe Darmstadt pages
+
+on: pull_request
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install pdftotext and OCR
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils tesseract-ocr tesseract-ocr-deu
+
+      - name: Install Playwright and Chromium
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          ROBOTS: |
+            sv98.de
+            www.sv98.de
+          GATE: |
+          FULL: |
+          TABLES: |
+          PDFS: |
+          RAW: |
+          NOTICES: |
+            https://www.sv98.de/
+          DISCOVER: |
+            https://www.sv98.de/
+          FOLLOW: |
+          FOLLOW_RE: '^$'
+          PAGES: |
+            https://www.sv98.de/
+        run: |
+          mkdir -p /tmp/probe && cd /tmp/probe
+          cat > probe.js <<'JS'
+          const { execFileSync } = require('child_process');
+          const fs = require('fs');
+          const UA = 'FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)';
+          const MAX = 60000;
+          const FORBIDDEN = /acheter|panier|connexion|se-connecter|mon-compte|inscription|commande|acquista|carrello|accedi|registrati|ticketone|vivaticket|eventim|kaufen|buy|bestellen|warenkorb|cart|checkout|login|anmelden|registrier|konto|account|queue|warteraum|warteschlange|waiting|sitzplan|saalplan|placeSelection/i;
+          // The organiser's own hosts; web.archive.org only for labelled archive copies.
+          const bare = h => h.replace(/^www\./, '');
+          // FOLLOW takes article links from a chosen page only if they match FOLLOW_RE.
+          const FAQ_ARTICLE = new RegExp(process.env.FOLLOW_RE || '^$');
+          // Help articles of the ticket site (/fr/aide/) are information pages, not buying pages, even when their
+          // slug names buying or the account (acheter-un-billet, mon-compte).
+          const isForbidden = u => FORBIDDEN.test(u) ;
+          const sleep = ms => new Promise(r => setTimeout(r, ms));
+          let n = 0, lastText = '';
+          function post(body) {
+            fs.writeFileSync(`c${++n}.md`, body);
+            execFileSync('gh', ['api', `repos/${process.env.REPO}/issues/${process.env.PR}/comments`,
+              '-F', `body=@c${n}.md`], { stdio: ['ignore', 'ignore', 'inherit'] });
+          }
+          const lines = s => (s || '').split('\n').map(x => x.trim()).filter(Boolean);
+
+          // robots.txt: groups for this bot win over the * group; longest match wins.
+          const robots = {};
+          async function fetchRobots(host) {
+            let status, text = '';
+            for (const limit of [30000, 90000]) {
+              await sleep(1000);
+              try {
+                const r = await fetch(`https://${host}/robots.txt`,
+                  { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(limit) });
+                status = r.status; text = await r.text(); break;
+              } catch (e) { status = `error (${limit / 1000} s limit): ${e.message}`; }
+            }
+            post(`### robots.txt of ${host}\nHTTP ${status}\n\n\`\`\`\n${text.slice(0, MAX)}\n\`\`\``);
+            const groups = []; let cur = null, lastWasUA = false;
+            for (const raw of text.split('\n')) {
+              const m = raw.replace(/#.*/, '').trim().match(/^([^:]+):\s*(.*)$/);
+              if (!m) continue; const k = m[1].toLowerCase(), v = m[2].trim();
+              if (k === 'user-agent') { if (!lastWasUA) { cur = { agents: [], rules: [] }; groups.push(cur); } cur.agents.push(v.toLowerCase()); lastWasUA = true; }
+              else { lastWasUA = false; if (cur && (k === 'allow' || k === 'disallow')) cur.rules.push([k, v]); }
+            }
+            const own = groups.filter(g => g.agents.some(a => a !== '*' && 'footballplannerbot'.startsWith(a)));
+            const rules = (own.length ? own : groups.filter(g => g.agents.includes('*'))).flatMap(g => g.rules);
+            const blocked = status === 401 || status === 403 || typeof status !== 'number';
+            return robots[host] = { status, rules, blocked };
+          }
+          function allowed(host, path) {
+            const rb = robots[host];
+            if (!rb) return [false, 'robots.txt of this host was not read'];
+            if (rb.blocked) return [false, `robots.txt answered ${rb.status}`];
+            let best = null;
+            for (const [k, v] of rb.rules) {
+              if (!v) continue;
+              const re = new RegExp('^' + v.split('*').map(s => s.replace(/[.+?^${}()|[\]\\]/g, '\\$&')).join('.*').replace(/\\\$$/, '$'));
+              if (re.test(path) && (!best || v.length > best[1].length || (v.length === best[1].length && k === 'allow'))) best = [k, v];
+            }
+            return best && best[0] === 'disallow' ? [false, `Disallow: ${best[1]}`] : [true, best ? `${best[0]}: ${best[1]}` : 'no matching rule'];
+          }
+
+          async function render(browser, url) {
+            const u = new URL(url);
+            if (isForbidden(url)) { post(`### STOPPED ${url}\nForbidden URL (buy/cart/checkout/login/queue/seat plan); not opened.`); return; }
+            const [ok, why] = allowed(u.host, u.pathname + u.search);
+            if (!ok) { post(`### STOPPED ${url}\nrobots.txt: ${why}; not opened.`); return; }
+            let resp, err = '', used = 0;
+            let ctx, page;
+            for (const limit of [45000, 90000]) {
+              if (ctx) await ctx.close();
+              ctx = await browser.newContext({ userAgent: UA, locale: 'de-DE' });
+              page = await ctx.newPage();
+              // Never follow a navigation (link, redirect, script) to a forbidden URL.
+              await page.route('**/*', r => (r.request().isNavigationRequest() && isForbidden(r.request().url())) ? r.abort() : r.continue());
+              await sleep(1000);
+              try { resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: limit }); err = ''; used = limit; break; }
+              catch (e) { err = `${e.message.split('\n')[0]} (limit ${limit / 1000} s)`; }
+            }
+            if (err) { post(`### FAILED ${url}\n${err}; tried twice (45 s, then 90 s).`); await ctx.close(); return; }
+            let idle = 'yes';
+            try { await page.waitForLoadState('networkidle', { timeout: 30000 }); } catch { idle = 'no (30 s limit)'; }
+            await sleep(3000);
+            // Scroll once so lazy content loads.
+            try { await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await sleep(3000); } catch {}
+            let frames = '';
+            for (const f of page.frames().slice(1)) {
+              try { frames += `\n[frame ${f.url()}]\n` + await f.evaluate(() => document.body ? document.body.innerText : ''); } catch {}
+            }
+            const status = resp ? resp.status() : 'none';
+            const final = page.url();
+            // A server redirect is not seen by page.route: refuse to record it.
+            if (isForbidden(final)) { post(`### STOPPED ${url}\nRedirected to a forbidden URL (login/checkout/queue); nothing recorded.`); await ctx.close(); return; }
+            if (bare(new URL(final).host) !== bare(u.host)) { post(`### STOPPED ${url}\nRedirected to another host (${new URL(final).host}); nothing recorded.`); await ctx.close(); return; }
+            const title = await page.title();
+            const text0 = await page.evaluate(() => {
+              const b = document.body.cloneNode(true);
+              // A consent dialog (Cookiebot, Didomi, OneTrust, Axeptio, tarteaucitron, Usercentrics, Sirdata, consentmanager) is removed from
+              // this copy only; nothing on the page is clicked or accepted.
+              b.querySelectorAll('script,style,noscript,#CybotCookiebotDialog,#CybotCookiebotDialogBodyUnderlay,#CookiebotWidget,[id^="Cybot"],#didomi-host,.didomi-popup-container,#onetrust-consent-sdk,#axeptio_overlay,#tarteaucitronRoot,#usercentrics-root,#sd-cmp,.sd-cmp-overlay,#cmpbox,#cmpbox2,.cmpboxBG').forEach(e => e.remove());
+              return b.textContent.replace(/[ \t\r\f\v ]+/g, ' ').replace(/\s*\n\s*/g, '\n').trim();
+            });
+            // Frame text is left out (a feedback form's reCAPTCHA frame is not page content).
+            const text = text0;
+            lastText = text;
+            // Narrowed 2026-10-26 at Alexandru's instruction: a challenge page shows itself in its TITLE or with an
+            // interstitial phrase; the bare word 'captcha' in an article's feedback form no longer counts.
+            const challenge = /just a moment|attention required|captcha|verify|security check|access denied|are you a robot/i.test(title)
+              || /verify you are human|checking your browser|checking if the site connection is secure|enable javascript and cookies to continue|complete the security check/i.test(text.slice(0, 3000));
+            const capCtx = (text.match(/.{0,80}captcha.{0,80}/gi) || []).slice(0, 3).join(' || ');
+            if (status === 403 || status === 429 || status === 503 || challenge) {
+              post(`### STOPPED ${url}\nHTTP ${status}, title "${title}", text length ${text.length}${challenge ? ', bot challenge text found' : ''}; nothing read.\nFirst 300 characters: ${text.slice(0, 300).replace(/```/g, "'''")}`);
+              await ctx.close(); return;
+            }
+            const head0 = `${u.host === 'web.archive.org' ? 'ARCHIVE COPY (web.archive.org), not the live page\n' : 'LIVE page\n'}URL: ${url}\nFinal URL: ${final}\nHTTP ${status}; title "${title}"; network idle: ${idle}; load limit used ${used / 1000} s\n`;
+            const head = head0 + (capCtx ? `Word 'captcha' in page text (not a challenge by the narrowed check): ${capCtx.replace(/```/g, "'''")}\n` : '');
+            const cut = text.length > MAX;
+            // FULL pages: the whole text, in parts of MAX characters each.
+            const full = lines(process.env.FULL).includes(url);
+            const parts = full ? Math.ceil(text.length / MAX) : 1;
+            for (let i = 0; i < parts; i++)
+              post(`### (a) TEXT${parts > 1 ? ` part ${i + 1} of ${parts}` : ''} ${url}\n${head}Length ${text.length} characters${full ? `, characters ${i * MAX} to ${Math.min(text.length, (i + 1) * MAX)}` : cut ? `, CUT at ${MAX}` : ', not cut'}.\n\n\`\`\`\n${text.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
+            // TABLES pages: every table, one row per line, cells separated by ' | '.
+            if (lines(process.env.TABLES).includes(url)) {
+              const tables = await page.evaluate(() => [...document.querySelectorAll('table')].map((t, i) =>
+                `[table ${i + 1}]\n` + [...t.rows].map(r => [...r.cells].map(c => c.innerText.replace(/\s+/g, ' ').trim() || '(empty)').join(' | ')).join('\n')).join('\n\n'));
+              post(`### (t) TABLES ${url}\n\n\`\`\`\n${(tables || 'no table element').slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
+            }
+            const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].filter(a => !a.closest('#CybotCookiebotDialog,#CybotCookiebotDialogBodyUnderlay,#CookiebotWidget,[id^="Cybot"],#didomi-host,.didomi-popup-container,#onetrust-consent-sdk,#axeptio_overlay,#tarteaucitronRoot,#usercentrics-root,#sd-cmp,.sd-cmp-overlay,#cmpbox,#cmpbox2,.cmpboxBG')).map(a =>
+              `${(a.textContent || a.getAttribute('aria-label') || a.title || '').replace(/\s+/g, ' ').trim()} | ${a.href}`));
+            const uniq = [...new Set(links)];
+            // The whole link list, in parts of MAX characters each.
+            const all = uniq.join('\n').replace(/```/g, "'''");
+            const lparts = Math.max(1, Math.ceil(all.length / MAX));
+            for (let i = 0; i < lparts; i++)
+              post(`### (b) LINKS${lparts > 1 ? ` part ${i + 1} of ${lparts}` : ''} ${url}\n${uniq.length} distinct links.\n\n\`\`\`\n${all.slice(i * MAX, (i + 1) * MAX)}\n\`\`\``);
+            await ctx.close();
+            return uniq;
+          }
+
+          async function pdf(url) {
+            const u = new URL(url);
+            if (isForbidden(url)) { post(`### STOPPED ${url}\nForbidden URL; not fetched.`); return; }
+            if (!robots[u.host]) await fetchRobots(u.host);
+            const [ok, why] = allowed(u.host, u.pathname + u.search);
+            if (!ok) { post(`### STOPPED ${url}\nrobots.txt: ${why}; not fetched.`); return; }
+            await sleep(1000);
+            const r = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(90000) });
+            const final = r.url;
+            if (r.status !== 200 || isForbidden(final) || bare(new URL(final).host) !== bare(u.host)) {
+              post(`### STOPPED ${url}\nHTTP ${r.status}, final URL ${final}; nothing recorded.`); return; }
+            const name = `p${++n}.pdf`;
+            fs.writeFileSync(name, Buffer.from(await r.arrayBuffer()));
+            let info = '';
+            try { info = execFileSync('pdfinfo', [name]).toString(); } catch (e) { info = 'pdfinfo failed'; }
+            const text = execFileSync('pdftotext', ['-layout', name, '-'], { maxBuffer: 1 << 28 }).toString();
+            const pages = +((info.match(/Pages:\s*(\d+)/) || [])[1] || 1);
+            // A PDF with (almost) no text layer is run through OCR; the comment says so.
+            let ocr = '';
+            if (text.replace(/\s+/g, '').length < 150 * pages) {
+              try {
+                execFileSync('pdftoppm', ['-r', '200', '-png', name, `o${n}`]);
+                for (const img of fs.readdirSync('.').filter(f => f.startsWith(`o${n}-`) && f.endsWith('.png')).sort())
+                  ocr += `\n[OCR page ${img}]\n` + execFileSync('tesseract', [img, '-', '-l', 'deu+eng'], { maxBuffer: 1 << 28 }).toString();
+              } catch (e) { ocr = `OCR failed: ${e.message}`; }
+              const op = Math.max(1, Math.ceil(ocr.length / MAX));
+              for (let i = 0; i < op; i++)
+                post(`### (o) OCR TEXT (tesseract, not the PDF's text layer) part ${i + 1} of ${op} ${url}\nlength ${ocr.length}\n\n\`\`\`\n${ocr.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
+            }
+            const parts = Math.max(1, Math.ceil(text.length / MAX));
+            for (let i = 0; i < parts; i++)
+              post(`### (p) PDF part ${i + 1} of ${parts} ${url}\nURL: ${url}\nFinal URL: ${final}\nHTTP ${r.status}; content-type ${r.headers.get('content-type')}; length ${text.length} characters\n${i === 0 ? '\n```\n' + info.replace(/```/g, "'''") + '```\n' : ''}\n\`\`\`\n${text.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
+          }
+
+          (async () => {
+            let browser;
+            try {
+              for (const h of lines(process.env.ROBOTS)) await fetchRobots(h);
+              // Run 2 onwards: robots.txt was read in run 1 and is re-read above for the hosts listed.
+              const { chromium } = require('/tmp/pw/node_modules/playwright');
+              browser = await chromium.launch();
+              // Run 2: the legal notice is read first; content pages are read only if its text is there and
+              // says nothing about bots or automated access (any mention stops the run for a person to judge).
+              let gateOk = true;
+              for (const g of lines(process.env.GATE)) {
+                lastText = '';
+                try { await render(browser, g); } catch (e) { post(`### ERROR ${g}\n${e.message}`); }
+                const hits = (lastText.match(/.{0,120}(automatis|crawl|robot|\bbots?\b|scrap|aspir|extraction|fouille|data.?mining|text and data|\bTDM\b|L\.?\s*122-5-3|spider|automatisiert|maschinenlesbar|reproduc|réutilis|base de donn|extraire).{0,120}/gi) || []);
+                post(`### GATE ${g}\ntext length ${lastText.length}; matches ${hits.length}\n\n\`\`\`\n${hits.join('\n').slice(0, 20000).replace(/\`\`\`/g, "'''")}\n\`\`\``);
+                // Only the first GATE page (the Impressum) can stop the run: a privacy page names bot-protection
+                // services, which is not a rule about this probe; its matches are posted for a person to read.
+                if (g === lines(process.env.GATE)[0] && (lastText.length < 800 || /automatis|crawl|robot|\bbots?\b|scrap|aspir|extraction|fouille|data.?mining|text and data|\bTDM\b|L\.?\s*122-5-3|spider|automatisiert|maschinenlesbar/i.test(lastText))) gateOk = false;
+              }
+              if (!gateOk) { post('### GATE STOP: content pages and PDFs not read in this run'); process.env.PAGES = ''; process.env.PDFS = ''; process.env.RAW = ''; }
+              for (const url of lines(process.env.PAGES)) {
+                try {
+                  const links = await render(browser, url);
+                  // Every article linked from a chosen service-centre folder page.
+                  if (links && lines(process.env.FOLLOW).includes(url)) {
+                    const arts = [...new Set(links.map(l => l.split(' | ').pop()).filter(h => FAQ_ARTICLE.test(h)))].slice(0, 15);
+                    post(`### Articles taken from the link list of ${url}\n${arts.join('\n') || 'none found'}`);
+                    for (const a of arts) {
+                      try { await render(browser, a); }
+                      catch (e) { post(`### ERROR ${a}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+                    }
+                  }
+                  // Run 1: the host's legal or terms notice, taken from the landing page's own link list.
+                  if (links && lines(process.env.NOTICES).includes(url)) {
+                    const host = new URL(url).host;
+                    const rank = l => { const t = l.split(' | ')[0]; return /impressum|nutzungsbedingungen|rechtlich|agb|mentions|l[ée]gal|terms|disclaimer/i.test(t) ? 0 : /datenschutz|privacy/i.test(t) ? 1 : 2; };
+                    const legal = [...new Set(links.filter(l => rank(l) < 2).sort((x, y) => rank(x) - rank(y))
+                      .map(l => l.split(' | ').pop()).filter(h => { try { return bare(new URL(h).host) === bare(host); } catch { return false; } }))].slice(0, 4);
+                    post(`### Notice links chosen from the link list of ${url}\n${legal.join('\n') || 'none found'}`);
+                    for (const l of legal) {
+                      try { await render(browser, l); }
+                      catch (e) { post(`### ERROR ${l}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+                    }
+                  }
+                  // Run 1: another club host (*.sv98.de) named in this page's own link list;
+                  // only its robots.txt, its landing link and its notice links are read.
+                  if (links && lines(process.env.DISCOVER).includes(url)) {
+                    const here = new URL(url).host;
+                    const byHost = {};
+                    for (const l of links) {
+                      const href = l.split(' | ').pop();
+                      let h; try { h = new URL(href).host; } catch { continue; }
+                      if (h === here || bare(h) === bare(here) || !/(^|\.)sv98\.(de|com)$/.test(h)) continue;
+                      const p = new URL(href).pathname || '/';
+                      if (!byHost[h] || (p === '/' && byHost[h].p !== '/')) byHost[h] = { href, p };
+                    }
+                    const hosts = Object.keys(byHost).slice(0, 6);
+                    post(`### Club hosts taken from the link list of ${url}\n${hosts.map(h => byHost[h].href).join('\n') || 'none found'}`);
+                    for (const h of hosts) {
+                      const site = byHost[h].href;
+                      if (!robots[h]) await fetchRobots(h);
+                      // A shop or ticket host: robots.txt only, its landing page is a buying page.
+                      if (/shop|store|ticket|billet|boutique/i.test(h)) { post(`### ${h}: robots.txt only (shop or ticket host); landing page not opened.`); continue; }
+                      const own = await render(browser, site);
+                      const legal = [...new Set((own || []).filter(l => /impressum|nutzungsbedingungen|rechtlich|agb|datenschutz|terms|privacy/i.test(l.split(' | ')[0]))
+                        .map(l => l.split(' | ').pop()).filter(x => { try { return new URL(x).host === h; } catch { return false; } }))].slice(0, 3);
+                      post(`### Notice links chosen from the link list of ${site}\n${legal.join('\n') || 'none found'}`);
+                      for (const l of legal) {
+                        try { await render(browser, l); }
+                        catch (e) { post(`### ERROR ${l}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+                      }
+                    }
+                  }
+                }
+                catch (e) { post(`### ERROR ${url}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+              }
+              // Raw text files (a sitemap named in robots.txt): fetched, robots-checked, posted as they are.
+              for (const url of lines(process.env.RAW)) {
+                try {
+                  const u = new URL(url);
+                  if (!robots[u.host]) await fetchRobots(u.host);
+                  const [ok, why] = allowed(u.host, u.pathname + u.search);
+                  if (!ok) { post(`### STOPPED ${url}\nrobots.txt: ${why}; not fetched.`); continue; }
+                  await sleep(1000);
+                  const r = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(90000) });
+                  const t = (await r.text()).replace(/<\/?(urlset|url|lastmod|changefreq|priority|sitemapindex|sitemap)[^>]*>/g, ' ').replace(/<loc>/g, '\n').replace(/<\/loc>/g, '').replace(/[ \t]+/g, ' ').replace(/```/g, "'''");
+                  const parts = Math.min(10, Math.max(1, Math.ceil(t.length / MAX)));
+                  for (let i = 0; i < parts; i++)
+                    post(`### (r) RAW part ${i + 1} of ${parts} ${url}\nHTTP ${r.status}; final URL ${r.url}; length ${t.length}${t.length > 10 * MAX ? ', CUT after 10 parts' : ''}\n\n\`\`\`\n${t.slice(i * MAX, (i + 1) * MAX)}\n\`\`\``);
+                } catch (e) { post(`### ERROR ${url}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+              }
+              for (const url of lines(process.env.PDFS)) {
+                try { await pdf(url); }
+                catch (e) { post(`### ERROR ${url}\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); }
+              }
+              post('### Probe run finished');
+            } catch (e) {
+              try { post(`### PROBE ERROR\n\`\`\`\n${String(e && e.stack || e).slice(0, 3000)}\n\`\`\``); } catch {}
+              process.exitCode = 1;
+            } finally { if (browser) await browser.close(); }
+          })();
+          JS
+          node probe.js
