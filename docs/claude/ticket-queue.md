@@ -35,7 +35,7 @@ One table of every German club of tier 1 and tier 2 for 2026/27, in the order a 
 | 12 | Q22707 | TSG 1899 Hoffenheim | Bundesliga | 50 | blocked: robots.txt 403 | #173 | 2026-10-28 | robots.txt of tsg-hoffenheim.de and www.tsg-hoffenheim.de answered HTTP 403; no page read; 0 confirmed, 0 unverified, 0 inferred; see open-problems.md |
 | 13 | Q162251 | 1. FC Heidenheim 1846 | 2. Bundesliga | 84 | done | #174 | 2026-10-28 | 33 confirmed (14 rules, 18 season-ticket prices, 1 demand), 12 unverified, 0 inferred; day-ticket prices only in a price-list rule (presale and box-office prices, schema gap); see open-problems.md |
 | 14 | Q479351 | SV Darmstadt 98 | 2. Bundesliga | 120 | done | #175 | 2026-10-29 | 81 confirmed (20 rules, 32 day-ticket and 28 season-ticket prices, 1 demand), 13 unverified, 0 inferred; which home games carry the 5-euro top-game surcharge is not stated; see open-problems.md |
-| 15 | Q104770 | 1. FC Köln | Bundesliga | 282 | pending |  |  |  |
+| 15 | Q104770 | 1. FC Köln | Bundesliga | 282 | done | #176 | 2026-10-29 | 13 confirmed (12 rules, 1 demand), 19 unverified (18 rules, 1 demand), 0 inferred; no price row: the 2026/27 price list is a picture; the day-ticket terms carry no printed date; see open-problems.md |
 | 16 | Q104761 | Bayer 04 Leverkusen | Bundesliga | 287 | pending |  |  |  |
 | 17 | Q41420 | Borussia Dortmund | Bundesliga | 319 | pending |  |  |  |
 | 18 | Q101959 | Borussia Mönchengladbach | Bundesliga | 324 | pending |  |  |  |
