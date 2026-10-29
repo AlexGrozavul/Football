@@ -33,21 +33,34 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            sv98.de
             www.sv98.de
+            wirlilien.sv98.de
           GATE: |
+            https://www.sv98.de/impressum/
           FULL: |
+            https://www.sv98.de/shops/ticketinfos/
+            https://www.sv98.de/fans/faq-fuer-lilien-fans/
+            https://wirlilien.sv98.de/wissen/ticketing
           TABLES: |
+            https://www.sv98.de/shops/ticketinfos/
+            https://www.sv98.de/shops/ticketinfos/dauerkarten/
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.sv98.de/
           DISCOVER: |
-            https://www.sv98.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.sv98.de/
+            https://www.sv98.de/shops/ticketinfos/
+            https://www.sv98.de/category/tickets/
+            https://www.sv98.de/orga-hinweise-zum-heimspiel-gegen-magdeburg-4/
+            https://www.sv98.de/fans/faq-fuer-lilien-fans/
+            https://www.sv98.de/fans/faninfos/
+            https://www.sv98.de/stadion/stadionbesuch/
+            https://wirlilien.sv98.de/wissen/ticketing
+            https://wirlilien.sv98.de/wissen/stadionbesuch
+            https://wirlilien.sv98.de/wissen/wie-kann-ich-mein-digitales-wirlilien-ticket-teilen
+            https://www.sv98.de/shops/ticketinfos/dauerkarten/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
