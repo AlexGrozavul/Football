@@ -37,22 +37,31 @@ jobs:
           GATE: |
             https://fc.de/impressum
           FULL: |
+            https://fc.de/service/stadionerlebnis/ticketing
           TABLES: |
+            https://fc.de/service/stadionerlebnis/ticketing
+            https://fc.de/service/stadionerlebnis/heimspiele
+            https://fc.de/club/mitgliedschaft/alle-informationen/beitraege
           PDFS: |
           RAW: |
-            https://fc.de/sitemap.xml
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://fc.de/service
-            https://fc.de/fans
-            https://fc.de/club/mitgliedschaft/alle-informationen
-            https://fc.de/mannschaften/maenner/spielplan
-            https://fc.de/mannschaften/maenner/1-bundesliga/saison2627/8-spieltag/12194458
-            https://fc.de/mannschaften/maenner/1-bundesliga/saison2627/9-spieltag/12193663
-            https://fc.de/mannschaften/maenner/dfb-pokal/saison2627/2-runde/12538107
+            https://fc.de/service/stadionerlebnis/ticketing
+            https://fc.de/service/stadionerlebnis/heimspiele
+            https://fc.de/service/stadionerlebnis
+            https://fc.de/fc-ticketboerse
+            https://fc.de/fc-spieltagsboerse
+            https://fc.de/mobile-kontaktlose-tickets
+            https://fc.de/service/rund-um-den-fc/dokumente-und-downloads
+            https://fc.de/club/mitgliedschaft/alle-informationen/vorteile-und-praemien
+            https://fc.de/club/mitgliedschaft/alle-informationen/haeufige-fragen
+            https://fc.de/club/mitgliedschaft/alle-informationen/beitraege
+            https://fc.de/service/stadionerlebnis/heimspiele/anreise-und-stadionbesuch
+            https://fc.de/fans/weitere-fanthemen/barrierefrei-ins-stadion
+            https://fc.de/aktuelles
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
