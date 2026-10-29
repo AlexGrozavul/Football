@@ -473,7 +473,13 @@ KNOWN = {
         # season-ticket table names (standing and wheelchair rows use the
         # existing stehplatz and rollstuhlfahrer).
         "suedtribuene-sitz", "suedtribuene-sitz-sichteingeschraenkt",
-        "haupttribuene"],
+        "haupttribuene",
+        # SV Darmstadt 98, 2026-10-29: the stands of the 2026/27 day- and
+        # season-ticket tables, as the club names them.
+        "suedtribuene-stehplatz", "gegengerade-stehplatz-g1-g3",
+        "gegengerade-sitz-o2-o4", "gegengerade-sitz-a-block-x2",
+        "wechselblock-y", "nordtribuene-n1-n3", "nordtribuene-n4",
+        "haupttribuene-w1-w4"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
