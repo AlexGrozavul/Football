@@ -34,20 +34,25 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             fc.de
-            www.fc.de
           GATE: |
+            https://fc.de/impressum
           FULL: |
           TABLES: |
           PDFS: |
           RAW: |
+            https://fc.de/sitemap.xml
           NOTICES: |
-            https://fc.de/
           DISCOVER: |
-            https://fc.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://fc.de/
+            https://fc.de/service
+            https://fc.de/fans
+            https://fc.de/club/mitgliedschaft/alle-informationen
+            https://fc.de/mannschaften/maenner/spielplan
+            https://fc.de/mannschaften/maenner/1-bundesliga/saison2627/8-spieltag/12194458
+            https://fc.de/mannschaften/maenner/1-bundesliga/saison2627/9-spieltag/12193663
+            https://fc.de/mannschaften/maenner/dfb-pokal/saison2627/2-runde/12538107
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
