@@ -34,34 +34,30 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             fc.de
+            assets.ctfassets.net
+            images.ctfassets.net
           GATE: |
             https://fc.de/impressum
           FULL: |
-            https://fc.de/service/stadionerlebnis/ticketing
           TABLES: |
-            https://fc.de/service/stadionerlebnis/ticketing
-            https://fc.de/service/stadionerlebnis/heimspiele
-            https://fc.de/club/mitgliedschaft/alle-informationen/beitraege
           PDFS: |
+            https://assets.ctfassets.net/nurz7nsnha04/51gUbkPbxXTpFSOKTXXAza/8816745fba073cbe4d016dcf79e6b1f1/AGB_Tageskarten_Maerz_2026.pdf
+            https://assets.ctfassets.net/nurz7nsnha04/51gUbkPbxXTpFSOKTXXAza/9be9c5574e08a1b7a3361c65159369a8/AGB_Tageskarten_2026.pdf
+            https://assets.ctfassets.net/nurz7nsnha04/4I3WbfdufqvGCZ2hVnMSXF/4c768032cfe7872ead24f0cccbad33d4/20251119_Stadionordnung_RheinEnergieSTADION.pdf
+            https://assets.ctfassets.net/nurz7nsnha04/6wb5aRS76DCv55jBe6RHED/b661767c530efb12d8842423447391cf/Sicherheitspolitik.pdf
+            https://assets.ctfassets.net/nurz7nsnha04/5TKRsTG8ipBbw7eB1O4Tsz/9cd05507d77585c3780e409e905c85ce/AGB_Dauerkarten_LigaPur_LigaPlus_2026.pdf
+            https://assets.ctfassets.net/nurz7nsnha04/4yF6gXQi95QidjXH0m8Hdm/f5450810c18e566d14a6c5460e50b37e/20260114_Satzung.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://fc.de/service/stadionerlebnis/ticketing
-            https://fc.de/service/stadionerlebnis/heimspiele
-            https://fc.de/service/stadionerlebnis
-            https://fc.de/fc-ticketboerse
-            https://fc.de/fc-spieltagsboerse
-            https://fc.de/mobile-kontaktlose-tickets
-            https://fc.de/service/rund-um-den-fc/dokumente-und-downloads
-            https://fc.de/club/mitgliedschaft/alle-informationen/vorteile-und-praemien
-            https://fc.de/club/mitgliedschaft/alle-informationen/haeufige-fragen
-            https://fc.de/club/mitgliedschaft/alle-informationen/beitraege
-            https://fc.de/service/stadionerlebnis/heimspiele/anreise-und-stadionbesuch
-            https://fc.de/fans/weitere-fanthemen/barrierefrei-ins-stadion
-            https://fc.de/aktuelles
+            https://fc.de/aktuelles/news/fc-tickets-neues-verfahren-bei-vorverkaeufen
+            https://fc.de/aktuelles/news/early-bird-vorverkauf-exklusiv-fuer-fc-mitglieder
+            https://fc.de/aktuelles/news/ticketing-stammtisch-liefert-viele-antworten-auf-mitglieder-fragen
+            https://fc.de/aktuelles/news/am-spieltag-verhindert-jetzt-ticketboerse-nutzen
+            https://fc.de/aktuelles/news
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
