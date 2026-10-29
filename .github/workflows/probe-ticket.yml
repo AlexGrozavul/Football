@@ -35,15 +35,11 @@ jobs:
           ROBOTS: |
             www.sv98.de
             wirlilien.sv98.de
-            tickets.sv98.de
           GATE: |
             https://www.sv98.de/impressum/
           FULL: |
-            https://www.sv98.de/shops/ticketinfos/blockuebersicht-eintrittspreise/
-            https://www.sv98.de/shops/ticketinfos/atgbs/
-            https://www.sv98.de/stadion/stadionbesuch/stadionordnung/
           TABLES: |
-            https://www.sv98.de/shops/ticketinfos/blockuebersicht-eintrittspreise/
+            https://www.sv98.de/verein/mitgliedschaft/
           PDFS: |
           RAW: |
           NOTICES: |
@@ -51,33 +47,20 @@ jobs:
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.sv98.de/shops/ticketinfos/blockuebersicht-eintrittspreise/
-            https://www.sv98.de/shops/ticketinfos/atgbs/
-            https://www.sv98.de/shops/ticketinfos/ticketboerse/
-            https://www.sv98.de/shops/ticketinfos/nein-zum-schwarzmarkt/
-            https://www.sv98.de/jetzt-tickets-sichern-heimspiel-gegen-1-fc-heidenheim-im-freien-verkauf/
-            https://www.sv98.de/jetzt-tickets-sichern-heimspiel-gegen-fc-st-pauli-im-freien-verkauf/
-            https://www.sv98.de/jetzt-tickets-sichern-heimspiele-gegen-cottbus-und-magdeburg-im-freien-verkauf/
-            https://www.sv98.de/mitgliedervorverkauf-fuer-die-oktober-heimspiele/
-            https://www.sv98.de/ab-mittwoch-mitglieder-vvk-fuer-bielefeld/
-            https://wirlilien.sv98.de/wissen/sind-tageskarten-und-dauerkarten-personalisiert
-            https://wirlilien.sv98.de/wissen/besitzen-vereinsmitglieder-ein-vorkaufsrecht
-            https://wirlilien.sv98.de/wissen/wann-habe-ich-anspruch-auf-eine-erm%C3%A4%C3%9Figung
-            https://wirlilien.sv98.de/wissen/ben%C3%B6tigen-kinder-eine-eintrittskarte-scho%C3%9Fkindregelung
-            https://wirlilien.sv98.de/wissen/kann-ich-tickets-zur%C3%BCckgeben-oder-stornieren
-            https://wirlilien.sv98.de/wissen/was-unternimmt-der-sv98-gegen-schwarzmarkthandel-von-eintrittskarten
-            https://wirlilien.sv98.de/wissen/wann-beginnen-die-vorverk%C3%A4ufe-f%C3%BCr-heimspiele-des-sv-darmstadt-98
+            https://www.sv98.de/mitglieder-vvk-fuers-hannover-heimspiel-startet-mittwoch/
+            https://www.sv98.de/ab-mittwoch-mitglieder-vvk-fuers-erste-heimspiel-gegen-kiel/
+            https://www.sv98.de/ab-mittwoch-mitglieder-vvk-fuer-dresden/
+            https://www.sv98.de/ab-freitag-mitglieder-vvk-fuer-jena/
+            https://www.sv98.de/verein/mitgliedschaft/
             https://wirlilien.sv98.de/wissen/wo-kann-ich-tickets-f%C3%BCr-heimspiele-des-sv-darmstadt-98-kaufen
-            https://wirlilien.sv98.de/wissen/wann-erhalte-ich-nach-dem-kauf-mein-ticket
-            https://wirlilien.sv98.de/wissen/gibt-es-am-spieltag-noch-tickets-f%C3%BCr-das-jeweilige-spiel-an-der-tageskasse
-            https://wirlilien.sv98.de/wissen/wie-funktioniert-die-ticketb%C3%B6rse
-            https://wirlilien.sv98.de/wissen/wann-hat-der-ticketshop-am-stadion-ge%C3%B6ffnet
-            https://wirlilien.sv98.de/wissen/wo-finde-ich-den-g%C3%A4steeingang
-            https://wirlilien.sv98.de/wissen/welche-angebote-gibt-es-f%C3%BCr-rollstuhlfahrer-und-sehbehinderte
-            https://www.sv98.de/shops/ticketinfos/ticket-in-der-wirlilien-app/
-            https://www.sv98.de/shops/ticketinfos/sonderkarten/
-            https://www.sv98.de/stadion/stadionbesuch/stadionordnung/
-            https://www.sv98.de/category/tickets/page/2/
+            https://wirlilien.sv98.de/wissen/wie-bekomme-ich-meine-anmeldedaten-im-online-ticketshop
+            https://wirlilien.sv98.de/wissen/wie-l%C3%A4uft-die-dauerkartenverl%C3%A4ngerung-ab
+            https://wirlilien.sv98.de/wissen/gibt-es-dauerkarten-f%C3%BCr-die-saison-2025/26
+            https://wirlilien.sv98.de/wissen/welche-rabattstufen-gibt-es-f%C3%BCr-dauerkarten
+            https://wirlilien.sv98.de/wissen/kann-ich-tickets-und-dauerkarten-aufwerten-1
+            https://www.sv98.de/dauerkarten-fuer-die-saison-2026-27-alle-infos-gibts-hier/
+            https://www.sv98.de/fuer-mitglieder-dauerkartenverkauf-startet-freitag/
+            https://www.sv98.de/fans/faninfos/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -92,7 +75,9 @@ jobs:
           const FAQ_ARTICLE = new RegExp(process.env.FOLLOW_RE || '^$');
           // Help articles of the ticket site (/fr/aide/) are information pages, not buying pages, even when their
           // slug names buying or the account (acheter-un-billet, mon-compte).
-          const isForbidden = u => FORBIDDEN.test(u) ;
+          // Help articles of the club's knowledge base (wirlilien.sv98.de/wissen/) are information pages, not buying pages,
+          // even when their slug names buying (wo-kann-ich-tickets-...-kaufen).
+          const isForbidden = u => FORBIDDEN.test(u) && !/^https:\/\/wirlilien\.sv98\.de\/wissen\/[^?#]*$/.test(u);
           const sleep = ms => new Promise(r => setTimeout(r, ms));
           let n = 0, lastText = '';
           function post(body) {
