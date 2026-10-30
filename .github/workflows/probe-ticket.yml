@@ -37,7 +37,9 @@ jobs:
           GATE: |
             https://www.bayer04.de/de-de/page/impressum
           FULL: |
+            https://www.bayer04.de/de-de/page/mitgliedschaften/bayer-04-club
           TABLES: |
+            https://www.bayer04.de/de-de/page/mitgliedschaften/bayer-04-club
           PDFS: |
           RAW: |
           NOTICES: |
@@ -45,10 +47,8 @@ jobs:
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.bayer04.de/de-de/news/europa-league/blind-package-heimspiel-tickets-in-der-europa-league-sichern
-            https://www.bayer04.de/de-de/news/europa-league/tickets-fuer-das-el-heimspiel-gegen-bk-haecken
-            https://www.bayer04.de/de-de/match/saison-202627/bundesliga/8-spieltag
-            https://www.bayer04.de/de-de/match/saison-202627/bundesliga/1-spieltag
+            https://www.bayer04.de/de-de/page/mitgliedschaften/bayer-04-club
+            https://www.bayer04.de/de-de/page/mitgliedschaften/loewenclub
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
