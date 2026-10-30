@@ -8134,7 +8134,7 @@
   {
    "id": 555060,
    "utcDate": "2026-10-29T22:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8152,14 +8152,14 @@
     "tla": "CRU",
     "crest": "https://crests.football-data.org/1771.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 555069,
    "utcDate": "2026-10-29T23:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8177,14 +8177,14 @@
     "tla": "FLA",
     "crest": "https://crests.football-data.org/1783.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 4,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 555066,
    "utcDate": "2026-10-30T00:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8202,9 +8202,9 @@
     "tla": "CAP",
     "crest": "https://crests.football-data.org/1768.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555063,
