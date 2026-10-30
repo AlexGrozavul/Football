@@ -37,21 +37,32 @@ jobs:
           GATE: |
             https://www.bayer04.de/de-de/page/impressum
           FULL: |
-            https://www.bayer04.de/de-de/news/bayer04/ticket-ueberblick-fuer-die-spiele-von-bayer-04
+            https://www.bayer04.de/de-de/page/service/tickets
+            https://www.bayer04.de/de-de/page/bayarena/faq-heimspiele
+            https://www.bayer04.de/de-de/page/stadionordnung
           TABLES: |
-            https://www.bayer04.de/de-de/news/bayer04/ticket-ueberblick-fuer-die-spiele-von-bayer-04
+            https://www.bayer04.de/de-de/page/service/tickets
+            https://www.bayer04.de/de-de/news/bundesliga/tickets-fuer-das-heimduell-gegen-den-vfb-stuttgart
+            https://www.bayer04.de/de-de/news/bayer04/alle-infos-zu-gruppen-tickets-fuer-die-heimspiele-der-werkself-202627
           PDFS: |
           RAW: |
-            https://www.bayer04.de/sitemap/sitemap.xml
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
-          FOLLOW_RE: '^$'
+            https://www.bayer04.de/de-de/page/service/tickets
+          FOLLOW_RE: '/page/service/tickets/'
           PAGES: |
-            https://www.bayer04.de/de-de/news/bayer04/ticket-ueberblick-fuer-die-spiele-von-bayer-04
-            https://www.bayer04.de/de-de/page/service
-            https://www.bayer04.de/de-de/page/fans
-            https://www.bayer04.de/de-de/page/bayarena
+            https://www.bayer04.de/de-de/page/service/tickets
+            https://www.bayer04.de/de-de/page/bayarena/faq-heimspiele
+            https://www.bayer04.de/de-de/page/fans/faq-schwarzmarkt
+            https://www.bayer04.de/de-de/news/bundesliga/tickets-fuer-das-heimduell-gegen-den-vfb-stuttgart
+            https://www.bayer04.de/de-de/news/bundesliga/tickets-fuer-das-heimduell-gegen-den-sc-paderborn
+            https://www.bayer04.de/de-de/news/europa-league/tickets-fuer-das-uel-heimspiel-gegen-olympique-marseille
+            https://www.bayer04.de/de-de/news/bayer04/alle-infos-zu-gruppen-tickets-fuer-die-heimspiele-der-werkself-202627
+            https://www.bayer04.de/de-de/page/fans/faninfos
+            https://www.bayer04.de/de-de/page/service/mitgliedschaft
+            https://www.bayer04.de/de-de/page/service/spieltag
+            https://www.bayer04.de/de-de/page/stadionordnung
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
