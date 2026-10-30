@@ -34,35 +34,26 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             www.bayer04.de
+            b04-ep-media-prod.azureedge.net
           GATE: |
             https://www.bayer04.de/de-de/page/impressum
           FULL: |
-            https://www.bayer04.de/de-de/page/service/tickets
-            https://www.bayer04.de/de-de/page/bayarena/faq-heimspiele
-            https://www.bayer04.de/de-de/page/stadionordnung
+            https://www.bayer04.de/de-de/page/fans/inklusion
           TABLES: |
-            https://www.bayer04.de/de-de/page/service/tickets
-            https://www.bayer04.de/de-de/news/bundesliga/tickets-fuer-das-heimduell-gegen-den-vfb-stuttgart
-            https://www.bayer04.de/de-de/news/bayer04/alle-infos-zu-gruppen-tickets-fuer-die-heimspiele-der-werkself-202627
+            https://www.bayer04.de/de-de/page/fans/inklusion
           PDFS: |
+            https://b04-ep-media-prod.azureedge.net/pickerdocuments/20260505_Bayer04-ATGB-DinA4-2026_882421_original.pdf
+            https://b04-ep-media-prod.azureedge.net/pickerdocuments/Preisgrafik_TK_BL_2627_B_20260430_882357_original.pdf
+            https://b04-ep-media-prod.azureedge.net/pickerdocuments/B04_Preisgrafiken_Europa_League_PreisB_deutsch_970398_original.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
-            https://www.bayer04.de/de-de/page/service/tickets
-          FOLLOW_RE: '/page/service/tickets/'
+          FOLLOW_RE: '^$'
           PAGES: |
-            https://www.bayer04.de/de-de/page/service/tickets
-            https://www.bayer04.de/de-de/page/bayarena/faq-heimspiele
-            https://www.bayer04.de/de-de/page/fans/faq-schwarzmarkt
-            https://www.bayer04.de/de-de/news/bundesliga/tickets-fuer-das-heimduell-gegen-den-vfb-stuttgart
-            https://www.bayer04.de/de-de/news/bundesliga/tickets-fuer-das-heimduell-gegen-den-sc-paderborn
-            https://www.bayer04.de/de-de/news/europa-league/tickets-fuer-das-uel-heimspiel-gegen-olympique-marseille
-            https://www.bayer04.de/de-de/news/bayer04/alle-infos-zu-gruppen-tickets-fuer-die-heimspiele-der-werkself-202627
-            https://www.bayer04.de/de-de/page/fans/faninfos
-            https://www.bayer04.de/de-de/page/service/mitgliedschaft
-            https://www.bayer04.de/de-de/page/service/spieltag
-            https://www.bayer04.de/de-de/page/stadionordnung
+            https://www.bayer04.de/de-de/page/fans/inklusion
+            https://www.bayer04.de/de-de/page/fahrkarte
+            https://www.bayer04.de/de-de/page/newscenter
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
