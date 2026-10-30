@@ -33,22 +33,25 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            bayer04.de
             www.bayer04.de
           GATE: |
+            https://www.bayer04.de/de-de/page/impressum
           FULL: |
+            https://www.bayer04.de/de-de/news/bayer04/ticket-ueberblick-fuer-die-spiele-von-bayer-04
           TABLES: |
+            https://www.bayer04.de/de-de/news/bayer04/ticket-ueberblick-fuer-die-spiele-von-bayer-04
           PDFS: |
           RAW: |
+            https://www.bayer04.de/sitemap/sitemap.xml
           NOTICES: |
-            https://www.bayer04.de/
           DISCOVER: |
-            https://www.bayer04.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.bayer04.de/
-            https://bayer04.de/
+            https://www.bayer04.de/de-de/news/bayer04/ticket-ueberblick-fuer-die-spiele-von-bayer-04
+            https://www.bayer04.de/de-de/page/service
+            https://www.bayer04.de/de-de/page/fans
+            https://www.bayer04.de/de-de/page/bayarena
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
