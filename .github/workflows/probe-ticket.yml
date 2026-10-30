@@ -34,26 +34,21 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             www.bayer04.de
-            b04-ep-media-prod.azureedge.net
           GATE: |
             https://www.bayer04.de/de-de/page/impressum
           FULL: |
-            https://www.bayer04.de/de-de/page/fans/inklusion
           TABLES: |
-            https://www.bayer04.de/de-de/page/fans/inklusion
           PDFS: |
-            https://b04-ep-media-prod.azureedge.net/pickerdocuments/20260505_Bayer04-ATGB-DinA4-2026_882421_original.pdf
-            https://b04-ep-media-prod.azureedge.net/pickerdocuments/Preisgrafik_TK_BL_2627_B_20260430_882357_original.pdf
-            https://b04-ep-media-prod.azureedge.net/pickerdocuments/B04_Preisgrafiken_Europa_League_PreisB_deutsch_970398_original.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.bayer04.de/de-de/page/fans/inklusion
-            https://www.bayer04.de/de-de/page/fahrkarte
-            https://www.bayer04.de/de-de/page/newscenter
+            https://www.bayer04.de/de-de/news/europa-league/blind-package-heimspiel-tickets-in-der-europa-league-sichern
+            https://www.bayer04.de/de-de/news/europa-league/tickets-fuer-das-el-heimspiel-gegen-bk-haecken
+            https://www.bayer04.de/de-de/match/saison-202627/bundesliga/8-spieltag
+            https://www.bayer04.de/de-de/match/saison-202627/bundesliga/1-spieltag
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
