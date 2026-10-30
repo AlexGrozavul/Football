@@ -433,6 +433,9 @@ KNOWN = {
                              "season-ticket"],
     (PRICES_FILE, "category"): [
         "1", "2", "3", "4", "5",
+        # Bayer 04 Leverkusen, 2026-10-30: the 2026/27 price graphic
+        # has a sixth seat category (Kat. VI).
+        "6",
         "haupttribuene-kat-1", "haupttribuene-kat-2", "haupttribuene-kat-3",
         "gegengerade-kat-1", "gegengerade-kat-2", "gegengerade-kat-3",
         "kurve-sitz-kat-1", "kurve-sitz-kat-2", "nordkurve-stehplatz",
