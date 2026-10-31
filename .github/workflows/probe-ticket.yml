@@ -40,8 +40,6 @@ jobs:
           TABLES: |
           EXPAND: |
             https://www.borussia.de/tickets
-            https://www.borussia.de/spieltagsinfo
-            https://www.borussia.de/mitgliedschaft
           PDFS: |
           RAW: |
           NOTICES: |
@@ -50,20 +48,10 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
+            https://www.borussia.de/news/mitglieder-ticketvorverkauf-fuer-heimspiele-startet-am-25-juli
+            https://www.borussia.de/news/freier-ticket-vorverkauf-startet-um-10-00-uhr
+            https://www.borussia.de/news/alles-wissenswerte-zum-heimspiel-gegen-hoffenheim
             https://www.borussia.de/tickets
-            https://www.borussia.de/spieltagsinfo
-            https://www.borussia.de/news/freier-verkauf-fuer-das-erste-heimspiel-startet-am-montag
-            https://www.borussia.de/news/borussia-setzt-erneut-30-000-dauerkarten-ab
-            https://www.borussia.de/news/jetzt-noch-tickets-fuer-bmgm-05-sichern
-            https://www.borussia.de/news/vorverkauf-fuer-bmgksc-startet-am-mittwoch
-            https://www.borussia.de/news/bmgksc-jetzt-tickets-fuer-pokalduell-sichern
-            https://www.borussia.de/news/bmgscp-bloecke-6-a-und-7-a-fuer-borussia-fans-freigeschaltet
-            https://www.borussia.de/news/kw-40-2026-tickets-trainingseinheiten-und-testspiel
-            https://www.borussia.de/news/kw-38-2026-tickets-plic-auftakt-und-heimspiel
-            https://www.borussia.de/news/hsvbmg-ticket-vorverkauf-startet-am-montag
-            https://www.borussia.de/news/ihre-tickets-fuer-die-saison-2026-27-sind-da
-            https://www.borussia.de/mitgliedschaft
-            https://www.borussia.de/ista-borussia-park
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -175,9 +163,9 @@ jobs:
                     b.click(); await new Promise(r => setTimeout(r, 500));
                     const id = b.getAttribute('aria-controls'); const panel = id && document.getElementById(id);
                     const box = panel || (b.parentElement && b.parentElement.parentElement) || b;
-                    return { q: (b.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 300), a: (box.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 6000) };
+                    return { q: (b.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 300), a: (box.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 6000), l: [...box.querySelectorAll('a[href]')].map(x => (x.textContent || '').replace(/\s+/g, ' ').trim() + ' | ' + x.href).join('\n') };
                   }, i);
-                  if (got) { expanded++; sections.push(`Q: ${got.q}\nA: ${got.a}`); }
+                  if (got) { expanded++; sections.push(`Q: ${got.q}\nA: ${got.a}${got.l ? '\nLINKS IN THIS SECTION:\n' + got.l : ''}`); }
                 } catch {}
                 if (page.url() !== final0) break;
               }
