@@ -35,11 +35,11 @@ const CLUBS = [['VfB Stuttgart', 'Q4512'], ['Karlsruher SC', 'Q105853'], ['1. FC
   ['SV Elversberg', 'Q692691'], ['SSC Napoli', 'Q2641'], ['SpVgg Greuther Fürth', 'Q153539'], ['SC Freiburg', 'Q106394'],
   ['1. FSV Mainz 05', 'Q105254'], ['FC Augsburg', 'Q97905916'], ['RC Strasbourg Alsace', 'Q126334'], ['1. FC Heidenheim 1846', 'Q162251'],
   ['SV Darmstadt 98', 'Q479351'], ['1. FC Köln', 'Q104770'], ['Bayer 04 Leverkusen', 'Q104761'],
-  ['Borussia Dortmund', 'Q41420']];
+  ['Borussia Dortmund', 'Q41420'], ['Borussia Mönchengladbach', 'Q101959']];
 // Clubs whose every researched row is checked on the sheet, text against the files (2026-10-11;
 // SV Elversberg added 2026-10-22, SSC Napoli, 1. FC Kaiserslautern and SpVgg Greuther Fürth 2026-10-26, SC Freiburg, 1. FSV Mainz 05 and FC Augsburg 2026-10-27, RC Strasbourg Alsace and 1. FC Heidenheim 1846 2026-10-28, SV Darmstadt 98 and 1. FC Köln 2026-10-29, Bayer 04 Leverkusen 2026-10-30).
-// Borussia Dortmund added 2026-10-31.
-const FULL_ROWS = ['Q38245', 'Q692691', 'Q2641', 'Q8466', 'Q153539', 'Q106394', 'Q105254', 'Q97905916', 'Q126334', 'Q162251', 'Q479351', 'Q104770', 'Q104761', 'Q41420'];
+// Borussia Dortmund added 2026-10-31; Borussia Mönchengladbach added 2026-10-31.
+const FULL_ROWS = ['Q38245', 'Q692691', 'Q2641', 'Q8466', 'Q153539', 'Q106394', 'Q105254', 'Q97905916', 'Q126334', 'Q162251', 'Q479351', 'Q104770', 'Q104761', 'Q41420', 'Q101959'];
 
 // A small CSV reader for the checks: quoted cells, doubled quotes.
 function csv(file){
