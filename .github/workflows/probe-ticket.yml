@@ -37,40 +37,33 @@ jobs:
           GATE: |
             https://www.borussia.de/impressum
           FULL: |
-            https://www.borussia.de/ticketinfo
-            https://www.borussia.de/atgb
-            https://www.borussia.de/tickets
           TABLES: |
-            https://www.borussia.de/ticketinfo
-            https://www.borussia.de/tickets
-            https://www.borussia.de/mitgliedsbeitrag
           EXPAND: |
-            https://www.borussia.de/ticketinfo
             https://www.borussia.de/tickets
-            https://www.borussia.de/auswaertsspiel
-            https://www.borussia.de/barrierefreie-tickets
             https://www.borussia.de/spieltagsinfo
-            https://www.borussia.de/fanclubs-heimspieltickets
-            https://www.borussia.de/fanclubs-auswaertstickets
-            https://www.borussia.de/atgb
+            https://www.borussia.de/mitgliedschaft
           PDFS: |
           RAW: |
-            https://www.borussia.de/api/sitemap/index.xml
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
-          RAW_SKIP: '/en/|borussia\.com/| 20(1[0-9]|2[0-5])-'
+          RAW_SKIP: ''
           PAGES: |
-            https://www.borussia.de/ticketinfo
             https://www.borussia.de/tickets
-            https://www.borussia.de/atgb
-            https://www.borussia.de/auswaertsspiel
             https://www.borussia.de/spieltagsinfo
-            https://www.borussia.de/barrierefreie-tickets
-            https://www.borussia.de/fanclubs-heimspieltickets
-            https://www.borussia.de/fanclubs-auswaertstickets
-            https://www.borussia.de/mitgliedsbeitrag
+            https://www.borussia.de/news/freier-verkauf-fuer-das-erste-heimspiel-startet-am-montag
+            https://www.borussia.de/news/borussia-setzt-erneut-30-000-dauerkarten-ab
+            https://www.borussia.de/news/jetzt-noch-tickets-fuer-bmgm-05-sichern
+            https://www.borussia.de/news/vorverkauf-fuer-bmgksc-startet-am-mittwoch
+            https://www.borussia.de/news/bmgksc-jetzt-tickets-fuer-pokalduell-sichern
+            https://www.borussia.de/news/bmgscp-bloecke-6-a-und-7-a-fuer-borussia-fans-freigeschaltet
+            https://www.borussia.de/news/kw-40-2026-tickets-trainingseinheiten-und-testspiel
+            https://www.borussia.de/news/kw-38-2026-tickets-plic-auftakt-und-heimspiel
+            https://www.borussia.de/news/hsvbmg-ticket-vorverkauf-startet-am-montag
+            https://www.borussia.de/news/ihre-tickets-fuer-die-saison-2026-27-sind-da
+            https://www.borussia.de/mitgliedschaft
+            https://www.borussia.de/ista-borussia-park
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -169,16 +162,30 @@ jobs:
             // EXPAND pages: collapsed sections (button[aria-expanded="false"] in the page body, not in a header, nav,
             // footer, form or consent dialog) are opened one by one so their text is in the DOM; no link is clicked,
             // nothing is accepted, and the run stops recording if the address changes.
-            let expanded = 0;
+            let expanded = 0, sections = [];
             if (lines(process.env.EXPAND).includes(url)) {
-              const n0 = await page.evaluate(() => { let i = 0; document.querySelectorAll('button[aria-expanded="false"]').forEach(b => {
-                if (b.closest('header,nav,footer,form,a,[id^="Cybot"],#usercentrics-root,#cmpbox,#onetrust-consent-sdk,#didomi-host')) return;
+              const n0 = await page.evaluate(() => { let i = 0; document.querySelectorAll('[aria-expanded="false"]').forEach(b => {
+                if (b.matches('a,a *') || b.closest('header,nav,footer,form,[id^="Cybot"],#usercentrics-root,#cmpbox,#onetrust-consent-sdk,#didomi-host,[role="dialog"]')) return;
                 b.setAttribute('data-probe-x', String(i++)); }); return i; });
               for (let i = 0; i < Math.min(n0, 80); i++) {
-                try { await page.click(`[data-probe-x="${i}"]`, { timeout: 3000 }); expanded++; await sleep(400); } catch {}
+                // A DOM click on the section header (no pointer event, so no overlay can catch it); then that section's text.
+                try {
+                  const got = await page.evaluate(async k => {
+                    const b = document.querySelector(`[data-probe-x="${k}"]`); if (!b) return null;
+                    b.click(); await new Promise(r => setTimeout(r, 500));
+                    const id = b.getAttribute('aria-controls'); const panel = id && document.getElementById(id);
+                    const box = panel || (b.parentElement && b.parentElement.parentElement) || b;
+                    return { q: (b.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 300), a: (box.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 6000) };
+                  }, i);
+                  if (got) { expanded++; sections.push(`Q: ${got.q}\nA: ${got.a}`); }
+                } catch {}
                 if (page.url() !== final0) break;
               }
-              await sleep(1500);
+              if (sections.length) {
+                const all = sections.join('\n\n').replace(/```/g, "'''");
+                for (let i = 0; i < Math.ceil(all.length / MAX); i++)
+                  post(`### (x) SECTIONS opened by the probe, part ${i + 1} of ${Math.ceil(all.length / MAX)} ${url}\n${sections.length} sections\n\n\`\`\`\n${all.slice(i * MAX, (i + 1) * MAX)}\n\`\`\``);
+              } else post(`### (x) SECTIONS ${url}\nno collapsed section found (${n0} marked)`);
             }
             if (page.url() !== final0) { post(`### STOPPED ${url}\nThe address changed while sections were expanded; nothing recorded.`); await ctx.close(); return; }
             const title = await page.title();
