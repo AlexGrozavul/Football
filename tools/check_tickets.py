@@ -459,6 +459,9 @@ KNOWN = {
         "rollstuhlfahrer",
         # 1. FSV Mainz 05, 2026-10-27: the club's own category numbers.
         "7", "komfort",
+        # Borussia Dortmund, 2026-10-31: category 15 of the 2026/27 price table
+        # (seats without access to the hospitality area).
+        "15",
         # FC Augsburg, 2026-10-27: the club's own seat categories, each
         # also with its slightly restricted (leicht sichteingeschraenkt)
         # and restricted-view (sichteingeschraenkt) rows, and the places
