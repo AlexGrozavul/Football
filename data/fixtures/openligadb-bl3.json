@@ -3969,7 +3969,7 @@
   {
    "id": 84856,
    "utcDate": "2026-10-30T18:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3984,9 +3984,20 @@
     "shortName": "Meppen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/SV_Meppen_Logo_2022.svg/250px-SV_Meppen_Logo_2022.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

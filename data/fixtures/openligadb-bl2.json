@@ -2925,7 +2925,7 @@
   {
    "id": 83671,
    "utcDate": "2026-10-30T17:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -2940,9 +2940,20 @@
     "shortName": "Braunschweig",
     "crest": "https://upload.wikimedia.org/wikipedia/de/4/45/Logo_Eintracht_Braunschweig.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -2950,7 +2961,7 @@
   {
    "id": 83674,
    "utcDate": "2026-10-30T17:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -2965,9 +2976,20 @@
     "shortName": "Bochum",
     "crest": "https://i.imgur.com/5jy3Gfr.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
