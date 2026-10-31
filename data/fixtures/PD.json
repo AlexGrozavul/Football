@@ -1757,31 +1757,6 @@
    "winner": "DRAW"
   },
   {
-   "id": 564698,
-   "utcDate": "2026-10-10T12:00:00Z",
-   "status": "CANCELLED",
-   "matchday": 8,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 87,
-    "name": "Rayo Vallecano de Madrid",
-    "shortName": "Rayo Vallecano",
-    "tla": "RAY",
-    "crest": "https://crests.football-data.org/87.png"
-   },
-   "away": {
-    "id": 77,
-    "name": "Athletic Club",
-    "shortName": "Athletic",
-    "tla": "ATH",
-    "crest": "https://crests.football-data.org/77.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 564699,
    "utcDate": "2026-10-10T14:15:00Z",
    "status": "FINISHED",
@@ -2509,7 +2484,7 @@
   {
    "id": 564737,
    "utcDate": "2026-10-30T20:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2527,9 +2502,9 @@
     "tla": "ESP",
     "crest": "https://crests.football-data.org/80.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 564730,
@@ -3751,6 +3726,31 @@
     "shortName": "Levante",
     "tla": "LEV",
     "crest": "https://crests.football-data.org/88.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564698,
+   "utcDate": "2026-12-09T19:00:00Z",
+   "status": "CANCELLED",
+   "matchday": 8,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 87,
+    "name": "Rayo Vallecano de Madrid",
+    "shortName": "Rayo Vallecano",
+    "tla": "RAY",
+    "crest": "https://crests.football-data.org/87.png"
+   },
+   "away": {
+    "id": 77,
+    "name": "Athletic Club",
+    "shortName": "Athletic",
+    "tla": "ATH",
+    "crest": "https://crests.football-data.org/77.png"
    },
    "homeGoals": null,
    "awayGoals": null,

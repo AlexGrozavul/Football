@@ -1809,7 +1809,7 @@
   {
    "id": 559644,
    "utcDate": "2026-10-30T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1827,14 +1827,14 @@
     "tla": "PSG",
     "crest": "https://crests.football-data.org/524.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 5,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 559646,
    "utcDate": "2026-10-30T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1852,14 +1852,14 @@
     "tla": "REN",
     "crest": "https://crests.football-data.org/529.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 5,
+   "awayGoals": 2,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559639,
    "utcDate": "2026-10-30T20:05:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1877,9 +1877,9 @@
     "tla": "RCL",
     "crest": "https://crests.football-data.org/546.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559643,
