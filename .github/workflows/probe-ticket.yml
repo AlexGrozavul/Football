@@ -33,21 +33,28 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            borussia.de
             www.borussia.de
+            d2m68vyp61dni.cloudfront.net
           GATE: |
+            https://www.borussia.de/impressum
           FULL: |
           TABLES: |
           PDFS: |
           RAW: |
+            https://www.borussia.de/api/sitemap/index.xml
           NOTICES: |
-            https://www.borussia.de/
           DISCOVER: |
-            https://www.borussia.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           PAGES: |
-            https://www.borussia.de/
+            https://www.borussia.de/spieltagsinfo
+            https://www.borussia.de/news/alles-wissenswerte-zum-heimduell-gegen-paderborn
+            https://www.borussia.de/fans
+            https://www.borussia.de/mitgliedschaft
+            https://www.borussia.de/stadionordnung
+            https://www.borussia.de/sitemap-barrierefrei
+            https://www.borussia.de/stadion-und-vereinsgelaende
+            https://www.borussia.de/anfahrt
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
