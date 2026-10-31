@@ -38,7 +38,7 @@ One table of every German club of tier 1 and tier 2 for 2026/27, in the order a 
 | 15 | Q104770 | 1. FC Köln | Bundesliga | 282 | done | #176 | 2026-10-29 | 13 confirmed (12 rules, 1 demand), 19 unverified (18 rules, 1 demand), 0 inferred; no price row: the 2026/27 price list is a picture; the day-ticket terms carry no printed date; see open-problems.md |
 | 16 | Q104761 | Bayer 04 Leverkusen | Bundesliga | 287 | done | #177 | 2026-10-30 | 34 confirmed (11 rules, 23 day-ticket prices), 20 unverified (19 rules, 1 demand), 0 inferred; which home games use price set B beyond VfB and Paderborn is not stated; the ATGB carry no printed date; see open-problems.md |
 | 17 | Q41420 | Borussia Dortmund | Bundesliga | 319 | done | #178 | 2026-10-31 | 49 confirmed (20 rules, 14 day-ticket and 15 season-ticket prices), 14 unverified (13 rules, 1 demand), 0 inferred; day-ticket prices written as Bundesliga (the price table names no competition for them); 21-game season ticket incl. Champions League only in a price-list rule (schema gap); guest allocation size not stated; see open-problems.md |
-| 18 | Q101959 | Borussia Mönchengladbach | Bundesliga | 324 | pending |  |  |  |
+| 18 | Q101959 | Borussia Mönchengladbach | Bundesliga | 324 | done | #179 | 2026-10-31 | 22 confirmed (20 rules, 1 price, 1 demand), 9 unverified (rules), 0 inferred; day tickets have no fixed categories (flexible pricing), so seat prices are only per-opponent minimums in a price-list rule; the current ATGB is only on the partner shop domain (not opened); see open-problems |
 | 19 | Q105861 | VfL Bochum | 2. Bundesliga | 325 | pending |  |  |  |
 | 20 | Q160532 | SC Paderborn 07 | Bundesliga | 327 | pending |  |  |  |
 | 21 | Q32494 | FC Schalke 04 | Bundesliga | 336 | pending |  |  |  |
