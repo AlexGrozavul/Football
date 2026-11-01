@@ -32,25 +32,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
+          ALLOW: |
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779369245/informationen-digitaler-warteraum_ppslrw.pdf
           ROBOTS: |
             www.vfl-bochum.de
             res.cloudinary.com
           GATE: |
             https://www.vfl-bochum.de/impressum/
           FULL: |
-            https://www.vfl-bochum.de/aktuelles/2026/10/heimspiele-gegen-wolfsburg-mainz-und-karlsruhe-tickets-fur-mitglieder-ab-freitag/
-            https://www.vfl-bochum.de/aktuelles/2026/10/dfb-pokal-spiel-gegen-mainz-informationen-zum-ticketverkauf/
           TABLES: |
           EXPAND: |
           PDFS: |
-            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1782991876/ATGB_VfL_Bochum_1848_Stand_01.07.2026_jidv8c.pdf
-            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1785137469/preisliste-einzeltickets-dina4_2026-27_ijihpj.pdf
-            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1782391040/Stadionordnung_Juli_2026_ry4tsa.pdf
-            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1783340254/stadionplan_blau_2026_jeqpwp.pdf
-            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779369248/informationen-digitales-ticket_yeoxlu.pdf
             https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779369245/informationen-digitaler-warteraum_ppslrw.pdf
-            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779369246/anleitung_clubsale_vflbochum1848_q2mqub.pdf
-            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779971670/gastefaninfos_saison-23_24_vflbochum1848_wg4wli.pdf
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1782991870/AGB_Dauerkarten_VfL_Bochum_1848_Stand_01.07.2026_dyj2lt.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -58,12 +52,11 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.vfl-bochum.de/aktuelles/2026/10/heimspiele-gegen-wolfsburg-mainz-und-karlsruhe-tickets-fur-mitglieder-ab-freitag/
-            https://www.vfl-bochum.de/aktuelles/2026/10/tickets-gegen-wolfsburg-und-mainz-im-freien-verkauf-erhaltlich/
-            https://www.vfl-bochum.de/aktuelles/2026/10/dfb-pokal-spiel-gegen-mainz-informationen-zum-ticketverkauf/
-            https://www.vfl-bochum.de/aktuelles/2026/09/heimspiel-gegen-bielefeld-tickets-fur-mitglieder-ab-freitag/
-            https://www.vfl-bochum.de/aktuelles/2026/10/faninfos-zu-bocm05-3/
-            https://www.vfl-bochum.de/aktuelles/2026/10/stellungnahme-zur-1848-restpostenaktion/
+            https://www.vfl-bochum.de/aktuelles/2026/10/die-faninfos-fur-die-partie-gegen-wolfsburg/
+            https://www.vfl-bochum.de/aktuelles/2026/10/faninfos-zu-bocdsc-2/
+            https://www.vfl-bochum.de/aktuelles/2026/09/faninfos-zu-bocsgf-2/
+            https://www.vfl-bochum.de/aktuelles/2026/09/informationen-zur-wandlungsphase-fur-dk-abonnenten-abo-ruhend-der-blocke-c-und-d/
+            https://www.vfl-bochum.de/aktuelles/2026/09/fan-aktion-fur-ruhende-dauerkarten-dein-sitzplatz-auf-der-nordtribune-die-wichtigsten-infos-im-uberblick/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -78,7 +71,10 @@ jobs:
           const FAQ_ARTICLE = new RegExp(process.env.FOLLOW_RE || '^$');
           // Help articles of the ticket site (/fr/aide/) are information pages, not buying pages, even when their
           // slug names buying or the account (acheter-un-billet, mon-compte).
-          const isForbidden = u => FORBIDDEN.test(u);
+          // ALLOW: information documents named on the club's ticket-info page whose address holds a filter word
+          // (the waiting-room explainer PDF); the page type decides, not the word.
+          const ALLOW = (process.env.ALLOW || '').split('\n').map(x => x.trim()).filter(Boolean);
+          const isForbidden = u => FORBIDDEN.test(u) && !ALLOW.includes(u);
           const sleep = ms => new Promise(r => setTimeout(r, ms));
           let n = 0, lastText = '';
           function post(body) {
