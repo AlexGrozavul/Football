@@ -33,22 +33,19 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ALLOW: |
-            https://www.scp07.de/Tickets-kaufen/
           ROBOTS: |
             www.scp07.de
           GATE: |
             https://www.scp07.de/Impressum/
           FULL: |
-            https://www.scp07.de/Ticket/Info/Tickets.html
-            https://www.scp07.de/Ticket-FAQ/
-            https://www.scp07.de/Tickets-kaufen/
+            https://www.scp07.de/FAQ/FAQ-Tickets.html
           TABLES: |
-            https://www.scp07.de/Ticket/Info/Tickets.html
-            https://www.scp07.de/Tickets-kaufen/
           EXPAND: |
-            https://www.scp07.de/Ticket-FAQ/
+            https://www.scp07.de/FAQ/FAQ-Tickets.html
           PDFS: |
-            https://www.scp07.de/medium/260831_ATGB_DinA4_Druck.pdf?m=28302
+            https://www.scp07.de/medium/2026_05_29_Block_und-Preisuebersicht_26_27_Einzelkarten_1_Bundesliga.pdf?m=27887
+            https://www.scp07.de/medium/2026_2027_Anleitung_TIXX_Select.pdf?m=28177
+            https://www.scp07.de/medium/2026_05_29_Block_und-Preisuebersicht_26_27_Dauerkarten_1_Bundesliga.pdf?m=27886
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -56,13 +53,20 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.scp07.de/Ticket/Info/Tickets.html
-            https://www.scp07.de/Tickets-kaufen/
-            https://www.scp07.de/Ticket-FAQ/
-            https://www.scp07.de/Heimspiel-Info_Profis/
-            https://www.scp07.de/Fans/Fan-Infos/Gaestefans/
-            https://www.scp07.de/Arena/Home-Deluxe-Arena/Stadionordnung/
-            https://www.scp07.de/Aktuelles/
+            https://www.scp07.de/FAQ/FAQ-Tickets.html
+            https://www.scp07.de/Ticket/News/Weiterer-Verkauf-26.html
+            https://www.scp07.de/Ticket/News/Exklusiver-Vorverkauf-138.html
+            https://www.scp07.de/Ticket/News/Weiterer-Verkauf-25.html
+            https://www.scp07.de/Ticket/News/Stuttgart-ausverkauft.html
+            https://www.scp07.de/Ticket/News/Weiterer-Verkauf-24.html
+            https://www.scp07.de/Ticket/News/Tickets-fuer-den-Pokal-3.html
+            https://www.scp07.de/Ticket/News/Mitglieder-Vorverkauf-1.html
+            https://www.scp07.de/Ticket/News/Treue-wird-belohnt.html
+            https://www.scp07.de/Ticket/News/Freier-Verkauf-42.html
+            https://www.scp07.de/Ticket/News/Weiterer-Verkauf-23.html
+            https://www.scp07.de/Ticket/News/Erste-Heimspiele.html
+            https://www.scp07.de/Ticket/News/
+            https://www.scp07.de/SCP07/Der-Verein/Mitgliedschaft/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
