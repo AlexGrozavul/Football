@@ -2997,7 +2997,7 @@
   {
    "id": 83663,
    "utcDate": "2026-10-31T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3012,9 +3012,20 @@
     "shortName": "Osnabrück",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3022,7 +3033,7 @@
   {
    "id": 83667,
    "utcDate": "2026-10-31T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3037,9 +3048,20 @@
     "shortName": "Magdeburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3047,7 +3069,7 @@
   {
    "id": 83668,
    "utcDate": "2026-10-31T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3062,9 +3084,20 @@
     "shortName": "Hertha",
     "crest": "https://i.imgur.com/apFwbYZ.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3072,7 +3105,7 @@
   {
    "id": 83669,
    "utcDate": "2026-10-31T19:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "10. Spieltag",
    "roundOrder": 10,
    "home": {
@@ -3087,9 +3120,20 @@
     "shortName": "Heidenheim",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9d/1._FC_Heidenheim_1846.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
