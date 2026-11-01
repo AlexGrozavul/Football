@@ -18,7 +18,9 @@ jobs:
           node-version: 22
 
       - name: Install pdftotext and OCR
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils tesseract-ocr tesseract-ocr-deu
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils tesseract-ocr tesseract-ocr-deu
+          pip3 install --quiet --break-system-packages pypdf==5.1.0
 
       - name: Install Playwright and Chromium
         run: |
@@ -38,13 +40,13 @@ jobs:
           GATE: |
             https://www.scp07.de/Impressum/
           FULL: |
-            https://www.scp07.de/FAQ/FAQ-Tickets.html
           TABLES: |
           EXPAND: |
-            https://www.scp07.de/FAQ/FAQ-Tickets.html
+          FIELDS: |
+            https://www.scp07.de/medium/2026_05_29_Block_und-Preisuebersicht_26_27_Einzelkarten_1_Bundesliga.pdf?m=27887
+            https://www.scp07.de/medium/2026_05_29_Block_und-Preisuebersicht_26_27_Dauerkarten_1_Bundesliga.pdf?m=27886
           PDFS: |
             https://www.scp07.de/medium/2026_05_29_Block_und-Preisuebersicht_26_27_Einzelkarten_1_Bundesliga.pdf?m=27887
-            https://www.scp07.de/medium/2026_2027_Anleitung_TIXX_Select.pdf?m=28177
             https://www.scp07.de/medium/2026_05_29_Block_und-Preisuebersicht_26_27_Dauerkarten_1_Bundesliga.pdf?m=27886
           RAW: |
           NOTICES: |
@@ -53,20 +55,13 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.scp07.de/FAQ/FAQ-Tickets.html
-            https://www.scp07.de/Ticket/News/Weiterer-Verkauf-26.html
-            https://www.scp07.de/Ticket/News/Exklusiver-Vorverkauf-138.html
-            https://www.scp07.de/Ticket/News/Weiterer-Verkauf-25.html
-            https://www.scp07.de/Ticket/News/Stuttgart-ausverkauft.html
-            https://www.scp07.de/Ticket/News/Weiterer-Verkauf-24.html
-            https://www.scp07.de/Ticket/News/Tickets-fuer-den-Pokal-3.html
-            https://www.scp07.de/Ticket/News/Mitglieder-Vorverkauf-1.html
-            https://www.scp07.de/Ticket/News/Treue-wird-belohnt.html
-            https://www.scp07.de/Ticket/News/Freier-Verkauf-42.html
-            https://www.scp07.de/Ticket/News/Weiterer-Verkauf-23.html
-            https://www.scp07.de/Ticket/News/Erste-Heimspiele.html
-            https://www.scp07.de/Ticket/News/
-            https://www.scp07.de/SCP07/Der-Verein/Mitgliedschaft/
+            https://www.scp07.de/Ticket/News/Neues-Vergabeverfahren.html
+            https://www.scp07.de/Ticket/News/Seite-2
+            https://www.scp07.de/Ticket/News/Seite-3
+            https://www.scp07.de/Informationen-fuer-Fans-mit-Behinderung.html
+            https://www.scp07.de/Fans/Fans-mit-Behinderung/Allgemeines/
+            https://www.scp07.de/Fans/Fans-mit-Behinderung/Gaestefans/
+            https://www.scp07.de/Spieltagsflyer/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -274,6 +269,13 @@ jobs:
               const op = Math.max(1, Math.ceil(ocr.length / MAX));
               for (let i = 0; i < op; i++)
                 post(`### (o) OCR TEXT (tesseract, not the PDF's text layer) part ${i + 1} of ${op} ${url}\nlength ${ocr.length}\n\n\`\`\`\n${ocr.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
+            }
+            // FIELDS PDFs: the text held in the file's own form fields (AcroForm), which pdftotext does not print; not OCR.
+            if (lines(process.env.FIELDS).includes(url)) {
+              let ff = '';
+              try { ff = execFileSync('python3', ['-I', '-c', "import sys\nfrom pypdf import PdfReader\nr=PdfReader(sys.argv[1])\nf=r.get_fields() or {}\nprint('fields:',len(f))\nfor k,v in f.items(): print(repr(k),'=',repr(v.get('/V')))\nfor i,p in enumerate(r.pages):\n  for a in (p.get('/Annots') or []):\n    a=a.get_object(); print('page',i+1,a.get('/Subtype'),repr(a.get('/T')),repr(a.get('/V')),repr(a.get('/Contents')))", name], { maxBuffer: 1 << 26 }).toString(); }
+              catch (e) { ff = `field dump failed: ${e.message}`; }
+              post(`### (f) PDF FORM FIELDS (pypdf, the file's own field values; not OCR) ${url}\nlength ${ff.length}\n\n\`\`\`\n${ff.slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
             }
             const parts = Math.max(1, Math.ceil(text.length / MAX));
             for (let i = 0; i < parts; i++)
