@@ -34,26 +34,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
+          SLOW: |
+            https://tickets.schalke04.de/p/ticket-faq
           HOSTGATE: |
-            ticketing.schalke04.de https://ticketing.schalke04.de/de/pages/allgemein/impressum
           ALLOW: |
           ROBOTS: |
             schalke04.de
             tickets.schalke04.de
-            ticketing.schalke04.de
-            storage.schalke04.de
           GATE: |
             https://schalke04.de/impressum/
           FULL: |
-            https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien
             https://tickets.schalke04.de/p/ticket-faq
           TABLES: |
-            https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien
           EXPAND: |
             https://tickets.schalke04.de/p/ticket-faq
           FIELDS: |
           PDFS: |
-            https://storage.schalke04.de/sites/1/2026/05/vergleichsdokument-aenderungen-tagb_2627.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -61,16 +57,13 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien
+            https://schalke04.de/tickets/saison-2026-2027-schalke-04-passt-ticketverkauf-an/
+            https://schalke04.de/tickets/erste-ticket-verkaufsphase-der-saison-2026-2027-alle-wichtigen-informationen/
+            https://schalke04.de/tickets/ersten-beiden-heimspiele-26-27/
+            https://schalke04.de/tickets/tickets-fuer-heimspiele-gegen-bayern-muenchen-und-sv-elversberg-vergriffen/
+            https://schalke04.de/tickets/nach-aktuellen-faellen-zu-dauerkarten-schalke-04-warnt-vor-betrugsmaschen/
+            https://schalke04.de/tickets/madrid-bayern-und-elversberg-ticketboerse-geoeffnet/
             https://tickets.schalke04.de/p/ticket-faq
-            https://tickets.schalke04.de/p/familienblock
-            https://tickets.schalke04.de/p/schwarzmarkt
-            https://schalke04.de/tickets/zweite-ticket-verkaufsphase-der-saison-alle-wichtigen-informationen/
-            https://schalke04.de/tickets/mainz-leipzig-stuttgart-26-27/
-            https://schalke04.de/tickets/tickets-fuer-heimspiele-gegen-mainz-leipzig-und-stuttgart-vergriffen/
-            https://schalke04.de/tickets/restkarten-elversberg-26-27/
-            https://schalke04.de/tickets/fans-mit-behinderung-mainz-leipzig-stuttgart/
-            https://schalke04.de/category/tickets/page/2/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -161,6 +154,8 @@ jobs:
             let idle = 'yes';
             try { await page.waitForLoadState('networkidle', { timeout: 30000 }); } catch { idle = 'no (30 s limit)'; }
             await sleep(3000);
+            // SLOW pages: a single-page shop app whose content renders late gets 15 s more before reading.
+            if (lines(process.env.SLOW).includes(url)) await sleep(15000);
             // Scroll once so lazy content loads.
             try { await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await sleep(3000); } catch {}
             let frames = '';
