@@ -436,6 +436,9 @@ KNOWN = {
         # Bayer 04 Leverkusen, 2026-10-30: the 2026/27 price graphic
         # has a sixth seat category (Kat. VI).
         "6",
+        # FC Schalke 04, 2026-11-01: its 2026/27 price tables start at
+        # price category 0 (the dearest seats).
+        "0",
         "haupttribuene-kat-1", "haupttribuene-kat-2", "haupttribuene-kat-3",
         "gegengerade-kat-1", "gegengerade-kat-2", "gegengerade-kat-3",
         "kurve-sitz-kat-1", "kurve-sitz-kat-2", "nordkurve-stehplatz",
