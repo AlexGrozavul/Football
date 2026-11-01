@@ -34,18 +34,26 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
+          HOSTGATE: |
+            ticketing.schalke04.de https://ticketing.schalke04.de/de/pages/allgemein/impressum
           ALLOW: |
           ROBOTS: |
             schalke04.de
             tickets.schalke04.de
+            ticketing.schalke04.de
+            storage.schalke04.de
           GATE: |
             https://schalke04.de/impressum/
           FULL: |
-            https://tickets.schalke04.de/agb
+            https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien
+            https://tickets.schalke04.de/p/ticket-faq
           TABLES: |
+            https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien
           EXPAND: |
+            https://tickets.schalke04.de/p/ticket-faq
           FIELDS: |
           PDFS: |
+            https://storage.schalke04.de/sites/1/2026/05/vergleichsdokument-aenderungen-tagb_2627.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -53,13 +61,16 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://tickets.schalke04.de/imprint
-            https://tickets.schalke04.de/agb
-            https://schalke04.de/category/tickets/
-            https://schalke04.de/tickets/heimspiele-gegen-mainz-leipzig-und-stuttgart-ticketboerse-geoeffnet/
-            https://schalke04.de/veltins-arena/tickets/service-formulare-des-fc-schalke-04/
-            https://schalke04.de/mitglieder-fans/mitgliedschaft/die-mitgliedschaft/
-            https://schalke04.de/business/hospitality/tageskarten/
+            https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien
+            https://tickets.schalke04.de/p/ticket-faq
+            https://tickets.schalke04.de/p/familienblock
+            https://tickets.schalke04.de/p/schwarzmarkt
+            https://schalke04.de/tickets/zweite-ticket-verkaufsphase-der-saison-alle-wichtigen-informationen/
+            https://schalke04.de/tickets/mainz-leipzig-stuttgart-26-27/
+            https://schalke04.de/tickets/tickets-fuer-heimspiele-gegen-mainz-leipzig-und-stuttgart-vergriffen/
+            https://schalke04.de/tickets/restkarten-elversberg-26-27/
+            https://schalke04.de/tickets/fans-mit-behinderung-mainz-leipzig-stuttgart/
+            https://schalke04.de/category/tickets/page/2/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -78,6 +89,9 @@ jobs:
           // (earlier passes); the page type decides, not the word.
           const ALLOW = (process.env.ALLOW || '').split('\n').map(x => x.trim()).filter(Boolean);
           const isForbidden = u => FORBIDDEN.test(u) && !ALLOW.includes(u);
+          // HOSTGATE lines 'host notice-url': the host's own notice is read before any of its pages in this run;
+          // if its text is short or mentions bots or automated access, the host's pages are skipped (a person judges).
+          const gatedOut = new Set();
           const sleep = ms => new Promise(r => setTimeout(r, ms));
           let n = 0, lastText = '';
           function post(body) {
@@ -127,6 +141,7 @@ jobs:
 
           async function render(browser, url) {
             const u = new URL(url);
+            if (gatedOut.has(u.host)) { post(`### SKIPPED ${url}\nThe host's notice did not pass HOSTGATE in this run; not opened.`); return; }
             if (isForbidden(url)) { post(`### STOPPED ${url}\nForbidden URL (buy/cart/checkout/login/queue/seat plan); not opened.`); return; }
             const [ok, why] = allowed(u.host, u.pathname + u.search);
             if (!ok) { post(`### STOPPED ${url}\nrobots.txt: ${why}; not opened.`); return; }
@@ -241,6 +256,7 @@ jobs:
 
           async function pdf(url) {
             const u = new URL(url);
+            if (gatedOut.has(u.host)) { post(`### SKIPPED ${url}\nThe host's notice did not pass HOSTGATE in this run; not fetched.`); return; }
             if (isForbidden(url)) { post(`### STOPPED ${url}\nForbidden URL; not fetched.`); return; }
             if (!robots[u.host]) await fetchRobots(u.host);
             const [ok, why] = allowed(u.host, u.pathname + u.search);
@@ -298,6 +314,15 @@ jobs:
                 // Only the first GATE page (the Impressum) can stop the run: a privacy page names bot-protection
                 // services, which is not a rule about this probe; its matches are posted for a person to read.
                 if (g === lines(process.env.GATE)[0] && (lastText.length < 800 || /automatis|crawl|robot|\bbots?\b|scrap|aspir|extraction|fouille|data.?mining|text and data|\bTDM\b|L\.?\s*122-5-3|spider|automatisiert|maschinenlesbar/i.test(lastText))) gateOk = false;
+              }
+              for (const hl of lines(process.env.HOSTGATE)) {
+                const [h, g] = hl.split(/\s+/);
+                lastText = '';
+                try { if (!robots[h]) await fetchRobots(h); await render(browser, g); } catch (e) { post(`### ERROR ${g}\n${e.message}`); }
+                const hits = (lastText.match(/.{0,120}(automatis|crawl|robot|\bbots?\b|scrap|data.?mining|text and data|\bTDM\b|spider|maschinenlesbar).{0,120}/gi) || []);
+                const pass = lastText.length >= 300 && hits.length === 0;
+                if (!pass) gatedOut.add(h);
+                post(`### HOSTGATE ${h} via ${g}\ntext length ${lastText.length}; matches ${hits.length}; ${pass ? 'PASS' : 'FAIL: pages of this host skipped in this run'}\n\n\`\`\`\n${hits.join('\n').slice(0, 20000).replace(/\`\`\`/g, "'''")}\n\`\`\``);
               }
               if (!gateOk) { post('### GATE STOP: content pages and PDFs not read in this run'); process.env.PAGES = ''; process.env.PDFS = ''; process.env.RAW = ''; }
               for (const url of lines(process.env.PAGES)) {
