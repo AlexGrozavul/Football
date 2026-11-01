@@ -20,7 +20,7 @@ jobs:
       - name: Install pdftotext and OCR
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils tesseract-ocr tesseract-ocr-deu
-          pip3 install --quiet --break-system-packages pypdf==5.1.0
+          sudo pip3 install --quiet --break-system-packages pypdf==5.1.0
 
       - name: Install Playwright and Chromium
         run: |
@@ -55,13 +55,12 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.scp07.de/Ticket/News/Neues-Vergabeverfahren.html
-            https://www.scp07.de/Ticket/News/Seite-2
-            https://www.scp07.de/Ticket/News/Seite-3
-            https://www.scp07.de/Informationen-fuer-Fans-mit-Behinderung.html
-            https://www.scp07.de/Fans/Fans-mit-Behinderung/Allgemeines/
-            https://www.scp07.de/Fans/Fans-mit-Behinderung/Gaestefans/
-            https://www.scp07.de/Spieltagsflyer/
+            https://www.scp07.de/Ticket/News/Eintrittspreise-2026-27.html
+            https://www.scp07.de/Ticket/News/Ticket-Vergabeverfahren.html
+            https://www.scp07.de/Ticket/News/Viele-Verlaengerungen.html
+            https://www.scp07.de/Ticket/News/Ausverkauft-31.html
+            https://www.scp07.de/Ticket/News/Heimbereich-ausverkauft.html
+            https://www.scp07.de/Ticket/News/Ausverkauft-30.html
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
