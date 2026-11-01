@@ -33,25 +33,39 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
-            vfl-bochum.de
             www.vfl-bochum.de
             backend.vfl-bochum.de
-            res.cloudinary.com
           GATE: |
+            https://www.vfl-bochum.de/impressum/
+            https://www.vfl-bochum.de/nutzungsbedingungen/
           FULL: |
+            https://www.vfl-bochum.de/shop-tickets/ticket-infos/
+            https://www.vfl-bochum.de/shop-tickets/ticket-faq/
+            https://www.vfl-bochum.de/stadion/stadionordnung-sicherheitspolitik/
           TABLES: |
+            https://www.vfl-bochum.de/shop-tickets/ticket-infos/
+            https://www.vfl-bochum.de/shop-tickets/ticket-faq/
           EXPAND: |
+            https://www.vfl-bochum.de/shop-tickets/ticket-faq/
+            https://www.vfl-bochum.de/shop-tickets/ticket-infos/
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.vfl-bochum.de/
           DISCOVER: |
-            https://www.vfl-bochum.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.vfl-bochum.de/
+            https://www.vfl-bochum.de/shop-tickets/
+            https://www.vfl-bochum.de/shop-tickets/ticket-infos/
+            https://www.vfl-bochum.de/shop-tickets/ticket-faq/
+            https://www.vfl-bochum.de/shop-tickets/ticket-zweitmarkt/
+            https://www.vfl-bochum.de/stadion/stadionordnung-sicherheitspolitik/
+            https://www.vfl-bochum.de/stadion/besucherinnen-infos/
+            https://www.vfl-bochum.de/teams/profis/match/vfl-bochum-1848-vs-karlsruher-sc-2026-11-08
+            https://www.vfl-bochum.de/verein/mitgliedschaft/
+            https://www.vfl-bochum.de/stadion/zahlen-fakten/
+            https://www.vfl-bochum.de/aktuelles/thema/fans
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
