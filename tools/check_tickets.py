@@ -485,7 +485,14 @@ KNOWN = {
         "suedtribuene-stehplatz", "gegengerade-stehplatz-g1-g3",
         "gegengerade-sitz-o2-o4", "gegengerade-sitz-a-block-x2",
         "wechselblock-y", "nordtribuene-n1-n3", "nordtribuene-n4",
-        "haupttribuene-w1-w4"],
+        "haupttribuene-w1-w4",
+        # VfL Bochum, 2026-11-01: the blocks of the 2026/27 day-ticket
+        # price list (BOC3); 'rollstuhlfahrer' already fitted.
+        "nord-komfort-l-m1", "nord-k-l-unten", "nord-i-m", "nord-n1",
+        "nord-i-bis-n1", "nord-h2-familienblock", "sued-b-c",
+        "sued-a-plus-d", "sued-a-bis-d", "ost-n2-bis-q-stehplatz",
+        "west-g-h1", "west-e1-gaesteblock-stehplatz",
+        "west-e2-f-gaesteblock-sitzplatz"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
