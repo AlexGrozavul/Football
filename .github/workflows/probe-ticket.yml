@@ -33,25 +33,36 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           ALLOW: |
+            https://www.scp07.de/Tickets-kaufen/
           ROBOTS: |
-            scp07.de
             www.scp07.de
-            m.scp07.de
           GATE: |
+            https://www.scp07.de/Impressum/
           FULL: |
+            https://www.scp07.de/Ticket/Info/Tickets.html
+            https://www.scp07.de/Ticket-FAQ/
+            https://www.scp07.de/Tickets-kaufen/
           TABLES: |
+            https://www.scp07.de/Ticket/Info/Tickets.html
+            https://www.scp07.de/Tickets-kaufen/
           EXPAND: |
+            https://www.scp07.de/Ticket-FAQ/
           PDFS: |
+            https://www.scp07.de/medium/260831_ATGB_DinA4_Druck.pdf?m=28302
           RAW: |
           NOTICES: |
-            https://www.scp07.de/
           DISCOVER: |
-            https://www.scp07.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.scp07.de/
+            https://www.scp07.de/Ticket/Info/Tickets.html
+            https://www.scp07.de/Tickets-kaufen/
+            https://www.scp07.de/Ticket-FAQ/
+            https://www.scp07.de/Heimspiel-Info_Profis/
+            https://www.scp07.de/Fans/Fan-Infos/Gaestefans/
+            https://www.scp07.de/Arena/Home-Deluxe-Arena/Stadionordnung/
+            https://www.scp07.de/Aktuelles/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -67,7 +78,7 @@ jobs:
           // Help articles of the ticket site (/fr/aide/) are information pages, not buying pages, even when their
           // slug names buying or the account (acheter-un-billet, mon-compte).
           // ALLOW: information documents named on the club's ticket-info page whose address holds a filter word
-          // (the waiting-room explainer PDF); the page type decides, not the word.
+          // (Paderborn: the club's own 'Tickets kaufen' information page on scp07.de); the page type decides, not the word.
           const ALLOW = (process.env.ALLOW || '').split('\n').map(x => x.trim()).filter(Boolean);
           const isForbidden = u => FORBIDDEN.test(u) && !ALLOW.includes(u);
           const sleep = ms => new Promise(r => setTimeout(r, ms));
