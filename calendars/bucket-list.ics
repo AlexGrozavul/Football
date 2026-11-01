@@ -7,21 +7,6 @@ X-WR-CALNAME:Bucket list
 X-PUBLISHED-TTL:PT12H
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 BEGIN:VEVENT
-UID:derby-madonnina-0@football.local
-DTSTAMP:20261011T084854Z
-SEQUENCE:2
-DTSTART;VALUE=DATE:20261031
-DTEND;VALUE=DATE:20261101
-TRANSP:TRANSPARENT
-SUMMARY:Derby della Madonnina - Inter v Milan
-DESCRIPTION:Two European giants sharing one stadium\, both curve building t
- ifos facing each other. New ground\, and closer than Turin - the Allianz S
- tadium is already attended.\nVenue: San Siro\nDistance: ~500 km straight l
- ine\nStatus: open\nNote: Cuore Rossonero phase then free sale. Card needed
-  well in advance.\n\nDate source: confirmed.\nGenerated from football-rule
- s.json. Edit the JSON\, not the calendar.
-END:VEVENT
-BEGIN:VEVENT
 UID:sudwest-derby@football.local
 DTSTAMP:20260908T132236Z
 SEQUENCE:1

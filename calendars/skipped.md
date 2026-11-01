@@ -1,6 +1,6 @@
 # Entries that produced no calendar event
 
-Generated 2026-10-31 by tools/build_calendars.py.
+Generated 2026-11-01 by tools/build_calendars.py.
 Nothing below is an error in the code. Each line is either a
 deliberate exclusion or a field you still need to fill in.
 
@@ -94,6 +94,8 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **derby-eternal-enemies** - Derby of the Eternal Enemies - Olympiacos v Panathinaikos
   - no date of any kind
+- **derby-madonnina** - Derby della Madonnina - Inter v Milan
+  - fixtures[0] on 2026-10-31 is in the past
 - **dfb-pokal-final** - DFB-Pokal final
   - no date of any kind
 - **dfl-supercup** - DFL-Supercup

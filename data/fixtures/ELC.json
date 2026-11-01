@@ -3609,7 +3609,7 @@
   {
    "id": 561916,
    "utcDate": "2026-10-30T20:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3627,14 +3627,14 @@
     "tla": "WRE",
     "crest": "https://crests.football-data.org/404.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561908,
    "utcDate": "2026-10-31T12:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3652,14 +3652,14 @@
     "tla": "PNE",
     "crest": "https://crests.football-data.org/1081.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561910,
    "utcDate": "2026-10-31T12:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3677,14 +3677,14 @@
     "tla": "WAT",
     "crest": "https://crests.football-data.org/346.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561915,
    "utcDate": "2026-10-31T12:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3702,14 +3702,14 @@
     "tla": "BIR",
     "crest": "https://crests.football-data.org/332.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561905,
    "utcDate": "2026-10-31T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3727,14 +3727,14 @@
     "tla": "CAR",
     "crest": "https://crests.football-data.org/715.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561906,
    "utcDate": "2026-10-31T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3752,14 +3752,14 @@
     "tla": "WBA",
     "crest": "https://crests.football-data.org/74.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561907,
    "utcDate": "2026-10-31T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3777,14 +3777,14 @@
     "tla": "BLA",
     "crest": "https://crests.football-data.org/59.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561909,
    "utcDate": "2026-10-31T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3802,14 +3802,14 @@
     "tla": "BRI",
     "crest": "https://crests.football-data.org/387.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561911,
    "utcDate": "2026-10-31T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3827,14 +3827,14 @@
     "tla": "CHA",
     "crest": "https://crests.football-data.org/348.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561912,
    "utcDate": "2026-10-31T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3852,14 +3852,14 @@
     "tla": "POR",
     "crest": "https://crests.football-data.org/325.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "winner": "DRAW"
   },
   {
    "id": 561913,
    "utcDate": "2026-10-31T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3877,14 +3877,14 @@
     "tla": "DER",
     "crest": "https://crests.football-data.org/342.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561914,
    "utcDate": "2026-10-31T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3902,9 +3902,9 @@
     "tla": "QPR",
     "crest": "https://crests.football-data.org/69.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561918,

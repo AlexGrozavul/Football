@@ -4982,31 +4982,6 @@
    "winner": "HOME_TEAM"
   },
   {
-   "id": 554942,
-   "utcDate": "2026-07-29T00:00:00Z",
-   "status": "POSTPONED",
-   "matchday": 21,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1772,
-    "name": "Chapecoense AF",
-    "shortName": "Chapecoense",
-    "tla": "CHA",
-    "crest": "https://crests.football-data.org/1772_large.png"
-   },
-   "away": {
-    "id": 1780,
-    "name": "CR Vasco da Gama",
-    "shortName": "Vasco da Gama",
-    "tla": "VAS",
-    "crest": "https://crests.football-data.org/1780.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 554946,
    "utcDate": "2026-07-29T22:30:00Z",
    "status": "FINISHED",
@@ -8234,7 +8209,7 @@
   {
    "id": 555064,
    "utcDate": "2026-10-31T19:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 33,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8252,9 +8227,9 @@
     "tla": "VIT",
     "crest": "https://crests.football-data.org/1782.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555072,
@@ -8526,6 +8501,31 @@
     "shortName": "Mineiro",
     "tla": "CAM",
     "crest": "https://crests.football-data.org/1766.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 554942,
+   "utcDate": "2026-11-14T23:30:00Z",
+   "status": "TIMED",
+   "matchday": 21,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1772,
+    "name": "Chapecoense AF",
+    "shortName": "Chapecoense",
+    "tla": "CHA",
+    "crest": "https://crests.football-data.org/1772_large.png"
+   },
+   "away": {
+    "id": 1780,
+    "name": "CR Vasco da Gama",
+    "shortName": "Vasco da Gama",
+    "tla": "VAS",
+    "crest": "https://crests.football-data.org/1780.png"
    },
    "homeGoals": null,
    "awayGoals": null,

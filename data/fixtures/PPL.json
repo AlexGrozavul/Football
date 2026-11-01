@@ -2059,7 +2059,7 @@
   {
    "id": 567343,
    "utcDate": "2026-10-31T15:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2077,14 +2077,14 @@
     "tla": "AMA",
     "crest": "https://crests.football-data.org/9136.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 567338,
    "utcDate": "2026-10-31T20:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2102,9 +2102,9 @@
     "tla": "EST",
     "crest": "https://crests.football-data.org/582.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 567341,

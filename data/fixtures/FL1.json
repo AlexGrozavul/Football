@@ -1884,7 +1884,7 @@
   {
    "id": 559643,
    "utcDate": "2026-10-31T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1902,9 +1902,9 @@
     "tla": "LMF",
     "crest": "https://crests.football-data.org/535.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559647,
