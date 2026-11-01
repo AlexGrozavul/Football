@@ -39,24 +39,34 @@ jobs:
             schalke04.de
             www.schalke04.de
             tickets.schalke04.de
-            ticketing.schalke04.de
-            storage.schalke04.de
           GATE: |
+            https://schalke04.de/haftungsausschluss/
           FULL: |
+            https://tickets.schalke04.de/de/pages/allgemein/agb
+            https://schalke04.de/f-a-q/
           TABLES: |
+            https://schalke04.de/mitglieder-fans/barrierefreiheit/preise/
           EXPAND: |
+            https://schalke04.de/f-a-q/
           FIELDS: |
           PDFS: |
           RAW: |
+            https://tickets.schalke04.de/third/sitemap.xml
           NOTICES: |
-            https://www.schalke04.de/
           DISCOVER: |
-            https://www.schalke04.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.schalke04.de/
+            https://schalke04.de/veltins-arena/tickets/
+            https://schalke04.de/veltins-arena/tickets/ticket-infos/
+            https://schalke04.de/veltins-arena/tickets/auswaertskarten/
+            https://schalke04.de/mitglieder-fans/fanbelange/infos-fuer-gaestefans/
+            https://schalke04.de/f-a-q/
+            https://schalke04.de/mitglieder-fans/barrierefreiheit/eintrittskarten-fuer-heimspiele/
+            https://schalke04.de/mitglieder-fans/barrierefreiheit/preise/
+            https://schalke04.de/die-veltins-arena/stadionordnung/
+            https://tickets.schalke04.de/de/pages/allgemein/agb
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
