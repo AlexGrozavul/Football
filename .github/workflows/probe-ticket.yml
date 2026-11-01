@@ -34,21 +34,23 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           ROBOTS: |
             www.vfl-bochum.de
-            backend.vfl-bochum.de
+            res.cloudinary.com
           GATE: |
             https://www.vfl-bochum.de/impressum/
-            https://www.vfl-bochum.de/nutzungsbedingungen/
           FULL: |
-            https://www.vfl-bochum.de/shop-tickets/ticket-infos/
-            https://www.vfl-bochum.de/shop-tickets/ticket-faq/
-            https://www.vfl-bochum.de/stadion/stadionordnung-sicherheitspolitik/
+            https://www.vfl-bochum.de/aktuelles/2026/10/heimspiele-gegen-wolfsburg-mainz-und-karlsruhe-tickets-fur-mitglieder-ab-freitag/
+            https://www.vfl-bochum.de/aktuelles/2026/10/dfb-pokal-spiel-gegen-mainz-informationen-zum-ticketverkauf/
           TABLES: |
-            https://www.vfl-bochum.de/shop-tickets/ticket-infos/
-            https://www.vfl-bochum.de/shop-tickets/ticket-faq/
           EXPAND: |
-            https://www.vfl-bochum.de/shop-tickets/ticket-faq/
-            https://www.vfl-bochum.de/shop-tickets/ticket-infos/
           PDFS: |
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1782991876/ATGB_VfL_Bochum_1848_Stand_01.07.2026_jidv8c.pdf
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1785137469/preisliste-einzeltickets-dina4_2026-27_ijihpj.pdf
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1782391040/Stadionordnung_Juli_2026_ry4tsa.pdf
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1783340254/stadionplan_blau_2026_jeqpwp.pdf
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779369248/informationen-digitales-ticket_yeoxlu.pdf
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779369245/informationen-digitaler-warteraum_ppslrw.pdf
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779369246/anleitung_clubsale_vflbochum1848_q2mqub.pdf
+            https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1779971670/gastefaninfos_saison-23_24_vflbochum1848_wg4wli.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -56,16 +58,12 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.vfl-bochum.de/shop-tickets/
-            https://www.vfl-bochum.de/shop-tickets/ticket-infos/
-            https://www.vfl-bochum.de/shop-tickets/ticket-faq/
-            https://www.vfl-bochum.de/shop-tickets/ticket-zweitmarkt/
-            https://www.vfl-bochum.de/stadion/stadionordnung-sicherheitspolitik/
-            https://www.vfl-bochum.de/stadion/besucherinnen-infos/
-            https://www.vfl-bochum.de/teams/profis/match/vfl-bochum-1848-vs-karlsruher-sc-2026-11-08
-            https://www.vfl-bochum.de/verein/mitgliedschaft/
-            https://www.vfl-bochum.de/stadion/zahlen-fakten/
-            https://www.vfl-bochum.de/aktuelles/thema/fans
+            https://www.vfl-bochum.de/aktuelles/2026/10/heimspiele-gegen-wolfsburg-mainz-und-karlsruhe-tickets-fur-mitglieder-ab-freitag/
+            https://www.vfl-bochum.de/aktuelles/2026/10/tickets-gegen-wolfsburg-und-mainz-im-freien-verkauf-erhaltlich/
+            https://www.vfl-bochum.de/aktuelles/2026/10/dfb-pokal-spiel-gegen-mainz-informationen-zum-ticketverkauf/
+            https://www.vfl-bochum.de/aktuelles/2026/09/heimspiel-gegen-bielefeld-tickets-fur-mitglieder-ab-freitag/
+            https://www.vfl-bochum.de/aktuelles/2026/10/faninfos-zu-bocm05-3/
+            https://www.vfl-bochum.de/aktuelles/2026/10/stellungnahme-zur-1848-restpostenaktion/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
