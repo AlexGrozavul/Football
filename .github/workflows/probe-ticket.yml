@@ -43,15 +43,22 @@ jobs:
           GATE: |
             https://www.arminia.de/impressum
           FULL: |
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tageskarte
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tauschboerse
+            https://www.arminia.de/der-dsc/schueco-arena/fragen-und-antworten-zum-stadionbesuch
+            https://www.arminia.de/eintrittskarte/eintrittskarten-uebersicht
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-digitalen-dauerkarte
           TABLES: |
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
-            https://www.arminia.de/leichte-sprache/tickets-preise
+            https://www.arminia.de/eintrittskarte/eintrittskarten-uebersicht
+            https://www.arminia.de/fans/behindertenbetreuung/tickets-anreise
           EXPAND: |
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
-            https://www.arminia.de/fans/gaestefans
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tageskarte
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tauschboerse
+            https://www.arminia.de/der-dsc/schueco-arena/fragen-und-antworten-zum-stadionbesuch
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-digitalen-dauerkarte
           FIELDS: |
           PDFS: |
+            https://www.arminia.de/fileadmin/user_upload/downloads/DSC_Stadionordnung_5._August_2026.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -59,13 +66,14 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
-            https://www.arminia.de/fans/gaestefans
-            https://www.arminia.de/leichte-sprache/tickets-preise
-            https://www.arminia.de/fans/behindertenbetreuung
-            https://www.arminia.de/der-dsc/schueco-arena
-            https://www.arminia.de/der-dsc/mitgliedschaft
-            https://www.arminia.de/neues/schlagzeilen
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tageskarte
+            https://www.arminia.de/eintrittskarte/eintrittskarten-uebersicht
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tauschboerse
+            https://www.arminia.de/neues/schlagzeilen/detail/fan-infos-fuer-braunschweig
+            https://www.arminia.de/fans/behindertenbetreuung/tickets-anreise
+            https://www.arminia.de/der-dsc/schueco-arena/fragen-und-antworten-zum-stadionbesuch
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-digitalen-dauerkarte
+            https://www.arminia.de/der-dsc/schueco-arena/stadionplan
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
