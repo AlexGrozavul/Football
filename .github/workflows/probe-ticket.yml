@@ -41,17 +41,15 @@ jobs:
             www.arminia.de
           GATE: |
             https://www.arminia.de/impressum
+          IMGS: |
+            https://www.arminia.de/eintrittskarte/eintrittskarten-uebersicht
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tageskarte
           FULL: |
           TABLES: |
-            https://www.arminia.de/neues/spieltach
           EXPAND: |
           FIELDS: |
-            https://www.arminia.de/fileadmin/Tageskarte/Nachzahlerpreise_26-27_-_A.pdf
-            https://www.arminia.de/fileadmin/Tageskarte/Nachzahlerpreise_26-27_-_B.pdf
           PDFS: |
-            https://www.arminia.de/fileadmin/Tageskarte/Nachzahlerpreise_26-27_-_A.pdf
-            https://www.arminia.de/fileadmin/Tageskarte/Nachzahlerpreise_26-27_-_B.pdf
-            https://www.arminia.de/fileadmin/user_upload/downloads/Sicherheitspolitik_DSC_Arminia_Bielefeld.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -59,8 +57,14 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.arminia.de/neues/spieltach
-            https://www.arminia.de/profis/saison
+            https://www.arminia.de/eintrittskarte/eintrittskarten-uebersicht
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tageskarte
+            https://www.arminia.de/profis/saison/detail/dfl-mat-j043p7-arminia-bielefeld-fc-energie
+            https://www.arminia.de/profis/saison/detail/dfl-mat-j043pq-arminia-bielefeld-st-pauli
+            https://www.arminia.de/profis/saison/detail/dfl-mat-j043q8-arminia-bielefeld-1-fc-heidenheim
+            https://www.arminia.de/profis/saison/detail/dfl-mat-j043qq-arminia-bielefeld-osnabrueck
+            https://www.arminia.de/profis/saison/detail/dfl-mat-j043r8-arminia-bielefeld-braunschweig
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -233,6 +237,11 @@ jobs:
               const tables = await page.evaluate(() => [...document.querySelectorAll('table')].map((t, i) =>
                 `[table ${i + 1}]\n` + [...t.rows].map(r => [...r.cells].map(c => c.innerText.replace(/\s+/g, ' ').trim() || '(empty)').join(' | ')).join('\n')).join('\n\n'));
               post(`### (t) TABLES ${url}\n\n\`\`\`\n${(tables || 'no table element').slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
+            }
+            // IMGS pages: the address and alt text of each image in <main> (images are listed, not opened or read).
+            if (lines(process.env.IMGS).includes(url)) {
+              const imgs = await page.evaluate(() => [...(document.querySelector('main') || document.body).querySelectorAll('img,picture source')].map(i => `${(i.alt || '').trim()} | ${i.currentSrc || i.src || i.srcset || ''}`));
+              post(`### (i) IMAGES in <main> ${url}\n${imgs.length} images (listed only, not opened).\n\n\`\`\`\n${[...new Set(imgs)].join('\n').slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
             }
             const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].filter(a => !a.closest('#CybotCookiebotDialog,#CybotCookiebotDialogBodyUnderlay,#CookiebotWidget,[id^="Cybot"],#didomi-host,.didomi-popup-container,#onetrust-consent-sdk,#axeptio_overlay,#tarteaucitronRoot,#usercentrics-root,#sd-cmp,.sd-cmp-overlay,#cmpbox,#cmpbox2,.cmpboxBG')).map(a =>
               `${(a.textContent || a.getAttribute('aria-label') || a.title || '').replace(/\s+/g, ' ').trim()} | ${a.href}`));
