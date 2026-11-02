@@ -39,26 +39,19 @@ jobs:
           ALLOW: |
           ROBOTS: |
             www.arminia.de
-            shop.arminia.de
           GATE: |
             https://www.arminia.de/impressum
           FULL: |
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tageskarte
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tauschboerse
-            https://www.arminia.de/der-dsc/schueco-arena/fragen-und-antworten-zum-stadionbesuch
-            https://www.arminia.de/eintrittskarte/eintrittskarten-uebersicht
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-digitalen-dauerkarte
           TABLES: |
-            https://www.arminia.de/eintrittskarte/eintrittskarten-uebersicht
-            https://www.arminia.de/fans/behindertenbetreuung/tickets-anreise
+            https://www.arminia.de/neues/spieltach
           EXPAND: |
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tageskarte
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tauschboerse
-            https://www.arminia.de/der-dsc/schueco-arena/fragen-und-antworten-zum-stadionbesuch
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-digitalen-dauerkarte
           FIELDS: |
+            https://www.arminia.de/fileadmin/Tageskarte/Nachzahlerpreise_26-27_-_A.pdf
+            https://www.arminia.de/fileadmin/Tageskarte/Nachzahlerpreise_26-27_-_B.pdf
           PDFS: |
-            https://www.arminia.de/fileadmin/user_upload/downloads/DSC_Stadionordnung_5._August_2026.pdf
+            https://www.arminia.de/fileadmin/Tageskarte/Nachzahlerpreise_26-27_-_A.pdf
+            https://www.arminia.de/fileadmin/Tageskarte/Nachzahlerpreise_26-27_-_B.pdf
+            https://www.arminia.de/fileadmin/user_upload/downloads/Sicherheitspolitik_DSC_Arminia_Bielefeld.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -66,14 +59,8 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tageskarte
-            https://www.arminia.de/eintrittskarte/eintrittskarten-uebersicht
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-tauschboerse
-            https://www.arminia.de/neues/schlagzeilen/detail/fan-infos-fuer-braunschweig
-            https://www.arminia.de/fans/behindertenbetreuung/tickets-anreise
-            https://www.arminia.de/der-dsc/schueco-arena/fragen-und-antworten-zum-stadionbesuch
-            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-digitalen-dauerkarte
-            https://www.arminia.de/der-dsc/schueco-arena/stadionplan
+            https://www.arminia.de/neues/spieltach
+            https://www.arminia.de/profis/saison
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
