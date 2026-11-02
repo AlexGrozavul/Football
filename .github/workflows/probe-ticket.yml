@@ -41,22 +41,37 @@ jobs:
             www.vfl.de
             vfl.de
           GATE: |
+            https://www.vfl.de/rechtliches/impressum
           IMGS: |
+            https://www.vfl.de/tickets/
+            https://www.vfl.de/tickets/preise
           FULL: |
           TABLES: |
+            https://www.vfl.de/tickets/
+            https://www.vfl.de/tickets/preise
+            https://www.vfl.de/tickets/kinder-familien
           EXPAND: |
+            https://www.vfl.de/tickets/
+            https://www.vfl.de/tickets/preise
+            https://www.vfl.de/fans/
           FIELDS: |
           PDFS: |
           RAW: |
+            https://vfl.de/sitemap.xml
           NOTICES: |
-            https://www.vfl.de/
           DISCOVER: |
-            https://www.vfl.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.vfl.de/
+            https://www.vfl.de/tickets/
+            https://www.vfl.de/tickets/preise
+            https://www.vfl.de/tickets/kinder-familien
+            https://www.vfl.de/tickets/gemeinwohltickets
+            https://www.vfl.de/fans/
+            https://www.vfl.de/news/flutlichtspiel-ausverkauft
+            https://www.vfl.de/vfl/mitgliedschaft
+            https://www.vfl.de/bremer-bruecke/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
