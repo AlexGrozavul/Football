@@ -37,23 +37,42 @@ jobs:
           SLOW: |
           HOSTGATE: |
           ALLOW: |
-          WIKI_QID: Q702455
+          WIKI_QID: ''
           ROBOTS: |
+            rbleipzig.com
+            policies.redbull.com
+            storage.googleapis.com
           GATE: |
+            https://policies.redbull.com/r/Rasenballsportleipzig/imprint/de_DE
+            https://policies.redbull.com/r/Rasenballsportleipzig/terms/de_DE
           IMGS: |
+            https://rbleipzig.com/de/matches-tickets
           FULL: |
+            https://policies.redbull.com/r/Rasenballsportleipzig/terms/de_DE
+            https://rbleipzig.com/de/matches-tickets
+            https://rbleipzig.com/de/matches-tickets-faq-zum-stadionbesuch
           TABLES: |
+            https://rbleipzig.com/de/matches-tickets
           EXPAND: |
+            https://rbleipzig.com/de/matches-tickets
+            https://rbleipzig.com/de/matches-tickets-faq-zum-stadionbesuch
           FIELDS: |
           PDFS: |
           RAW: |
+            https://rbleipzig.com/de/sitemap
           NOTICES: |
           DISCOVER: |
           DISCOVER_RE: '^$'
           FOLLOW: |
           FOLLOW_RE: '^$'
-          RAW_SKIP: ''
+          RAW_SKIP: '/(news|videos)[-/]'
           PAGES: |
+            https://rbleipzig.com/de/matches-tickets
+            https://rbleipzig.com/de/matches-tickets-faq-zum-stadionbesuch
+            https://rbleipzig.com/de/matches/bundesliga-2026-2027-rb-leipzig-vs-fc-augsburg
+            https://rbleipzig.com/de/matches/uefa-champions-league-2026-2027-rb-leipzig-vs-manchester-city
+            https://rbleipzig.com/de/matches/uefa-champions-league-2026-2027-rb-leipzig-vs-rc-lens
+            https://rbleipzig.com/de/fans-fans-mit-behinderung
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -327,9 +346,8 @@ jobs:
                 try { await render(browser, g); } catch (e) { post(`### ERROR ${g}\n${e.message}`); }
                 const hits = (lastText.match(/.{0,120}(automatis|crawl|robot|\bbots?\b|scrap|aspir|extraction|fouille|data.?mining|text and data|\bTDM\b|L\.?\s*122-5-3|spider|automatisiert|maschinenlesbar|reproduc|réutilis|base de donn|extraire).{0,120}/gi) || []);
                 post(`### GATE ${g}\ntext length ${lastText.length}; matches ${hits.length}\n\n\`\`\`\n${hits.join('\n').slice(0, 20000).replace(/\`\`\`/g, "'''")}\n\`\`\``);
-                // Only the first GATE page (the Impressum) can stop the run: a privacy page names bot-protection
-                // services, which is not a rule about this probe; its matches are posted for a person to read.
-                if (g === lines(process.env.GATE)[0] && (lastText.length < 800 || /automatis|crawl|robot|\bbots?\b|scrap|aspir|extraction|fouille|data.?mining|text and data|\bTDM\b|L\.?\s*122-5-3|spider|automatisiert|maschinenlesbar/i.test(lastText))) gateOk = false;
+                // Every GATE page (imprint and terms of use; no privacy page is listed) can stop the run.
+                if ((lastText.length < 800 || /automatis|crawl|robot|\bbots?\b|scrap|aspir|extraction|fouille|data.?mining|text and data|\bTDM\b|L\.?\s*122-5-3|spider|automatisiert|maschinenlesbar/i.test(lastText))) gateOk = false;
               }
               for (const hl of lines(process.env.HOSTGATE)) {
                 const [h, g] = hl.split(/\s+/);
