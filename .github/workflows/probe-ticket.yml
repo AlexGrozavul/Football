@@ -40,22 +40,11 @@ jobs:
           WIKI_QID: ''
           ROBOTS: |
             rbleipzig.com
-            policies.redbull.com
-            storage.googleapis.com
           GATE: |
-            https://policies.redbull.com/r/Rasenballsportleipzig/imprint/de_DE
-            https://policies.redbull.com/r/Rasenballsportleipzig/terms/de_DE
           IMGS: |
-            https://rbleipzig.com/de/matches-tickets
           FULL: |
-            https://policies.redbull.com/r/Rasenballsportleipzig/terms/de_DE
-            https://rbleipzig.com/de/matches-tickets
-            https://rbleipzig.com/de/matches-tickets-faq-zum-stadionbesuch
           TABLES: |
-            https://rbleipzig.com/de/matches-tickets
           EXPAND: |
-            https://rbleipzig.com/de/matches-tickets
-            https://rbleipzig.com/de/matches-tickets-faq-zum-stadionbesuch
           FIELDS: |
           PDFS: |
           RAW: |
@@ -67,12 +56,6 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: '/(news|videos)[-/]'
           PAGES: |
-            https://rbleipzig.com/de/matches-tickets
-            https://rbleipzig.com/de/matches-tickets-faq-zum-stadionbesuch
-            https://rbleipzig.com/de/matches/bundesliga-2026-2027-rb-leipzig-vs-fc-augsburg
-            https://rbleipzig.com/de/matches/uefa-champions-league-2026-2027-rb-leipzig-vs-manchester-city
-            https://rbleipzig.com/de/matches/uefa-champions-league-2026-2027-rb-leipzig-vs-rc-lens
-            https://rbleipzig.com/de/fans-fans-mit-behinderung
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
