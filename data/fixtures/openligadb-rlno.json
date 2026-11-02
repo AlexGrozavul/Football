@@ -4761,7 +4761,7 @@
   {
    "id": 86337,
    "utcDate": "2026-11-01T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4776,9 +4776,20 @@
     "shortName": "Chemie Leipzig",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/0/0b/BSG_Chemie_Leipzig_1997.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4786,7 +4797,7 @@
   {
    "id": 86341,
    "utcDate": "2026-11-01T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4801,9 +4812,20 @@
     "shortName": "Chemnitz",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chemnitzer_FC_Logo.svg/120px-Chemnitzer_FC_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 4,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 4
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4811,7 +4833,7 @@
   {
    "id": 86344,
    "utcDate": "2026-11-01T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "15. Spieltag",
    "roundOrder": 15,
    "home": {
@@ -4826,9 +4848,20 @@
     "shortName": "Babelsberg",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/e/ee/SV_Babelsberg_03.svg/250px-SV_Babelsberg_03.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

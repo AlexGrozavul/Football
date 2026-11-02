@@ -1793,6 +1793,206 @@
    "stadium": null,
    "city": null,
    "viewers": null
+  },
+  {
+   "id": 88749,
+   "utcDate": "2026-12-01T14:30:00Z",
+   "finished": false,
+   "round": "Achtelfinale",
+   "roundOrder": 3,
+   "home": {
+    "id": 91,
+    "name": "Eintracht Frankfurt",
+    "shortName": "Frankfurt",
+    "crest": "https://i.imgur.com/X8NFkOb.png"
+   },
+   "away": {
+    "id": 7,
+    "name": "Borussia Dortmund",
+    "shortName": "Dortmund",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/960px-Borussia_Dortmund_logo.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 88750,
+   "utcDate": "2026-12-01T14:30:00Z",
+   "finished": false,
+   "round": "Achtelfinale",
+   "roundOrder": 3,
+   "home": {
+    "id": 16,
+    "name": "VfB Stuttgart",
+    "shortName": "Stuttgart",
+    "crest": "https://i.imgur.com/v0tkpNx.png"
+   },
+   "away": {
+    "id": 177,
+    "name": "Dynamo Dresden",
+    "shortName": "Dresden",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 88751,
+   "utcDate": "2026-12-01T14:30:00Z",
+   "finished": false,
+   "round": "Achtelfinale",
+   "roundOrder": 3,
+   "home": {
+    "id": 6,
+    "name": "Bayer 04 Leverkusen",
+    "shortName": "Leverkusen",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/f/f7/Bayer_Leverkusen_Logo.svg"
+   },
+   "away": {
+    "id": 1635,
+    "name": "RB Leipzig",
+    "shortName": "Leipzig",
+    "crest": "https://i.imgur.com/Rpwsjz1.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 88752,
+   "utcDate": "2026-12-01T14:30:00Z",
+   "finished": false,
+   "round": "Achtelfinale",
+   "roundOrder": 3,
+   "home": {
+    "id": 40,
+    "name": "FC Bayern München",
+    "shortName": "Bayern",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Logo_FC_Bayern_M%C3%BCnchen_%282002%E2%80%932017%29.svg"
+   },
+   "away": {
+    "id": 54,
+    "name": "Hertha BSC",
+    "shortName": "Hertha",
+    "crest": "https://i.imgur.com/apFwbYZ.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 88753,
+   "utcDate": "2026-12-01T14:30:00Z",
+   "finished": false,
+   "round": "Achtelfinale",
+   "roundOrder": 3,
+   "home": {
+    "id": 87,
+    "name": "Borussia Mönchengladbach",
+    "shortName": "Gladbach",
+    "crest": "https://i.imgur.com/KSIk0Eu.png"
+   },
+   "away": {
+    "id": 118,
+    "name": "SV Darmstadt 98",
+    "shortName": "Darmstadt",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e5/SV_Darmstadt_98_Logo.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 88754,
+   "utcDate": "2026-12-01T14:30:00Z",
+   "finished": false,
+   "round": "Achtelfinale",
+   "roundOrder": 3,
+   "home": {
+    "id": 76,
+    "name": "1. FC Kaiserslautern",
+    "shortName": "Kaiserslautern",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
+   },
+   "away": {
+    "id": 112,
+    "name": "SC Freiburg",
+    "shortName": "Freiburg",
+    "crest": "https://i.imgur.com/r3mvi0h.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 88755,
+   "utcDate": "2026-12-01T14:30:00Z",
+   "finished": false,
+   "round": "Achtelfinale",
+   "roundOrder": 3,
+   "home": {
+    "id": 104,
+    "name": "Holstein Kiel",
+    "shortName": "Kiel",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
+   },
+   "away": {
+    "id": 65,
+    "name": "1. FC Köln",
+    "shortName": "Köln",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/0/01/1._FC_Koeln_Logo_2014%E2%80%93.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 88756,
+   "utcDate": "2026-12-01T14:30:00Z",
+   "finished": false,
+   "round": "Achtelfinale",
+   "roundOrder": 3,
+   "home": {
+    "id": 129,
+    "name": "VfL Bochum",
+    "shortName": "Bochum",
+    "crest": "https://i.imgur.com/5jy3Gfr.png"
+   },
+   "away": {
+    "id": 95,
+    "name": "FC Augsburg",
+    "shortName": "Augsburg",
+    "crest": "https://i.imgur.com/sdE62e2.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
   }
  ],
  "teams": {
