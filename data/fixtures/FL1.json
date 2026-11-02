@@ -1909,7 +1909,7 @@
   {
    "id": 559647,
    "utcDate": "2026-11-01T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1927,14 +1927,14 @@
     "tla": "AJA",
     "crest": "https://crests.football-data.org/519.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 5,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559640,
    "utcDate": "2026-11-01T16:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1952,14 +1952,14 @@
     "tla": "ANG",
     "crest": "https://crests.football-data.org/532.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559642,
    "utcDate": "2026-11-01T16:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1977,14 +1977,14 @@
     "tla": "ASM",
     "crest": "https://crests.football-data.org/548.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559645,
    "utcDate": "2026-11-01T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 9,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2002,9 +2002,9 @@
     "tla": "TOU",
     "crest": "https://crests.football-data.org/511.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559641,

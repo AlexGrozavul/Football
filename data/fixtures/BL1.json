@@ -1759,7 +1759,7 @@
   {
    "id": 565841,
    "utcDate": "2026-11-01T14:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1777,14 +1777,14 @@
     "tla": "KOE",
     "crest": "https://crests.football-data.org/1.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 565844,
    "utcDate": "2026-11-01T16:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -1802,9 +1802,9 @@
     "tla": "HSV",
     "crest": "https://crests.football-data.org/7.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 565852,
