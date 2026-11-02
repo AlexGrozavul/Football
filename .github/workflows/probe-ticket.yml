@@ -40,17 +40,18 @@ jobs:
           ROBOTS: |
             www.vfl.de
             vfl.de
-            res.cloudinary.com
           GATE: |
             https://www.vfl.de/rechtliches/impressum
           IMGS: |
+            https://www.vfl.de/tickets/eintrittspreise/
           FULL: |
           TABLES: |
+            https://www.vfl.de/tickets/eintrittspreise/
           EXPAND: |
           FIELDS: |
+            https://www.vfl.de/wp-content/uploads/2018/12/VfL_2026-27_Preisliste_TK.pdf
           PDFS: |
-            https://res.cloudinary.com/diheptxu2/image/upload/v1786030965/Informationen_f%C3%BCr_Gaestefans_26_27_u1nyrc.pdf
-            https://www.vfl.de/api/download/VfL_2025_1125_Stadionordnung_600x900_xgqbu1_oulpos
+            https://www.vfl.de/wp-content/uploads/2018/12/VfL_2026-27_Preisliste_TK.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -58,30 +59,10 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.vfl.de/news/ticketupdate-magdeburg
-            https://www.vfl.de/news/faninfos-brueckentag-magdeburg
-            https://www.vfl.de/news/ticketinfos-btsv-bsc
-            https://www.vfl.de/news/ticketupdate-btsv-hertha
-            https://www.vfl.de/news/faninfos-brueckentag-osnebs
-            https://www.vfl.de/news/ticketupdate-hertha
-            https://www.vfl.de/news/ticketinfos-brueckentag-dresden
-            https://www.vfl.de/news/faninfos-brueckentag-osnbsc
-            https://www.vfl.de/news/faninfos-brueckentag-dresden
-            https://www.vfl.de/news/ticketverkauf-sgf-fck
-            https://www.vfl.de/news/sitzplaetze-spvgg26
-            https://www.vfl.de/news/ticketupdate-sgf-wob-fck
-            https://www.vfl.de/news/ticketinfos-brueckenabend-hannover
-            https://www.vfl.de/news/ticketupdate-fck-h96
-            https://www.vfl.de/news/dfb-pokal-vfl-empfaengt-den-fc-bayern-muenchen-an-der-bremer-bruecke
-            https://www.vfl.de/news/ticketinfos-bayern-muenchen
-            https://www.vfl.de/news/ruecklaeufer-bayern
-            https://www.vfl.de/news/bayern-ausverkauft
-            https://www.vfl.de/news/ticketzweitmarkt-fcb
-            https://www.vfl.de/news/faninfos-brueckenabend-bayern
-            https://www.vfl.de/news/rekord-andrang-dauerkarten
-            https://www.vfl.de/news/dauerkartenverkauf-beendet
-            https://www.vfl.de/news/zweitmarkt-oeffnet
-            https://www.vfl.de/news/wichtige-informationen-ticketkauf
+            https://www.vfl.de/tickets/eintrittspreise/
+            https://www.vfl.de/news/digitale-dauerkarte
+            https://www.vfl.de/news/warnung-ticketbetrug
+            https://www.vfl.de/news/ticketangebot-familien
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
