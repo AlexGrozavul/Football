@@ -38,25 +38,34 @@ jobs:
           HOSTGATE: |
           ALLOW: |
           ROBOTS: |
-            arminia.de
             www.arminia.de
             shop.arminia.de
           GATE: |
+            https://www.arminia.de/impressum
           FULL: |
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
           TABLES: |
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
+            https://www.arminia.de/leichte-sprache/tickets-preise
           EXPAND: |
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
+            https://www.arminia.de/fans/gaestefans
           FIELDS: |
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.arminia.de/
           DISCOVER: |
-            https://www.arminia.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.arminia.de/
+            https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte
+            https://www.arminia.de/fans/gaestefans
+            https://www.arminia.de/leichte-sprache/tickets-preise
+            https://www.arminia.de/fans/behindertenbetreuung
+            https://www.arminia.de/der-dsc/schueco-arena
+            https://www.arminia.de/der-dsc/mitgliedschaft
+            https://www.arminia.de/neues/schlagzeilen
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
