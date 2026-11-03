@@ -40,23 +40,36 @@ jobs:
           ROBOTS: |
             www.hannover96.de
             hannover96.de
+            www.96mitgliedschaft.de
+            www.heinzvonheiden-arena.de
+            shop.hannover96.de
           GATE: |
+            https://www.hannover96.de/impressum
           IMGS: |
+            https://www.hannover96.de/tickets
+            https://www.hannover96.de/newscenter/news/details/new6ae9b97acbb74897841577-letzte-heimspiele-des-jahres-ticketverkauf-fuer-hertha-und-kaiserslautern-startet-am-mittwoch.html
           FULL: |
           TABLES: |
+            https://www.hannover96.de/tickets
+            https://www.hannover96.de/newscenter/news/details/new6ae9b97acbb74897841577-letzte-heimspiele-des-jahres-ticketverkauf-fuer-hertha-und-kaiserslautern-startet-am-mittwoch.html
           EXPAND: |
           FIELDS: |
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.hannover96.de/
+            https://www.96mitgliedschaft.de/mitglied-werden
           DISCOVER: |
-            https://www.hannover96.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.hannover96.de/
+            https://www.hannover96.de/tickets
+            https://www.hannover96.de/newscenter/news/details/new6ae9b97acbb74897841577-letzte-heimspiele-des-jahres-ticketverkauf-fuer-hertha-und-kaiserslautern-startet-am-mittwoch.html
+            https://www.hannover96.de/fans-spieltag/heimspielinfos
+            https://www.hannover96.de/akademie/spieltagsinfos/informationen-fuer-gaestefans
+            https://www.hannover96.de/fans-spieltag/barrierefreies-stadion
+            https://www.hannover96.de/newscenter/news
+            https://www.96mitgliedschaft.de/mitglied-werden
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
