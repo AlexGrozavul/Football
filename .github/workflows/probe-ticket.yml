@@ -39,37 +39,41 @@ jobs:
           ALLOW: |
           ROBOTS: |
             www.hannover96.de
-            hannover96.de
-            www.96mitgliedschaft.de
-            www.heinzvonheiden-arena.de
-            shop.hannover96.de
           GATE: |
             https://www.hannover96.de/impressum
           IMGS: |
-            https://www.hannover96.de/tickets
-            https://www.hannover96.de/newscenter/news/details/new6ae9b97acbb74897841577-letzte-heimspiele-des-jahres-ticketverkauf-fuer-hertha-und-kaiserslautern-startet-am-mittwoch.html
+            https://www.hannover96.de/tickets/tageskarten
+            https://www.hannover96.de/tickets/vorverkaufsstarts
+            https://www.hannover96.de/tickets/dauerkarte-2026/27
           FULL: |
+            https://www.hannover96.de/tickets/tageskarten
+            https://www.hannover96.de/tickets/vorverkaufsstarts
+            https://www.hannover96.de/tickets/dauerkarte-2026/27
           TABLES: |
-            https://www.hannover96.de/tickets
-            https://www.hannover96.de/newscenter/news/details/new6ae9b97acbb74897841577-letzte-heimspiele-des-jahres-ticketverkauf-fuer-hertha-und-kaiserslautern-startet-am-mittwoch.html
+            https://www.hannover96.de/tickets/tageskarten
+            https://www.hannover96.de/tickets/vorverkaufsstarts
+            https://www.hannover96.de/tickets/dauerkarte-2026/27
           EXPAND: |
+            https://www.hannover96.de/tickets/tageskarten
+            https://www.hannover96.de/tickets/vorverkaufsstarts
+            https://www.hannover96.de/tickets/dauerkarte-2026/27
           FIELDS: |
           PDFS: |
+            https://www.hannover96.de/fileadmin/user_upload/Stadionordnung_fuer_die_Heinz_von_Heiden_Arena_Hannover_01.08.2025.pdf
+            https://www.hannover96.de/fileadmin/user_upload/Stadionordnung_Taschen_HvH_Arena.pdf
           RAW: |
+            https://www.hannover96.de/rss
           NOTICES: |
-            https://www.96mitgliedschaft.de/mitglied-werden
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.hannover96.de/tickets
-            https://www.hannover96.de/newscenter/news/details/new6ae9b97acbb74897841577-letzte-heimspiele-des-jahres-ticketverkauf-fuer-hertha-und-kaiserslautern-startet-am-mittwoch.html
-            https://www.hannover96.de/fans-spieltag/heimspielinfos
-            https://www.hannover96.de/akademie/spieltagsinfos/informationen-fuer-gaestefans
-            https://www.hannover96.de/fans-spieltag/barrierefreies-stadion
-            https://www.hannover96.de/newscenter/news
-            https://www.96mitgliedschaft.de/mitglied-werden
+            https://www.hannover96.de/tickets/tageskarten
+            https://www.hannover96.de/tickets/vorverkaufsstarts
+            https://www.hannover96.de/tickets/dauerkarte-2026/27
+            https://www.hannover96.de/tickets/vereinskarten
+            https://www.hannover96.de/newscenter/news/news-archiv
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
