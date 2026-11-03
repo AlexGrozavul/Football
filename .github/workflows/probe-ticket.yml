@@ -42,38 +42,26 @@ jobs:
           GATE: |
             https://www.hannover96.de/impressum
           IMGS: |
-            https://www.hannover96.de/tickets/tageskarten
-            https://www.hannover96.de/tickets/vorverkaufsstarts
-            https://www.hannover96.de/tickets/dauerkarte-2026/27
           FULL: |
-            https://www.hannover96.de/tickets/tageskarten
-            https://www.hannover96.de/tickets/vorverkaufsstarts
-            https://www.hannover96.de/tickets/dauerkarte-2026/27
           TABLES: |
-            https://www.hannover96.de/tickets/tageskarten
-            https://www.hannover96.de/tickets/vorverkaufsstarts
-            https://www.hannover96.de/tickets/dauerkarte-2026/27
           EXPAND: |
-            https://www.hannover96.de/tickets/tageskarten
-            https://www.hannover96.de/tickets/vorverkaufsstarts
-            https://www.hannover96.de/tickets/dauerkarte-2026/27
           FIELDS: |
+            https://www.hannover96.de/fileadmin/user_upload/Preisuebersicht_2627.pdf
           PDFS: |
-            https://www.hannover96.de/fileadmin/user_upload/Stadionordnung_fuer_die_Heinz_von_Heiden_Arena_Hannover_01.08.2025.pdf
-            https://www.hannover96.de/fileadmin/user_upload/Stadionordnung_Taschen_HvH_Arena.pdf
+            https://www.hannover96.de/fileadmin/user_upload/Preisuebersicht_2627.pdf
+            https://www.hannover96.de/fileadmin/user_upload/20240710_Anleitung_Onlineshop.pdf
           RAW: |
-            https://www.hannover96.de/rss
           NOTICES: |
           DISCOVER: |
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.hannover96.de/tickets/tageskarten
-            https://www.hannover96.de/tickets/vorverkaufsstarts
-            https://www.hannover96.de/tickets/dauerkarte-2026/27
-            https://www.hannover96.de/tickets/vereinskarten
-            https://www.hannover96.de/newscenter/news/news-archiv
+            https://www.hannover96.de/newscenter/news/details/37419-gestaffelte-verkaufsphasen-tickets-fuer-heimspiele-gegen-st-pauli-und-dresden-ab-mittwoch-erhaeltlich.html
+            https://www.hannover96.de/newscenter/news/details/mitglieder-haben-vorkaufsrecht-ticketverkauf-fuers-heimspiel-gegen-fuerth-startet-am-montag.html
+            https://www.hannover96.de/newscenter/news/details/37629-infos-zum-stadionbesuch-gegen-dynamo-dresden-bitte-fruehzeitig-anreisen-eingaenge-oeffnen-am-sonntag-um-1130-uhr.html
+            https://www.hannover96.de/newscenter/news/details/37615-infos-zum-stadionbesuch-gegen-kaiserslautern-bitte-fruehzeitig-anreisen-eingaenge-oeffnen-am-mittwoch-um-1845-uhr.html
+            https://www.hannover96.de/newscenter/news/details/new6ad73c1f02a5a882146275-hannover-hautnah-der-96tv-vlog-gegen-den-fc-st-pauli-ausverkaufte-arena-flutlicht-ein-umkaempfter-punkt-1.html
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
