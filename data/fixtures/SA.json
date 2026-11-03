@@ -2459,7 +2459,7 @@
   {
    "id": 558541,
    "utcDate": "2026-11-02T17:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2477,14 +2477,14 @@
     "tla": "FIO",
     "crest": "https://crests.football-data.org/99.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 4,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558545,
    "utcDate": "2026-11-02T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2502,9 +2502,9 @@
     "tla": "PAR",
     "crest": "https://crests.football-data.org/112.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558537,

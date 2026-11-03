@@ -8234,7 +8234,7 @@
   {
    "id": 555072,
    "utcDate": "2026-11-02T23:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8252,9 +8252,9 @@
     "tla": "SAN",
     "crest": "https://crests.football-data.org/6685.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555073,
