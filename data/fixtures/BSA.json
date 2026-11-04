@@ -8259,7 +8259,7 @@
   {
    "id": 555073,
    "utcDate": "2026-11-03T22:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8277,14 +8277,14 @@
     "tla": "MIR",
     "crest": "https://crests.football-data.org/4364.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 555076,
    "utcDate": "2026-11-04T00:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8302,9 +8302,9 @@
     "tla": "COR",
     "crest": "https://crests.football-data.org/4241.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555070,
