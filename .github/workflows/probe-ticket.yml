@@ -55,10 +55,12 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://1.fc-magdeburg.de/news/detail/zurueck-in-der-erfolgsspur
-            https://1.fc-magdeburg.de/news/detail/blau-weisse-ekstase
-            https://1.fc-magdeburg.de/news/profis/page-2
-            https://1.fc-magdeburg.de/news/profis/page-3
+            https://1.fc-magdeburg.de/news/detail/niedersachsen-mit-neuem-coach
+            https://1.fc-magdeburg.de/news/detail/dritter-heimsieg-in-folge
+            https://1.fc-magdeburg.de/news/detail/ungeschlagene-rote-teufel
+            https://1.fc-magdeburg.de/news/detail/ueberzeugende-leistung
+            https://1.fc-magdeburg.de/news/profis/page-4
+            https://1.fc-magdeburg.de/news/profis/page-5
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
