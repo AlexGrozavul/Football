@@ -54,8 +54,10 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.eintracht.com/news?currentPage=2&cHash=69831662b286cd2d77c7de98ca23fec5
-            https://www.eintracht.com/news?currentPage=3&cHash=9560494dea026fa5f0f5b45f70680d01
+            https://www.eintracht.com/news/artikel/fan-infos-zum-heimderby
+            https://www.eintracht.com/news/artikel/rueckschau-zum-niedersachsenderby
+            https://www.eintracht.com/news/artikel/spielbericht-derby
+            https://www.eintracht.com/news/artikel/gegen-den-erzrivalen
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
