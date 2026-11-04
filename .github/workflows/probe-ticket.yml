@@ -42,17 +42,11 @@ jobs:
           GATE: |
             https://www.eintracht.com/impressum
           IMGS: |
-            https://www.eintracht.com/tickets/vorverkauf/tageskarten-1
-            https://www.eintracht.com/tickets/dauerkarten/dauerkartenverkauf-2026/2027
           FULL: |
           TABLES: |
-            https://www.eintracht.com/tickets/vorverkauf/tageskarten-1
-            https://www.eintracht.com/tickets/dauerkarten/dauerkartenverkauf-2026/2027
           EXPAND: |
-            https://www.eintracht.com/tickets/dauerkarten/faq
           FIELDS: |
           PDFS: |
-            https://www.eintracht.com/fileadmin/Profis/Medien/Dateien/ATGB_Eintracht_Braunschweig_2627.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -60,13 +54,10 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.eintracht.com/tickets/vorverkauf/tageskarten-1
-            https://www.eintracht.com/stadion/stadionordnung
-            https://www.eintracht.com/stadion/alles-zum-blau-gelben-spieltagsbesuch/sicherheit-regeln
-            https://www.eintracht.com/news/artikel/dauerkartenverkauf-fuer-die-saison-2026-27-startet-am-4-juni-2026
-            https://www.eintracht.com/tickets/dauerkarten/dauerkartenverkauf-2026/2027
-            https://www.eintracht.com/tickets/dauerkarten/kompakt
-            https://www.eintracht.com/tickets/dauerkarten/faq
+            https://www.eintracht.com/news
+            https://www.eintracht.com/stadion/barrierefreiheit
+            https://www.eintracht.com/tickets/gruppen
+            https://www.eintracht.com/teams/profis/dfb-pokal
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
