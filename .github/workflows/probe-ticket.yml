@@ -42,27 +42,21 @@ jobs:
           GATE: |
             https://1.fc-magdeburg.de/impressum
           IMGS: |
-            https://1.fc-magdeburg.de/ticketing/stadion-avnet-arena/stadionordnung
-            https://1.fc-magdeburg.de/fans/fans-mit-handicap
-            https://1.fc-magdeburg.de/ticketing/stadion-avnet-arena/stadionplan
-            https://1.fc-magdeburg.de/ticketing/ticketinformationen/deine-dauerkarte-26/27
-            https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atgb-dauerkarte
+            https://1.fc-magdeburg.de/news/detail/tickets-fuer-braunschweig-ab-mittwoch
           FULL: |
-            https://1.fc-magdeburg.de/ticketing/stadion-avnet-arena/stadionordnung
-            https://1.fc-magdeburg.de/ticketing/ticketinformationen/deine-dauerkarte-26/27
-            https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atgb-dauerkarte
           TABLES: |
-            https://1.fc-magdeburg.de/ticketing/ticketinformationen/deine-dauerkarte-26/27
           EXPAND: |
           FIELDS: |
+          RAWPDF: |
             https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Tageskarten_2026-27.pdf
             https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Tageskarten_Kat_B_2026-27.pdf
-            https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Aufwertungen_2026-27.pdf
+            https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Dauerkarten_2026-27.pdf
           PDFS: |
             https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Tageskarten_2026-27.pdf
             https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Tageskarten_Kat_B_2026-27.pdf
-            https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Aufwertungen_2026-27.pdf
-            https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/240520_ATGB_FCM.pdf
+            https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Erklaerung_Digitales_Ticket.pdf
+            https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Dauerkarten_2026-27.pdf
+            https://1.fc-magdeburg.de/fileadmin/user_upload/Stadionordnung-Avnet-Arena-2024-25.pdf
           RAW: |
           NOTICES: |
           DISCOVER: |
@@ -70,16 +64,10 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://1.fc-magdeburg.de/news/detail/tickets-fuer-darmstadt-st-pauli-cottbus-ab-dienstag
-            https://1.fc-magdeburg.de/news/detail/tickets-fuer-hannover-karlsruhe-ab-dienstag
-            https://1.fc-magdeburg.de/news/detail/tickets-fuer-kiel-kaiserslautern-ab-dienstag
-            https://1.fc-magdeburg.de/news/detail/tickets-fuer-fuerth-ab-dienstag
-            https://1.fc-magdeburg.de/news/tickets/page-2
-            https://1.fc-magdeburg.de/ticketing/stadion-avnet-arena/stadionordnung
-            https://1.fc-magdeburg.de/fans/fans-mit-handicap
-            https://1.fc-magdeburg.de/ticketing/stadion-avnet-arena/stadionplan
-            https://1.fc-magdeburg.de/ticketing/ticketinformationen/deine-dauerkarte-26/27
-            https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atgb-dauerkarte
+            https://1.fc-magdeburg.de/news/detail/tickets-fuer-braunschweig-ab-mittwoch
+            https://1.fc-magdeburg.de/news/tickets/page-3
+            https://1.fc-magdeburg.de/news/profis
+            https://1.fc-magdeburg.de/news/detail/sichert-euch-euren-stammplatz-in-der-avnet-arena
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
@@ -277,8 +265,13 @@ jobs:
             if (!robots[u.host]) await fetchRobots(u.host);
             const [ok, why] = allowed(u.host, u.pathname + u.search);
             if (!ok) { post(`### STOPPED ${url}\nrobots.txt: ${why}; not fetched.`); return; }
-            await sleep(1000);
-            const r = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(90000) });
+            // One retry after a failed download (a fetch error is not an answer from the host).
+            let r;
+            for (const wait of [1000, 10000]) {
+              await sleep(wait);
+              try { r = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(90000) }); break; }
+              catch (e) { if (wait === 10000) throw e; }
+            }
             const final = r.url;
             if (r.status !== 200 || isForbidden(final) || bare(new URL(final).host) !== bare(u.host)) {
               post(`### STOPPED ${url}\nHTTP ${r.status}, final URL ${final}; nothing recorded.`); return; }
@@ -306,6 +299,13 @@ jobs:
               try { ff = execFileSync('python3', ['-I', '-c', "import sys\nfrom pypdf import PdfReader\nr=PdfReader(sys.argv[1])\nf=r.get_fields() or {}\nprint('fields:',len(f))\nfor k,v in f.items(): print(repr(k),'=',repr(v.get('/V')))\nfor i,p in enumerate(r.pages):\n  for a in (p.get('/Annots') or []):\n    a=a.get_object(); print('page',i+1,a.get('/Subtype'),repr(a.get('/T')),repr(a.get('/V')),repr(a.get('/Contents')))", name], { maxBuffer: 1 << 26 }).toString(); }
               catch (e) { ff = `field dump failed: ${e.message}`; }
               post(`### (f) PDF FORM FIELDS (pypdf, the file's own field values; not OCR) ${url}\nlength ${ff.length}\n\n\`\`\`\n${ff.slice(0, MAX).replace(/```/g, "'''")}\n\`\`\``);
+            }
+            // RAWPDF PDFs: also the text in content-stream order (pdftotext -raw), so each label stays next to its price.
+            if (lines(process.env.RAWPDF).includes(url)) {
+              const rawt = execFileSync('pdftotext', ['-raw', name, '-'], { maxBuffer: 1 << 28 }).toString();
+              const rp = Math.max(1, Math.ceil(rawt.length / MAX));
+              for (let i = 0; i < rp; i++)
+                post(`### (q) PDF RAW-ORDER TEXT (pdftotext -raw) part ${i + 1} of ${rp} ${url}\nlength ${rawt.length}\n\n\`\`\`\n${rawt.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
             }
             const parts = Math.max(1, Math.ceil(text.length / MAX));
             for (let i = 0; i < parts; i++)
