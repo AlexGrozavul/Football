@@ -41,23 +41,48 @@ jobs:
             1.fc-magdeburg.de
             fc-magdeburg.de
             www.fc-magdeburg.de
+            partnerverein.fc-magdeburg.de
           GATE: |
+            https://1.fc-magdeburg.de/impressum
           IMGS: |
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/tagestickets
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atg-tagestickets
+            https://1.fc-magdeburg.de/ticketing/heimspiel
+            https://1.fc-magdeburg.de/ticketing/heimspiel/fc-st-pauli
+            https://1.fc-magdeburg.de/ticketing/heimspiel/fc-energie-cottbus
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/clubsale
           FULL: |
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/tagestickets
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atg-tagestickets
           TABLES: |
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/tagestickets
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atg-tagestickets
+            https://1.fc-magdeburg.de/ticketing/heimspiel
+            https://1.fc-magdeburg.de/ticketing/heimspiel/fc-st-pauli
+            https://1.fc-magdeburg.de/ticketing/heimspiel/fc-energie-cottbus
           EXPAND: |
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atg-tagestickets
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/clubsale
           FIELDS: |
           PDFS: |
           RAW: |
           NOTICES: |
-            https://1.fc-magdeburg.de/
           DISCOVER: |
-            https://1.fc-magdeburg.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://1.fc-magdeburg.de/
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/tagestickets
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atg-tagestickets
+            https://1.fc-magdeburg.de/ticketing/heimspiel
+            https://1.fc-magdeburg.de/ticketing/heimspiel/fc-st-pauli
+            https://1.fc-magdeburg.de/ticketing/heimspiel/fc-energie-cottbus
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/clubsale
+            https://1.fc-magdeburg.de/fans/gaestefans
+            https://1.fc-magdeburg.de/news/tickets
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/gruppentickets
+            https://1.fc-magdeburg.de/ticketing/ticketinformationen/ansprechpartner
+            https://1.fc-magdeburg.de/club/mitglieder/mitgliedschaft
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
