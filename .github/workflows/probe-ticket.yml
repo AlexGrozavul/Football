@@ -39,26 +39,39 @@ jobs:
           ALLOW: |
           ROBOTS: |
             www.eintracht.com
-            verein.eintracht.com
-            ich-lebe-eintracht.com
-            shop.eintracht.com
           GATE: |
+            https://www.eintracht.com/impressum
           IMGS: |
+            https://www.eintracht.com/tickets/vorverkauf/tageskarten
+            https://www.eintracht.com/tickets/dauerkarten/ticketpreise
           FULL: |
           TABLES: |
+            https://www.eintracht.com/tickets/vorverkauf/tageskarten
+            https://www.eintracht.com/tickets/dauerkarten/ticketpreise
           EXPAND: |
+            https://www.eintracht.com/tickets/vorverkauf/tageskarten
+            https://www.eintracht.com/tickets/service
+            https://www.eintracht.com/tickets/infos-fuer-gaestefans
           FIELDS: |
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.eintracht.com/start
           DISCOVER: |
-            https://www.eintracht.com/start
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.eintracht.com/start
+            https://www.eintracht.com/tickets/vorverkauf/tageskarten
+            https://www.eintracht.com/tickets/vorverkauf/aktuelles
+            https://www.eintracht.com/news/artikel/ticket-und-vorverkaufsinfos-zum-heimspiel-gegen-energie-cottbus
+            https://www.eintracht.com/news/artikel/wolfsburg-heimspiel-ist-ausverkauft
+            https://www.eintracht.com/tickets/loewen-ticketboerse
+            https://www.eintracht.com/tickets/infos-fuer-gaestefans
+            https://www.eintracht.com/tickets/infos-fuer-gaestefans-1
+            https://www.eintracht.com/tickets/service
+            https://www.eintracht.com/stadion/alles-zum-blau-gelben-spieltagsbesuch/tickets
+            https://www.eintracht.com/tickets/sozialtickets
+            https://www.eintracht.com/tickets/dauerkarten/ticketpreise
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
