@@ -37,30 +37,16 @@ jobs:
           SLOW: |
           HOSTGATE: |
           ALLOW: |
+            https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/tickets-bestellen
           ROBOTS: |
             www.vfl-wolfsburg.de
           GATE: |
           IMGS: |
           FULL: |
             https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/tickets-bestellen
-            https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/volkswagen-arena
-            https://www.vfl-wolfsburg.de/newsdetails/news-detail/detail/news/fanszene-aktuell-565ec164d25f1e94a16b2b5ea62a3a5a
-            https://www.vfl-wolfsburg.de/fans/mitgliedschaft/woelfeclub
-            https://www.vfl-wolfsburg.de/fans/mitgliedschaft/woelficlub
-            https://www.vfl-wolfsburg.de/allgemeines/agb/agb-woelfeclub
-            https://www.vfl-wolfsburg.de/fans/fan-infos/wo-geht-es-nach-panama
-            https://www.vfl-wolfsburg.de/fans/fan-infos/spieltags-und-faninfos
           TABLES: |
             https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/tickets-bestellen
-            https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/volkswagen-arena
-            https://www.vfl-wolfsburg.de/newsdetails/news-detail/detail/news/fanszene-aktuell-565ec164d25f1e94a16b2b5ea62a3a5a
-            https://www.vfl-wolfsburg.de/fans/mitgliedschaft/woelfeclub
-            https://www.vfl-wolfsburg.de/fans/mitgliedschaft/woelficlub
-            https://www.vfl-wolfsburg.de/allgemeines/agb/agb-woelfeclub
-            https://www.vfl-wolfsburg.de/fans/fan-infos/wo-geht-es-nach-panama
-            https://www.vfl-wolfsburg.de/fans/fan-infos/spieltags-und-faninfos
           EXPAND: |
-            https://www.vfl-wolfsburg.de/fans/fan-infos/spieltags-und-faninfos
             https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/tickets-bestellen
           FIELDS: |
           RAWPDF: |
@@ -73,13 +59,6 @@ jobs:
           RAW_SKIP: ''
           PAGES: |
             https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/tickets-bestellen
-            https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/volkswagen-arena
-            https://www.vfl-wolfsburg.de/newsdetails/news-detail/detail/news/fanszene-aktuell-565ec164d25f1e94a16b2b5ea62a3a5a
-            https://www.vfl-wolfsburg.de/fans/mitgliedschaft/woelfeclub
-            https://www.vfl-wolfsburg.de/fans/mitgliedschaft/woelficlub
-            https://www.vfl-wolfsburg.de/allgemeines/agb/agb-woelfeclub
-            https://www.vfl-wolfsburg.de/fans/fan-infos/wo-geht-es-nach-panama
-            https://www.vfl-wolfsburg.de/fans/fan-infos/spieltags-und-faninfos
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
