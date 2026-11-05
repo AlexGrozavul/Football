@@ -783,6 +783,97 @@ const server = http.createServer((req, res) => {
   await pgR.close(); await pgRo.close();
 
   tick('real friendship data');
+  // ---- Founding data (data/club-founding.csv): fixtures live in this test only, the repo's file stays as it is.
+  // The age is computed by the page from "today" (a parameter of foundingAge); a club with no row gets nothing.
+  const FOH = 'clubQ,subject,name,founded,status,basis,sourceId,checkedOn,quote';
+  const fsrc = rivSrc[0];
+  const nowD = new Date(), thisY = nowD.getFullYear();
+  const FNAME60 = 'Ultras Nordkurve Stuttgart Cannstatt Block Fuenf Gold 1900 X';   // 60 characters
+  const frow = (c, subj, name, founded, status) => [c, subj, name, founded, status, 'basis', fsrc.sourceId, '2026-11-05', 'a short quote'].map(q).join(',');
+  const foundCsv = FOH + '\n' + [
+    frow('Q4512', 'club', '', `${thisY - 126}-01-01`, 'confirmed'),
+    frow('Q4512', 'supporters', FNAME60, `${thisY - 50}-03-01`, 'unverified'),
+    frow('Q105853', 'supporters', 'Supporters Only', `${thisY - 20}-01-01`, 'inferred'),
+  ].join('\n') + '\n';
+  const foundPage = async lang => {
+    const pg = await ctx.newPage();
+    if(lang) await pg.addInitScript(l => { try { localStorage.setItem('football-planner-lang', l); } catch(e){} }, lang);
+    await pg.route('**/data/club-founding.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: foundCsv}));
+    pg.on('pageerror', e => errors.push(e.message));
+    await pg.goto(BASE);
+    await pg.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    return pg;
+  };
+  const foundSheet = async (pg, qid) => {
+    await pg.evaluate(c => openSheet(CLUBS.find(x => x.id === c)), qid);
+    await pg.waitForFunction(() => !/Loading|Se încarcă/.test(document.getElementById('sheetTix').textContent), null, {timeout: 10000});
+    await pg.waitForTimeout(250);
+    return pg.evaluate(() => {
+      const b = document.getElementById('sheetBody'), sb = document.querySelector('#sheet .sbody'), f = document.getElementById('sheetFound');
+      return {
+        rows: [...f.querySelectorAll('.row')].map(r => ({label: r.children[0].textContent, val: r.children[1].firstChild.textContent.trim(), tag: r.children[1].querySelector('.tag')?.textContent || '', tagCls: r.children[1].querySelector('.tag')?.className || ''})),
+        srcs: [...f.querySelectorAll('.sub')].map(x => ({text: x.textContent, href: x.querySelector('a')?.href || ''})),
+        prevLabel: f.previousElementSibling?.children[0]?.textContent || '', nextIsComp: f.nextElementSibling?.id === 'sheetComp',
+        h: f.getBoundingClientRect().height,
+        sideways: sb.scrollWidth > sb.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1};
+    });
+  };
+  const pgF = await foundPage('en');
+  const AGE = (iso, y, m, d) => pgF.evaluate(([i, a, b, c]) => foundingAge(i, new Date(a, b - 1, c)), [iso, y, m, d]);
+  const ageCases = [['1900-03-01', 2026, 11, 5, 126], ['1900-11-05', 2026, 11, 5, 126], ['1900-11-06', 2026, 11, 5, 125], ['1900-12-31', 2026, 11, 5, 125],
+    ['2000-02-29', 2026, 2, 28, 25], ['2000-02-29', 2026, 3, 1, 26], ['2000-02-29', 2028, 2, 28, 27], ['2000-02-29', 2028, 2, 29, 28],
+    ['2026-01-01', 2026, 11, 5, 0], ['2025-06-01', 2026, 11, 5, 1], ['2024-01-01', 2026, 11, 5, 2], ['2007-01-01', 2026, 11, 5, 19], ['2006-01-01', 2026, 11, 5, 20],
+    ['1926-01-01', 2026, 11, 5, 100], ['1925-01-01', 2026, 11, 5, 101], ['1913-01-01', 2026, 11, 5, 113], ['1907-01-01', 2026, 11, 5, 119], ['1906-01-01', 2026, 11, 5, 120]];
+  const gotAges = []; for(const c of ageCases) gotAges.push(await AGE(c[0], c[1], c[2], c[3]));
+  check('founding age: birthday passed / not yet passed, 29 February (1 March in a non-leap year), and ages 0, 1, 2, 19, 20, 100, 101, 113, 119, 120',
+    ageCases.every((c, i) => gotAges[i] === c[4]), JSON.stringify(ageCases.map((c, i) => [c[0], c[1] + '-' + c[2] + '-' + c[3], c[4], gotAges[i]]).filter((x, i) => gotAges[i] !== ageCases[i][4])));
+  const badAges = await pgF.evaluate(() => [foundingAge('1900-02-30', new Date(2026, 0, 1)), foundingAge('1900-03', new Date(2026, 0, 1)), foundingAge('1900', new Date(2026, 0, 1)), foundingAge('2999-01-01', new Date(2026, 0, 1))]);
+  check('founding age: a year, a year-month, an impossible day and a future date give no age (nothing drawn)', badAges.every(x => x === null), JSON.stringify(badAges));
+  const enAge = await pgF.evaluate(() => [0, 1, 2, 19, 20, 100, 101, 113, 119, 120].map(ageText));
+  check('founding age text, English', JSON.stringify(enAge) === JSON.stringify(['less than 1 year', '1 year', '2 years', '19 years', '20 years', '100 years', '101 years', '113 years', '119 years', '120 years']), JSON.stringify(enAge));
+  const FE = await foundSheet(pgF, 'Q4512'), FS = await foundSheet(pgF, 'Q105853'), FN = await foundSheet(pgF, 'Q15789');
+  check('founding sheet (English): club row "Founded <full date> (126 years)", confirmed shows no tag, source line with link and "Checked on"',
+    FE.rows[0]?.label === 'Founded' && FE.rows[0].val === `1 January ${thisY - 126} (126 years)` && FE.rows[0].tag === '' &&
+    FE.srcs[0]?.href === fsrc.url && /Checked on /.test(FE.srcs[0].text), JSON.stringify(FE.rows[0]) + JSON.stringify(FE.srcs[0]));
+  const suppWant = nowD.getMonth() + 1 < 3 ? 49 : 50;   // founded 1 March: the birthday has passed from 1 March on
+  check('founding sheet (English): supporters row "Main supporters group" with name, "founded <date> (<age>)", unverified shows the warning tag and a source line',
+    FE.rows[1]?.label === 'Main supporters group' && FE.rows[1].val === `${FNAME60}, founded 1 March ${thisY - 50} (${suppWant} years)` && FE.rows[1].tag === 'unverified' && /tag/.test(FE.rows[1].tagCls) &&
+    FE.srcs.length === 2 && FE.srcs[1].href === fsrc.url && /Checked on /.test(FE.srcs[1].text), JSON.stringify(FE.rows[1]));
+  check('founding sheet: the rows sit straight after Capacity (before Competition), club row first', FE.prevLabel === 'Capacity' && FE.nextIsComp && FE.rows.length === 2, FE.prevLabel);
+  check('founding sheet: a club with only a supporters row shows only that row (inferred tag); a club with no row shows nothing',
+    FS.rows.length === 1 && FS.rows[0].label === 'Main supporters group' && FS.rows[0].val === `Supporters Only, founded 1 January ${thisY - 20} (20 years)` && FS.rows[0].tag === 'inferred' &&
+    FN.rows.length === 0 && FN.srcs.length === 0 && FN.h === 0, JSON.stringify([FS.rows, FN.rows, FN.h]));
+  check('founding sheet: no "Not recorded" in the founding rows and no sideways scroll', ![...FE.rows, ...FS.rows].some(r => /not recorded/i.test(r.val)) && !FE.sideways && !FS.sideways);
+  await pgF.close();
+  const pgFR = await foundPage('ro');
+  const roAge = await pgFR.evaluate(() => [0, 1, 2, 19, 20, 100, 101, 113, 119, 120].map(ageText));
+  check('founding age text, Romanian ("ani" up to 19 and for last two digits 01-19, otherwise "de ani")', JSON.stringify(roAge) === JSON.stringify(['sub 1 an', '1 an', '2 ani', '19 ani', '20 de ani', '100 de ani', '101 ani', '113 ani', '119 ani', '120 de ani']), JSON.stringify(roAge));
+  const FRO = await foundSheet(pgFR, 'Q4512');
+  check('founding sheet (Romanian): "Fondat" and "Grup principal de suporteri", Romanian month, "fondat" and "de ani" (126)',
+    FRO.rows[0]?.label === 'Fondat' && /^1 ianuarie \d{4} \(126 de ani\)$/.test(FRO.rows[0].val) && FRO.rows[1]?.label === 'Grup principal de suporteri' &&
+    FRO.rows[1].val.startsWith(FNAME60 + ', fondat 1 martie ') && FRO.rows[1].tag === 'neverificat' && /Verificat la /.test(FRO.srcs[0].text), JSON.stringify(FRO.rows));
+  await pgFR.close();
+  // Layout of the longest case at 360 px (the group name wraps to several lines) in both languages.
+  const ctx360 = await browser.newContext({viewport: {width: 360, height: 740}, isMobile: true, hasTouch: true, serviceWorkers: 'block'});
+  await ctx360.route('https://tiles.stadiamaps.com/**', r => r.fulfill({status:200, contentType:'image/png', headers: {'Access-Control-Allow-Origin': '*'}, body: PNG}));
+  await ctx360.route('https://api.stadiamaps.com/**', r => r.abort());
+  for(const lang of ['en', 'ro']){
+    const pg = await ctx360.newPage();
+    await pg.addInitScript(l => { try { localStorage.setItem('football-planner-lang', l); } catch(e){} }, lang);
+    await pg.route('**/data/club-founding.csv', r => r.fulfill({status: 200, contentType: 'text/csv', body: foundCsv}));
+    pg.on('pageerror', e => errors.push(e.message));
+    await pg.goto(BASE);
+    await pg.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
+    const F3 = await foundSheet(pg, 'Q4512');
+    const geo = await pg.evaluate(() => { const f = document.getElementById('sheetFound'), sb = document.querySelector('#sheet .sbody'), fr = f.getBoundingClientRect(); const rows = [...f.querySelectorAll('.row span:last-child')];
+      return {lines: Math.round(rows[1].getBoundingClientRect().height / parseFloat(getComputedStyle(rows[1]).lineHeight)), right: Math.max(...[...f.querySelectorAll('*')].map(e => e.getBoundingClientRect().right)), left: Math.min(...[...f.querySelectorAll('*')].map(e => e.getBoundingClientRect().left)), w: innerWidth, sbW: sb.scrollWidth, sbC: sb.clientWidth}; });
+    check(`layout 360 px (${lang}): a 60-character group name wraps (${geo.lines} lines), nothing leaves the screen, no sideways scroll`,
+      geo.lines >= 2 && geo.right <= geo.w + 0.5 && geo.left >= -0.5 && !F3.sideways && geo.sbW <= geo.sbC + 1, JSON.stringify(geo));
+    await pg.close();
+  }
+  await ctx360.close();
+  tick('founding data on the sheet');
+
   // ---- The checker (tools/check_club_culture.py) on a scratch copy of the data: a pair in both the friendships
   // and the rivalries file exits 1 unless the friendship has ended; a quote over 15 words exits 1; no quote warns.
   const cp = require('child_process'), os = require('os');
@@ -790,7 +881,7 @@ const server = http.createServer((req, res) => {
   fs.mkdirSync(path.join(scratch, 'tools')); fs.mkdirSync(path.join(scratch, 'data', 'clubs'), {recursive: true});
   fs.copyFileSync(path.join(ROOT, 'tools/check_club_culture.py'), path.join(scratch, 'tools/check_club_culture.py'));
   for(const f of fs.readdirSync(path.join(ROOT, 'data/clubs'))) if(/^[A-Z]{2}\.json$/.test(f)) fs.copyFileSync(path.join(ROOT, 'data/clubs', f), path.join(scratch, 'data/clubs', f));
-  for(const f of ['club-rivalries.csv', 'club-friendships.csv', 'club-culture-sources.csv', 'club-parents.csv']) fs.copyFileSync(path.join(ROOT, 'data', f), path.join(scratch, 'data', f));
+  for(const f of ['club-rivalries.csv', 'club-friendships.csv', 'club-culture-sources.csv', 'club-parents.csv', 'club-founding.csv']) fs.copyFileSync(path.join(ROOT, 'data', f), path.join(scratch, 'data', f));
   const runChecker = () => cp.spawnSync('python3', [path.join(scratch, 'tools/check_club_culture.py')], {encoding: 'utf8'});
   const friFile = path.join(scratch, 'data/club-friendships.csv'), baseFri = fs.readFileSync(friFile, 'utf8').replace(/\n?$/, '\n');
   const withRow = row => { fs.writeFileSync(friFile, baseFri + FH.split(',').map(k => q(row[k] || '')).join(',') + '\n'); return runChecker(); };
@@ -841,6 +932,34 @@ const server = http.createServer((req, res) => {
   const noQ = (RV0.stdout.match(/^WARNING: club-rivalries\.csv: \d+ rows have no quote/gm) || []);
   check('checker: rivalry rows with no quote give one warning with a count, no row listed, exit 0',
     RV0.status === 0 && noQ.length === 1 && !/Scratch Rival FC.*no quote/.test(RV0.stdout) && Number(noQ[0].match(/: (\d+) rows/)[1]) === riv.filter(r => !r.quote).length + 1, (RV0.stdout + RV0.stderr).slice(-200));
+  // club-founding.csv: every bad case exits 1 on a temporary copy; an empty file, a supporters-only club and a missing checkedOn do not.
+  const fndFile = path.join(scratch, 'data/club-founding.csv'), fndHead = FOH + '\n';
+  const fcheck = (lines) => { fs.writeFileSync(fndFile, fndHead + lines.join('\n') + (lines.length ? '\n' : '')); return runChecker(); };
+  const gr = (c, subj, name, founded, status, sid = fsrc.sourceId, chk = '2026-11-05') => [c, subj, name, founded, status, 'basis', sid, chk, 'a short quote'].map(q).join(',');
+  const okRow = gr('Q4512', 'club', '', '1893-05-09', 'confirmed');
+  const fcases = [
+    ['an empty file passes', [], 0, /club-founding\.csv: 0 accepted rows/],
+    ['a good club row and a supporters-only club pass', [okRow, gr('Q105853', 'supporters', 'Some Group', '1999-12-31', 'inferred')], 0, /club-founding\.csv: 2 accepted rows/],
+    ['an unknown status', [gr('Q4512', 'club', '', '1893-05-09', 'sure')], 1, /status "sure" is not one of/],
+    ['an unknown subject', [gr('Q4512', 'fans', 'X', '1893-05-09', 'confirmed')], 1, /subject "fans" is not one of/],
+    ['an unknown sourceId', [gr('Q4512', 'club', '', '1893-05-09', 'confirmed', 'ZZZ9')], 1, /sourceId "ZZZ9" is not in club-culture-sources\.csv/],
+    ['an unknown clubQ', [gr('Q0', 'club', '', '1893-05-09', 'confirmed')], 1, /clubQ "Q0" is on no club file/],
+    ['a year only', [gr('Q4512', 'club', '', '1893', 'confirmed')], 1, /not a full YYYY-MM-DD date/],
+    ['a year-month', [gr('Q4512', 'club', '', '1893-05', 'confirmed')], 1, /not a full YYYY-MM-DD date/],
+    ['a day that does not exist', [gr('Q4512', 'club', '', '1893-02-30', 'confirmed')], 1, /not a full YYYY-MM-DD date that exists/],
+    ['29 February in a non-leap year', [gr('Q4512', 'club', '', '1900-02-29', 'confirmed')], 1, /not a full YYYY-MM-DD date that exists/],
+    ['a date in the future', [gr('Q4512', 'club', '', '2999-01-01', 'confirmed')], 1, /is in the future/],
+    ['a date before 1800', [gr('Q4512', 'club', '', '1799-12-31', 'confirmed')], 1, /is before 1800/],
+    ['a supporters row with no name', [gr('Q4512', 'supporters', '', '1999-01-01', 'confirmed')], 1, /needs the name of the group/],
+    ['a club row with a name', [gr('Q4512', 'club', 'Named', '1893-05-09', 'confirmed')], 1, /a club row has no name/],
+    ['a duplicate (clubQ, subject, name)', [okRow, okRow], 1, /is entered twice/],
+    ['a supporters row whose club has no club row is not an error', [gr('Q4512', 'supporters', 'Only Fans', '1999-01-01', 'confirmed')], 0, /1 accepted rows/],
+    ['a missing checkedOn only warns', [gr('Q4512', 'club', '', '1893-05-09', 'confirmed', fsrc.sourceId, '')], 0, /club-founding\.csv line \d+: no checkedOn/],
+  ];
+  for(const [name, lines, want, re] of fcases){
+    const R = fcheck(lines);
+    check(`checker (founding): ${name}`, R.status === want && re.test(R.stdout), `${R.status} ${(R.stdout + R.stderr).slice(-200)}`);
+  }
   fs.rmSync(scratch, {recursive: true, force: true});
   function csvText(t){ const f = '__tmp'; return t.split('\n').slice(1).filter(Boolean).map(l => { const c = l.split(','); return {clubQ: c[0], rivalQ: c[1], rivalName: c[2], class: c[3], sourceId: c[4]}; }); }
 

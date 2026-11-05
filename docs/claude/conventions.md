@@ -2567,6 +2567,18 @@ right.
 
 ---
 
+## Founding data
+
+Added 2026-11-05. `data/club-founding.csv` (header `clubQ,subject,name,founded,status,basis,sourceId,checkedOn,quote`) is **hand-written and never written by a script**; Wikidata is never fetched for it. A row is either `subject` `club` (the club's founding date, `name` blank) or `supporters` (the **main** supporters group, `name` required). A supporters row exists only when a source calls one group the main, largest or leading one; a supporters row does not need a club row. VfB Stuttgart II and Hoffenheim II get no rows.
+
+- **Full dates only**: `founded` is `YYYY-MM-DD`, a real day, not before 1800 and not in the future. A year or a year-month is not stored and not accepted; if only that is known the row is not written (the cell stays absent, rules 1 and 2).
+- **Whose date**: the club row holds the date the club itself states; any other date goes in `basis`.
+- **Tags** (`status`): `confirmed` = stated by the club's own page or by two independent sources (several pages of one body, or all Wikipedia versions, are one source); `inferred` = follows from stated facts by reasoning given in `basis`; `unverified` = everything else, including a page that could not be opened. Confirmed rows show no tag on the sheet; inferred and unverified show the same tag as other rows.
+- **Sources** go in `data/club-culture-sources.csv` (kinds `club-history` and `supporters-site` were added next to the old ones); `quote` is the source's own words, 15 words at most, in the original language, as in `club-friendships.csv`.
+- **Age**: never stored. The page computes whole years on the device's local date (`foundingAge(iso, today)`); a 29 February founding has its birthday on 1 March in a year that is not a leap year. Age 0 shows "less than 1 year" / "sub 1 an", age 1 "1 year" / "1 an"; Romanian from 2 up is "N ani" for N up to 19 and for numbers whose last two digits are 01 to 19, otherwise "N de ani".
+- **Sheet**: both rows are drawn straight after Capacity (club first); a club without a row gets nothing drawn, never "Not recorded". The month is spelled out ("1 March 1900").
+- `tools/check_club_culture.py` exits 1 on the bad cases listed in its header; a missing `checkedOn` only warns.
+
 ## Adding a country: the places to touch
 
 Read off the Belgium and Greece wiring on 2026-10-20 (Portugal pass); keep it in step when a file below changes.
