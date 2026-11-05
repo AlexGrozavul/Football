@@ -38,26 +38,39 @@ jobs:
           HOSTGATE: |
           ALLOW: |
           ROBOTS: |
-            vfl-wolfsburg.de
             www.vfl-wolfsburg.de
           GATE: |
+            https://www.vfl-wolfsburg.de/allgemeines/allgemeine-nutzungsbedingungen
           IMGS: |
           FULL: |
+            https://www.vfl-wolfsburg.de/startseite
+            https://www.vfl-wolfsburg.de/fans/fan-infos/spieltags-und-faninfos
+            https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen
+            https://www.vfl-wolfsburg.de/stadien/volkswagen-arena/stadioninformationen
+            https://www.vfl-wolfsburg.de/allgemeines/agb
           TABLES: |
+            https://www.vfl-wolfsburg.de/startseite
+            https://www.vfl-wolfsburg.de/fans/fan-infos/spieltags-und-faninfos
+            https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen
+            https://www.vfl-wolfsburg.de/stadien/volkswagen-arena/stadioninformationen
+            https://www.vfl-wolfsburg.de/allgemeines/agb
           EXPAND: |
           FIELDS: |
           RAWPDF: |
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.vfl-wolfsburg.de/
           DISCOVER: |
-            https://www.vfl-wolfsburg.de/
+            https://www.vfl-wolfsburg.de/startseite
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.vfl-wolfsburg.de/
+            https://www.vfl-wolfsburg.de/startseite
+            https://www.vfl-wolfsburg.de/fans/fan-infos/spieltags-und-faninfos
+            https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen
+            https://www.vfl-wolfsburg.de/stadien/volkswagen-arena/stadioninformationen
+            https://www.vfl-wolfsburg.de/allgemeines/agb
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
