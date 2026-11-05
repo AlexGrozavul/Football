@@ -4134,7 +4134,7 @@
   {
    "id": 561925,
    "utcDate": "2026-11-04T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4152,14 +4152,14 @@
     "tla": "WHU",
     "crest": "https://crests.football-data.org/563.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 3,
+   "winner": "DRAW"
   },
   {
    "id": 561927,
    "utcDate": "2026-11-04T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4177,14 +4177,14 @@
     "tla": "MID",
     "crest": "https://crests.football-data.org/343.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561926,
    "utcDate": "2026-11-04T20:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 14,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4202,9 +4202,9 @@
     "tla": "WOL",
     "crest": "https://crests.football-data.org/76.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561932,
