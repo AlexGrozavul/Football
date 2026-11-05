@@ -288,6 +288,7 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   .sheet button.frname{background:var(--surf);border:1px solid var(--line);border-radius:7px;padding:6px 9px;
     font:inherit;font-size:13.5px;cursor:pointer;text-align:left;min-height:36px;max-width:100%}
   .sheet .fri .sub{overflow-wrap:anywhere}
+  .sheet .found .sub{overflow-wrap:anywhere}
   .sheet .fri[hidden]{display:none}
   .sheet button.frmore{margin-top:8px;background:var(--surf);border:1px solid var(--line);border-radius:7px;
     padding:8px 12px;color:var(--ink);font:inherit;font-size:13.5px;min-height:44px;cursor:pointer}
@@ -1115,6 +1116,15 @@ const I18N = {
     "fri.note": "As stated by the cited source. Fan friendships change and can end.",
     "fri.groups": "Groups: {text}",
     "fri.quote": "Source says:",
+    "found.club": "Founded",
+    "found.supp": "Main supporters group",
+    "found.suppValue": "{name}, founded {date} ({age})",
+    "found.age0": "less than 1 year",
+    "found.age1": "1 year",
+    "found.ageN": "{n} years",
+    "found.ageDe": "{n} years",
+    "found.loadFail": "The founding information could not be loaded.",
+    "found.short": "Founding information",
     "fri.mirror": "Stated on {club}'s page only",
     "riv.mirror": "Stated on {club}'s page only",
     "riv.none": "No rivalry recorded for this club yet.",
@@ -2413,6 +2423,15 @@ const I18N = {
     "fri.note": "Așa cum le arată sursa citată. Prieteniile dintre suporteri se pot schimba și pot lua sfârșit.",
     "fri.groups": "Grupuri: {text}",
     "fri.quote": "Sursa spune:",
+    "found.club": "Fondat",
+    "found.supp": "Grup principal de suporteri",
+    "found.suppValue": "{name}, fondat {date} ({age})",
+    "found.age0": "sub 1 an",
+    "found.age1": "1 an",
+    "found.ageN": "{n} ani",
+    "found.ageDe": "{n} de ani",
+    "found.loadFail": "Informațiile despre înființare nu au putut fi încărcate.",
+    "found.short": "Informații despre înființare",
     "fri.mirror": "Menționat doar pe pagina {club}",
     "riv.mirror": "Menționat doar pe pagina {club}",
     "riv.none": "Nu este încă înregistrată nicio rivalitate pentru acest club.",
@@ -4344,6 +4363,7 @@ function openSheet(club, mates, keep = false){
     `<h4>${esc(t('sheet.club'))}</h4>` +
     field(t('sheet.ground'), club.venue, true) +
     field(t('sheet.capacity'), club.capacity ? nfg(club.capacity) : null) +
+    `<div id="sheetFound"></div>` +
     `<div id="sheetComp">${field(t('sheet.competition'), '…')}</div>` +
     field(t('sheet.distance'), km !== null ? t('sheet.byRoad', {km: nn(km), home: HOME.label}) : null) +
     `<div class="sub">${esc(t('sheet.straight', {m: MULTIPLIER}))}</div>` +
@@ -4380,6 +4400,7 @@ function openSheet(club, mates, keep = false){
   };
   competitionHtml(club).then(h => fill('sheetComp', h));
   fixturesHtml(club).then(h => fill('sheetFix', h));
+  foundingHtml(club).then(h => fill('sheetFound', h));
   rivalriesHtml(club).then(h => fill('sheetRiv', h));
   friendshipsHtml(club).then(h => fill('sheetFri', h));
   ticketsHtml(club).then(h => fill('sheetTix', h));
@@ -4468,6 +4489,58 @@ async function rivalriesHtml(club){
   return `<h4>${esc(t('riv.title'))}</h4><div class="rivs">` + rows.map(rowHtml).join('') +
     (rows.length > RIV_SHOWN ? `<button class="rvmore" aria-expanded="false">${esc(t('gen.showAll', {n: rows.length}))}</button>` : '') +
     (par ? parentHtml() : '') + `</div>`;
+}
+
+/* Founding data: data/club-founding.csv, hand-written, full dates only (YYYY-MM-DD). The age is
+   computed here from the device's date and never stored. A club without a row gets nothing drawn. */
+const FOUND_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const foundParts = iso => {
+  const m = FOUND_DATE.exec(iso || '');
+  if(!m) return null;
+  const y = +m[1], mo = +m[2], d = +m[3], dt = new Date(Date.UTC(y, mo - 1, d));
+  return dt.getUTCFullYear() === y && dt.getUTCMonth() === mo - 1 && dt.getUTCDate() === d ? {y, mo, d} : null;
+};
+const isLeapYear = y => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+/* Whole years on `today` (a Date, read in local time). A 29 February founding has its birthday on
+   1 March in a year that is not a leap year. null for an invalid or future date. */
+function foundingAge(iso, today){
+  const f = foundParts(iso);
+  if(!f) return null;
+  const ty = today.getFullYear(), tm = today.getMonth() + 1, td = today.getDate();
+  let bm = f.mo, bd = f.d;
+  if(bm === 2 && bd === 29 && !isLeapYear(ty)){ bm = 3; bd = 1; }
+  let age = ty - f.y;
+  if(tm < bm || (tm === bm && td < bd)) age--;
+  return age < 0 ? null : age;
+}
+function ageText(age){
+  if(age === 0) return t('found.age0');
+  if(age === 1) return t('found.age1');
+  /* Romanian: "N ani" up to 19 and for last two digits 01 to 19, otherwise "N de ani" */
+  const last2 = age % 100;
+  const de = LANG === 'ro' && age >= 20 && !(last2 >= 1 && last2 <= 19);
+  return t(de ? 'found.ageDe' : 'found.ageN', {n: age});
+}
+const foundDate = iso => new Date(iso + 'T12:00:00Z').toLocaleDateString(LOC(), {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'});
+
+async function foundingHtml(club){
+  const C = await cultureFiles(['data/club-founding.csv']);
+  if(C.err) return `<div class="found">` + unavailable(t('found.short'), esc(t('found.loadFail'))) +
+    why(esc(t('gen.fileFail', {file: C.err, err: C.why}))) + `</div>`;
+  const now = new Date();
+  const mine = C.files[0].filter(r => !r._over && r.clubQ === club.id && C.src.has(r.sourceId) &&
+      foundingAge(r.founded, now) !== null && ['confirmed', 'inferred', 'unverified'].includes(r.status));
+  const one = (subject, label, valueOf) => {
+    const r = mine.find(x => x.subject === subject && (subject === 'club' || x.name));
+    if(!r) return '';
+    const value = valueOf(r, foundDate(r.founded), ageText(foundingAge(r.founded, now)));
+    const tag = r.status === 'confirmed' ? '' : ' ' + confTag(r.status);
+    return `<div class="row"><span>${esc(label)}</span><span data-content>${esc(value)}${tag}</span></div>` +
+      `<div class="sub">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div>`;
+  };
+  const html = one('club', t('found.club'), (r, d, a) => `${d} (${a})`) +
+    one('supporters', t('found.supp'), (r, d, a) => t('found.suppValue', {name: r.name, date: d, age: a}));
+  return html ? `<div class="found">${html}</div>` : '';
 }
 
 /* Fan friendships: data/club-friendships.csv, hand-written, cites club-culture-sources.csv.

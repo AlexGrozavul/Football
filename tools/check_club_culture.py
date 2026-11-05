@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 check_club_culture.py -- read-back and checks for data/club-rivalries.csv,
-data/club-friendships.csv and data/club-culture-sources.csv.
+data/club-friendships.csv, data/club-founding.csv and data/club-culture-sources.csv.
 
 All three are hand-written and nothing writes to them. This tool reads them,
 prints every accepted row as understood and exits 1 on a problem.
@@ -22,6 +22,13 @@ checkedOn, quote (the source's own words behind the status, in the original lang
 nothing is inferred from rivalries or shared enemies. Status active needs present-tense
 wording and ended needs wording that says so; the quote is what lets a person check both.
 
+club-founding.csv: clubQ, subject (club or supporters), name (blank for club, required for
+supporters), founded (YYYY-MM-DD, a real calendar day, full dates only), status (confirmed, inferred,
+unverified), basis, sourceId, checkedOn, quote (15 words at most). The file may be empty.
+EXITS 1 in club-founding.csv on: an unknown status or subject, an unknown sourceId, an unknown clubQ,
+a malformed or non-existent date, a date in the future, a date before 1800, a supporters row with no
+name, a club row with a name, a duplicate (clubQ, subject, name), a quote of more than 15 words. A
+supporters row whose club has no club row is not an error.
 EXITS 1 on: in club-parents.csv an unknown clubQ or parentQ, a repeated clubQ, a club that is its own parent and a parent that is itself a reserve side; a clubQ or rivalQ on no data/clubs/*.json, a sourceId
 not in club-culture-sources.csv, a class or source kind
 outside its list, a duplicate row, a missing rivalName,
@@ -46,7 +53,10 @@ CLASSES = ('main', 'local', 'other')
 SCOPES = ('fan-groups', 'clubs', 'unclear')
 STATUSES = ('active', 'ended', 'unclear')
 ORDER_SHOWN = ('active', 'unclear', 'ended')   # the order the club sheet draws them
-KINDS = ('wikipedia', 'club', 'press', 'fan-media')
+KINDS = ('wikipedia', 'club', 'press', 'fan-media', 'club-history', 'supporters-site')
+FOUND_SUBJECTS = ('club', 'supporters')
+FOUND_STATUSES = ('confirmed', 'inferred', 'unverified')
+FOUND_MIN_YEAR = 1800
 REVIEW_OVER = 12
 QUOTE_MAX_WORDS = 15
 MONTHS = 'january|february|march|april|may|june|july|august|september|october|november|december'
@@ -199,6 +209,36 @@ for line, r in read('club-friendships.csv', ['clubQ', 'friendQ', 'friendName', '
     seen.add(key)
     if ok: fri.setdefault(r['clubQ'], []).append(r)
 
+# club-founding.csv: the club's founding date and its main supporters group. Hand-written, full dates only.
+founding = []
+fseen = set()
+rows = read('club-founding.csv', ['clubQ', 'subject', 'name', 'founded', 'status', 'basis', 'sourceId', 'checkedOn', 'quote'])
+for line, r in rows:
+    at = f'club-founding.csv line {line}'
+    ok = common(at, r, True)
+    if r['subject'] not in FOUND_SUBJECTS:
+        problems.append(f'{at}: subject "{r["subject"]}" is not one of {", ".join(FOUND_SUBJECTS)}'); ok = False
+    elif r['subject'] == 'supporters' and not r['name']:
+        problems.append(f'{at}: a supporters row needs the name of the group'); ok = False
+    elif r['subject'] == 'club' and r['name']:
+        problems.append(f'{at}: a club row has no name (found "{r["name"]}")'); ok = False
+    if r['status'] not in FOUND_STATUSES:
+        problems.append(f'{at}: status "{r["status"]}" is not one of {", ".join(FOUND_STATUSES)}'); ok = False
+    fd = iso(r['founded']) if re.fullmatch(r'\d{4}-\d{2}-\d{2}', r['founded']) else None
+    if not fd:
+        problems.append(f'{at}: founded "{r["founded"]}" is not a full YYYY-MM-DD date that exists'); ok = False
+    elif fd > today:
+        problems.append(f'{at}: founded {r["founded"]} is in the future'); ok = False
+    elif fd.year < FOUND_MIN_YEAR:
+        problems.append(f'{at}: founded {r["founded"]} is before {FOUND_MIN_YEAR}'); ok = False
+    if len(r['quote'].split()) > QUOTE_MAX_WORDS:
+        problems.append(f'{at}: the quote is {len(r["quote"].split())} words; {QUOTE_MAX_WORDS} at most'); ok = False
+    key = (r['clubQ'], r['subject'], r['name'].casefold())
+    if key in fseen:
+        problems.append(f'{at}: {clubs.get(r["clubQ"], r["clubQ"])} / {r["subject"]} {r["name"]} is entered twice'); ok = False
+    fseen.add(key)
+    if ok: founding.append(r)
+
 # club-parents.csv: a reserve side and the first team it belongs to. Exits 1 on a clubQ or parentQ on no
 # club file, a repeated clubQ, a club that is its own parent, and a parent that is itself a reserve side
 # (a clubQ of this file). Warns on a missing source or checkedOn.
@@ -267,6 +307,9 @@ for q in sorted(fri, key=lambda q: clubs[q]):
     for r in sorted(fri[q], key=lambda r: (ORDER_SHOWN.index(r['status']), r['friendName'])):
         print(f'    {r["status"]:7} {r["scope"]:10} {r["friendName"]}  {r["friendQ"] or "(not on the map)"}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
         if r['quote']: print(f'             quote: «{r["quote"]}»')
+print(f'club-founding.csv: {len(founding)} accepted rows')
+for r in sorted(founding, key=lambda r: (clubs[r['clubQ']], r['subject'])):
+    print(f'  {clubs[r["clubQ"]]} ({r["clubQ"]})  {r["subject"]:10} {r["name"] or "-"}  {r["founded"]}  {r["status"]}  {r["sourceId"]}  checked {r["checkedOn"] or "-"}')
 print(f'club-parents.csv: {len(parents)} accepted rows')
 for q in sorted(parents, key=lambda q: clubs[q]):
     print(f'  {clubs[q]} ({q}) is a reserve side of {clubs[parents[q]["parentQ"]]} ({parents[q]["parentQ"]})  checked {parents[q]["checkedOn"] or "-"}')

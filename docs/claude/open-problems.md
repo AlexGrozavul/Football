@@ -5378,3 +5378,5 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
 
 ---
 
+
+- **Founding data: the file is empty (2026-11-05).** The feature (`data/club-founding.csv`, two rows on the club sheet, checker, tests) is built and `data/club-founding.csv` holds only its header. No row was researched or invented. The research session comes later, with web pages and sources of its own; until then no club sheet shows a founding line. Open for that session: finding, per club, a source that calls one supporters group the main one (many clubs will have none, and then no supporters row is written); VfB Stuttgart II and Hoffenheim II get no rows by decision.
