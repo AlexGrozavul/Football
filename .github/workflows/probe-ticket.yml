@@ -33,22 +33,27 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
-          RUN_LABEL: run-3
+          RUN_LABEL: run-4
         run: |
           cd /tmp/pw
           # One line per item. ROBOTS <host> | PAGE <url> | NOTICES <url> (landing page; also opens
           # its legal-notice / terms links on the same host) | PDF <url> | WIKIDATA <qid> | CLICK <url>
           # (page, then opens collapsed sections by DOM click) | RAW <url> (plain text, e.g. a sitemap)
           cat > list.txt <<'EOF'
-          PAGE https://www.fc-union-berlin.de/de/allgemeine-geschaeftsbedingungen-83FR
-          TABS https://www.fc-union-berlin.de/de/stadion/besucherinfos-2h5Y
-          TABS https://www.fc-union-berlin.de/de/stadion/besucherinfos/ticketpreise-2pVY
-          TABS https://www.fc-union-berlin.de/de/stadion/besucherinfos/information-gaestefans-LKWp
-          TABS https://www.fc-union-berlin.de/de/stadion/besucherinfos/hinweise-fuer-besucher-mit-handicap-RgJe
-          TABS https://www.fc-union-berlin.de/de/stadion/an-der-alten-foersterei/stadionnordnung-CvFS
-          TABS https://www.fc-union-berlin.de/de/verein/mitglieder-iNvD
-          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW
-          PAGE https://www.fc-union-berlin.de/de/fussball/profis-maenner/spielplan-maenner-5OQZ
+          PDF https://www.fc-union-berlin.de/files/d1a330c1-503e-40cd-b47b-a7a6c1a2d19f?ts=1791811694&s=hRlmW0u17nrqgU418Vadn8
+          CLICK https://www.fc-union-berlin.de/de/matchcenter-PuUNWOxFaYVwzsLus5Y22Th8i?section=matchday
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=2
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=3
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=4
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=5
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=6
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=7
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=8
+          PAGE https://www.fc-union-berlin.de/de/matchcenter-dai4tb25qoHjuG2JabyYE4gBI?section=report
+          PAGE https://www.fc-union-berlin.de/de/matchcenter-N2Lz8gVkwM7JEtSqEoJmLREBp?section=report
+          PAGE https://www.fc-union-berlin.de/de/matchcenter-6XdgF76MdIj3vcL7aQORDrYVY?section=report
+          PAGE https://www.fc-union-berlin.de/de/matchcenter-pQZkb7Qg90hGgdOjMqtygfT8B?section=report
+          PAGE https://www.fc-union-berlin.de/de/matchcenter-PuUNWOxFaYgBYrhkNWaugTIlJ?section=report
           EOF
           cat > probe.js <<'EOF'
           const { chromium } = require('playwright');
