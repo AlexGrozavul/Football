@@ -33,17 +33,20 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
-          RUN_LABEL: run-1
+          RUN_LABEL: run-2
         run: |
           cd /tmp/pw
           # One line per item. ROBOTS <host> | PAGE <url> | NOTICES <url> (landing page; also opens
           # its legal-notice / terms links on the same host) | PDF <url> | WIKIDATA <qid> | CLICK <url>
           # (page, then opens collapsed sections by DOM click) | RAW <url> (plain text, e.g. a sitemap)
           cat > list.txt <<'EOF'
-          WIKIDATA Q141971
-          ROBOTS fc-union-berlin.de
-          ROBOTS www.fc-union-berlin.de
-          NOTICES https://www.fc-union-berlin.de/
+          ROBOTS tickets.union-zeughaus.de
+          ROBOTS www.tickets.union-zeughaus.de
+          ROBOTS union-zeughaus.de
+          SITEMAP https://www.fc-union-berlin.de/sitemap.xml
+          CLICK https://www.fc-union-berlin.de/de/verein/mitglieder-iNvD?tab=10-36
+          CLICK https://www.fc-union-berlin.de/de/stadion/an-der-alten-foersterei-uw2Y?tab=26-94#tab-26-94
+          CLICK https://www.fc-union-berlin.de/de/matchcenter-W7v06c9IK9U6vQEUnO1bYBR5P?section=matchday
           EOF
           cat > probe.js <<'EOF'
           const { chromium } = require('playwright');
@@ -192,6 +195,17 @@ jobs:
             } catch (e) { await post(`${LABEL} ERROR RAW ${url}: ${String(e).slice(0, 500)}`); }
             await sleep(1500);
           }
+          async function sitemap(url, depth) {
+            const g = await gate(url);
+            if (g) { await post(`${LABEL} SKIPPED SITEMAP ${url}: ${g}`); return; }
+            try { const r = await fetch(url, {headers: {'User-Agent': UA}, signal: AbortSignal.timeout(30000)});
+              const t = await r.text(); await sleep(1100);
+              const entries = [...t.matchAll(/<(?:url|sitemap)>([\s\S]*?)<\/(?:url|sitemap)>/g)].map(m => { const loc = (m[1].match(/<loc>\s*([^<]*?)\s*<\/loc>/) || [])[1] || ''; const lm = (m[1].match(/<lastmod>([^<]*)<\/lastmod>/) || [])[1] || ''; return `${loc} ${lm}`.trim(); });
+              const isIndex = /<sitemapindex/i.test(t);
+              await postParts(`${LABEL} SITEMAP ${url} HTTP ${r.status} ${isIndex ? 'INDEX' : 'URLSET'} ${entries.length} entries (loc and lastmod only)`, entries.join('\n') || t.slice(0, 3000));
+              if (isIndex && depth === 0) for (const e of entries.slice(0, 20)) await sitemap(e.split(' ')[0], 1);
+            } catch (e) { await post(`${LABEL} ERROR SITEMAP ${url}: ${String(e).slice(0, 500)}`); }
+          }
           (async () => {
             try {
               browser = await chromium.launch();
@@ -212,6 +226,7 @@ jobs:
                 else if (kind === 'CLICK') await page(arg, {click: true});
                 else if (kind === 'PDF') await pdf(arg);
                 else if (kind === 'RAW') await raw(arg);
+                else if (kind === 'SITEMAP') await sitemap(arg, 0);
                 else if (kind === 'NOTICES') {
                   const d = await page(arg);
                   if (d) {
