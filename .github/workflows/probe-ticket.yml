@@ -33,22 +33,17 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
-          RUN_LABEL: run-6
+          RUN_LABEL: run-7
         run: |
           cd /tmp/pw
           # One line per item. ROBOTS <host> | PAGE <url> | NOTICES <url> (landing page; also opens
           # its legal-notice / terms links on the same host) | PDF <url> | WIKIDATA <qid> | CLICK <url>
           # (page, then opens collapsed sections by DOM click) | RAW <url> (plain text, e.g. a sitemap)
           cat > list.txt <<'EOF'
-          PAGE https://www.fc-union-berlin.de/de/stadion/an-der-alten-foersterei/sicherheitspolitik-YBVE
-          PAGE https://www.fc-union-berlin.de/de/sponsoring/hospitality-viptickets-ylvr
-          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=9
-          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=10
-          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=11
-          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=12
-          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=13
-          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=14
-          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=15
+          PAGE https://www.fc-union-berlin.de/de/meldungen/losverfahren-zu-den-heimspielen-gegen-frankfurt-und-schalke-W106ft
+          PAGE https://www.fc-union-berlin.de/de/meldungen/hinweise-fuer-den-stadionbesuch-j9wIS5
+          PAGE https://www.fc-union-berlin.de/de/meldungen/hinweise-fuer-den-stadionbesuch-q03uBE
+          PAGE https://www.fc-union-berlin.de/de/meldungen/endlich-wieder-alte-foersterei-union-misst-sich-zum-heimauftakt-mit-cagliari-calcio-tCyuks
           EOF
           cat > probe.js <<'EOF'
           const { chromium } = require('playwright');
