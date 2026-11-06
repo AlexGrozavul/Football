@@ -37,8 +37,9 @@ jobs:
           SLOW: |
           HOSTGATE: |
           ALLOW: |
-          WIKI_QID: Q107818
           ROBOTS: |
+            www.fcenergie.de
+            fcenergie.de
           GATE: |
           IMGS: |
           FULL: |
@@ -49,12 +50,15 @@ jobs:
           PDFS: |
           RAW: |
           NOTICES: |
+            https://www.fcenergie.de/home.html
           DISCOVER: |
-          DISCOVER_RE: '^$'
+            https://www.fcenergie.de/home.html
+          DISCOVER_RE: '(^|\.)fcenergie\.de$'
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
+            https://www.fcenergie.de/home.html
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
