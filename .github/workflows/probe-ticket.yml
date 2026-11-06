@@ -33,22 +33,22 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
-          RUN_LABEL: run-5
+          RUN_LABEL: run-6
         run: |
           cd /tmp/pw
           # One line per item. ROBOTS <host> | PAGE <url> | NOTICES <url> (landing page; also opens
           # its legal-notice / terms links on the same host) | PDF <url> | WIKIDATA <qid> | CLICK <url>
           # (page, then opens collapsed sections by DOM click) | RAW <url> (plain text, e.g. a sitemap)
           cat > list.txt <<'EOF'
-          PAGE https://www.fc-union-berlin.de/de/meldungen/informationen-zum-vorverkauf-fuer-koeln-und-leipzig-5sQ8MR
-          PAGE https://www.fc-union-berlin.de/de/meldungen/termine-der-losverfahren-fuer-elversberg-und-dortmund-LKpVMu
-          PAGE https://www.fc-union-berlin.de/de/meldungen/vorverkauf-startet-am-27-oktober-07TL0V
-          PAGE https://www.fc-union-berlin.de/de/meldungen/union-vor-heimspiel-gegen-s04-kQKbcD
-          PAGE https://www.fc-union-berlin.de/de/meldungen/dortmund-an-der-alten-foersterei-unioner-gegen-die-schwarz-gelben--LKpVLo
-          PAGE https://www.fc-union-berlin.de/de/meldungen/union-fordert-die-elf-aus-elversberg-RgeVbv
-          PAGE https://www.fc-union-berlin.de/de/meldungen/stabiles-plateau-nahende-stadionerweiterung-und-neuer-gewaehlter-aufsichtsrat-ARsCLS
-          PAGE https://www.fc-union-berlin.de/de/matchcenter-8gTRbRuEDAUOOIwENybgi12Oz?section=report
-          CLICK https://www.fc-union-berlin.de/de/fans/fan-und-mitgliederabteilung-zNcw
+          PAGE https://www.fc-union-berlin.de/de/stadion/an-der-alten-foersterei/sicherheitspolitik-YBVE
+          PAGE https://www.fc-union-berlin.de/de/sponsoring/hospitality-viptickets-ylvr
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=9
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=10
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=11
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=12
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=13
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=14
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW?page=15
           EOF
           cat > probe.js <<'EOF'
           const { chromium } = require('playwright');
