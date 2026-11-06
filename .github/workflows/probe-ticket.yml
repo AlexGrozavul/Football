@@ -55,13 +55,11 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.fcenergie.de/nachrichtenuebersicht.html?page=8
-            https://www.fcenergie.de/nachrichtenuebersicht.html?page=9
-            https://www.fcenergie.de/news/die-fuggerstaedter-sind-zu-gast.html
-            https://www.fcenergie.de/news/gegen-die-jungs-vom-kiez.html
-            https://www.fcenergie.de/news/wichtiges-heimspiel.html
-            https://www.fcenergie.de/news/herzlich-willkommen.html
-            https://www.fcenergie.de/news/wir-sind-siebentausend.html
+            https://www.fcenergie.de/news/vorverkauf-fuer-den-dfb-pokal-startet.html
+            https://www.fcenergie.de/news/online-nur-noch-bis-zum-24-juli.html
+            https://www.fcenergie.de/news/lasst-am-besten-das-auto-stehen.html
+            https://www.fcenergie.de/nachrichtenuebersicht.html?page=10
+            https://www.fcenergie.de/nachrichtenuebersicht.html?page=11
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
