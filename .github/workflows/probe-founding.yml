@@ -20,14 +20,33 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN_LABEL: run-1
+      RUN_LABEL: run-2
       PROBE_URLS: |
-        https://fck.de/ +legal
-        https://fcn.de/ +legal
-        https://www.mainz05.de/ +legal
-        https://www.eintracht.de/ +legal
-        https://www.fcaugsburg.de/ +legal
         https://fcbayern.com/de +legal
+        https://fck.de/fck/verein/tradition/
+        https://fck.de/fck/verein/
+        https://fck.de/fck/museum/
+        https://fck.de/fans/fans-beim-fck/
+        https://fck.de/fans/fans-beim-fck/fanbetreuung/
+        https://fck.de/fck/mitgliedschaft/satzung-und-beitraege/
+        https://www.mainz05.de/chronik
+        https://www.mainz05.de/die-fanabteilung
+        https://www.mainz05.de/supporters-mainz
+        https://www.mainz05.de/fanbetreuung-fanbeauftragte
+        https://museum.eintracht.de/
+        https://klub.eintracht.de/
+        https://fans.eintracht.de/
+        https://www.fcaugsburg.de/page/historie-5
+        https://www.fcaugsburg.de/page/der-fca-in-kuerze-59
+        https://www.fcaugsburg.de/page/fanclubs-43
+        https://www.fcaugsburg.de/page/fanbeauftragte-30
+        https://www.fcaugsburg.de/page/fanprojekt-32
+        https://de.wikipedia.org/wiki/1._FC_Kaiserslautern
+        https://de.wikipedia.org/wiki/1._FC_N%C3%BCrnberg
+        https://de.wikipedia.org/wiki/1._FSV_Mainz_05
+        https://de.wikipedia.org/wiki/Eintracht_Frankfurt
+        https://de.wikipedia.org/wiki/FC_Augsburg
+        https://de.wikipedia.org/wiki/FC_Bayern_M%C3%BCnchen
     steps:
       - uses: actions/setup-node@v5
         with:
@@ -69,7 +88,7 @@ jobs:
               if (text.length === 0) break;
             }
           }
-          const KEY = /(\b\d{1,2}\.\s?\d{1,2}\.\s?\d{4}\b|\b\d{1,2}\.?\s+(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|January|February|March|May|June|July|October|December|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+\d{4}|(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}|gegründet|Gründung|seit|founded|fondé|fondation|Chronik|Geschichte)/i;
+          const KEY = /(\b\d{1,2}\.\s?\d{1,2}\.\s?\d{4}\b|\b\d{1,2}\.?\s+(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|January|February|March|May|June|July|October|December|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+\d{4}|(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}|gegründet|Gründung|seit|founded|fondé|fondation|Chronik|Geschichte|Ultra|Fanszene|Hauptgruppe|größte|führende)/i;
           function robotsRules(txt) {
             const groups = []; let cur = null, lastUA = false;
             for (let line of txt.split(/\r?\n/)) {
