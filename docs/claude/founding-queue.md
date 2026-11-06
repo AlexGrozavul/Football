@@ -20,12 +20,12 @@ One table of the clubs whose founding date and main supporters group a session r
 
 | order | club key | name | league | status | PR | date | notes |
 |---|---|---|---|---|---|---|---|
-| 1 | Q8466 | 1. FC Kaiserslautern | 2. Bundesliga | pending |  |  |  |
-| 2 | Q15786 | 1. FC Nürnberg | 2. Bundesliga | pending |  |  |  |
-| 3 | Q105254 | 1. FSV Mainz 05 | Bundesliga | pending |  |  |  |
-| 4 | Q38245 | Eintracht Frankfurt | Bundesliga | pending |  |  |  |
-| 5 | Q97905916 | FC Augsburg | Bundesliga | pending |  |  |  |
-| 6 | Q15789 | FC Bayern München | Bundesliga | pending |  |  |  |
+| 1 | Q8466 | 1. FC Kaiserslautern | 2. Bundesliga | done | #192 | 2026-11-06 | club row confirmed (statutes PDF); main group Generation Luzifer, founding year only (1998) |
+| 2 | Q15786 | 1. FC Nürnberg | 2. Bundesliga | done | #192 | 2026-11-06 | club row unverified (Wikipedia only; fcn.de robots.txt bars Claude bots, treated as a stop); no main group named |
+| 3 | Q105254 | 1. FSV Mainz 05 | Bundesliga | done | #192 | 2026-11-06 | club row confirmed (club chronicle); no main group named |
+| 4 | Q38245 | Eintracht Frankfurt | Bundesliga | done | #192 | 2026-11-06 | club row confirmed (e.V. club page); no main group named |
+| 5 | Q97905916 | FC Augsburg | Bundesliga | done | #192 | 2026-11-06 | club row confirmed (club history page); main group Legio Augusta, founding year only (2007) |
+| 6 | Q15789 | FC Bayern München | Bundesliga | done | #192 | 2026-11-06 | club row unverified (Wikipedia only; fcbayern.com robots.txt no answer twice); no main group named |
 | 7 | Q105853 | Karlsruher SC | 2. Bundesliga | pending |  |  |  |
 | 8 | Q106394 | SC Freiburg | Bundesliga | pending |  |  |  |
 | 9 | Q153539 | SpVgg Greuther Fürth | 2. Bundesliga | pending |  |  |  |
