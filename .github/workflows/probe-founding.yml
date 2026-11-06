@@ -20,15 +20,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN_LABEL: run-3
+      RUN_LABEL: run-4
       PROBE_URLS: |
         https://fck.de/wp-content/uploads/2026/05/Satzung_OrdnungenMai2026.pdf
-        https://museum.eintracht.de/chronik/
-        https://klub.eintracht.de/eintracht-frankfurt-ev/
-        https://fans.eintracht.de/fans-fankultur/fanszene/
-        https://augsburg.original1907.de/2017/11/10-jahre-legio-augusta.html +legal
-        https://www.tz.de/sport/fc-bayern/schickeria-muenchen-ultras-fc-bayern-das-steckt-dahinter-4145942.html +legal
-        https://www.sport1.de/fussball/bundesliga/2020/03/fc-bayern-und-seine-ultras-die-zwei-gesichter-der-schickeria +legal
+        http://augsburg.original1907.de/p/blog-page.html
     steps:
       - uses: actions/setup-node@v5
         with:
@@ -126,8 +121,8 @@ jobs:
               try {
                 let text = '', links = [], title = '', status = 0, ctype = '';
                 if (/\.pdf($|\?)/i.test(url.pathname) || flags.includes('+pdf')) {
-                  const r = await ctx.request.get(u, { timeout: 60000 }); status = r.status(); ctype = r.headers()['content-type'] || '';
-                  fs.writeFileSync('/tmp/p.pdf', await r.body());
+                  const r = await fetch(u, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(90000) }); status = r.status; ctype = r.headers.get('content-type') || '';
+                  fs.writeFileSync('/tmp/p.pdf', Buffer.from(await r.arrayBuffer()));
                   text = execFileSync('pdftotext', ['-layout', '/tmp/p.pdf', '-']).toString(); title = 'PDF';
                 } else {
                   const resp = await page.goto(u, { waitUntil: 'domcontentloaded', timeout: 60000 });
