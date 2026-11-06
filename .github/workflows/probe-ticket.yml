@@ -33,20 +33,22 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
-          RUN_LABEL: run-2
+          RUN_LABEL: run-3
         run: |
           cd /tmp/pw
           # One line per item. ROBOTS <host> | PAGE <url> | NOTICES <url> (landing page; also opens
           # its legal-notice / terms links on the same host) | PDF <url> | WIKIDATA <qid> | CLICK <url>
           # (page, then opens collapsed sections by DOM click) | RAW <url> (plain text, e.g. a sitemap)
           cat > list.txt <<'EOF'
-          ROBOTS tickets.union-zeughaus.de
-          ROBOTS www.tickets.union-zeughaus.de
-          ROBOTS union-zeughaus.de
-          SITEMAP https://www.fc-union-berlin.de/sitemap.xml
-          CLICK https://www.fc-union-berlin.de/de/verein/mitglieder-iNvD?tab=10-36
-          CLICK https://www.fc-union-berlin.de/de/stadion/an-der-alten-foersterei-uw2Y?tab=26-94#tab-26-94
-          CLICK https://www.fc-union-berlin.de/de/matchcenter-W7v06c9IK9U6vQEUnO1bYBR5P?section=matchday
+          PAGE https://www.fc-union-berlin.de/de/allgemeine-geschaeftsbedingungen-83FR
+          TABS https://www.fc-union-berlin.de/de/stadion/besucherinfos-2h5Y
+          TABS https://www.fc-union-berlin.de/de/stadion/besucherinfos/ticketpreise-2pVY
+          TABS https://www.fc-union-berlin.de/de/stadion/besucherinfos/information-gaestefans-LKWp
+          TABS https://www.fc-union-berlin.de/de/stadion/besucherinfos/hinweise-fuer-besucher-mit-handicap-RgJe
+          TABS https://www.fc-union-berlin.de/de/stadion/an-der-alten-foersterei/stadionnordnung-CvFS
+          TABS https://www.fc-union-berlin.de/de/verein/mitglieder-iNvD
+          PAGE https://www.fc-union-berlin.de/de/meldungen-UkLW
+          PAGE https://www.fc-union-berlin.de/de/fussball/profis-maenner/spielplan-maenner-5OQZ
           EOF
           cat > probe.js <<'EOF'
           const { chromium } = require('playwright');
@@ -144,6 +146,20 @@ jobs:
                 await p.waitForTimeout(2500);
                 if (p.url() !== finalUrl) { await post(`${LABEL} STOPPED ${url}: address changed after section clicks to ${p.url()}; nothing recorded`); return null; }
               }
+              let tabText = '';
+              if (opts.tabs) {
+                const n = await p.evaluate(() => [...document.querySelectorAll('[role=tab]')].filter(t => !t.closest('header,nav,footer,form')).length);
+                for (let i = 0; i < n; i++) {
+                  const name = await p.evaluate(i => { const t = [...document.querySelectorAll('[role=tab]')].filter(t => !t.closest('header,nav,footer,form'))[i]; if (t.tagName === 'A' && t.getAttribute('href') && !t.getAttribute('href').startsWith('#')) return null; t.click(); return (t.innerText || '').trim(); }, i);
+                  await p.waitForTimeout(1500);
+                  if (new URL(p.url()).pathname !== new URL(finalUrl).pathname) { await post(`${LABEL} STOPPED ${url}: path changed after a tab click to ${p.url()}; nothing recorded`); return null; }
+                  if (name === null) continue;
+                  await p.evaluate(() => { document.querySelectorAll('[aria-expanded="false"]').forEach(el => { if (!el.closest('header,nav,footer,form,a,[role=dialog]')) try { el.click(); } catch (e) {} }); });
+                  await p.waitForTimeout(1200);
+                  const t = await p.evaluate(() => { const panels = [...document.querySelectorAll('[role=tabpanel]')].filter(x => x.offsetParent !== null && !x.hidden); return panels.length ? panels.map(x => x.innerText).join('\n') : (document.querySelector('main') || document.body).innerText; });
+                  tabText += `\n=== TAB ${i + 1}: ${name} ===\n${t}\n`;
+                }
+              }
               const d = await p.evaluate(() => {
                 const body = document.body ? document.body.innerText : '';
                 const m = document.querySelector('main');
@@ -158,6 +174,7 @@ jobs:
               const useMain = d.main.length > 500 && d.body.length > 20000;
               const head = `${LABEL} PAGE ${url}\nfinal: ${finalUrl}\nHTTP ${status} | title: ${d.title} | body ${d.body.length} chars | main ${d.main.length} chars | posted: ${useMain ? 'main' : 'body'} | overlays removed: ${removed.join(',') || 'none'} | time/datetime: ${d.dates.join(' ; ')}${opts.click ? ' | sections opened by DOM click' : ''}`;
               await postParts(head + '\nTEXT', useMain ? d.main : d.body);
+              if (tabText) await postParts(`${LABEL} TABS ${url} (each tab clicked by DOM click, no link followed)`, tabText);
               await postParts(`${LABEL} LINKS ${url} (${d.links.length} links)`, d.links.join('\n'));
               if (d.imgs.length) await postParts(`${LABEL} IMGS in main ${url}`, d.imgs.join('\n'));
               return d;
@@ -224,6 +241,7 @@ jobs:
                   await postParts(`${LABEL} ROBOTS https://${arg}/robots.txt HTTP ${r.status}${r.location ? ' location ' + r.location : ''}${r.error ? ' error ' + r.error : ''}`, r.text || '(empty)');
                 } else if (kind === 'PAGE') await page(arg);
                 else if (kind === 'CLICK') await page(arg, {click: true});
+                else if (kind === 'TABS') await page(arg, {click: true, tabs: true});
                 else if (kind === 'PDF') await pdf(arg);
                 else if (kind === 'RAW') await raw(arg);
                 else if (kind === 'SITEMAP') await sitemap(arg, 0);
