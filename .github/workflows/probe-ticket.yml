@@ -34,6 +34,54 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
+          SLOW: |
+          HOSTGATE: |
+          ALLOW: |
+          ROBOTS: |
+            herthabsc.de
+            www.herthabsc.com
+            content.herthabsc.com
+          GATE: |
+          IMGS: |
+            https://www.herthabsc.com/de/common/atgb-stadionordnung
+            https://www.herthabsc.com/de/nachrichten/2026/10/tickets-bscwob-2627
+          FULL: |
+          TABLES: |
+            https://www.herthabsc.com/de/nachrichten/2026/10/tickets-bscwob-2627
+          EXPAND: |
+          FIELDS: |
+          RAWPDF: |
+          PDFS: |
+          RAW: |
+            https://www.herthabsc.com/de/sitemap.xml
+          NOTICES: |
+          DISCOVER: |
+          DISCOVER_RE: '^$'
+          FOLLOW: |
+          FOLLOW_RE: '^$'
+          RAW_SKIP: ''
+          PAGES: |
+            https://www.herthabsc.com/de/common/atgb-stadionordnung
+            https://www.herthabsc.com/de/nachrichten/2026/10/tickets-bscwob-2627
+            https://www.herthabsc.com/de/nachrichten/2026/11/rin-ins-wohnzimmer-bscwob-2627
+            https://www.herthabsc.com/de/mitglieder/mitglied-werden?utm_source=homepage&utm_medium=webseite&utm_campaign=mitglieder_landingpage+&utm_term=header&utm_content=link+
+            https://www.herthabsc.com/de/nachrichten
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils tesseract-ocr tesseract-ocr-deu
+          sudo pip3 install --quiet --break-system-packages pypdf==5.1.0
+
+      - name: Install Playwright and Chromium
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
           WIKI_QID: Q102720
           SLOW: |
           HOSTGATE: |
