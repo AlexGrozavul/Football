@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN_LABEL: run-5
+      RUN_LABEL: run-6
       PROBE_URLS: |
         https://fck.de/wp-content/uploads/2026/05/Satzung_OrdnungenMai2026.pdf
     steps:
@@ -120,7 +120,7 @@ jobs:
               try {
                 let text = '', links = [], title = '', status = 0, ctype = '';
                 if (/\.pdf($|\?)/i.test(url.pathname) || flags.includes('+pdf')) {
-                  const meta = execFileSync('curl', ['-sS', '-L', '-A', UA, '--max-time', '180', '--retry', '1', '-o', '/tmp/p.pdf', '-w', '%{http_code} %{content_type}', u]).toString().split(' '); status = +meta[0]; ctype = meta[1] || '';
+                  const meta = execFileSync('curl', ['-sS', '-L', '--http1.1', '-A', UA, '--max-time', '180', '--retry', '1', '-o', '/tmp/p.pdf', '-w', '%{http_code} %{content_type}', u]).toString().split(' '); status = +meta[0]; ctype = meta[1] || '';
                   text = execFileSync('pdftotext', ['-layout', '/tmp/p.pdf', '-']).toString(); title = 'PDF';
                 } else {
                   const resp = await page.goto(u, { waitUntil: 'domcontentloaded', timeout: 60000 });
