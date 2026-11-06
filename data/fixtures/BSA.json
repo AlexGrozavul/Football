@@ -8409,7 +8409,7 @@
   {
    "id": 555077,
    "utcDate": "2026-11-05T22:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8427,14 +8427,14 @@
     "tla": "CRE",
     "crest": "https://crests.football-data.org/4287.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 6,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555074,
    "utcDate": "2026-11-06T00:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8452,9 +8452,9 @@
     "tla": "BAH",
     "crest": "https://crests.football-data.org/1777.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 555079,
