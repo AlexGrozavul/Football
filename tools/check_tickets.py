@@ -506,7 +506,12 @@ KNOWN = {
         # Hertha BSC, 2026-11-06: the flat 2026/27 season-ticket price of
         # the East stand (Ostkurve, blocks Q-T and 34-41), the only price
         # the club's pages state in text.
-        "ostkurve-q-t-34-41"],
+        "ostkurve-q-t-34-41",
+        # 1. FC Union Berlin, 2026-11-06: the Bundesliga 2026/27 day-ticket
+        # table prices four standing sectors differently (sector 2 blocks
+        # E-J, sector 3 K-T, sector 4 U-Y, sector 5 block Z).
+        "sek-2-stehplatz-e-j", "sek-3-stehplatz-k-t", "sek-4-stehplatz-u-y",
+        "sek-5-stehplatz-z"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
