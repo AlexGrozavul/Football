@@ -38,22 +38,32 @@ jobs:
           HOSTGATE: |
           ALLOW: |
           ROBOTS: |
-            herthabsc.de
             www.herthabsc.com
             content.herthabsc.com
           GATE: |
+            https://www.herthabsc.com/de/common/nutzungsbedingungen
           IMGS: |
-            https://www.herthabsc.com/de/common/atgb-stadionordnung
-            https://www.herthabsc.com/de/nachrichten/2026/10/tickets-bscwob-2627
+            https://www.herthabsc.com/de/tickets/tickets
+            https://www.herthabsc.com/de/tickets/tageskarten-termine
+            https://www.herthabsc.com/de/tickets/dauerkarte
+            https://www.herthabsc.com/de/tickets/stadionplan
           FULL: |
           TABLES: |
-            https://www.herthabsc.com/de/nachrichten/2026/10/tickets-bscwob-2627
+            https://www.herthabsc.com/de/tickets/tickets
+            https://www.herthabsc.com/de/tickets/tageskarten-termine
+            https://www.herthabsc.com/de/tickets/dauerkarte
+            https://www.herthabsc.com/de/tickets/gruppentickets
           EXPAND: |
+            https://www.herthabsc.com/de/tickets/tickets
+            https://www.herthabsc.com/de/tickets/faq-dauerkarte
+            https://www.herthabsc.com/de/mitglieder/mitgliedschaft-faq
+            https://www.herthabsc.com/de/fans/herthaid-faq
           FIELDS: |
           RAWPDF: |
           PDFS: |
+            https://content.herthabsc.com/site/binaries/content/assets/fans/herthabsc_atgb-2627.pdf
           RAW: |
-            https://www.herthabsc.com/de/sitemap.xml
+            https://www.herthabsc.com/de/news-sitemap.xml
           NOTICES: |
           DISCOVER: |
           DISCOVER_RE: '^$'
@@ -61,11 +71,17 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.herthabsc.com/de/common/atgb-stadionordnung
-            https://www.herthabsc.com/de/nachrichten/2026/10/tickets-bscwob-2627
-            https://www.herthabsc.com/de/nachrichten/2026/11/rin-ins-wohnzimmer-bscwob-2627
-            https://www.herthabsc.com/de/mitglieder/mitglied-werden?utm_source=homepage&utm_medium=webseite&utm_campaign=mitglieder_landingpage+&utm_term=header&utm_content=link+
-            https://www.herthabsc.com/de/nachrichten
+            https://www.herthabsc.com/de/tickets/tickets
+            https://www.herthabsc.com/de/tickets/tageskarten-termine
+            https://www.herthabsc.com/de/fans/spieltag/infos-fur-gaestefans-in-berlin
+            https://www.herthabsc.com/de/fans/spieltag/heimspielservice
+            https://www.herthabsc.com/de/tickets/barrierefrei
+            https://www.herthabsc.com/de/tickets/dauerkarte
+            https://www.herthabsc.com/de/tickets/faq-dauerkarte
+            https://www.herthabsc.com/de/mitglieder/mitgliedschaft-faq
+            https://www.herthabsc.com/de/fans/herthaid-faq
+            https://www.herthabsc.com/de/tickets/gruppentickets
+            https://www.herthabsc.com/de/tickets/stadionplan
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
