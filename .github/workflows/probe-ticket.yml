@@ -41,29 +41,18 @@ jobs:
             www.herthabsc.com
             content.herthabsc.com
           GATE: |
-            https://www.herthabsc.com/de/common/nutzungsbedingungen
           IMGS: |
-            https://www.herthabsc.com/de/tickets/tickets
-            https://www.herthabsc.com/de/tickets/tageskarten-termine
-            https://www.herthabsc.com/de/tickets/dauerkarte
-            https://www.herthabsc.com/de/tickets/stadionplan
+            https://www.herthabsc.com/de/nachrichten/2026/10/tickets-bscksc-2627
+            https://www.herthabsc.com/de/nachrichten/2026/09/tickets-bscdsc-2627
+            https://www.herthabsc.com/de/nachrichten/2026/09/tickets-bscsgf-2627
           FULL: |
           TABLES: |
-            https://www.herthabsc.com/de/tickets/tickets
-            https://www.herthabsc.com/de/tickets/tageskarten-termine
-            https://www.herthabsc.com/de/tickets/dauerkarte
-            https://www.herthabsc.com/de/tickets/gruppentickets
           EXPAND: |
-            https://www.herthabsc.com/de/tickets/tickets
-            https://www.herthabsc.com/de/tickets/faq-dauerkarte
-            https://www.herthabsc.com/de/mitglieder/mitgliedschaft-faq
-            https://www.herthabsc.com/de/fans/herthaid-faq
           FIELDS: |
           RAWPDF: |
           PDFS: |
-            https://content.herthabsc.com/site/binaries/content/assets/fans/herthabsc_atgb-2627.pdf
+            https://content.herthabsc.com/site/binaries/content/assets/tickets/atgb/atgb_2025_final.pdf
           RAW: |
-            https://www.herthabsc.com/de/news-sitemap.xml
           NOTICES: |
           DISCOVER: |
           DISCOVER_RE: '^$'
@@ -71,17 +60,12 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.herthabsc.com/de/tickets/tickets
-            https://www.herthabsc.com/de/tickets/tageskarten-termine
-            https://www.herthabsc.com/de/fans/spieltag/infos-fur-gaestefans-in-berlin
-            https://www.herthabsc.com/de/fans/spieltag/heimspielservice
-            https://www.herthabsc.com/de/tickets/barrierefrei
-            https://www.herthabsc.com/de/tickets/dauerkarte
-            https://www.herthabsc.com/de/tickets/faq-dauerkarte
-            https://www.herthabsc.com/de/mitglieder/mitgliedschaft-faq
-            https://www.herthabsc.com/de/fans/herthaid-faq
-            https://www.herthabsc.com/de/tickets/gruppentickets
-            https://www.herthabsc.com/de/tickets/stadionplan
+            https://www.herthabsc.com/de/nachrichten/2026/10/tickets-bscksc-2627
+            https://www.herthabsc.com/de/nachrichten/2026/09/tickets-bscdsc-2627
+            https://www.herthabsc.com/de/nachrichten/2026/09/tickets-bscsgf-2627
+            https://www.herthabsc.com/de/club/olympiastadion
+            https://www.herthabsc.com/de/club/sicherheitspolitik
+            https://www.herthabsc.com/de/club/fanshops
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
