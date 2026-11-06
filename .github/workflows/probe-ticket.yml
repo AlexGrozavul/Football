@@ -39,26 +39,39 @@ jobs:
           ALLOW: |
           ROBOTS: |
             www.fcenergie.de
-            fcenergie.de
           GATE: |
           IMGS: |
+            https://www.fcenergie.de/ticketpreise-2026-27.html
+            https://www.fcenergie.de/dauerkartenpreise-2026-27.html
+            https://www.fcenergie.de/sonderkarten.html
           FULL: |
           TABLES: |
+            https://www.fcenergie.de/ticketpreise-2026-27.html
+            https://www.fcenergie.de/dauerkartenpreise-2026-27.html
           EXPAND: |
           FIELDS: |
           RAWPDF: |
           PDFS: |
           RAW: |
           NOTICES: |
-            https://www.fcenergie.de/home.html
           DISCOVER: |
-            https://www.fcenergie.de/home.html
           DISCOVER_RE: '(^|\.)fcenergie\.de$'
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.fcenergie.de/home.html
+            https://www.fcenergie.de/ticketpreise-2026-27.html
+            https://www.fcenergie.de/dauerkartenpreise-2026-27.html
+            https://www.fcenergie.de/vorverkaufsstellen.html
+            https://www.fcenergie.de/sonderkarten.html
+            https://www.fcenergie.de/auswaertskarten.html
+            https://www.fcenergie.de/atgb.html
+            https://www.fcenergie.de/stadionordnung.html
+            https://www.fcenergie.de/gaeste-couch.html
+            https://www.fcenergie.de/sonderbereiche.html
+            https://www.fcenergie.de/mitgliedschaft.html
+            https://www.fcenergie.de/nachrichtenuebersicht.html
+            https://www.fcenergie.de/leag-energie-stadion.html
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
