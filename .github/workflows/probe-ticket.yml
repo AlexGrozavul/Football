@@ -1,0 +1,230 @@
+name: Probe ticket pages (temporary)
+
+# Temporary probe for one club's ticket research (1. FC Union Berlin).
+# Posts each page's text and link list as PR comments. Removed before merge.
+on:
+  pull_request:
+    paths:
+      - .github/workflows/probe-ticket.yml
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install Playwright and Chromium
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Install poppler and tesseract
+        run: sudo apt-get install -y poppler-utils tesseract-ocr tesseract-ocr-deu >/dev/null
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          RUN_LABEL: run-1
+        run: |
+          cd /tmp/pw
+          # One line per item. ROBOTS <host> | PAGE <url> | NOTICES <url> (landing page; also opens
+          # its legal-notice / terms links on the same host) | PDF <url> | WIKIDATA <qid> | CLICK <url>
+          # (page, then opens collapsed sections by DOM click) | RAW <url> (plain text, e.g. a sitemap)
+          cat > list.txt <<'EOF'
+          WIKIDATA Q141971
+          ROBOTS fc-union-berlin.de
+          ROBOTS www.fc-union-berlin.de
+          NOTICES https://www.fc-union-berlin.de/
+          EOF
+          cat > probe.js <<'EOF'
+          const { chromium } = require('playwright');
+          const { execFileSync } = require('child_process');
+          const fs = require('fs');
+          const UA = 'FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)';
+          const LABEL = process.env.RUN_LABEL;
+          const sleep = ms => new Promise(r => setTimeout(r, ms));
+          const OPEN_HOSTS = new Set(['fc-union-berlin.de', 'www.fc-union-berlin.de']);
+          const BAD = /(kaufen|\bbuy\b|login|log-in|anmelden|registrier|warenkorb|\bcart\b|checkout|kasse|saalplan|seatplan|seat-plan|\/shop\b|account|konto)/i;
+          const ALLOW = new Set([]);
+          async function post(body) {
+            const r = await fetch(`https://api.github.com/repos/${process.env.REPO}/issues/${process.env.PR}/comments`, {
+              method: 'POST', headers: {Authorization: `Bearer ${process.env.GH_TOKEN}`, 'Content-Type': 'application/json', 'User-Agent': UA},
+              body: JSON.stringify({body})});
+            if (!r.ok) console.log('post failed', r.status, await r.text());
+            await sleep(1200);
+          }
+          async function postParts(head, text) {
+            const MAX = 58000;
+            const n = Math.max(1, Math.ceil(text.length / MAX));
+            for (let i = 0; i < n; i++) await post(`${head} [part ${i + 1}/${n}, ${text.length} chars]\n\n\`\`\`\n${text.slice(i * MAX, (i + 1) * MAX).replace(/```/g, "'''")}\n\`\`\``);
+          }
+          const robotsCache = {};
+          async function robots(host) {
+            if (host in robotsCache) return robotsCache[host];
+            let res;
+            try {
+              const r = await fetch(`https://${host}/robots.txt`, {headers: {'User-Agent': UA}, redirect: 'manual', signal: AbortSignal.timeout(20000)});
+              const t = await r.text();
+              res = {status: r.status, location: r.headers.get('location') || '', text: t};
+            } catch (e) { res = {status: 0, text: '', error: String(e)}; }
+            robotsCache[host] = res; await sleep(1100);
+            return res;
+          }
+          function allowedBy(rtext, path) {
+            // RFC 9309: groups for our agent, else '*'; longest match, Allow wins ties.
+            const lines = rtext.split(/\r?\n/).map(l => l.replace(/#.*/, '').trim()).filter(Boolean);
+            const groups = []; let cur = null, lastUA = false;
+            for (const l of lines) {
+              const m = l.match(/^([A-Za-z-]+)\s*:\s*(.*)$/); if (!m) continue;
+              const k = m[1].toLowerCase(), v = m[2].trim();
+              if (k === 'user-agent') { if (!lastUA) { cur = {agents: [], rules: []}; groups.push(cur); } cur.agents.push(v.toLowerCase()); lastUA = true; }
+              else { lastUA = false; if (cur && (k === 'allow' || k === 'disallow')) cur.rules.push([k, v]); }
+            }
+            let g = groups.filter(g => g.agents.some(a => a !== '*' && 'footballplannerbot'.includes(a)));
+            if (!g.length) g = groups.filter(g => g.agents.includes('*'));
+            let best = null;
+            for (const gr of g) for (const [k, v] of gr.rules) {
+              if (!v) continue;
+              const re = new RegExp('^' + v.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\\\$$/, '$'));
+              if (re.test(path)) { if (!best || v.length > best[1].length || (v.length === best[1].length && k === 'allow')) best = [k, v]; }
+            }
+            return !best || best[0] === 'allow' ? {ok: true, rule: best} : {ok: false, rule: best};
+          }
+          async function gate(url) {
+            const u = new URL(url);
+            if (!OPEN_HOSTS.has(u.hostname)) return `host ${u.hostname} not in the open list`;
+            if (BAD.test(u.pathname + u.search) && !ALLOW.has(url)) return 'address word filter (shop/login/cart)';
+            const r = await robots(u.hostname);
+            if (r.status === 0) return `robots.txt gave no answer: ${r.error}`;
+            if (r.status === 401 || r.status === 403 || r.status === 429 || r.status >= 500) return `robots.txt HTTP ${r.status}`;
+            if (r.status >= 300 && r.status < 400) return `robots.txt redirects to ${r.location}`;
+            if (r.status === 200 && !/<html/i.test(r.text)) { const a = allowedBy(r.text, u.pathname + u.search); if (!a.ok) return `robots.txt ${a.rule.join(': ')}`; }
+            return '';
+          }
+          const CHALLENGE_TITLE = /just a moment|attention required|security checkpoint|access denied|are you a robot|ddos-guard/i;
+          const CHALLENGE_TEXT = /verify you are human|checking your browser|bestätigen sie, dass sie ein mensch|prüfen, ob sie ein mensch|enable javascript and cookies to continue/i;
+          let browser, ctx;
+          async function page(url, opts = {}) {
+            const g = await gate(url);
+            if (g) { await post(`${LABEL} SKIPPED ${url}: ${g}`); return null; }
+            const p = await ctx.newPage();
+            try {
+              const resp = await p.goto(url, {waitUntil: 'domcontentloaded', timeout: 45000});
+              await p.waitForTimeout(4000);
+              const status = resp ? resp.status() : 0;
+              const finalUrl = p.url();
+              const fu = new URL(finalUrl);
+              if (!OPEN_HOSTS.has(fu.hostname) || (BAD.test(fu.pathname) && !ALLOW.has(url))) {
+                await post(`${LABEL} STOPPED ${url}: final URL ${finalUrl} is outside the open hosts or hits the word filter; nothing recorded`); return null; }
+              // Remove consent overlays from our own copy; never click accept or reject.
+              const removed = await p.evaluate(() => {
+                const sel = ['#usercentrics-root', '#usercentrics-cmp-ui', '#onetrust-consent-sdk', '#CybotCookiebotDialog', '#CybotCookiebotDialogBodyUnderlay', '.cmp-root', '#cmpbox', '#cmpbox2', '[id^="sp_message_container"]', '#didomi-host', '.cookie-consent', '#cookie-consent', '#BorlabsCookieBox', '#consent-banner', '#cookiebanner'];
+                const out = []; for (const s of sel) document.querySelectorAll(s).forEach(e => { out.push(s); e.remove(); });
+                document.documentElement.style.overflow = 'auto'; document.body.style.overflow = 'auto';
+                return out;
+              });
+              if (opts.click) {
+                await p.evaluate(() => {
+                  const skip = el => el.closest('header,nav,footer,form,a,[role=dialog]');
+                  document.querySelectorAll('[aria-expanded="false"]').forEach(el => { if (!skip(el)) try { el.click(); } catch (e) {} });
+                  document.querySelectorAll('details:not([open])').forEach(d => { if (!d.closest('header,nav,footer,form')) d.open = true; });
+                });
+                await p.waitForTimeout(2500);
+                if (p.url() !== finalUrl) { await post(`${LABEL} STOPPED ${url}: address changed after section clicks to ${p.url()}; nothing recorded`); return null; }
+              }
+              const d = await p.evaluate(() => {
+                const body = document.body ? document.body.innerText : '';
+                const m = document.querySelector('main');
+                const main = m ? m.innerText : '';
+                const links = [...document.querySelectorAll('a[href]')].map(a => `${(a.innerText || a.getAttribute('aria-label') || a.title || '').replace(/\s+/g, ' ').trim().slice(0, 100)} | ${a.href}`);
+                const imgs = m ? [...m.querySelectorAll('img')].map(i => `${i.alt || ''} | ${i.currentSrc || i.src}`) : [];
+                const dates = [...document.querySelectorAll('time,[datetime]')].map(t => `${t.getAttribute('datetime') || ''} ${t.innerText || ''}`.trim()).slice(0, 10);
+                return {title: document.title, body, main, links: [...new Set(links)], imgs, dates};
+              });
+              const challenged = [401, 403, 429, 503].includes(status) || CHALLENGE_TITLE.test(d.title) || CHALLENGE_TEXT.test(d.main || d.body.slice(0, 3000));
+              if (challenged) { await post(`${LABEL} CHALLENGE/STOP ${url}: HTTP ${status}, title "${d.title}", text length ${d.body.length}; not recorded`); return null; }
+              const useMain = d.main.length > 500 && d.body.length > 20000;
+              const head = `${LABEL} PAGE ${url}\nfinal: ${finalUrl}\nHTTP ${status} | title: ${d.title} | body ${d.body.length} chars | main ${d.main.length} chars | posted: ${useMain ? 'main' : 'body'} | overlays removed: ${removed.join(',') || 'none'} | time/datetime: ${d.dates.join(' ; ')}${opts.click ? ' | sections opened by DOM click' : ''}`;
+              await postParts(head + '\nTEXT', useMain ? d.main : d.body);
+              await postParts(`${LABEL} LINKS ${url} (${d.links.length} links)`, d.links.join('\n'));
+              if (d.imgs.length) await postParts(`${LABEL} IMGS in main ${url}`, d.imgs.join('\n'));
+              return d;
+            } catch (e) { await post(`${LABEL} ERROR ${url}: ${String(e).slice(0, 500)}`); return null; }
+            finally { await p.close(); await sleep(1500); }
+          }
+          async function pdf(url) {
+            const g = await gate(url);
+            if (g) { await post(`${LABEL} SKIPPED PDF ${url}: ${g}`); return; }
+            try {
+              const r = await fetch(url, {headers: {'User-Agent': UA}, signal: AbortSignal.timeout(60000)});
+              const fu = new URL(r.url);
+              if (!OPEN_HOSTS.has(fu.hostname)) { await post(`${LABEL} STOPPED PDF ${url}: final ${r.url}`); return; }
+              const buf = Buffer.from(await r.arrayBuffer());
+              fs.writeFileSync('/tmp/doc.pdf', buf);
+              let info = ''; try { info = execFileSync('pdfinfo', ['/tmp/doc.pdf']).toString(); } catch (e) {}
+              let t = ''; try { t = execFileSync('pdftotext', ['-layout', '/tmp/doc.pdf', '-']).toString(); } catch (e) { t = 'pdftotext failed: ' + e; }
+              let how = 'pdftotext';
+              if (t.replace(/\s/g, '').length < 200) {
+                how = 'OCR (tesseract, deu) - the PDF has no text layer';
+                try { execFileSync('pdftoppm', ['-r', '200', '-png', '/tmp/doc.pdf', '/tmp/pg']);
+                  t = fs.readdirSync('/tmp').filter(f => /^pg.*\.png$/.test(f)).sort().map(f => execFileSync('tesseract', ['/tmp/' + f, '-', '-l', 'deu']).toString()).join('\n\f\n');
+                  fs.readdirSync('/tmp').filter(f => /^pg.*\.png$/.test(f)).forEach(f => fs.unlinkSync('/tmp/' + f));
+                } catch (e) { t += '\nOCR failed: ' + e; }
+              }
+              await postParts(`${LABEL} PDF ${url}\nHTTP ${r.status} | ${buf.length} bytes | text via ${how}\npdfinfo:\n${info}\nTEXT`, t);
+            } catch (e) { await post(`${LABEL} ERROR PDF ${url}: ${String(e).slice(0, 500)}`); }
+            await sleep(1500);
+          }
+          async function raw(url) {
+            const g = await gate(url);
+            if (g) { await post(`${LABEL} SKIPPED RAW ${url}: ${g}`); return; }
+            try { const r = await fetch(url, {headers: {'User-Agent': UA}, signal: AbortSignal.timeout(30000)});
+              const t = await r.text(); await postParts(`${LABEL} RAW ${url} HTTP ${r.status} final ${r.url}`, t);
+            } catch (e) { await post(`${LABEL} ERROR RAW ${url}: ${String(e).slice(0, 500)}`); }
+            await sleep(1500);
+          }
+          (async () => {
+            try {
+              browser = await chromium.launch();
+              ctx = await browser.newContext({userAgent: UA, viewport: {width: 1280, height: 1800}, locale: 'de-DE'});
+              const items = fs.readFileSync('list.txt', 'utf8').split('\n').map(l => l.trim()).filter(Boolean);
+              for (const it of items) {
+                const [kind, arg] = it.split(/\s+/, 2);
+                if (kind === 'WIKIDATA') {
+                  try { const r = await fetch(`https://www.wikidata.org/wiki/Special:EntityData/${arg}.json`, {headers: {'User-Agent': UA}});
+                    const j = await r.json(); const v = (j.entities[arg].claims.P856 || []).map(c => `${c.mainsnak.datavalue && c.mainsnak.datavalue.value} (rank ${c.rank})`);
+                    await post(`${LABEL} WIKIDATA ${arg} P856: ${v.join(' ; ') || 'none'}`);
+                  } catch (e) { await post(`${LABEL} ERROR WIKIDATA ${arg}: ${e}`); }
+                  await sleep(1100);
+                } else if (kind === 'ROBOTS') {
+                  const r = await robots(arg);
+                  await postParts(`${LABEL} ROBOTS https://${arg}/robots.txt HTTP ${r.status}${r.location ? ' location ' + r.location : ''}${r.error ? ' error ' + r.error : ''}`, r.text || '(empty)');
+                } else if (kind === 'PAGE') await page(arg);
+                else if (kind === 'CLICK') await page(arg, {click: true});
+                else if (kind === 'PDF') await pdf(arg);
+                else if (kind === 'RAW') await raw(arg);
+                else if (kind === 'NOTICES') {
+                  const d = await page(arg);
+                  if (d) {
+                    const base = new URL(arg).hostname;
+                    const want = [...new Set(d.links.map(l => l.split(' | ').pop()).filter(h => { try { const u = new URL(h); return u.hostname === base && /impressum|nutzungsbedingung|rechtlich|legal|terms|agb|datenschutz|disclaimer/i.test(u.pathname); } catch (e) { return false; } }))].slice(0, 6);
+                    await post(`${LABEL} NOTICE LINKS found on ${arg}: ${want.join(' ; ') || 'none'}`);
+                    for (const w of want) { if (/\.pdf($|\?)/i.test(w)) await pdf(w); else await page(w); }
+                  }
+                }
+              }
+              await post(`${LABEL} DONE`);
+            } catch (e) { await post(`${LABEL} FATAL ${String(e).slice(0, 1000)}`); }
+            finally { if (browser) await browser.close(); }
+          })();
+          EOF
+          node probe.js
