@@ -20,33 +20,15 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN_LABEL: run-2
+      RUN_LABEL: run-3
       PROBE_URLS: |
-        https://fcbayern.com/de +legal
-        https://fck.de/fck/verein/tradition/
-        https://fck.de/fck/verein/
-        https://fck.de/fck/museum/
-        https://fck.de/fans/fans-beim-fck/
-        https://fck.de/fans/fans-beim-fck/fanbetreuung/
-        https://fck.de/fck/mitgliedschaft/satzung-und-beitraege/
-        https://www.mainz05.de/chronik
-        https://www.mainz05.de/die-fanabteilung
-        https://www.mainz05.de/supporters-mainz
-        https://www.mainz05.de/fanbetreuung-fanbeauftragte
-        https://museum.eintracht.de/
-        https://klub.eintracht.de/
-        https://fans.eintracht.de/
-        https://www.fcaugsburg.de/page/historie-5
-        https://www.fcaugsburg.de/page/der-fca-in-kuerze-59
-        https://www.fcaugsburg.de/page/fanclubs-43
-        https://www.fcaugsburg.de/page/fanbeauftragte-30
-        https://www.fcaugsburg.de/page/fanprojekt-32
-        https://de.wikipedia.org/wiki/1._FC_Kaiserslautern
-        https://de.wikipedia.org/wiki/1._FC_N%C3%BCrnberg
-        https://de.wikipedia.org/wiki/1._FSV_Mainz_05
-        https://de.wikipedia.org/wiki/Eintracht_Frankfurt
-        https://de.wikipedia.org/wiki/FC_Augsburg
-        https://de.wikipedia.org/wiki/FC_Bayern_M%C3%BCnchen
+        https://fck.de/wp-content/uploads/2026/05/Satzung_OrdnungenMai2026.pdf
+        https://museum.eintracht.de/chronik/
+        https://klub.eintracht.de/eintracht-frankfurt-ev/
+        https://fans.eintracht.de/fans-fankultur/fanszene/
+        https://augsburg.original1907.de/2017/11/10-jahre-legio-augusta.html +legal
+        https://www.tz.de/sport/fc-bayern/schickeria-muenchen-ultras-fc-bayern-das-steckt-dahinter-4145942.html +legal
+        https://www.sport1.de/fussball/bundesliga/2020/03/fc-bayern-und-seine-ultras-die-zwei-gesichter-der-schickeria +legal
     steps:
       - uses: actions/setup-node@v5
         with:
