@@ -502,7 +502,11 @@ KNOWN = {
         "block-12", "block-13", "block-16-18", "block-19", "block-20",
         "block-21-23", "block-24",
         "stehplatz-ueberdacht-g-h-i-p", "stehplatz-unueberdacht-f2",
-        "west-a-b-d-e", "ost-j-l-u1-u2", "west-c-reihe-1-4"],
+        "west-a-b-d-e", "ost-j-l-u1-u2", "west-c-reihe-1-4",
+        # Hertha BSC, 2026-11-06: the flat 2026/27 season-ticket price of
+        # the East stand (Ostkurve, blocks Q-T and 34-41), the only price
+        # the club's pages state in text.
+        "ostkurve-q-t-34-41"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
