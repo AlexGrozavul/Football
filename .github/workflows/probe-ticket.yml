@@ -39,7 +39,6 @@ jobs:
           ALLOW: |
           ROBOTS: |
             www.fcenergie.de
-            tickets.fcenergie.de
           GATE: |
           IMGS: |
           FULL: |
@@ -56,14 +55,13 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.fcenergie.de/nachrichtenuebersicht.html?page=6
-            https://www.fcenergie.de/nachrichtenuebersicht.html?page=7
-            https://www.fcenergie.de/news/der-glubb-gibt-sich-die-ehre.html
-            https://www.fcenergie.de/news/fraenkisches-spitzenteam.html
-            https://www.fcenergie.de/news/kiezkicker-kommen-in-die-lausitz.html
-            https://www.fcenergie.de/news/interessante-partie.html
-            https://www.fcenergie.de/news/tickets-gegen-die-alte-dame.html
-            https://www.fcenergie.de/news/shop-oder-top.html
+            https://www.fcenergie.de/nachrichtenuebersicht.html?page=8
+            https://www.fcenergie.de/nachrichtenuebersicht.html?page=9
+            https://www.fcenergie.de/news/die-fuggerstaedter-sind-zu-gast.html
+            https://www.fcenergie.de/news/gegen-die-jungs-vom-kiez.html
+            https://www.fcenergie.de/news/wichtiges-heimspiel.html
+            https://www.fcenergie.de/news/herzlich-willkommen.html
+            https://www.fcenergie.de/news/wir-sind-siebentausend.html
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
