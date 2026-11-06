@@ -500,7 +500,9 @@ KNOWN = {
         # in the club's price lists (Stand 17.05.2026).
         "block-1-7", "block-8", "block-9", "block-10", "block-11",
         "block-12", "block-13", "block-16-18", "block-19", "block-20",
-        "block-21-23", "block-24"],
+        "block-21-23", "block-24",
+        "stehplatz-ueberdacht-g-h-i-p", "stehplatz-unueberdacht-f2",
+        "west-a-b-d-e", "ost-j-l-u1-u2", "west-c-reihe-1-4"],
     # category-a / category-b are the CLUB'S OWN labels (Nürnberg's
     # Preiskategorie A and B), unlike top-opponent / standard-opponent,
     # which are this project's description of two Bayern tables.
