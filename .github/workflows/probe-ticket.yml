@@ -41,13 +41,8 @@ jobs:
             www.fcenergie.de
           GATE: |
           IMGS: |
-            https://www.fcenergie.de/ticketpreise-2026-27.html
-            https://www.fcenergie.de/dauerkartenpreise-2026-27.html
-            https://www.fcenergie.de/sonderkarten.html
           FULL: |
           TABLES: |
-            https://www.fcenergie.de/ticketpreise-2026-27.html
-            https://www.fcenergie.de/dauerkartenpreise-2026-27.html
           EXPAND: |
           FIELDS: |
           RAWPDF: |
@@ -60,18 +55,14 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.fcenergie.de/ticketpreise-2026-27.html
-            https://www.fcenergie.de/dauerkartenpreise-2026-27.html
-            https://www.fcenergie.de/vorverkaufsstellen.html
-            https://www.fcenergie.de/sonderkarten.html
-            https://www.fcenergie.de/auswaertskarten.html
-            https://www.fcenergie.de/atgb.html
-            https://www.fcenergie.de/stadionordnung.html
-            https://www.fcenergie.de/gaeste-couch.html
-            https://www.fcenergie.de/sonderbereiche.html
-            https://www.fcenergie.de/mitgliedschaft.html
-            https://www.fcenergie.de/nachrichtenuebersicht.html
-            https://www.fcenergie.de/leag-energie-stadion.html
+            https://www.fcenergie.de/nachrichtenuebersicht.html?page=2
+            https://www.fcenergie.de/nachrichtenuebersicht.html?page=3
+            https://www.fcenergie.de/nachrichtenuebersicht.html?page=4
+            https://www.fcenergie.de/nachrichtenuebersicht.html?page=5
+            https://www.fcenergie.de/news/gaeste-aus-dem-pott.html
+            https://www.fcenergie.de/news/flutlicht-atmosphaere.html
+            https://www.fcenergie.de/news/ein-oktober-resuemee.html
+            https://www.fcenergie.de/news/vorverkauf-fuer-partie-an-der-boerde.html
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
