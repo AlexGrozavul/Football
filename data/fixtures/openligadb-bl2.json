@@ -3922,6 +3922,156 @@
    "viewers": null
   },
   {
+   "id": 83741,
+   "utcDate": "2026-12-04T17:30:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 83,
+    "name": "DSC Arminia Bielefeld",
+    "shortName": "Bielefeld",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Arminia_Bielefeld_Logo_2021%E2%80%93.svg"
+   },
+   "away": {
+    "id": 177,
+    "name": "Dynamo Dresden",
+    "shortName": "Dresden",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83742,
+   "utcDate": "2026-12-04T17:30:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 93,
+    "name": "Energie Cottbus",
+    "shortName": "Cottbus",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
+   },
+   "away": {
+    "id": 36,
+    "name": "VfL Osnabrück",
+    "shortName": "Osnabrück",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83733,
+   "utcDate": "2026-12-05T12:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 76,
+    "name": "1. FC Kaiserslautern",
+    "shortName": "Kaiserslautern",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
+   },
+   "away": {
+    "id": 115,
+    "name": "SpVgg Greuther Fürth",
+    "shortName": "Fürth",
+    "crest": "https://i.imgur.com/pwuVbKr.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83735,
+   "utcDate": "2026-12-05T12:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 79,
+    "name": "1. FC Nürnberg",
+    "shortName": "Nürnberg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
+   },
+   "away": {
+    "id": 129,
+    "name": "VfL Bochum",
+    "shortName": "Bochum",
+    "crest": "https://i.imgur.com/5jy3Gfr.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83738,
+   "utcDate": "2026-12-05T12:00:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 105,
+    "name": "Karlsruher SC",
+    "shortName": "Karlsruhe",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
+   },
+   "away": {
+    "id": 104,
+    "name": "Holstein Kiel",
+    "shortName": "Kiel",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83731,
+   "utcDate": "2026-12-05T19:30:00Z",
+   "finished": false,
+   "round": "14. Spieltag",
+   "roundOrder": 14,
+   "home": {
+    "id": 55,
+    "name": "Hannover 96",
+    "shortName": "Hannover",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
+   },
+   "away": {
+    "id": 54,
+    "name": "Hertha BSC",
+    "shortName": "Hertha",
+    "crest": "https://i.imgur.com/apFwbYZ.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 83726,
    "utcDate": "2026-12-06T12:30:00Z",
    "finished": false,
@@ -3972,31 +4122,6 @@
    "viewers": null
   },
   {
-   "id": 83731,
-   "utcDate": "2026-12-06T12:30:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 55,
-    "name": "Hannover 96",
-    "shortName": "Hannover",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
-   },
-   "away": {
-    "id": 54,
-    "name": "Hertha BSC",
-    "shortName": "Hertha",
-    "crest": "https://i.imgur.com/apFwbYZ.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 83732,
    "utcDate": "2026-12-06T12:30:00Z",
    "finished": false,
@@ -4022,86 +4147,11 @@
    "viewers": null
   },
   {
-   "id": 83733,
-   "utcDate": "2026-12-06T12:30:00Z",
+   "id": 83747,
+   "utcDate": "2026-12-11T17:30:00Z",
    "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 76,
-    "name": "1. FC Kaiserslautern",
-    "shortName": "Kaiserslautern",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
-   },
-   "away": {
-    "id": 115,
-    "name": "SpVgg Greuther Fürth",
-    "shortName": "Fürth",
-    "crest": "https://i.imgur.com/pwuVbKr.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83735,
-   "utcDate": "2026-12-06T12:30:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 79,
-    "name": "1. FC Nürnberg",
-    "shortName": "Nürnberg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
-   },
-   "away": {
-    "id": 129,
-    "name": "VfL Bochum",
-    "shortName": "Bochum",
-    "crest": "https://i.imgur.com/5jy3Gfr.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83738,
-   "utcDate": "2026-12-06T12:30:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
-   "home": {
-    "id": 105,
-    "name": "Karlsruher SC",
-    "shortName": "Karlsruhe",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
-   },
-   "away": {
-    "id": 104,
-    "name": "Holstein Kiel",
-    "shortName": "Kiel",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83741,
-   "utcDate": "2026-12-06T12:30:00Z",
-   "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
+   "round": "15. Spieltag",
+   "roundOrder": 15,
    "home": {
     "id": 83,
     "name": "DSC Arminia Bielefeld",
@@ -4109,10 +4159,10 @@
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Arminia_Bielefeld_Logo_2021%E2%80%93.svg"
    },
    "away": {
-    "id": 177,
-    "name": "Dynamo Dresden",
-    "shortName": "Dresden",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
+    "id": 76,
+    "name": "1. FC Kaiserslautern",
+    "shortName": "Kaiserslautern",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4122,22 +4172,22 @@
    "viewers": null
   },
   {
-   "id": 83742,
-   "utcDate": "2026-12-06T12:30:00Z",
+   "id": 83748,
+   "utcDate": "2026-12-11T17:30:00Z",
    "finished": false,
-   "round": "14. Spieltag",
-   "roundOrder": 14,
+   "round": "15. Spieltag",
+   "roundOrder": 15,
    "home": {
-    "id": 93,
-    "name": "Energie Cottbus",
-    "shortName": "Cottbus",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
+    "id": 78,
+    "name": "1. FC Magdeburg",
+    "shortName": "Magdeburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
    "away": {
-    "id": 36,
-    "name": "VfL Osnabrück",
-    "shortName": "Osnabrück",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
+    "id": 79,
+    "name": "1. FC Nürnberg",
+    "shortName": "Nürnberg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4148,7 +4198,7 @@
   },
   {
    "id": 83743,
-   "utcDate": "2026-12-13T12:30:00Z",
+   "utcDate": "2026-12-12T12:00:00Z",
    "finished": false,
    "round": "15. Spieltag",
    "roundOrder": 15,
@@ -4163,6 +4213,81 @@
     "name": "SV Darmstadt 98",
     "shortName": "Darmstadt",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e5/SV_Darmstadt_98_Logo.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83746,
+   "utcDate": "2026-12-12T12:00:00Z",
+   "finished": false,
+   "round": "15. Spieltag",
+   "roundOrder": 15,
+   "home": {
+    "id": 104,
+    "name": "Holstein Kiel",
+    "shortName": "Kiel",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
+   },
+   "away": {
+    "id": 55,
+    "name": "Hannover 96",
+    "shortName": "Hannover",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83749,
+   "utcDate": "2026-12-12T12:00:00Z",
+   "finished": false,
+   "round": "15. Spieltag",
+   "roundOrder": 15,
+   "home": {
+    "id": 74,
+    "name": "Eintracht Braunschweig",
+    "shortName": "Braunschweig",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/4/45/Logo_Eintracht_Braunschweig.svg"
+   },
+   "away": {
+    "id": 105,
+    "name": "Karlsruher SC",
+    "shortName": "Karlsruhe",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83745,
+   "utcDate": "2026-12-12T19:30:00Z",
+   "finished": false,
+   "round": "15. Spieltag",
+   "roundOrder": 15,
+   "home": {
+    "id": 177,
+    "name": "Dynamo Dresden",
+    "shortName": "Dresden",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
+   },
+   "away": {
+    "id": 93,
+    "name": "Energie Cottbus",
+    "shortName": "Cottbus",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4188,131 +4313,6 @@
     "name": "1. FC Heidenheim 1846",
     "shortName": "Heidenheim",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9d/1._FC_Heidenheim_1846.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83745,
-   "utcDate": "2026-12-13T12:30:00Z",
-   "finished": false,
-   "round": "15. Spieltag",
-   "roundOrder": 15,
-   "home": {
-    "id": 177,
-    "name": "Dynamo Dresden",
-    "shortName": "Dresden",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
-   },
-   "away": {
-    "id": 93,
-    "name": "Energie Cottbus",
-    "shortName": "Cottbus",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83746,
-   "utcDate": "2026-12-13T12:30:00Z",
-   "finished": false,
-   "round": "15. Spieltag",
-   "roundOrder": 15,
-   "home": {
-    "id": 104,
-    "name": "Holstein Kiel",
-    "shortName": "Kiel",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
-   },
-   "away": {
-    "id": 55,
-    "name": "Hannover 96",
-    "shortName": "Hannover",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83747,
-   "utcDate": "2026-12-13T12:30:00Z",
-   "finished": false,
-   "round": "15. Spieltag",
-   "roundOrder": 15,
-   "home": {
-    "id": 83,
-    "name": "DSC Arminia Bielefeld",
-    "shortName": "Bielefeld",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Arminia_Bielefeld_Logo_2021%E2%80%93.svg"
-   },
-   "away": {
-    "id": 76,
-    "name": "1. FC Kaiserslautern",
-    "shortName": "Kaiserslautern",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83748,
-   "utcDate": "2026-12-13T12:30:00Z",
-   "finished": false,
-   "round": "15. Spieltag",
-   "roundOrder": 15,
-   "home": {
-    "id": 78,
-    "name": "1. FC Magdeburg",
-    "shortName": "Magdeburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
-   },
-   "away": {
-    "id": 79,
-    "name": "1. FC Nürnberg",
-    "shortName": "Nürnberg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83749,
-   "utcDate": "2026-12-13T12:30:00Z",
-   "finished": false,
-   "round": "15. Spieltag",
-   "roundOrder": 15,
-   "home": {
-    "id": 74,
-    "name": "Eintracht Braunschweig",
-    "shortName": "Braunschweig",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/4/45/Logo_Eintracht_Braunschweig.svg"
-   },
-   "away": {
-    "id": 105,
-    "name": "Karlsruher SC",
-    "shortName": "Karlsruhe",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4372,8 +4372,58 @@
    "viewers": null
   },
   {
+   "id": 83760,
+   "utcDate": "2026-12-18T17:30:00Z",
+   "finished": false,
+   "round": "16. Spieltag",
+   "roundOrder": 16,
+   "home": {
+    "id": 79,
+    "name": "1. FC Nürnberg",
+    "shortName": "Nürnberg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
+   },
+   "away": {
+    "id": 36,
+    "name": "VfL Osnabrück",
+    "shortName": "Osnabrück",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83766,
+   "utcDate": "2026-12-18T17:30:00Z",
+   "finished": false,
+   "round": "16. Spieltag",
+   "roundOrder": 16,
+   "home": {
+    "id": 93,
+    "name": "Energie Cottbus",
+    "shortName": "Cottbus",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
+   },
+   "away": {
+    "id": 104,
+    "name": "Holstein Kiel",
+    "shortName": "Kiel",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 83752,
-   "utcDate": "2026-12-20T12:30:00Z",
+   "utcDate": "2026-12-19T12:00:00Z",
    "finished": false,
    "round": "16. Spieltag",
    "roundOrder": 16,
@@ -4398,7 +4448,7 @@
   },
   {
    "id": 83753,
-   "utcDate": "2026-12-20T12:30:00Z",
+   "utcDate": "2026-12-19T12:00:00Z",
    "finished": false,
    "round": "16. Spieltag",
    "roundOrder": 16,
@@ -4413,6 +4463,56 @@
     "name": "Hertha BSC",
     "shortName": "Hertha",
     "crest": "https://i.imgur.com/apFwbYZ.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83765,
+   "utcDate": "2026-12-19T12:00:00Z",
+   "finished": false,
+   "round": "16. Spieltag",
+   "roundOrder": 16,
+   "home": {
+    "id": 105,
+    "name": "Karlsruher SC",
+    "shortName": "Karlsruhe",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
+   },
+   "away": {
+    "id": 177,
+    "name": "Dynamo Dresden",
+    "shortName": "Dresden",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83762,
+   "utcDate": "2026-12-19T19:30:00Z",
+   "finished": false,
+   "round": "16. Spieltag",
+   "roundOrder": 16,
+   "home": {
+    "id": 129,
+    "name": "VfL Bochum",
+    "shortName": "Bochum",
+    "crest": "https://i.imgur.com/5jy3Gfr.png"
+   },
+   "away": {
+    "id": 78,
+    "name": "1. FC Magdeburg",
+    "shortName": "Magdeburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4497,22 +4597,22 @@
    "viewers": null
   },
   {
-   "id": 83760,
-   "utcDate": "2026-12-20T12:30:00Z",
+   "id": 83774,
+   "utcDate": "2027-01-15T17:30:00Z",
    "finished": false,
-   "round": "16. Spieltag",
-   "roundOrder": 16,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
    "home": {
-    "id": 79,
-    "name": "1. FC Nürnberg",
-    "shortName": "Nürnberg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
+    "id": 83,
+    "name": "DSC Arminia Bielefeld",
+    "shortName": "Bielefeld",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Arminia_Bielefeld_Logo_2021%E2%80%93.svg"
    },
    "away": {
-    "id": 36,
-    "name": "VfL Osnabrück",
-    "shortName": "Osnabrück",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
+    "id": 55,
+    "name": "Hannover 96",
+    "shortName": "Hannover",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4522,47 +4622,47 @@
    "viewers": null
   },
   {
-   "id": 83762,
-   "utcDate": "2026-12-20T12:30:00Z",
+   "id": 83777,
+   "utcDate": "2027-01-15T17:30:00Z",
    "finished": false,
-   "round": "16. Spieltag",
-   "roundOrder": 16,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
    "home": {
-    "id": 129,
-    "name": "VfL Bochum",
-    "shortName": "Bochum",
-    "crest": "https://i.imgur.com/5jy3Gfr.png"
+    "id": 115,
+    "name": "SpVgg Greuther Fürth",
+    "shortName": "Fürth",
+    "crest": "https://i.imgur.com/pwuVbKr.png"
    },
    "away": {
-    "id": 78,
-    "name": "1. FC Magdeburg",
-    "shortName": "Magdeburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83765,
-   "utcDate": "2026-12-20T12:30:00Z",
-   "finished": false,
-   "round": "16. Spieltag",
-   "roundOrder": 16,
-   "home": {
     "id": 105,
     "name": "Karlsruher SC",
     "shortName": "Karlsruhe",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
    },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83773,
+   "utcDate": "2027-01-16T12:00:00Z",
+   "finished": false,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
+   "home": {
+    "id": 104,
+    "name": "Holstein Kiel",
+    "shortName": "Kiel",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
+   },
    "away": {
-    "id": 177,
-    "name": "Dynamo Dresden",
-    "shortName": "Dresden",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
+    "id": 129,
+    "name": "VfL Bochum",
+    "shortName": "Bochum",
+    "crest": "https://i.imgur.com/5jy3Gfr.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4572,22 +4672,72 @@
    "viewers": null
   },
   {
-   "id": 83766,
-   "utcDate": "2026-12-20T12:30:00Z",
+   "id": 83775,
+   "utcDate": "2027-01-16T12:00:00Z",
    "finished": false,
-   "round": "16. Spieltag",
-   "roundOrder": 16,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
    "home": {
-    "id": 93,
-    "name": "Energie Cottbus",
-    "shortName": "Cottbus",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
+    "id": 78,
+    "name": "1. FC Magdeburg",
+    "shortName": "Magdeburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
    "away": {
-    "id": 104,
-    "name": "Holstein Kiel",
-    "shortName": "Kiel",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
+    "id": 199,
+    "name": "1. FC Heidenheim 1846",
+    "shortName": "Heidenheim",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9d/1._FC_Heidenheim_1846.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83776,
+   "utcDate": "2027-01-16T12:00:00Z",
+   "finished": false,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
+   "home": {
+    "id": 74,
+    "name": "Eintracht Braunschweig",
+    "shortName": "Braunschweig",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/4/45/Logo_Eintracht_Braunschweig.svg"
+   },
+   "away": {
+    "id": 98,
+    "name": "FC St. Pauli",
+    "shortName": "St. Pauli",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83771,
+   "utcDate": "2027-01-16T19:30:00Z",
+   "finished": false,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
+   "home": {
+    "id": 54,
+    "name": "Hertha BSC",
+    "shortName": "Hertha",
+    "crest": "https://i.imgur.com/apFwbYZ.png"
+   },
+   "away": {
+    "id": 79,
+    "name": "1. FC Nürnberg",
+    "shortName": "Nürnberg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4622,31 +4772,6 @@
    "viewers": null
   },
   {
-   "id": 83771,
-   "utcDate": "2027-01-17T12:30:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 54,
-    "name": "Hertha BSC",
-    "shortName": "Hertha",
-    "crest": "https://i.imgur.com/apFwbYZ.png"
-   },
-   "away": {
-    "id": 79,
-    "name": "1. FC Nürnberg",
-    "shortName": "Nürnberg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 83772,
    "utcDate": "2027-01-17T12:30:00Z",
    "finished": false,
@@ -4663,131 +4788,6 @@
     "name": "VfL Wolfsburg",
     "shortName": "Wolfsburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/VfL_Wolfsburg_logo_2026.svg/960px-VfL_Wolfsburg_logo_2026.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83773,
-   "utcDate": "2027-01-17T12:30:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 104,
-    "name": "Holstein Kiel",
-    "shortName": "Kiel",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/330px-Holstein_Kiel_Logo.svg.png"
-   },
-   "away": {
-    "id": 129,
-    "name": "VfL Bochum",
-    "shortName": "Bochum",
-    "crest": "https://i.imgur.com/5jy3Gfr.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83774,
-   "utcDate": "2027-01-17T12:30:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 83,
-    "name": "DSC Arminia Bielefeld",
-    "shortName": "Bielefeld",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Arminia_Bielefeld_Logo_2021%E2%80%93.svg"
-   },
-   "away": {
-    "id": 55,
-    "name": "Hannover 96",
-    "shortName": "Hannover",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Hannover_96_Logo.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83775,
-   "utcDate": "2027-01-17T12:30:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 78,
-    "name": "1. FC Magdeburg",
-    "shortName": "Magdeburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
-   },
-   "away": {
-    "id": 199,
-    "name": "1. FC Heidenheim 1846",
-    "shortName": "Heidenheim",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9d/1._FC_Heidenheim_1846.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83776,
-   "utcDate": "2027-01-17T12:30:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 74,
-    "name": "Eintracht Braunschweig",
-    "shortName": "Braunschweig",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/4/45/Logo_Eintracht_Braunschweig.svg"
-   },
-   "away": {
-    "id": 98,
-    "name": "FC St. Pauli",
-    "shortName": "St. Pauli",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83777,
-   "utcDate": "2027-01-17T12:30:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 115,
-    "name": "SpVgg Greuther Fürth",
-    "shortName": "Fürth",
-    "crest": "https://i.imgur.com/pwuVbKr.png"
-   },
-   "away": {
-    "id": 105,
-    "name": "Karlsruher SC",
-    "shortName": "Karlsruhe",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4822,8 +4822,58 @@
    "viewers": null
   },
   {
+   "id": 83861,
+   "utcDate": "2027-01-22T17:30:00Z",
+   "finished": false,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
+   "home": {
+    "id": 177,
+    "name": "Dynamo Dresden",
+    "shortName": "Dresden",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
+   },
+   "away": {
+    "id": 79,
+    "name": "1. FC Nürnberg",
+    "shortName": "Nürnberg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83865,
+   "utcDate": "2027-01-22T17:30:00Z",
+   "finished": false,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
+   "home": {
+    "id": 74,
+    "name": "Eintracht Braunschweig",
+    "shortName": "Braunschweig",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/4/45/Logo_Eintracht_Braunschweig.svg"
+   },
+   "away": {
+    "id": 78,
+    "name": "1. FC Magdeburg",
+    "shortName": "Magdeburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 83858,
-   "utcDate": "2027-01-24T12:30:00Z",
+   "utcDate": "2027-01-23T12:00:00Z",
    "finished": false,
    "round": "18. Spieltag",
    "roundOrder": 18,
@@ -4838,6 +4888,56 @@
     "name": "Energie Cottbus",
     "shortName": "Cottbus",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/5/55/Logo_Energie_Cottbus.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83860,
+   "utcDate": "2027-01-23T12:00:00Z",
+   "finished": false,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
+   "home": {
+    "id": 54,
+    "name": "Hertha BSC",
+    "shortName": "Hertha",
+    "crest": "https://i.imgur.com/apFwbYZ.png"
+   },
+   "away": {
+    "id": 129,
+    "name": "VfL Bochum",
+    "shortName": "Bochum",
+    "crest": "https://i.imgur.com/5jy3Gfr.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 83868,
+   "utcDate": "2027-01-23T12:00:00Z",
+   "finished": false,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
+   "home": {
+    "id": 36,
+    "name": "VfL Osnabrück",
+    "shortName": "Osnabrück",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
+   },
+   "away": {
+    "id": 199,
+    "name": "1. FC Heidenheim 1846",
+    "shortName": "Heidenheim",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9d/1._FC_Heidenheim_1846.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4863,56 +4963,6 @@
     "name": "VfL Wolfsburg",
     "shortName": "Wolfsburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/VfL_Wolfsburg_logo_2026.svg/960px-VfL_Wolfsburg_logo_2026.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83860,
-   "utcDate": "2027-01-24T12:30:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 54,
-    "name": "Hertha BSC",
-    "shortName": "Hertha",
-    "crest": "https://i.imgur.com/apFwbYZ.png"
-   },
-   "away": {
-    "id": 129,
-    "name": "VfL Bochum",
-    "shortName": "Bochum",
-    "crest": "https://i.imgur.com/5jy3Gfr.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83861,
-   "utcDate": "2027-01-24T12:30:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 177,
-    "name": "Dynamo Dresden",
-    "shortName": "Dresden",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
-   },
-   "away": {
-    "id": 79,
-    "name": "1. FC Nürnberg",
-    "shortName": "Nürnberg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fa/1._FC_Nürnberg_logo.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4972,31 +5022,6 @@
    "viewers": null
   },
   {
-   "id": 83865,
-   "utcDate": "2027-01-24T12:30:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 74,
-    "name": "Eintracht Braunschweig",
-    "shortName": "Braunschweig",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/4/45/Logo_Eintracht_Braunschweig.svg"
-   },
-   "away": {
-    "id": 78,
-    "name": "1. FC Magdeburg",
-    "shortName": "Magdeburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 83867,
    "utcDate": "2027-01-24T12:30:00Z",
    "finished": false,
@@ -5013,31 +5038,6 @@
     "name": "FC St. Pauli",
     "shortName": "St. Pauli",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 83868,
-   "utcDate": "2027-01-24T12:30:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 36,
-    "name": "VfL Osnabrück",
-    "shortName": "Osnabrück",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
-   },
-   "away": {
-    "id": 199,
-    "name": "1. FC Heidenheim 1846",
-    "shortName": "Heidenheim",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/9d/1._FC_Heidenheim_1846.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
