@@ -2034,7 +2034,7 @@
   {
    "id": 559638,
    "utcDate": "2026-11-06T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2052,9 +2052,9 @@
     "tla": "RC ",
     "crest": "https://crests.football-data.org/576.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559637,

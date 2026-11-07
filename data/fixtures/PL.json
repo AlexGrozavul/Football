@@ -2259,7 +2259,7 @@
   {
    "id": 560634,
    "utcDate": "2026-11-06T20:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2277,9 +2277,9 @@
     "tla": "COV",
     "crest": "https://crests.football-data.org/1076.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560632,

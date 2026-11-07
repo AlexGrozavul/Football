@@ -8459,7 +8459,7 @@
   {
    "id": 555079,
    "utcDate": "2026-11-06T23:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 34,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -8477,9 +8477,9 @@
     "tla": "FLU",
     "crest": "https://crests.football-data.org/1765.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 555085,
