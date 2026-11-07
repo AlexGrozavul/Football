@@ -37,29 +37,34 @@ jobs:
           SLOW: |
           HOSTGATE: |
           ALLOW: |
+            https://www.holstein-kiel.de/verein/mein-holstein-kiel-ein-login-fur-deine-ksv-welt/
           ROBOTS: |
             www.holstein-kiel.de
           GATE: |
             https://www.holstein-kiel.de/impressum/
           IMGS: |
-            https://www.holstein-kiel.de/stadionerlebnis/ticketinfos/
-            https://www.holstein-kiel.de/fans/infos-fuer-gaestefans/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-arminia-bielefeld/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-hertha-bsc/
           FULL: |
-            https://www.holstein-kiel.de/stadionerlebnis/ticketinfos/
-            https://www.holstein-kiel.de/fans/infos-fuer-gaestefans/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-arminia-bielefeld/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-dynamo-dresden/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-hertha-bsc/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-pokalspiel-gegen-die-tsg-hoffenheim/
           TABLES: |
-            https://www.holstein-kiel.de/stadionerlebnis/ticketinfos/
-            https://www.holstein-kiel.de/fans/infos-fuer-gaestefans/
-            https://www.holstein-kiel.de/verein/mitgliedschaft/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-arminia-bielefeld/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-dynamo-dresden/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-hertha-bsc/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-pokalspiel-gegen-die-tsg-hoffenheim/
           EXPAND: |
-            https://www.holstein-kiel.de/stadionerlebnis/ticketinfos/
-            https://www.holstein-kiel.de/fans/infos-fuer-gaestefans/
-            https://www.holstein-kiel.de/verein/mitgliedschaft/
-            https://www.holstein-kiel.de/stadionerlebnis/holstein-stadion/
+            https://www.holstein-kiel.de/verein/mein-holstein-kiel-ein-login-fur-deine-ksv-welt/
           FIELDS: |
           PDFS: |
+            https://www.holstein-kiel.de/wp-content/uploads/2026/06/ATGB-Stand-Juni-2026.pdf
+            https://www.holstein-kiel.de/wp-content/uploads/2025/09/Stadionordnung_Holstein-Stadion_2025-26_WEB6.0.pdf
           RAW: |
-            https://www.holstein-kiel.de/sitemap_index.xml
+            https://www.holstein-kiel.de/page-sitemap.xml
+            https://www.holstein-kiel.de/post-sitemap.xml
+            https://www.holstein-kiel.de/post-sitemap2.xml
           RAW_FROM: '0'
           NOTICES: |
           DISCOVER: |
@@ -67,14 +72,11 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.holstein-kiel.de/stadionerlebnis/ticketinfos/
-            https://www.holstein-kiel.de/fans/infos-fuer-gaestefans/
-            https://www.holstein-kiel.de/stadionerlebnis/holstein-stadion/
-            https://www.holstein-kiel.de/verein/mitgliedschaft/
-            https://www.holstein-kiel.de/verein/kids/mit-kids-ins-stadion/
-            https://www.holstein-kiel.de/verein/nachhaltigkeit/fuer-die-menschen/inklusion/
-            https://www.holstein-kiel.de/news-tickets/holstein-kiel-testet-in-der-laenderspielpause-gegen-odense-bk/
-            https://www.holstein-kiel.de/stadionerlebnis/anreise-und-parken/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-arminia-bielefeld/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-dynamo-dresden/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-hertha-bsc/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-pokalspiel-gegen-die-tsg-hoffenheim/
+            https://www.holstein-kiel.de/verein/mein-holstein-kiel-ein-login-fur-deine-ksv-welt/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
