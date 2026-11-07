@@ -131,7 +131,17 @@ jobs:
             return best && best[0] === 'disallow' ? [false, `Disallow: ${best[1]}`] : [true, best ? `${best[0]}: ${best[1]}` : 'no matching rule'];
           }
 
+          // Every page gets a hard limit of 4 minutes (Holstein Kiel run 1 hung without one); its context is closed then.
+          let curCtx = null;
           async function render(browser, url) {
+            let timer;
+            const limit = new Promise(res => { timer = setTimeout(() => res('TIMEOUT'), 240000); });
+            const r = await Promise.race([render0(browser, url), limit]);
+            clearTimeout(timer);
+            if (r === 'TIMEOUT') { post(`### FAILED ${url}\nNo result within 4 minutes; context closed, nothing recorded.`); try { if (curCtx) await curCtx.close(); } catch {} return; }
+            return r;
+          }
+          async function render0(browser, url) {
             const u = new URL(url);
             if (gatedOut.has(u.host)) { post(`### SKIPPED ${url}\nThe host's notice did not pass HOSTGATE in this run; not opened.`); return; }
             if (isForbidden(url)) { post(`### STOPPED ${url}\nForbidden URL (buy/cart/checkout/login/queue/seat plan); not opened.`); return; }
@@ -142,6 +152,7 @@ jobs:
             for (const limit of [45000, 90000]) {
               if (ctx) await ctx.close();
               ctx = await browser.newContext({ userAgent: UA, locale: 'de-DE' });
+              curCtx = ctx;
               page = await ctx.newPage();
               // Never follow a navigation (link, redirect, script) to a forbidden URL.
               await page.route('**/*', r => (r.request().isNavigationRequest() && isForbidden(r.request().url())) ? r.abort() : r.continue());
@@ -157,10 +168,7 @@ jobs:
             if (lines(process.env.SLOW).includes(url)) await sleep(15000);
             // Scroll once so lazy content loads.
             try { await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await sleep(3000); } catch {}
-            let frames = '';
-            for (const f of page.frames().slice(1)) {
-              try { frames += `\n[frame ${f.url()}]\n` + await f.evaluate(() => document.body ? document.body.innerText : ''); } catch {}
-            }
+            // Frame text is not read: an iframe that never finishes loading made evaluate() wait forever (Holstein Kiel run 1).
             const status = resp ? resp.status() : 'none';
             const final = page.url();
             const final0 = final;
