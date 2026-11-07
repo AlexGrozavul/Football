@@ -37,34 +37,25 @@ jobs:
           SLOW: |
           HOSTGATE: |
           ALLOW: |
-            https://www.holstein-kiel.de/verein/mein-holstein-kiel-ein-login-fur-deine-ksv-welt/
           ROBOTS: |
             www.holstein-kiel.de
           GATE: |
             https://www.holstein-kiel.de/impressum/
           IMGS: |
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-arminia-bielefeld/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-hertha-bsc/
+            https://www.holstein-kiel.de/news-tickets/alle-infos-zum-dauerkartenvorverkauf-fuer-die-saison-2026-27/
+            https://www.holstein-kiel.de/news-tickets/veraenderungen-zur-saison-2026-27-fuer-dauerkarteninhaber/
           FULL: |
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-arminia-bielefeld/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-dynamo-dresden/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-hertha-bsc/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-pokalspiel-gegen-die-tsg-hoffenheim/
+            https://www.holstein-kiel.de/news-tickets/alle-infos-zum-dauerkartenvorverkauf-fuer-die-saison-2026-27/
+            https://www.holstein-kiel.de/news-tickets/veraenderungen-zur-saison-2026-27-fuer-dauerkarteninhaber/
           TABLES: |
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-arminia-bielefeld/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-dynamo-dresden/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-hertha-bsc/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-pokalspiel-gegen-die-tsg-hoffenheim/
+            https://www.holstein-kiel.de/news-tickets/alle-infos-zum-dauerkartenvorverkauf-fuer-die-saison-2026-27/
+            https://www.holstein-kiel.de/news-tickets/veraenderungen-zur-saison-2026-27-fuer-dauerkarteninhaber/
           EXPAND: |
-            https://www.holstein-kiel.de/verein/mein-holstein-kiel-ein-login-fur-deine-ksv-welt/
+            https://www.holstein-kiel.de/news-tickets/alle-infos-zum-dauerkartenvorverkauf-fuer-die-saison-2026-27/
+            https://www.holstein-kiel.de/news-tickets/veraenderungen-zur-saison-2026-27-fuer-dauerkarteninhaber/
           FIELDS: |
           PDFS: |
-            https://www.holstein-kiel.de/wp-content/uploads/2026/06/ATGB-Stand-Juni-2026.pdf
-            https://www.holstein-kiel.de/wp-content/uploads/2025/09/Stadionordnung_Holstein-Stadion_2025-26_WEB6.0.pdf
           RAW: |
-            https://www.holstein-kiel.de/page-sitemap.xml
-            https://www.holstein-kiel.de/post-sitemap.xml
-            https://www.holstein-kiel.de/post-sitemap2.xml
           RAW_FROM: '0'
           NOTICES: |
           DISCOVER: |
@@ -72,11 +63,16 @@ jobs:
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-arminia-bielefeld/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-dynamo-dresden/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-hertha-bsc/
-            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-pokalspiel-gegen-die-tsg-hoffenheim/
-            https://www.holstein-kiel.de/verein/mein-holstein-kiel-ein-login-fur-deine-ksv-welt/
+            https://www.holstein-kiel.de/news-tickets/alle-infos-zum-dauerkartenvorverkauf-fuer-die-saison-2026-27/
+            https://www.holstein-kiel.de/news-tickets/veraenderungen-zur-saison-2026-27-fuer-dauerkarteninhaber/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-den-1-fc-magdeburg/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-den-1-fc-nuernberg/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-den-fc-st-pauli/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-den-fc-st-pauli-2/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-den-vfl-osnabrueck/
+            https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-eintracht-braunschweig/
+            https://www.holstein-kiel.de/news-tickets/erste-runde-dfb-pokal-ticketinfos-zum-fc-08-homburg/
+            https://www.holstein-kiel.de/stadionerlebnis/holstein-stadion/stadionumbau/
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
