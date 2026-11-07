@@ -4329,7 +4329,7 @@
   {
    "id": 84870,
    "utcDate": "2026-11-06T18:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -4344,9 +4344,20 @@
     "shortName": "Saarbrücken",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/f/ff/1._FC_Saarbr%C3%BCcken.svg/960px-1._FC_Saarbr%C3%BCcken.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 5,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 3,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 5,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
