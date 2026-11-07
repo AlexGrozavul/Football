@@ -39,26 +39,30 @@ jobs:
           ALLOW: |
           ROBOTS: |
             www.hsv.de
-            hsv.de
+            a.storyblok.com
           GATE: |
+            https://www.hsv.de/impressum
           IMGS: |
+            https://www.hsv.de/news/44-444-tickets-fuer-die-44-vorfreude-auf-hajduk-test
+            https://www.hsv.de/news/heimspiel-dreierpack-so-laeuft-die-organisation-hinter-den-kulissen
           FULL: |
           TABLES: |
           EXPAND: |
           FIELDS: |
           PDFS: |
+            https://a.storyblok.com/f/291215624286909/x/5ce38d7bf2/atgb_ticketing_260820.pdf
+            https://a.storyblok.com/f/291215624286909/x/70bf3ed806/stadionordnung_04_2025.pdf
           RAW: |
+            https://www.hsv.de/sitemap.xml
           NOTICES: |
-            https://www.hsv.de/
-            https://hsv.de/
           DISCOVER: |
-            https://www.hsv.de/
           FOLLOW: |
           FOLLOW_RE: '^$'
           RAW_SKIP: ''
           PAGES: |
-            https://www.hsv.de/
-            https://hsv.de/
+            https://www.hsv.de/news/44-444-tickets-fuer-die-44-vorfreude-auf-hajduk-test
+            https://www.hsv.de/news/heimspiel-dreierpack-so-laeuft-die-organisation-hinter-den-kulissen
+            https://www.hsv.de/teams/maenner/spielplan
         run: |
           mkdir -p /tmp/probe && cd /tmp/probe
           cat > probe.js <<'JS'
