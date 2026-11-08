@@ -12,28 +12,15 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "2"
+      RUN: "3"
       URLS: |
-        https://fc.de/fans
-        https://www.bayer04.de/de-de/page/historie
-        https://www.bayer04.de/de-de/page/fans
-        https://www.alemannia-aachen.de/impressum/
-        https://www.alemannia-aachen.de/archiv/vereinshistorie/
-        https://www.alemannia-aachen.de/klub/verein/allgemein/
-        https://www.alemannia-aachen.de/klub/verein/satzung/
-        https://www.alemannia-aachen.de/fans/fan-klubs/
-        https://f95.de/ terms
-        https://www.bvb.de/de/de/der-bvb/die-bvb-historie/jahrzehnte/1909-die-gruenderjahre.html
-        https://www.borussia.de/historie
-        https://www.borussia.de/ueber-uns
-        https://www.borussia.de/fans
-        https://d2m68vyp61dni.cloudfront.net/asset/975050198774/document_tq7112vtd565tbp4ibi0nj6u2a?content-disposition=inline pdf
-        https://de.wikipedia.org/wiki/1._FC_K%C3%B6ln fans
-        https://de.wikipedia.org/wiki/Bayer_04_Leverkusen fans
-        https://de.wikipedia.org/wiki/Alemannia_Aachen fans
-        https://de.wikipedia.org/wiki/Fortuna_D%C3%BCsseldorf fans
-        https://de.wikipedia.org/wiki/Borussia_Dortmund fans
-        https://de.wikipedia.org/wiki/Borussia_M%C3%B6nchengladbach fans
+        https://de.wikipedia.org/wiki/1._FC_K%C3%B6ln fans wl:horde
+        https://fc.de/club/mitgliedschaft/alle-informationen
+        https://fc.de/fc-info/club/tradition/hennes/
+        https://www.bayer04.de/de-de/page/historie/jahrzehnte/gruenderjahre
+        https://datencenter.dfb.de/datencenter/vereine
+        https://datencenter.dfb.de/datencenter/vereine/1-fc-koeln-e-v
+        https://datencenter.dfb.de/datencenter/vereine/borussia-09-e-v-dortmund
     steps:
       - uses: actions/setup-node@v5
         with:
@@ -148,6 +135,8 @@ jobs:
               const FAN = /ultra|fanszene|fangruppe|fanclub|fan-club|dachverband|supporters|anhänger|kurve|größte|wichtigste|führende|tribüne|boys|horde|szene/i;
               body = '[fans mode: only paragraphs matching fan words]\n' + text.split(/\n+/).filter(p => FAN.test(p)).join('\n');
               shown = [];
+              const wl = flags.find(f => f.startsWith('wl:'));
+              if (wl) { const re = new RegExp(wl.slice(3), 'i'); shown = links.filter(([t, h]) => re.test(t + ' ' + h)); }
             } else if (text.length > 20000) {
               const paras = text.split(/\n+/).filter(p => KEY.test(p));
               body = text.slice(0, 3000) + `\n[... page ${text.length} chars; paragraphs with a date or keyword follow]\n` + paras.join('\n');
