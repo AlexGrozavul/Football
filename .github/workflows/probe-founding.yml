@@ -33,7 +33,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
-          RUN_LABEL: "run 1"
+          RUN_LABEL: "run 2"
           # mode host: robots.txt, terms/legal-notice links, landing page. mode page: one page.
           TARGETS: |
             host https://www.rcstrasbourgalsace.fr/
@@ -168,4 +168,4 @@ jobs:
             } catch (e) { await comment(`PROBE ${LABEL} | FATAL ${e.stack}`); process.exit(1); }
           })();
           EOF
-          cd /tmp/pw && node /tmp/probe.js
+          cd /tmp/pw && NODE_PATH=/tmp/pw/node_modules node /tmp/probe.js
