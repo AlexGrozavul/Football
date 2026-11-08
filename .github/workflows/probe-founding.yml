@@ -12,27 +12,18 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "2"
+      RUN: "3"
       URLS: |
-        https://www.fc-saarbruecken.de/verein/chronik/
-        https://www.fc-saarbruecken.de/verein/blau-schwarze-geschichte/
-        https://www.fc-saarbruecken.de/verein/portrait/
-        https://www.fc-saarbruecken.de/app/uploads/2026/03/FCS-Satzung-gem-aoMGV_08.01.2026-CL.pdf
-        https://www.fc-saarbruecken.de/fans/fanclubs/
-        https://www.fc-saarbruecken.de/fans/fanbetreuung/
-        https://www.sgf1903.de/das-kleeblatt/verein
+        https://www.ssv-jahn.de/der-jahn/mehr-als-fussball/jahn-archiv
+        https://datencenter.dfb.de/clubs/ssv-jahn-regensburg-e-v?datacenter_name=datencenter
+        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/fc-viktoria-koeln?datacenter_name=datencenter?historize_title=Jahn+Regensburg%2C+3.+Liga+2026%2F27&historize_url=
+        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/1-fc-saarbruecken?datacenter_name=datencenter?historize_title=Jahn+Regensburg%2C+3.+Liga+2026%2F27&historize_url=
+        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/fc-ingolstadt?datacenter_name=datencenter?historize_title=Jahn+Regensburg%2C+3.+Liga+2026%2F27&historize_url=
+        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/fortuna-koeln?datacenter_name=datencenter?historize_title=Jahn+Regensburg%2C+3.+Liga+2026%2F27&historize_url=
+        https://viktoria1904.de/verein/historie/
+        https://viktoria1904.de/fans/offizielle-fanclubs/
         https://www.sgf1903.de/fans.fanbetreuung.fanklubs
-        https://www.fcingolstadt.de/unsere-geschichte/
-        https://www.fcingolstadt.de/wp-content/uploads/2026/05/Satzung_27112025.pdf
-        https://www.fcingolstadt.de/fanabteilung/
-        https://www.ssv-jahn.de/der-jahn
-        https://www.ssv-jahn.de/der-jahn/struktur/ev
-        https://www.ssv-jahn.de/fans/fanwesen
-        https://www.ssv-jahn.de/fans/fanwesen/fanclubs
-        https://viktoria1904.de/verein/
-        https://viktoria1904.de/fans/
-        https://www.fortuna-koeln.de/ terms
-        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/jahn-regensburg?datacenter_name=datencenter?historize_title=&historize_url=
+        https://www.sgf1903.de/das-kleeblatt/verein/faq
     steps:
       - uses: actions/setup-node@v5
         with:
@@ -107,7 +98,7 @@ jobs:
             await post(`### run ${process.env.RUN} robots ${origin}\n${res.note}\n\`\`\`\n${(res.text || '').slice(0, 6000)}\n\`\`\``);
             return res;
           }
-          const KEY = /gegr[üu]nd|gr[üu]ndung|founded|fondé|fondation|ultra|fanclub|fan-club|fanszene|fangruppe|supporters|impressum|nutzungsbeding|urheber|copyright|vervielf|kopier|crawler|automatisiert|\b(1[89]\d\d|20[0-2]\d)\b/i;
+          const KEY = /gegr[üu]nd|gr[üu]ndung|founded|fondé|fondation|ultra|fanclub|fan-club|fanszene|fangruppe|supporters|impressum|nutzungsbeding|urheber|copyright|vervielf|kopier|crawler|automatisiert|sportfreunde|größte|wichtigste|führende|\b(1[89]\d\d|20[0-2]\d)\b/i;
           async function visit(ctx, url, flags) {
             n++;
             const u = new URL(url);
