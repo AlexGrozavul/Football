@@ -2059,7 +2059,7 @@
   {
    "id": 559637,
    "utcDate": "2026-11-07T18:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2077,14 +2077,14 @@
     "tla": "PFC",
     "crest": "https://crests.football-data.org/1045.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 559635,
    "utcDate": "2026-11-07T20:05:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2102,9 +2102,9 @@
     "tla": "ETR",
     "crest": "https://crests.football-data.org/531.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559636,

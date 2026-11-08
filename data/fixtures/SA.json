@@ -2534,7 +2534,7 @@
   {
    "id": 558532,
    "utcDate": "2026-11-07T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2552,14 +2552,14 @@
     "tla": "USL",
     "crest": "https://crests.football-data.org/5890.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 558534,
    "utcDate": "2026-11-07T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2577,14 +2577,14 @@
     "tla": "FRO",
     "crest": "https://crests.football-data.org/470.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558535,
    "utcDate": "2026-11-07T17:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2602,14 +2602,14 @@
     "tla": "BOL",
     "crest": "https://crests.football-data.org/103.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558531,
    "utcDate": "2026-11-07T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2627,14 +2627,14 @@
     "tla": "SAS",
     "crest": "https://crests.football-data.org/471.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558533,
    "utcDate": "2026-11-08T11:30:00Z",
-   "status": "TIMED",
+   "status": "IN_PLAY",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,

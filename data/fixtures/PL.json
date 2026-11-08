@@ -2284,7 +2284,7 @@
   {
    "id": 560632,
    "utcDate": "2026-11-07T12:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2302,14 +2302,14 @@
     "tla": "TOT",
     "crest": "https://crests.football-data.org/73.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560633,
    "utcDate": "2026-11-07T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2327,14 +2327,14 @@
     "tla": "NEW",
     "crest": "https://crests.football-data.org/67.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 560640,
    "utcDate": "2026-11-07T15:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2352,14 +2352,14 @@
     "tla": "HUL",
     "crest": "https://crests.football-data.org/322.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560641,
    "utcDate": "2026-11-07T17:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2377,9 +2377,9 @@
     "tla": "MCI",
     "crest": "https://crests.football-data.org/65.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560635,

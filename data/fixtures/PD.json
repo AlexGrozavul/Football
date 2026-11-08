@@ -2759,7 +2759,7 @@
   {
    "id": 564744,
    "utcDate": "2026-11-07T13:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2777,14 +2777,14 @@
     "tla": "SAN",
     "crest": "https://crests.football-data.org/5335.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 564745,
    "utcDate": "2026-11-07T15:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2802,14 +2802,14 @@
     "tla": "DEP",
     "crest": "https://crests.football-data.org/560.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "winner": "DRAW"
   },
   {
    "id": 564739,
    "utcDate": "2026-11-07T17:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2827,14 +2827,14 @@
     "tla": "ATH",
     "crest": "https://crests.football-data.org/77.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 564741,
    "utcDate": "2026-11-07T20:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2852,9 +2852,9 @@
     "tla": "RMA",
     "crest": "https://crests.football-data.org/86.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 564738,
@@ -3476,6 +3476,56 @@
     "shortName": "Getafe",
     "tla": "GET",
     "crest": "https://crests.football-data.org/82.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564855,
+   "utcDate": "2026-12-02T18:00:00Z",
+   "status": "TIMED",
+   "matchday": 23,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 92,
+    "name": "Real Sociedad de Fútbol",
+    "shortName": "Real Sociedad",
+    "tla": "RSO",
+    "crest": "https://crests.football-data.org/92.png"
+   },
+   "away": {
+    "id": 86,
+    "name": "Real Madrid CF",
+    "shortName": "Real Madrid",
+    "tla": "RMA",
+    "crest": "https://crests.football-data.org/86.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564857,
+   "utcDate": "2026-12-02T20:30:00Z",
+   "status": "TIMED",
+   "matchday": 23,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 81,
+    "name": "FC Barcelona",
+    "shortName": "Barça",
+    "tla": "FCB",
+    "crest": "https://crests.football-data.org/81.png"
+   },
+   "away": {
+    "id": 78,
+    "name": "Club Atlético de Madrid",
+    "shortName": "Atleti",
+    "tla": "ATL",
+    "crest": "https://crests.football-data.org/78.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5682,31 +5732,6 @@
    "winner": null
   },
   {
-   "id": 564855,
-   "utcDate": "2027-02-07T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 23,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 92,
-    "name": "Real Sociedad de Fútbol",
-    "shortName": "Real Sociedad",
-    "tla": "RSO",
-    "crest": "https://crests.football-data.org/92.png"
-   },
-   "away": {
-    "id": 86,
-    "name": "Real Madrid CF",
-    "shortName": "Real Madrid",
-    "tla": "RMA",
-    "crest": "https://crests.football-data.org/86.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 564856,
    "utcDate": "2027-02-07T00:00:00Z",
    "status": "SCHEDULED",
@@ -5726,31 +5751,6 @@
     "shortName": "Santander",
     "tla": "SAN",
     "crest": "https://crests.football-data.org/5335.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 564857,
-   "utcDate": "2027-02-07T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 23,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 81,
-    "name": "FC Barcelona",
-    "shortName": "Barça",
-    "tla": "FCB",
-    "crest": "https://crests.football-data.org/81.png"
-   },
-   "away": {
-    "id": 78,
-    "name": "Club Atlético de Madrid",
-    "shortName": "Atleti",
-    "tla": "ATL",
-    "crest": "https://crests.football-data.org/78.png"
    },
    "homeGoals": null,
    "awayGoals": null,
