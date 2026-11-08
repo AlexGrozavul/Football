@@ -1,0 +1,193 @@
+name: Probe founding pages (temporary)
+
+# Temporary probe for one founding-data batch (batch 2). Removed before merging.
+# Starts only when this file changes (pull_request, paths = this file). A host
+# whose robots.txt names an Anthropic or Claude crawler, or disallows / for us,
+# is a stop even though this probe's User-Agent is different.
+# Reads the pages listed in PROBE_URLS and posts each page's text and link
+# list as PR comments. One page per second, descriptive User-Agent, no
+# clicks, no consent, no forms. robots.txt is read first for every host.
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/probe-founding.yml
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      RUN_LABEL: b2-run-1
+      PROBE_URLS: |
+        https://vfb.de/en/1893/club/history/chronicle/september-9th--1893
+        https://www.vfb.de/de/1893/verein/historie/chronik/
+        https://www.echo24.de/sport/fussball/vfb-stuttgart-commando-cannstatt-ultras-spende-drk-kaeltebus-13533928.html
+        https://de.wikipedia.org/wiki/VfB_Stuttgart
+        https://www.sg94.de/
+        https://www.sg94.de/fileadmin/media/Media/Formulare/Satzung_vom_15.11.pdf
+        https://de.wikipedia.org/wiki/SG_Sonnenhof_Gro%C3%9Faspach
+        https://www.tsg-hoffenheim.de/
+        https://www.heidelberg24.de/sport/tsg-1899-hoffenheim/tsg-hoffenheim-geschichte-erfolge-dietmar-hopp-hansi-flick-julian-nagelsmann-bundesliga-fussball-13575051.html
+        https://www.bundesliga.com/en/bundesliga/news/hoffenheim-club-by-club-historical-guide-nagelsmann-hopp-24189
+        https://de.wikipedia.org/wiki/TSG_1899_Hoffenheim
+        https://www.ksc.de/
+        https://web1.karlsruhe.de/sportarchiv/detail.php?verein=KSC
+        https://web1.karlsruhe.de/sportarchiv/detail.php?verein=PHOE
+        https://www.bundesliga.com/en/bundesliga/news/karlsruhe-club-by-club-historical-guide-oliver-kahn-schafer-24171
+        https://de.wikipedia.org/wiki/Karlsruher_SC
+        https://www.fc-heidenheim.de/
+        https://www.bundesliga.com/en/bundesliga/news/1-fc-heidenheim-1846-club-by-club-historical-guide-24332
+        https://datencenter.dfb.de/en/clubs/1-fc-heidenheim-1846-e-v
+        https://de.wikipedia.org/wiki/1._FC_Heidenheim
+        https://www.svw07.de/
+        https://datencenter.dfb.de/en/data-center/clubs/sv-waldhof-mannheim-07-e-v
+        https://de.wikipedia.org/wiki/SV_Waldhof_Mannheim
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install Playwright and Chromium
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+          sudo apt-get install -y poppler-utils >/dev/null
+
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          cat > /tmp/pw/probe.js <<'JS'
+          const { chromium } = require('playwright');
+          const fs = require('fs'); const { execFileSync } = require('child_process');
+          const UA = 'FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)';
+          const sleep = ms => new Promise(r => setTimeout(r, ms));
+          const LABEL = process.env.RUN_LABEL;
+          async function comment(body) {
+            for (let i = 0; i < 3; i++) {
+              const r = await fetch(`https://api.github.com/repos/${process.env.REPO}/issues/${process.env.PR}/comments`, {
+                method: 'POST', headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, 'Content-Type': 'application/json', 'User-Agent': UA },
+                body: JSON.stringify({ body }) });
+              if (r.ok) { await sleep(1500); return; }
+              console.log('comment failed', r.status); await sleep(10000);
+            }
+          }
+          async function post(head, text) {
+            const MAX = 60000; let part = 1; const n = Math.max(1, Math.ceil(text.length / MAX));
+            for (let i = 0; i < text.length || i === 0; i += MAX) {
+              await comment(`${head} (part ${part}/${n})\n\n~~~~\n${text.slice(i, i + MAX)}\n~~~~`); part++;
+              if (text.length === 0) break;
+            }
+          }
+          const KEY = /(\b\d{1,2}\.\s?\d{1,2}\.\s?\d{4}\b|\b\d{1,2}\.?\s+(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|January|February|March|May|June|July|October|December|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+\d{4}|(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}|gegründet|Gründung|seit|founded|fondé|fondation|Chronik|Geschichte|Ultra|Fanszene|Hauptgruppe|größte|führende)/i;
+          function robotsRules(txt) {
+            const groups = []; let cur = null, lastUA = false;
+            for (let line of txt.split(/\r?\n/)) {
+              line = line.replace(/#.*/, '').trim(); if (!line) continue;
+              const m = line.match(/^([A-Za-z-]+)\s*:\s*(.*)$/); if (!m) continue;
+              const k = m[1].toLowerCase(), v = m[2].trim();
+              if (k === 'user-agent') { if (!lastUA) { cur = { ua: [], rules: [] }; groups.push(cur); } cur.ua.push(v.toLowerCase()); lastUA = true; }
+              else { lastUA = false; if (cur && (k === 'allow' || k === 'disallow')) cur.rules.push([k, v]); }
+            }
+            let g = groups.filter(g => g.ua.some(u => u !== '*' && 'footballplannerbot'.includes(u)));
+            if (!g.length) g = groups.filter(g => g.ua.includes('*'));
+            return g.flatMap(x => x.rules);
+          }
+          function allowed(rules, path) {
+            let best = null;
+            for (const [k, v] of rules) {
+              if (!v) continue;
+              const re = new RegExp('^' + v.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\\\$$/, '$'));
+              if (re.test(path) && (!best || v.length > best[1].length || (v.length === best[1].length && k === 'allow'))) best = [k, v];
+            }
+            return best ? [best[0] === 'allow', `${best[0]}: ${best[1]}`] : [true, 'no matching rule'];
+          }
+          (async () => {
+            const browser = await chromium.launch();
+            const ctx = await browser.newContext({ userAgent: UA, locale: 'de-DE' });
+            await ctx.route('**/*', r => ['image', 'media', 'font'].includes(r.request().resourceType()) ? r.abort() : r.continue());
+            const robots = {};
+            const list = process.env.PROBE_URLS.split('\n').map(s => s.trim()).filter(Boolean).map(s => { const [u, ...f] = s.split(/\s+/); return { u, f }; });
+            let idx = 0;
+            async function robotsFor(origin) {
+              if (robots[origin]) return robots[origin];
+              let res;
+              try {
+                const r = await ctx.request.get(origin + '/robots.txt', { timeout: 30000, maxRedirects: 5 });
+                const st = r.status(), txt = await r.text();
+                if (st === 401 || st === 403) res = { stop: true, why: `robots.txt HTTP ${st}` };
+                else if (st >= 500 || st === 429) res = { stop: true, why: `robots.txt HTTP ${st} (no answer)` };
+                else if (st >= 400) res = { rules: [], why: `robots.txt HTTP ${st} (none)` };
+                else {
+                  const named = (txt.match(/^\s*user-agent\s*:\s*(\S*(claude|anthropic)\S*)/gim) || []).map(x => x.split(':')[1].trim());
+                  const rules = robotsRules(txt);
+                  if (named.length) res = { stop: true, why: `robots.txt HTTP 200 names ${named.join(', ')} (stop)`, rules };
+                  else if (rules.some(([k, v]) => k === 'disallow' && v === '/') && !rules.some(([k, v]) => k === 'allow' && v === '/')) res = { stop: true, why: 'robots.txt HTTP 200 Disallow: / for this agent (stop)', rules };
+                  else res = { rules, why: 'robots.txt HTTP 200' };
+                }
+                const shown = txt.length <= 20000 ? txt : txt.slice(0, 3000) + '\n[...]\nRULES FOR THIS BOT:\n' + (res.rules || []).map(x => x.join(': ')).join('\n');
+                await post(`### ${LABEL} ROBOTS ${origin}/robots.txt: ${res.why}, ${txt.length} chars`, shown);
+              } catch (e) { res = { stop: true, why: 'robots.txt no answer: ' + e.message.slice(0, 200) }; await comment(`### ${LABEL} ROBOTS ${origin}: ${res.why}`); }
+              await sleep(1000); robots[origin] = res; return res;
+            }
+            async function probe(u, flags) {
+              idx++;
+              let url; try { url = new URL(u); } catch (e) { await comment(`### ${LABEL} [${idx}] bad URL ${u}`); return; }
+              const rb = await robotsFor(url.origin);
+              if (rb.stop) { await comment(`### ${LABEL} [${idx}] SKIPPED ${u}: ${rb.why}`); return; }
+              const [ok, rule] = allowed(rb.rules, url.pathname + url.search);
+              if (!ok) { await comment(`### ${LABEL} [${idx}] SKIPPED ${u}: robots.txt ${rule}`); return; }
+              const page = await ctx.newPage();
+              try {
+                let text = '', links = [], title = '', status = 0, ctype = '';
+                if (/\.pdf($|\?)/i.test(url.pathname) || flags.includes('+pdf')) {
+                  const meta = execFileSync('curl', ['-sS', '-L', '--http1.1', '-A', UA, '--max-time', '180', '--retry', '1', '-o', '/tmp/p.pdf', '-w', '%{http_code} %{content_type}', u]).toString().split(' '); status = +meta[0]; ctype = meta[1] || '';
+                  text = execFileSync('pdftotext', ['-layout', '/tmp/p.pdf', '-']).toString(); title = 'PDF';
+                } else {
+                  const resp = await page.goto(u, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                  status = resp ? resp.status() : 0; ctype = resp ? (resp.headers()['content-type'] || '') : '';
+                  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+                  await sleep(2000);
+                  // Remove consent overlays from our own copy only; never click or consent.
+                  await page.evaluate(() => { for (const s of ['#usercentrics-root', '#usercentrics-cmp-ui', '#onetrust-consent-sdk', '#CybotCookiebotDialog', '#cmpbox', '#cmpbox2', '.cmpboxBG', '#sp_message_container', '[id^="sp_message"]', '#didomi-host', '.fc-consent-root', '#cookie-banner', '#cookiebanner', '.cookie-banner', '#consent-banner']) document.querySelectorAll(s).forEach(e => e.remove()); document.documentElement.style.overflow = 'auto'; document.body && (document.body.style.overflow = 'auto'); });
+                  title = await page.title();
+                  text = await page.evaluate(() => document.body ? document.body.innerText : '');
+                  links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => [(a.innerText || a.getAttribute('aria-label') || a.title || '').replace(/\s+/g, ' ').trim().slice(0, 80), a.href]));
+                }
+                const seen = new Set(); const ll = [];
+                for (const [t, h] of links) { if (seen.has(h)) continue; seen.add(h); ll.push(`${t} -> ${h}`); }
+                const challenge = [403, 429, 503].includes(status) || /just a moment|attention required|access denied|are you a robot/i.test(title) || /verify you are human|bestätigen sie, dass sie ein mensch sind/i.test(text.slice(0, 3000));
+                const head = `### ${LABEL} [${idx}] ${u}\nfinal: ${page.url()} | HTTP ${status} | ${ctype} | title: ${title} | ${text.length} chars | ${ll.length} links | robots: ${rule}${challenge ? ' | CHALLENGE-OR-BLOCK SIGNAL' : ''}`;
+                let body;
+                if (text.length <= 20000) body = text;
+                else {
+                  const paras = text.split(/\n+/).map(s => s.trim()).filter(s => s && KEY.test(s));
+                  body = text.slice(0, 3000) + '\n\n[... page over 20000 chars: paragraphs with a date or a key word follow ...]\n\n' + paras.join('\n\n');
+                }
+                await post(head + ' | TEXT', body);
+                if (ll.length) await post(`### ${LABEL} [${idx}] LINKS ${u}`, ll.join('\n'));
+                if (flags.includes('+legal')) {
+                  const legal = [...new Set(links.filter(([t]) => /impressum|imprint|rechtliche|nutzungsbedingungen|legal|terms of use|mentions légales/i.test(t)).map(([, h]) => h))].slice(0, 3);
+                  await comment(`### ${LABEL} [${idx}] LEGAL LINKS FOLLOWED: ${legal.join(' , ') || 'none found'}`);
+                  for (const h of legal) { await sleep(1000); await probe(h, []); }
+                }
+              } catch (e) { await comment(`### ${LABEL} [${idx}] ERROR ${u}: ${String(e.message).slice(0, 500)}`); }
+              finally { await page.close(); await sleep(1000); }
+            }
+            try { for (const { u, f } of list) await probe(u, f); }
+            catch (e) { await comment(`### ${LABEL} FATAL: ${String(e.stack).slice(0, 1500)}`); }
+            await comment(`### ${LABEL} DONE (${idx} pages)`);
+            await browser.close();
+          })();
+          JS
+          cd /tmp/pw && node probe.js
