@@ -12,22 +12,28 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "1"
+      RUN: "2"
       URLS: |
-        wdall:Q104770
-        wdall:Q104761
-        wdall:Q153535
-        wdall:Q151747
-        wdall:Q41420
-        wdall:Q101959
-        https://www.fc-saarbruecken.de/ terms
-        https://www.ssv-jahn.de/ terms
-        https://viktoria1904.de/ terms
-        https://www.fcingolstadt.de/ terms
-        https://www.dfb.de/ terms
-        https://datencenter.dfb.de/ terms
-        https://datencenter.dfb.de/clubs/ssv-jahn-regensburg-e-v?datacenter_name=datencenter
-        wd:Q265570
+        https://fc.de/fans
+        https://www.bayer04.de/de-de/page/historie
+        https://www.bayer04.de/de-de/page/fans
+        https://www.alemannia-aachen.de/impressum/
+        https://www.alemannia-aachen.de/archiv/vereinshistorie/
+        https://www.alemannia-aachen.de/klub/verein/allgemein/
+        https://www.alemannia-aachen.de/klub/verein/satzung/
+        https://www.alemannia-aachen.de/fans/fan-klubs/
+        https://f95.de/ terms
+        https://www.bvb.de/de/de/der-bvb/die-bvb-historie/jahrzehnte/1909-die-gruenderjahre.html
+        https://www.borussia.de/historie
+        https://www.borussia.de/ueber-uns
+        https://www.borussia.de/fans
+        https://d2m68vyp61dni.cloudfront.net/asset/975050198774/document_tq7112vtd565tbp4ibi0nj6u2a?content-disposition=inline pdf
+        https://de.wikipedia.org/wiki/1._FC_K%C3%B6ln fans
+        https://de.wikipedia.org/wiki/Bayer_04_Leverkusen fans
+        https://de.wikipedia.org/wiki/Alemannia_Aachen fans
+        https://de.wikipedia.org/wiki/Fortuna_D%C3%BCsseldorf fans
+        https://de.wikipedia.org/wiki/Borussia_Dortmund fans
+        https://de.wikipedia.org/wiki/Borussia_M%C3%B6nchengladbach fans
     steps:
       - uses: actions/setup-node@v5
         with:
@@ -112,7 +118,7 @@ jobs:
             if (!ok) { await post(`### run ${process.env.RUN} #${n} ${url}\nNOT OPENED: robots ${rule[0]} ${rule[1]}`); return []; }
             let head = `### run ${process.env.RUN} #${n} ${url}\n`, text = '', links = [];
             try {
-              if (/\.pdf($|\?)/i.test(url)) {
+              if (/\.pdf($|\?)/i.test(url) || flags.includes('pdf')) {
                 const r = await ctx.request.get(url, { timeout: 60000 });
                 head += `HTTP ${r.status()} ${r.headers()['content-type']}\n`;
                 fs.writeFileSync('/tmp/x.pdf', await r.body());
@@ -138,7 +144,11 @@ jobs:
             if (isWiki) shown = links.filter(([t, h]) => !/wikipedia\.org|wikimedia|wikidata|mediawiki/.test(h));
             text = text.replace(/\n{3,}/g, '\n\n');
             let body = text;
-            if (text.length > 20000) {
+            if (flags.includes('fans')) {
+              const FAN = /ultra|fanszene|fangruppe|fanclub|fan-club|dachverband|supporters|anhänger|kurve|größte|wichtigste|führende|tribüne|boys|horde|szene/i;
+              body = '[fans mode: only paragraphs matching fan words]\n' + text.split(/\n+/).filter(p => FAN.test(p)).join('\n');
+              shown = [];
+            } else if (text.length > 20000) {
               const paras = text.split(/\n+/).filter(p => KEY.test(p));
               body = text.slice(0, 3000) + `\n[... page ${text.length} chars; paragraphs with a date or keyword follow]\n` + paras.join('\n');
             }
