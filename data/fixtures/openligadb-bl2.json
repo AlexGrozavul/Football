@@ -3321,7 +3321,7 @@
   {
    "id": 83682,
    "utcDate": "2026-11-07T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "11. Spieltag",
    "roundOrder": 11,
    "home": {
@@ -3336,9 +3336,20 @@
     "shortName": "Darmstadt",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e5/SV_Darmstadt_98_Logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3346,7 +3357,7 @@
   {
    "id": 83685,
    "utcDate": "2026-11-07T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "11. Spieltag",
    "roundOrder": 11,
    "home": {
@@ -3361,9 +3372,20 @@
     "shortName": "Bielefeld",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Arminia_Bielefeld_Logo_2021%E2%80%93.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3371,7 +3393,7 @@
   {
    "id": 83688,
    "utcDate": "2026-11-07T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "11. Spieltag",
    "roundOrder": 11,
    "home": {
@@ -3386,9 +3408,20 @@
     "shortName": "Kaiserslautern",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Logo_1_FC_Kaiserslautern.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3396,7 +3429,7 @@
   {
    "id": 83681,
    "utcDate": "2026-11-07T19:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "11. Spieltag",
    "roundOrder": 11,
    "home": {
@@ -3411,9 +3444,20 @@
     "shortName": "Wolfsburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/VfL_Wolfsburg_logo_2026.svg/960px-VfL_Wolfsburg_logo_2026.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 2,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
