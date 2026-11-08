@@ -23,26 +23,18 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN_LABEL: b2-run-2
+      RUN_LABEL: b2-run-3
       PROBE_URLS: |
-        https://www.vfb.de/en/1893/club/history/chronicle/april-2nd--1912/
-        https://www.vfb.de/en/vfb/latest/news/club/2024/131--geburtstag-vfb-stuttgart
-        https://datencenter.dfb.de/en/clubs/vfb-stuttgart-1893-e-v
-        https://www.90min.de/posts/6362636-in-der-sache-vereint-mit-diesen-5-klubs-ist-der-vfb-stuttgart-befreundet
-        https://www.commando-cannstatt.de/
-        https://www.sg94.de/der-dorfklub/ueber-uns/vereinshistorie/
-        https://datencenter.dfb.de/en/clubs/sg-sonnenhof-grossaspach-e-v
-        https://datencenter.dfb.de/en/clubs/tsg-1899-hoffenheim-e-v
-        https://www.sport-histoire.fr/en/Sport/Football/Club/Hoffenheim.php
-        https://www.ksc.de/club/allgemein/chronik
-        https://datencenter.dfb.de/en/clubs/karlsruher-sc-e-v
-        https://datencenter.dfb.de/en/clubs/karlsruher-sport-club-muehlburg-phoenix-e-v
-        https://www.fc-heidenheim.de/fileadmin/50_redaktion/02_pdf/Satzung_2022.pdf
-        https://www.fc-heidenheim.de/verein
-        https://www.fc-heidenheim.de/historie
-        https://svw07.de/der-svw
-        https://svw07.de/fans
+        https://www.fc-heidenheim.de/unser-fch/historie
+        https://assets.fc-heidenheim.de/asset/503561443546/document_ngdskqoehl7v78a6g9m6bj2f4s/?content-disposition=inline +pdf
         https://datencenter.dfb.de/en/clubs/sv-waldhof-mannheim-07-e-v
+        https://svw07.de/fans
+        https://rsssf.org/tablesd/duitfound.html
+        https://www.worldfootball.net/teams/waldhof-mannheim/1/
+        https://www.worldfootball.net/teams/1899-hoffenheim/1/
+        https://www.worldfootball.net/teams/karlsruher-sc/1/
+        https://www.worldfootball.net/teams/1-fc-heidenheim-1846/1/
+        https://stadtlexikon.karlsruhe.de/index.php/De:Lexikon:ins-0976
     steps:
       - uses: actions/setup-node@v5
         with:
