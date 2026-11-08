@@ -23,31 +23,26 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN_LABEL: b2-run-1
+      RUN_LABEL: b2-run-2
       PROBE_URLS: |
-        https://vfb.de/en/1893/club/history/chronicle/september-9th--1893
-        https://www.vfb.de/de/1893/verein/historie/chronik/
-        https://www.echo24.de/sport/fussball/vfb-stuttgart-commando-cannstatt-ultras-spende-drk-kaeltebus-13533928.html
-        https://de.wikipedia.org/wiki/VfB_Stuttgart
-        https://www.sg94.de/
-        https://www.sg94.de/fileadmin/media/Media/Formulare/Satzung_vom_15.11.pdf
-        https://de.wikipedia.org/wiki/SG_Sonnenhof_Gro%C3%9Faspach
-        https://www.tsg-hoffenheim.de/
-        https://www.heidelberg24.de/sport/tsg-1899-hoffenheim/tsg-hoffenheim-geschichte-erfolge-dietmar-hopp-hansi-flick-julian-nagelsmann-bundesliga-fussball-13575051.html
-        https://www.bundesliga.com/en/bundesliga/news/hoffenheim-club-by-club-historical-guide-nagelsmann-hopp-24189
-        https://de.wikipedia.org/wiki/TSG_1899_Hoffenheim
-        https://www.ksc.de/
-        https://web1.karlsruhe.de/sportarchiv/detail.php?verein=KSC
-        https://web1.karlsruhe.de/sportarchiv/detail.php?verein=PHOE
-        https://www.bundesliga.com/en/bundesliga/news/karlsruhe-club-by-club-historical-guide-oliver-kahn-schafer-24171
-        https://de.wikipedia.org/wiki/Karlsruher_SC
-        https://www.fc-heidenheim.de/
-        https://www.bundesliga.com/en/bundesliga/news/1-fc-heidenheim-1846-club-by-club-historical-guide-24332
-        https://datencenter.dfb.de/en/clubs/1-fc-heidenheim-1846-e-v
-        https://de.wikipedia.org/wiki/1._FC_Heidenheim
-        https://www.svw07.de/
-        https://datencenter.dfb.de/en/data-center/clubs/sv-waldhof-mannheim-07-e-v
-        https://de.wikipedia.org/wiki/SV_Waldhof_Mannheim
+        https://www.vfb.de/en/1893/club/history/chronicle/april-2nd--1912/
+        https://www.vfb.de/en/vfb/latest/news/club/2024/131--geburtstag-vfb-stuttgart
+        https://datencenter.dfb.de/en/clubs/vfb-stuttgart-1893-e-v
+        https://www.90min.de/posts/6362636-in-der-sache-vereint-mit-diesen-5-klubs-ist-der-vfb-stuttgart-befreundet
+        https://www.commando-cannstatt.de/
+        https://www.sg94.de/der-dorfklub/ueber-uns/vereinshistorie/
+        https://datencenter.dfb.de/en/clubs/sg-sonnenhof-grossaspach-e-v
+        https://datencenter.dfb.de/en/clubs/tsg-1899-hoffenheim-e-v
+        https://www.sport-histoire.fr/en/Sport/Football/Club/Hoffenheim.php
+        https://www.ksc.de/club/allgemein/chronik
+        https://datencenter.dfb.de/en/clubs/karlsruher-sc-e-v
+        https://datencenter.dfb.de/en/clubs/karlsruher-sport-club-muehlburg-phoenix-e-v
+        https://www.fc-heidenheim.de/fileadmin/50_redaktion/02_pdf/Satzung_2022.pdf
+        https://www.fc-heidenheim.de/verein
+        https://www.fc-heidenheim.de/historie
+        https://svw07.de/der-svw
+        https://svw07.de/fans
+        https://datencenter.dfb.de/en/clubs/sv-waldhof-mannheim-07-e-v
     steps:
       - uses: actions/setup-node@v5
         with:
