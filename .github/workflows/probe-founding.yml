@@ -27,43 +27,25 @@ jobs:
           npm init -y >/dev/null
           npm install --no-audit --no-fund playwright@1.56.1
           npx playwright install --with-deps chromium
+          sudo apt-get install -y poppler-utils >/dev/null
 
       - name: Probe
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
-          RUN_LABEL: "run 3"
+          RUN_LABEL: "run 4"
           # mode host: robots.txt, terms/legal-notice links, landing page. mode page: one page.
           TARGETS: |
-            host https://www.dfb.de/
-            pagelegal https://web1.karlsruhe.de/sportarchiv/detail.php?verein=KSC
-            terms https://www.vfb.de/de/1893/club/service/formales/impressum/
-            terms https://www.fc-heidenheim.de/rechtliches/impressum
-            terms https://www.rcstrasbourgalsace.fr/conditions-generale-dutilisation/
-            page https://www.rcstrasbourgalsace.fr/le-club/histoire/
-            page https://www.rcstrasbourgalsace.fr/le-club/lassociation-sportive/
-            page https://fr.wikipedia.org/wiki/Racing_Club_de_Strasbourg_Alsace
-            page https://www.sv98.de/verein/historie/
-            page https://www.sv98.de/fans/fankultur/
-            page https://de.wikipedia.org/wiki/SV_Darmstadt_98
-            page https://www.scfreiburg.com/verein/historie/sc-geschichte/
-            page https://www.scfreiburg.com/verein/historie/
-            page https://www.scfreiburg.com/fans/fanszene/fanszene/
-            page https://de.wikipedia.org/wiki/SC_Freiburg
-            page https://www.wuerzburger-kickers.de/de/verein
-            page https://www.wuerzburger-kickers.de/de/verein/organisation
-            page https://www.wuerzburger-kickers.de/de/tickets/fans
-            page https://de.wikipedia.org/wiki/W%C3%BCrzburger_Kickers
-            page https://sv07elversberg.de/die-sve/historie/
-            page https://sv07elversberg.de/offizielle-fanclubs/
-            page https://sv07elversberg.de/fans/fanbetreuung/
-            page https://de.wikipedia.org/wiki/SV_Elversberg
-            page https://svww.de/verein/historie
-            page https://svww.de/verein/taunusstein-ev
-            page https://svww.de/fans/fanclubs
-            page https://svww.de/100-jahre-sv-wehen
-            page https://de.wikipedia.org/wiki/SV_Wehen_Wiesbaden
+            page https://www.scfreiburg.com/verein/historie/sc-geschichte/1904-1912/
+            pdf https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/04_Verein/Satzung/Satzung_SC_Freiburg_Neufassung_9._Oktober_2025.pdf
+            page https://www.wuerzburger-kickers.de/de/verein/organisation/ev/geschichte
+            page https://www.wuerzburger-kickers.de/de/verein/organisation/ev
+            pdf https://svww.de/fileadmin/dokumente/satzung-svww.pdf
+            page https://sv07elversberg.de/die-sve/mitgliedschaft/
+            page https://www.rcstrasbourgalsace.fr/racingclopedie/
+            page https://www.rcstrasbourgalsace.fr/le-club/
+            page https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/fc-wuerzburger-kickers?datacenter_name=datencenter?historize_title=&historize_url=
         run: |
           cat > /tmp/probe.js <<'EOF'
           const { chromium } = require('playwright');
@@ -155,6 +137,25 @@ jobs:
             await comment(`PROBE ${LABEL} | LINKS ${url} (${links.length})\n` + links.map(([h, t]) => `${h} | ${t}`).join('\n'));
             return { links, status };
           }
+          async function pdf(url) {
+            const u = new URL(url);
+            const rb = await robots(u.origin);
+            const al = allowed(rb.app.rules, u.pathname + u.search);
+            if (rb.stop || al !== 'allowed') { await comment(`PROBE ${LABEL} | PDF ${url}\nNOT OPENED: robots stop=${rb.stop || 'none'}, path ${al}`); return; }
+            let text = '', status = '?';
+            try {
+              const r = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(60000) });
+              status = r.status + ' ' + (r.headers.get('content-type') || '');
+              const buf = Buffer.from(await r.arrayBuffer());
+              require('fs').writeFileSync('/tmp/doc.pdf', buf);
+              text = require('child_process').execFileSync('pdftotext', ['-layout', '/tmp/doc.pdf', '-'], { maxBuffer: 50e6 }).toString();
+            } catch (e) { text = 'ERROR ' + e.message; }
+            await sleep(1100);
+            const paras = text.split(/\n\s*\n+/).map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean);
+            const hits = paras.filter(s => KEY.test(s));
+            const shown = text.length > 20000 ? text.slice(0, 3000) + '\n--- matching paragraphs (whole document searched) ---\n' + hits.join('\n') : text;
+            await comment(`PROBE ${LABEL} | PDF ${url}\nstatus: ${status} | chars: ${text.length} | matching paragraphs: ${hits.length}\nrobots: ${rb.app.who} ${al}\n--- TEXT ---\n${shown}`);
+          }
           (async () => {
             try {
               browser = await chromium.launch();
@@ -171,6 +172,7 @@ jobs:
                     await comment(`PROBE ${LABEL} | LEGAL-LINKS ${url}: ${JSON.stringify(uniq)}`);
                     for (const l of uniq) await page(l, 'TERMS');
                   } else if (mode === 'terms') await page(url, 'TERMS');
+                  else if (mode === 'pdf') await pdf(url);
                   else if (mode === 'pagelegal') {
                     const r = await page(url, 'PAGE');
                     if (!r) continue;
