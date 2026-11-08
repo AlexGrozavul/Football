@@ -34,18 +34,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
-          RUN_LABEL: "run 4"
+          RUN_LABEL: "run 5"
           # mode host: robots.txt, terms/legal-notice links, landing page. mode page: one page.
           TARGETS: |
-            page https://www.scfreiburg.com/verein/historie/sc-geschichte/1904-1912/
-            pdf https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/04_Verein/Satzung/Satzung_SC_Freiburg_Neufassung_9._Oktober_2025.pdf
-            page https://www.wuerzburger-kickers.de/de/verein/organisation/ev/geschichte
-            page https://www.wuerzburger-kickers.de/de/verein/organisation/ev
-            pdf https://svww.de/fileadmin/dokumente/satzung-svww.pdf
-            page https://sv07elversberg.de/die-sve/mitgliedschaft/
-            page https://www.rcstrasbourgalsace.fr/racingclopedie/
-            page https://www.rcstrasbourgalsace.fr/le-club/
-            page https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/fc-wuerzburger-kickers?datacenter_name=datencenter?historize_title=&historize_url=
+            page https://datencenter.dfb.de/clubs/fc-wuerzburger-kickers-e-v-1907?datacenter_name=datencenter
+            page https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/sv-wehen-wiesbaden?datacenter_name=datencenter?historize_title=FC+W%C3%BCrzburger+Kickers%2C+3.+Liga+2026%2F27&historize_url=
+            page https://datencenter.dfb.de/datencenter/vereine/fc-bayern-muenchen-e-v
+            page https://fr.wikipedia.org/wiki/Supporters_du_Racing_Club_de_Strasbourg_Alsace
+            host http://www.ub90.com/
         run: |
           cat > /tmp/probe.js <<'EOF'
           const { chromium } = require('playwright');
