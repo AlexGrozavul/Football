@@ -12,16 +12,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "4"
+      RUN: "5"
       URLS: |
-        https://datencenter.dfb.de/clubs/1-fc-saarbruecken-e-v?datacenter_name=datencenter
-        https://datencenter.dfb.de/clubs/fc-ingolstadt-04-e-v?datacenter_name=datencenter
-        https://datencenter.dfb.de/clubs/fc-viktoria-koeln-1904-e-v?datacenter_name=datencenter
-        https://datencenter.dfb.de/clubs/sc-fortuna-koeln-e-v?datacenter_name=datencenter
-        https://www.sgf1903.de/das-kleeblatt
-        https://www.sgf1903.de/fanabteilung
-        https://www.greuther-fuerth.de/fans/fanbetreuung/fanklubs-block-12/
-        https://www.kleeblatt-chronik.de/ terms
+        https://www.kicker.de/spvgg-greuther-fuerth/info terms
     steps:
       - uses: actions/setup-node@v5
         with:
