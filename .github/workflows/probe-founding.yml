@@ -12,15 +12,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "3"
+      RUN: "4"
       URLS: |
-        https://de.wikipedia.org/wiki/1._FC_K%C3%B6ln fans wl:horde
-        https://fc.de/club/mitgliedschaft/alle-informationen
-        https://fc.de/fc-info/club/tradition/hennes/
-        https://www.bayer04.de/de-de/page/historie/jahrzehnte/gruenderjahre
-        https://datencenter.dfb.de/datencenter/vereine
-        https://datencenter.dfb.de/datencenter/vereine/1-fc-koeln-e-v
-        https://datencenter.dfb.de/datencenter/vereine/borussia-09-e-v-dortmund
+        https://fc.de/club/mitgliedschaft/alle-informationen/satzung-und-ordnungen
+        https://fc.de/club
     steps:
       - uses: actions/setup-node@v5
         with:
