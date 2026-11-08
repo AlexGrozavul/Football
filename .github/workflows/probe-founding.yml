@@ -12,18 +12,16 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "3"
+      RUN: "4"
       URLS: |
-        https://www.ssv-jahn.de/der-jahn/mehr-als-fussball/jahn-archiv
-        https://datencenter.dfb.de/clubs/ssv-jahn-regensburg-e-v?datacenter_name=datencenter
-        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/fc-viktoria-koeln?datacenter_name=datencenter?historize_title=Jahn+Regensburg%2C+3.+Liga+2026%2F27&historize_url=
-        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/1-fc-saarbruecken?datacenter_name=datencenter?historize_title=Jahn+Regensburg%2C+3.+Liga+2026%2F27&historize_url=
-        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/fc-ingolstadt?datacenter_name=datencenter?historize_title=Jahn+Regensburg%2C+3.+Liga+2026%2F27&historize_url=
-        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/fortuna-koeln?datacenter_name=datencenter?historize_title=Jahn+Regensburg%2C+3.+Liga+2026%2F27&historize_url=
-        https://viktoria1904.de/verein/historie/
-        https://viktoria1904.de/fans/offizielle-fanclubs/
-        https://www.sgf1903.de/fans.fanbetreuung.fanklubs
-        https://www.sgf1903.de/das-kleeblatt/verein/faq
+        https://datencenter.dfb.de/clubs/1-fc-saarbruecken-e-v?datacenter_name=datencenter
+        https://datencenter.dfb.de/clubs/fc-ingolstadt-04-e-v?datacenter_name=datencenter
+        https://datencenter.dfb.de/clubs/fc-viktoria-koeln-1904-e-v?datacenter_name=datencenter
+        https://datencenter.dfb.de/clubs/sc-fortuna-koeln-e-v?datacenter_name=datencenter
+        https://www.sgf1903.de/das-kleeblatt
+        https://www.sgf1903.de/fanabteilung
+        https://www.greuther-fuerth.de/fans/fanbetreuung/fanklubs-block-12/
+        https://www.kleeblatt-chronik.de/ terms
     steps:
       - uses: actions/setup-node@v5
         with:
