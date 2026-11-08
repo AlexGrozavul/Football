@@ -34,11 +34,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
-          RUN_LABEL: "run 7"
+          RUN_LABEL: "run 8"
           # mode host: robots.txt, terms/legal-notice links, landing page. mode page: one page.
           TARGETS: |
-            page https://datencenter.dfb.de/competitions/bundesliga/seasons/2026-2027/teams/sc-freiburg?datacenter_name=datencenter?historize_title=FC+Bayern+M%C3%BCnchen%2C+Bundesliga+2026%2F27&historize_url=
-            page https://datencenter.dfb.de/competitions/bundesliga/seasons/2026-2027/teams/sv-elversberg?datacenter_name=datencenter?historize_title=FC+Bayern+M%C3%BCnchen%2C+Bundesliga+2026%2F27&historize_url=
+            page https://datencenter.dfb.de/clubs/sc-freiburg-e-v?datacenter_name=datencenter
+            page https://datencenter.dfb.de/clubs/sv-07-elversberg-e-v?datacenter_name=datencenter
         run: |
           cat > /tmp/probe.js <<'EOF'
           const { chromium } = require('playwright');
