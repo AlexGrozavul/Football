@@ -12,10 +12,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "4"
+      RUN: "5"
       URLS: |
-        https://fc.de/club/mitgliedschaft/alle-informationen/satzung-und-ordnungen
-        https://fc.de/club
+        https://images.ctfassets.net/nurz7nsnha04/4yF6gXQi95QidjXH0m8Hdm/f5450810c18e566d14a6c5460e50b37e/20260114_Satzung.pdf
     steps:
       - uses: actions/setup-node@v5
         with:
