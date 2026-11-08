@@ -27,12 +27,12 @@ One table of the clubs whose founding date and main supporters group a session r
 | 4 | Q38245 | Eintracht Frankfurt | Bundesliga | done | #192 | 2026-11-06 | club row confirmed (e.V. club page); no main group named |
 | 5 | Q97905916 | FC Augsburg | Bundesliga | done | #192 | 2026-11-06 | club row confirmed (club history page); main group Legio Augusta, founding year only (2007) |
 | 6 | Q15789 | FC Bayern München | Bundesliga | done | #192 | 2026-11-06 | club row unverified (Wikipedia only; fcbayern.com robots.txt no answer twice); no main group named |
-| 7 | Q4512 | VfB Stuttgart | Bundesliga | pending |  |  |  |
-| 8 | Q692755 | SG Sonnenhof Großaspach | 3. Liga | pending |  |  |  |
-| 9 | Q22707 | TSG 1899 Hoffenheim | Bundesliga | pending |  |  |  |
-| 10 | Q105853 | Karlsruher SC | 2. Bundesliga | pending |  |  |  |
-| 11 | Q162251 | 1. FC Heidenheim 1846 | 2. Bundesliga | pending |  |  |  |
-| 12 | Q170134 | SV Waldhof Mannheim | 3. Liga | pending |  |  |  |
+| 7 | Q4512 | VfB Stuttgart | Bundesliga | done | #200 | 2026-11-08 | club row confirmed (club anniversary page). Year only: Commando Cannstatt 1997, 1997, https://de.wikipedia.org/wiki/VfB_Stuttgart, called the main group: yes (Wikipedia "gilt als größte Ultras-Gruppierung in der Cannstatter Kurve"; 90min.de: "Gründung im März 1997", month only); no row |
+| 8 | Q692755 | SG Sonnenhof Großaspach | 3. Liga | done | #200 | 2026-11-08 | club row confirmed (club history page). No main group: no group named; the club page names only its first fan club, "Projekt Waldameise" |
+| 9 | Q22707 | TSG 1899 Hoffenheim | Bundesliga | done | #200 | 2026-11-08 | club row unverified (Wikipedia only; tsg-hoffenheim.de robots.txt HTTP 403; heidelberg24.de, bundesliga.com, worldfootball.net name Claude crawlers). No main group: Young Boyz 07 (Wikipedia: "Fangruppe", source of a fan friendship), Zwinger-Club (Wikipedia: "erster Fanclub"); none called the main one |
+| 10 | Q105853 | Karlsruher SC | 2. Bundesliga | done | #200 | 2026-11-08 | club row confirmed: 16 October 1952, the merger date the club chronicle gives; predecessor KFC Phönix 6 June 1894 is in basis only (which date is the club's: Alexandru's call). No main group: ULTRA1894 (Wikipedia: alliance of four groups since 2009, "keine eigenständige Gruppe"), Phönix Sons 1999, Rheinfire 2002, Armata Fidelis 2003, Wild Boys 2004; Supporters Karlsruhe 1986 e. V. (fan project, about 2700 members) |
+| 11 | Q162251 | 1. FC Heidenheim 1846 | 2. Bundesliga | done | #200 | 2026-11-08 | club row confirmed: 1 January 2007, the club page's founding of 1. FC Heidenheim 1846 (15 June 2007, effective 1 January; DFB agrees); 1846 is the tradition year, no day (which date is the club's: Alexandru's call). No main group: Unitas Aquileiae (Wikipedia: "Ultra-Gruppierung", 2014 merger), Fanatico Boys (Wikipedia: "die größte Ultra-Gruppierung neben Unitas Aquileiae"), Hellenstein Supporters 2004 ("Mutter der organisierten Heidenheimer Fanszene") |
+| 12 | Q170134 | SV Waldhof Mannheim | 3. Liga | done | #200 | 2026-11-08 | club row unverified (DFB data center 11 April 1907, Wikipedia agrees; RSSSF 9 April 1907; club page year only). No main group: Pro Waldhof e. V. (club fan page: "Fan-Dachverband" of the official fan clubs); no ultra group named |
 | 13 | Q126334 | RC Strasbourg Alsace | Ligue 1 | pending |  |  |  |
 | 14 | Q479351 | SV Darmstadt 98 | 2. Bundesliga | pending |  |  |  |
 | 15 | Q106394 | SC Freiburg | Bundesliga | pending |  |  |  |
