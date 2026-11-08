@@ -12,24 +12,27 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "1"
+      RUN: "2"
       URLS: |
-        https://www.fc-saarbruecken.de/ terms
-        https://www.sgf1903.de/ terms
-        https://www.fcingolstadt.de/ terms
-        https://www.ssv-jahn.de/ terms
-        https://www.viktoria1904.de/ terms
+        https://www.fc-saarbruecken.de/verein/chronik/
+        https://www.fc-saarbruecken.de/verein/blau-schwarze-geschichte/
+        https://www.fc-saarbruecken.de/verein/portrait/
+        https://www.fc-saarbruecken.de/app/uploads/2026/03/FCS-Satzung-gem-aoMGV_08.01.2026-CL.pdf
+        https://www.fc-saarbruecken.de/fans/fanclubs/
+        https://www.fc-saarbruecken.de/fans/fanbetreuung/
+        https://www.sgf1903.de/das-kleeblatt/verein
+        https://www.sgf1903.de/fans.fanbetreuung.fanklubs
+        https://www.fcingolstadt.de/unsere-geschichte/
+        https://www.fcingolstadt.de/wp-content/uploads/2026/05/Satzung_27112025.pdf
+        https://www.fcingolstadt.de/fanabteilung/
+        https://www.ssv-jahn.de/der-jahn
+        https://www.ssv-jahn.de/der-jahn/struktur/ev
+        https://www.ssv-jahn.de/fans/fanwesen
+        https://www.ssv-jahn.de/fans/fanwesen/fanclubs
+        https://viktoria1904.de/verein/
+        https://viktoria1904.de/fans/
         https://www.fortuna-koeln.de/ terms
-        https://www.sv98.de/ terms
-        https://www.wuerzburger-kickers.de/ terms
-        https://www.dfb.de/ terms
-        https://datencenter.dfb.de/ terms
-        wd:Q157463
-        wd:Q153539
-        wd:Q170117
-        wd:Q265570
-        wd:Q695008
-        wd:Q310608
+        https://datencenter.dfb.de/competitions/3-liga/seasons/2026-2027/teams/jahn-regensburg?datacenter_name=datencenter?historize_title=&historize_url=
     steps:
       - uses: actions/setup-node@v5
         with:
@@ -122,12 +125,11 @@ jobs:
               } else {
                 const page = await ctx.newPage();
                 const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-                await page.waitForTimeout(3500);
+                await page.waitForTimeout(6000);
                 const ct = resp ? resp.headers()['content-type'] || '' : '';
                 head += `HTTP ${resp ? resp.status() : '?'} | final ${page.url()} | title: ${await page.title()} | ${ct}\n`;
                 if (/pdf/.test(ct)) { fs.writeFileSync('/tmp/x.pdf', await resp.body()); text = execSync('pdftotext -layout /tmp/x.pdf -').toString(); }
                 else {
-                  await page.evaluate(() => document.querySelectorAll('[id*=cookie i],[class*=cookie i],[id*=consent i],[class*=consent i],#usercentrics-root,#onetrust-banner-sdk').forEach(e => e.remove())).catch(() => {});
                   text = await page.evaluate(() => document.body ? document.body.innerText : '');
                   links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => [a.innerText.trim().replace(/\s+/g, ' ').slice(0, 80), a.href]));
                 }
