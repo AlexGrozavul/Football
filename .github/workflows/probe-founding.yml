@@ -1,0 +1,171 @@
+name: Probe founding pages (temporary)
+
+# Temporary probe for founding data, batch 3. Removed before merge.
+# Starts only when this file changes. Posts page text and link lists as PR comments.
+
+on:
+  pull_request:
+    paths: ['.github/workflows/probe-founding.yml']
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install Playwright and Chromium
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          RUN_LABEL: "run 1"
+          # mode host: robots.txt, terms/legal-notice links, landing page. mode page: one page.
+          TARGETS: |
+            host https://www.rcstrasbourgalsace.fr/
+            host https://www.sv98.de/
+            host https://www.scfreiburg.com/
+            host https://www.wuerzburger-kickers.de/
+            host https://sv07elversberg.de/
+            host https://svww.de/
+            host https://www.vfb.de/
+            host https://www.sg94.de/
+            host https://www.ksc.de/
+            host https://www.fc-heidenheim.de/
+            host https://datencenter.dfb.de/
+            host https://www.rsssf.org/
+            host https://de.wikipedia.org/
+            page https://www.ksc.de/club/allgemein/chronik
+            page https://de.wikipedia.org/wiki/Liste_der_Vereine_der_Fu%C3%9Fball-Bundesliga
+            page https://en.wikipedia.org/wiki/FC_W%C3%BCrzburger_Kickers
+            page https://en.wikipedia.org/wiki/SV_Wehen_Wiesbaden
+            page https://en.wikipedia.org/wiki/RC_Strasbourg_Alsace
+        run: |
+          cat > /tmp/probe.js <<'EOF'
+          const { chromium } = require('playwright');
+          const UA = 'FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)';
+          const LABEL = process.env.RUN_LABEL;
+          const sleep = ms => new Promise(r => setTimeout(r, ms));
+          async function comment(body) {
+            for (let i = 0; i < body.length; i += 59000) {
+              const part = body.slice(i, i + 59000);
+              const r = await fetch(`https://api.github.com/repos/${process.env.REPO}/issues/${process.env.PR}/comments`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json' },
+                body: JSON.stringify({ body: part })
+              });
+              if (!r.ok) console.log('comment failed', r.status, await r.text());
+              await sleep(1200);
+            }
+          }
+          const ANTH = /claude|anthropic/i;
+          const robotsCache = {};
+          function parseRobots(txt) {
+            const groups = []; let cur = null, lastUA = false;
+            for (const raw of txt.split(/\r?\n/)) {
+              const line = raw.replace(/#.*/, '').trim(); if (!line) continue;
+              const m = line.match(/^([A-Za-z-]+)\s*:\s*(.*)$/); if (!m) continue;
+              const k = m[1].toLowerCase(), v = m[2].trim();
+              if (k === 'user-agent') { if (!lastUA) { cur = { agents: [], rules: [] }; groups.push(cur); } cur.agents.push(v.toLowerCase()); lastUA = true; }
+              else { lastUA = false; if (cur && (k === 'allow' || k === 'disallow')) cur.rules.push({ k, v }); }
+            }
+            return groups;
+          }
+          function applicable(groups) {
+            const own = groups.filter(g => g.agents.some(a => a !== '*' && 'footballplannerbot'.startsWith(a)));
+            if (own.length) return { who: 'FootballPlannerBot', rules: own.flatMap(g => g.rules) };
+            return { who: '*', rules: groups.filter(g => g.agents.includes('*')).flatMap(g => g.rules) };
+          }
+          function pat2re(p) { let e = p.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*'); if (e.endsWith('\\$')) e = e.slice(0, -2) + '$'; return new RegExp('^' + e); }
+          function allowed(rules, path) {
+            let best = null;
+            for (const r of rules) { if (!r.v) continue; if (pat2re(r.v).test(path)) { if (!best || r.v.length > best.v.length || (r.v.length === best.v.length && r.k === 'allow')) best = r; } }
+            return !best || best.k === 'allow' ? 'allowed' : `DISALLOWED by "${best.k}: ${best.v}"`;
+          }
+          async function robots(origin) {
+            if (robotsCache[origin]) return robotsCache[origin];
+            let res;
+            try {
+              const r = await fetch(origin + '/robots.txt', { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(25000), redirect: 'follow' });
+              const txt = await r.text();
+              const groups = parseRobots(r.ok ? txt : '');
+              const anth = txt.split(/\r?\n/).filter(l => ANTH.test(l));
+              const app = applicable(groups);
+              const stop = [403, 429, 503].includes(r.status) ? `HTTP ${r.status}` : (r.ok && anth.length ? 'names Anthropic/Claude crawler' : '');
+              res = { status: r.status, finalUrl: r.url, txt, anth, app, stop };
+            } catch (e) { res = { status: 'ERROR ' + e.message, txt: '', anth: [], app: { who: '*', rules: [] }, stop: 'no answer' }; }
+            robotsCache[origin] = res; await sleep(1100);
+            let body = `PROBE ${LABEL} | ROBOTS ${origin}/robots.txt\nstatus: ${res.status}${res.finalUrl ? ' final ' + res.finalUrl : ''}\nSTOP: ${res.stop || 'none'}\nAnthropic/Claude lines: ${JSON.stringify(res.anth)}\napplicable group: ${res.app.who}; rules: ${JSON.stringify(res.app.rules).slice(0, 3000)}\n--- full text (first 15000 chars) ---\n${res.txt.slice(0, 15000)}`;
+            await comment(body);
+            return res;
+          }
+          const KEY = /gegründet|Gründung|seit|founded|fondé|fondation|Chronik|Geschichte|Ultra|Fanszene|Fangruppe|Fanclub|Supporter|größte|führende|wichtigste|groupe|kop\b|\b\d{1,2}\.\s?\d{1,2}\.\s?\d{4}\b|\b\d{1,2}\.?\s+(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|January|February|March|June|July|October|December|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+\d{4}|\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}|\d{4}-\d{2}-\d{2}/i;
+          const TERMSKEY = /automat|crawler|robot|\bbot|scrap|spider|kopier|vervielf|copy|reprodu|text.?(und|and)?.?data.?mining|TDM|künstliche|\bKI\b|\bAI\b|Urheber|Nutzung|droit|propriété|utilisation|extraction/i;
+          const LEGAL = /impressum|imprint|legal|mentions|nutzungsbedingungen|nutzungsbestimmungen|terms|conditions-generales-d-utilisation|cgu|rechtliche|rechtliches|disclaimer|haftungsausschluss/i;
+          let browser, ctx;
+          async function page(url, kind) {
+            const u = new URL(url);
+            const rb = await robots(u.origin);
+            const al = allowed(rb.app.rules, u.pathname + u.search);
+            if (rb.stop || al !== 'allowed') { await comment(`PROBE ${LABEL} | ${kind} ${url}\nNOT OPENED: robots stop=${rb.stop || 'none'}, path ${al}`); return null; }
+            const p = await ctx.newPage();
+            let status = '?', title = '', text = '', links = [];
+            try {
+              const resp = await p.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
+              status = resp ? resp.status() : 'no response';
+              try { await p.waitForLoadState('networkidle', { timeout: 12000 }); } catch (e) {}
+              title = await p.title();
+              text = await p.evaluate(() => document.body ? document.body.innerText : '');
+              links = await p.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => [a.href, (a.innerText || a.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim().slice(0, 80)]));
+            } catch (e) { text = 'ERROR ' + e.message; }
+            await p.close(); await sleep(1100);
+            const seen = new Set(); links = links.filter(([h]) => { if (seen.has(h)) return false; seen.add(h); return true; });
+            const challenge = /verify you are human|just a moment|attention required|checking your browser|are you a robot|bot protection|access denied/i.test(title + ' ' + text.slice(0, 1500));
+            let shown;
+            const paras = text.split(/\n+/).map(s => s.trim()).filter(Boolean);
+            if (text.length > 20000) {
+              const re = kind === 'TERMS' ? TERMSKEY : KEY;
+              shown = text.slice(0, 3000) + '\n--- matching paragraphs ---\n' + paras.filter(s => re.test(s)).join('\n');
+            } else shown = text;
+            await comment(`PROBE ${LABEL} | ${kind} ${url}\nstatus: ${status} | title: ${title} | chars: ${text.length} | links: ${links.length} | challenge-phrase: ${challenge}\nrobots: ${rb.app.who} ${al}\n--- TEXT ---\n${shown}`);
+            await comment(`PROBE ${LABEL} | LINKS ${url} (${links.length})\n` + links.map(([h, t]) => `${h} | ${t}`).join('\n'));
+            return { links, status };
+          }
+          (async () => {
+            try {
+              browser = await chromium.launch();
+              ctx = await browser.newContext({ userAgent: UA, locale: 'de-DE' });
+              const targets = process.env.TARGETS.split('\n').map(s => s.trim()).filter(Boolean).map(s => s.split(/\s+/));
+              for (const [mode, url] of targets) {
+                try {
+                  if (mode === 'host') {
+                    const r = await page(url, 'LANDING');
+                    if (!r) continue;
+                    const host = new URL(url).hostname.replace(/^www\./, '');
+                    const legal = r.links.filter(([h, t]) => LEGAL.test(h + ' ' + t) && !/^mailto:/.test(h)).map(([h]) => h.split('#')[0]);
+                    const uniq = [...new Set(legal)].sort((a, b) => (b.includes(host) - a.includes(host))).slice(0, 4);
+                    await comment(`PROBE ${LABEL} | LEGAL-LINKS ${url}: ${JSON.stringify(uniq)}`);
+                    for (const l of uniq) await page(l, 'TERMS');
+                  } else await page(url, 'PAGE');
+                } catch (e) { await comment(`PROBE ${LABEL} | ERROR ${url}: ${e.message}`); }
+              }
+              await browser.close();
+              await comment(`PROBE ${LABEL} | DONE`);
+            } catch (e) { await comment(`PROBE ${LABEL} | FATAL ${e.stack}`); process.exit(1); }
+          })();
+          EOF
+          cd /tmp/pw && node /tmp/probe.js
