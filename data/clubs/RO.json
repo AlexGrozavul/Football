@@ -418,20 +418,6 @@
    "competition": "SuperLiga Romaniei"
   },
   {
-   "id": "Q18537232",
-   "name": "Bucovina Rădăuți",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Municipal",
-   "capacity": null,
-   "lat": 47.841861,
-   "lon": 25.903611,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q18539440",
    "name": "CSL Ștefăneștii de Jos",
    "leagues": [
