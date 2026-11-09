@@ -22,7 +22,7 @@ jobs:
         https://www.scp07.de/SCP07/Der-Verein/Chronik/Die-Paderborner-Linie.html
         https://www.scp07.de/SCP07/Der-Verein/Chronik/Der-gemeinsame-Weg.html
         https://www.msv-museum.de/virtuelles-museum/1902/
-        https://duepublico2.uni-due.de/servlets/MCRFileNodeServlet/duepublico_derivate_00070601/Rhein_Maas_9.pdf#page=178&zoom=100
+        https://duepublico2.uni-due.de/servlets/MCRFileNodeServlet/duepublico_derivate_00070601/Rhein_Maas_9.pdf#page=178&zoom=100 pdf
     steps:
       - uses: actions/setup-node@v5
         with:
