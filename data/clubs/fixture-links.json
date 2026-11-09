@@ -1971,7 +1971,10 @@
      "teamId": "398",
      "teamName": "Würzburger Kickers",
      "basis": "manual",
-     "venue": null,
+     "venue": {
+      "theirs": "AKON Arena",
+      "agrees": false
+     },
      "competitions": [
       {
        "code": "bl3",
