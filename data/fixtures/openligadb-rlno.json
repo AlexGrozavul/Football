@@ -4950,7 +4950,7 @@
   {
    "id": 86346,
    "utcDate": "2026-11-07T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "16. Spieltag",
    "roundOrder": 16,
    "home": {
@@ -4965,9 +4965,20 @@
     "shortName": "Lok Leipzig",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_1._FC_Lokomotive_Leipzig.svg/250px-Logo_1._FC_Lokomotive_Leipzig.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5047,7 +5058,7 @@
   {
    "id": 86349,
    "utcDate": "2026-11-07T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "16. Spieltag",
    "roundOrder": 16,
    "home": {
@@ -5062,9 +5073,20 @@
     "shortName": "Aue",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/1/13/Fc_erzgebirge_aue.svg/960px-Fc_erzgebirge_aue.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5147,14 +5169,14 @@
      "away": 2
     }
    ],
-   "stadium": null,
-   "city": null,
-   "viewers": null
+   "stadium": "Leuna Chemie Stadion",
+   "city": "Halle",
+   "viewers": 4739
   },
   {
    "id": 86352,
    "utcDate": "2026-11-07T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "16. Spieltag",
    "roundOrder": 16,
    "home": {
@@ -5169,9 +5191,20 @@
     "shortName": "1. FC Magdeburg II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/8/84/1._FC_Magdeburg.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 4,
+   "awayGoals": 4,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 4,
+     "away": 4
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

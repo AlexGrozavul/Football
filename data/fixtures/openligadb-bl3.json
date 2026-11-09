@@ -4586,7 +4586,7 @@
   {
    "id": 84873,
    "utcDate": "2026-11-08T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -4601,9 +4601,20 @@
     "shortName": "Regensburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Jahn_Regensburg_logo2014.svg/960px-Jahn_Regensburg_logo2014.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4611,7 +4622,7 @@
   {
    "id": 84872,
    "utcDate": "2026-11-08T15:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -4626,9 +4637,20 @@
     "shortName": "Verl",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/SC_Verl_Logo.svg/960px-SC_Verl_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -4636,7 +4658,7 @@
   {
    "id": 84874,
    "utcDate": "2026-11-08T18:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "13. Spieltag",
    "roundOrder": 13,
    "home": {
@@ -4651,11 +4673,22 @@
     "shortName": "TSG 1899 Hoffenheim II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
+   "stadium": "AKON Arena",
+   "city": "Würzburg",
    "viewers": null
   },
   {
