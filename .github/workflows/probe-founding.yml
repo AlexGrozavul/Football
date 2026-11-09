@@ -12,21 +12,36 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "1"
+      RUN: "2"
       URLS: |
-        wdall:Q105861
-        wdall:Q160532
-        wdall:Q154293
-        wdall:Q155218
-        wdall:Q32494
-        wdall:Q666010
-        https://fc.de/ terms
-        https://www.bayer04.de/ terms
-        https://www.bvb.de/ terms
-        https://www.borussia.de/ terms
-        wd:Q104770 ref:13\.\s*Februar\s*1948
-        wd:Q265570 ref:4\.\s*Oktober\s*1907
-        wd:Q310608 ref:21\.\s*Februar\s*1948
+        https://www.vfl-bochum.de/verein/uber-den-vfl/tradition/
+        https://www.vfl-bochum.de/verein/uber-den-vfl/vereinsportrait/
+        https://www.vfl-bochum.de/fans/fanklubs/
+        https://www.scp07.de/SCP07/Der-Verein/Chronik/
+        https://www.scp07.de/SCP07/Der-Verein/Mit-Herzblut.-Fussball./
+        https://www.scp07.de/Fans/SCP07-Fanclubs/SCP07-Fanclubs/
+        http://www.msv1902.de/ terms
+        https://www.msv1902.de/mitglied/
+        https://www.msv-museum.de/ terms
+        https://www.msv-duisburg.de/fans/fanclubs/
+        https://www.rot-weiss-essen.de/verein/historie/
+        https://www.rot-weiss-essen.de/verein/
+        https://www.rot-weiss-essen.de/archiv/fanclubs/
+        https://schalke04.de/verein/portraits-und-geschichte/
+        https://schalke04.de/verein/epochen/
+        https://schalke04.de/verein/schalke-04-e-v/satzung/
+        https://schalke04.de/mitglieder-fans/fanbelange/fanclubs/
+        https://www.sportclub-verl.de/geschichte
+        https://www.sportclub-verl.de/satzung
+        https://www.sportclub-verl.de/fans
+        wd:Q105861 fans ref:29\.\s*Juli\s*1949
+        wd:Q160532 fans ref:1985
+        wd:Q154293 fans ref:2\.\s*Juni\s*1902
+        wd:Q155218 fans ref:1\.\s*Februar\s*1907
+        wd:Q32494 fans ref:4\.\s*Mai\s*1904
+        wd:Q666010 fans ref:6\.\s*September\s*1924
+        https://www.rheinische-geschichte.lvr.de/Persoenlichkeiten/franz-kremer/DE-2086/lido/57c9399d10ec35.46625923
+        https://www.transfermarkt.de/ssv-jahn-regensburg/datenfakten/verein/109
     steps:
       - uses: actions/setup-node@v5
         with:
