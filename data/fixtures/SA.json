@@ -2634,7 +2634,7 @@
   {
    "id": 558533,
    "utcDate": "2026-11-08T11:30:00Z",
-   "status": "IN_PLAY",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2652,14 +2652,14 @@
     "tla": "LAZ",
     "crest": "https://crests.football-data.org/110.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 558536,
    "utcDate": "2026-11-08T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2677,14 +2677,14 @@
     "tla": "MIL",
     "crest": "https://crests.football-data.org/98.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558538,
    "utcDate": "2026-11-08T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2702,14 +2702,14 @@
     "tla": "ATA",
     "crest": "https://crests.football-data.org/102.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558530,
    "utcDate": "2026-11-08T17:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2727,14 +2727,14 @@
     "tla": "COM",
     "crest": "https://crests.football-data.org/7397.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558529,
    "utcDate": "2026-11-08T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2752,9 +2752,9 @@
     "tla": "JUV",
     "crest": "https://crests.football-data.org/109.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "winner": "DRAW"
   },
   {
    "id": 558525,

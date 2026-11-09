@@ -8982,6 +8982,31 @@
    "winner": null
   },
   {
+   "id": 555102,
+   "utcDate": "2026-11-24T21:00:00Z",
+   "status": "TIMED",
+   "matchday": 37,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1772,
+    "name": "Chapecoense AF",
+    "shortName": "Chapecoense",
+    "tla": "CHA",
+    "crest": "https://crests.football-data.org/1772_large.png"
+   },
+   "away": {
+    "id": 1769,
+    "name": "SE Palmeiras",
+    "shortName": "Palmeiras",
+    "tla": "PAL",
+    "crest": "https://crests.football-data.org/1769.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 555091,
    "utcDate": "2026-11-25T23:00:00Z",
    "status": "TIMED",
@@ -9007,125 +9032,25 @@
    "winner": null
   },
   {
-   "id": 555100,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 555108,
+   "utcDate": "2026-11-26T23:00:00Z",
+   "status": "TIMED",
    "matchday": 37,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 1766,
-    "name": "CA Mineiro",
-    "shortName": "Mineiro",
-    "tla": "CAM",
-    "crest": "https://crests.football-data.org/1766.png"
+    "id": 1776,
+    "name": "São Paulo FC",
+    "shortName": "São Paulo",
+    "tla": "PAU",
+    "crest": "https://crests.football-data.org/1776.png"
    },
    "away": {
-    "id": 1780,
-    "name": "CR Vasco da Gama",
-    "shortName": "Vasco da Gama",
-    "tla": "VAS",
-    "crest": "https://crests.football-data.org/1780.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555101,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 37,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1770,
-    "name": "Botafogo FR",
-    "shortName": "Botafogo",
-    "tla": "BOT",
-    "crest": "https://crests.football-data.org/1770.png"
-   },
-   "away": {
-    "id": 1777,
-    "name": "EC Bahia",
-    "shortName": "Bahia",
-    "tla": "BAH",
-    "crest": "https://crests.football-data.org/1777.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555102,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 37,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1772,
-    "name": "Chapecoense AF",
-    "shortName": "Chapecoense",
-    "tla": "CHA",
-    "crest": "https://crests.football-data.org/1772_large.png"
-   },
-   "away": {
-    "id": 1769,
-    "name": "SE Palmeiras",
-    "shortName": "Palmeiras",
-    "tla": "PAL",
-    "crest": "https://crests.football-data.org/1769.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555103,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 37,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1779,
-    "name": "SC Corinthians Paulista",
-    "shortName": "Corinthians",
-    "tla": "COR",
-    "crest": "https://crests.football-data.org/1779.png"
-   },
-   "away": {
-    "id": 1767,
-    "name": "Grêmio FBPA",
-    "shortName": "Grêmio",
-    "tla": "FBP",
-    "crest": "https://crests.football-data.org/1767.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555104,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 37,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 4241,
-    "name": "Coritiba FBC",
-    "shortName": "Coritiba",
-    "tla": "COR",
-    "crest": "https://crests.football-data.org/4241.png"
-   },
-   "away": {
-    "id": 1783,
-    "name": "CR Flamengo",
-    "shortName": "Flamengo",
-    "tla": "FLA",
-    "crest": "https://crests.football-data.org/1783.png"
+    "id": 4287,
+    "name": "Clube do Remo",
+    "shortName": "Clube do Remo",
+    "tla": "CRE",
+    "crest": "https://crests.football-data.org/4287.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -9133,8 +9058,8 @@
   },
   {
    "id": 555105,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-27T23:00:00Z",
+   "status": "TIMED",
    "matchday": 37,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9157,9 +9082,109 @@
    "winner": null
   },
   {
+   "id": 555101,
+   "utcDate": "2026-11-29T00:00:00Z",
+   "status": "TIMED",
+   "matchday": 37,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1770,
+    "name": "Botafogo FR",
+    "shortName": "Botafogo",
+    "tla": "BOT",
+    "crest": "https://crests.football-data.org/1770.png"
+   },
+   "away": {
+    "id": 1777,
+    "name": "EC Bahia",
+    "shortName": "Bahia",
+    "tla": "BAH",
+    "crest": "https://crests.football-data.org/1777.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555104,
+   "utcDate": "2026-11-29T19:00:00Z",
+   "status": "TIMED",
+   "matchday": 37,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 4241,
+    "name": "Coritiba FBC",
+    "shortName": "Coritiba",
+    "tla": "COR",
+    "crest": "https://crests.football-data.org/4241.png"
+   },
+   "away": {
+    "id": 1783,
+    "name": "CR Flamengo",
+    "shortName": "Flamengo",
+    "tla": "FLA",
+    "crest": "https://crests.football-data.org/1783.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555109,
+   "utcDate": "2026-11-29T19:00:00Z",
+   "status": "TIMED",
+   "matchday": 37,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1782,
+    "name": "EC Vitória",
+    "shortName": "Vitória",
+    "tla": "VIT",
+    "crest": "https://crests.football-data.org/1782.png"
+   },
+   "away": {
+    "id": 6685,
+    "name": "Santos FC",
+    "shortName": "Santos",
+    "tla": "SAN",
+    "crest": "https://crests.football-data.org/6685.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 555103,
+   "utcDate": "2026-11-29T21:30:00Z",
+   "status": "TIMED",
+   "matchday": 37,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1779,
+    "name": "SC Corinthians Paulista",
+    "shortName": "Corinthians",
+    "tla": "COR",
+    "crest": "https://crests.football-data.org/1779.png"
+   },
+   "away": {
+    "id": 1767,
+    "name": "Grêmio FBPA",
+    "shortName": "Grêmio",
+    "tla": "FBP",
+    "crest": "https://crests.football-data.org/1767.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 555106,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-29T21:30:00Z",
+   "status": "TIMED",
    "matchday": 37,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9183,8 +9208,8 @@
   },
   {
    "id": 555107,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-11-29T21:30:00Z",
+   "status": "TIMED",
    "matchday": 37,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9207,50 +9232,25 @@
    "winner": null
   },
   {
-   "id": 555108,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 555100,
+   "utcDate": "2026-11-29T22:30:00Z",
+   "status": "TIMED",
    "matchday": 37,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 1776,
-    "name": "São Paulo FC",
-    "shortName": "São Paulo",
-    "tla": "PAU",
-    "crest": "https://crests.football-data.org/1776.png"
+    "id": 1766,
+    "name": "CA Mineiro",
+    "shortName": "Mineiro",
+    "tla": "CAM",
+    "crest": "https://crests.football-data.org/1766.png"
    },
    "away": {
-    "id": 4287,
-    "name": "Clube do Remo",
-    "shortName": "Clube do Remo",
-    "tla": "CRE",
-    "crest": "https://crests.football-data.org/4287.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 555109,
-   "utcDate": "2026-11-28T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 37,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1782,
-    "name": "EC Vitória",
-    "shortName": "Vitória",
-    "tla": "VIT",
-    "crest": "https://crests.football-data.org/1782.png"
-   },
-   "away": {
-    "id": 6685,
-    "name": "Santos FC",
-    "shortName": "Santos",
-    "tla": "SAN",
-    "crest": "https://crests.football-data.org/6685.png"
+    "id": 1780,
+    "name": "CR Vasco da Gama",
+    "shortName": "Vasco da Gama",
+    "tla": "VAS",
+    "crest": "https://crests.football-data.org/1780.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -9258,8 +9258,8 @@
   },
   {
    "id": 555110,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9283,8 +9283,8 @@
   },
   {
    "id": 555111,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9308,8 +9308,8 @@
   },
   {
    "id": 555112,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9333,8 +9333,8 @@
   },
   {
    "id": 555113,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9358,8 +9358,8 @@
   },
   {
    "id": 555114,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9383,8 +9383,8 @@
   },
   {
    "id": 555115,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9408,8 +9408,8 @@
   },
   {
    "id": 555116,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9433,8 +9433,8 @@
   },
   {
    "id": 555117,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9458,8 +9458,8 @@
   },
   {
    "id": 555118,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -9483,8 +9483,8 @@
   },
   {
    "id": 555119,
-   "utcDate": "2026-12-02T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-03T00:30:00Z",
+   "status": "TIMED",
    "matchday": 38,
    "stage": "REGULAR_SEASON",
    "group": null,
