@@ -12,8 +12,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "4"
+      RUN: "5"
       URLS: |
+        https://www.vfl.de/vfl/verein
         https://www.vfl.de/api/download/20250707_Vereinssatzung_VfL1899_bu0tgm_iemdoj pdf
     steps:
       - uses: actions/setup-node@v5
@@ -100,7 +101,7 @@ jobs:
             let head = `### run ${process.env.RUN} #${n} ${url}\n`, text = '', links = [], refs = '';
             try {
               if (/\.pdf($|\?)/i.test(url) || flags.includes('pdf')) {
-                const r = await ctx.request.get(url, { timeout: 60000 });
+                const r = await ctx.request.get(url, { timeout: 60000, headers: { Accept: 'application/pdf,*/*;q=0.8' } });
                 head += `HTTP ${r.status()} ${r.headers()['content-type']}\n`;
                 fs.writeFileSync('/tmp/x.pdf', await r.body());
                 text = execSync('pdftotext -layout /tmp/x.pdf -').toString();
