@@ -12,22 +12,32 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "1"
+      RUN: "2"
       URLS: |
-        wdall:Q160530
-        wdall:Q33748
-        wdall:Q154053
-        wdall:Q537301
-        wdall:Q155730
-        wdall:Q141931
-        wdall:Q101859
-        wdall:Q819400
-        https://www.scfreiburg.com/ terms
-        https://sv07elversberg.de/ terms
-        https://svww.de/ terms
-        https://scpreussen-muenster.de/ terms
-        https://supporters-ingolstadt.de/ueber-uns/
-        https://supporters-ingolstadt.de/kontakt-links/
+        https://www.vfl.de/ fans wl:histor|chronik|geschichte|tradition|satzung|verein|fanszene|fanclub|ultra|impressum|ueber|über
+        https://www.hannover96.de/klub-historie/historie
+        https://www.hannover96.de/verein/satzung-1
+        https://www.hannover96.de/fans-spieltag/fanbetreuung/fanclubs fans
+        https://www.eintracht.com/start terms
+        https://gesamtverein.eintracht.com/ terms
+        https://tsv-havelse.de/der-tsv/#historie
+        https://tsv-havelse.de//impressum/
+        https://1.fc-magdeburg.de/club/ueber-den-fcm/tradition
+        https://1.fc-magdeburg.de/fans/fans/nordtribuene-block-u fans
+        https://www.dynamo-dresden.de/verein/historie/chronik/
+        https://www.dynamo-dresden.de/fans/fanszene/der-weg-zum-dynamofan/ fans
+        https://www.vfl-wolfsburg.de/startseite fans wl:histor|chronik|geschichte|tradition|satzung|verein|fanszene|fanclub|ultra|impressum|ueber|über
+        https://vfl-wob.de/ terms
+        https://www.svmeppen.de/vereinshistorie
+        https://www.svmeppen.de/fans fans
+        wd:Q160530 fans
+        wd:Q33748 fans
+        wd:Q154053 fans
+        wd:Q537301 fans
+        wd:Q155730 fans
+        wd:Q141931 fans
+        wd:Q101859 fans
+        wd:Q819400 fans
     steps:
       - uses: actions/setup-node@v5
         with:
