@@ -2,6 +2,8 @@
 
 One table of the clubs whose founding date and main supporters group a session researches, in the order a session works through it. The queue only says which club is next; the data itself is in `data/club-founding.csv` (hand-written, conventions in `docs/claude/conventions.md` under "Founding data research").
 
+**Load status (step 2c, 2026-11-10)**: rows 1 to 36 loaded into `data/club-founding.csv` under the tradition-date policy (32 club rows, 4 supporters rows); Strasbourg, Freiburg, Elversberg and Wehen have no row (no source URL in the notes). Details: open-problems, "Founding data load (step 2c)".
+
 ## How a session uses this file
 
 - Take the next 6 rows whose status is `pending`, in the order of the table.
