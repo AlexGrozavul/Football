@@ -12,19 +12,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "3"
+      RUN: "4"
       URLS: |
-        https://www.dynamo-dresden.de/verein/historie/chronik/ raw
-        https://www.dynamo-dresden.de/impressum/ raw
-        https://www.vfl.de/vfl/verein fans wl:histor|chronik|geschichte|satzung|museum|verein|ultra|fanszene
-        https://www.vfl.de/fans/ fans wl:ultra|fanszene|gruppe|fanclub|fanabteilung
-        https://www.eintracht.com/eintracht/chronik/gruendung
-        https://verein.eintracht.com/mitgliedschaft/satzung
-        https://www.vfl-wolfsburg.de/der-vfl/geschichte/chronik
-        https://vfl-wob.de/kultur/historie/
-        wd:Q155730 fans ref:dominierende Fangruppierung
-        wd:Q141931 fans ref:offizielles Gründungsdatum
-        wd:Q160530 fans ref:Gegründet wurde der erste
+        https://www.vfl.de/api/download/20250707_Vereinssatzung_VfL1899_bu0tgm_iemdoj pdf
     steps:
       - uses: actions/setup-node@v5
         with:
