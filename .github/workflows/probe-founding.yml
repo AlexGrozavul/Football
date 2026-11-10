@@ -12,32 +12,19 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "2"
+      RUN: "3"
       URLS: |
-        https://www.vfl.de/ fans wl:histor|chronik|geschichte|tradition|satzung|verein|fanszene|fanclub|ultra|impressum|ueber|über
-        https://www.hannover96.de/klub-historie/historie
-        https://www.hannover96.de/verein/satzung-1
-        https://www.hannover96.de/fans-spieltag/fanbetreuung/fanclubs fans
-        https://www.eintracht.com/start terms
-        https://gesamtverein.eintracht.com/ terms
-        https://tsv-havelse.de/der-tsv/#historie
-        https://tsv-havelse.de//impressum/
-        https://1.fc-magdeburg.de/club/ueber-den-fcm/tradition
-        https://1.fc-magdeburg.de/fans/fans/nordtribuene-block-u fans
-        https://www.dynamo-dresden.de/verein/historie/chronik/
-        https://www.dynamo-dresden.de/fans/fanszene/der-weg-zum-dynamofan/ fans
-        https://www.vfl-wolfsburg.de/startseite fans wl:histor|chronik|geschichte|tradition|satzung|verein|fanszene|fanclub|ultra|impressum|ueber|über
-        https://vfl-wob.de/ terms
-        https://www.svmeppen.de/vereinshistorie
-        https://www.svmeppen.de/fans fans
-        wd:Q160530 fans
-        wd:Q33748 fans
-        wd:Q154053 fans
-        wd:Q537301 fans
-        wd:Q155730 fans
-        wd:Q141931 fans
-        wd:Q101859 fans
-        wd:Q819400 fans
+        https://www.dynamo-dresden.de/verein/historie/chronik/ raw
+        https://www.dynamo-dresden.de/impressum/ raw
+        https://www.vfl.de/vfl/verein fans wl:histor|chronik|geschichte|satzung|museum|verein|ultra|fanszene
+        https://www.vfl.de/fans/ fans wl:ultra|fanszene|gruppe|fanclub|fanabteilung
+        https://www.eintracht.com/eintracht/chronik/gruendung
+        https://verein.eintracht.com/mitgliedschaft/satzung
+        https://www.vfl-wolfsburg.de/der-vfl/geschichte/chronik
+        https://vfl-wob.de/kultur/historie/
+        wd:Q155730 fans ref:dominierende Fangruppierung
+        wd:Q141931 fans ref:offizielles Gründungsdatum
+        wd:Q160530 fans ref:Gegründet wurde der erste
     steps:
       - uses: actions/setup-node@v5
         with:
@@ -135,7 +122,7 @@ jobs:
                 head += `HTTP ${resp ? resp.status() : '?'} | final ${page.url()} | title: ${await page.title()} | ${ct}\n`;
                 if (/pdf/.test(ct)) { fs.writeFileSync('/tmp/x.pdf', await resp.body()); text = execSync('pdftotext -layout /tmp/x.pdf -').toString(); }
                 else {
-                  text = await page.evaluate(() => document.body ? document.body.innerText : '');
+                  text = flags.includes('raw') ? await page.evaluate(() => document.body ? document.body.textContent.replace(/[ \t]+/g, ' ').replace(/\s*\n\s*/g, '\n') : '') : await page.evaluate(() => document.body ? document.body.innerText : '');
                   const rf = flags.find(f => f.startsWith('ref:'));
                   if (rf) refs = await page.evaluate(src => {
                     const re = new RegExp(src, 'i'), out = [];
