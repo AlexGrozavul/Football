@@ -12,26 +12,36 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "1"
+      RUN: "2"
       URLS: |
-        wdall:Q126334 ref:Gründung|gegründet
-        wd:Q126334@frwiki ref:fondation|fondé|Fondation
-        wdall:Q106394 ref:Gründung|gegründet
-        wdall:Q692691 ref:Gründung|gegründet
-        wdall:Q310621 ref:Gründung|gegründet
-        wdall:Q170117 ref:Gründung|gegründet|1905
-        wdall:Q105844 ref:Gründung|gegründet
-        wdall:Q316865 ref:Gründung|gegründet
-        wdall:Q702455 ref:Gründung|gegründet
-        https://www.ksc.de/club/allgemein/chronik
-        https://www.fc-heidenheim.de/unser-fch/historie
-        https://viktoria1904.de/verein/historie/
-        wd:Q8466 fans ref:Generation.Luzifer
-        wd:Q97905916 fans ref:Legio.Augusta
-        wd:Q4512 fans ref:Commando.Cannstatt
-        wd:Q104770 fans ref:Wilde.Horde
-        https://schalke04.de/ terms
-        https://duepublico2.uni-due.de/ terms
+        https://www.rcstrasbourgalsace.fr/le-club/histoire/
+        https://www.rcstrasbourgalsace.fr/le-racing-reunit-ceux-qui-ont-ecrit-son-histoire-pour-celebrer-ses-120-ans-le-21-novembre/
+        wd:Q126334@frwiki fans ref:Ultra|UB.?90
+        https://www.scfreiburg.com/verein/historie/
+        https://www.scfreiburg.com/verein/historie/sc-geschichte/
+        https://web.archive.org/web/20171027230110/https://www.scfreiburg.com/news/gruendungsdatum-mit-vielen-fragezeichen
+        https://www.badische-zeitung.de/sc-freiburg-archivar-das-gruendungsdatum-ist-interpretationssache
+        https://www.scfreiburg.com/fans/fanszene/fanszene/ fans
+        https://sv07elversberg.de/die-sve/historie/
+        https://svww.de/verein/historie
+        https://www.faz.net/aktuell/sport/fussball/sv-wehen-in-der-2-liga-der-geilste-dorfverein-der-welt-1434495.html
+        https://www.fcingolstadt.de/unsere-geschichte/
+        https://www.fcingolstadt.de/jubilaeumsjahr-zehn-jahre-schanzer-herzschlag/
+        https://www.fcingolstadt.de/wp-content/uploads/2026/05/Satzung_27112025.pdf
+        https://www.fcingolstadt.de/fanabteilung/ fans
+        https://supporters-ingolstadt.de/ terms
+        https://supporters-ingolstadt.de/ueber-uns/
+        https://www.arminia.de/der-dsc/historie
+        https://www.arminia.de/fans/faninstitutionen fans
+        https://www.arminia.de/fans/fussballkultur fans
+        https://scpreussen-muenster.de/verein/e-v/historie/
+        https://scpreussen-muenster.de/verein/e-v/satzung/
+        https://scpreussen-muenster.de/fans/heim/fangemeinschaft/ fans
+        https://scpreussen-muenster.de/fans/heim/fanclubs/ fans
+        https://policies.redbull.com/r/Rasenballsportleipzig/terms/de_DE
+        https://policies.redbull.com/r/Rasenballsportleipzig/imprint/de_DE
+        https://www.zeit.de/online/2009/25/red-bull-leipzig-mateschitz-dfb
+        https://de.wikipedia.org/wiki/FC_Augsburg fans ref:Legio.Augusta
     steps:
       - uses: actions/setup-node@v5
         with:
