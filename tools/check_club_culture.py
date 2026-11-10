@@ -23,10 +23,11 @@ nothing is inferred from rivalries or shared enemies. Status active needs presen
 wording and ended needs wording that says so; the quote is what lets a person check both.
 
 club-founding.csv: clubQ, subject (club or supporters), name (blank for club, required for
-supporters), founded (YYYY-MM-DD, a real calendar day, full dates only), status (confirmed, inferred,
-unverified), basis, sourceId, checkedOn, quote (15 words at most). The file may be empty.
+supporters), founded (YYYY, YYYY-MM or YYYY-MM-DD; the length is the precision, nothing is padded),
+status (confirmed, inferred, unverified), basis, sourceId, checkedOn, quote (15 words at most). The file may be empty.
 EXITS 1 in club-founding.csv on: an unknown status or subject, an unknown sourceId, an unknown clubQ,
-a malformed or non-existent date, a date in the future, a date before 1800, a supporters row with no
+any other date format (YYYY-M, a space, text), a month outside 01-12, a day that is not a real
+calendar day, a year before 1800, a year, month or date in the future, a supporters row with no
 name, a club row with a name, a duplicate (clubQ, subject, name), a quote of more than 15 words. A
 supporters row whose club has no club row is not an error.
 EXITS 1 on: in club-parents.csv an unknown clubQ or parentQ, a repeated clubQ, a club that is its own parent and a parent that is itself a reserve side; a clubQ or rivalQ on no data/clubs/*.json, a sourceId
@@ -209,7 +210,7 @@ for line, r in read('club-friendships.csv', ['clubQ', 'friendQ', 'friendName', '
     seen.add(key)
     if ok: fri.setdefault(r['clubQ'], []).append(r)
 
-# club-founding.csv: the club's founding date and its main supporters group. Hand-written, full dates only.
+# club-founding.csv: the club's founding date and its main supporters group. Hand-written; YYYY, YYYY-MM or YYYY-MM-DD.
 founding = []
 fseen = set()
 rows = read('club-founding.csv', ['clubQ', 'subject', 'name', 'founded', 'status', 'basis', 'sourceId', 'checkedOn', 'quote'])
@@ -224,13 +225,20 @@ for line, r in rows:
         problems.append(f'{at}: a club row has no name (found "{r["name"]}")'); ok = False
     if r['status'] not in FOUND_STATUSES:
         problems.append(f'{at}: status "{r["status"]}" is not one of {", ".join(FOUND_STATUSES)}'); ok = False
-    fd = iso(r['founded']) if re.fullmatch(r'\d{4}-\d{2}-\d{2}', r['founded']) else None
-    if not fd:
-        problems.append(f'{at}: founded "{r["founded"]}" is not a full YYYY-MM-DD date that exists'); ok = False
-    elif fd > today:
-        problems.append(f'{at}: founded {r["founded"]} is in the future'); ok = False
-    elif fd.year < FOUND_MIN_YEAR:
-        problems.append(f'{at}: founded {r["founded"]} is before {FOUND_MIN_YEAR}'); ok = False
+    fm = re.fullmatch(r'(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?', r['founded'])
+    if not fm:
+        problems.append(f'{at}: founded "{r["founded"]}" is not YYYY, YYYY-MM or YYYY-MM-DD'); ok = False
+    else:
+        fy, fmo, fdy = int(fm[1]), fm[2] and int(fm[2]), fm[3] and int(fm[3])
+        if fmo is not None and not 1 <= fmo <= 12:
+            problems.append(f'{at}: founded "{r["founded"]}" has a month outside 01-12'); ok = False
+        elif fdy is not None and not iso(r['founded']):
+            problems.append(f'{at}: founded "{r["founded"]}" is not a real calendar day'); ok = False
+        elif fy < FOUND_MIN_YEAR:
+            problems.append(f'{at}: founded {r["founded"]} is before {FOUND_MIN_YEAR}'); ok = False
+        elif (fy > today.year or (fmo is not None and (fy, fmo) > (today.year, today.month))
+              or (fdy is not None and iso(r['founded']) > today)):
+            problems.append(f'{at}: founded {r["founded"]} is in the future'); ok = False
     if len(r['quote'].split()) > QUOTE_MAX_WORDS:
         problems.append(f'{at}: the quote is {len(r["quote"].split())} words; {QUOTE_MAX_WORDS} at most'); ok = False
     key = (r['clubQ'], r['subject'], r['name'].casefold())

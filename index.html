@@ -1123,6 +1123,11 @@ const I18N = {
     "found.age1": "1 year",
     "found.ageN": "{n} years",
     "found.ageDe": "{n} years",
+    "found.onDay": "{date}",
+    "found.inMonth": "{date}",
+    "found.inYear": "{date}",
+    "found.ageIn": "{age} in {year}",
+    "found.thisYear": "this year",
     "found.loadFail": "The founding information could not be loaded.",
     "found.short": "Founding information",
     "fri.mirror": "Stated on {club}'s page only",
@@ -2430,6 +2435,11 @@ const I18N = {
     "found.age1": "1 an",
     "found.ageN": "{n} ani",
     "found.ageDe": "{n} de ani",
+    "found.onDay": "la {date}",
+    "found.inMonth": "în {date}",
+    "found.inYear": "în {date}",
+    "found.ageIn": "{age} în {year}",
+    "found.thisYear": "anul acesta",
     "found.loadFail": "Informațiile despre înființare nu au putut fi încărcate.",
     "found.short": "Informații despre înființare",
     "fri.mirror": "Menționat doar pe pagina {club}",
@@ -4491,22 +4501,30 @@ async function rivalriesHtml(club){
     (par ? parentHtml() : '') + `</div>`;
 }
 
-/* Founding data: data/club-founding.csv, hand-written, full dates only (YYYY-MM-DD). The age is
-   computed here from the device's date and never stored. A club without a row gets nothing drawn. */
-const FOUND_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
+/* Founding data: data/club-founding.csv, hand-written; founded is YYYY, YYYY-MM or YYYY-MM-DD and its
+   length is its precision (nothing is padded). The age is computed here from the device's date and
+   never stored. A club without a row gets nothing drawn. */
+const FOUND_DATE = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/;
 const foundParts = iso => {
   const m = FOUND_DATE.exec(iso || '');
   if(!m) return null;
-  const y = +m[1], mo = +m[2], d = +m[3], dt = new Date(Date.UTC(y, mo - 1, d));
-  return dt.getUTCFullYear() === y && dt.getUTCMonth() === mo - 1 && dt.getUTCDate() === d ? {y, mo, d} : null;
+  const y = +m[1];
+  if(m[2] === undefined) return {y, mo: 1, d: 1, prec: 'y'};
+  const mo = +m[2];
+  if(mo < 1 || mo > 12) return null;
+  if(m[3] === undefined) return {y, mo, d: 1, prec: 'm'};
+  const d = +m[3], dt = new Date(Date.UTC(y, mo - 1, d));
+  return dt.getUTCFullYear() === y && dt.getUTCMonth() === mo - 1 && dt.getUTCDate() === d ? {y, mo, d, prec: 'd'} : null;
 };
 const isLeapYear = y => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
 /* Whole years on `today` (a Date, read in local time). A 29 February founding has its birthday on
-   1 March in a year that is not a leap year. null for an invalid or future date. */
+   1 March in a year that is not a leap year. A year and month counts from the first day of that
+   month; a year only is the current year minus the year. null for an invalid or future date. */
 function foundingAge(iso, today){
   const f = foundParts(iso);
   if(!f) return null;
   const ty = today.getFullYear(), tm = today.getMonth() + 1, td = today.getDate();
+  if(f.prec === 'y') return ty - f.y < 0 ? null : ty - f.y;
   let bm = f.mo, bd = f.d;
   if(bm === 2 && bd === 29 && !isLeapYear(ty)){ bm = 3; bd = 1; }
   let age = ty - f.y;
@@ -4521,7 +4539,18 @@ function ageText(age){
   const de = LANG === 'ro' && age >= 20 && !(last2 >= 1 && last2 <= 19);
   return t(de ? 'found.ageDe' : 'found.ageN', {n: age});
 }
-const foundDate = iso => new Date(iso + 'T12:00:00Z').toLocaleDateString(LOC(), {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'});
+/* The date and the age as shown, at the stored precision: "1 March 1900" / "126 years",
+   "December 1900" / "125 years", "1906" / "120 years in 2026" or "this year". Romanian adds
+   "la" before a day and "în" before a month or a year. null for an invalid or future date. */
+function foundText(iso, today){
+  const f = foundParts(iso), age = foundingAge(iso, today);
+  if(!f || age === null) return null;
+  const at = new Date(Date.UTC(f.y, f.mo - 1, f.d, 12));
+  if(f.prec === 'y') return {date: t('found.inYear', {date: String(f.y)}),
+    age: age === 0 ? t('found.thisYear') : t('found.ageIn', {age: ageText(age), year: today.getFullYear()})};
+  if(f.prec === 'm') return {date: t('found.inMonth', {date: at.toLocaleDateString(LOC(), {month: 'long', year: 'numeric', timeZone: 'UTC'})}), age: ageText(age)};
+  return {date: t('found.onDay', {date: at.toLocaleDateString(LOC(), {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'})}), age: ageText(age)};
+}
 
 async function foundingHtml(club){
   const C = await cultureFiles(['data/club-founding.csv']);
@@ -4533,7 +4562,8 @@ async function foundingHtml(club){
   const one = (subject, label, valueOf) => {
     const r = mine.find(x => x.subject === subject && (subject === 'club' || x.name));
     if(!r) return '';
-    const value = valueOf(r, foundDate(r.founded), ageText(foundingAge(r.founded, now)));
+    const ft = foundText(r.founded, now);
+    const value = valueOf(r, ft.date, ft.age);
     const tag = r.status === 'confirmed' ? '' : ' ' + confTag(r.status);
     return `<div class="row"><span>${esc(label)}</span><span data-content>${esc(value)}${tag}</span></div>` +
       `<div class="sub">${sourceLine(C.src.get(r.sourceId), r.checkedOn)}</div>`;

@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1404 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1409 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -328,6 +328,11 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `found.age1` | 1 year | 1 an |
 | `found.ageN` | {n} years | {n} ani |
 | `found.ageDe` | {n} years | {n} de ani |
+| `found.onDay` | {date} | la {date} |
+| `found.inMonth` | {date} | în {date} |
+| `found.inYear` | {date} | în {date} |
+| `found.ageIn` | {age} in {year} | {age} în {year} |
+| `found.thisYear` | this year | anul acesta |
 | `found.loadFail` | The founding information could not be loaded. | Informațiile despre înființare nu au putut fi încărcate. |
 | `found.short` | Founding information | Informații despre înființare |
 | `fri.mirror` | Stated on {club}'s page only | Menționat doar pe pagina {club} |
