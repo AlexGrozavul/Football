@@ -802,6 +802,10 @@ const server = http.createServer((req, res) => {
     frow('Q4512', 'club', '', `${thisY - 126}-01-01`, 'confirmed'),
     frow('Q4512', 'supporters', FNAME60, `${thisY - 50}-03-01`, 'unverified'),
     frow('Q105853', 'supporters', 'Supporters Only', `${thisY - 20}-01-01`, 'inferred'),
+    frow('Q265570', 'club', '', `${thisY - 120}`, 'confirmed'),                 // year only
+    frow('Q265570', 'supporters', FNAME60, `${thisY - 50}-09`, 'unverified'),   // year and month
+    frow('Q8466', 'club', '', `${thisY}`, 'confirmed'),                          // year only, this year
+    frow('Q8466', 'supporters', FNAME60, `${thisY - 120}`, 'inferred'),          // the longest supporters form
   ].join('\n') + '\n';
   const foundPage = async lang => {
     const pg = await ctx.newPage();
@@ -831,15 +835,33 @@ const server = http.createServer((req, res) => {
   const ageCases = [['1900-03-01', 2026, 11, 5, 126], ['1900-11-05', 2026, 11, 5, 126], ['1900-11-06', 2026, 11, 5, 125], ['1900-12-31', 2026, 11, 5, 125],
     ['2000-02-29', 2026, 2, 28, 25], ['2000-02-29', 2026, 3, 1, 26], ['2000-02-29', 2028, 2, 28, 27], ['2000-02-29', 2028, 2, 29, 28],
     ['2026-01-01', 2026, 11, 5, 0], ['2025-06-01', 2026, 11, 5, 1], ['2024-01-01', 2026, 11, 5, 2], ['2007-01-01', 2026, 11, 5, 19], ['2006-01-01', 2026, 11, 5, 20],
-    ['1926-01-01', 2026, 11, 5, 100], ['1925-01-01', 2026, 11, 5, 101], ['1913-01-01', 2026, 11, 5, 113], ['1907-01-01', 2026, 11, 5, 119], ['1906-01-01', 2026, 11, 5, 120]];
+    ['1926-01-01', 2026, 11, 5, 100], ['1925-01-01', 2026, 11, 5, 101], ['1913-01-01', 2026, 11, 5, 113], ['1907-01-01', 2026, 11, 5, 119], ['1906-01-01', 2026, 11, 5, 120],
+    // year only: the current year minus the year, whatever the day (the same year, one year before, 120 years before)
+    ['2026', 2026, 11, 5, 0], ['2026', 2026, 1, 1, 0], ['2025', 2026, 1, 1, 1], ['2025', 2026, 12, 31, 1], ['1906', 2026, 1, 1, 120], ['1906', 2026, 11, 5, 120],
+    // year and month: whole years from the first day of that month (not yet reached, reached, the same month)
+    ['1900-12', 2026, 11, 5, 125], ['1900-12', 2026, 11, 30, 125], ['1900-10', 2026, 11, 5, 126], ['1900-11', 2026, 11, 1, 126], ['1900-11', 2026, 11, 30, 126],
+    ['2026-11', 2026, 11, 1, 0], ['2025-11', 2026, 11, 1, 1], ['2025-12', 2026, 11, 30, 0]];
   const gotAges = []; for(const c of ageCases) gotAges.push(await AGE(c[0], c[1], c[2], c[3]));
-  check('founding age: birthday passed / not yet passed, 29 February (1 March in a non-leap year), and ages 0, 1, 2, 19, 20, 100, 101, 113, 119, 120',
+  check('founding age: birthday passed / not yet passed, 29 February (1 March in a non-leap year), ages 0, 1, 2, 19, 20, 100, 101, 113, 119, 120, year only and year and month',
     ageCases.every((c, i) => gotAges[i] === c[4]), JSON.stringify(ageCases.map((c, i) => [c[0], c[1] + '-' + c[2] + '-' + c[3], c[4], gotAges[i]]).filter((x, i) => gotAges[i] !== ageCases[i][4])));
-  const badAges = await pgF.evaluate(() => [foundingAge('1900-02-30', new Date(2026, 0, 1)), foundingAge('1900-03', new Date(2026, 0, 1)), foundingAge('1900', new Date(2026, 0, 1)), foundingAge('2999-01-01', new Date(2026, 0, 1))]);
-  check('founding age: a year, a year-month, an impossible day and a future date give no age (nothing drawn)', badAges.every(x => x === null), JSON.stringify(badAges));
+  const badAges = await pgF.evaluate(() => ['1900-02-30', '1900-13', '1900-00', '1900-3', '190', '1900 ', 'abc', '', '2999-01-01', '2027', '2026-12', '2026-11-06']
+    .map(i => foundingAge(i, new Date(2026, 10, 5))));
+  check('founding age: an impossible day, a month outside 01-12, YYYY-M, a short year, a space, text, empty, and a future date, year or month give no age (nothing drawn)', badAges.every(x => x === null), JSON.stringify(badAges));
+  const TXT = pg => pg.evaluate(() => [['1900-03-01', 2026, 11, 5], ['1900-12', 2026, 11, 5], ['1906', 2026, 11, 5], ['2026', 2026, 11, 5], ['2025', 2026, 11, 5], ['2026-11', 2026, 11, 5], ['1907-01', 2026, 11, 5]]
+    .map(([i, y, m, d]) => { const r = foundText(i, new Date(y, m - 1, d)); return r && r.date + ' (' + r.age + ')'; }));
+  const enTxt = await TXT(pgF);
+  check('founding text (English): full date, year and month, year only ("in 2026"), "this year", 1 year, less than 1 year, 119 years',
+    JSON.stringify(enTxt) === JSON.stringify(['1 March 1900 (126 years)', 'December 1900 (125 years)', '1906 (120 years in 2026)', '2026 (this year)', '2025 (1 year in 2026)', 'November 2026 (less than 1 year)', 'January 1907 (119 years)']), JSON.stringify(enTxt));
   const enAge = await pgF.evaluate(() => [0, 1, 2, 19, 20, 100, 101, 113, 119, 120].map(ageText));
   check('founding age text, English', JSON.stringify(enAge) === JSON.stringify(['less than 1 year', '1 year', '2 years', '19 years', '20 years', '100 years', '101 years', '113 years', '119 years', '120 years']), JSON.stringify(enAge));
   const FE = await foundSheet(pgF, 'Q4512'), FS = await foundSheet(pgF, 'Q105853'), FN = await foundSheet(pgF, 'Q15789');
+  const FY = await foundSheet(pgF, 'Q265570'), FT = await foundSheet(pgF, 'Q8466');
+  const sepWant = nowD.getMonth() + 1 < 9 ? 49 : 50;   // founded September: counted from 1 September
+  check('founding sheet (English): year only "Founded <year> (120 years in <year>)", year and month in the supporters row, "this year", year-only supporters row',
+    FY.rows[0]?.label === 'Founded' && FY.rows[0].val === `${thisY - 120} (120 years in ${thisY})` && FY.rows[0].tag === '' &&
+    FY.rows[1]?.val === `${FNAME60}, founded September ${thisY - 50} (${sepWant} years)` && FY.rows[1].tag === 'unverified' &&
+    FT.rows[0]?.val === `${thisY} (this year)` && FT.rows[1]?.val === `${FNAME60}, founded ${thisY - 120} (120 years in ${thisY})` && FT.rows[1].tag === 'inferred' && FT.srcs.length === 2,
+    JSON.stringify([FY.rows, FT.rows]));
   check('founding sheet (English): club row "Founded <full date> (126 years)", confirmed shows no tag, source line with link and "Checked on"',
     FE.rows[0]?.label === 'Founded' && FE.rows[0].val === `1 January ${thisY - 126} (126 years)` && FE.rows[0].tag === '' &&
     FE.srcs[0]?.href === fsrc.url && /Checked on /.test(FE.srcs[0].text), JSON.stringify(FE.rows[0]) + JSON.stringify(FE.srcs[0]));
@@ -856,10 +878,16 @@ const server = http.createServer((req, res) => {
   const pgFR = await foundPage('ro');
   const roAge = await pgFR.evaluate(() => [0, 1, 2, 19, 20, 100, 101, 113, 119, 120].map(ageText));
   check('founding age text, Romanian ("ani" up to 19 and for last two digits 01-19, otherwise "de ani")', JSON.stringify(roAge) === JSON.stringify(['sub 1 an', '1 an', '2 ani', '19 ani', '20 de ani', '100 de ani', '101 ani', '113 ani', '119 ani', '120 de ani']), JSON.stringify(roAge));
-  const FRO = await foundSheet(pgFR, 'Q4512');
-  check('founding sheet (Romanian): "Fondat" and "Grup principal de suporteri", Romanian month, "fondat" and "de ani" (126)',
-    FRO.rows[0]?.label === 'Fondat' && /^1 ianuarie \d{4} \(126 de ani\)$/.test(FRO.rows[0].val) && FRO.rows[1]?.label === 'Grup principal de suporteri' &&
-    FRO.rows[1].val.startsWith(FNAME60 + ', fondat 1 martie ') && FRO.rows[1].tag === 'neverificat' && /Verificat la /.test(FRO.srcs[0].text), JSON.stringify(FRO.rows));
+  const roTxt = await TXT(pgFR);
+  check('founding text (Romanian): "la" before a day, "în" before a month or a year, "în 2026", "anul acesta", "1 an", "sub 1 an", "119 ani"',
+    JSON.stringify(roTxt) === JSON.stringify(['la 1 martie 1900 (126 de ani)', 'în decembrie 1900 (125 de ani)', 'în 1906 (120 de ani în 2026)', 'în 2026 (anul acesta)', 'în 2025 (1 an în 2026)', 'în noiembrie 2026 (sub 1 an)', 'în ianuarie 1907 (119 ani)']), JSON.stringify(roTxt));
+  const FRO = await foundSheet(pgFR, 'Q4512'), FRY = await foundSheet(pgFR, 'Q265570'), FRT = await foundSheet(pgFR, 'Q8466');
+  check('founding sheet (Romanian): "Fondat" and "Grup principal de suporteri", "la" and a Romanian month, "fondat la" and "de ani" (126)',
+    FRO.rows[0]?.label === 'Fondat' && /^la 1 ianuarie \d{4} \(126 de ani\)$/.test(FRO.rows[0].val) && FRO.rows[1]?.label === 'Grup principal de suporteri' &&
+    FRO.rows[1].val.startsWith(FNAME60 + ', fondat la 1 martie ') && FRO.rows[1].tag === 'neverificat' && /Verificat la /.test(FRO.srcs[0].text), JSON.stringify(FRO.rows));
+  check('founding sheet (Romanian): year only "în <year> (120 de ani în <year>)", "fondat în septembrie", "anul acesta"',
+    FRY.rows[0]?.val === `în ${thisY - 120} (120 de ani în ${thisY})` && FRY.rows[1]?.val === `${FNAME60}, fondat în septembrie ${thisY - 50} (${sepWant} de ani)` &&
+    FRT.rows[0]?.val === `în ${thisY} (anul acesta)` && FRT.rows[1]?.val === `${FNAME60}, fondat în ${thisY - 120} (120 de ani în ${thisY})`, JSON.stringify([FRY.rows, FRT.rows]));
   await pgFR.close();
   // Layout of the longest case at 360 px (the group name wraps to several lines) in both languages.
   const ctx360 = await browser.newContext({viewport: {width: 360, height: 740}, isMobile: true, hasTouch: true, serviceWorkers: 'block'});
@@ -872,11 +900,13 @@ const server = http.createServer((req, res) => {
     pg.on('pageerror', e => errors.push(e.message));
     await pg.goto(BASE);
     await pg.waitForFunction(() => / z\d+/.test(document.getElementById('zoomChip').textContent), null, {timeout: 30000});
-    const F3 = await foundSheet(pg, 'Q4512');
+    for(const qid of ['Q4512', 'Q265570', 'Q8466']){
+    const F3 = await foundSheet(pg, qid);
     const geo = await pg.evaluate(() => { const f = document.getElementById('sheetFound'), sb = document.querySelector('#sheet .sbody'), fr = f.getBoundingClientRect(); const rows = [...f.querySelectorAll('.row span:last-child')];
       return {lines: Math.round(rows[1].getBoundingClientRect().height / parseFloat(getComputedStyle(rows[1]).lineHeight)), right: Math.max(...[...f.querySelectorAll('*')].map(e => e.getBoundingClientRect().right)), left: Math.min(...[...f.querySelectorAll('*')].map(e => e.getBoundingClientRect().left)), w: innerWidth, sbW: sb.scrollWidth, sbC: sb.clientWidth}; });
-    check(`layout 360 px (${lang}): a 60-character group name wraps (${geo.lines} lines), nothing leaves the screen, no sideways scroll`,
-      geo.lines >= 2 && geo.right <= geo.w + 0.5 && geo.left >= -0.5 && !F3.sideways && geo.sbW <= geo.sbC + 1, JSON.stringify(geo));
+    check(`layout 360 px (${lang}, ${qid}: ${F3.rows.map(r => r.val.replace(FNAME60, 'NAME60')).join(' / ')}): a 60-character group name wraps (${geo.lines} lines), nothing leaves the screen, no sideways scroll`,
+      F3.rows.length === 2 && geo.lines >= 2 && geo.right <= geo.w + 0.5 && geo.left >= -0.5 && !F3.sideways && geo.sbW <= geo.sbC + 1, JSON.stringify(geo));
+    }
     await pg.close();
   }
   await ctx360.close();
@@ -952,12 +982,25 @@ const server = http.createServer((req, res) => {
     ['an unknown subject', [gr('Q4512', 'fans', 'X', '1893-05-09', 'confirmed')], 1, /subject "fans" is not one of/],
     ['an unknown sourceId', [gr('Q4512', 'club', '', '1893-05-09', 'confirmed', 'ZZZ9')], 1, /sourceId "ZZZ9" is not in club-culture-sources\.csv/],
     ['an unknown clubQ', [gr('Q0', 'club', '', '1893-05-09', 'confirmed')], 1, /clubQ "Q0" is on no club file/],
-    ['a year only', [gr('Q4512', 'club', '', '1893', 'confirmed')], 1, /not a full YYYY-MM-DD date/],
-    ['a year-month', [gr('Q4512', 'club', '', '1893-05', 'confirmed')], 1, /not a full YYYY-MM-DD date/],
-    ['a day that does not exist', [gr('Q4512', 'club', '', '1893-02-30', 'confirmed')], 1, /not a full YYYY-MM-DD date that exists/],
-    ['29 February in a non-leap year', [gr('Q4512', 'club', '', '1900-02-29', 'confirmed')], 1, /not a full YYYY-MM-DD date that exists/],
+    ['a year only, a year and month and a full date pass', [gr('Q4512', 'club', '', '1893', 'confirmed'), gr('Q4512', 'supporters', 'Group A', '1997-05', 'unverified'),
+      gr('Q105853', 'club', '', '1894-11-17', 'confirmed'), gr('Q105853', 'supporters', 'Group B', `${new Date().getFullYear()}`, 'inferred')], 0, /club-founding\.csv: 4 accepted rows/],
+    ['the current year and month pass', [gr('Q4512', 'club', '', (d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`)(new Date()), 'confirmed')], 0, /1 accepted rows/],
+    ['YYYY-M', [gr('Q4512', 'club', '', '1893-5', 'confirmed')], 1, /is not YYYY, YYYY-MM or YYYY-MM-DD/],
+    ['YYYY-MM-D', [gr('Q4512', 'club', '', '1893-05-9', 'confirmed')], 1, /is not YYYY, YYYY-MM or YYYY-MM-DD/],
+    ['a space', [gr('Q4512', 'club', '', '1893 05', 'confirmed')], 1, /is not YYYY, YYYY-MM or YYYY-MM-DD/],
+    ['a trailing space is trimmed (the checker and the page both trim every cell), so it passes', [gr('Q4512', 'club', '', '1893 ', 'confirmed')], 0, /1 accepted rows/],
+    ['a space inside a full date', [gr('Q4512', 'club', '', '1893-05 -09', 'confirmed')], 1, /is not YYYY, YYYY-MM or YYYY-MM-DD/],
+    ['text', [gr('Q4512', 'club', '', 'circa 1893', 'confirmed')], 1, /is not YYYY, YYYY-MM or YYYY-MM-DD/],
+    ['a month 13', [gr('Q4512', 'club', '', '1893-13', 'confirmed')], 1, /has a month outside 01-12/],
+    ['a month 00 in a full date', [gr('Q4512', 'club', '', '1893-00-10', 'confirmed')], 1, /has a month outside 01-12/],
+    ['a day that does not exist', [gr('Q4512', 'club', '', '1893-02-30', 'confirmed')], 1, /is not a real calendar day/],
+    ['29 February in a non-leap year', [gr('Q4512', 'club', '', '1900-02-29', 'confirmed')], 1, /is not a real calendar day/],
     ['a date in the future', [gr('Q4512', 'club', '', '2999-01-01', 'confirmed')], 1, /is in the future/],
+    ['a day two days ahead', [gr('Q4512', 'club', '', new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10), 'confirmed')], 1, /is in the future/],
+    ['a year in the future', [gr('Q4512', 'club', '', `${new Date().getFullYear() + 1}`, 'confirmed')], 1, /is in the future/],
+    ['a month in the future', [gr('Q4512', 'club', '', (d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`)(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)), 'confirmed')], 1, /is in the future/],
     ['a date before 1800', [gr('Q4512', 'club', '', '1799-12-31', 'confirmed')], 1, /is before 1800/],
+    ['a year before 1800', [gr('Q4512', 'club', '', '1799', 'confirmed')], 1, /is before 1800/],
     ['a supporters row with no name', [gr('Q4512', 'supporters', '', '1999-01-01', 'confirmed')], 1, /needs the name of the group/],
     ['a club row with a name', [gr('Q4512', 'club', 'Named', '1893-05-09', 'confirmed')], 1, /a club row has no name/],
     ['a duplicate (clubQ, subject, name)', [okRow, okRow], 1, /is entered twice/],
