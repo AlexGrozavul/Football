@@ -141,10 +141,13 @@
    ],
    "tier": 2,
    "venue": "Kehrweg Stadion",
-   "capacity": 8000,
+   "capacity": 8363,
    "lat": 50.626389,
    "lon": 6.045833,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/Kehrwegstadion; https://nl.wikipedia.org/wiki/Kehrwegstadion; https://stadiumdb.com/stadiums/bel",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): capacity. Wikidata's 8000 is stated by no source read. 8363 is in the en.wikipedia ground article (cited) and the nl.wikipedia ground and club articles; StadiumDB's Belgium table says 8400.",
+   "manual": true,
    "competition": "Challenger Pro League"
   },
   {

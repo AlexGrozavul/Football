@@ -256,10 +256,13 @@
    ],
    "tier": 2,
    "venue": "stade Auguste-Delaune",
-   "capacity": 21684,
+   "capacity": 20519,
    "lat": 49.24716,
    "lon": 4.02478,
    "city": null,
+   "source": "https://stadiumdb.com/stadiums/fra; https://fr.wikipedia.org/wiki/Stade_de_Reims; https://en.wikipedia.org/wiki/Stade_Auguste-Delaune",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): capacity. Wikidata's 21684 is stated by no source read. 20519 is in StadiumDB's France table and the fr.wikipedia club article; the en.wikipedia ground article (cited) and the 2026-27 Ligue 2 article say 21029, which is 2.5 percent above 20519 - the two figures are not a dispute under the audit's 3 percent rule, but neither is exact.",
+   "manual": true,
    "competition": "Ligue 2"
   },
   {

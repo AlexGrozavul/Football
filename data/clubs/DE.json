@@ -278,10 +278,13 @@
    ],
    "tier": 4,
    "venue": "Waldstadion Homburg",
-   "capacity": 21813,
+   "capacity": 16488,
    "lat": 49.3161,
    "lon": 7.355,
    "city": null,
+   "source": "https://de.wikipedia.org/wiki/Waldstadion_Homburg; https://en.wikipedia.org/wiki/Waldstadion_Homburg; https://stadiumdb.com/stadiums/ger; https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_S%C3%BCdwest_2026/27",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): capacity. Wikidata's 21813 is stated by no source read. 16488 is in the de.wikipedia ground article (cited), the en.wikipedia ground and club articles (cited), the stadium table of de.wikipedia's Regionalliga Südwest 2026/27 article and StadiumDB's Germany table.",
+   "manual": true,
    "competition": "Regionalliga Suedwest"
   },
   {
@@ -476,10 +479,13 @@
    ],
    "tier": 4,
    "venue": "Ernst-Abbe-Sportfeld",
-   "capacity": 12990,
+   "capacity": 15432,
    "lat": 50.915833,
    "lon": 11.582778,
    "city": null,
+   "source": "https://de.wikipedia.org/wiki/Ernst-Abbe-Sportfeld; https://stadiumdb.com/stadiums/ger; https://en.wikipedia.org/wiki/Ernst-Abbe-Sportfeld",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): capacity. Wikidata's 12990 is stated by no source read. 15432 is in the de.wikipedia ground article and StadiumDB's Germany table (ad hoc Arena); other figures read are 15100 (de.wikipedia club article) and 15000 (en.wikipedia ground article, cited) - all within 3 percent of 15432.",
+   "manual": true,
    "competition": "Regionalliga Nordost"
   },
   {
@@ -1047,10 +1053,13 @@
    ],
    "tier": 4,
    "venue": "Parkstadion",
-   "capacity": 62008,
-   "lat": 51.559368,
-   "lon": 7.067835,
+   "capacity": null,
+   "lat": 53.352104,
+   "lon": 13.056247,
    "city": null,
+   "source": "https://www.openstreetmap.org/way/158277880; https://de.wikipedia.org/wiki/TSG_Neustrelitz; https://en.wikipedia.org/wiki/Parkstadion",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): position - capacity. Wikidata's P115 on this club is the Parkstadion in Gelsenkirchen: the fetched point is 452 km from Neustrelitz and 62008 is that ground's figure (en.wikipedia Parkstadion: 62004 for league matches). Position is OpenStreetMap's way 158277880 (Parkstadion - leisure=stadium - 28 m from the coordinates de.wikipedia gives for the Parkstadion Neustrelitz). Capacity cleared: the only figure read is an uncited 7000 in Wikipedia - not written. NOT DECIDED HERE: the club is not in the 2026-27 Regionalliga articles and is listed in de.wikipedia's Oberliga Nordost 2026/27 - the tier is Alexandru's call.",
+   "manual": true,
    "competition": "Regionalliga Nordost"
   },
   {
@@ -1723,10 +1732,13 @@
    ],
    "tier": 4,
    "venue": "Leimbachstadion",
-   "capacity": 19400,
+   "capacity": 18500,
    "lat": 50.852222,
    "lon": 8.026111,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/Leimbachstadion; https://de.wikipedia.org/wiki/Leimbachstadion; https://stadiumdb.com/stadiums/ger",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): capacity. Wikidata's 19400 is stated by no source read. 18500 is in the en.wikipedia ground article (cited), the de.wikipedia ground and club articles and StadiumDB's Germany table.",
+   "manual": true,
    "competition": "Regionalliga West"
   },
   {

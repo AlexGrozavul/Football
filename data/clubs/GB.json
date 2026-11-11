@@ -554,10 +554,13 @@
    ],
    "tier": 2,
    "venue": "Deepdale",
-   "capacity": 24500,
+   "capacity": 23404,
    "lat": 53.772222,
    "lon": -2.688056,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/Deepdale; https://stadiumdb.com/stadiums/eng; https://en.wikipedia.org/wiki/2026%E2%80%9327_EFL_Championship",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): capacity. Wikidata's 24500 is stated by no source read. 23404 is in the en.wikipedia ground article (cited) and StadiumDB's England table; the 2026-27 EFL Championship article's stadium table says 23408.",
+   "manual": true,
    "competition": "EFL Championship"
   },
   {

@@ -234,7 +234,7 @@
   },
   {
    "id": "Q130302376",
-   "name": "CSM Târgu Jiu (fotbal)",
+   "name": "CSM Târgu Jiu",
    "leagues": [
     "Q1707697"
    ],
@@ -244,6 +244,9 @@
    "lat": 45.043611,
    "lon": 23.27,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/CSM_T%C3%A2rgu_Jiu_%28football%29; https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_III",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): name. The fetched name 'CSM Târgu Jiu (fotbal)' carries the disambiguator of the ro.wikipedia article title. The en.wikipedia infobox and the 2026-27 Liga III article name the club CSM Târgu Jiu.",
+   "manual": true,
    "competition": "Liga a III-a"
   },
   {
@@ -935,11 +938,14 @@
     "Q1707697"
    ],
    "tier": 3,
-   "venue": "Stadionul Daniel Prodan",
-   "capacity": 18000,
-   "lat": 47.799611,
-   "lon": 22.891028,
+   "venue": "Stadionul Someșul",
+   "capacity": null,
+   "lat": 47.77575,
+   "lon": 22.869738,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/FC_Olimpia_Satu_Mare; https://ro.wikipedia.org/wiki/Olimpia_MCMXXI_Satu_Mare; https://www.openstreetmap.org/way/439006041",
+   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): ground - position - capacity. en.wikipedia: the club 'used to play its home matches on Daniel Prodan Stadium ... After its second re-foundation in 2018 ... started to play its home matches on Someșul Stadium'; both infoboxes name Someșul. Position is OpenStreetMap's way 439006041 (Stadionul Someșul, 3.1 km from the old point). Capacity cleared: 18000 is the Daniel Prodan figure; the only figure read for Someșul is an uncited 6000 in Wikipedia - not written. NOT DECIDED HERE: the club is not in the 2026-27 Liga III article and its en.wikipedia infobox says relegated to Liga IV - the tier is Alexandru's call.",
+   "manual": true,
    "competition": "Liga a III-a"
   },
   {
