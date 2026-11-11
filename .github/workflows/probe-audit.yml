@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "1"
+      RUN: "2"
     steps:
       - name: Probe
         env:
@@ -34,7 +34,7 @@ jobs:
           LAST, LOG, STOPPED, OUT = {}, [], {}, []
           NREQ = [0]
 
-          CFG = json.loads(r'''{"articles": [["en", "2026–27 Bundesliga"], ["en", "2026–27 2. Bundesliga"], ["en", "2026–27 3. Liga"], ["en", "2026–27 Regionalliga"], ["en", "2026–27 Liga I"], ["en", "2026–27 Liga II"], ["en", "2026–27 Liga III"], ["en", "2026–27 Super League Greece 2"], ["en", "2026–27 Liga IV"], ["de", "3. Fußball-Liga 2026/27"], ["de", "Fußball-Regionalliga Nord 2026/27"], ["de", "Fußball-Regionalliga Nordost 2026/27"], ["de", "Fußball-Regionalliga West 2026/27"], ["de", "Fußball-Regionalliga Südwest 2026/27"], ["de", "Fußball-Regionalliga Bayern 2026/27"]], "searches": [["de", "intitle:\"2026/27\" intitle:Oberliga", "Oberliga", "Frauen|Junior|Futsal|Jugend|Pokal|Handball|Eishockey|Hockey|Basketball|Volleyball|Tischtennis"], ["de", "intitle:\"2026/27\" intitle:Fußball", "Oberliga|Bayernliga|Hessenliga|Bremen-Liga|Mittelrheinliga|Schleswig-Holstein|Regionalliga|3\\. Fußball-Liga|Verbandsliga|Landesliga|Westfalenliga", "Frauen|Junior|Futsal|Jugend|Pokal|Österreich|Schweiz"], ["ro", "intitle:\"2026-2027\" intitle:Liga", "Liga", "feminin|futsal|handbal|baschet|volei|hochei|Cupa|Campionilor|Europa|Conferenc|Națiunilor|rugby|polo"], ["ro", "intitle:\"2026–2027\" intitle:Liga", "Liga", "feminin|futsal|handbal|baschet|volei|hochei|Cupa|Campionilor|Europa|Conferenc|Națiunilor|rugby|polo"]], "searchcap": 34, "targets": {"Q162213": "DE", "Q162366": "DE", "Q162394": "DE", "Q666155": "DE", "Q479276": "DE", "Q468738": "DE", "Q14118284": "DE", "Q325270": "DE", "Q831602": "DE", "Q694464": "DE", "Q479371": "DE", "Q55364716": "DE", "Q1576328": "DE", "Q20631356": "DE", "Q524378": "DE", "Q885184": "DE", "Q30090061": "DE", "Q1425370": "DE", "Q885187": "DE", "Q526949": "DE", "Q1507157": "DE", "Q2802618": "DE", "Q529579": "DE", "Q445897": "DE", "Q7924284": "DE", "Q666179": "DE", "Q823142": "DE", "Q797022": "DE", "Q176850": "DE", "Q16536906": "DE", "Q692704": "DE", "Q16559523": "DE", "Q666000": "DE", "Q5424977": "DE", "Q831887": "DE", "Q1387417": "DE", "Q13426883": "DE", "Q566165": "DE", "Q1514109": "DE", "Q639472": "DE", "Q20994272": "DE", "Q566172": "DE", "Q666024": "DE", "Q566141": "DE", "Q2208389": "DE", "Q324983": "DE", "Q175616": "DE", "Q176168": "DE", "Q479340": "DE", "Q155452": "DE", "Q700029": "DE", "Q479366": "DE", "Q639419": "DE", "Q16645947": "DE", "Q639506": "DE", "Q819419": "DE", "Q170157": "DE", "Q136089": "DE", "Q12872753": "GR", "Q136297458": "RO", "Q133971899": "RO", "Q39055984": "RO", "Q131452573": "RO", "Q4684936": "RO", "Q136806593": "RO", "Q65090070": "RO", "Q2977075": "RO", "Q3623598": "RO", "Q533005": "RO", "Q2080673": "RO", "Q3063150": "RO", "Q138775785": "RO", "Q55625920": "RO", "Q55621169": "RO", "Q141888787": "RO", "Q130224833": "RO", "Q55583785": "RO", "Q55585905": "RO", "Q106824323": "RO", "Q48844820": "RO", "Q18541813": "RO", "Q113577645": "RO", "Q39058249": "RO", "Q56676453": "RO", "Q3749047": "RO", "Q3681572": "RO", "Q5014472": "RO", "Q55620895": "RO", "Q18539446": "RO", "Q61896223": "RO", "Q120972966": "RO", "Q39058326": "RO", "Q3441620": "RO", "Q5425186": "RO", "Q66424148": "RO", "Q66424089": "RO", "Q66423321": "RO", "Q55619018": "RO", "Q12723227": "RO", "Q5424763": "RO", "Q2932010": "RO", "Q15920568": "RO", "Q639046": "RO", "Q4683227": "RO", "Q584629": "RO", "Q629277": "RO", "Q107724768": "RO", "Q5425107": "RO"}, "grabs": [["en", "Volksparkstadion", "capacity|57,000|51,500|league match|international"], ["de", "Volksparkstadion", "Kapazität|57\\.000|51\\.500|Plätze|international"], ["en", "Hamburger SV", "57,000|51,500|Volksparkstadion"]], "nominatim": []}''')
+          CFG = json.loads(r'''{"articles": [["de", "Fußball-Regionalliga Südwest 2026/27"], ["de", "Fußball-Regionalliga Nord 2026/27"], ["de", "Fußball-Regionalliga Nordost 2026/27"]], "searches": [], "targets": {"Q112633360": "DE", "Q1585026": "DE", "Q2124601": "DE", "Q2521440": "DE", "Q51974": "DE"}, "grabs": [["en", "RB Leipzig II", "dissolved|withdr|disband|2017|defunct"], ["en", "Eintracht Frankfurt II", "dissolved|withdr|re-?establish|reform|reintroduc|2022|2014"], ["en", "VfL Bochum II", "dissolved|withdr|re-?establish|reform|reintroduc|2015|2024|2025"], ["de", "RSV Eintracht 1949", "Stadion|Sportplatz|Spielstätte|Heimspiel"], ["en", "FC Daco-Getica București", "Colentina|Juventus|stadium|ground"]], "coords": [["de", ["Buniamshof", "Dreisamstadion", "Edmund-Plambeck-Stadion", "Erzgebirgsstadion", "Hans-Walter-Wild-Stadion", "Heidewaldstadion", "Karl-Liebknecht-Stadion", "Kleiner Arena", "Lohrheidestadion", "Mondpalast-Arena", "Preussenstadion", "Rhein-Neckar-Stadion", "Rosenaustadion", "Sachs-Stadion", "Stadion am Hünting", "Stadion am Panzenberg", "Städtisches Stadion an der Düsternortstraße", "Volksstadion Greifswald"]]], "nominatim": [["Q162366", "Buniamshof, Lübeck"], ["Q1425370", "Kehdinger Stadion, Drochtersen"], ["Q112633360", "Elm-Stadion, Schöningen"], ["Q30090061", "Stadion an der Düsternortstraße, Delmenhorst"], ["Q1576328", "HSC-Stadion Constantinstraße, Hannover"], ["Q468738", "Sportpark Hinschenfelde, Hamburg"], ["Q1585026", "Joda Sportpark, Todesfelde"], ["Q479276", "Stadion am Panzenberg, Bremen"], ["Q831602", "Edmund-Plambeck-Stadion, Norderstedt"], ["Q445897", "Spree-Arena, Fürstenwalde"], ["Q141882", "eins-Erzgebirgsstadion, Aue"], ["Q55364716", "Volksstadion Greifswald, Greifswald"], ["Q571553", "Karl-Liebknecht-Stadion, Potsdam"], ["Q666155", "Preussenstadion, Berlin"], ["Q479371", "Werner-Seelenbinder-Stadion, Luckenwalde"], ["Q694464", "Heidewaldstadion, Gütersloh"], ["Q823142", "Westfalia-Sportpark, Hamm-Rhynern"], ["Q162213", "Stadion am Hünting, Bocholt"], ["Q2521440", "Sportanlage Bandsbusch, Hilden"], ["Q7924284", "Mondpalast-Arena, Herne"], ["Q524378", "Lohrheidestadion, Bochum-Wattenscheid"], ["Q666179", "Rhein-Neckar-Stadion, Mannheim"], ["Q885184", "Kleiner Arena, Remchingen"], ["Q20631356", "Dreisamstadion, Freiburg"], ["Q14118284", "maxworx Sportpark, Dreieich"], ["Q325270", "Dietmar-Hopp-Sportpark, Walldorf"], ["Q526949", "Hans-Walter-Wild-Stadion, Bayreuth"], ["Q529579", "Rosenaustadion, Augsburg"], ["Q162394", "Sachs-Stadion, Schweinfurt"], ["Q885187", "Xaver-Bertsch-Sportpark, Ansbach"], ["Q1507157", "NGN-Arena, Aubstadt"], ["Q2802618", "Sportzentrum Landsberg, Landsberg"]]}''')
 
 
           def emit(obj):
@@ -173,7 +173,7 @@ jobs:
                   ntab += 1
                   out = []
                   for r in rows[1:]:
-                      cells = [clean("".join(c["t"]), 28) for c in r[:4]]
+                      cells = [clean("".join(c["t"]), 70) for c in r[:4]]
                       links = [(c["l"][0] if c["l"] else "") for c in r[:3]]
                       for l in links[:2]:
                           if l and not l.startswith("!red:"):
@@ -380,6 +380,15 @@ jobs:
                       emit(rec)
               for lang, title, rx in CFG.get("grabs", []):
                   emit({"k": "G", "rx": rx, "page": club_page(lang, title, rx)})
+              for lang, titles in CFG.get("coords", []):
+                  d, err = api(lang, action="query", prop="coordinates", titles="|".join(titles[:50]), redirects="1", colimit="max")
+                  if err:
+                      emit({"k": "K", "lang": lang, "err": err})
+                  else:
+                      q = d.get("query", {})
+                      back = {x["to"]: x["from"] for x in q.get("redirects", [])}
+                      back.update({x["to"]: back.get(x["from"], x["from"]) for x in q.get("normalized", [])})
+                      emit({"k": "K", "lang": lang, "m": {back.get(pg["title"], pg["title"]): [[round(c["lat"], 6), round(c["lon"], 6)] for c in pg.get("coordinates", [])][:1] for pg in q.get("pages", [])}})
               for key, q in CFG.get("nominatim", []):
                   if "nominatim.openstreetmap.org" in STOPPED:
                       emit({"k": "N", "key": key, "q": q, "err": "host stopped"})
