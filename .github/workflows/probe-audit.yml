@@ -514,22 +514,15 @@ jobs:
                       summary[c["id"]]["overpass"] = {"error": err, "near": near[:8]}
 
               chunk = []
+              fence = "`" * 3
               for cid, js in summary.items():
                   line = "AUDITJSON " + json.dumps(js, ensure_ascii=False)
                   if chunk and sum(len(x) + 1 for x in chunk) + len(line) > 56000:
-                      post(f"### AUDIT r{RUN} json
-          ```
-          " + "
-          ".join(chunk) + "
-          ```")
+                      post(f"### AUDIT r{RUN} json\n" + fence + "\n" + "\n".join(chunk) + "\n" + fence)
                       chunk = []
                   chunk.append(line)
               if chunk:
-                  post(f"### AUDIT r{RUN} json
-          ```
-          " + "
-          ".join(chunk) + "
-          ```")
+                  post(f"### AUDIT r{RUN} json\n" + fence + "\n" + "\n".join(chunk) + "\n" + fence)
               post(f"### AUDIT r{RUN} end\nrequests: {len(LOG)}, stopped hosts: {json.dumps(STOPPED)}\n```\n"
                    + "\n".join(l for l in LOG if not l.startswith('200'))[:8000] + "\n```")
 
