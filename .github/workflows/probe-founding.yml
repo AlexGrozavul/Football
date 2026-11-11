@@ -12,20 +12,15 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "3"
+      RUN: "4"
       URLS: |
-        https://gruendungsort-werder.info/ terms
-        https://www.kicker.de/werder-bremen/info
-        https://www.spurensuche-bremen.de/werder-und-das-weserstadion/
-        https://datencenter.dfb.de/competitions/dfb-pokal/seasons/2025-26/teams/fc-st-pauli/
-        https://www.fcenergie.de/der-verein.html
-        https://www.fcenergie.de/offizielle-fanclubs.html
-        https://www.fc-union-berlin.de/de/gemeinschaft/hymne/
-        https://www.fc-union-berlin.de/de/fans/unsere-fanclubs-ccua?tab=18-92
-        https://www.hsv-ev.de/verein/geschichte/
-        https://www.holstein-kiel.de/verein/das-erste-spiel-das-erste-tor-der-erste-sieg/
-        https://www.fch.de/files/pdf/Mitgliederwesen/Satzung%20FC%20Hansa%20Rostock%20e.V.%20Stand%202026%20A4.pdf pdf
-        https://www.fch.de/fanblock/fanbetreuung.html
+        https://www.fc-union-berlin.de/de/verein/der-erste-fc-union-berlin-qp31?tab=24-86#tab-24-86
+        https://www.fc-union-berlin.de/de/fans/fan-und-mitgliederabteilung/fakten-fuma-bnnZ
+        https://web.archive.org/web/20170320053500/http://www.hsv-ev.de/fileadmin/redaktion/03_PDF/03_Verordnungen/Satzung_Hamburger_SV_eV_Stand_080714.pdf pdf
+        https://www.hsv.de/uebersicht
+        https://www.holstein-kiel.de/verein/die-ksv/ueber-uns/
+        https://www.holstein-kiel.de/verein/die-ksv/traditionsclub/
+        https://datencenter.dfb.de/clubs/fc-st-pauli-von-1910-e-v?datacenter_name=datencenter
     steps:
       - uses: actions/setup-node@v5
         with:
