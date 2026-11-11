@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
-      RUN: "1"
+      RUN: "2"
     steps:
       - uses: actions/checkout@v5
       - name: Probe
@@ -37,7 +37,9 @@ jobs:
                    "ES": "es", "NL": "nl", "BE": "nl", "PT": "pt"}
 
           IDS = ["Q151747", "Q15849956", "Q15972883", "Q16743331", "Q2207914", "Q2521441", "Q3736767", "Q4107588", "Q566165", "Q720528", "Q137499", "Q142005", "Q155186", "Q155452", "Q16525407", "Q16536906", "Q16559523", "Q170117", "Q265570", "Q566141", "Q609926", "Q647893", "Q819419", "Q113331350", "Q130199486", "Q107724768", "Q130302376", "Q1575208", "Q5425107", "Q629277", "Q699746", "Q694484", "Q113000", "Q1423718", "Q206692", "Q162251", "Q51974", "Q460448", "Q223620", "Q5773365", "Q208228", "Q48911", "Q19571", "Q18739", "Q19612", "Q15309584", "Q1547133", "Q2052", "Q297430", "Q631", "Q219233", "Q24711", "Q876568", "Q744353", "Q211401", "Q56677281", "Q205998", "Q753462", "Q31181880", "Q1137993", "Q176168", "Q204237", "Q18656", "Q8723", "Q1378922", "Q831892"]
-          EXTRA = []
+          EXTRA = {"nominatim": [["Q176168", "Parkstadion, Neustrelitz"], ["Q204237", "Stadionul Arcul de Triumf, București"], ["Q204237", "Arena Națională, București"], ["Q16525407", "Sportpark Rote Teufel, Kaiserslautern"], ["Q16536906", "Ulrich-Haberland-Stadion, Leverkusen"], ["Q16559523", "Rheingoldarena, Braunschweig"], ["Q629277", "Stadionul Someșul, Satu Mare"], ["Q629277", "Stadionul Olimpia, Satu Mare"], ["Q566141", "IMS Arena, Velbert"], ["Q1378922", "Waldeck-Stadion, Eutin"], ["Q1378922", "Fritz-Latendorf-Stadion, Eutin"], ["Q831892", "Lupo Stadion, Wolfsburg"], ["Q15309584", "Markopoulo stadium"], ["Q15309584", "Δημοτικό Γήπεδο Μαρκοπούλου"], ["Q1547133", "Grigoris Lambrakis stadium, Kallithea"], ["Q107724768", "Stadionul Tineretului, Brașov"], ["Q113331350", "Stadionul Gaz Metan, Mediaș"], ["Q130199486", "Stadionul Tineretului, Curtișoara"], ["Q5425107", "Stadionul Știința, Timișoara"], ["Q1575208", "Stadionul Minerul, Lupeni"]],
+           "points": [["wiki:Parkstadion Neustrelitz (de club article)", 53.35185, 13.05629], ["wiki:Arena Națională (ro)", 44.43694, 26.1525], ["wiki:Arcul de Triumf Stadium (en)", 44.46889, 26.07492], ["wiki:Stadionul Someșul (en)", 47.77556, 22.87019], ["wiki:Grigoris Lamprakis Stadium (en)", 37.9601, 23.7151]]}
+
 
 
           def get(url, gap=1.1, data=None, timeout=45):
@@ -59,9 +61,9 @@ jobs:
                   except urllib.error.HTTPError as e:
                       LAST[host] = time.time()
                       LOG.append(f"{e.code} " + url[:170])
-                      if api and attempt == 1 and e.code in (429, 502, 504):
+                      if api and attempt == 1 and e.code in (429, 502, 503, 504):
                           ra = e.headers.get("Retry-After") or ""
-                          time.sleep(min(int(ra), 60) if ra.isdigit() else 25)
+                          time.sleep(min(int(ra), 60) if ra.isdigit() else 40)
                           continue
                       if e.code in (403, 429, 503):
                           STOPPED[host] = f"HTTP {e.code}"
@@ -320,218 +322,129 @@ jobs:
               return rows_out
 
 
+          def all_tables(page_html):
+              out = []
+              for m in re.finditer(r"<table[^>]*class=\"[^\"]*wikitable[^\"]*\"[^>]*>(.*?)</table>", page_html, re.S):
+                  heads = re.findall(r"<h[2-4][^>]*>(.*?)</h[2-4]>", page_html[:m.start()], re.S)
+                  head = re.sub(r"<[^>]+>", "", heads[-1]).strip() if heads else ""
+                  rows = re.findall(r"<tr[^>]*>(.*?)</tr>", m.group(1), re.S)
+                  if len(rows) < 3:
+                      continue
+                  out.append(f"## table under '{html.unescape(head)}' ({len(rows)} rows)")
+                  for tr in rows:
+                      cells = [re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", re.sub(r"<sup.*?</sup>", "", c, flags=re.S)))).strip()
+                               for c in re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", tr, re.S)]
+                      links = [urllib.parse.unquote(l).replace("_", " ") for l in re.findall(r'href="(?:\./|/wiki/)([^"#?]+)"', tr)
+                               if not re.match(r"(File|Datei|Fi%C8%99ier|Fișier|Special|Category|Spezial):", l)][:3]
+                      out.append((" | ".join(cells[:4]))[:150] + "  => " + "; ".join(links))
+              return out
+
+
+          def roster(lang, title, label):
+              q = urllib.parse.urlencode({"action": "parse", "page": title, "prop": "text|links",
+                                          "redirects": "1", "format": "json", "formatversion": "2"})
+              data, err = get_json(f"https://{lang}.wikipedia.org/w/api.php?" + q)
+              if err or "error" in (data or {}):
+                  post(f"### AUDIT r{RUN} season {lang}: {title} - NOT READ: {err or data['error'].get('code')}")
+                  return []
+              body = "\n".join(all_tables(data["parse"]["text"]))
+              for part in range(0, max(1, len(body)), 58000):
+                  post(f"### AUDIT r{RUN} season {lang}: {title} ({label}) part {part // 58000 + 1}\n"
+                       f"https://{lang}.wikipedia.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}\n```\n" + body[part:part + 58000] + "\n```")
+              return [l.get("title") for l in data["parse"].get("links", []) if l.get("exists", True)]
+
+
           def main():
               clubs = load_clubs()
-              missing = [i for i in IDS if i not in clubs]
-              post(f"### AUDIT r{RUN} start\n{len(clubs)} clubs loaded from data/clubs, missing: {missing}. "
-                   f"User-Agent `{UA}`, at most one request per second per host.")
+              post(f"### AUDIT r{RUN} start\n{len(clubs)} clubs. Rosters of the Regionalliga and Liga III, Nominatim and Overpass again (slower).")
+              # 1 rosters
+              roster("en", "2026–27 Regionalliga", "DE tier 4")
+              roster("en", "2026–27 Liga III", "RO tier 3")
+              links = roster("de", "Fußball-Regionalliga 2026/27", "DE tier 4")
+              div = [t for t in links if re.match(r"^Fußball-Regionalliga (Nord|Nordost|West|Südwest|Bayern) 2026/27$", t or "")]
+              post(f"### AUDIT r{RUN} links de: Fußball-Regionalliga 2026/27\n" + "\n".join("- " + t for t in links if t and "2026" in t))
+              for t in div:
+                  roster("de", t, "DE tier 4 division")
+              q = urllib.parse.urlencode({"action": "query", "list": "search", "srsearch": "Liga a III-a 2026-2027",
+                                          "srlimit": "6", "format": "json"})
+              data, err = get_json("https://ro.wikipedia.org/w/api.php?" + q)
+              found = [r["title"] for r in (data or {}).get("query", {}).get("search", [])] if not err else []
+              post(f"### AUDIT r{RUN} search ro: 'Liga a III-a 2026-2027'\n{err or ''}\n" + "\n".join("- " + t for t in found))
+              for t in found:
+                  if re.search(r"Liga a III-a 2026", t):
+                      roster("ro", t, "RO tier 3")
+                      break
 
-              # 1 Wikidata: the item the map was built from (identity and what it holds; it judges nothing)
-              ents = wikidata(clubs, "labels|claims|sitelinks", "en|de|ro|fr|es|it|nl|pt")
-              venue_ids = set()
-              for cid in clubs:
-                  for c in claims(ents.get(cid), "P115"):
-                      if isinstance(c["v"], dict) and c["v"].get("id"):
-                          venue_ids.add(c["v"]["id"])
-              vents = wikidata(venue_ids, "labels|claims|sitelinks", "en|de|ro|fr|es|it|nl|pt") if venue_ids else {}
-
-              summary = {}
-              stopped_wiki = False
-              for cid, club in clubs.items():
-                  e = ents.get(cid) or {}
-                  sl = {k: v.get("title") for k, v in e.get("sitelinks", {}).items()}
-                  wd = {"label": label(e), "venues": [], "leagues": [], "error": ents.get("_error"),
-                        "sitelinks": {k: sl[k] for k in sl if k in ("enwiki", "dewiki", "rowiki", "frwiki", "itwiki", "eswiki", "nlwiki", "ptwiki")}}
-                  for c in claims(e, "P115"):
-                      vid = c["v"].get("id") if isinstance(c["v"], dict) else None
-                      ve = vents.get(vid) or {}
-                      caps = [{"n": x["v"].get("amount"), "rank": x["rank"], "asof": x["asof"]} for x in claims(ve, "P1083") if isinstance(x["v"], dict)]
-                      co = [x["v"] for x in claims(ve, "P625") if isinstance(x["v"], dict)]
-                      wd["venues"].append({"id": vid, "label": label(ve), "rank": c["rank"], "start": c["start"], "end": c["end"],
-                                           "caps": caps, "coord": [co[0].get("latitude"), co[0].get("longitude")] if co else None})
-                  for c in claims(e, "P118"):
-                      wd["leagues"].append({"id": c["v"].get("id") if isinstance(c["v"], dict) else c["snak"],
-                                            "rank": c["rank"], "start": c["start"], "end": c["end"]})
-                  arts = []
-                  langs = ["en"] + ([LOCAL[club["cc"]]] if LOCAL.get(club["cc"]) and LOCAL[club["cc"]] != "en" else [])
-                  for lang in langs:
-                      title = sl.get(lang + "wiki")
-                      if not title:
-                          arts.append(({"lang": lang, "asked": "(no sitelink on the Wikidata item)", "error": "no article"}, False))
-                          continue
-                      a = wiki(lang, title)
-                      arts.append((a, False))
-                      if a.get("error"):
-                          continue
-                      ground_links = []
-                      for k, v in pick(params_of(a["wt"])).items():
-                          if K_GROUND.search(k) and not K_CAP.search(k):
-                              ground_links += links_in(v)
-                      for g in ground_links[:1]:
-                          arts.append((wiki(lang, g), True))
-                  js = {"id": cid, "map": club, "wd": wd,
-                        "club": [article_json(a, False) for a, st in arts if not st],
-                        "stadium": [article_json(a, True) for a, st in arts if st]}
-                  summary[cid] = js
-                  md = [f"### AUDIT r{RUN} club {cid} {club['name']} ({club['cc']}, tier {club['tier']})",
-                        f"Map: venue `{club['venue']}`, capacity `{club['capacity']}`, `{club['lat']}, {club['lon']}`, hand-corrected: {bool(club.get('manual'))}",
-                        "", "Wikidata item (what the map was built from; not a judge): https://www.wikidata.org/wiki/" + cid,
-                        "```json", json.dumps(wd, ensure_ascii=False), "```"]
-                  for a, st in arts:
-                      md.append(article_md(a, st))
-                  text = "\n".join(md)
-                  post(text[:62000])
-
-              # 2 season articles named in data/league-rosters.csv
-              import csv
-              wanted = {(c["cc"], str(c["tier"])) for c in clubs.values()}
-              seen = set()
-              for row in csv.DictReader(open("data/league-rosters.csv", encoding="utf-8")):
-                  if (row["country"], row["tier"]) not in wanted or row["article"] in seen:
-                      continue
-                  seen.add(row["article"])
-                  todo = [("en", row["article"])]
-                  q = urllib.parse.urlencode({"action": "parse", "page": row["article"], "prop": "text|langlinks",
-                                              "redirects": "1", "format": "json", "formatversion": "2"})
-                  data, err = get_json("https://en.wikipedia.org/w/api.php?" + q)
-                  if err or "error" in (data or {}):
-                      post(f"### AUDIT r{RUN} season en: {row['article']} - NOT READ: {err or data['error'].get('code')}")
-                      continue
-                  rows = season_tables(data["parse"]["text"])
-                  ll = {l["lang"]: l["title"] for l in data["parse"].get("langlinks", [])}
-                  body = "\n".join(rows)
-                  for part in range(0, max(1, len(body)), 58000):
-                      post(f"### AUDIT r{RUN} season en: {row['article']} ({row['country']} tier {row['tier']}) part {part // 58000 + 1}\n"
-                           f"https://en.wikipedia.org/wiki/{urllib.parse.quote(row['article'].replace(' ', '_'))}\nlanglinks: "
-                           + json.dumps({k: ll[k] for k in ll if k in ('de', 'ro', 'fr', 'it', 'es', 'nl', 'pt')}, ensure_ascii=False)
-                           + "\n```\n" + body[part:part + 58000] + "\n```")
-                  loc = LOCAL.get(row["country"])
-                  if loc and ll.get(loc):
-                      q = urllib.parse.urlencode({"action": "parse", "page": ll[loc], "prop": "text",
-                                                  "redirects": "1", "format": "json", "formatversion": "2"})
-                      data, err = get_json(f"https://{loc}.wikipedia.org/w/api.php?" + q)
-                      if err or "error" in (data or {}):
-                          post(f"### AUDIT r{RUN} season {loc}: {ll[loc]} - NOT READ: {err or data['error'].get('code')}")
-                      else:
-                          body = "\n".join(season_tables(data["parse"]["text"]))
-                          for part in range(0, max(1, len(body)), 58000):
-                              post(f"### AUDIT r{RUN} season {loc}: {ll[loc]} ({row['country']} tier {row['tier']}) part {part // 58000 + 1}\n"
-                                   f"https://{loc}.wikipedia.org/wiki/{urllib.parse.quote(ll[loc].replace(' ', '_'))}\n```\n" + body[part:part + 58000] + "\n```")
-
-              # 3 StadiumDB country tables (robots.txt first)
-              sys.path.insert(0, "tools")
-              sdb_note = ""
-              try:
-                  import crosscheck_stadiumdb as sdb
-                  robots, err = get("https://stadiumdb.com/robots.txt")
-                  sdb_note = f"robots.txt: {err or repr(robots[:600])}"
-                  bad = err or re.search(r"claude|anthropic|GPTBot|FootballPlannerBot", robots, re.I) or re.search(r"(?mi)^\s*Disallow:\s*/(stadiums)?\s*$", robots)
-                  if bad:
-                      sdb_note += "\nSTOP: StadiumDB not read."
-                  else:
-                      for cc in sorted({c["cc"] for c in clubs.values()}):
-                          slug = sdb.COUNTRY_PAGES.get(cc, (None,))[0]
-                          if not slug:
-                              sdb_note += f"\n{cc}: no country page in COUNTRY_PAGES"
-                              continue
-                          url = f"https://stadiumdb.com/stadiums/{slug}"
-                          body, err = get(url)
-                          if err:
-                              sdb_note += f"\n{cc}: {url} {err}"
-                              continue
-                          grounds = sdb.parse_country_table(body)
-                          sdb_note += f"\n{cc}: {url} {len(grounds)} grounds"
-                          generic = set("fc sc sv fk cf cs acs csm afc club de la del fotbal football stadion stadium stadionul stade stadio estadio arena sportpark ii united city real club sporting athletic".split())
-                          for c in clubs.values():
-                              if c["cc"] != cc:
-                                  continue
-                              cw = {w for w in sdb.words(c["name"]) if len(w) >= 4 and w not in generic}
-                              vw = {w for w in sdb.words(c["venue"] or "") if len(w) >= 4 and w not in generic}
-                              hits = []
-                              for g in grounds:
-                                  s = len(cw & set(sdb.words(g["clubsRaw"]))) * 2 + len(vw & set(sdb.words(g["name"]))) * 2 + len(cw & set(sdb.words(g["city"])))
-                                  if s:
-                                      hits.append((s, g))
-                              hits.sort(key=lambda h: -h[0])
-                              summary[c["id"]]["sdb"] = [{"score": s, "name": g["name"], "city": g["city"], "clubs": g["clubsRaw"][:120],
-                                                          "capacity": g["capacity"], "url": g["url"]} for s, g in hits[:5]]
-                              summary[c["id"]]["sdbPage"] = url
-              except Exception as e:
-                  sdb_note += f"\nStadiumDB step failed: {type(e).__name__}: {e}"
-              post(f"### AUDIT r{RUN} stadiumdb\n```\n{sdb_note}\n```")
-
-              # 4 Nominatim: where OpenStreetMap has a ground of that name
-              def nominatim(q, cc, club):
+              out = {cid: {"id": cid, "nominatim": [], "overpass": None} for cid in clubs}
+              # 2 Nominatim
+              def nominatim(q, cc, lat, lon):
                   url = "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode(
                       {"q": q, "format": "jsonv2", "limit": "6", "countrycodes": cc.lower(), "extratags": "1"})
-                  data, err = get_json(url, gap=1.3)
+                  data, err = get_json(url, gap=2.6)
                   if err:
                       return {"q": q, "url": url, "error": err}
                   res = [{"name": r.get("name"), "display": (r.get("display_name") or "")[:110], "cat": f"{r.get('category')}={r.get('type')}",
                           "lat": r.get("lat"), "lon": r.get("lon"), "osm": f"{r.get('osm_type')}/{r.get('osm_id')}",
                           "capacity": (r.get("extratags") or {}).get("capacity"),
-                          "m": dist(club["lat"], club["lon"], r.get("lat"), r.get("lon"))} for r in data]
+                          "m": dist(lat, lon, r.get("lat"), r.get("lon"))} for r in data]
                   res.sort(key=lambda r: r["m"] if r["m"] is not None else 9e9)
                   return {"q": q, "url": url, "results": res[:4]}
 
-              for cid, club in clubs.items():
-                  qs = []
-                  if club.get("venue"):
-                      qs.append(club["venue"])
-                  for a in summary[cid]["stadium"]:
-                      t = a.get("title")
-                      if t:
-                          t = re.sub(r"\s*\(([^)]*)\)", r" \1", t)
-                          if sdb_fold(t) not in [sdb_fold(x) for x in qs]:
-                              qs.append(t)
-                  summary[cid]["nominatim"] = [nominatim(q, club["cc"], club) for q in qs[:3]]
+              order = [i for i in IDS if i in clubs]
+              for cid in order[9:]:
+                  c = clubs[cid]
+                  if c.get("venue"):
+                      out[cid]["nominatim"].append(nominatim(c["venue"], c["cc"], c["lat"], c["lon"]))
+              for cid, q in EXTRA["nominatim"]:
+                  c = clubs[cid]
+                  out[cid]["nominatim"].append(nominatim(q, c["cc"], c["lat"], c["lon"]))
 
-              # 5 Overpass: named pitches and stadiums within 500 m of the map's point
-              items = list(clubs.values())
-              for i in range(0, len(items), 22):
-                  batch = items[i:i + 22]
-                  ql = "[out:json][timeout:90];(" + "".join(
-                      f'nwr(around:500,{c["lat"]},{c["lon"]})["leisure"~"^(stadium|pitch|sports_centre)$"]["name"];'
-                      for c in batch if c.get("lat") is not None) + ");out tags center 600;"
-                  body, err = get("https://overpass-api.de/api/interpreter", gap=5,
+              # 3 Overpass, small batches
+              points = [(cid, clubs[cid]["lat"], clubs[cid]["lon"]) for cid in order[22:] if clubs[cid].get("lat") is not None]
+              points += [(k, la, lo) for k, la, lo in EXTRA["points"]]
+              extra_out = {}
+              for i in range(0, len(points), 10):
+                  batch = points[i:i + 10]
+                  ql = "[out:json][timeout:60];(" + "".join(
+                      f'nwr(around:500,{la},{lo})["leisure"~"^(stadium|pitch|sports_centre)$"]["name"];' for _, la, lo in batch) + ");out tags center 400;"
+                  body, err = get("https://overpass-api.de/api/interpreter", gap=12,
                                   data=urllib.parse.urlencode({"data": ql}).encode(), timeout=120)
                   try:
                       els = json.loads(body)["elements"] if not err else []
                   except Exception as e:
                       els, err = [], "not JSON: " + str(e)[:60]
-                  for c in batch:
+                  for key, la0, lo0 in batch:
                       near = []
                       for el in els:
                           la = el.get("lat") or (el.get("center") or {}).get("lat")
                           lo = el.get("lon") or (el.get("center") or {}).get("lon")
-                          m = dist(c["lat"], c["lon"], la, lo)
+                          m = dist(la0, lo0, la, lo)
                           if m is not None and m <= 600:
                               t = el.get("tags", {})
                               near.append({"name": t.get("name"), "leisure": t.get("leisure"), "sport": t.get("sport"),
-                                           "capacity": t.get("capacity"), "osm": f"{el.get('type')}/{el.get('id')}", "m": m,
-                                           "lat": la, "lon": lo})
+                                           "capacity": t.get("capacity"), "osm": f"{el.get('type')}/{el.get('id')}", "m": m, "lat": la, "lon": lo})
                       near.sort(key=lambda n: n["m"])
-                      summary[c["id"]]["overpass"] = {"error": err, "near": near[:8]}
-
+                      res = {"error": err, "near": near[:8], "point": [la0, lo0]}
+                      if key in out:
+                          out[key]["overpass"] = res
+                      else:
+                          extra_out[key] = res
               chunk = []
               fence = "`" * 3
-              for cid, js in summary.items():
-                  line = "AUDITJSON " + json.dumps(js, ensure_ascii=False)
+              lines = ["AUDITJSON2 " + json.dumps(v, ensure_ascii=False) for v in out.values()] + ["AUDITX " + json.dumps({"key": k, **v}, ensure_ascii=False) for k, v in extra_out.items()]
+              for line in lines:
                   if chunk and sum(len(x) + 1 for x in chunk) + len(line) > 56000:
                       post(f"### AUDIT r{RUN} json\n" + fence + "\n" + "\n".join(chunk) + "\n" + fence)
                       chunk = []
                   chunk.append(line)
               if chunk:
                   post(f"### AUDIT r{RUN} json\n" + fence + "\n" + "\n".join(chunk) + "\n" + fence)
-              post(f"### AUDIT r{RUN} end\nrequests: {len(LOG)}, stopped hosts: {json.dumps(STOPPED)}\n```\n"
-                   + "\n".join(l for l in LOG if not l.startswith('200'))[:8000] + "\n```")
+              post(f"### AUDIT r{RUN} end\nrequests: {len(LOG)}, stopped hosts: {json.dumps(STOPPED)}\n" + fence + "\n"
+                   + "\n".join(l for l in LOG if not l.startswith('200'))[:8000] + "\n" + fence)
 
 
           def sdb_fold(t):
-              import unicodedata
-              t = unicodedata.normalize("NFKD", t or "")
-              t = "".join(c for c in t if not unicodedata.combining(c)).lower()
-              return re.sub(r"[^a-z0-9]+", " ", t).strip()
+              return t
 
 
           if __name__ == "__main__":
