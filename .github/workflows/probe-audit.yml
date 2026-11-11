@@ -1,0 +1,546 @@
+name: probe-audit
+# Temporary probe for the club audit, phase 1a (PR 210); removed before the merge.
+on:
+  pull_request:
+    paths: ['.github/workflows/probe-audit.yml']
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      RUN: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import glob, html, json, math, os, re, sys, time
+          import urllib.error, urllib.parse, urllib.request
+
+          UA = "FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)"
+          RUN = os.environ.get("RUN", "1")
+          REPO = os.environ.get("REPO", "")
+          PR = os.environ.get("PR", "")
+          TOKEN = os.environ.get("GH_TOKEN", "")
+          DRY = os.environ.get("DRY") == "1"
+          API_HOSTS = {"www.wikidata.org", "nominatim.openstreetmap.org", "overpass-api.de"}
+          LAST, LOG, STOPPED = {}, [], {}
+          LOCAL = {"DE": "de", "AT": "de", "CH": "de", "RO": "ro", "FR": "fr", "IT": "it",
+                   "ES": "es", "NL": "nl", "BE": "nl", "PT": "pt"}
+
+          IDS = ["Q151747", "Q15849956", "Q15972883", "Q16743331", "Q2207914", "Q2521441", "Q3736767", "Q4107588", "Q566165", "Q720528", "Q137499", "Q142005", "Q155186", "Q155452", "Q16525407", "Q16536906", "Q16559523", "Q170117", "Q265570", "Q566141", "Q609926", "Q647893", "Q819419", "Q113331350", "Q130199486", "Q107724768", "Q130302376", "Q1575208", "Q5425107", "Q629277", "Q699746", "Q694484", "Q113000", "Q1423718", "Q206692", "Q162251", "Q51974", "Q460448", "Q223620", "Q5773365", "Q208228", "Q48911", "Q19571", "Q18739", "Q19612", "Q15309584", "Q1547133", "Q2052", "Q297430", "Q631", "Q219233", "Q24711", "Q876568", "Q744353", "Q211401", "Q56677281", "Q205998", "Q753462", "Q31181880", "Q1137993", "Q176168", "Q204237", "Q18656", "Q8723", "Q1378922", "Q831892"]
+          EXTRA = []
+
+
+          def get(url, gap=1.1, data=None, timeout=45):
+              host = urllib.parse.urlsplit(url).netloc
+              api = host in API_HOSTS or host.endswith(".wikipedia.org")
+              if host in STOPPED:
+                  return None, "host stopped earlier in this run: " + STOPPED[host]
+              for attempt in (1, 2):
+                  wait = LAST.get(host, 0) + gap - time.time()
+                  if wait > 0:
+                      time.sleep(wait)
+                  req = urllib.request.Request(url, data=data, headers={"User-Agent": UA})
+                  try:
+                      with urllib.request.urlopen(req, timeout=timeout) as r:
+                          body = r.read().decode("utf-8", "replace")
+                      LAST[host] = time.time()
+                      LOG.append("200 " + url[:170])
+                      return body, None
+                  except urllib.error.HTTPError as e:
+                      LAST[host] = time.time()
+                      LOG.append(f"{e.code} " + url[:170])
+                      if api and attempt == 1 and e.code in (429, 502, 504):
+                          ra = e.headers.get("Retry-After") or ""
+                          time.sleep(min(int(ra), 60) if ra.isdigit() else 25)
+                          continue
+                      if e.code in (403, 429, 503):
+                          STOPPED[host] = f"HTTP {e.code}"
+                      return None, f"HTTP {e.code}"
+                  except Exception as e:  # timeout, DNS, reset
+                      LAST[host] = time.time()
+                      LOG.append("ERR " + url[:170] + " " + type(e).__name__)
+                      if api and attempt == 1:
+                          time.sleep(6)
+                          continue
+                      return None, f"{type(e).__name__}: {e}"
+              return None, "failed twice"
+
+
+          def get_json(url, **kw):
+              body, err = get(url, **kw)
+              if err:
+                  return None, err
+              try:
+                  return json.loads(body), None
+              except Exception as e:
+                  return None, "not JSON: " + str(e)[:80]
+
+
+          COMMENTS = 0
+
+
+          def post(body):
+              global COMMENTS
+              COMMENTS += 1
+              body = body[:64000]
+              if DRY or not TOKEN:
+                  print("=" * 30, "COMMENT", COMMENTS, len(body))
+                  print(body[:int(os.environ.get("DRYCHARS", "1500"))])
+                  return
+              req = urllib.request.Request(
+                  f"https://api.github.com/repos/{REPO}/issues/{PR}/comments",
+                  data=json.dumps({"body": body}).encode(),
+                  headers={"Authorization": "Bearer " + TOKEN, "Accept": "application/vnd.github+json",
+                           "User-Agent": UA, "Content-Type": "application/json"})
+              for attempt in (1, 2, 3):
+                  try:
+                      urllib.request.urlopen(req, timeout=40).read()
+                      break
+                  except Exception as e:
+                      print("comment failed", attempt, e)
+                      time.sleep(20 * attempt)
+              time.sleep(1.6)
+
+
+          def dist(a, b, c, d):
+              try:
+                  a, b, c, d = map(float, (a, b, c, d))
+              except Exception:
+                  return None
+              p = math.pi / 180
+              h = (math.sin((c - a) * p / 2) ** 2 +
+                   math.cos(a * p) * math.cos(c * p) * math.sin((d - b) * p / 2) ** 2)
+              return round(12742000 * math.asin(math.sqrt(h)))
+
+
+          # ---------------------------------------------------------------- wikitext
+          K_GROUND = re.compile(r"ground|stadi|stade|spielst|arena|terrain|teren|heimst|estadi|estádi|campo|thuis|venue", re.I)
+          K_CAP = re.compile(r"capac|kapaz|pl[aä]tze|plaetze|capien|locuri|places|zuschauer|aforo|lota[cç]|posti|sitzpl|stehpl|seating", re.I)
+          K_LEAGUE = re.compile(r"league|liga|ligue|campionat|competi|divis|campeonato|klasse|championnat", re.I)
+          K_NAME = re.compile(r"^(club ?name|full ?name|name|kurzname|langname|nume|nume[_ ]complet|nom|nom complet|nombre|nombre[_ ]completo|nome|nomeabrev|naam|volledige naam|nome squadra|stadium[_ ]name|stadionname|nume stadion|nom du stade|nome stadio|nombre del estadio|fullname|nickname)$", re.I)
+          K_COORD = re.compile(r"coord|koordinat|breitengrad|l[aä]ngengrad|^lat|^lon|latitud|longitud|^ns$|^ew$", re.I)
+          K_OTHER = re.compile(r"tenant|nutzer|verein|club|proprietar|locataire|bespeler|equipo|usuari|opened|closed|er[oö]ffn|abriss|demol|renov|inaugur|chiusura|cierre|city|ort|location|ora[sș]|ville|citt|ciudad|plaats|localiza|cidade", re.I)
+          PARAM = re.compile(r"^\s*\|\s*([^=|\n{}\[\]]{1,45}?)\s*=[ \t]*(.*)$")
+          KW = re.compile(r"Kapazit[aä]t|capacity|capacit[eé]|capacitate|Zuschauer|places|locuri|Pl[aä]tze|capienza|capacidad|capacidade|capaciteit|posti|aforo", re.I)
+          NUM = re.compile(r"\d{1,3}(?:[.,  ']\d{3})+|\d{3,6}")
+
+
+          def lead_of(wt):
+              return re.split(r"\n==[^=]", wt, 1)[0]
+
+
+          def params_of(wt):
+              out, key = {}, None
+              for line in lead_of(wt).split("\n"):
+                  m = PARAM.match(line)
+                  if m:
+                      key = m.group(1).strip()
+                      if key not in out:
+                          out[key] = m.group(2).strip()
+                      else:
+                          key = None
+                  elif key and not line.startswith(("}}", "{{")) and len(out[key]) < 500:
+                      out[key] += " " + line.strip()
+                  else:
+                      key = None
+              return out
+
+
+          def pick(params, stadium=False):
+              got = {}
+              for k, v in params.items():
+                  if not v.strip():
+                      continue
+                  if (K_GROUND.search(k) or K_CAP.search(k) or K_LEAGUE.search(k) or K_NAME.match(k)
+                          or (stadium and (K_COORD.search(k) or K_OTHER.search(k)))):
+                      got[k] = v[:420]
+              return got
+
+
+          def links_in(value):
+              return [t.strip() for t in re.findall(r"\[\[([^\]|#]+)", value or "")
+                      if ":" not in t][:3]
+
+
+          def cap_paragraphs(wt):
+              out = []
+              for para in re.split(r"\n\s*\n", wt):
+                  if para.lstrip().startswith(("{|", "|", "!")) and len(para) > 1500:
+                      continue
+                  for m in KW.finditer(para):
+                      window = para[max(0, m.start() - 90): m.end() + 90]
+                      if NUM.search(window):
+                          s = max(0, m.start() - 280)
+                          out.append(re.sub(r"\s+", " ", para[s: m.end() + 320]))
+                          break
+                  if len(out) >= 6:
+                      break
+              return out
+
+
+          def prose(wt):
+              keep = [l for l in lead_of(wt).split("\n")
+                      if l.strip() and not l.lstrip().startswith(("|", "{{", "}}", "[[File", "[[Datei", "[[Fi", "<!--", "!"))]
+              return re.sub(r"\s+", " ", " ".join(keep))[:3000]
+
+
+          def infobox_raw(wt):
+              lead = lead_of(wt)
+              m = re.search(r"\{\{\s*(Infobox|Infocaset|Info/|Squadra|Ficha|Impianto|Infobox_|Stadion|Stadium)", lead, re.I)
+              start = m.start() if m else 0
+              return lead[start:start + 2600]
+
+
+          def wiki(lang, title):
+              q = urllib.parse.urlencode({"action": "parse", "page": title, "prop": "wikitext|externallinks",
+                                          "redirects": "1", "format": "json", "formatversion": "2"})
+              url = f"https://{lang}.wikipedia.org/w/api.php?{q}"
+              data, err = get_json(url)
+              if err:
+                  return {"lang": lang, "asked": title, "error": err, "url": url}
+              if "error" in data:
+                  return {"lang": lang, "asked": title, "error": data["error"].get("code"), "url": url}
+              p = data["parse"]
+              wt = p.get("wikitext") or ""
+              real = p.get("title")
+              return {"lang": lang, "asked": title, "title": real,
+                      "page": f"https://{lang}.wikipedia.org/wiki/" + urllib.parse.quote(real.replace(" ", "_")),
+                      "api": url, "wt": wt, "ext": (p.get("externallinks") or [])[:50]}
+
+
+          def article_md(a, stadium):
+              if a.get("error"):
+                  return f"\n#### {a['lang']}: {a['asked']} - NOT READ: {a['error']}\n"
+              wt = a["wt"]
+              md = [f"\n#### {a['lang']}.wikipedia: {a['title']}", a["page"], "API: " + a["api"], "",
+                    "**Picked infobox fields**", "```"]
+              md += [f"{k} = {v}" for k, v in pick(params_of(wt), stadium).items()] or ["(none)"]
+              coord = re.search(r"\{\{\s*(?:coord|Coordinate|Coordonate|Coor)[^}]{0,160}\}\}", wt, re.I)
+              md += ["```", "first coord template: " + (coord.group(0) if coord else "(none)"), "",
+                     "**Infobox, raw (first 2600 characters)**", "```", infobox_raw(wt).replace("```", "'''"), "```",
+                     "**Lead text (first 3000 characters)**", "", "> " + prose(wt), "",
+                     "**Paragraphs with a number next to a capacity word**", ""]
+              md += ["- " + p for p in cap_paragraphs(wt)] or ["(none)"]
+              md += ["", "**External links**", ""] + ["- " + u for u in a["ext"]]
+              return "\n".join(md)
+
+
+          def article_json(a, stadium):
+              if a.get("error"):
+                  return {"lang": a["lang"], "asked": a["asked"], "error": a["error"]}
+              wt = a["wt"]
+              coord = re.search(r"\{\{\s*(?:coord|Coordinate|Coordonate|Coor)[^}]{0,160}\}\}", wt, re.I)
+              return {"lang": a["lang"], "title": a["title"], "page": a["page"],
+                      "f": pick(params_of(wt), stadium), "coord": coord.group(0) if coord else None,
+                      "caps": [p[:400] for p in cap_paragraphs(wt)[:3]] if stadium else []}
+
+
+          # ------------------------------------------------------------------ steps
+          def load_clubs():
+              clubs = {}
+              for f in sorted(glob.glob("data/clubs/??.json")):
+                  cc = os.path.basename(f)[:2]
+                  for c in json.load(open(f, encoding="utf-8"))["clubs"]:
+                      if c["id"] in IDS:
+                          c = {k: c.get(k) for k in ("id", "name", "tier", "venue", "capacity", "lat", "lon", "leagues", "manual")}
+                          c["cc"] = cc
+                          clubs[c["id"]] = c
+              return clubs
+
+
+          def wikidata(ids, props, langs):
+              out = {}
+              ids = sorted(ids)
+              for i in range(0, len(ids), 40):
+                  q = urllib.parse.urlencode({"action": "wbgetentities", "ids": "|".join(ids[i:i + 40]),
+                                              "props": props, "languages": langs, "format": "json"})
+                  data, err = get_json("https://www.wikidata.org/w/api.php?" + q)
+                  if err:
+                      out["_error"] = err
+                      continue
+                  out.update(data.get("entities", {}))
+              return out
+
+
+          def label(e):
+              labels = (e or {}).get("labels", {})
+              for l in ("en", "de", "ro", "fr", "es", "it", "nl", "pt"):
+                  if l in labels:
+                      return labels[l]["value"]
+              return None
+
+
+          def claims(e, prop):
+              out = []
+              for c in (e or {}).get("claims", {}).get(prop, []):
+                  snak = c.get("mainsnak", {})
+                  val = snak.get("datavalue", {}).get("value")
+                  q = c.get("qualifiers", {})
+
+                  def year(p):
+                      try:
+                          return q[p][0]["datavalue"]["value"]["time"][1:5]
+                      except Exception:
+                          return None
+                  out.append({"v": val, "rank": c.get("rank"), "snak": snak.get("snaktype"),
+                              "start": year("P580"), "end": year("P582"), "asof": year("P585")})
+              return out
+
+
+          def season_tables(page_html):
+              rows_out = []
+              for m in re.finditer(r"<table[^>]*class=\"[^\"]*wikitable[^\"]*\"[^>]*>(.*?)</table>", page_html, re.S):
+                  before = page_html[:m.start()]
+                  heads = re.findall(r"<h[2-4][^>]*>(.*?)</h[2-4]>", before, re.S)
+                  head = re.sub(r"<[^>]+>", "", heads[-1]).strip() if heads else ""
+                  rows = re.findall(r"<tr[^>]*>(.*?)</tr>", m.group(1), re.S)
+                  if not rows:
+                      continue
+                  first = re.sub(r"<[^>]+>", " ", rows[0])
+                  ncols = len(re.findall(r"<t[hd][^>]*>", rows[0]))
+                  if ncols > 9 or not re.search(r"team|club|stadi|capac|location|ground|verein|echip|ort|kapaz|spielst", first, re.I):
+                      continue
+                  rows_out.append(f"## table under '{html.unescape(head)}' ({ncols} columns)")
+                  for tr in rows:
+                      cells = [re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", re.sub(r"<sup.*?</sup>", "", c, flags=re.S)))).strip()
+                               for c in re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", tr, re.S)]
+                      links = [urllib.parse.unquote(l).replace("_", " ") for l in re.findall(r'href="(?:\./|/wiki/)([^"#?]+)"', tr)
+                               if not re.match(r"(File|Datei|Fi%C8%99ier|Fișier|Special|Category):", l)][:4]
+                      rows_out.append((" | ".join(cells))[:260] + "  => " + "; ".join(links))
+              return rows_out
+
+
+          def main():
+              clubs = load_clubs()
+              missing = [i for i in IDS if i not in clubs]
+              post(f"### AUDIT r{RUN} start\n{len(clubs)} clubs loaded from data/clubs, missing: {missing}. "
+                   f"User-Agent `{UA}`, at most one request per second per host.")
+
+              # 1 Wikidata: the item the map was built from (identity and what it holds; it judges nothing)
+              ents = wikidata(clubs, "labels|claims|sitelinks", "en|de|ro|fr|es|it|nl|pt")
+              venue_ids = set()
+              for cid in clubs:
+                  for c in claims(ents.get(cid), "P115"):
+                      if isinstance(c["v"], dict) and c["v"].get("id"):
+                          venue_ids.add(c["v"]["id"])
+              vents = wikidata(venue_ids, "labels|claims|sitelinks", "en|de|ro|fr|es|it|nl|pt") if venue_ids else {}
+
+              summary = {}
+              stopped_wiki = False
+              for cid, club in clubs.items():
+                  e = ents.get(cid) or {}
+                  sl = {k: v.get("title") for k, v in e.get("sitelinks", {}).items()}
+                  wd = {"label": label(e), "venues": [], "leagues": [], "error": ents.get("_error"),
+                        "sitelinks": {k: sl[k] for k in sl if k in ("enwiki", "dewiki", "rowiki", "frwiki", "itwiki", "eswiki", "nlwiki", "ptwiki")}}
+                  for c in claims(e, "P115"):
+                      vid = c["v"].get("id") if isinstance(c["v"], dict) else None
+                      ve = vents.get(vid) or {}
+                      caps = [{"n": x["v"].get("amount"), "rank": x["rank"], "asof": x["asof"]} for x in claims(ve, "P1083") if isinstance(x["v"], dict)]
+                      co = [x["v"] for x in claims(ve, "P625") if isinstance(x["v"], dict)]
+                      wd["venues"].append({"id": vid, "label": label(ve), "rank": c["rank"], "start": c["start"], "end": c["end"],
+                                           "caps": caps, "coord": [co[0].get("latitude"), co[0].get("longitude")] if co else None})
+                  for c in claims(e, "P118"):
+                      wd["leagues"].append({"id": c["v"].get("id") if isinstance(c["v"], dict) else c["snak"],
+                                            "rank": c["rank"], "start": c["start"], "end": c["end"]})
+                  arts = []
+                  langs = ["en"] + ([LOCAL[club["cc"]]] if LOCAL.get(club["cc"]) and LOCAL[club["cc"]] != "en" else [])
+                  for lang in langs:
+                      title = sl.get(lang + "wiki")
+                      if not title:
+                          arts.append(({"lang": lang, "asked": "(no sitelink on the Wikidata item)", "error": "no article"}, False))
+                          continue
+                      a = wiki(lang, title)
+                      arts.append((a, False))
+                      if a.get("error"):
+                          continue
+                      ground_links = []
+                      for k, v in pick(params_of(a["wt"])).items():
+                          if K_GROUND.search(k) and not K_CAP.search(k):
+                              ground_links += links_in(v)
+                      for g in ground_links[:1]:
+                          arts.append((wiki(lang, g), True))
+                  js = {"id": cid, "map": club, "wd": wd,
+                        "club": [article_json(a, False) for a, st in arts if not st],
+                        "stadium": [article_json(a, True) for a, st in arts if st]}
+                  summary[cid] = js
+                  md = [f"### AUDIT r{RUN} club {cid} {club['name']} ({club['cc']}, tier {club['tier']})",
+                        f"Map: venue `{club['venue']}`, capacity `{club['capacity']}`, `{club['lat']}, {club['lon']}`, hand-corrected: {bool(club.get('manual'))}",
+                        "", "Wikidata item (what the map was built from; not a judge): https://www.wikidata.org/wiki/" + cid,
+                        "```json", json.dumps(wd, ensure_ascii=False), "```"]
+                  for a, st in arts:
+                      md.append(article_md(a, st))
+                  text = "\n".join(md)
+                  post(text[:62000])
+
+              # 2 season articles named in data/league-rosters.csv
+              import csv
+              wanted = {(c["cc"], str(c["tier"])) for c in clubs.values()}
+              seen = set()
+              for row in csv.DictReader(open("data/league-rosters.csv", encoding="utf-8")):
+                  if (row["country"], row["tier"]) not in wanted or row["article"] in seen:
+                      continue
+                  seen.add(row["article"])
+                  todo = [("en", row["article"])]
+                  q = urllib.parse.urlencode({"action": "parse", "page": row["article"], "prop": "text|langlinks",
+                                              "redirects": "1", "format": "json", "formatversion": "2"})
+                  data, err = get_json("https://en.wikipedia.org/w/api.php?" + q)
+                  if err or "error" in (data or {}):
+                      post(f"### AUDIT r{RUN} season en: {row['article']} - NOT READ: {err or data['error'].get('code')}")
+                      continue
+                  rows = season_tables(data["parse"]["text"])
+                  ll = {l["lang"]: l["title"] for l in data["parse"].get("langlinks", [])}
+                  body = "\n".join(rows)
+                  for part in range(0, max(1, len(body)), 58000):
+                      post(f"### AUDIT r{RUN} season en: {row['article']} ({row['country']} tier {row['tier']}) part {part // 58000 + 1}\n"
+                           f"https://en.wikipedia.org/wiki/{urllib.parse.quote(row['article'].replace(' ', '_'))}\nlanglinks: "
+                           + json.dumps({k: ll[k] for k in ll if k in ('de', 'ro', 'fr', 'it', 'es', 'nl', 'pt')}, ensure_ascii=False)
+                           + "\n```\n" + body[part:part + 58000] + "\n```")
+                  loc = LOCAL.get(row["country"])
+                  if loc and ll.get(loc):
+                      q = urllib.parse.urlencode({"action": "parse", "page": ll[loc], "prop": "text",
+                                                  "redirects": "1", "format": "json", "formatversion": "2"})
+                      data, err = get_json(f"https://{loc}.wikipedia.org/w/api.php?" + q)
+                      if err or "error" in (data or {}):
+                          post(f"### AUDIT r{RUN} season {loc}: {ll[loc]} - NOT READ: {err or data['error'].get('code')}")
+                      else:
+                          body = "\n".join(season_tables(data["parse"]["text"]))
+                          for part in range(0, max(1, len(body)), 58000):
+                              post(f"### AUDIT r{RUN} season {loc}: {ll[loc]} ({row['country']} tier {row['tier']}) part {part // 58000 + 1}\n"
+                                   f"https://{loc}.wikipedia.org/wiki/{urllib.parse.quote(ll[loc].replace(' ', '_'))}\n```\n" + body[part:part + 58000] + "\n```")
+
+              # 3 StadiumDB country tables (robots.txt first)
+              sys.path.insert(0, "tools")
+              sdb_note = ""
+              try:
+                  import crosscheck_stadiumdb as sdb
+                  robots, err = get("https://stadiumdb.com/robots.txt")
+                  sdb_note = f"robots.txt: {err or repr(robots[:600])}"
+                  bad = err or re.search(r"claude|anthropic|GPTBot|FootballPlannerBot", robots, re.I) or re.search(r"(?mi)^\s*Disallow:\s*/(stadiums)?\s*$", robots)
+                  if bad:
+                      sdb_note += "\nSTOP: StadiumDB not read."
+                  else:
+                      for cc in sorted({c["cc"] for c in clubs.values()}):
+                          slug = sdb.COUNTRY_PAGES.get(cc, (None,))[0]
+                          if not slug:
+                              sdb_note += f"\n{cc}: no country page in COUNTRY_PAGES"
+                              continue
+                          url = f"https://stadiumdb.com/stadiums/{slug}"
+                          body, err = get(url)
+                          if err:
+                              sdb_note += f"\n{cc}: {url} {err}"
+                              continue
+                          grounds = sdb.parse_country_table(body)
+                          sdb_note += f"\n{cc}: {url} {len(grounds)} grounds"
+                          generic = set("fc sc sv fk cf cs acs csm afc club de la del fotbal football stadion stadium stadionul stade stadio estadio arena sportpark ii united city real club sporting athletic".split())
+                          for c in clubs.values():
+                              if c["cc"] != cc:
+                                  continue
+                              cw = {w for w in sdb.words(c["name"]) if len(w) >= 4 and w not in generic}
+                              vw = {w for w in sdb.words(c["venue"] or "") if len(w) >= 4 and w not in generic}
+                              hits = []
+                              for g in grounds:
+                                  s = len(cw & set(sdb.words(g["clubsRaw"]))) * 2 + len(vw & set(sdb.words(g["name"]))) * 2 + len(cw & set(sdb.words(g["city"])))
+                                  if s:
+                                      hits.append((s, g))
+                              hits.sort(key=lambda h: -h[0])
+                              summary[c["id"]]["sdb"] = [{"score": s, "name": g["name"], "city": g["city"], "clubs": g["clubsRaw"][:120],
+                                                          "capacity": g["capacity"], "url": g["url"]} for s, g in hits[:5]]
+                              summary[c["id"]]["sdbPage"] = url
+              except Exception as e:
+                  sdb_note += f"\nStadiumDB step failed: {type(e).__name__}: {e}"
+              post(f"### AUDIT r{RUN} stadiumdb\n```\n{sdb_note}\n```")
+
+              # 4 Nominatim: where OpenStreetMap has a ground of that name
+              def nominatim(q, cc, club):
+                  url = "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode(
+                      {"q": q, "format": "jsonv2", "limit": "6", "countrycodes": cc.lower(), "extratags": "1"})
+                  data, err = get_json(url, gap=1.3)
+                  if err:
+                      return {"q": q, "url": url, "error": err}
+                  res = [{"name": r.get("name"), "display": (r.get("display_name") or "")[:110], "cat": f"{r.get('category')}={r.get('type')}",
+                          "lat": r.get("lat"), "lon": r.get("lon"), "osm": f"{r.get('osm_type')}/{r.get('osm_id')}",
+                          "capacity": (r.get("extratags") or {}).get("capacity"),
+                          "m": dist(club["lat"], club["lon"], r.get("lat"), r.get("lon"))} for r in data]
+                  res.sort(key=lambda r: r["m"] if r["m"] is not None else 9e9)
+                  return {"q": q, "url": url, "results": res[:4]}
+
+              for cid, club in clubs.items():
+                  qs = []
+                  if club.get("venue"):
+                      qs.append(club["venue"])
+                  for a in summary[cid]["stadium"]:
+                      t = a.get("title")
+                      if t:
+                          t = re.sub(r"\s*\(([^)]*)\)", r" \1", t)
+                          if sdb_fold(t) not in [sdb_fold(x) for x in qs]:
+                              qs.append(t)
+                  summary[cid]["nominatim"] = [nominatim(q, club["cc"], club) for q in qs[:3]]
+
+              # 5 Overpass: named pitches and stadiums within 500 m of the map's point
+              items = list(clubs.values())
+              for i in range(0, len(items), 22):
+                  batch = items[i:i + 22]
+                  ql = "[out:json][timeout:90];(" + "".join(
+                      f'nwr(around:500,{c["lat"]},{c["lon"]})["leisure"~"^(stadium|pitch|sports_centre)$"]["name"];'
+                      for c in batch if c.get("lat") is not None) + ");out tags center 600;"
+                  body, err = get("https://overpass-api.de/api/interpreter", gap=5,
+                                  data=urllib.parse.urlencode({"data": ql}).encode(), timeout=120)
+                  try:
+                      els = json.loads(body)["elements"] if not err else []
+                  except Exception as e:
+                      els, err = [], "not JSON: " + str(e)[:60]
+                  for c in batch:
+                      near = []
+                      for el in els:
+                          la = el.get("lat") or (el.get("center") or {}).get("lat")
+                          lo = el.get("lon") or (el.get("center") or {}).get("lon")
+                          m = dist(c["lat"], c["lon"], la, lo)
+                          if m is not None and m <= 600:
+                              t = el.get("tags", {})
+                              near.append({"name": t.get("name"), "leisure": t.get("leisure"), "sport": t.get("sport"),
+                                           "capacity": t.get("capacity"), "osm": f"{el.get('type')}/{el.get('id')}", "m": m,
+                                           "lat": la, "lon": lo})
+                      near.sort(key=lambda n: n["m"])
+                      summary[c["id"]]["overpass"] = {"error": err, "near": near[:8]}
+
+              chunk = []
+              for cid, js in summary.items():
+                  line = "AUDITJSON " + json.dumps(js, ensure_ascii=False)
+                  if chunk and sum(len(x) + 1 for x in chunk) + len(line) > 56000:
+                      post(f"### AUDIT r{RUN} json
+          ```
+          " + "
+          ".join(chunk) + "
+          ```")
+                      chunk = []
+                  chunk.append(line)
+              if chunk:
+                  post(f"### AUDIT r{RUN} json
+          ```
+          " + "
+          ".join(chunk) + "
+          ```")
+              post(f"### AUDIT r{RUN} end\nrequests: {len(LOG)}, stopped hosts: {json.dumps(STOPPED)}\n```\n"
+                   + "\n".join(l for l in LOG if not l.startswith('200'))[:8000] + "\n```")
+
+
+          def sdb_fold(t):
+              import unicodedata
+              t = unicodedata.normalize("NFKD", t or "")
+              t = "".join(c for c in t if not unicodedata.combining(c)).lower()
+              return re.sub(r"[^a-z0-9]+", " ", t).strip()
+
+
+          if __name__ == "__main__":
+              main()
+          PY
