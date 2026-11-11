@@ -12,28 +12,20 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "2"
+      RUN: "3"
       URLS: |
-        https://de.wikipedia.org/wiki/Werder_Bremen fans ref:Gr(ü|u)ndung wl:ultra|fanszene|fangruppe|supporter|crew|kurve|boys|fanclub
-        https://de.wikipedia.org/wiki/Energie_Cottbus fans ref:Gr(ü|u)ndung wl:ultra|fanszene|fangruppe|supporter|crew|kurve|boys|fanclub
-        https://de.wikipedia.org/wiki/Hertha_BSC fans ref:Gr(ü|u)ndung wl:ultra|fanszene|fangruppe|supporter|crew|kurve|boys|fanclub
-        https://de.wikipedia.org/wiki/1._FC_Union_Berlin fans ref:Gr(ü|u)ndung wl:ultra|fanszene|fangruppe|supporter|crew|kurve|boys|fanclub
-        https://de.wikipedia.org/wiki/FC_St._Pauli fans ref:Gr(ü|u)ndung wl:ultra|fanszene|fangruppe|supporter|crew|kurve|boys|fanclub
-        https://de.wikipedia.org/wiki/Hamburger_SV fans ref:Gr(ü|u)ndung wl:ultra|fanszene|fangruppe|supporter|crew|kurve|boys|fanclub
-        https://de.wikipedia.org/wiki/Holstein_Kiel fans ref:Gr(ü|u)ndung wl:ultra|fanszene|fangruppe|supporter|crew|kurve|boys|fanclub
-        https://de.wikipedia.org/wiki/Hansa_Rostock fans ref:Gr(ü|u)ndung wl:ultra|fanszene|fangruppe|supporter|crew|kurve|boys|fanclub
-        https://www.fcenergie.de/home.html terms
-        https://www.herthabsc.com/de/club/wir-sind-hertha-uebersicht/unsere-identitat
-        https://content.herthabsc.com/site/binaries/content/assets/club/satzung-herthabsc-ev-230514.pdf pdf
-        https://museum.herthabsc.com/ terms
-        https://www.fc-union-berlin.de/de/verein/mitglieder-iNvD?tab=10-36
-        https://www.hsv.de/news/tag/Historie
-        https://www.hsv-ev.de/ terms
-        https://www.holstein-kiel.de/vereinshistorie/
-        https://www.holstein-kiel.de/verein/historie/highlights/
-        https://www.holstein-kiel.de/fans/fanclubs/
-        https://www.fch.de/ terms
-        https://www.fch.de/satzung.html
+        https://gruendungsort-werder.info/ terms
+        https://www.kicker.de/werder-bremen/info
+        https://www.spurensuche-bremen.de/werder-und-das-weserstadion/
+        https://datencenter.dfb.de/competitions/dfb-pokal/seasons/2025-26/teams/fc-st-pauli/
+        https://www.fcenergie.de/der-verein.html
+        https://www.fcenergie.de/offizielle-fanclubs.html
+        https://www.fc-union-berlin.de/de/gemeinschaft/hymne/
+        https://www.fc-union-berlin.de/de/fans/unsere-fanclubs-ccua?tab=18-92
+        https://www.hsv-ev.de/verein/geschichte/
+        https://www.holstein-kiel.de/verein/das-erste-spiel-das-erste-tor-der-erste-sieg/
+        https://www.fch.de/files/pdf/Mitgliederwesen/Satzung%20FC%20Hansa%20Rostock%20e.V.%20Stand%202026%20A4.pdf pdf
+        https://www.fch.de/fanblock/fanbetreuung.html
     steps:
       - uses: actions/setup-node@v5
         with:
