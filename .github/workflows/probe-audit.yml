@@ -1,0 +1,404 @@
+name: probe-audit
+# Temporary probe for the club fact check, phase 1b (full tier check); removed before the merge.
+on:
+  pull_request:
+    paths: ['.github/workflows/probe-audit.yml']
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      RUN: "1"
+    steps:
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import html, json, os, re, sys, time
+          import urllib.error, urllib.parse, urllib.request
+          from html.parser import HTMLParser
+
+          UA = "FootballPlannerBot/1.0 (https://github.com/AlexGrozavul/Football)"
+          RUN = os.environ.get("RUN", "1")
+          REPO = os.environ.get("REPO", "")
+          PR = os.environ.get("PR", "")
+          TOKEN = os.environ.get("GH_TOKEN", "")
+          DRY = os.environ.get("DRY") == "1"
+          LAST, LOG, STOPPED, OUT = {}, [], {}, []
+          NREQ = [0]
+
+          CFG = json.loads(r'''{"articles": [["en", "2026–27 Bundesliga"], ["en", "2026–27 2. Bundesliga"], ["en", "2026–27 3. Liga"], ["en", "2026–27 Regionalliga"], ["en", "2026–27 Liga I"], ["en", "2026–27 Liga II"], ["en", "2026–27 Liga III"], ["en", "2026–27 Super League Greece 2"], ["en", "2026–27 Liga IV"], ["de", "3. Fußball-Liga 2026/27"], ["de", "Fußball-Regionalliga Nord 2026/27"], ["de", "Fußball-Regionalliga Nordost 2026/27"], ["de", "Fußball-Regionalliga West 2026/27"], ["de", "Fußball-Regionalliga Südwest 2026/27"], ["de", "Fußball-Regionalliga Bayern 2026/27"]], "searches": [["de", "intitle:\"2026/27\" intitle:Oberliga", "Oberliga", "Frauen|Junior|Futsal|Jugend|Pokal|Handball|Eishockey|Hockey|Basketball|Volleyball|Tischtennis"], ["de", "intitle:\"2026/27\" intitle:Fußball", "Oberliga|Bayernliga|Hessenliga|Bremen-Liga|Mittelrheinliga|Schleswig-Holstein|Regionalliga|3\\. Fußball-Liga|Verbandsliga|Landesliga|Westfalenliga", "Frauen|Junior|Futsal|Jugend|Pokal|Österreich|Schweiz"], ["ro", "intitle:\"2026-2027\" intitle:Liga", "Liga", "feminin|futsal|handbal|baschet|volei|hochei|Cupa|Campionilor|Europa|Conferenc|Națiunilor|rugby|polo"], ["ro", "intitle:\"2026–2027\" intitle:Liga", "Liga", "feminin|futsal|handbal|baschet|volei|hochei|Cupa|Campionilor|Europa|Conferenc|Națiunilor|rugby|polo"]], "searchcap": 34, "targets": {"Q162213": "DE", "Q162366": "DE", "Q162394": "DE", "Q666155": "DE", "Q479276": "DE", "Q468738": "DE", "Q14118284": "DE", "Q325270": "DE", "Q831602": "DE", "Q694464": "DE", "Q479371": "DE", "Q55364716": "DE", "Q1576328": "DE", "Q20631356": "DE", "Q524378": "DE", "Q885184": "DE", "Q30090061": "DE", "Q1425370": "DE", "Q885187": "DE", "Q526949": "DE", "Q1507157": "DE", "Q2802618": "DE", "Q529579": "DE", "Q445897": "DE", "Q7924284": "DE", "Q666179": "DE", "Q823142": "DE", "Q797022": "DE", "Q176850": "DE", "Q16536906": "DE", "Q692704": "DE", "Q16559523": "DE", "Q666000": "DE", "Q5424977": "DE", "Q831887": "DE", "Q1387417": "DE", "Q13426883": "DE", "Q566165": "DE", "Q1514109": "DE", "Q639472": "DE", "Q20994272": "DE", "Q566172": "DE", "Q666024": "DE", "Q566141": "DE", "Q2208389": "DE", "Q324983": "DE", "Q175616": "DE", "Q176168": "DE", "Q479340": "DE", "Q155452": "DE", "Q700029": "DE", "Q479366": "DE", "Q639419": "DE", "Q16645947": "DE", "Q639506": "DE", "Q819419": "DE", "Q170157": "DE", "Q136089": "DE", "Q12872753": "GR", "Q136297458": "RO", "Q133971899": "RO", "Q39055984": "RO", "Q131452573": "RO", "Q4684936": "RO", "Q136806593": "RO", "Q65090070": "RO", "Q2977075": "RO", "Q3623598": "RO", "Q533005": "RO", "Q2080673": "RO", "Q3063150": "RO", "Q138775785": "RO", "Q55625920": "RO", "Q55621169": "RO", "Q141888787": "RO", "Q130224833": "RO", "Q55583785": "RO", "Q55585905": "RO", "Q106824323": "RO", "Q48844820": "RO", "Q18541813": "RO", "Q113577645": "RO", "Q39058249": "RO", "Q56676453": "RO", "Q3749047": "RO", "Q3681572": "RO", "Q5014472": "RO", "Q55620895": "RO", "Q18539446": "RO", "Q61896223": "RO", "Q120972966": "RO", "Q39058326": "RO", "Q3441620": "RO", "Q5425186": "RO", "Q66424148": "RO", "Q66424089": "RO", "Q66423321": "RO", "Q55619018": "RO", "Q12723227": "RO", "Q5424763": "RO", "Q2932010": "RO", "Q15920568": "RO", "Q639046": "RO", "Q4683227": "RO", "Q584629": "RO", "Q629277": "RO", "Q107724768": "RO", "Q5425107": "RO"}, "grabs": [["en", "Volksparkstadion", "capacity|57,000|51,500|league match|international"], ["de", "Volksparkstadion", "Kapazität|57\\.000|51\\.500|Plätze|international"], ["en", "Hamburger SV", "57,000|51,500|Volksparkstadion"]], "nominatim": []}''')
+
+
+          def emit(obj):
+              OUT.append(json.dumps(obj, ensure_ascii=False, separators=(",", ":")))
+
+
+          def get(url, gap=1.1, data=None, timeout=60):
+              host = urllib.parse.urlsplit(url).netloc
+              if host in STOPPED:
+                  return None, "host stopped earlier in this run: " + STOPPED[host]
+              for attempt in (1, 2, 3):
+                  wait = LAST.get(host, 0) + gap - time.time()
+                  if wait > 0:
+                      time.sleep(wait)
+                  req = urllib.request.Request(url, data=data, headers={"User-Agent": UA})
+                  NREQ[0] += 1
+                  try:
+                      with urllib.request.urlopen(req, timeout=timeout) as r:
+                          body = r.read().decode("utf-8", "replace")
+                      LAST[host] = time.time()
+                      return body, None
+                  except urllib.error.HTTPError as e:
+                      LAST[host] = time.time()
+                      LOG.append("HTTP %s %s" % (e.code, url[:150]))
+                      if e.code in (429, 502, 503, 504) and attempt < 3:
+                          ra = e.headers.get("Retry-After") or ""
+                          time.sleep(min(int(ra) if ra.isdigit() else 20 * attempt, 90))
+                          continue
+                      if e.code in (403, 429):
+                          STOPPED[host] = "HTTP %s" % e.code
+                      return None, "HTTP %s" % e.code
+                  except Exception as e:  # timeout, reset
+                      LAST[host] = time.time()
+                      LOG.append("ERR %s %s" % (type(e).__name__, url[:150]))
+                      if attempt < 3:
+                          time.sleep(10)
+                          continue
+                      return None, type(e).__name__
+              return None, "gave up"
+
+
+          def api(lang, **params):
+              host = "www.wikidata.org" if lang == "wd" else lang + ".wikipedia.org"
+              params.update(format="json", formatversion="2")
+              body, err = get("https://%s/w/api.php?%s" % (host, urllib.parse.urlencode(params)))
+              if err:
+                  return None, err
+              try:
+                  d = json.loads(body)
+              except ValueError:
+                  return None, "not JSON"
+              if "error" in d:
+                  return None, "api: " + str(d["error"].get("code"))
+              return d, None
+
+
+          class Tables(HTMLParser):
+              """Rows of every wikitable: cell texts and the first article link of each cell."""
+
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.stack, self.done, self.skip = [], [], 0
+
+              def handle_starttag(self, tag, attrs):
+                  a = dict(attrs)
+                  if tag in ("style", "script", "sup"):
+                      self.skip += 1
+                  elif tag == "table":
+                      self.stack.append({"wt": "wikitable" in (a.get("class") or ""), "rows": [], "row": None, "cell": None})
+                  elif self.stack:
+                      t = self.stack[-1]
+                      if tag == "tr":
+                          t["row"] = []
+                          t["rows"].append(t["row"])
+                          t["cell"] = None
+                      elif tag in ("td", "th") and t["row"] is not None:
+                          t["cell"] = {"th": tag == "th", "t": [], "l": []}
+                          t["row"].append(t["cell"])
+                      elif tag == "a" and t["cell"] is not None:
+                          h = a.get("href") or ""
+                          if h.startswith("/wiki/") and ":" not in h[6:].split("#")[0]:
+                              t["cell"]["l"].append(urllib.parse.unquote(h[6:].split("#")[0]).replace("_", " "))
+                          elif "redlink=1" in h:
+                              m = re.search(r"title=([^&]+)", h)
+                              if m:
+                                  t["cell"]["l"].append("!red:" + urllib.parse.unquote(m.group(1)).replace("_", " "))
+                      elif tag == "br" and t["cell"] is not None:
+                          t["cell"]["t"].append(" ")
+
+              def handle_endtag(self, tag):
+                  if tag in ("style", "script", "sup"):
+                      self.skip = max(0, self.skip - 1)
+                  elif tag == "table" and self.stack:
+                      t = self.stack.pop()
+                      if t["wt"]:
+                          self.done.append(t["rows"])
+                  elif tag in ("td", "th") and self.stack:
+                      self.stack[-1]["cell"] = None
+
+              def handle_data(self, data):
+                  if self.skip or not self.stack:
+                      return
+                  c = self.stack[-1]["cell"]
+                  if c is not None:
+                      c["t"].append(data)
+
+
+          TEAMISH = re.compile(r"team|club|verein|mannschaft|echip|stadi|spielst|^pos|^pl\b|^pl\.|^loc", re.I)
+
+
+          def clean(s, n=34):
+              return re.sub(r"\s+", " ", s).strip()[:n]
+
+
+          READ = set()
+
+
+          def read_article(lang, title, titles_seen):
+              if (lang, title) in READ:
+                  return
+              READ.add((lang, title))
+              d, err = api(lang, action="parse", page=title, prop="text|revid", redirects="1")
+              if err:
+                  emit({"k": "A", "lang": lang, "t": title, "err": err})
+                  return
+              p = Tables()
+              p.feed(d["parse"]["text"])
+              ntab = 0
+              for rows in p.done:
+                  rows = [r for r in rows if r]
+                  if len(rows) < 4:
+                      continue
+                  head = [clean("".join(c["t"])) for c in rows[0]]
+                  if not any(TEAMISH.search(h) for h in head) or len(head) > 14:
+                      continue
+                  ntab += 1
+                  out = []
+                  for r in rows[1:]:
+                      cells = [clean("".join(c["t"]), 28) for c in r[:4]]
+                      links = [(c["l"][0] if c["l"] else "") for c in r[:3]]
+                      for l in links[:2]:
+                          if l and not l.startswith("!red:"):
+                              titles_seen.setdefault(lang, set()).add(l)
+                      out.append([cells, links])
+                  emit({"k": "T", "lang": lang, "a": d["parse"]["title"], "n": ntab, "h": head[:8], "rows": out})
+              emit({"k": "A", "lang": lang, "t": title, "real": d["parse"]["title"], "rev": d["parse"].get("revid"),
+                    "tables": ntab, "url": "https://%s.wikipedia.org/wiki/%s" % (lang, urllib.parse.quote(d["parse"]["title"].replace(" ", "_")))})
+
+
+          def resolve(lang, titles):
+              titles = sorted(titles)
+              res = {}
+              for i in range(0, len(titles), 50):
+                  batch = titles[i:i + 50]
+                  d, err = api(lang, action="query", prop="pageprops", ppprop="wikibase_item", redirects="1", titles="|".join(batch))
+                  if err:
+                      emit({"k": "Qerr", "lang": lang, "err": err, "n": len(batch)})
+                      continue
+                  q = d.get("query", {})
+                  norm = {x["from"]: x["to"] for x in q.get("normalized", [])}
+                  red = {x["from"]: x["to"] for x in q.get("redirects", [])}
+                  qid = {pg["title"]: (pg.get("pageprops") or {}).get("wikibase_item", "") for pg in q.get("pages", [])}
+                  for t in batch:
+                      t1 = norm.get(t, t)
+                      t2 = red.get(t1, t1)
+                      res[t] = [qid.get(t2, ""), t2] if t2 != t else [qid.get(t2, "")]
+              emit({"k": "Q", "lang": lang, "m": res})
+
+
+          def search(lang, query, keep, drop):
+              found = []
+              d, err = api(lang, action="query", list="search", srsearch=query, srlimit="100", srnamespace="0", srprop="")
+              if err:
+                  emit({"k": "S", "lang": lang, "q": query, "err": err})
+                  return found
+              hits = [h["title"] for h in d.get("query", {}).get("search", [])]
+              found = [h for h in hits if re.search(keep, h) and not re.search(drop, h, re.I)]
+              emit({"k": "S", "lang": lang, "q": query, "hits": len(hits), "kept": found,
+                    "dropped": [h for h in hits if h not in found][:60]})
+              return found
+
+
+          def year_of(claims, prop):
+              for c in claims.get(prop, []):
+                  try:
+                      return c["mainsnak"]["datavalue"]["value"]["time"][1:5]
+                  except (KeyError, TypeError):
+                      return "?"
+              return ""
+
+
+          def coord_of(claims):
+              for c in claims.get("P625", []):
+                  try:
+                      v = c["mainsnak"]["datavalue"]["value"]
+                      return [round(v["latitude"], 6), round(v["longitude"], 6)]
+                  except (KeyError, TypeError):
+                      pass
+              return None
+
+
+          def entities(qids):
+              ents = {}
+              qids = sorted(set(qids))
+              for i in range(0, len(qids), 50):
+                  d, err = api("wd", action="wbgetentities", ids="|".join(qids[i:i + 50]), props="labels|sitelinks|claims", languages="en|de|ro")
+                  if err:
+                      emit({"k": "Werr", "err": err, "n": len(qids[i:i + 50])})
+                      continue
+                  ents.update(d.get("entities", {}))
+              return ents
+
+
+          def claim_ids(claims, prop):
+              out = []
+              for c in claims.get(prop, []):
+                  try:
+                      ended = "P582" in (c.get("qualifiers") or {})
+                      out.append([c["mainsnak"]["datavalue"]["value"]["id"], c.get("rank", "")[:1], 1 if ended else 0])
+                  except (KeyError, TypeError):
+                      pass
+              return out
+
+
+          KEYS = re.compile(r"^\s*\|\s*(stadion|stadium|ground|spielst|pl[aä]tze|capacity|capacit|kapazit|liga|league|aufgel|dissol|desfiin|gegr|founded|fondat|[iî]nfiin|ort|sitz|ora[sș]|location|homepage|website|sezon|season|saison|position|pozi|platz|current|aktuell)", re.I)
+
+
+          def club_page(lang, title, extra_rx=None):
+              d, err = api(lang, action="parse", page=title, prop="wikitext|revid", redirects="1")
+              if err:
+                  return {"lang": lang, "t": title, "err": err}
+              wt = d["parse"]["wikitext"]
+              top = wt.split("\n==", 1)[0]
+              box = [clean(l, 150) for l in top.split("\n") if KEYS.search(l)][:22]
+              prose = re.sub(r"\{\{[^{}]*\}\}", "", top)
+              prose = re.sub(r"\{\{[^{}]*\}\}", "", prose)
+              prose = "\n".join(l for l in prose.split("\n") if l and not l.lstrip().startswith(("|", "{", "}", "[[Datei", "[[File", "[[Fișier")))
+              prose = re.sub(r"<ref[^>]*>.*?</ref>|<ref[^>]*/>", "", prose, flags=re.S)
+              prose = re.sub(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]", r"\1", prose).replace("'''", "").replace("''", "")
+              body = re.sub(r"<ref[^>]*>.*?</ref>|<ref[^>]*/>", "", wt, flags=re.S)
+              body = re.sub(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]", r"\1", body)
+              rx = re.compile(extra_rx or r"2026|2025[/–-]26", re.I)
+              sents = []
+              for s in re.split(r"(?<=[.!?])\s+|\n", body):
+                  if rx.search(s) and not s.lstrip().startswith(("|", "{", "!", "*", "<", "}")) and len(s) > 40:
+                      sents.append(clean(s, 300))
+                  if len(sents) >= (8 if extra_rx else 4):
+                      break
+              return {"lang": lang, "t": d["parse"]["title"], "rev": d["parse"].get("revid"), "box": box,
+                      "prose": clean(prose, 500), "s": sents}
+
+
+          def post(text):
+              body = json.dumps({"body": text}).encode()
+              if DRY or not (REPO and PR and TOKEN):
+                  print(text[:1500])
+                  return
+              req = urllib.request.Request("https://api.github.com/repos/%s/issues/%s/comments" % (REPO, PR), data=body,
+                                           headers={"Authorization": "Bearer " + TOKEN, "Accept": "application/vnd.github+json",
+                                                    "User-Agent": UA, "Content-Type": "application/json"})
+              with urllib.request.urlopen(req, timeout=60) as r:
+                  r.read()
+              time.sleep(1.5)
+
+
+          def flush():
+              chunks, cur, size = [], [], 0
+              for line in OUT:
+                  while len(line) > 55000:      # a very long line is cut into numbered pieces
+                      chunks.append(["#CUT " + line[:55000]])
+                      line = "#CONT " + line[55000:]
+                  if size + len(line) > 56000 and cur:
+                      chunks.append(cur)
+                      cur, size = [], 0
+                  cur.append(line)
+                  size += len(line) + 1
+              if cur:
+                  chunks.append(cur)
+              for i, c in enumerate(chunks, 1):
+                  post("probe-audit run %s, part %d of %d\n\n```\n%s\n```" % (RUN, i, len(chunks), "\n".join(c)))
+
+
+          def nominatim(q):
+              body, err = get("https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode(
+                  {"q": q, "format": "jsonv2", "limit": "4", "addressdetails": "1", "accept-language": "en"}), gap=2.6)
+              if err:
+                  return {"q": q, "err": err}
+              try:
+                  res = json.loads(body)
+              except ValueError:
+                  return {"q": q, "err": "not JSON"}
+              return {"q": q, "r": [[x.get("osm_type", "")[:1] + str(x.get("osm_id", "")), x.get("category", ""), x.get("type", ""),
+                                     clean(x.get("name") or "", 50), round(float(x["lat"]), 6), round(float(x["lon"]), 6),
+                                     clean(", ".join(str(x.get("address", {}).get(k, "")) for k in ("village", "town", "city", "municipality", "county", "state") if x.get("address", {}).get(k)), 80)]
+                                    for x in res]}
+
+
+          def main():
+              seen = {}
+              for lang, title in CFG.get("articles", []):
+                  read_article(lang, title, seen)
+              for lang, query, keep, drop in CFG.get("searches", []):
+                  for title in search(lang, query, keep, drop)[:CFG.get("searchcap", 30)]:
+                      read_article(lang, title, seen)
+              for lang, titles in seen.items():
+                  resolve(lang, titles)
+              targets = CFG.get("targets", {})
+              if targets:
+                  ents = entities(list(targets))
+                  grounds = set()
+                  for q, e in ents.items():
+                      for g in claim_ids(e.get("claims", {}), "P115"):
+                          grounds.add(g[0])
+                  gents = entities(list(grounds)) if grounds else {}
+                  for q, cc in targets.items():
+                      e = ents.get(q)
+                      if not e or "missing" in e:
+                          emit({"k": "C", "q": q, "err": "no entity"})
+                          continue
+                      cl = e.get("claims", {})
+                      sl = {k[:-4]: v["title"] for k, v in e.get("sitelinks", {}).items() if k in ("enwiki", "dewiki", "rowiki", "elwiki")}
+                      rec = {"k": "C", "q": q, "cc": cc, "label": (e.get("labels", {}).get("en") or e.get("labels", {}).get("de") or e.get("labels", {}).get("ro") or {}).get("value", ""),
+                             "sl": sl, "p576": year_of(cl, "P576"), "p625": coord_of(cl), "p118": claim_ids(cl, "P118"), "g": []}
+                      for g in claim_ids(cl, "P115"):
+                          ge = gents.get(g[0], {})
+                          gl = ge.get("labels", {})
+                          cap = ""
+                          for c in ge.get("claims", {}).get("P1083", []):
+                              try:
+                                  cap = c["mainsnak"]["datavalue"]["value"]["amount"].lstrip("+")
+                              except (KeyError, TypeError):
+                                  pass
+                          rec["g"].append([g[0], g[1], g[2], (gl.get("en") or gl.get("de") or gl.get("ro") or {}).get("value", ""),
+                                           coord_of(ge.get("claims", {})), cap])
+                      pages = []
+                      order = {"DE": ["de"], "RO": ["ro", "en"], "GR": ["en"]}.get(cc, ["en"])
+                      for lang in order:
+                          if lang in sl:
+                              pages.append(club_page(lang, sl[lang]))
+                      if not pages and "en" in sl:
+                          pages.append(club_page("en", sl["en"]))
+                      rec["pages"] = pages
+                      emit(rec)
+              for lang, title, rx in CFG.get("grabs", []):
+                  emit({"k": "G", "rx": rx, "page": club_page(lang, title, rx)})
+              for key, q in CFG.get("nominatim", []):
+                  if "nominatim.openstreetmap.org" in STOPPED:
+                      emit({"k": "N", "key": key, "q": q, "err": "host stopped"})
+                      continue
+                  r = nominatim(q)
+                  r.update(k="N", key=key)
+                  emit(r)
+              emit({"k": "END", "run": RUN, "requests": NREQ[0], "stopped": STOPPED, "log": LOG[:40]})
+              flush()
+
+
+          if __name__ == "__main__":
+              if os.environ.get("SELFTEST") == "1":
+                  p = Tables()
+                  p.feed('<table class="wikitable sortable"><tr><th>Pos</th><th>Team</th><th>Pld</th></tr>'
+                         '<tr><td>1</td><th><a href="/wiki/FC_Test_M%C3%BCnchen" title="x">FC Test</a><sup>[1]</sup></th><td>3</td></tr>'
+                         '<tr><td>2</td><td><a href="/w/index.php?title=Red_Club&amp;action=edit&amp;redlink=1">Red Club</a></td><td>3</td></tr>'
+                         '<tr><td>3</td><td>Plain</td><td>1</td></tr><tr><td>4</td><td>P</td><td>1</td></tr></table>')
+                  print(json.dumps(p.done, ensure_ascii=False)[:600])
+                  sys.exit(0)
+              main()
+          PY
