@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      RUN: "2"
+      RUN: "3"
     steps:
       - name: Probe
         env:
@@ -34,7 +34,7 @@ jobs:
           LAST, LOG, STOPPED, OUT = {}, [], {}, []
           NREQ = [0]
 
-          CFG = json.loads(r'''{"articles": [["de", "Fußball-Regionalliga Südwest 2026/27"], ["de", "Fußball-Regionalliga Nord 2026/27"], ["de", "Fußball-Regionalliga Nordost 2026/27"]], "searches": [], "targets": {"Q112633360": "DE", "Q1585026": "DE", "Q2124601": "DE", "Q2521440": "DE", "Q51974": "DE"}, "grabs": [["en", "RB Leipzig II", "dissolved|withdr|disband|2017|defunct"], ["en", "Eintracht Frankfurt II", "dissolved|withdr|re-?establish|reform|reintroduc|2022|2014"], ["en", "VfL Bochum II", "dissolved|withdr|re-?establish|reform|reintroduc|2015|2024|2025"], ["de", "RSV Eintracht 1949", "Stadion|Sportplatz|Spielstätte|Heimspiel"], ["en", "FC Daco-Getica București", "Colentina|Juventus|stadium|ground"]], "coords": [["de", ["Buniamshof", "Dreisamstadion", "Edmund-Plambeck-Stadion", "Erzgebirgsstadion", "Hans-Walter-Wild-Stadion", "Heidewaldstadion", "Karl-Liebknecht-Stadion", "Kleiner Arena", "Lohrheidestadion", "Mondpalast-Arena", "Preussenstadion", "Rhein-Neckar-Stadion", "Rosenaustadion", "Sachs-Stadion", "Stadion am Hünting", "Stadion am Panzenberg", "Städtisches Stadion an der Düsternortstraße", "Volksstadion Greifswald"]]], "nominatim": [["Q162366", "Buniamshof, Lübeck"], ["Q1425370", "Kehdinger Stadion, Drochtersen"], ["Q112633360", "Elm-Stadion, Schöningen"], ["Q30090061", "Stadion an der Düsternortstraße, Delmenhorst"], ["Q1576328", "HSC-Stadion Constantinstraße, Hannover"], ["Q468738", "Sportpark Hinschenfelde, Hamburg"], ["Q1585026", "Joda Sportpark, Todesfelde"], ["Q479276", "Stadion am Panzenberg, Bremen"], ["Q831602", "Edmund-Plambeck-Stadion, Norderstedt"], ["Q445897", "Spree-Arena, Fürstenwalde"], ["Q141882", "eins-Erzgebirgsstadion, Aue"], ["Q55364716", "Volksstadion Greifswald, Greifswald"], ["Q571553", "Karl-Liebknecht-Stadion, Potsdam"], ["Q666155", "Preussenstadion, Berlin"], ["Q479371", "Werner-Seelenbinder-Stadion, Luckenwalde"], ["Q694464", "Heidewaldstadion, Gütersloh"], ["Q823142", "Westfalia-Sportpark, Hamm-Rhynern"], ["Q162213", "Stadion am Hünting, Bocholt"], ["Q2521440", "Sportanlage Bandsbusch, Hilden"], ["Q7924284", "Mondpalast-Arena, Herne"], ["Q524378", "Lohrheidestadion, Bochum-Wattenscheid"], ["Q666179", "Rhein-Neckar-Stadion, Mannheim"], ["Q885184", "Kleiner Arena, Remchingen"], ["Q20631356", "Dreisamstadion, Freiburg"], ["Q14118284", "maxworx Sportpark, Dreieich"], ["Q325270", "Dietmar-Hopp-Sportpark, Walldorf"], ["Q526949", "Hans-Walter-Wild-Stadion, Bayreuth"], ["Q529579", "Rosenaustadion, Augsburg"], ["Q162394", "Sachs-Stadion, Schweinfurt"], ["Q885187", "Xaver-Bertsch-Sportpark, Ansbach"], ["Q1507157", "NGN-Arena, Aubstadt"], ["Q2802618", "Sportzentrum Landsberg, Landsberg"]]}''')
+          CFG = json.loads(r'''{"articles": [], "searches": [], "targets": {}, "grabs": [["de", "SpVgg Ansbach 09", "Sportpark|Stadion|Spielstätte"], ["de", "TSV Aubstadt", "Arena|Stadion|Sportplatz|Spielstätte"], ["de", "TSV 1882 Landsberg", "Sportzentrum|Stadion|Sportpark|Spielstätte"], ["de", "VSG Altglienicke", "Fürstenwalde|Spree-Arena|Stadion|Spielstätte"], ["de", "Westfalia Rhynern", "Sportpark|Stadion|Papenloh|Spielstätte"], ["de", "Hannoverscher SC", "Stadion|Constantinstraße|Spielstätte"]], "nominatim": [["Q112633360", "Elmstadion, Schöningen"], ["Q1576328", "HSC-Stadion, Hannover"], ["Q445897", "Spreearena, Fürstenwalde/Spree"], ["Q14118284", "Sportpark Dreieich, Dreieich"], ["Q885187", "Xaver-Bertsch-Sportpark, Ansbach"], ["Q1507157", "NGN Arena, Aubstadt"], ["Q823142", "Westfalia Sportpark, Rhynern, Hamm"], ["Q2802618", "Sportzentrum, Landsberg am Lech"]], "overpass": [["Q112633360", "Schöningen", "Elm"], ["Q1576328", "Hannover", "HSC|Hannoverscher"], ["Q445897", "Fürstenwalde", "Spree|Friesen|Bonava|Arena"], ["Q14118284", "Dreieich", "Sportpark|maxworx|Hahn"], ["Q885187", "Ansbach", "Bertsch|SpVgg"], ["Q1507157", "Aubstadt", "."], ["Q823142", "Hamm", "Westfalia|Papenloh"], ["Q2802618", "Landsberg am Lech", "Sportzentrum|3C|TSV"]]}''')
 
 
           def emit(obj):
@@ -396,6 +396,19 @@ jobs:
                   r = nominatim(q)
                   r.update(k="N", key=key)
                   emit(r)
+              for key, town, rx in CFG.get("overpass", []):
+                  ql = '[out:json][timeout:40];area[name~"^%s"][boundary=administrative][admin_level~"^(6|7|8)$"]->.a;nwr(area.a)[leisure~"^(stadium|pitch|sports_centre)$"][name~"%s",i];out center tags 12;' % (town, rx)
+                  body, err = get("https://overpass-api.de/api/interpreter", gap=8, data=urllib.parse.urlencode({"data": ql}).encode(), timeout=90)
+                  if err:
+                      emit({"k": "O", "key": key, "town": town, "rx": rx, "err": err})
+                      continue
+                  try:
+                      els = json.loads(body).get("elements", [])
+                  except ValueError:
+                      emit({"k": "O", "key": key, "town": town, "rx": rx, "err": "not JSON"})
+                      continue
+                  emit({"k": "O", "key": key, "town": town, "rx": rx, "r": [[e["type"][0] + str(e["id"]), e.get("tags", {}).get("leisure", ""), e.get("tags", {}).get("sport", ""), clean(e.get("tags", {}).get("name", ""), 60),
+                        round((e.get("center") or e).get("lat", 0), 6), round((e.get("center") or e).get("lon", 0), 6)] for e in els]})
               emit({"k": "END", "run": RUN, "requests": NREQ[0], "stopped": STOPPED, "log": LOG[:40]})
               flush()
 
