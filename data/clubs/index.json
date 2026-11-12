@@ -3,30 +3,28 @@
  "countries": {
   "DE": {
    "name": "Germany",
-   "onMap": 149,
+   "onMap": 143,
    "byTier": {
     "1": 18,
     "2": 18,
     "3": 20,
-    "4": 88,
-    "6": 3,
-    "7": 1,
-    "8": 1
+    "4": 86,
+    "7": 1
    },
-   "withVenueName": 149,
-   "withCapacity": 139,
-   "handCorrected": 65
+   "withVenueName": 143,
+   "withCapacity": 135,
+   "handCorrected": 79
   },
   "RO": {
    "name": "Romania",
-   "onMap": 73,
+   "onMap": 67,
    "byTier": {
     "1": 16,
     "2": 22,
-    "3": 35
+    "3": 29
    },
-   "withVenueName": 73,
-   "withCapacity": 43,
+   "withVenueName": 67,
+   "withCapacity": 42,
    "handCorrected": 25
   },
   "FR": {

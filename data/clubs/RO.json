@@ -92,20 +92,6 @@
    "competition": "Liga a II-a"
   },
   {
-   "id": "Q107724768",
-   "name": "SR Brașov",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Tineretului",
-   "capacity": 5750,
-   "lat": 45.664806,
-   "lon": 25.585583,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q113331350",
    "name": "ACS Mediaș 2022",
    "leagues": [
@@ -337,20 +323,6 @@
    "competition": "Liga a III-a"
   },
   {
-   "id": "Q15920568",
-   "name": "CS Național Sebiș",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Crișana",
-   "capacity": null,
-   "lat": 46.369556,
-   "lon": 22.127361,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q16838020",
    "name": "Universitatea Craiova",
    "leagues": [
@@ -556,20 +528,6 @@
    "competition": "Liga a II-a"
   },
   {
-   "id": "Q2932010",
-   "name": "CS Medgidia",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Iftimie Ilisei",
-   "capacity": null,
-   "lat": 44.2481,
-   "lon": 28.2575,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q298201",
    "name": "FC ASA Târgu Mureș",
    "leagues": [
@@ -678,20 +636,6 @@
    "competition": "Liga a III-a"
   },
   {
-   "id": "Q4683227",
-   "name": "FC Rapid II București",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Electromagnetica",
-   "capacity": null,
-   "lat": 44.406,
-   "lon": 26.0852,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q5014181",
    "name": "CSM Râmnicu Sărat",
    "leagues": [
@@ -762,17 +706,21 @@
    "competition": "Liga a III-a"
   },
   {
-   "id": "Q5424763",
-   "name": "Avântul Reghin",
+   "id": "Q533005",
+   "name": "FC Inter Sibiu",
    "leagues": [
+    "Q386384",
     "Q1707697"
    ],
    "tier": 3,
-   "venue": "Stadionul Municipal",
-   "capacity": null,
-   "lat": 46.780833,
-   "lon": 24.710222,
+   "venue": "Stadionul Municipal Sibiu",
+   "capacity": 14200,
+   "lat": 45.783056,
+   "lon": 24.143611,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Liga_III",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): tier 3. Listed as \"Inter Sibiu\" in the en.wikipedia \"2026–27 Liga III\" article and not in the 2026–27 Liga II article; Wikidata has the club and a position (its ground), which stand. It was off the map only because the roster contradicted the tier its Liga II tag would give (open-problems, the Inter Sibiu rule).",
+   "manual": true,
    "competition": "Liga a III-a"
   },
   {
@@ -916,37 +864,6 @@
    "note": "Resolved before applying (2026-09-26): club confirmed by the 2026-27 Liga II article, whose stadiums table gives Jean Pădureanu. Coordinates are the ground item Q1532041's own P625, the same point FC Bistrița Q24895825 already sat on. UPDATE 2026-09-26: FC Bistrița now has a skip row (dissolved 2017), so this club is alone on the pin. CAPACITY: in use 7814 (the Liga II stadiums table); 7800 from Wikidata Q1532041 and the stadium article agrees within 5%. NOT THE SAME CLUB AS FC Bistrița Q24895825: that one was founded 2013 and dissolved 2017 per English Wikipedia; this one was founded 2018 as the unofficial successor of ACF Gloria Bistrița",
    "manual": true,
    "competition": "Liga a II-a"
-  },
-  {
-   "id": "Q584629",
-   "name": "FCU Craiova",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Ion Oblemenco",
-   "capacity": 30944,
-   "lat": 44.313889,
-   "lon": 23.784167,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
-   "id": "Q629277",
-   "name": "Olimpia MCMXXI Satu Mare",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Someșul",
-   "capacity": null,
-   "lat": 47.77575,
-   "lon": 22.869738,
-   "city": null,
-   "source": "https://en.wikipedia.org/wiki/FC_Olimpia_Satu_Mare; https://ro.wikipedia.org/wiki/Olimpia_MCMXXI_Satu_Mare; https://www.openstreetmap.org/way/439006041",
-   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): ground - position - capacity. en.wikipedia: the club 'used to play its home matches on Daniel Prodan Stadium ... After its second re-foundation in 2018 ... started to play its home matches on Someșul Stadium'; both infoboxes name Someșul. Position is OpenStreetMap's way 439006041 (Stadionul Someșul, 3.1 km from the old point). Capacity cleared: 18000 is the Daniel Prodan figure; the only figure read for Someșul is an uncited 6000 in Wikipedia - not written. NOT DECIDED HERE: the club is not in the 2026-27 Liga III article and its en.wikipedia infobox says relegated to Liga IV - the tier is Alexandru's call.",
-   "manual": true,
-   "competition": "Liga a III-a"
   },
   {
    "id": "Q639046",

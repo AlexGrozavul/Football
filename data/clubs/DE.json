@@ -192,6 +192,21 @@
    "competition": "2. Bundesliga"
   },
   {
+   "id": "Q112633360",
+   "name": "FSV Schöningen",
+   "leagues": [],
+   "tier": 4,
+   "venue": "Elm-Stadion",
+   "capacity": null,
+   "lat": 52.143522,
+   "lon": 10.954535,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as FSV Schöningen). Ground from the stadium table of the de article (Elm-Stadion, Schöningen); position from OpenStreetMap w237007153 \"Elmstadion\" in Esbeck, Schöningen (Nominatim \"Elmstadion, Schöningen\" and Overpass, probe run 3); no second source for the position. Capacity left blank: the table cell (none) could not be read without doubt.",
+   "manual": true,
+   "competition": null
+  },
+  {
    "id": "Q127275134",
    "name": "VfR Garching",
    "leagues": [
@@ -240,37 +255,6 @@
    "competition": "Regionalliga West"
   },
   {
-   "id": "Q13426883",
-   "name": "FC Viktoria 1889 Berlin",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Stadion Lichterfelde",
-   "capacity": 4300,
-   "lat": 52.439306,
-   "lon": 13.323972,
-   "city": null,
-   "source": "https://www.europlan-online.de/stadion-lichterfelde/stadion-234.html",
-   "note": "Stadion Lichterfelde, Ostpreußendamm 3-17, 12207 Berlin-Lichterfelde. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Viktoria 1889 Berlin Lichterfelde-Tempelhof. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. WORTH A SECOND LOOK: this ground page names the club's WOMEN'S team (2. Bundesliga) and its Nebenplatz names the third team, but the men's first team is not listed on any of the three Lichterfelde pages read. The club is unambiguously based here - same postcode, and the club is named for the district - but the men's team's own row was not seen. OpenStreetMap had offered ten Berlin stadiums for this club, none of them this one.",
-   "manual": true,
-   "competition": "Regionalliga Nordost"
-  },
-  {
-   "id": "Q136089",
-   "name": "ZFC Meuselwitz",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Bluechip-Arena",
-   "capacity": 5260,
-   "lat": 51.0536,
-   "lon": 12.2831,
-   "city": null,
-   "competition": "Regionalliga Nordost"
-  },
-  {
    "id": "Q137499",
    "name": "FC 08 Homburg",
    "leagues": [
@@ -286,37 +270,6 @@
    "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): capacity. Wikidata's 21813 is stated by no source read. 16488 is in the de.wikipedia ground article (cited), the en.wikipedia ground and club articles (cited), the stadium table of de.wikipedia's Regionalliga Südwest 2026/27 article and StadiumDB's Germany table.",
    "manual": true,
    "competition": "Regionalliga Suedwest"
-  },
-  {
-   "id": "Q1378922",
-   "name": "Eutin 08",
-   "leagues": [
-    "Q539678"
-   ],
-   "tier": 6,
-   "venue": "Thies Hahn Arena",
-   "capacity": 2000,
-   "lat": 54.147329,
-   "lon": 10.627917,
-   "city": null,
-   "source": "https://www.europlan-online.de/eutina-platz/stadion-11632.html",
-   "note": "Thies Hahn Arena, Steinredder, 23701 Eutin-Fissau. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names Eutiner SV 08. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA HOLSTEIN, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 6 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map. The ground's URL still carries the name eutina-platz, which is what an earlier pass had for this club - same ground, since renamed.",
-   "manual": true,
-   "competition": null
-  },
-  {
-   "id": "Q1387417",
-   "name": "FC Oberlausitz Neugersdorf",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Ostseehalle",
-   "capacity": 13500,
-   "lat": 54.320556,
-   "lon": 10.130556,
-   "city": null,
-   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q141931",
@@ -361,6 +314,23 @@
    "competition": "3. Liga"
   },
   {
+   "id": "Q1425370",
+   "name": "SV Drochtersen/Assel",
+   "leagues": [
+    "Q317868"
+   ],
+   "tier": 4,
+   "venue": "Kehdinger Stadion",
+   "capacity": 3000,
+   "lat": 53.70381,
+   "lon": 9.380466,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as SV Drochtersen/Assel). Ground and capacity from the stadium table of the de article (Kehdinger Stadion, Drochtersen); position from OpenStreetMap w1110584842 \"Kehdinger Stadion\" in Drochtersen (Nominatim \"Kehdinger Stadion, Drochtersen\"); no second source for the position.",
+   "manual": true,
+   "competition": null
+  },
+  {
    "id": "Q14551982",
    "name": "SSV Ulm 1846",
    "leagues": [
@@ -378,21 +348,21 @@
    "competition": null
   },
   {
-   "id": "Q1514109",
-   "name": "Germania Egestorf",
+   "id": "Q1507157",
+   "name": "TSV Aubstadt",
    "leagues": [
-    "Q539678"
+    "Q20028073"
    ],
    "tier": 4,
-   "venue": "Stadion An der Ammerke",
+   "venue": "NGN-Arena",
    "capacity": 3000,
-   "lat": 52.285947,
-   "lon": 9.512819,
+   "lat": 50.329634,
+   "lon": 10.432409,
    "city": null,
-   "source": "https://www.europlan-online.de/sportanlage-egestorf/stadion-1868.html",
-   "note": "Stadion An der Ammerke, An der Ammerke 3, 30890 Barsinghausen-Egestorf. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Oberliga Niedersachsen page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names 1. FC Germania Egestorf/Langreder 2001. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. Wikidata's town for this club is Barsinghausen and the ground is in Barsinghausen-Egestorf, so town and club name agree.",
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Bayern_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Bayern 2026/27\" (as TSV Aubstadt). Ground and capacity from the stadium table of the de article (NGN-Arena, Aubstadt); position from OpenStreetMap w103891118, a football pitch in Aubstadt (Overpass, probe run 3), 2 m from the coordinates the de club article's infobox gives for the NGN-Arena.",
    "manual": true,
-   "competition": "Regionalliga Nord"
+   "competition": null
   },
   {
    "id": "Q151747",
@@ -590,6 +560,23 @@
    "competition": "3. Liga"
   },
   {
+   "id": "Q1576328",
+   "name": "Hannoverscher SC",
+   "leagues": [
+    "Q317868"
+   ],
+   "tier": 4,
+   "venue": "HSC-Stadion Constantinstraße",
+   "capacity": null,
+   "lat": 52.4037,
+   "lon": 9.769643,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as HSC Hannover). Ground from the stadium table of the de article (HSC-Stadion Constantinstraße, Hannover); position from OpenStreetMap w32209700, a sports centre named \"Hannoverscher Sport-Club von 1893\" (Overpass, probe run 3): the object carries the CLUB's name, not the ground's, and nothing else confirms it; the de club article says the club's home is at the Constantinstraße. Capacity left blank: the table cell (none) could not be read without doubt.",
+   "manual": true,
+   "competition": null
+  },
+  {
    "id": "Q157828",
    "name": "Holstein Kiel",
    "leagues": [
@@ -678,6 +665,23 @@
    "note": "Stadion der Stadt Fulda im Sportpark Johannisau, Johannistraße, 36041 Fulda. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Regionalliga Südwest page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names SG Barockstadt Fulda-Lehnerz 04-65. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
    "manual": true,
    "competition": "Regionalliga Suedwest"
+  },
+  {
+   "id": "Q1585026",
+   "name": "SV Todesfelde",
+   "leagues": [
+    "Q324154"
+   ],
+   "tier": 4,
+   "venue": "Joda Sportpark",
+   "capacity": 2000,
+   "lat": 53.898196,
+   "lon": 10.185532,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as SV Todesfelde). Ground and capacity from the stadium table of the de article (Joda Sportpark, Todesfelde); position from OpenStreetMap w753432639 \"Joda Sportpark\" in Todesfelde (Nominatim \"Joda Sportpark, Todesfelde\"); no second source for the position.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q15972883",
@@ -787,6 +791,23 @@
    "competition": "Regionalliga Nordost"
   },
   {
+   "id": "Q162213",
+   "name": "1. FC Bocholt",
+   "leagues": [
+    "Q1476473"
+   ],
+   "tier": 4,
+   "venue": "Stadion am Hünting",
+   "capacity": 3310,
+   "lat": 51.857297,
+   "lon": 6.60973,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_West_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga West 2026/27\" (as 1. FC Bocholt). Ground and capacity from the stadium table of the de article (Stadion am Hünting, Bocholt); position from OpenStreetMap w104981785 \"Stadion am Hünting\" (Nominatim \"Stadion am Hünting, Bocholt\"), 5 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
+  },
+  {
    "id": "Q162251",
    "name": "1. FC Heidenheim 1846",
    "leagues": [
@@ -821,6 +842,38 @@
    "competition": "Regionalliga Nordost"
   },
   {
+   "id": "Q162366",
+   "name": "1. FC Phönix Lübeck",
+   "leagues": [],
+   "tier": 4,
+   "venue": "Buniamshof",
+   "capacity": 2500,
+   "lat": 53.85787,
+   "lon": 10.68185,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as 1. FC Phönix Lübeck). Ground and capacity from the stadium table of the de article (Buniamshof, Lübeck); position from OpenStreetMap w151836165 \"Buniamshof\" (Nominatim \"Buniamshof, Lübeck\"), 57 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
+  },
+  {
+   "id": "Q162394",
+   "name": "1. FC Schweinfurt 05",
+   "leagues": [
+    "Q15735"
+   ],
+   "tier": 4,
+   "venue": "Sachs-Stadion",
+   "capacity": 15060,
+   "lat": 50.051994,
+   "lon": 10.201683,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Bayern_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Bayern 2026/27\" (as 1. FC Schweinfurt 05). Ground from the stadium table of the de article (Sachs-Stadion, Schweinfurt); position from OpenStreetMap w23646182 \"Sachs-Stadion\" (Nominatim \"Sachs-Stadion, Schweinfurt\"), 118 m from the coordinates of the de.wikipedia stadium article. Capacity left blank: the table cell (12.0000) could not be read without doubt.",
+   "manual": true,
+   "competition": null
+  },
+  {
    "id": "Q16525407",
    "name": "1. FC Kaiserslautern II",
    "leagues": [
@@ -852,34 +905,6 @@
    "competition": null
   },
   {
-   "id": "Q16536906",
-   "name": "Bayer 04 Leverkusen II",
-   "leagues": [
-    "Q555836"
-   ],
-   "tier": 4,
-   "venue": "BayArena",
-   "capacity": 30210,
-   "lat": 51.038256,
-   "lon": 7.002206,
-   "city": null,
-   "competition": "Regionalliga West"
-  },
-  {
-   "id": "Q16559523",
-   "name": "Eintracht Braunschweig II",
-   "leagues": [
-    "Q539678"
-   ],
-   "tier": 4,
-   "venue": "Eintracht-Stadion",
-   "capacity": 24406,
-   "lat": 52.29,
-   "lon": 10.521389,
-   "city": null,
-   "competition": "Regionalliga Nord"
-  },
-  {
    "id": "Q16573990",
    "name": "Hannover 96 II",
    "leagues": [
@@ -909,20 +934,6 @@
    "note": "TIER FROM THE ROSTER CHECK of 2026-09-20. The 2026-27 3. Liga article lists this club and the 2026-27 Regionalliga article does not, so tier 3 is what the leagues themselves say. Wikidata still tags it Q322128 Regionalliga Suedwest, which is where the old tier came from.",
    "manual": true,
    "competition": "3. Liga"
-  },
-  {
-   "id": "Q16645947",
-   "name": "VfL Wolfsburg II",
-   "leagues": [
-    "Q539678"
-   ],
-   "tier": 4,
-   "venue": "AOK Stadion",
-   "capacity": null,
-   "lat": 52.434577,
-   "lon": 10.807511,
-   "city": null,
-   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q16743331",
@@ -998,23 +1009,6 @@
    "competition": "3. Liga"
   },
   {
-   "id": "Q170157",
-   "name": "Wuppertaler SV",
-   "leagues": [
-    "Q555836"
-   ],
-   "tier": 4,
-   "venue": "Stadion am Zoo",
-   "capacity": 23067,
-   "lat": 51.239083,
-   "lon": 7.105083,
-   "city": null,
-   "source": "multiple independent listings, per Alexandru",
-   "note": "THIS ROW CHANGES NOTHING ON THE MAP AND IS MEANT TO: Wikidata already says 23067 for the Stadion am Zoo and it is right, so the capacity before and after this row is the same. It goes in the other direction from every other correction in this batch - here it was OPENSTREETMAP that was imprecise, with a round 21000, and capacity-review.csv reported the 9% gap as if Wikidata were the suspect one. Writing 23067 down by hand pins it, so a future Wikidata edit cannot quietly move it and so the next reader knows the row was judged rather than missed.",
-   "manual": true,
-   "competition": "Regionalliga West"
-  },
-  {
    "id": "Q17321080",
    "name": "DJK Vilzing",
    "leagues": [
@@ -1029,20 +1023,6 @@
    "source": "https://www.openstreetmap.org/node/13043406139",
    "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
    "manual": true,
-   "competition": "Regionalliga Bayern"
-  },
-  {
-   "id": "Q175616",
-   "name": "SV Seligenporten",
-   "leagues": [
-    "Q340179"
-   ],
-   "tier": 4,
-   "venue": "M.A.R. Arena",
-   "capacity": 5000,
-   "lat": 49.264,
-   "lon": 11.298,
-   "city": null,
    "competition": "Regionalliga Bayern"
   },
   {
@@ -1063,20 +1043,6 @@
    "competition": "Regionalliga Nordost"
   },
   {
-   "id": "Q176850",
-   "name": "Bahlinger SC",
-   "leagues": [
-    "Q322128"
-   ],
-   "tier": 4,
-   "venue": "Kaiserstuhlstadion",
-   "capacity": 5000,
-   "lat": 48.1191,
-   "lon": 7.74351,
-   "city": null,
-   "competition": "Regionalliga Suedwest"
-  },
-  {
    "id": "Q1921747",
    "name": "BSG Chemie Leipzig",
    "leagues": [
@@ -1091,18 +1057,21 @@
    "competition": "Regionalliga Nordost"
   },
   {
-   "id": "Q20994272",
-   "name": "RB Leipzig II",
+   "id": "Q20631356",
+   "name": "SC Freiburg II",
    "leagues": [
-    "Q548937"
+    "Q878642"
    ],
    "tier": 4,
-   "venue": "Red Bull Arena",
-   "capacity": 42000,
-   "lat": 51.345833,
-   "lon": 12.348056,
+   "venue": "Dreisamstadion",
+   "capacity": 24000,
+   "lat": 47.988934,
+   "lon": 7.892989,
    "city": null,
-   "competition": "Regionalliga Nordost"
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_S%C3%BCdwest_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Südwest 2026/27\" (as SC Freiburg II). Ground and capacity from the stadium table of the de article (Dreisamstadion, Freiburg); position from OpenStreetMap r1614762 \"Dreisamstadion\" (Nominatim \"Dreisamstadion, Freiburg\"), 7 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q2207914",
@@ -1118,23 +1087,6 @@
    "city": null,
    "source": "https://www.openstreetmap.org/way/1121559196",
    "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
-   "manual": true,
-   "competition": "Regionalliga Nord"
-  },
-  {
-   "id": "Q2208389",
-   "name": "SV Eichede",
-   "leagues": [
-    "Q539678"
-   ],
-   "tier": 4,
-   "venue": "Ernst-Wagener-Stadion",
-   "capacity": null,
-   "lat": 53.720317,
-   "lon": 10.4138,
-   "city": null,
-   "source": "https://www.openstreetmap.org/way/26487966",
-   "note": "Coordinates from OpenStreetMap; confident row in coordinate-review.csv - this named football pitch is 0.6 km from the middle of Eichede, the village in the club's name",
    "manual": true,
    "competition": "Regionalliga Nord"
   },
@@ -1182,6 +1134,21 @@
    "lon": 12.1069,
    "city": null,
    "competition": "3. Liga"
+  },
+  {
+   "id": "Q30090061",
+   "name": "SV Atlas Delmenhorst",
+   "leagues": [],
+   "tier": 4,
+   "venue": "Stadion an der Düsternortstraße",
+   "capacity": 6000,
+   "lat": 53.038495,
+   "lon": 8.643092,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as SV Atlas Delmenhorst). Ground and capacity from the stadium table of the de article (Stadion an der Düsternortstraße, Delmenhorst); position from the coordinates of the de.wikipedia stadium article \"Städtisches Stadion an der Düsternortstraße\"; Nominatim found no object under this name, so OpenStreetMap does not confirm it.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q310608",
@@ -1311,6 +1278,23 @@
    "competition": "Regionalliga Bayern"
   },
   {
+   "id": "Q325270",
+   "name": "FC Astoria Walldorf",
+   "leagues": [
+    "Q878642"
+   ],
+   "tier": 4,
+   "venue": "Stadion im Dietmar-Hopp-Sportpark",
+   "capacity": 5000,
+   "lat": 49.315171,
+   "lon": 8.642312,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_S%C3%BCdwest_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Südwest 2026/27\" (as FC-Astoria Walldorf). Ground and capacity from the stadium table of the de article (Stadion im Dietmar-Hopp-Sportpark, Walldorf); position from OpenStreetMap w159034730 \"Stadion im Dietmar-Hopp-Sportpark\" in Walldorf (Nominatim \"Dietmar-Hopp-Sportpark, Walldorf\"); no second source for the position.",
+   "manual": true,
+   "competition": null
+  },
+  {
    "id": "Q33748",
    "name": "Hannover 96",
    "leagues": [
@@ -1421,6 +1405,21 @@
    "competition": "Regionalliga Bayern"
   },
   {
+   "id": "Q468738",
+   "name": "Eimsbütteler TV",
+   "leagues": [],
+   "tier": 4,
+   "venue": "Sportpark Hinschenfelde",
+   "capacity": 4500,
+   "lat": 53.58118,
+   "lon": 10.098844,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as Eimsbütteler TV). Ground and capacity from the stadium table of the de article (Sportpark Hinschenfelde, Hamburg); position from OpenStreetMap r1106317 \"Sportpark Hinschenfelde\" in Hamburg (Nominatim \"Sportpark Hinschenfelde, Hamburg\"); no second source for the position.",
+   "manual": true,
+   "competition": null
+  },
+  {
    "id": "Q479269",
    "name": "SC Wiedenbrück",
    "leagues": [
@@ -1435,19 +1434,19 @@
    "competition": "Regionalliga West"
   },
   {
-   "id": "Q479306",
-   "name": "VfB Hüls",
+   "id": "Q479276",
+   "name": "Bremer SV",
    "leagues": [
-    "Q555836"
+    "Q475887"
    ],
-   "tier": 8,
-   "venue": "EVONIK Sportpark",
-   "capacity": 6000,
-   "lat": 51.67652,
-   "lon": 7.099067,
+   "tier": 4,
+   "venue": "Stadion am Panzenberg",
+   "capacity": 5000,
+   "lat": 53.08674,
+   "lon": 8.794492,
    "city": null,
-   "source": "https://www.europlan-online.de/evonik-sportpark-stadion-am-badeweiher/stadion-689.html",
-   "note": "EVONIK Sportpark, Paul-Baumann-Straße, 45772 Marl. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfB 48/64 Hüls. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN BEZIRKSLIGA WESTFALEN 11, LEVEL 8, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 8 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map. europlan has three pitches on this address; this is the main one, which its club row gives the first team.",
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as Bremer SV). Ground and capacity from the stadium table of the de article (Stadion am Panzenberg, Bremen); position from OpenStreetMap w231977701 \"Stadion am Panzenberg\" (Nominatim \"Stadion am Panzenberg, Bremen\"), 5 m from the coordinates of the de.wikipedia stadium article.",
    "manual": true,
    "competition": null
   },
@@ -1469,23 +1468,6 @@
    "competition": "Regionalliga Bayern"
   },
   {
-   "id": "Q479340",
-   "name": "TSV 1896 Rain",
-   "leagues": [
-    "Q340179"
-   ],
-   "tier": 4,
-   "venue": "Georg-Weber-Stadion",
-   "capacity": null,
-   "lat": 48.69474,
-   "lon": 10.907072,
-   "city": null,
-   "source": "https://www.openstreetmap.org/way/1375425515",
-   "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
-   "manual": true,
-   "competition": "Regionalliga Bayern"
-  },
-  {
    "id": "Q479351",
    "name": "SV Darmstadt 98",
    "leagues": [
@@ -1503,21 +1485,21 @@
    "competition": "2. Bundesliga"
   },
   {
-   "id": "Q479366",
-   "name": "VfB Auerbach",
+   "id": "Q479371",
+   "name": "FSV 63 Luckenwalde",
    "leagues": [
-    "Q548937"
+    "Q316686"
    ],
    "tier": 4,
-   "venue": "Arena zur Vogtlandweide",
-   "capacity": null,
-   "lat": 50.506196,
-   "lon": 12.38675,
+   "venue": "Werner-Seelenbinder-Stadion",
+   "capacity": 3000,
+   "lat": 52.103298,
+   "lon": 13.148296,
    "city": null,
-   "source": "https://www.openstreetmap.org/way/72745820",
-   "note": "Coordinates from OpenStreetMap; ground's operator tag names the club directly (confident match in coordinate-review.csv)",
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nordost_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nordost 2026/27\" (as FSV 63 Luckenwalde). Ground and capacity from the stadium table of the de article (Werner-Seelenbinder-Stadion, Luckenwalde); position from OpenStreetMap w51780507 \"Werner-Seelenbinder-Stadion\" in Luckenwalde (Nominatim \"Werner-Seelenbinder-Stadion, Luckenwalde\"); no second source for the position.",
    "manual": true,
-   "competition": "Regionalliga Nordost"
+   "competition": null
   },
   {
    "id": "Q493464",
@@ -1541,10 +1523,13 @@
    ],
    "tier": 1,
    "venue": "Volksparkstadion",
-   "capacity": 51500,
+   "capacity": 57000,
    "lat": 53.586944,
    "lon": 9.898611,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/Volksparkstadion",
+   "note": "CONTESTED CAPACITY, decided by the convention of 2026-11-11 (the stored capacity is the figure for league matches). In use: 57000 (en.wikipedia Volksparkstadion infobox \"57,000 (league matches)\", de.wikipedia Volksparkstadion \"57.000 Plätze\", and the stadiums table of en.wikipedia \"2026–27 Bundesliga\"; all read 2026-11-11). Not taken: 51500, the figure for international matches (same two stadium articles), which the map held until now.",
+   "manual": true,
    "competition": "Bundesliga"
   },
   {
@@ -1560,6 +1545,57 @@
    "lon": 8.8375,
    "city": null,
    "competition": "Bundesliga"
+  },
+  {
+   "id": "Q524378",
+   "name": "SG Wattenscheid 09",
+   "leagues": [
+    "Q316113"
+   ],
+   "tier": 4,
+   "venue": "Lohrheidestadion",
+   "capacity": 16387,
+   "lat": 51.485756,
+   "lon": 7.118613,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_West_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga West 2026/27\" (as SG Wattenscheid 09). Ground and capacity from the stadium table of the de article (Lohrheidestadion, Bochum-Wattenscheid); position from OpenStreetMap w663054792 \"Lohrheidestadion\" (Nominatim \"Lohrheidestadion, Bochum-Wattenscheid\"), 22 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
+  },
+  {
+   "id": "Q526949",
+   "name": "SpVgg Bayreuth",
+   "leagues": [
+    "Q15735"
+   ],
+   "tier": 4,
+   "venue": "Hans-Walter-Wild-Stadion",
+   "capacity": 21500,
+   "lat": 49.945352,
+   "lon": 11.587346,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Bayern_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Bayern 2026/27\" (as SpVgg Bayreuth). Ground from the stadium table of the de article (Hans-Walter-Wild-Stadion, Bayreuth); position from OpenStreetMap w439206373 \"Hans-Walter-Wild-Stadion\" (Nominatim \"Hans-Walter-Wild-Stadion, Bayreuth\"), 11 m from the coordinates of the de.wikipedia stadium article. Capacity left blank: the table cell (21.5000) could not be read without doubt.",
+   "manual": true,
+   "competition": null
+  },
+  {
+   "id": "Q529579",
+   "name": "TSV Schwaben Augsburg",
+   "leagues": [
+    "Q1477024"
+   ],
+   "tier": 4,
+   "venue": "Rosenaustadion",
+   "capacity": 5000,
+   "lat": 48.355334,
+   "lon": 10.876242,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Bayern_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Bayern 2026/27\" (as TSV Schwaben Augsburg). Ground from the stadium table of the de article (Rosenaustadion, Augsburg); position from OpenStreetMap w26039742 \"Rosenaustadion\" (Nominatim \"Rosenaustadion, Augsburg\"), 13 m from the coordinates of the de.wikipedia stadium article. Capacity left blank: the table cell (28.0000) could not be read without doubt.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q535785",
@@ -1610,18 +1646,19 @@
    "competition": "Regionalliga Bayern"
   },
   {
-   "id": "Q5424977",
-   "name": "FC Ingolstadt 04 II",
-   "leagues": [
-    "Q340179"
-   ],
+   "id": "Q55364716",
+   "name": "Greifswalder FC",
+   "leagues": [],
    "tier": 4,
-   "venue": "ESV-Stadion",
-   "capacity": 11418,
-   "lat": 48.744444,
-   "lon": 11.443056,
+   "venue": "Volksstadion Greifswald",
+   "capacity": 4990,
+   "lat": 54.089937,
+   "lon": 13.41371,
    "city": null,
-   "competition": "Regionalliga Bayern"
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nordost_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nordost 2026/27\" (as Greifswalder FC). Ground and capacity from the stadium table of the de article (Volksstadion Greifswald, Greifswald); position from OpenStreetMap w65043195 \"Volksstadion\" (Nominatim \"Volksstadion Greifswald, Greifswald\"), 101 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q5644342",
@@ -1650,51 +1687,6 @@
    "lon": 10.1661,
    "city": null,
    "competition": "Regionalliga Bayern"
-  },
-  {
-   "id": "Q566141",
-   "name": "SSVg Velbert",
-   "leagues": [
-    "Q555836"
-   ],
-   "tier": 4,
-   "venue": "Stadion Sonnenblume",
-   "capacity": 4702,
-   "lat": 51.3289,
-   "lon": 7.01857,
-   "city": null,
-   "competition": "Regionalliga West"
-  },
-  {
-   "id": "Q566165",
-   "name": "FSV Optik Rathenow",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Stadion Vogelgesang",
-   "capacity": 5000,
-   "lat": 52.597398,
-   "lon": 12.368599,
-   "city": null,
-   "source": "https://www.europlan-online.de/stadion-vogelgesang/stadion-1314.html",
-   "note": "Stadion Vogelgesang, Birkenweg 45, 14712 Rathenow. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the NOFV-Oberliga Nord page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FSV Optik Rathenow 1991. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
-   "manual": true,
-   "competition": "Regionalliga Nordost"
-  },
-  {
-   "id": "Q566172",
-   "name": "SC 07 Idar-Oberstein",
-   "leagues": [
-    "Q322128"
-   ],
-   "tier": 4,
-   "venue": "Stadion Im Haag",
-   "capacity": 4000,
-   "lat": 49.7352,
-   "lon": 7.29491,
-   "city": null,
-   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q566183",
@@ -1740,48 +1732,6 @@
    "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): capacity. Wikidata's 19400 is stated by no source read. 18500 is in the en.wikipedia ground article (cited), the de.wikipedia ground and club articles and StadiumDB's Germany table.",
    "manual": true,
    "competition": "Regionalliga West"
-  },
-  {
-   "id": "Q639419",
-   "name": "VfB Germania Halberstadt",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Friedensstadion",
-   "capacity": 5000,
-   "lat": 51.8764,
-   "lon": 11.0501,
-   "city": null,
-   "competition": "Regionalliga Nordost"
-  },
-  {
-   "id": "Q639472",
-   "name": "Goslarer SC 08",
-   "leagues": [
-    "Q539678"
-   ],
-   "tier": 4,
-   "venue": "S-Arena",
-   "capacity": 5001,
-   "lat": 51.905,
-   "lon": 10.4451,
-   "city": null,
-   "competition": "Regionalliga Nord"
-  },
-  {
-   "id": "Q639506",
-   "name": "VfR Neumünster",
-   "leagues": [
-    "Q539678"
-   ],
-   "tier": 4,
-   "venue": "Grümmi-Arena",
-   "capacity": 6000,
-   "lat": 54.0892,
-   "lon": 9.95558,
-   "city": null,
-   "competition": "Regionalliga Nord"
   },
   {
    "id": "Q639525",
@@ -1843,20 +1793,6 @@
    "competition": null
   },
   {
-   "id": "Q666000",
-   "name": "FC Bayern Alzenau",
-   "leagues": [
-    "Q322128"
-   ],
-   "tier": 4,
-   "venue": "Städtisches Stadion am Prischoß",
-   "capacity": 5113,
-   "lat": 50.0815,
-   "lon": 9.0593,
-   "city": null,
-   "competition": "Regionalliga Suedwest"
-  },
-  {
    "id": "Q666010",
    "name": "SC Verl",
    "leagues": [
@@ -1874,20 +1810,6 @@
    "competition": "3. Liga"
   },
   {
-   "id": "Q666024",
-   "name": "SC Pfullendorf",
-   "leagues": [
-    "Q322128"
-   ],
-   "tier": 4,
-   "venue": "Geberit-Arena",
-   "capacity": 10000,
-   "lat": 47.918342,
-   "lon": 9.261914,
-   "city": null,
-   "competition": "Regionalliga Suedwest"
-  },
-  {
    "id": "Q666067",
    "name": "Sportfreunde Lotte",
    "leagues": [
@@ -1900,6 +1822,40 @@
    "lon": 7.920444,
    "city": null,
    "competition": "Regionalliga West"
+  },
+  {
+   "id": "Q666155",
+   "name": "BFC Preussen",
+   "leagues": [
+    "Q821097"
+   ],
+   "tier": 4,
+   "venue": "Preussenstadion",
+   "capacity": 3000,
+   "lat": 52.43269,
+   "lon": 13.354666,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nordost_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nordost 2026/27\" (as BFC Preussen). Ground and capacity from the stadium table of the de article (Preussenstadion, Berlin); position from OpenStreetMap r20335480 \"Preussenstadion\" (Nominatim \"Preussenstadion, Berlin\"), 13 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
+  },
+  {
+   "id": "Q666179",
+   "name": "VfR Mannheim",
+   "leagues": [
+    "Q878642"
+   ],
+   "tier": 4,
+   "venue": "Rhein-Neckar-Stadion",
+   "capacity": 8000,
+   "lat": 49.479307,
+   "lon": 8.499711,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_S%C3%BCdwest_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Südwest 2026/27\" (as VfR Mannheim). Ground and capacity from the stadium table of the de article (Rhein-Neckar-Stadion, Mannheim); position from OpenStreetMap w439077870 \"Rhein-Neckar-Stadion\" (Nominatim \"Rhein-Neckar-Stadion, Mannheim\"), 25 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q692586",
@@ -1930,20 +1886,6 @@
    "competition": "Bundesliga"
   },
   {
-   "id": "Q692704",
-   "name": "Berliner AK 07",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Poststadion",
-   "capacity": 10000,
-   "lat": 52.53,
-   "lon": 13.359444,
-   "city": null,
-   "competition": "Regionalliga Nordost"
-  },
-  {
    "id": "Q692755",
    "name": "SG Sonnenhof Großaspach",
    "leagues": [
@@ -1959,6 +1901,23 @@
    "note": "Promoted from Regionalliga to 3. Liga in summer 2026",
    "manual": true,
    "competition": "3. Liga"
+  },
+  {
+   "id": "Q694464",
+   "name": "FC Gütersloh 2000",
+   "leagues": [
+    "Q316113"
+   ],
+   "tier": 4,
+   "venue": "Heidewaldstadion",
+   "capacity": 8400,
+   "lat": 51.891793,
+   "lon": 8.388073,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_West_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga West 2026/27\" (as FC Gütersloh). Ground and capacity from the stadium table of the de article (Heidewaldstadion, Gütersloh); position from OpenStreetMap w26927517 \"Ohlendorf Stadion im Heidewald\" (Nominatim \"Heidewaldstadion, Gütersloh\"), 3 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q695008",
@@ -2006,23 +1965,6 @@
    "competition": "Bundesliga"
   },
   {
-   "id": "Q720528",
-   "name": "FC Kray",
-   "leagues": [
-    "Q555836"
-   ],
-   "tier": 6,
-   "venue": "KrayArena",
-   "capacity": 2000,
-   "lat": 51.462594,
-   "lon": 7.074942,
-   "city": null,
-   "source": "https://www.europlan-online.de/krayarena-kr/stadion-6747.html",
-   "note": "KrayArena - powered by Stölting Service Group, Buderusstraße 20a, 45307 Essen/Ruhr-Kray. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Kray 09/31. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA NIEDERRHEIN 2, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 6 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map. europlan has three grounds on this address; this is the one its club row gives the first team, the other two being the reserve sides' pitch and a former ground.",
-   "manual": true,
-   "competition": null
-  },
-  {
    "id": "Q7572134",
    "name": "SpVgg Greuther Fürth II",
    "leagues": [
@@ -2040,18 +1982,21 @@
    "competition": "Regionalliga Bayern"
   },
   {
-   "id": "Q797022",
-   "name": "BSV Rehden",
+   "id": "Q7924284",
+   "name": "VfL Bochum II",
    "leagues": [
-    "Q539678"
+    "Q2188121"
    ],
    "tier": 4,
-   "venue": "Sportplatz Waldsportstätten",
-   "capacity": 4350,
-   "lat": 52.6163,
-   "lon": 8.48314,
+   "venue": "Mondpalast-Arena",
+   "capacity": 4999,
+   "lat": 51.522032,
+   "lon": 7.172388,
    "city": null,
-   "competition": "Regionalliga Nord"
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_West_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga West 2026/27\" (as VfL Bochum II). Ground and capacity from the stadium table of the de article (Mondpalast-Arena, Herne); position from OpenStreetMap w87347983 \"Mondpalast-Arena\" (Nominatim \"Mondpalast-Arena, Herne\"), 34 m from the coordinates of the de.wikipedia stadium article. allowDissolved: Wikidata carries P576 2015; the en club article says the second team was reintegrated for 2024/25 and its infobox says Regionalliga West.",
+   "manual": true,
+   "competition": "Regionalliga (the generic fourth-division item)"
   },
   {
    "id": "Q819354",
@@ -2085,20 +2030,6 @@
    "competition": "3. Liga"
   },
   {
-   "id": "Q819419",
-   "name": "Wormatia Worms",
-   "leagues": [
-    "Q322128"
-   ],
-   "tier": 4,
-   "venue": "EWR-Arena",
-   "capacity": 5724,
-   "lat": 49.631381,
-   "lon": 8.335803,
-   "city": null,
-   "competition": "Regionalliga Suedwest"
-  },
-  {
    "id": "Q821096",
    "name": "SC Eltersdorf",
    "leagues": [
@@ -2127,6 +2058,23 @@
    "competition": "Regionalliga (the generic fourth-division item)"
   },
   {
+   "id": "Q831602",
+   "name": "FC Eintracht Norderstedt 03",
+   "leagues": [
+    "Q317927"
+   ],
+   "tier": 4,
+   "venue": "Edmund-Plambeck-Stadion",
+   "capacity": 5068,
+   "lat": 53.677019,
+   "lon": 9.977077,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" (as Eintracht Norderstedt). Ground and capacity from the stadium table of the de article (Edmund-Plambeck-Stadion, Norderstedt); position from OpenStreetMap w26790284 \"Edmund-Plambeck-Stadion\" (Nominatim \"Edmund-Plambeck-Stadion, Norderstedt\"), 4 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
+  },
+  {
    "id": "Q831867",
    "name": "SC Weiche Flensburg 08",
    "leagues": [
@@ -2142,40 +2090,6 @@
    "note": "Bredstedter Str. 2, 24941 Flensburg. 4000 total capacity, 2500 licensed for match use - the licensed figure is the one that decides whether a match sells out. Club renamed from ETSV Weiche, which is still the Wikidata label. Rejects the coordinate-review.csv proposal of the GP JOULE Arena (way/25020637), a different ground",
    "manual": true,
    "competition": "Regionalliga Nord"
-  },
-  {
-   "id": "Q831887",
-   "name": "FC Ismaning",
-   "leagues": [
-    "Q340179"
-   ],
-   "tier": 4,
-   "venue": "Prof. Erich Greipl Stadion",
-   "capacity": 5000,
-   "lat": 48.228361,
-   "lon": 11.666837,
-   "city": null,
-   "source": "https://www.europlan-online.de/prof-erich-greipl-stadion/stadion-782.html",
-   "note": "Prof. Erich Greipl Stadion, Leuchtenbergstraße 25, 85737 Ismaning. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the Bayernliga Süd page, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names FC Ismaning 1921. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de.",
-   "manual": true,
-   "competition": "Regionalliga Bayern"
-  },
-  {
-   "id": "Q831892",
-   "name": "Lupo Martini Wolfsburg",
-   "leagues": [
-    "Q539678"
-   ],
-   "tier": 6,
-   "venue": "Lupo Stadio",
-   "capacity": 2000,
-   "lat": 52.451539,
-   "lon": 10.793827,
-   "city": null,
-   "source": "https://www.europlan-online.de/lupo-stadio/stadion-1532.html",
-   "note": "Lupo Stadio, Hubertusstraße 10, 38448 Wolfsburg-Kreuzheide. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names USI Lupo Martini Wolfsburg 62/81/70. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN LANDESLIGA BRAUNSCHWEIG, LEVEL 6, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 6 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map.",
-   "manual": true,
-   "competition": null
   },
   {
    "id": "Q8466",
@@ -2207,6 +2121,40 @@
    "note": "COPIED GROUND, corrected. Wikidata gave this reserve side the first team's Signal Iduna Park and its 81359, exactly the shape of error that put TSV 1860 Muenchen II on the Gruenwalder. StadiumDB names Stadion Rote Erde in Dortmund at 9999 for Borussia II specifically, and lists Signal Iduna Park separately for Borussia. COORDINATES PINNED 2026-09-26, and the reason is worse than the note used to say. Q865720 carries TWO truthy P115 values, Stadion Rote Erde (Q628059) and the Westfalenstadion (Q150928), and fetch_clubs.py builds a club from whichever query rows come back first - so the map took the venue name and capacity from this row but the POSITION from the Westfalenstadion's row (7.451667): a mixed record, the Freiburg flap in a quieter form. Three sources agree on the ground: StadiumDB (Stadion Rote Erde, Borussia II, 9,999), the club's English Wikipedia infobox (Stadion Rote Erde, 9,999) and Rote Erde's own Wikidata item Q628059, whose P625 51.4925/7.454444 is what is written here. Not taken: Q628059's P1083 25,000, which the stadium article gives as the athletics-meeting figure; 9,999 is its football figure",
    "manual": true,
    "competition": "Regionalliga West"
+  },
+  {
+   "id": "Q885184",
+   "name": "SGV Freiberg",
+   "leagues": [
+    "Q878642"
+   ],
+   "tier": 4,
+   "venue": "Kleiner Arena",
+   "capacity": 3800,
+   "lat": 48.925993,
+   "lon": 8.572711,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_S%C3%BCdwest_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Südwest 2026/27\" (as SGV Heilbronn-Freiberg). Ground and capacity from the stadium table of the de article (Kleiner Arena, Remchingen); position from OpenStreetMap w25015055 \"Kleiner Arena\" (Nominatim \"Kleiner Arena, Remchingen\"), 14 m from the coordinates of the de.wikipedia stadium article.",
+   "manual": true,
+   "competition": null
+  },
+  {
+   "id": "Q885187",
+   "name": "SpVgg Ansbach",
+   "leagues": [
+    "Q15735"
+   ],
+   "tier": 4,
+   "venue": "Xaver-Bertsch-Sportpark",
+   "capacity": 5000,
+   "lat": 49.30651,
+   "lon": 10.555689,
+   "city": null,
+   "source": "https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Bayern_2026/27",
+   "note": "TIER FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-clubs.md, PR 211): ADDED at tier 4. Listed in en.wikipedia \"2026–27 Regionalliga\" and in de.wikipedia \"Fußball-Regionalliga Bayern 2026/27\" (as SpVgg Ansbach 09). Ground and capacity from the stadium table of the de article (Xaver-Bertsch-Sportpark, Ansbach); position from OpenStreetMap w156675035, a sports centre named \"SpVgg Ansbach\" (Overpass, probe run 3), 108 m from the coordinates the de club article's infobox gives for the Xaver-Bertsch-Sportpark.",
+   "manual": true,
+   "competition": null
   },
   {
    "id": "Q920263",
