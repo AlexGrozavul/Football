@@ -150,6 +150,30 @@
     }
    ]
   },
+  "Q162366": {
+   "name": "1. FC Phönix Lübeck",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "6326",
+     "teamName": "1. FC Phönix Lübeck",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "dfb",
+       "file": "data/fixtures/openligadb-dfb.json",
+       "label": "DFB-Pokal"
+      },
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
   "Q157463": {
    "name": "1. FC Saarbrücken",
    "links": [
@@ -314,6 +338,28 @@
     }
    ]
   },
+  "Q666155": {
+   "name": "BFC Preussen",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "4344",
+     "teamName": "BFC Preussen",
+     "basis": "name",
+     "venue": {
+      "theirs": "Preussenstadion",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
   "Q1921747": {
    "name": "BSG Chemie Leipzig",
    "links": [
@@ -331,25 +377,6 @@
        "code": "rlno",
        "file": "data/fixtures/openligadb-rlno.json",
        "label": "Regionalliga Nordost"
-      }
-     ]
-    }
-   ]
-  },
-  "Q176850": {
-   "name": "Bahlinger SC",
-   "links": [
-    {
-     "source": "openligadb",
-     "teamId": "2499",
-     "teamName": "Bahlinger SC",
-     "basis": "name",
-     "venue": null,
-     "competitions": [
-      {
-       "code": "dfb",
-       "file": "data/fixtures/openligadb-dfb.json",
-       "label": "DFB-Pokal"
       }
      ]
     }
@@ -459,6 +486,25 @@
     }
    ]
   },
+  "Q479276": {
+   "name": "Bremer SV",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "2727",
+     "teamName": "Bremer SV",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
   "Q161554": {
    "name": "Chemnitzer FC",
    "links": [
@@ -500,6 +546,25 @@
        "code": "dfb",
        "file": "data/fixtures/openligadb-dfb.json",
        "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q468738": {
+   "name": "Eimsbütteler TV",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "8803",
+     "teamName": "Eimsbütteler TV",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
       }
      ]
     }
@@ -703,6 +768,25 @@
     }
    ]
   },
+  "Q831602": {
+   "name": "FC Eintracht Norderstedt 03",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "4342",
+     "teamName": "Eintracht Norderstedt",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
   "Q97927365": {
    "name": "FC Erzgebirge Aue",
    "links": [
@@ -852,6 +936,47 @@
     }
    ]
   },
+  "Q479371": {
+   "name": "FSV 63 Luckenwalde",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "5798",
+     "teamName": "FSV 63 Luckenwalde",
+     "basis": "name",
+     "venue": {
+      "theirs": "Werner-Seelenbinder-Stadion",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q112633360": {
+   "name": "FSV Schöningen",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "8802",
+     "teamName": "FSV Schöningen",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
   "Q316896": {
    "name": "FSV Zwickau",
    "links": [
@@ -893,6 +1018,28 @@
        "code": "dfb",
        "file": "data/fixtures/openligadb-dfb.json",
        "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q55364716": {
+   "name": "Greifswalder FC",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "5389",
+     "teamName": "Greifswalder FC",
+     "basis": "name",
+     "venue": {
+      "theirs": "Volksstadion",
+      "agrees": true
+     },
+     "competitions": [
+      {
+       "code": "rlno",
+       "file": "data/fixtures/openligadb-rlno.json",
+       "label": "Regionalliga Nordost"
       }
      ]
     }
@@ -1462,6 +1609,25 @@
     }
    ]
   },
+  "Q30090061": {
+   "name": "SV Atlas Delmenhorst",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "5024",
+     "teamName": "Atlas Delmenhorst",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
+      }
+     ]
+    }
+   ]
+  },
   "Q97927380": {
    "name": "SV Babelsberg 03",
    "links": [
@@ -1503,6 +1669,25 @@
        "code": "dfb",
        "file": "data/fixtures/openligadb-dfb.json",
        "label": "DFB-Pokal"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1425370": {
+   "name": "SV Drochtersen/Assel",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "4341",
+     "teamName": "SpVgg Drochtersen/Assel",
+     "basis": "short-name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
       }
      ]
     }
@@ -1577,6 +1762,25 @@
        "code": "rlno",
        "file": "data/fixtures/openligadb-rlno.json",
        "label": "Regionalliga Nordost"
+      }
+     ]
+    }
+   ]
+  },
+  "Q1585026": {
+   "name": "SV Todesfelde",
+   "links": [
+    {
+     "source": "openligadb",
+     "teamId": "5213",
+     "teamName": "SV Todesfelde",
+     "basis": "name",
+     "venue": null,
+     "competitions": [
+      {
+       "code": "rln",
+       "file": "data/fixtures/openligadb-rln.json",
+       "label": "Regionalliga Nord"
       }
      ]
     }
