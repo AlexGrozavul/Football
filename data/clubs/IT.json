@@ -152,10 +152,13 @@
    ],
    "tier": 1,
    "venue": "stadio Artemio Franchi",
-   "capacity": 43325,
+   "capacity": 24786,
    "lat": 43.780822,
    "lon": 11.282258,
    "city": null,
+   "source": "https://www.legaseriea.it/team/fiorentina/stadium; https://en.wikipedia.org/wiki/Stadio_Artemio_Franchi",
+   "note": "CAPACITY FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-capacity.md, PR 212), every page read that day. CONTESTED CAPACITY. In use: 24786 (Lega Serie A's club page \"Capienza: 24 786\"; en.wikipedia Stadio Artemio Franchi infobox 24,786, citing that page). Not taken: 43147 (it.wikipedia's text, the full ground); 22000 (StadiumDB's country table); 43325 (Wikidata, which the map held until now). The league's figure is far below the ground's full figure, so it can change again: check it again next season.",
+   "manual": true,
    "competition": "Serie A"
   },
   {
@@ -306,10 +309,13 @@
    ],
    "tier": 2,
    "venue": "stadio Arena Garibaldi-Romeo Anconetani",
-   "capacity": 10442,
+   "capacity": 12508,
    "lat": 43.725278,
    "lon": 10.4,
    "city": null,
+   "source": "https://it.wikipedia.org/wiki/Stadio_Arena_Garibaldi-Romeo_Anconetani",
+   "note": "CAPACITY FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-capacity.md, PR 212), every page read that day. CONTESTED CAPACITY. In use: 12508, the approved figure (it.wikipedia infobox \"12508 omologati\" and text \"Ha una capienza omologata di 12508 posti a sedere\", citing a pisanews.net article (reference \"pisanews-aumento-capienza\"), which reads \"l'omologazione della nuova capienza, fissata a 12.508 spettatori\"; en.wikipedia infobox \"25,000 (12,508 approved)\"). Not taken: 25000 (en.wikipedia, the ground's full figure); 10442 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Serie B"
   },
   {

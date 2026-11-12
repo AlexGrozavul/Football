@@ -462,10 +462,13 @@
    ],
    "tier": 1,
    "venue": "Stadionul Dr. Constantin Rădulescu",
-   "capacity": 23500,
+   "capacity": 17408,
    "lat": 46.779678,
    "lon": 23.577247,
    "city": null,
+   "source": "https://cfr1907.ro/info-utile/; https://ro.wikipedia.org/wiki/Stadionul_Dr._Constantin_R%C4%83dulescu",
+   "note": "CAPACITY FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-capacity.md, PR 212), every page read that day. CONTESTED CAPACITY. In use: 17408 (the club's own page lists seven sectors, 3003, 9557, 66, 200, 497, 3197 and 888 places, which add up to 17408; ro.wikipedia and en.wikipedia infobox 17,408, both citing that page). Not taken: 23500 (StadiumDB's country table and Wikidata, which the map held until now; ro.wikipedia's text gives 23,500 as the figure after the 2008 extension).",
+   "manual": true,
    "competition": "SuperLiga Romaniei"
   },
   {

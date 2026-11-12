@@ -12,10 +12,13 @@
    ],
    "tier": 2,
    "venue": "Stade de la Fontenette",
-   "capacity": 7200,
+   "capacity": 4110,
    "lat": 46.185861,
    "lon": 6.149833,
    "city": null,
+   "source": "https://sfl.ch/teams/etoile-carouge-fc; https://fr.wikipedia.org/wiki/Stade_de_la_Fontenette",
+   "note": "CAPACITY FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-capacity.md, PR 212), every page read that day. CONTESTED CAPACITY. In use: 4110 (the Swiss Football League's club page \"4110 Capacité du stade\"; fr.wikipedia Stade de la Fontenette infobox and text 4110). Not taken: 3600 (en.wikipedia infobox); 7200 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Challenge League"
   },
   {
@@ -265,10 +268,13 @@
    ],
    "tier": 2,
    "venue": "Stade Municipal",
-   "capacity": 6600,
+   "capacity": 5100,
    "lat": 46.783297,
    "lon": 6.647056,
    "city": null,
+   "source": "https://sfl.ch/teams/yverdon-sport-fc; https://fr.wikipedia.org/wiki/Stade_municipal_(Yverdon-les-Bains)",
+   "note": "CAPACITY FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-capacity.md, PR 212), every page read that day. CONTESTED CAPACITY. In use: 5100 (the Swiss Football League's club page \"5100 Capacité du stade\"; fr.wikipedia infobox 5100, citing that page). Not taken: 4000 (de.wikipedia, the seats after the 2019 to 2021 renovation); 6600 (en.wikipedia and Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Challenge League"
   },
   {

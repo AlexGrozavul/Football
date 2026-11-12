@@ -13,7 +13,7 @@
    },
    "withVenueName": 143,
    "withCapacity": 135,
-   "handCorrected": 79
+   "handCorrected": 86
   },
   "RO": {
    "name": "Romania",
@@ -25,7 +25,7 @@
    },
    "withVenueName": 67,
    "withCapacity": 42,
-   "handCorrected": 25
+   "handCorrected": 26
   },
   "FR": {
    "name": "France",
@@ -36,7 +36,7 @@
    },
    "withVenueName": 36,
    "withCapacity": 36,
-   "handCorrected": 10
+   "handCorrected": 11
   },
   "IT": {
    "name": "Italy",
@@ -47,7 +47,7 @@
    },
    "withVenueName": 40,
    "withCapacity": 39,
-   "handCorrected": 5
+   "handCorrected": 7
   },
   "CH": {
    "name": "Switzerland",
@@ -58,7 +58,7 @@
    },
    "withVenueName": 22,
    "withCapacity": 20,
-   "handCorrected": 8
+   "handCorrected": 10
   },
   "AT": {
    "name": "Austria",
@@ -91,7 +91,7 @@
    },
    "withVenueName": 29,
    "withCapacity": 27,
-   "handCorrected": 7
+   "handCorrected": 8
   },
   "ES": {
    "name": "Spain",
@@ -102,7 +102,7 @@
    },
    "withVenueName": 42,
    "withCapacity": 41,
-   "handCorrected": 10
+   "handCorrected": 12
   },
   "GB": {
    "name": "England",

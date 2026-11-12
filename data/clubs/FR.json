@@ -450,10 +450,13 @@
    ],
    "tier": 2,
    "venue": "stade Gaston-Gérard",
-   "capacity": 15995,
+   "capacity": 15459,
    "lat": 47.32616,
    "lon": 5.06757,
    "city": null,
+   "source": "https://www.dfco.fr/club/stade-gaston-gerard/; https://en.wikipedia.org/wiki/Stade_Gaston_G%C3%A9rard",
+   "note": "CAPACITY FULL CHECK 2026-11-12 (docs/claude/audits/2026-11-capacity.md, PR 212), every page read that day. CONTESTED CAPACITY. In use: 15459 (the club's own page \"La capacité commerciale totale du stade Gaston-Gérard est désormais de 15459 places\"; en.wikipedia infobox 15,459, citing that page). Not taken: 18692 (fr.wikipedia infobox, citing the same page, on which that figure is not found); 16288 (StadiumDB's country table); 15995 (Wikidata, which the map held until now, 3.4 percent above the club's figure).",
+   "manual": true,
    "competition": "Ligue 2"
   },
   {
