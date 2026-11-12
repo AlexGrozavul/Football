@@ -651,6 +651,8 @@ figures, says where each came from, and says which is in use:
 > in use is recorded rather than dropped, so nobody has to rediscover
 > the disagreement.
 
+**The stored capacity is the figure for LEAGUE matches (decided 2026-11-11).** Where a ground has another configuration (all-seated for international matches, a cup or concert figure), `capacity` holds the league figure and the note names the other as not taken; first applied to Hamburger SV (57,000 in use, 51,500 international, PR #211).
+
 **Dropping the figure you did not take is the failure this prevents.**
 A row that says only "11500" looks like a checked fact with no history,
 and the next person to see 12,584 somewhere has no way to know it was
