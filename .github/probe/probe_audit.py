@@ -511,25 +511,71 @@ def main_compare():
     post(f"### run {RUN} LOG\nmaxlag used: {MAXLAG or 5}; seconds waited on lag: {LAGWAIT}\nrequests: " + ", ".join(f"{k} {v}" for k, v in sorted(NREQ.items())) + "\n```\n" + "\n".join(LOG)[-20000:] + "\n```\nDONE run " + RUN)
 
 
+NEWS = re.compile(r"kicker|transfermarkt|weltfussball|worldfootball|soccerway|fussballdaten|fupa|spiegel|bild\.de|"
+                  r"zeit\.de|faz\.net|sueddeutsche|gazzetta|marca\.com|lequipe|bbc\.|theguardian|digisport|gsp\.ro|"
+                  r"prosport|uefa\.com|fifa\.com|rsssf|youtube|google|doi\.org|worldcat|books|newspapers|\.pdf")
+STADKW = re.compile(r"stadion|stadium|arena|stade|estadio|stadio|estadi|sportpark|ground|spielst|infrastr|impianti|"
+                    r"stadiumdb|europlan|stadionwelt|venue|club|verein|ueber-uns|info", re.I)
+
+
+def compact_page(url, figs):
+    r = read_page(url, figs)
+    lines = r.split("\n")
+    found = [l.strip()[:230] for l in lines[1:] if "FOUND" in l]
+    kws = [l.strip()[:200] for l in lines[1:] if l.strip().startswith("kw")]
+    head = lines[0][:110]
+    if found:
+        return [f"  PAGE {url[:120]} -> {head}"] + ["     " + f for f in found]
+    return [f"  PAGE {url[:120]} -> {head} | none of the figures"] + ["     " + k for k in kws[:2]]
+
+
 def main_followup():
-    """Later runs: read listed pages (robots first) and listed Wikipedia passages; snippets only."""
+    """Later runs: for listed clubs read the pages their Wikipedia link lists name (robots first),
+    listed lead pages, and listed Wikipedia passages; snippets only, never a page."""
     todo = json.load(open(".github/probe/followup.json", encoding="utf-8"))
     out = []
+    for item in todo.get("clubs", []):
+        figs = [(k, v) for k, v in item["figs"]]
+        out.append(f"== {item['n']} {item['id']} figs " + " ".join(f"{k}={v}" for k, v in figs))
+        cands, seenhost = [], set()
+        for lang, title in item["arts"]:
+            d = wm(f"{lang}.wikipedia.org", {"action": "parse", "page": title, "prop": "wikitext", "redirects": "1"})
+            wt = ((d or {}).get("parse") or {}).get("wikitext") or ""
+            for m in URLRE.finditer(wt):
+                u = m.group(0).rstrip(".,;)")
+                host = urllib.parse.urlsplit(u).netloc.lower()
+                if SKIP_HOSTS.search(host) or NEWS.search(u.lower()):
+                    continue
+                score = (3 if STADKW.search(u) else 0) + (2 if m.start() < 3500 else 0)
+                near = wt[max(0, m.start() - 200):m.start()].lower()
+                if re.search(r"website|webseite|site web|sitio|sito|offiz|official|oficial", near):
+                    score += 2
+                cands.append((score, u, host))
+        cands.sort(key=lambda x: -x[0])
+        n = 0
+        for score, u, host in cands:
+            if host in seenhost or score <= 0:
+                continue
+            seenhost.add(host)
+            out.extend(compact_page(u, figs))
+            n += 1
+            if n >= 3:
+                break
+        if not n:
+            out.append("  no page named by the link lists (after excluding news, statistics and archive hosts)")
     for item in todo.get("pages", []):
-        out.append(f"== {item.get('id','')} {item['url'][:170]}")
-        out.append(read_page(item["url"], [(k, v) for k, v in item.get("figs", [])]))
+        out.append(f"== LEAD {item.get('id','')}")
+        out.extend(compact_page(item["url"], [(k, v) for k, v in item.get("figs", [])]))
     for item in todo.get("wiki", []):
         d = wm(f"{item['lang']}.wikipedia.org", {"action": "parse", "page": item["title"], "prop": "wikitext", "redirects": "1"})
         wt = ((d or {}).get("parse") or {}).get("wikitext") or ""
-        out.append(f"== {item.get('id','')} {item['lang']}:{item['title']} (len {len(wt)})")
-        x = infobox_capacity(wt)
-        out.append(f"  infobox [{x['kind']}] {x['raw'][:300]} ref {x['refurl'][:150]}")
+        out.append(f"== WIKI {item.get('id','')} {item['lang']}:{item['title']} (len {len(wt)})")
         pat = re.compile(item.get("grep") or "capacit", re.I)
         shown = 0
         for m in pat.finditer(wt):
-            out.append("  «" + re.sub(r"\s+", " ", wt[max(0, m.start() - 150):m.end() + 220]) + "»")
+            out.append("  «" + re.sub(r"\s+", " ", wt[max(0, m.start() - 60):m.end() + 200]) + "»")
             shown += 1
-            if shown >= int(item.get("max", 4)):
+            if shown >= int(item.get("max", 3)):
                 break
     post_chunks(f"### run {RUN} FOLLOW-UP", out, limit=52000)
     post(f"### run {RUN} LOG\nmaxlag used: {MAXLAG or 5}; seconds waited on lag: {LAGWAIT}\nrequests: " + ", ".join(f"{k} {v}" for k, v in sorted(NREQ.items())) + "\n```\n" + "\n".join(LOG)[-15000:] + "\n```\nDONE run " + RUN)
