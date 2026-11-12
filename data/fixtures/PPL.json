@@ -2332,31 +2332,6 @@
    "winner": "HOME_TEAM"
   },
   {
-   "id": 567348,
-   "utcDate": "2026-11-08T00:00:00Z",
-   "status": "POSTPONED",
-   "matchday": 11,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 582,
-    "name": "GD Estoril Praia",
-    "shortName": "Estoril Praia",
-    "tla": "EST",
-    "crest": "https://crests.football-data.org/582.png"
-   },
-   "away": {
-    "id": 5575,
-    "name": "CS Marítimo",
-    "shortName": "Marítimo",
-    "tla": "CSM",
-    "crest": "https://crests.football-data.org/5575.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 567351,
    "utcDate": "2026-11-08T15:30:00Z",
    "status": "FINISHED",
@@ -3601,6 +3576,31 @@
     "shortName": "Alverca",
     "tla": "ALV",
     "crest": "https://crests.football-data.org/7822.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567348,
+   "utcDate": "2027-01-04T20:15:00Z",
+   "status": "TIMED",
+   "matchday": 11,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 582,
+    "name": "GD Estoril Praia",
+    "shortName": "Estoril Praia",
+    "tla": "EST",
+    "crest": "https://crests.football-data.org/582.png"
+   },
+   "away": {
+    "id": 5575,
+    "name": "CS Marítimo",
+    "shortName": "Marítimo",
+    "tla": "CSM",
+    "crest": "https://crests.football-data.org/5575.png"
    },
    "homeGoals": null,
    "awayGoals": null,
