@@ -34,24 +34,30 @@ def http(url, key, gap, timeout=40, maxbytes=3_000_000):
 
 
 def wm(host, params):
-    """Wikimedia API call: one request per second across all Wikimedia hosts, maxlag=5."""
-    p = dict(params)
-    p.update(format="json", maxlag="5", formatversion="2")
-    url = f"https://{host}/w/api.php?" + urllib.parse.urlencode(p)
+    """Wikimedia API call: one request per second across all Wikimedia hosts, maxlag set.
+    maxlag starts at 5. Runs 1 and 2 never got a Wikidata answer at 5 (its query-service
+    lag stayed at 6 to 11 s for 20 minutes), so after 4 minutes of waiting on one host the
+    value is raised to 15 and later 60 for that host only, and the log says so."""
     global LAGWAIT
-    for attempt in range(40):
+    for attempt in range(120):
+        p = dict(params)
+        p.update(format="json", maxlag=str(MAXLAG.get(host, 5)), formatversion="2")
+        url = f"https://{host}/w/api.php?" + urllib.parse.urlencode(p)
         try:
             _, hdr, body = http(url, "wikimedia", 1.0, maxbytes=30_000_000)
             data = json.loads(body)
             err = data.get("error", {}) if isinstance(data, dict) else {}
             if err.get("code") == "maxlag":
                 w = min(int(hdr.get("Retry-After") or 5), 60) + 1
-                if attempt == 0:
-                    log(f"maxlag {host}: {str(err.get('info'))[:120]} (waiting {w}s per try)")
-                if LAGWAIT > 1200:
-                    log(f"ERR {host} maxlag budget spent, giving up on this call")
-                    return None
+                HOSTWAIT[host] = HOSTWAIT.get(host, 0) + w
                 LAGWAIT += w
+                if HOSTWAIT[host] > 240 and MAXLAG.get(host, 5) < 60:
+                    MAXLAG[host] = 15 if MAXLAG.get(host, 5) == 5 else 60
+                    HOSTWAIT[host] = 0
+                    log(f"maxlag {host}: still lagged ({str(err.get('info'))[:80]}); maxlag raised to {MAXLAG[host]} for this host")
+                elif HOSTWAIT[host] > 600:
+                    log(f"ERR {host} lagged beyond maxlag 60 for 10 minutes, giving up on this call")
+                    return None
                 time.sleep(w)
                 continue
             if err:
@@ -61,10 +67,8 @@ def wm(host, params):
         except urllib.error.HTTPError as e:
             ra = e.headers.get("Retry-After")
             log(f"HTTP {e.code} {host} retry-after={ra} try {attempt}: {e.read(200)!r}"[:300])
-            if e.code in (429, 503) and attempt < 6 and LAGWAIT <= 1200:
-                w = min(int(ra) if (ra or "").isdigit() else 15, 120) + 1
-                LAGWAIT += w
-                time.sleep(w)
+            if e.code in (429, 503) and attempt < 6:
+                time.sleep(min(int(ra) if (ra or "").isdigit() else 15, 120) + 1)
                 continue
             return None
         except Exception as e:
@@ -75,6 +79,7 @@ def wm(host, params):
     return None
 
 
+MAXLAG, HOSTWAIT = {}, {}
 LAGWAIT = 0
 
 
@@ -503,7 +508,7 @@ def main_compare():
     post_chunks(f"### run {RUN} DIFFERS detail ({len(diff)} clubs, priority order)", det, limit=52000)
     ni = [f"{r['id']}\t{r['cc']}\tt{r['tier']}\t{r['cap']}\t{r['cls']}\t{r['wiki']}\t{r['kind']}\t{r['raw'][:110]}" for r in rows if r["cls"] in ("not-independent", "no-article")]
     post_chunks(f"### run {RUN} NOT-INDEPENDENT and NO-ARTICLE", ni)
-    post(f"### run {RUN} LOG\nrequests: " + ", ".join(f"{k} {v}" for k, v in sorted(NREQ.items())) + "\n```\n" + "\n".join(LOG)[-20000:] + "\n```\nDONE run " + RUN)
+    post(f"### run {RUN} LOG\nmaxlag used: {MAXLAG or 5}; seconds waited on lag: {LAGWAIT}\nrequests: " + ", ".join(f"{k} {v}" for k, v in sorted(NREQ.items())) + "\n```\n" + "\n".join(LOG)[-20000:] + "\n```\nDONE run " + RUN)
 
 
 def main_followup():
@@ -527,7 +532,7 @@ def main_followup():
             if shown >= int(item.get("max", 4)):
                 break
     post_chunks(f"### run {RUN} FOLLOW-UP", out, limit=52000)
-    post(f"### run {RUN} LOG\nrequests: " + ", ".join(f"{k} {v}" for k, v in sorted(NREQ.items())) + "\n```\n" + "\n".join(LOG)[-15000:] + "\n```\nDONE run " + RUN)
+    post(f"### run {RUN} LOG\nmaxlag used: {MAXLAG or 5}; seconds waited on lag: {LAGWAIT}\nrequests: " + ", ".join(f"{k} {v}" for k, v in sorted(NREQ.items())) + "\n```\n" + "\n".join(LOG)[-15000:] + "\n```\nDONE run " + RUN)
 
 
 if __name__ == "__main__":
