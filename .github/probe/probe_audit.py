@@ -38,24 +38,44 @@ def wm(host, params):
     p = dict(params)
     p.update(format="json", maxlag="5", formatversion="2")
     url = f"https://{host}/w/api.php?" + urllib.parse.urlencode(p)
-    for attempt in range(6):
+    global LAGWAIT
+    for attempt in range(40):
         try:
             _, hdr, body = http(url, "wikimedia", 1.0, maxbytes=30_000_000)
             data = json.loads(body)
-            if isinstance(data, dict) and data.get("error", {}).get("code") == "maxlag":
-                time.sleep(int(hdr.get("Retry-After") or 5) + 1)
+            err = data.get("error", {}) if isinstance(data, dict) else {}
+            if err.get("code") == "maxlag":
+                w = min(int(hdr.get("Retry-After") or 5), 60) + 1
+                if attempt == 0:
+                    log(f"maxlag {host}: {str(err.get('info'))[:120]} (waiting {w}s per try)")
+                if LAGWAIT > 1200:
+                    log(f"ERR {host} maxlag budget spent, giving up on this call")
+                    return None
+                LAGWAIT += w
+                time.sleep(w)
                 continue
+            if err:
+                log(f"ERR {host} api error {err.get('code')}: {str(err.get('info'))[:160]}")
+                return None
             return data
         except urllib.error.HTTPError as e:
-            if e.code in (429, 503):
-                time.sleep(int(e.headers.get("Retry-After") or 10) + 1)
+            ra = e.headers.get("Retry-After")
+            log(f"HTTP {e.code} {host} retry-after={ra} try {attempt}: {e.read(200)!r}"[:300])
+            if e.code in (429, 503) and attempt < 6 and LAGWAIT <= 1200:
+                w = min(int(ra) if (ra or "").isdigit() else 15, 120) + 1
+                LAGWAIT += w
+                time.sleep(w)
                 continue
-            log(f"ERR {host} {params.get('page') or params.get('ids','')[:40]} HTTP {e.code}")
             return None
         except Exception as e:
             log(f"ERR {host} {params.get('page') or params.get('ids','')[:40]} {type(e).__name__} {e}")
+            if attempt >= 3:
+                return None
             time.sleep(3)
     return None
+
+
+LAGWAIT = 0
 
 
 def post(body):
