@@ -25,6 +25,18 @@ on:
       - "data/roster-links-manual.csv"
       - "tools/check_rosters.py"
       - ".github/workflows/check-rosters.yml"
+  # A pull request that changes a hand file the check reads, the review
+  # file or the checker runs the check too (added 2026-11-11: PR #210
+  # changed data/clubs-manual.csv and no check ran). On a pull request
+  # the check only reads and reports; nothing is committed.
+  pull_request:
+    paths:
+      - "data/clubs-manual.csv"
+      - "data/league-tiers.csv"
+      - "data/league-rosters.csv"
+      - "data/roster-links-manual.csv"
+      - "data/clubs/roster-review.csv"
+      - "tools/check_rosters.py"
   workflow_dispatch:
 
 permissions:
@@ -69,6 +81,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit only if the review file changed
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
