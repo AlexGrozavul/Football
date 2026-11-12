@@ -350,7 +350,7 @@ Q201584,,Apollon Smyrnis F.C.,other,C179,2026-10-17
 Q104761,Q104770,1. FC Köln,other,C15,2026-10-17,Eine große Rivalität besteht zwischen den Fans Bayer Leverkusens und denen des 1. FC Köln
 Q105254,Q38245,Eintracht Frankfurt,main,C14,2026-10-17,In jüngerer Vergangenheit gelten Eintracht Frankfurt und der 1. FC Kaiserslautern als größte Rivalen
 Q105254,Q8466,1. FC Kaiserslautern,main,C14,2026-10-17,In jüngerer Vergangenheit gelten Eintracht Frankfurt und der 1. FC Kaiserslautern als größte Rivalen
-Q105254,Q819419,Wormatia Worms,other,C14,2026-10-17,Die Rivalität mit Wormatia Worms entwickelte sich aus dem Kopf-an-Kopf-Rennen
+Q105254,,Wormatia Worms,other,C14,2026-10-17,Die Rivalität mit Wormatia Worms entwickelte sich aus dem Kopf-an-Kopf-Rennen
 Q105254,Q97905916,FC Augsburg,other,C14,2026-10-17,entwickelte sich seit den 2010er Jahren eine Fangegnerschaft zum FC Augsburg
 Q105254,Q479351,SV Darmstadt 98,other,C14,2026-10-17,Jedoch sind beide Rivalitäten weniger ernst genommen als die zuvor genannten Feindschaften
 Q105254,Q310621,SV Wehen Wiesbaden,other,C14,2026-10-17,Jedoch sind beide Rivalitäten weniger ernst genommen als die zuvor genannten Feindschaften
@@ -381,7 +381,7 @@ Q157828,Q51974,Hamburger SV,other,C37,2026-10-17,Die Partien gegen die Hamburger
 Q151747,Q104770,1. FC Köln,main,C180,2026-10-17,Hauptrivale des Vereins ist der 1. FC Köln
 Q151747,Q104761,Bayer 04 Leverkusen,local,C180,2026-10-17,"Rivalitäten in unmittelbarer regionaler Nähe wurden zu Bayer 04 Leverkusen, Rot-Weiss Essen"
 Q151747,Q155218,Rot-Weiss Essen,local,C180,2026-10-17,"Rivalitäten in unmittelbarer regionaler Nähe wurden zu Bayer 04 Leverkusen, Rot-Weiss Essen"
-Q151747,Q170157,Wuppertaler SV,local,C180,2026-10-17,Weitere Rivalitäten in unmittelbarer regionaler Nähe wurden zu Bayer 04 Leverkusen
+Q151747,,Wuppertaler SV,local,C180,2026-10-17,Weitere Rivalitäten in unmittelbarer regionaler Nähe wurden zu Bayer 04 Leverkusen
 Q151747,Q154293,MSV Duisburg,local,C180,2026-10-17,"mit MSV Duisburg oder Rot-Weiß Oberhausen und gegenwärtig mit Borussia Mönchengladbach, werden als „Niederrhein-Derby“ bezeichnet"
 Q151747,Q157020,Rot-Weiß Oberhausen,local,C180,2026-10-17,"mit MSV Duisburg oder Rot-Weiß Oberhausen und gegenwärtig mit Borussia Mönchengladbach, werden als „Niederrhein-Derby“ bezeichnet"
 Q151747,Q101959,Borussia Mönchengladbach,local,C180,2026-10-17,"mit MSV Duisburg oder Rot-Weiß Oberhausen und gegenwärtig mit Borussia Mönchengladbach, werden als „Niederrhein-Derby“ bezeichnet"
@@ -396,7 +396,7 @@ Q154293,Q32494,FC Schalke 04,local,C48,2026-10-17,Gewisse Rivalitäten bestehen 
 Q155218,Q32494,FC Schalke 04,local,C49,2026-10-17,Die größte Abneigung besteht zum Nachbarn FC Schalke 04
 Q155218,Q153535,Alemannia Aachen,local,C49,2026-10-17,Weitere Rivalitäten gibt es zu anderen Vereinen aus der Region wie Alemannia Aachen
 Q155218,Q157020,Rot-Weiß Oberhausen,local,C49,2026-10-17,Weitere Rivalitäten gibt es zu anderen Vereinen aus der Region
-Q155218,Q170157,Wuppertaler SV,local,C49,2026-10-17,Weitere Rivalitäten gibt es zu anderen Vereinen aus der Region
+Q155218,,Wuppertaler SV,local,C49,2026-10-17,Weitere Rivalitäten gibt es zu anderen Vereinen aus der Region
 Q155218,Q151747,Fortuna Düsseldorf,local,C49,2026-10-17,Weitere Rivalitäten gibt es zu anderen Vereinen aus der Region
 Q155218,Q316865,Preußen Münster,local,C49,2026-10-17,Weitere Rivalitäten gibt es zu anderen Vereinen aus der Region
 Q155218,,Schwarz-Weiß Essen,other,C49,2026-10-17,jedoch handelt es sich hier um die historisch gewachsene Rivalität
@@ -755,7 +755,7 @@ Q1135735,,Știința Poli Timișoara,other,C393,2026-10-18,"Alte rivalități sun
 Q298201,Q753462,FC Universitatea Cluj,main,C394,2026-10-18,Rivala principala a ASA Targul Mures este Universitatea Cluj
 Q298201,Q205998,CFR Cluj,other,C394,2026-10-18,s-a declansat o rivalitate cu clubul CFR Cluj
 Q23051672,,AFC Odorheiu Secuiesc,local,C395,2026-10-18,"una locală, de puțină intensitate, există împotriva AFC Odorheiu Secuiesc"
-Q16838020,Q584629,FCU Craiova,other,C396,2026-10-18,Principala rivalitate a fanilor lui CS U Craiova este cea cu concitadinii
+Q16838020,,FCU Craiova,other,C396,2026-10-18,Principala rivalitate a fanilor lui CS U Craiova este cea cu concitadinii
 Q16838020,Q204237,Dinamo București,other,C396,2026-10-18,"Suporterii CS Universitatea preiau rivalitatea fostei Universități cu clubul din capitală, Dinamo București"
 Q16838020,Q179658,FCSB,other,C396,2026-10-18,"rivalitate mai puțin intensă cu celălalt club major din capitală, FCSB"
 Q16838020,,Pandurii Târgu Jiu,other,C396,2026-10-18,"rivalitate minoră s-a dezvoltat și cu celălalt club major din Oltenia, Pandurii Târgu Jiu"
@@ -830,7 +830,7 @@ Q568276,,FV Bonn-Endenich,local,C545,2026-10-19,dem Bonner SC und dem FV Bonn-En
 Q568276,,Siegburger SV 04,other,C545,2026-10-19,"Duellen, was den Hass sowie die Rivalität beider Vereine verstärkt"
 Q568276,,FV Bad Honnef,other,C545,2026-10-19,Bad Honnef bis heute noch zu einem der größten Rivalen der BSC-Anhänger zählt
 Q161554,Q97927365,FC Erzgebirge Aue,other,C571,2026-10-19,Die Rivalität der Clubs geht bis in die DDR-Zeit zurück
-Q700029,Q479366,VfB Auerbach,local,C574,2026-10-19,Vogtlandderby der Fußball-Oberliga zwischen dem VFC Plauen und dem VfB Auerbach
+Q700029,,VfB Auerbach,local,C574,2026-10-19,Vogtlandderby der Fußball-Oberliga zwischen dem VFC Plauen und dem VfB Auerbach
 Q692691,Q157463,1. FC Saarbrücken,local,C579,2026-10-19,ausgerechnet der Drittliga-Lokalrivale geschafft: Der 1. FC Saarbrücken
 Q176168,,FC Neubrandenburg,main,C621,2026-10-19,Zum Auswärtsspiel beim Erzrivalen FC Neubrandenburg begleiten mehr als 1.500 Neustrelitzer
 Q535785,,Würzburger FV,local,C539,2026-10-19,"Lokalrivale Würzburger FV, Nachfolgeverein des 1981 insolventen Würzburger FV 04"
