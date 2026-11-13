@@ -1633,121 +1633,131 @@
 "man": false
 }
 ],
-"done_b": [
-"Q107421",
-"Q131603",
-"Q137499",
-"Q142005",
-"Q1425370",
-"Q14551982",
-"Q151747",
-"Q153535",
-"Q154293",
-"Q155186",
-"Q155218",
-"Q155452",
-"Q1565781",
-"Q157020",
-"Q157463",
-"Q158121",
-"Q15843660",
-"Q15849956",
-"Q1585026",
-"Q15972883",
-"Q159930",
-"Q159936",
-"Q161034",
-"Q161554",
-"Q162213",
-"Q162317",
-"Q162366",
-"Q162394",
-"Q16525407",
-"Q16525419",
-"Q16573990",
-"Q16637410",
+"b3": [
+"Q112633360",
+"Q1507157",
+"Q157352",
+"Q1576328",
 "Q16743331",
-"Q170105",
-"Q170117",
-"Q170134",
-"Q17321080",
-"Q176168",
-"Q1921747",
-"Q20631356",
-"Q2207914",
-"Q2521441",
-"Q265570",
-"Q310608",
-"Q310621"
+"Q30090061",
+"Q319167",
+"Q4545849",
+"Q566136",
+"Q566183",
+"Q639525",
+"Q665920",
+"Q7572134",
+"Q821096",
+"Q831867",
+"Q885187",
+"Q97927365",
+"Q1024393",
+"Q130199486",
+"Q1463313",
+"Q19902101",
+"Q4654138",
+"Q4680389",
+"Q5014447",
+"Q5014453",
+"Q5014496",
+"Q55583717",
+"Q55864953",
+"Q966392",
+"Q13397712",
+"Q493464",
+"Q537301"
 ],
-"alt": {
-"Q537301": [
-"Eilenriedestadion",
-"Hannover"
-]
+"towns": {
+"Q1024393": "Pașcani",
+"Q130199486": "Curtișoara",
+"Q1463313": "Cluj-Napoca",
+"Q19902101": "Deva",
+"Q4654138": "Brașov",
+"Q4680389": "Călărași",
+"Q5014447": "Bacău",
+"Q5014453": "Buftea",
+"Q5014496": "Breaza",
+"Q55583717": "Târgu Secuiesc",
+"Q55864953": "Modelu",
+"Q966392": "Dej"
 },
+"force_town": [
+"Q966392"
+],
 "same": [
 [
 "de",
 [
-"Flyeralarm Arena",
-"Akon Arena"
+"PSD Bank Arena",
+"BBBank Arena"
 ]
 ],
 [
 "de",
 [
-"Stadion an der Poststraße",
-"Sportclub Arena"
+"Sparda-Bank-Hessen-Stadion",
+"Stadion am Bieberer Berg"
 ]
+],
+[
+"de",
+[
+"Stadion Zwickau",
+"GGZ-Arena"
+]
+],
+[
+"de",
+[
+"Centus Arena",
+"Bediani-Arena"
+]
+],
+[
+"de",
+[
+"Sportpark Eimsbüttel",
+"Stadion Hoheluft",
+"Wolfgang-Meyer-Sportanlage"
+]
+]
+],
+"season_rows": [
+[
+"de",
+"Fußball-Regionalliga Nord 2026/27",
+"Hannover|HSC|Constantin|Hamburger SV"
+]
+],
+"league_rows": [
+[
+"en",
+"2026–27 Liga III",
+"Timi[sș]oara"
 ]
 ],
 "passages": [
 [
 "de",
-"3. Fußball-Liga 2026/27",
-"Eilenried|Langrehr"
+"Hamburger SV II",
+"Hoheluft|Eimsbüttel|Wolfgang-Meyer"
 ],
 [
 "de",
-"TSV Havelse",
-"Eilenried|Heinz[- ]von[- ]Heiden|Langrehr"
-],
-[
-"de",
-"Würzburger Kickers",
-"Akon"
-],
-[
-"de",
-"SC Verl",
-"Sportclub[ -]Arena"
+"Fußball-Regionalliga Nord 2026/27",
+"Hoheluft"
 ]
 ],
 "pages": [
 [
-"https://www.tsv-havelse.de/",
-"Eilenriede|Heinz[- ]von[- ]Heiden|Langrehr",
-"stadion|spielst|heimspiel|anfahrt|ticket"
+"https://www.dfb.de/news/eilenriedestadion-als-weitere-heimspielstaette-des-tsv-havelse-zugelassen",
+"Eilenriede|Heinz[- ]von[- ]Heiden|Heimspielst|Langrehr",
+null
 ],
 [
-"https://www.parisfc.fr/",
-"Jean[- ]Bouin|Charl[ée]ty",
-"stade|infos|pratique|billet|venir"
-]
-],
-"nominatim": [
-[
-"Heinz von Heiden Arena, Hannover",
-"DE",
-52.4083,
-9.60222
-],
-[
-"Eilenriedestadion, Hannover",
-"DE",
-52.4083,
-9.60222
+"https://www.hsv.de/",
+"Hoheluft|Eimsbüttel|Wolfgang-Meyer",
+"u21|zweite|regionalliga|nachwuchs|young"
 ]
 ]
 }

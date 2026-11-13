@@ -665,6 +665,84 @@ def stage_b(scope, only=None):
     post_chunks(f"RUN {RUN} B coordinates {json.dumps(cnt)}", rows)
 
 
+def nom_raw(params, path="search"):
+    return osm_http("https://nominatim.openstreetmap.org/" + path + "?" + urllib.parse.urlencode(params), key="nominatim")
+
+
+def near_list(lat, lon, cc):
+    """Named stadiums and pitches Nominatim knows in a box of about 3 km around a point, nearest first."""
+    box = f"{lon - 0.045},{lat + 0.03},{lon + 0.045},{lat - 0.03}"
+    out, seen = [], set()
+    for q in ("[stadium]", "stadion", "[pitch]"):
+        d = nom_raw({"q": q, "format": "jsonv2", "limit": "12", "viewbox": box, "bounded": "1"})
+        for r in d or []:
+            key = (r.get("osm_type"), r.get("osm_id"))
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append((hav(lat, lon, float(r["lat"]), float(r["lon"])), r))
+    out.sort(key=lambda x: x[0])
+    return out
+
+
+def nshow(d, r):
+    nm = r.get("name") or (r.get("display_name") or "").split(",")[0]
+    return f"{r.get('osm_type')}/{r.get('osm_id')} {r.get('category')}={r.get('type')} \"{cut(nm, 38)}\" {float(r['lat']):.6f},{float(r['lon']):.6f} {d:.0f}m"
+
+
+def stage_b3(scope, T):
+    rows, fails = [], 0
+    towns = T.get("towns") or {}
+    for c in scope:
+        if c["q"] not in set(T.get("b3") or []):
+            continue
+        parts = []
+        if fails < 4:
+            els = overpass_club(c, [c["v"]])
+            if els is None:
+                fails += 1
+                parts.append("OVP failed")
+            else:
+                fails = 0
+                m = best_match(els, c["v"])
+                near = sorted(els, key=lambda e: e["d"])[:5]
+                parts.append("OVP " + (("match " + fmt(m)) if m and m["s"] >= 2 else "no name match") + f"; {len(els)} els: " +
+                             " / ".join(f"{e['id']} {e['kind']} \"{cut(e['names'][0] if e['names'] else '', 34)}\" {e['lat']:.6f},{e['lon']:.6f} {e['d']:.0f}m" for e in near))
+        else:
+            parts.append("OVP not tried (4 failures in a row)")
+        rv = nom_raw({"lat": c["lat"], "lon": c["lon"], "format": "jsonv2", "zoom": "18"}, "reverse")
+        if isinstance(rv, dict) and rv.get("lat"):
+            parts.append("REV " + nshow(hav(c["lat"], c["lon"], float(rv["lat"]), float(rv["lon"])), rv))
+        else:
+            parts.append("REV none")
+        nl = near_list(c["lat"], c["lon"], c["cc"])
+        parts.append(f"NEAR({len(nl)}) " + " / ".join(nshow(d, r) for d, r in nl[:6]))
+        if c["q"] in towns and (not nl or c["q"] in (T.get("force_town") or [])):
+            g = nom_raw({"q": towns[c["q"]], "format": "jsonv2", "limit": "1", "countrycodes": c["cc"].lower()})
+            if g:
+                tl, to = float(g[0]["lat"]), float(g[0]["lon"])
+                n2 = near_list(tl, to, c["cc"])
+                parts.append(f"TOWN {towns[c['q']]} {tl:.5f},{to:.5f} is {hav(c['lat'], c['lon'], tl, to) / 1000:.1f} km from the map point; stadiums there({len(n2)}): " +
+                             " / ".join(nshow(d, r) for d, r in n2[:6]))
+            else:
+                parts.append(f"TOWN {towns[c['q']]} not geocoded")
+        rows.append(f"{c['q']}|{cut(c['n'], 26)}|{cut(c['v'], 40)}|{c['lat']},{c['lon']}|" + " || ".join(parts))
+    post_chunks(f"RUN {RUN} B3 nearby grounds", [cut(r, 1500) for r in rows])
+
+
+def league_rows(lang, title, pat, cap=8):
+    a = read_article(lang, title)
+    if not a:
+        return [f"{lang}:{title} NOT READ"]
+    out = [f"ROWS {lang}:{a['title']} /{pat}/"]
+    for t in a["tabs"]:
+        for r in t["rows"]:
+            line = " | ".join(cut(ctext(x), 50) for i, x in enumerate(r) if i == 0 or x is not r[i - 1])
+            if re.search(pat, line, re.I) and len(out) <= cap:
+                out.append("  [" + cut("/".join(t["header"]), 40) + "] " + cut(line, 200))
+    return out
+
+
 # ---------- Part C and later runs: season rows, wiki passages, club pages ----------
 
 def season_rows(lang, title, pat):
@@ -819,6 +897,8 @@ def stage_c(T):
     lines = []
     for lang, title, pat in T.get("season_rows", []):
         lines += season_rows(lang, title, pat)
+    for lang, title, pat in T.get("league_rows", []):
+        lines += league_rows(lang, title, pat)
     for lang, title, pat in T.get("passages", []):
         lines += wiki_passages(lang, title, pat)
     for lang, titles in T.get("same", []):
@@ -847,6 +927,8 @@ def main():
             stage_c(T)
         if "B" in STAGES:
             stage_b(scope)
+        if "B3" in STAGES:
+            stage_b3(scope, T)
     except Exception as e:
         import traceback
         post(f"RUN {RUN} CRASH\n```\n{traceback.format_exc()[-3000:]}\n```")
