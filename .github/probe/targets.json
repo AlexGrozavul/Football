@@ -1,108 +1,6 @@
 {
 "clubs": [
 {
-"q": "Q464775",
-"name": "FC Thun",
-"cc": "CH",
-"tier": 1,
-"map": 10000,
-"venue": "Visana Stadion",
-"city": null,
-"grp": "A",
-"titles": {
-"de": "Visana Stadion",
-"en": "Stockhorn Arena"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q1140695",
-"name": "Football Club d'Annecy",
-"cc": "FR",
-"tier": 2,
-"map": 15660,
-"venue": "parc des Sports",
-"city": null,
-"grp": "A",
-"titles": {
-"fr": "Parc des Sports d'Annecy",
-"en": "Parc des Sports (Annecy)"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q457460",
-"name": "SV Ried",
-"cc": "AT",
-"tier": 1,
-"map": 7680,
-"venue": "Innviertel Arena",
-"city": null,
-"grp": "A",
-"titles": {
-"de": "BWT X Oberösterreichische Arena",
-"en": "BWT X Upper Austrian Arena"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q671950",
-"name": "SC Kriens",
-"cc": "CH",
-"tier": 2,
-"map": 5360,
-"venue": "Stadion Kleinfeld",
-"city": null,
-"grp": "A",
-"titles": {
-"de": "Stadion Kleinfeld"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q9616",
-"name": "Chelsea F.C.",
-"cc": "GB",
-"tier": 1,
-"map": 41875,
-"venue": "Stamford Bridge",
-"city": null,
-"grp": "A",
-"titles": {
-"en": "Stamford Bridge (stadium)"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q19444",
-"name": "Birmingham City F.C.",
-"cc": "GB",
-"tier": 2,
-"map": 30016,
-"venue": "St Andrew's",
-"city": null,
-"grp": "A",
-"titles": {
-"en": "St Andrew's (stadium)"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q216773",
-"name": "FC Vaduz",
-"cc": "CH",
-"tier": 1,
-"map": 7584,
-"venue": "Rheinpark Stadion Vaduz",
-"city": null,
-"grp": "A",
-"titles": {
-"de": "Rheinpark Stadion Vaduz",
-"en": "Rheinpark Stadion"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
 "q": "Q289613",
 "name": "Pisa Sporting Club",
 "cc": "IT",
@@ -112,55 +10,11 @@
 "city": null,
 "grp": "B",
 "titles": {
-"it": "Stadio Arena Garibaldi-Romeo Anconetani",
-"en": "Arena Garibaldi – Stadio Romeo Anconetani"
+"it": "Stadio Arena Garibaldi-Romeo Anconetani"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q1262822",
-"name": "FC Botoșani",
-"cc": "RO",
-"tier": 1,
-"map": 12000,
-"venue": "Stadionul Municipal",
-"city": null,
-"grp": "C",
-"titles": {
-"ro": "Stadionul Municipal Botoșani",
-"en": "Botoșani Municipal Stadium"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q653119",
-"name": "Almere City FC",
-"cc": "NL",
-"tier": 2,
-"map": 4501,
-"venue": "Yanmar Hanasaka Stadion",
-"city": null,
-"grp": "C",
-"titles": {
-"nl": "Yanmar Hanasaka Stadion",
-"en": "Yanmar Stadion"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
-},
-{
-"q": "Q123283162",
-"name": "A.S. Anagennisi Karditsas (football)",
-"cc": "GR",
-"tier": 2,
-"map": 13000,
-"venue": "Karditsa Municipal Stadium",
-"city": null,
-"grp": "C",
-"titles": {
-"el": "Δημοτικό Στάδιο Καρδίτσας",
-"en": "Municipal Stadium of Karditsa"
-},
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))",
+"only_extra": true,
+"noleague": true
 },
 {
 "q": "Q16848949",
@@ -172,10 +26,11 @@
 "city": null,
 "grp": "AB",
 "titles": {
-"it": "Orogel Stadium-Dino Manuzzi",
-"en": "Stadio Dino Manuzzi"
+"it": "Orogel Stadium-Dino Manuzzi"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))",
+"only_extra": true,
+"noleague": true
 },
 {
 "q": "Q6630",
@@ -187,10 +42,11 @@
 "city": null,
 "grp": "AB",
 "titles": {
-"it": "Stadio Cino e Lillo Del Duca",
-"en": "Stadio Cino e Lillo Del Duca"
+"it": "Stadio Cino e Lillo Del Duca"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))",
+"only_extra": true,
+"noleague": true
 },
 {
 "q": "Q1886",
@@ -202,10 +58,11 @@
 "city": null,
 "grp": "AB",
 "titles": {
-"it": "Stadio di Bergamo",
-"en": "Stadio di Bergamo"
+"it": "Stadio di Bergamo"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))",
+"only_extra": true,
+"noleague": true
 },
 {
 "q": "Q759482",
@@ -217,10 +74,11 @@
 "city": null,
 "grp": "AB",
 "titles": {
-"it": "Stadio Giovanni Zini",
-"en": "Stadio Giovanni Zini"
+"it": "Stadio Giovanni Zini"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))",
+"only_extra": true,
+"noleague": true
 },
 {
 "q": "Q1120838",
@@ -231,10 +89,11 @@
 "venue": "stadio Giuseppe Sinigaglia",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Giuseppe Sinigaglia",
-"en": "Stadio Giuseppe Sinigaglia"
-}
+"titles": {
+"it": "Stadio Giuseppe Sinigaglia"
+},
+"titlesfrom": "it title as read in run 2 (label)",
+"force": true
 },
 {
 "q": "Q13391",
@@ -245,10 +104,10 @@
 "venue": "stadio Via del Mare",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Ettore Giardiniero",
-"en": "Stadio Via del mare"
-}
+"titles": {
+"it": "Stadio Ettore Giardiniero"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q1387710",
@@ -259,10 +118,10 @@
 "venue": "stadio Druso",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Druso",
-"en": "Stadio Druso"
-}
+"titles": {
+"it": "Stadio Druso"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q1422",
@@ -273,10 +132,10 @@
 "venue": "Juventus Stadium",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Juventus Stadium",
-"en": "Juventus Stadium"
-}
+"titles": {
+"it": "Juventus Stadium"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q1457",
@@ -287,10 +146,10 @@
 "venue": "stadio Luigi Ferraris",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Luigi Ferraris",
-"en": "Stadio Luigi Ferraris"
-}
+"titles": {
+"it": "Stadio Luigi Ferraris"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q1543",
@@ -301,10 +160,10 @@
 "venue": "stadio Giuseppe Meazza",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Giuseppe Meazza",
-"en": "San Siro"
-}
+"titles": {
+"it": "Stadio Giuseppe Meazza"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q1893",
@@ -315,10 +174,10 @@
 "venue": "stadio Renato Dall'Ara",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Renato Dall'Ara",
-"en": "Stadio Renato Dall'Ara"
-}
+"titles": {
+"it": "Stadio Renato Dall'Ara"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q1900",
@@ -329,10 +188,10 @@
 "venue": "Unipol Domus",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Unipol Domus",
-"en": "Unipol Domus"
-}
+"titles": {
+"it": "Unipol Domus"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q2052",
@@ -344,10 +203,11 @@
 "city": null,
 "grp": "B",
 "titles": {
-"it": "Stadio Artemio Franchi",
-"en": "Stadio Artemio Franchi"
+"it": "Stadio Artemio Franchi"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))",
+"only_extra": true,
+"noleague": true
 },
 {
 "q": "Q2074",
@@ -358,10 +218,10 @@
 "venue": "stadio Luigi Ferraris",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Luigi Ferraris",
-"en": "Stadio Luigi Ferraris"
-}
+"titles": {
+"it": "Stadio Luigi Ferraris"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q2276413",
@@ -372,7 +232,10 @@
 "venue": "Stadio comunale (Chiavari)",
 "city": null,
 "grp": "B",
-"clubtitle": "Virtus Entella"
+"titles": {
+"it": "Stadio Enrico Sannazzari"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q2609",
@@ -383,10 +246,10 @@
 "venue": "Stadio Olimpico",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Olimpico (Roma)",
-"en": "Stadio Olimpico"
-}
+"titles": {
+"it": "Stadio Olimpico (Roma)"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q2641",
@@ -397,10 +260,10 @@
 "venue": "Stadio Diego Armando Maradona",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Diego Armando Maradona (Napoli)",
-"en": "Stadio Diego Armando Maradona"
-}
+"titles": {
+"it": "Stadio Diego Armando Maradona (Napoli)"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q2674",
@@ -411,10 +274,10 @@
 "venue": "stadio Renzo Barbera",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Renzo Barbera",
-"en": "Stadio Renzo Barbera"
-}
+"titles": {
+"it": "Stadio Renzo Barbera"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q2693",
@@ -426,10 +289,9 @@
 "city": null,
 "grp": "B",
 "titles": {
-"it": "Stadio Ennio Tardini",
-"en": "Stadio Ennio Tardini"
+"it": "Stadio Ennio Tardini"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))"
 },
 {
 "q": "Q2739",
@@ -440,10 +302,10 @@
 "venue": "Stadio Olimpico",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Olimpico (Roma)",
-"en": "Stadio Olimpico"
-}
+"titles": {
+"it": "Stadio Olimpico (Roma)"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q2768",
@@ -454,10 +316,10 @@
 "venue": "Stadio Olimpico Grande Torino",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Olimpico Grande Torino",
-"en": "Stadio Olimpico Grande Torino"
-}
+"titles": {
+"it": "Stadio Olimpico Grande Torino"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q2798",
@@ -468,10 +330,10 @@
 "venue": "stadio Friuli",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Friuli",
-"en": "Stadio Friuli"
-}
+"titles": {
+"it": "Stadio Friuli"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q289482",
@@ -482,10 +344,10 @@
 "venue": "stadio Brianteo",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Brianteo",
-"en": "Stadio Brianteo"
-}
+"titles": {
+"it": "Stadio Brianteo"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q297430",
@@ -496,10 +358,10 @@
 "venue": "stadio Città di Arezzo",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Città di Arezzo",
-"en": "Stadio Città di Arezzo"
-}
+"titles": {
+"it": "Stadio Città di Arezzo"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q430993",
@@ -511,10 +373,11 @@
 "city": null,
 "grp": "B",
 "titles": {
-"it": "Stadio Danilo Martelli",
-"en": "Stadio Danilo Martelli"
+"it": "Stadio Danilo Martelli"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))",
+"only_extra": true,
+"noleague": true
 },
 {
 "q": "Q501372",
@@ -525,10 +388,10 @@
 "venue": "stadio Nicola Ceravolo",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Nicola Ceravolo",
-"en": "Stadio Nicola Ceravolo"
-}
+"titles": {
+"it": "Stadio Nicola Ceravolo"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q56542463",
@@ -539,10 +402,11 @@
 "venue": "stadio Romeo Menti",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Romeo Menti",
-"en": "Stadio Romeo Menti"
-}
+"titles": {
+"it": "Stadio Romeo Menti"
+},
+"titlesfrom": "it title as read in run 2 (label)",
+"force": true
 },
 {
 "q": "Q631",
@@ -553,10 +417,10 @@
 "venue": "stadio Giuseppe Meazza",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Giuseppe Meazza",
-"en": "San Siro"
-}
+"titles": {
+"it": "Stadio Giuseppe Meazza"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q6703",
@@ -568,10 +432,11 @@
 "city": null,
 "grp": "B",
 "titles": {
-"it": "Stadio Carlo Castellani",
-"en": "Stadio Carlo Castellani"
+"it": "Stadio Carlo Castellani"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))",
+"only_extra": true,
+"noleague": true
 },
 {
 "q": "Q6748",
@@ -582,7 +447,11 @@
 "venue": "stadio Romeo Menti",
 "city": null,
 "grp": "B",
-"clubtitle": "S.S. Juve Stabia"
+"titles": {
+"it": "Stadio Romeo Menti (Castellammare di Stabia)"
+},
+"titlesfrom": "it title as read in run 2 (label)",
+"force": true
 },
 {
 "q": "Q8408",
@@ -593,10 +462,11 @@
 "venue": "stadio Alberto Braglia",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Alberto Braglia",
-"en": "Stadio Alberto Braglia"
-}
+"titles": {
+"it": "Stadio Alberto Braglia"
+},
+"titlesfrom": "it title as read in run 2 (label)",
+"force": true
 },
 {
 "q": "Q8428",
@@ -607,10 +477,11 @@
 "venue": "stadio Euganeo",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Euganeo",
-"en": "Stadio Euganeo"
-}
+"titles": {
+"it": "Stadio Euganeo"
+},
+"titlesfrom": "it title as read in run 2 (label)",
+"force": true
 },
 {
 "q": "Q845043",
@@ -621,10 +492,10 @@
 "venue": "Stadio Benito Stirpe",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Stadio Benito Stirpe",
-"en": "Stadio Benito Stirpe"
-}
+"titles": {
+"it": "Stadio Benito Stirpe"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q8603",
@@ -635,10 +506,10 @@
 "venue": "Mapei Stadium - Città del Tricolore",
 "city": null,
 "grp": "B",
-"titles2": {
-"it": "Mapei Stadium - Città del Tricolore",
-"en": "Mapei Stadium – Città del Tricolore"
-}
+"titles": {
+"it": "Mapei Stadium - Città del Tricolore"
+},
+"titlesfrom": "it title as read in run 2 (label)"
 },
 {
 "q": "Q8639",
@@ -650,10 +521,9 @@
 "city": null,
 "grp": "B",
 "titles": {
-"it": "Stadio Marcantonio Bentegodi",
-"en": "Stadio Marcantonio Bentegodi"
+"it": "Stadio Marcantonio Bentegodi"
 },
-"titlesfrom": "ground titles of phase 1c run 3 (Wikidata sitelinks)"
+"titlesfrom": "it title as read in run 2 (ground titles of phase 1c run 3 (Wikidata sitelinks))"
 },
 {
 "q": "Q3180055",
@@ -664,7 +534,12 @@
 "venue": "Pantelis Magoulas Stadium",
 "city": null,
 "grp": "C",
-"clubtitle": "Niki Volos F.C."
+"titles": {
+"el": "Γήπεδο Παντελής Μαγουλάς"
+},
+"titlesfrom": "titles as read in run 2 (Wikidata sitelinks)",
+"allext": true,
+"noleague": true
 },
 {
 "q": "Q1945740",
@@ -675,101 +550,12 @@
 "venue": "Mladost Stadium",
 "city": null,
 "grp": "C",
-"clubtitle": "FK Mladost Lučani"
-},
-{
-"q": "Q216032",
-"name": "KRC Genk",
-"cc": "BE",
-"tier": 1,
-"map": 25000,
-"venue": "Cegeka Arena",
-"city": null,
-"grp": "A",
 "titles": {
-"nl": "Cegeka Arena",
-"en": "Cegeka Arena"
+"sr": "Стадион Младост (Лучани)"
 },
-"titlesfrom": "as in run 1",
-"only_extra": true
-},
-{
-"q": "Q18708",
-"name": "Fulham F.C.",
-"cc": "GB",
-"tier": 1,
-"map": 25700,
-"venue": "Craven Cottage",
-"city": null,
-"grp": "A",
-"titles": {
-"en": "Craven Cottage"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true
-},
-{
-"q": "Q18736",
-"name": "Stoke City F.C.",
-"cc": "GB",
-"tier": 2,
-"map": 27740,
-"venue": "Britannia Stadium",
-"city": null,
-"grp": "A",
-"titles": {
-"en": "Bet365 Stadium"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true
-},
-{
-"q": "Q1770361",
-"name": "Jong Ajax",
-"cc": "NL",
-"tier": 2,
-"map": 5000,
-"venue": "Sportpark De Toekomst",
-"city": null,
-"grp": "C",
-"titles": {
-"nl": "Sportpark De Toekomst",
-"en": "Sportpark De Toekomst"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true
-},
-{
-"q": "Q332642",
-"name": "NAC Breda",
-"cc": "NL",
-"tier": 2,
-"map": 19000,
-"venue": "Rat Verlegh Stadion",
-"city": null,
-"grp": "A",
-"titles": {
-"nl": "Rat Verlegh Stadion",
-"en": "Rat Verlegh Stadion"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true
-},
-{
-"q": "Q134241",
-"name": "Feyenoord Rotterdam",
-"cc": "NL",
-"tier": 1,
-"map": 51577,
-"venue": "De Kuip",
-"city": null,
-"grp": "A",
-"titles": {
-"nl": "Stadion Feijenoord",
-"en": "De Kuip"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true
+"titlesfrom": "titles as read in run 2 (Wikidata sitelinks)",
+"allext": true,
+"noleague": true
 },
 {
 "q": "Q743557",
@@ -785,149 +571,20 @@
 "en": "Nou Estadi Castàlia"
 },
 "titlesfrom": "as in run 1",
-"only_extra": true
-},
-{
-"q": "Q187091",
-"name": "FC Wil",
-"cc": "CH",
-"tier": 2,
-"map": 6958,
-"venue": "Lidl Arena",
-"city": null,
-"grp": "A",
-"titles": {
-"de": "Lidl Arena",
-"en": "Lidl Arena"
-},
-"titlesfrom": "as in run 1",
 "only_extra": true,
-"tok": [
-"wil"
-]
-},
-{
-"q": "Q659212",
-"name": "FC St. Gallen",
-"cc": "CH",
-"tier": 1,
-"map": 19694,
-"venue": "Kybunpark",
-"city": null,
-"grp": "A",
-"titles": {
-"de": "Berit Sitterstadion",
-"en": "Sitterstadion"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true,
-"tok": [
-"gallen"
-]
-},
-{
-"q": "Q201360",
-"name": "Grasshopper Club Zürich",
-"cc": "CH",
-"tier": 1,
-"map": 25000,
-"venue": "Letzigrund",
-"city": null,
-"grp": "A",
-"titles": {
-"de": "Letzigrund",
-"en": "Letzigrund"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true,
-"tok": [
-"grasshopper"
-]
-},
-{
-"q": "Q8806",
-"name": "Getafe CF",
-"cc": "ES",
-"tier": 1,
-"map": 16500,
-"venue": "Estadio Coliseum",
-"city": null,
-"grp": "C",
-"titles": {
-"es": "Coliseum (Getafe)",
-"en": "Estadio Coliseum"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true
-},
-{
-"q": "Q19513",
-"name": "Montpellier Hérault SC",
-"cc": "FR",
-"tier": 2,
-"map": 32900,
-"venue": "stade de la Mosson",
-"city": null,
-"grp": "C",
-"titles": {
-"fr": "Stade de la Mosson",
-"en": "Stade de la Mosson"
-},
-"titlesfrom": "as in run 1",
-"only_extra": true,
-"tok": [
-"montpellier"
-]
+"noleague": true
 }
 ],
 "extra": {
-"Q216032": [
-"http://www.krcgenk.be/nl/club/algemene-info/"
-],
-"Q18708": [
-"https://www.premierleague.com/en/news/62625"
-],
-"Q18736": [
-"https://www.premierleague.com/clubs/42/Stoke-City/stadium"
-],
-"Q1770361": [
-"https://keukenkampioendivisie.nl/teams/jong-ajax"
-],
-"Q332642": [
-"https://www.nac.nl/nieuws/update-verbouwing-rat-verlegh-stadion-betonconstructies-en-uitbreiding-tribunes",
-"https://keukenkampioendivisie.nl/teams/nac-breda"
-],
-"Q134241": [
-"https://www.dekuip.com/nl/stadion-feijenoord"
-],
 "Q743557": [
 "http://www.cdcastellon.com/estadio/"
-],
-"Q187091": [],
-"Q659212": [],
-"Q201360": [
-"https://stadionletzigrund.com/stadion-letzigrund/facts/"
-],
-"Q8806": [],
-"Q19513": [],
-"Q16848949": [
-"https://www.cesenafc.com/it/society/stadium"
-],
-"Q1262822": [
-"https://lpf.ro/cluburi/fc-botosani/8"
 ]
+},
+"dump": {
+"http://www.cdcastellon.com/estadio/": "aforo en varias ocasiones"
 },
 "render": [
 "legaseriea.it",
-"legab.it",
-"laliga.com",
-"ligue1.com",
-"premierleague.com",
-"lpf.ro",
-"keukenkampioendivisie.nl",
-"krcgenk.be",
-"nac.nl",
-"slgr.gr",
-"proleague.be"
+"legab.it"
 ]
 }

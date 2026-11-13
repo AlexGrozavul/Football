@@ -295,9 +295,21 @@ def article(lang, title):
         val = tidy(m.group(2))
         if re.search(r"\d", val):
             out["lines"].append(f"{m.group(1).strip()} = {val[:520]}")
+    if not out["lines"]:
+        out["keys"] = [k.strip() for k in re.findall(r"^\s*\|\s*([^=|\n{}\[\]]{1,28})=", head, re.M)][:60]
+    if lang == "it":
+        h = wm("it.wikipedia.org", {"action": "parse", "page": title, "prop": "text", "section": "0", "redirects": "1"})
+        htm = (h or {}).get("parse", {}).get("text", "")
+        for th, td in re.findall(r"<tr[^>]*>\s*<th[^>]*>(.*?)</th>\s*<td[^>]*>(.*?)</td>", htm, re.S):
+            tht = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", th))).strip()
+            if re.search(r"posti|capien|spettator", tht, re.I):
+                tdt = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", re.sub(r"<sup.*?</sup>", " ", td, flags=re.S)))).strip()
+                out["lines"].append(f"RENDERED INFOBOX ROW {tht} = {tdt[:300]}")
     w = re.search(r"^\s*\|\s*(?:website|homepage|sito|site|web|url)[^=\n]{0,20}=\s*[^\n]*?(https?://[^\s|\]}<\"]+)", head, re.I | re.M)
     out["web"] = w.group(1) if w else ""
-    text = tidy(re.sub(r"\{\{[^{}]*\}\}", " ", re.sub(r"\{\|.*?\|\}", " ", wt, flags=re.S)))
+    wt2 = re.sub(r"\{\{\s*(?:formatnum|M|TA|nts|tutto attaccato|unité|nombre|esd|nowrap|val)\s*[:|]\s*([\d .,\u00a0]+)(?:\|[^{}]*)?\}\}", r"\1", wt, flags=re.I)
+    text = tidy(re.sub(r"\{\{[^{}]*\}\}", " ", re.sub(r"\{\|.*?\|\}", " ", wt2, flags=re.S)))
+    text = re.sub(r"(?<=\d)\.(?=\d{3}(?!\d))", "\u00a0", text)
     for m in re.finditer(rf"[^.!?|=]{{0,170}}(?:{KEY})[^.!?|=]{{0,170}}", text, re.I):
         s = m.group(0).strip()
         if re.search(NUM, s) and len(out["body"]) < 5 and not any(s[:40] == b[:40] for b in out["body"]):
@@ -465,6 +477,9 @@ class Host:
             self.stop = "bot challenge"
             res["st"] = "STOP bot challenge"
             return res, []
+        dm = DUMP.get(url) and re.search(DUMP[url], text, re.I)
+        if dm:
+            res["dump"] = text[dm.start():dm.start() + 1500]
         res.update(title=title, chars=len(text), snips=[s[:420 if cap > 6 else 330] for s in snippets(text, figs, cap)])
         if self.render:
             res["rendered"] = 1
@@ -473,6 +488,7 @@ class Host:
 
 HOSTS = {}
 TERMSOK = set()
+DUMP = {}
 
 
 def host_of(url):
@@ -588,6 +604,7 @@ def main():
         clubs = [c for c in clubs if c["q"] in only]
     log(f"run {RUN}: {len(clubs)} clubs")
     RENDER.update(cfg.get("render") or [])
+    DUMP.update(cfg.get("dump") or {})
     for c in clubs:
         if c.get("titles"):
             c["wd"] = {"how": c.pop("titlesfrom", "titles given")}
@@ -629,6 +646,8 @@ def main():
         agrees = m and any(abs(v - m) <= 0.03 * m for v in linenums)
         c["auto"] = "a number on a capacity line is within 3 percent of the map" if agrees else "no number on the capacity lines within 3 percent"
         todo = [(u, "added by hand for this run") for u in extra.get(c["q"], [])]
+        if c.get("force"):
+            agrees = False
         if not (c["grp"] == "B" and agrees) and not c.get("only_extra"):
             for l, a in c["wp"].items():
                 for u, arch in a["lineref"][:2]:
@@ -636,6 +655,8 @@ def main():
                 for u, arch in a["bodyref"][:1]:
                     todo.append((u, f"reference on a capacity sentence of {l}.wikipedia"))
             ext = [u for a in c["wp"].values() for u in a["ext"]]
+            if c.get("allext"):
+                c["extlist"] = [u[:110] for u in ext][:25]
             sd = [u for u in ext if re.search(r"stadiumdb\.com|stadiony\.net", u)][:1]
             todo += [(u, "StadiumDB page in the article's link list") for u in sd]
             web = [a["web"] for a in c["wp"].values() if a["web"]][:1]
@@ -643,7 +664,7 @@ def main():
             n = 0
             for u in ext:
                 p = urllib.parse.urlparse(u)
-                if n < 3 and not SKIPHOST.search(u) and STADWORD.search(p.path + "?" + p.query) and not re.search(r"\.(pdf|jpg|png)$", p.path, re.I) and u not in sd:
+                if n < (5 if c.get("allext") else 3) and not SKIPHOST.search(u) and (c.get("allext") or STADWORD.search(p.path + "?" + p.query)) and not re.search(r"\.(pdf|jpg|png)$", p.path, re.I) and u not in sd:
                     todo.append((u, "external link of the article"))
                     n += 1
         seen = set()
@@ -660,7 +681,7 @@ def main():
     log("stadiumdb: " + str(sdb))
     leagues = {}
     for c in clubs:
-        if c["grp"] == "B" and c["auto"].startswith("a number"):
+        if (c["grp"] == "B" and c["auto"].startswith("a number") and not c.get("force")) or c.get("noleague"):
             continue
         for root in LEAGUES.get(c["cc"], []):
             leagues.setdefault(root, []).append(c)
