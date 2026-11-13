@@ -893,8 +893,42 @@ def websites(qids):
     return res
 
 
+def refs_follow(lang, title, pat, pagepat, cap=3):
+    """The passages of an article that match, the outside URLs cited within them, and those pages."""
+    d = wm(f"{lang}.wikipedia.org", {"action": "parse", "page": title, "prop": "wikitext", "redirects": "1"})
+    if not d or "parse" not in d:
+        return [f"{lang}:{title} NOT READ"]
+    wt = d["parse"].get("wikitext") or ""
+    out, urls, last = [f"REFS {lang}:{d['parse'].get('title')} /{pat}/"], [], -9999
+    for m in re.finditer(pat, wt, re.I):
+        if m.start() < last + 500:
+            continue
+        last = m.end()
+        seg = wt[max(0, m.start() - 500):m.end() + 900]
+        out.append("  ..." + cut(seg, 1300) + "...")
+        for u in re.findall(r"https?://[^\s|\]<>}\"]+", seg):
+            if not re.search(r"wikipedia|wikimedia|archive\.org|transfermarkt|facebook|twitter|instagram|youtube", u) and u not in urls:
+                urls.append(u)
+        if len(out) > 4:
+            break
+    out.append("  cited URLs: " + " ".join(urls[:8]))
+    for u in urls[:cap]:
+        out += read_page(u, pagepat, None, 5, 0)
+    return out
+
+
 def stage_c(T):
     lines = []
+    for lang, title, pat, pagepat in T.get("refs_follow", []):
+        lines += refs_follow(lang, title, pat, pagepat)
+    for lang, q in T.get("search", []):
+        lines.append(f"SEARCH {lang} \"{q}\": " + " ; ".join(search_titles(lang, q)))
+    for ids in T.get("lookup", []):
+        for r in nom_raw({"osm_ids": ids, "format": "jsonv2", "extratags": "1", "namedetails": "1"}, "lookup") or []:
+            lines.append(f"LOOKUP {r.get('osm_type')}/{r.get('osm_id')} {r.get('category')}={r.get('type')} name=\"{r.get('name')}\" {r.get('lat')},{r.get('lon')} \"{cut(r.get('display_name'), 110)}\" extratags={cut(json.dumps(r.get('extratags'), ensure_ascii=False), 300)} namedetails={cut(json.dumps(r.get('namedetails'), ensure_ascii=False), 200)}")
+    for label, lat, lon in T.get("reverse", []):
+        r = nom_raw({"lat": lat, "lon": lon, "format": "jsonv2", "zoom": "18"}, "reverse") or {}
+        lines.append(f"REVERSE {label} {lat},{lon}: {r.get('osm_type')}/{r.get('osm_id')} {r.get('category')}={r.get('type')} name=\"{r.get('name')}\" \"{cut(r.get('display_name'), 160)}\"")
     for lang, title, pat in T.get("season_rows", []):
         lines += season_rows(lang, title, pat)
     for lang, title, pat in T.get("league_rows", []):

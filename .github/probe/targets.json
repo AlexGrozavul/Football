@@ -1633,131 +1633,84 @@
 "man": false
 }
 ],
-"b3": [
-"Q112633360",
-"Q1507157",
-"Q157352",
-"Q1576328",
-"Q16743331",
-"Q30090061",
-"Q319167",
-"Q4545849",
-"Q566136",
-"Q566183",
-"Q639525",
-"Q665920",
-"Q7572134",
-"Q821096",
-"Q831867",
-"Q885187",
-"Q97927365",
-"Q1024393",
-"Q130199486",
-"Q1463313",
-"Q19902101",
-"Q4654138",
-"Q4680389",
-"Q5014447",
-"Q5014453",
-"Q5014496",
-"Q55583717",
-"Q55864953",
-"Q966392",
-"Q13397712",
-"Q493464",
-"Q537301"
-],
-"towns": {
-"Q1024393": "Pașcani",
-"Q130199486": "Curtișoara",
-"Q1463313": "Cluj-Napoca",
-"Q19902101": "Deva",
-"Q4654138": "Brașov",
-"Q4680389": "Călărași",
-"Q5014447": "Bacău",
-"Q5014453": "Buftea",
-"Q5014496": "Breaza",
-"Q55583717": "Târgu Secuiesc",
-"Q55864953": "Modelu",
-"Q966392": "Dej"
-},
-"force_town": [
-"Q966392"
-],
-"same": [
-[
-"de",
-[
-"PSD Bank Arena",
-"BBBank Arena"
-]
-],
-[
-"de",
-[
-"Sparda-Bank-Hessen-Stadion",
-"Stadion am Bieberer Berg"
-]
-],
-[
-"de",
-[
-"Stadion Zwickau",
-"GGZ-Arena"
-]
-],
-[
-"de",
-[
-"Centus Arena",
-"Bediani-Arena"
-]
-],
-[
-"de",
-[
-"Sportpark Eimsbüttel",
-"Stadion Hoheluft",
-"Wolfgang-Meyer-Sportanlage"
-]
-]
-],
-"season_rows": [
+"refs_follow": [
 [
 "de",
 "Fußball-Regionalliga Nord 2026/27",
-"Hannover|HSC|Constantin|Hamburger SV"
+"\\{\\{FNZ\\|5\\|",
+"Hoheluft|Eimsbüttel|Heimspiel"
+],
+[
+"de",
+"Hamburger SV",
+"in das \\[\\[Stadion Hoheluft\\]\\] ausweichen",
+"Hoheluft|Eimsbüttel|Heimspiel"
 ]
 ],
-"league_rows": [
+"search": [
+[
+"ro",
+"Stadionul Municipal Dej"
+],
 [
 "en",
-"2026–27 Liga III",
-"Timi[sș]oara"
+"Stadionul Municipal Dej"
 ]
 ],
 "passages": [
 [
-"de",
-"Hamburger SV II",
-"Hoheluft|Eimsbüttel|Wolfgang-Meyer"
+"ro",
+"Stadionul Municipal (Dej)",
+"coord|Aurora|adres[aă]|loca[țt]i|capacitate"
 ],
 [
-"de",
-"Fußball-Regionalliga Nord 2026/27",
-"Hoheluft"
+"en",
+"Stadionul Municipal (Dej)",
+"coord|Aurora|address|location|capacity"
+],
+[
+"ro",
+"FC Unirea Dej",
+"stadion\\s*=|Berceni|Stadionul Municipal"
+],
+[
+"en",
+"FC Unirea Dej",
+"ground\\s*=|stadium\\s*=|Berceni|Stadionul Municipal"
 ]
 ],
-"pages": [
+"lookup": [
+"W271928305,W25240552"
+],
+"reverse": [
 [
-"https://www.dfb.de/news/eilenriedestadion-als-weitere-heimspielstaette-des-tsv-havelse-zugelassen",
-"Eilenriede|Heinz[- ]von[- ]Heiden|Heimspielst|Langrehr",
-null
+"Dej stadium way 271928305",
+47.130872,
+23.890376
 ],
 [
-"https://www.hsv.de/",
-"Hoheluft|Eimsbüttel|Wolfgang-Meyer",
-"u21|zweite|regionalliga|nachwuchs|young"
+"Unirea Dej map point",
+44.308611,
+26.183889
+],
+[
+"Oltul Curtișoara map point",
+44.484307,
+24.331631
+]
+],
+"nominatim": [
+[
+"Stadionul Municipal, Dej",
+"RO",
+47.130872,
+23.890376
+],
+[
+"Stadion Unirea Dej",
+"RO",
+47.130872,
+23.890376
 ]
 ]
 }
