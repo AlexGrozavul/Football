@@ -5193,7 +5193,7 @@
   },
   {
    "id": 84895,
-   "utcDate": "2026-12-05T13:00:00Z",
+   "utcDate": "2026-12-04T18:00:00Z",
    "finished": false,
    "round": "16. Spieltag",
    "roundOrder": 16,
@@ -5208,31 +5208,6 @@
     "name": "SV Waldhof Mannheim",
     "shortName": "Mannheim",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Svwaldhof.svg/960px-Svwaldhof.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84896,
-   "utcDate": "2026-12-05T13:00:00Z",
-   "finished": false,
-   "round": "16. Spieltag",
-   "roundOrder": 16,
-   "home": {
-    "id": 23,
-    "name": "Alemannia Aachen",
-    "shortName": "Aachen",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/94/Alemannia_Aachen_2010.svg"
-   },
-   "away": {
-    "id": 126,
-    "name": "TSV Havelse",
-    "shortName": null,
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5267,31 +5242,6 @@
    "viewers": null
   },
   {
-   "id": 84898,
-   "utcDate": "2026-12-05T13:00:00Z",
-   "finished": false,
-   "round": "16. Spieltag",
-   "roundOrder": 16,
-   "home": {
-    "id": 181,
-    "name": "Jahn Regensburg",
-    "shortName": "Regensburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Jahn_Regensburg_logo2014.svg/960px-Jahn_Regensburg_logo2014.svg.png"
-   },
-   "away": {
-    "id": 188,
-    "name": "Preußen Münster",
-    "shortName": "Münster",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/7/7e/SC_Preussen_Muenster_Logo_2018.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 84899,
    "utcDate": "2026-12-05T13:00:00Z",
    "finished": false,
@@ -5308,31 +5258,6 @@
     "name": "SG Sonnenhof Großaspach",
     "shortName": "Sonnenhof Großaspach",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/8/86/SG_Sonnenhof_Gro%C3%9Faspach_logo.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84900,
-   "utcDate": "2026-12-05T13:00:00Z",
-   "finished": false,
-   "round": "16. Spieltag",
-   "roundOrder": 16,
-   "home": {
-    "id": 2396,
-    "name": "TSG 1899 Hoffenheim II",
-    "shortName": "TSG 1899 Hoffenheim II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
-   },
-   "away": {
-    "id": 417,
-    "name": "1. FC Saarbrücken",
-    "shortName": "Saarbrücken",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/f/ff/1._FC_Saarbr%C3%BCcken.svg/960px-1._FC_Saarbr%C3%BCcken.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5418,7 +5343,7 @@
   },
   {
    "id": 84904,
-   "utcDate": "2026-12-05T13:00:00Z",
+   "utcDate": "2026-12-05T15:30:00Z",
    "finished": false,
    "round": "16. Spieltag",
    "roundOrder": 16,
@@ -5442,22 +5367,97 @@
    "viewers": null
   },
   {
-   "id": 84905,
-   "utcDate": "2026-12-12T13:00:00Z",
+   "id": 84898,
+   "utcDate": "2026-12-06T12:30:00Z",
    "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
+   "round": "16. Spieltag",
+   "roundOrder": 16,
    "home": {
+    "id": 181,
+    "name": "Jahn Regensburg",
+    "shortName": "Regensburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Jahn_Regensburg_logo2014.svg/960px-Jahn_Regensburg_logo2014.svg.png"
+   },
+   "away": {
     "id": 188,
     "name": "Preußen Münster",
     "shortName": "Münster",
     "crest": "https://upload.wikimedia.org/wikipedia/de/7/7e/SC_Preussen_Muenster_Logo_2018.svg"
    },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84900,
+   "utcDate": "2026-12-06T15:30:00Z",
+   "finished": false,
+   "round": "16. Spieltag",
+   "roundOrder": 16,
+   "home": {
+    "id": 2396,
+    "name": "TSG 1899 Hoffenheim II",
+    "shortName": "TSG 1899 Hoffenheim II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
+   },
    "away": {
-    "id": 599,
-    "name": "SV Meppen",
-    "shortName": "Meppen",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/SV_Meppen_Logo_2022.svg/250px-SV_Meppen_Logo_2022.svg.png"
+    "id": 417,
+    "name": "1. FC Saarbrücken",
+    "shortName": "Saarbrücken",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/f/ff/1._FC_Saarbr%C3%BCcken.svg/960px-1._FC_Saarbr%C3%BCcken.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84896,
+   "utcDate": "2026-12-06T18:30:00Z",
+   "finished": false,
+   "round": "16. Spieltag",
+   "roundOrder": 16,
+   "home": {
+    "id": 23,
+    "name": "Alemannia Aachen",
+    "shortName": "Aachen",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/9/94/Alemannia_Aachen_2010.svg"
+   },
+   "away": {
+    "id": 126,
+    "name": "TSV Havelse",
+    "shortName": null,
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84910,
+   "utcDate": "2026-12-11T18:00:00Z",
+   "finished": false,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
+   "home": {
+    "id": 2199,
+    "name": "Viktoria Köln",
+    "shortName": "Viktoria Köln",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
+   },
+   "away": {
+    "id": 185,
+    "name": "Fortuna Düsseldorf",
+    "shortName": "Düsseldorf",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/960px-Fortuna_D%C3%BCsseldorf.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5483,31 +5483,6 @@
     "name": "MSV Duisburg",
     "shortName": "Duisburg",
     "crest": "https://upload.wikimedia.org/wikipedia/en/c/c8/Msv_duisburg%28new%29.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84907,
-   "utcDate": "2026-12-12T13:00:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 102,
-    "name": "Hansa Rostock",
-    "shortName": "Rostock",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/F.C._Hansa_Rostock_Logo.svg/960px-F.C._Hansa_Rostock_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
-   },
-   "away": {
-    "id": 114,
-    "name": "SC Verl",
-    "shortName": "Verl",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/SC_Verl_Logo.svg/960px-SC_Verl_Logo.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5567,56 +5542,6 @@
    "viewers": null
   },
   {
-   "id": 84910,
-   "utcDate": "2026-12-12T13:00:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 2199,
-    "name": "Viktoria Köln",
-    "shortName": "Viktoria Köln",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
-   },
-   "away": {
-    "id": 185,
-    "name": "Fortuna Düsseldorf",
-    "shortName": "Düsseldorf",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/960px-Fortuna_D%C3%BCsseldorf.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84911,
-   "utcDate": "2026-12-12T13:00:00Z",
-   "finished": false,
-   "round": "17. Spieltag",
-   "roundOrder": 17,
-   "home": {
-    "id": 171,
-    "name": "FC Ingolstadt 04",
-    "shortName": "Ingolstadt",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/5/55/FC-Ingolstadt_logo.svg/960px-FC-Ingolstadt_logo.svg.png"
-   },
-   "away": {
-    "id": 1718,
-    "name": "Fortuna Köln",
-    "shortName": "Fortuna Köln",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg/250px-SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 84912,
    "utcDate": "2026-12-12T13:00:00Z",
    "finished": false,
@@ -5667,8 +5592,33 @@
    "viewers": null
   },
   {
+   "id": 84905,
+   "utcDate": "2026-12-12T15:30:00Z",
+   "finished": false,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
+   "home": {
+    "id": 188,
+    "name": "Preußen Münster",
+    "shortName": "Münster",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/7/7e/SC_Preussen_Muenster_Logo_2018.svg"
+   },
+   "away": {
+    "id": 599,
+    "name": "SV Meppen",
+    "shortName": "Meppen",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/SV_Meppen_Logo_2022.svg/250px-SV_Meppen_Logo_2022.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 84914,
-   "utcDate": "2026-12-12T13:00:00Z",
+   "utcDate": "2026-12-13T12:30:00Z",
    "finished": false,
    "round": "17. Spieltag",
    "roundOrder": 17,
@@ -5683,6 +5633,81 @@
     "name": "Alemannia Aachen",
     "shortName": "Aachen",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/9/94/Alemannia_Aachen_2010.svg"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84911,
+   "utcDate": "2026-12-13T15:30:00Z",
+   "finished": false,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
+   "home": {
+    "id": 171,
+    "name": "FC Ingolstadt 04",
+    "shortName": "Ingolstadt",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/5/55/FC-Ingolstadt_logo.svg/960px-FC-Ingolstadt_logo.svg.png"
+   },
+   "away": {
+    "id": 1718,
+    "name": "Fortuna Köln",
+    "shortName": "Fortuna Köln",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg/250px-SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84907,
+   "utcDate": "2026-12-13T18:30:00Z",
+   "finished": false,
+   "round": "17. Spieltag",
+   "roundOrder": 17,
+   "home": {
+    "id": 102,
+    "name": "Hansa Rostock",
+    "shortName": "Rostock",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/F.C._Hansa_Rostock_Logo.svg/960px-F.C._Hansa_Rostock_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "away": {
+    "id": 114,
+    "name": "SC Verl",
+    "shortName": "Verl",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/SC_Verl_Logo.svg/960px-SC_Verl_Logo.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84920,
+   "utcDate": "2026-12-18T18:00:00Z",
+   "finished": false,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
+   "home": {
+    "id": 2199,
+    "name": "Viktoria Köln",
+    "shortName": "Viktoria Köln",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
+   },
+   "away": {
+    "id": 553,
+    "name": "SV Waldhof Mannheim",
+    "shortName": "Mannheim",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Svwaldhof.svg/960px-Svwaldhof.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5708,31 +5733,6 @@
     "name": "SV Wehen Wiesbaden",
     "shortName": "Wiesbaden",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/3/3d/Logo_SV_Wehen_Wiesbaden.svg/250px-Logo_SV_Wehen_Wiesbaden.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84916,
-   "utcDate": "2026-12-19T13:00:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 185,
-    "name": "Fortuna Düsseldorf",
-    "shortName": "Düsseldorf",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/960px-Fortuna_D%C3%BCsseldorf.svg.png"
-   },
-   "away": {
-    "id": 109,
-    "name": "Rot-Weiss Essen",
-    "shortName": "Rot-Weiss Essen",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Rot-Weiss_Essen.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5792,56 +5792,6 @@
    "viewers": null
   },
   {
-   "id": 84919,
-   "utcDate": "2026-12-19T13:00:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 114,
-    "name": "SC Verl",
-    "shortName": "Verl",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/SC_Verl_Logo.svg/960px-SC_Verl_Logo.svg.png"
-   },
-   "away": {
-    "id": 126,
-    "name": "TSV Havelse",
-    "shortName": null,
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84920,
-   "utcDate": "2026-12-19T13:00:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 2199,
-    "name": "Viktoria Köln",
-    "shortName": "Viktoria Köln",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
-   },
-   "away": {
-    "id": 553,
-    "name": "SV Waldhof Mannheim",
-    "shortName": "Mannheim",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Svwaldhof.svg/960px-Svwaldhof.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 84921,
    "utcDate": "2026-12-19T13:00:00Z",
    "finished": false,
@@ -5858,56 +5808,6 @@
     "name": "Fortuna Köln",
     "shortName": "Fortuna Köln",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg/250px-SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84922,
-   "utcDate": "2026-12-19T13:00:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 184,
-    "name": "VfB Stuttgart II",
-    "shortName": "Stuttgart II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/VfB_Stuttgart_1893_Logo.svg/960px-VfB_Stuttgart_1893_Logo.svg.png"
-   },
-   "away": {
-    "id": 417,
-    "name": "1. FC Saarbrücken",
-    "shortName": "Saarbrücken",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/f/ff/1._FC_Saarbr%C3%BCcken.svg/960px-1._FC_Saarbr%C3%BCcken.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84923,
-   "utcDate": "2026-12-19T13:00:00Z",
-   "finished": false,
-   "round": "18. Spieltag",
-   "roundOrder": 18,
-   "home": {
-    "id": 599,
-    "name": "SV Meppen",
-    "shortName": "Meppen",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/SV_Meppen_Logo_2022.svg/250px-SV_Meppen_Logo_2022.svg.png"
-   },
-   "away": {
-    "id": 171,
-    "name": "FC Ingolstadt 04",
-    "shortName": "Ingolstadt",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/5/55/FC-Ingolstadt_logo.svg/960px-FC-Ingolstadt_logo.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5942,22 +5842,97 @@
    "viewers": null
   },
   {
-   "id": 84925,
-   "utcDate": "2027-01-16T13:00:00Z",
+   "id": 84923,
+   "utcDate": "2026-12-19T15:30:00Z",
    "finished": false,
-   "round": "19. Spieltag",
-   "roundOrder": 19,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
    "home": {
-    "id": 109,
-    "name": "Rot-Weiss Essen",
-    "shortName": "Rot-Weiss Essen",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Rot-Weiss_Essen.png"
+    "id": 599,
+    "name": "SV Meppen",
+    "shortName": "Meppen",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/SV_Meppen_Logo_2022.svg/250px-SV_Meppen_Logo_2022.svg.png"
    },
    "away": {
+    "id": 171,
+    "name": "FC Ingolstadt 04",
+    "shortName": "Ingolstadt",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/5/55/FC-Ingolstadt_logo.svg/960px-FC-Ingolstadt_logo.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84922,
+   "utcDate": "2026-12-20T12:30:00Z",
+   "finished": false,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
+   "home": {
     "id": 184,
     "name": "VfB Stuttgart II",
     "shortName": "Stuttgart II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/VfB_Stuttgart_1893_Logo.svg/960px-VfB_Stuttgart_1893_Logo.svg.png"
+   },
+   "away": {
+    "id": 417,
+    "name": "1. FC Saarbrücken",
+    "shortName": "Saarbrücken",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/f/ff/1._FC_Saarbr%C3%BCcken.svg/960px-1._FC_Saarbr%C3%BCcken.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84919,
+   "utcDate": "2026-12-20T15:30:00Z",
+   "finished": false,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
+   "home": {
+    "id": 114,
+    "name": "SC Verl",
+    "shortName": "Verl",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/SC_Verl_Logo.svg/960px-SC_Verl_Logo.svg.png"
+   },
+   "away": {
+    "id": 126,
+    "name": "TSV Havelse",
+    "shortName": null,
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84916,
+   "utcDate": "2026-12-20T18:30:00Z",
+   "finished": false,
+   "round": "18. Spieltag",
+   "roundOrder": 18,
+   "home": {
+    "id": 185,
+    "name": "Fortuna Düsseldorf",
+    "shortName": "Düsseldorf",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/960px-Fortuna_D%C3%BCsseldorf.svg.png"
+   },
+   "away": {
+    "id": 109,
+    "name": "Rot-Weiss Essen",
+    "shortName": "Rot-Weiss Essen",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Rot-Weiss_Essen.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -5968,7 +5943,7 @@
   },
   {
    "id": 84926,
-   "utcDate": "2027-01-16T13:00:00Z",
+   "utcDate": "2027-01-15T18:00:00Z",
    "finished": false,
    "round": "19. Spieltag",
    "roundOrder": 19,
@@ -5992,22 +5967,22 @@
    "viewers": null
   },
   {
-   "id": 84927,
+   "id": 84925,
    "utcDate": "2027-01-16T13:00:00Z",
    "finished": false,
    "round": "19. Spieltag",
    "roundOrder": 19,
    "home": {
-    "id": 174,
-    "name": "SV Wehen Wiesbaden",
-    "shortName": "Wiesbaden",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/3/3d/Logo_SV_Wehen_Wiesbaden.svg/250px-Logo_SV_Wehen_Wiesbaden.svg.png"
+    "id": 109,
+    "name": "Rot-Weiss Essen",
+    "shortName": "Rot-Weiss Essen",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Rot-Weiss_Essen.png"
    },
    "away": {
-    "id": 2199,
-    "name": "Viktoria Köln",
-    "shortName": "Viktoria Köln",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
+    "id": 184,
+    "name": "VfB Stuttgart II",
+    "shortName": "Stuttgart II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/VfB_Stuttgart_1893_Logo.svg/960px-VfB_Stuttgart_1893_Logo.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -6092,81 +6067,6 @@
    "viewers": null
   },
   {
-   "id": 84931,
-   "utcDate": "2027-01-16T13:00:00Z",
-   "finished": false,
-   "round": "19. Spieltag",
-   "roundOrder": 19,
-   "home": {
-    "id": 126,
-    "name": "TSV Havelse",
-    "shortName": null,
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
-   },
-   "away": {
-    "id": 185,
-    "name": "Fortuna Düsseldorf",
-    "shortName": "Düsseldorf",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/960px-Fortuna_D%C3%BCsseldorf.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84932,
-   "utcDate": "2027-01-16T13:00:00Z",
-   "finished": false,
-   "round": "19. Spieltag",
-   "roundOrder": 19,
-   "home": {
-    "id": 1718,
-    "name": "Fortuna Köln",
-    "shortName": "Fortuna Köln",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg/250px-SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg.png"
-   },
-   "away": {
-    "id": 107,
-    "name": "MSV Duisburg",
-    "shortName": "Duisburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/en/c/c8/Msv_duisburg%28new%29.svg"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
-   "id": 84933,
-   "utcDate": "2027-01-16T13:00:00Z",
-   "finished": false,
-   "round": "19. Spieltag",
-   "roundOrder": 19,
-   "home": {
-    "id": 529,
-    "name": "SG Sonnenhof Großaspach",
-    "shortName": "Sonnenhof Großaspach",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/86/SG_Sonnenhof_Gro%C3%9Faspach_logo.png"
-   },
-   "away": {
-    "id": 181,
-    "name": "Jahn Regensburg",
-    "shortName": "Regensburg",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Jahn_Regensburg_logo2014.svg/960px-Jahn_Regensburg_logo2014.svg.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
-   "stadium": null,
-   "city": null,
-   "viewers": null
-  },
-  {
    "id": 84934,
    "utcDate": "2027-01-16T13:00:00Z",
    "finished": false,
@@ -6192,22 +6092,22 @@
    "viewers": null
   },
   {
-   "id": 84935,
-   "utcDate": "2027-01-23T13:00:00Z",
+   "id": 84932,
+   "utcDate": "2027-01-16T15:30:00Z",
    "finished": false,
-   "round": "20. Spieltag",
-   "roundOrder": 20,
+   "round": "19. Spieltag",
+   "roundOrder": 19,
    "home": {
-    "id": 185,
-    "name": "Fortuna Düsseldorf",
-    "shortName": "Düsseldorf",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/960px-Fortuna_D%C3%BCsseldorf.svg.png"
+    "id": 1718,
+    "name": "Fortuna Köln",
+    "shortName": "Fortuna Köln",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg/250px-SC_Fortuna_Koeln_Logo_2013–2019%2C_2026–.svg.png"
    },
    "away": {
-    "id": 553,
-    "name": "SV Waldhof Mannheim",
-    "shortName": "Mannheim",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Svwaldhof.svg/960px-Svwaldhof.svg.png"
+    "id": 107,
+    "name": "MSV Duisburg",
+    "shortName": "Duisburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/en/c/c8/Msv_duisburg%28new%29.svg"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -6217,22 +6117,72 @@
    "viewers": null
   },
   {
-   "id": 84936,
-   "utcDate": "2027-01-23T13:00:00Z",
+   "id": 84933,
+   "utcDate": "2027-01-17T12:30:00Z",
    "finished": false,
-   "round": "20. Spieltag",
-   "roundOrder": 20,
+   "round": "19. Spieltag",
+   "roundOrder": 19,
    "home": {
-    "id": 188,
-    "name": "Preußen Münster",
-    "shortName": "Münster",
-    "crest": "https://upload.wikimedia.org/wikipedia/de/7/7e/SC_Preussen_Muenster_Logo_2018.svg"
+    "id": 529,
+    "name": "SG Sonnenhof Großaspach",
+    "shortName": "Sonnenhof Großaspach",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/8/86/SG_Sonnenhof_Gro%C3%9Faspach_logo.png"
    },
    "away": {
+    "id": 181,
+    "name": "Jahn Regensburg",
+    "shortName": "Regensburg",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Jahn_Regensburg_logo2014.svg/960px-Jahn_Regensburg_logo2014.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84931,
+   "utcDate": "2027-01-17T15:30:00Z",
+   "finished": false,
+   "round": "19. Spieltag",
+   "roundOrder": 19,
+   "home": {
+    "id": 126,
+    "name": "TSV Havelse",
+    "shortName": null,
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/TSV_Havelse_logo.svg/120px-TSV_Havelse_logo.svg.png"
+   },
+   "away": {
+    "id": 185,
+    "name": "Fortuna Düsseldorf",
+    "shortName": "Düsseldorf",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/960px-Fortuna_D%C3%BCsseldorf.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84927,
+   "utcDate": "2027-01-17T18:30:00Z",
+   "finished": false,
+   "round": "19. Spieltag",
+   "roundOrder": 19,
+   "home": {
     "id": 174,
     "name": "SV Wehen Wiesbaden",
     "shortName": "Wiesbaden",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/3/3d/Logo_SV_Wehen_Wiesbaden.svg/250px-Logo_SV_Wehen_Wiesbaden.svg.png"
+   },
+   "away": {
+    "id": 2199,
+    "name": "Viktoria Köln",
+    "shortName": "Viktoria Köln",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -6243,7 +6193,7 @@
   },
   {
    "id": 84937,
-   "utcDate": "2027-01-23T13:00:00Z",
+   "utcDate": "2027-01-22T18:00:00Z",
    "finished": false,
    "round": "20. Spieltag",
    "roundOrder": 20,
@@ -6267,22 +6217,22 @@
    "viewers": null
   },
   {
-   "id": 84938,
+   "id": 84935,
    "utcDate": "2027-01-23T13:00:00Z",
    "finished": false,
    "round": "20. Spieltag",
    "roundOrder": 20,
    "home": {
-    "id": 102,
-    "name": "Hansa Rostock",
-    "shortName": "Rostock",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/F.C._Hansa_Rostock_Logo.svg/960px-F.C._Hansa_Rostock_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+    "id": 185,
+    "name": "Fortuna Düsseldorf",
+    "shortName": "Düsseldorf",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/960px-Fortuna_D%C3%BCsseldorf.svg.png"
    },
    "away": {
-    "id": 2396,
-    "name": "TSG 1899 Hoffenheim II",
-    "shortName": "TSG 1899 Hoffenheim II",
-    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
+    "id": 553,
+    "name": "SV Waldhof Mannheim",
+    "shortName": "Mannheim",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Svwaldhof.svg/960px-Svwaldhof.svg.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -6392,8 +6342,58 @@
    "viewers": null
   },
   {
+   "id": 84938,
+   "utcDate": "2027-01-23T15:30:00Z",
+   "finished": false,
+   "round": "20. Spieltag",
+   "roundOrder": 20,
+   "home": {
+    "id": 102,
+    "name": "Hansa Rostock",
+    "shortName": "Rostock",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/F.C._Hansa_Rostock_Logo.svg/960px-F.C._Hansa_Rostock_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
+   },
+   "away": {
+    "id": 2396,
+    "name": "TSG 1899 Hoffenheim II",
+    "shortName": "TSG 1899 Hoffenheim II",
+    "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Logo_TSG_Hoffenheim.svg/960px-Logo_TSG_Hoffenheim.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
+   "id": 84936,
+   "utcDate": "2027-01-24T12:30:00Z",
+   "finished": false,
+   "round": "20. Spieltag",
+   "roundOrder": 20,
+   "home": {
+    "id": 188,
+    "name": "Preußen Münster",
+    "shortName": "Münster",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/7/7e/SC_Preussen_Muenster_Logo_2018.svg"
+   },
+   "away": {
+    "id": 174,
+    "name": "SV Wehen Wiesbaden",
+    "shortName": "Wiesbaden",
+    "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/3/3d/Logo_SV_Wehen_Wiesbaden.svg/250px-Logo_SV_Wehen_Wiesbaden.svg.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "results": [],
+   "stadium": null,
+   "city": null,
+   "viewers": null
+  },
+  {
    "id": 84943,
-   "utcDate": "2027-01-23T13:00:00Z",
+   "utcDate": "2027-01-24T15:30:00Z",
    "finished": false,
    "round": "20. Spieltag",
    "roundOrder": 20,
@@ -6418,7 +6418,7 @@
   },
   {
    "id": 84944,
-   "utcDate": "2027-01-23T13:00:00Z",
+   "utcDate": "2027-01-24T18:30:00Z",
    "finished": false,
    "round": "20. Spieltag",
    "roundOrder": 20,
