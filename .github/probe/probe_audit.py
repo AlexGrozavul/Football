@@ -190,6 +190,8 @@ OSM_UA = "football-fixture-planner/1.0 (personal project; https://github.com/Ale
 OVERPASS = "https://overpass-api.de/api/interpreter"
 NOMINATIM = "https://nominatim.openstreetmap.org/search"
 STAGES = os.environ.get("PROBE_STAGES", "A,B,C").split(",")
+OVERPASS_MIN = int(os.environ.get("OVERPASS_MIN", "45"))
+DONE_B, ALT = set(), {}
 NS = re.compile(r"^(File|Datei|Fișier|Fichier|Bestand|Image|Bild|Category|Kategorie|Categorie|Special|Spezial|"
                 r"Help|Hilfe|Wikipedia|Template|Vorlage|Portal|Format|Talk|Diskussion|Benutzer|User|Imagine):", re.I)
 GENERIC = set("stadion stadionul stadium arena sportpark sportplatz sportanlage platz am an der im in auf dem den "
@@ -304,8 +306,10 @@ def columns(header):
             idx.setdefault("stad", i)
         elif re.search(r"verein|mannschaft|team|club|echip|klub|^nume$|denumire", h):
             idx.setdefault("club", i)
-        elif re.search(r"\bort\b|location|stadt|city|localit|oras|sitz|town|judet|county|spielort|\bville\b|plaats", h):
+        elif re.search(r"\bort\b|location|stadt|city|localit|oras|sitz|town|judet|county|spielort|\bville\b|plaats|gemeinde", h):
             idx.setdefault("loc", i)
+    if "stad" not in idx and "cap" in idx and "name" in header and "club" in idx:
+        idx["stad"] = header.index("name")
     return idx
 
 
@@ -417,7 +421,7 @@ def stage_a(scope):
                    ("de", "Fußball-Regionalliga Bayern 2026/27"), ("de", "Fußball-Regionalliga Nord 2026/27"),
                    ("de", "Fußball-Regionalliga Nordost 2026/27"), ("de", "Fußball-Regionalliga Südwest 2026/27"),
                    ("de", "Fußball-Regionalliga West 2026/27"), ("en", "2026–27 3. Liga"), ("en", "2026–27 Regionalliga")],
-            "RO": [("ro", "Liga a III-a 2026-2027"), ("ro", "Liga III 2026-2027"), ("en", "2026–27 Liga III")]}
+            "RO": [("ro", "Liga a III-a 2026-2027"), ("en", "2026–27 Liga III")]}
     lines, n = [], 0
     for cc, lst in arts.items():
         clubs = [c for c in scope if c["cc"] == cc]
@@ -461,6 +465,9 @@ def stage_a(scope):
                                                            "glink": (sc["links"][:1] or [""])[0] if sc else "", "loc": ctext(lc) if lc else ""})
                         else:
                             c.setdefault("T", {}).setdefault(n, set()).add(sig[:34])
+                            hh = " ".join(t["header"])
+                            if re.search(r"\b(pos|pl)\b", hh) and re.search(r"pts|punkt", hh) and not t["header"][0].startswith("vte"):
+                                c.setdefault("M", set()).add(n)
     post_chunks(f"RUN {RUN} A0 articles", lines)
     rows, cnt = [], {}
     for c in scope:
@@ -481,7 +488,7 @@ def stage_a(scope):
             if bl and be and (bl["s"] >= 2) != (be["s"] >= 2):
                 st += "(wikis split)"
         else:
-            st = "NOT-IN-TABLE" if c.get("T") else "ABSENT"
+            st = "NOT-IN-TABLE" if c.get("M") else "ABSENT"
         c["A"] = st
         cnt[st] = cnt.get(st, 0) + 1
 
@@ -494,13 +501,16 @@ def stage_a(scope):
             rows.append(f"{c['q']}|{cut(c['n'], 26)}|{c['t']}|AGREE|{cut(c['v'], 34)}|{'#%d' % ref['art']}{'' if ref['how'] == 'Q' else '~'} s{ref['s']}{'' if ref['s'] >= 3 else ' ' + cut(ref['ground'], 40)}")
         else:
             tabs = "; ".join(f"#{k}:{'+'.join(sorted(v))}" for k, v in sorted(c.get("T", {}).items()))
-            rows.append(f"{c['q']}|{cut(c['n'], 26)}|{c['t']}|{st}|{cut(c['v'], 40)}|L {show(bl)}|EN {show(be)}" + (f"|other tables {cut(tabs, 150)}" if not ref else ""))
+            if st == "NOT-IN-TABLE":
+                rows.append(f"{c['q']}|{cut(c['n'], 26)}|{c['t']}|{st}|league table of #{','.join(str(x) for x in sorted(c['M']))}")
+            else:
+                rows.append(f"{c['q']}|{cut(c['n'], 26)}|{c['t']}|{st}|{cut(c['v'], 40)}|L {show(bl)}|EN {show(be)}" + (f"|other tables {cut(tabs, 150)}" if not ref else ""))
     rows.sort(key=lambda r: (r.split("|")[3].startswith("AGREE"), r.split("|")[3]))
     post_chunks(f"RUN {RUN} A1 grounds {json.dumps(cnt)}", rows)
 
 
 def osm_http(url, data=None, key="osm"):
-    for attempt in range(5):
+    for attempt in range(2 if key == "overpass" else 4):
         with LOCK:
             now = time.time()
             at = max(now, LAST.get(key, 0) + 1.25)
@@ -510,19 +520,19 @@ def osm_http(url, data=None, key="osm"):
             time.sleep(at - now)
         try:
             req = urllib.request.Request(url, data=data, headers={"User-Agent": OSM_UA, "Accept-Language": "en"})
-            with urllib.request.urlopen(req, timeout=90) as r:
+            with urllib.request.urlopen(req, timeout=45) as r:
                 return json.loads(r.read(30_000_000))
         except urllib.error.HTTPError as e:
             log(f"OSM HTTP {e.code} {key} try {attempt}")
-            if e.code in (429, 502, 503, 504) and attempt < 4:
-                time.sleep(20 * (2 ** attempt))
+            if e.code in (429, 502, 503, 504) and attempt < (1 if key == "overpass" else 3):
+                time.sleep(15 * (2 ** attempt))
                 continue
             return None
         except Exception as e:
             log(f"OSM ERR {key} {type(e).__name__} {str(e)[:80]}")
-            if attempt >= 2:
+            if attempt >= 1:
                 return None
-            time.sleep(15)
+            time.sleep(10)
     return None
 
 
@@ -547,7 +557,7 @@ def rx_tokens(names):
 def overpass_club(c, names):
     lat, lon = c["lat"], c["lon"]
     rx = rx_tokens(names)
-    q = f'[out:json][timeout:60];(nwr["leisure"~"^(stadium|pitch)$"]["name"](around:3000,{lat},{lon});'
+    q = f'[out:json][timeout:25];(nwr["leisure"~"^(stadium|pitch)$"]["name"](around:3000,{lat},{lon});'
     if rx:
         q += f'nwr["leisure"]["name"~"{rx}",i](around:3000,{lat},{lon});nwr["building"]["name"~"{rx}",i](around:3000,{lat},{lon});'
     q += ");out tags center 1500;"
@@ -588,8 +598,11 @@ def best_match(els, name):
     return e
 
 
-def nominatim(q, cc, lat, lon):
-    url = NOMINATIM + "?" + urllib.parse.urlencode({"q": q, "format": "jsonv2", "limit": "5", "countrycodes": cc.lower()})
+def nominatim(q, cc, lat, lon, box=None):
+    prm = {"q": q, "format": "jsonv2", "limit": "5", "countrycodes": cc.lower()}
+    if box:
+        prm.update(viewbox=box, bounded="1")
+    url = NOMINATIM + "?" + urllib.parse.urlencode(prm)
     d = osm_http(url, key="nominatim")
     if d is None:
         return "nominatim failed"
@@ -607,18 +620,32 @@ def fmt(e):
 def stage_b(scope, only=None):
     rows, cnt = [], {}
     for c in scope:
-        if only is not None and c["q"] not in only:
+        if c["q"] in DONE_B and not c.get("A", "").startswith("DIFF"):
             continue
+        if c["q"] in ALT:
+            c["alt"], c["town"] = ALT[c["q"]]
         if time.time() > DEADLINE:
             rows.append(f"{c['q']}|{c['n']}|NOT REACHED (time)")
             continue
         ref = c.get("bl") or c.get("be")
-        alt = ref["ground"] if (ref and ref.get("s", 3) < 2 and ref["ground"]) else (c.get("alt") or "")
-        town = (ref or {}).get("loc") or c.get("town") or ""
-        els = overpass_club(c, [c["v"]] + ([alt] if alt else []))
+        alt = c.get("alt") or (ref["ground"] if (ref and ref.get("s", 3) < 2 and ref["ground"]) else "")
+        town = c.get("town") or (ref or {}).get("loc") or ""
+        els = overpass_club(c, [c["v"]] + ([alt] if alt else [])) if time.time() < T0 + OVERPASS_MIN * 60 else None
         if els is None:
-            cnt["OVERPASS-FAILED"] = cnt.get("OVERPASS-FAILED", 0) + 1
-            rows.append(f"{c['q']}|{cut(c['n'], 26)}|OVERPASS-FAILED|{cut(c['v'], 40)}")
+            # Overpass did not answer: one Nominatim search bounded to about 3 km around the map point, then one with the town
+            box = f"{c['lon'] - 0.045},{c['lat'] + 0.03},{c['lon'] + 0.045},{c['lat'] - 0.03}"
+            r1 = nominatim(c["v"], c["cc"], c["lat"], c["lon"], box)
+            m1 = re.search(r" (\d+)m$", r1)
+            if m1:
+                st = "WITHIN" if int(m1.group(1)) < 500 else "DIFFERS"
+            else:
+                st = "NOTFOUND"
+                r1 += " ; unbounded: " + nominatim(f"{c['v']}, {town}" if town else c["v"], c["cc"], c["lat"], c["lon"])
+            if alt:
+                r1 += " || ALT \"" + cut(alt, 40) + "\": " + nominatim(f"{alt}, {town}" if town else alt, c["cc"], c["lat"], c["lon"])
+            st += "(nominatim)"
+            cnt[st] = cnt.get(st, 0) + 1
+            rows.append(f"{c['q']}|{cut(c['n'], 26)}|{st}|{cut(c['v'], 40)}|{r1}")
             continue
         m = best_match(els, c["v"])
         extra = ""
@@ -627,7 +654,8 @@ def stage_b(scope, only=None):
             extra = fmt(m)
         else:
             st = "NOTFOUND"
-            extra = (("weak " + fmt(m) + " ; ") if m else "") + f"{len(els)} named els ; " + nominatim(f"{c['v']}, {town}" if town else c["v"], c["cc"], c["lat"], c["lon"])
+            near = sorted([e for e in els if e["rank"] >= 1], key=lambda e: e["d"])[:4]
+            extra = (("weak " + fmt(m) + " ; ") if m else "") + f"{len(els)} named els, nearest: " + " / ".join(f"{e['id']} {e['kind']} \"{cut(e['names'][0] if e['names'] else '', 30)}\" {e['d']:.0f}m" for e in near) + " ; " + nominatim(f"{c['v']}, {town}" if town else c["v"], c["cc"], c["lat"], c["lon"])
         if alt:
             ma = best_match(els, alt)
             extra += " || ALT \"" + cut(alt, 40) + "\": " + (fmt(ma) if ma and ma["s"] >= 2 else ("none in 3 km ; " + nominatim(f"{alt}, {town}" if town else alt, c["cc"], c["lat"], c["lon"])))
@@ -654,18 +682,24 @@ def season_rows(lang, title, pat):
     return out
 
 
-def wiki_passages(lang, title, pat, cap=8):
+def same_page(lang, titles):
+    d = wm(f"{lang}.wikipedia.org", {"action": "query", "prop": "pageprops", "ppprop": "wikibase_item", "redirects": "1", "titles": "|".join(titles)}) or {}
+    q = d.get("query", {})
+    return (f"SAME? {lang}: redirects " + "; ".join(f"{x['from']} -> {x['to']}" for x in q.get("redirects", [])) + " | pages " +
+            "; ".join(f"{pg.get('title')}={(pg.get('pageprops') or {}).get('wikibase_item')}{' MISSING' if pg.get('missing') else ''}" for pg in q.get("pages", [])))
+
+
+def wiki_passages(lang, title, pat, cap=5):
     d = wm(f"{lang}.wikipedia.org", {"action": "parse", "page": title, "prop": "wikitext", "redirects": "1"})
     if not d or "parse" not in d:
         return [f"{lang}:{title} NOT READ"]
     wt = d["parse"].get("wikitext") or ""
     out, seen = [f"{lang}:{d['parse'].get('title')} ({len(wt)} ch)"], set()
     for m in re.finditer(pat, wt, re.I):
-        s = re.sub(r"\s+", " ", wt[max(0, m.start() - 170):m.end() + 230])
-        k = s[60:160]
-        if k in seen:
+        if seen and m.start() < max(seen) + 320:
             continue
-        seen.add(k)
+        seen.add(m.end())
+        s = re.sub(r"\s+", " ", wt[max(0, m.start() - 170):m.end() + 230])
         out.append("  ..." + s + "...")
         if len(out) > cap:
             break
@@ -787,6 +821,8 @@ def stage_c(T):
         lines += season_rows(lang, title, pat)
     for lang, title, pat in T.get("passages", []):
         lines += wiki_passages(lang, title, pat)
+    for lang, titles in T.get("same", []):
+        lines.append(same_page(lang, titles))
     sites = websites(T["site_of"]) if T.get("site_of") else {}
     for q, (pat, follow) in (T.get("site_of") or {}).items():
         lines.append(f"SITE {q}: P856 {sites.get(q)}")
@@ -803,12 +839,14 @@ def main():
     T = json.load(open(os.path.join(HERE, "targets.json"), encoding="utf-8"))
     scope = T["scope"]
     try:
+        DONE_B.update(T.get("done_b") or [])
+        ALT.update(T.get("alt") or {})
         if "A" in STAGES:
             stage_a(scope)
-        if "B" in STAGES:
-            stage_b(scope, set(T["only_b"]) if T.get("only_b") else None)
         if "C" in STAGES:
             stage_c(T)
+        if "B" in STAGES:
+            stage_b(scope)
     except Exception as e:
         import traceback
         post(f"RUN {RUN} CRASH\n```\n{traceback.format_exc()[-3000:]}\n```")

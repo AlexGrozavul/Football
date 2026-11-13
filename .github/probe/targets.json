@@ -1633,108 +1633,121 @@
 "man": false
 }
 ],
-"season_rows": [
+"done_b": [
+"Q107421",
+"Q131603",
+"Q137499",
+"Q142005",
+"Q1425370",
+"Q14551982",
+"Q151747",
+"Q153535",
+"Q154293",
+"Q155186",
+"Q155218",
+"Q155452",
+"Q1565781",
+"Q157020",
+"Q157463",
+"Q158121",
+"Q15843660",
+"Q15849956",
+"Q1585026",
+"Q15972883",
+"Q159930",
+"Q159936",
+"Q161034",
+"Q161554",
+"Q162213",
+"Q162317",
+"Q162366",
+"Q162394",
+"Q16525407",
+"Q16525419",
+"Q16573990",
+"Q16637410",
+"Q16743331",
+"Q170105",
+"Q170117",
+"Q170134",
+"Q17321080",
+"Q176168",
+"Q1921747",
+"Q20631356",
+"Q2207914",
+"Q2521441",
+"Q265570",
+"Q310608",
+"Q310621"
+],
+"alt": {
+"Q537301": [
+"Eilenriedestadion",
+"Hannover"
+]
+},
+"same": [
 [
-"en",
-"2026–27 Eredivisie",
-"Zwolle"
+"de",
+[
+"Flyeralarm Arena",
+"Akon Arena"
+]
 ],
 [
-"nl",
-"Eredivisie 2026/27 (mannenvoetbal)",
-"Zwolle"
-],
+"de",
 [
-"en",
-"2026–27 Ligue 1",
-"Paris FC"
-],
-[
-"fr",
-"Championnat de France de football 2026-2027",
-"Paris FC"
-],
-[
-"en",
-"2026–27 Ligue 2",
-"Paris FC"
-],
-[
-"en",
-"2026–27 Serie B",
-"Stabia|Padova"
-],
-[
-"it",
-"Serie B 2026-2027",
-"Stabia|Padova"
+"Stadion an der Poststraße",
+"Sportclub Arena"
+]
 ]
 ],
 "passages": [
 [
-"nl",
-"MAC³PARK stadion",
-"capaciteit|toeschouwers"
+"de",
+"3. Fußball-Liga 2026/27",
+"Eilenried|Langrehr"
 ],
 [
-"fr",
-"Paris FC",
-"Jean[- ]Bouin"
+"de",
+"TSV Havelse",
+"Eilenried|Heinz[- ]von[- ]Heiden|Langrehr"
 ],
 [
-"en",
-"Paris FC",
-"Jean[- ]Bouin"
+"de",
+"Würzburger Kickers",
+"Akon"
 ],
 [
-"it",
-"Stadio Romeo Menti (Castellammare di Stabia)",
-"7[\\s.,]?642|omologa"
-],
-[
-"it",
-"Stadio Euganeo",
-"18[\\s.,]?236|omologa"
+"de",
+"SC Verl",
+"Sportclub[ -]Arena"
 ]
 ],
-"site_of": {
-"Q6748": [
-"capienza|posti|spettator|omologa",
-"stadi|impianto|menti"
-],
-"Q8428": [
-"capienza|posti|spettator|omologa",
-"stadi|impianto|euganeo"
-],
-"Q1051013": [
-"Jean[- ]Bouin|Charl[ée]ty",
-"stade|infos|pratique|billet|venir"
-]
-},
 "pages": [
 [
-"https://www.peczwolle.nl/over-het-mac3park-stadion/",
-"toeschouwers|capaciteit|plaats aan",
-null
+"https://www.tsv-havelse.de/",
+"Eilenriede|Heinz[- ]von[- ]Heiden|Langrehr",
+"stadion|spielst|heimspiel|anfahrt|ticket"
 ],
 [
-"https://www.legab.it/",
-"capienza|posti|spettator|omologa|Menti|Euganeo",
-"stabia|padova"
+"https://www.parisfc.fr/",
+"Jean[- ]Bouin|Charl[ée]ty",
+"stade|infos|pratique|billet|venir"
 ]
 ],
 "nominatim": [
 [
-"Stade Jean-Bouin, Paris",
-"FR",
-48.81716,
-2.34511
+"Heinz von Heiden Arena, Hannover",
+"DE",
+52.4083,
+9.60222
 ],
 [
-"Stade Charléty, Paris",
-"FR",
-48.81716,
-2.34511
+"Eilenriedestadion, Hannover",
+"DE",
+52.4083,
+9.60222
 ]
 ]
 }

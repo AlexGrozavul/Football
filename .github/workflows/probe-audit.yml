@@ -37,7 +37,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Probe
         env:
-          PROBE_RUN: "1"
+          PROBE_RUN: "2"
           PROBE_STAGES: "A,B,C"
           WD_BUDGET: "420"
           NODE_PATH: /tmp/pw/node_modules
