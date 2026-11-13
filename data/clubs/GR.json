@@ -400,10 +400,13 @@
    ],
    "tier": 1,
    "venue": "Peristeri Stadium",
-   "capacity": 10200,
+   "capacity": 8969,
    "lat": 38.004858,
    "lon": 23.689756,
    "city": null,
+   "source": "https://www.atromitosfc.gr/facilities/peristeri-stadium/; https://el.wikipedia.org/wiki/%CE%94%CE%B7%CE%BC%CE%BF%CF%84%CE%B9%CE%BA%CF%8C_%CE%A3%CF%84%CE%AC%CE%B4%CE%B9%CE%BF_%CE%A0%CE%B5%CF%81%CE%B9%CF%83%CF%84%CE%B5%CF%81%CE%AF%CE%BF%CF%85",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 8969 (the club's stadium page \"Σήμερα η χωρητικότητα του σταδίου είναι 8.969 θέσεις\"; el.wikipedia infobox 8.969; en.wikipedia text 8,969). Not taken: 9035 (en.wikipedia infobox, 0.7 percent higher); 10000 (StadiumDB); 10200 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Super League (Greece)"
   },
   {

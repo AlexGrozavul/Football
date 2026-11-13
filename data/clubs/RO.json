@@ -181,10 +181,13 @@
    ],
    "tier": 1,
    "venue": "Stadionul Municipal",
-   "capacity": 12000,
+   "capacity": 7782,
    "lat": 47.7483,
    "lon": 26.6519,
    "city": null,
+   "source": "https://www.gsp.ro/fotbal/liga-1/valeriu-iftime-stadion-botosani-689560.html; https://ro.wikipedia.org/wiki/Stadionul_Municipal_Boto%C8%99ani; http://stadiumdb.com/stadiums/rou/stadionul_municipal_botosani",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 7782 (ro.wikipedia infobox 7.782 and text \"7.782 de locuri, toate pe scaune\"; en.wikipedia infobox \"7,782 seated\"; Gazeta Sporturilor, a link of the ro article, \"Stadionul are 7.782 de locuri\"). Not taken: 8500 (StadiumDB: \"used to hold 12,000 people, but after conversion to all-seater mode\" about 8,500); 12000 (Wikidata, the figure before the seats, which the map held until now). Phase 1c left it disputed between 7782 and 8500; the press page read on 2026-11-13 is what decides it. The league's club page (lpf.ro) was opened and gave no figure.",
+   "manual": true,
    "competition": "SuperLiga Romaniei"
   },
   {

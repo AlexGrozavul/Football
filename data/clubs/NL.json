@@ -68,10 +68,13 @@
    ],
    "tier": 1,
    "venue": "Philips Stadion",
-   "capacity": 36500,
+   "capacity": 35000,
    "lat": 51.4417,
    "lon": 5.4674,
    "city": null,
+   "source": "https://www.psv.nl/ticketinfo/stadionplattegrond; https://nl.wikipedia.org/wiki/Philips_Stadion",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 35000 (the club's page \"Het Philips Stadion heeft een capaciteit van 35.000 zitplaatsen\"; nl.wikipedia infobox 35.000, citing that page). Not taken: 35119 (en.wikipedia infobox and StadiumDB, 0.3 percent higher); 36500 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Eredivisie"
   },
   {
@@ -96,10 +99,13 @@
    ],
    "tier": 1,
    "venue": "De Kuip",
-   "capacity": 51577,
+   "capacity": 47500,
    "lat": 51.893894,
    "lon": 4.523253,
    "city": null,
+   "source": "https://www.dekuip.com/nl/stadion-feijenoord; https://nl.wikipedia.org/wiki/Stadion_Feijenoord; https://stadionfeijenoord.nl/",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 47500 (the stadium's own page \"Het stadion heeft tijdens voetbalwedstrijden een capaciteit van 47.500 toeschouwers\", the figure for football matches; nl.wikipedia infobox 47.500; en.wikipedia infobox \"47,500 (limited capacity)\"). Not taken: 51117 (stadionfeijenoord.nl \"een capaciteit van 51.117 plaatsen\", en.wikipedia and StadiumDB: the full ground); 51577 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Eredivisie"
   },
   {
@@ -363,10 +369,13 @@
    ],
    "tier": 2,
    "venue": "Rat Verlegh Stadion",
-   "capacity": 19000,
+   "capacity": 20500,
    "lat": 51.595556,
    "lon": 4.750278,
    "city": null,
+   "source": "https://www.vi.nl/nieuws/nac-bouwt-door-en-kijkt-alweer-naar-verdere-uitbreiding-rat-verlegh-stadion; https://nl.wikipedia.org/wiki/Rat_Verlegh_Stadion",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 20500 (nl.wikipedia and en.wikipedia infobox 20.500; Voetbal International, the reference of the nl infobox, \"De club kan nu zo'n 20.500 toeschouwers ontvangen\"). Not taken: 19000 (StadiumDB and Wikidata, which the map held until now: the figure before the extension). The club's own news page about the works was opened and gave no figure.",
+   "manual": true,
    "competition": "Eerste Divisie"
   },
   {
@@ -453,12 +462,12 @@
    ],
    "tier": 2,
    "venue": "Kras Stadion",
-   "capacity": 6200,
+   "capacity": 6800,
    "lat": 52.494444,
    "lon": 5.066389,
    "city": null,
-   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://en.wikipedia.org/wiki/FC_Volendam",
-   "note": "TIER CORRECTED, 2026-10-01, in the Netherlands pass - the FC Wil shape, reviewable. Wikidata's truthy P118 on Q738060 is a PREFERRED-rank Eredivisie statement dated 2025-2026 (it carries an end date, which the club query does not read), so the club arrived at tier 1. Both 2026-27 division articles are complete (Eredivisie 18 of 18 and Eerste Divisie 20 of 20 resolved to a Q-id, read on a runner 2026-10-01): the Eerste Divisie one lists it and the Eredivisie one does not and names it in its Team changes table, 'Volendam (relegated after one-year in the top flight)'; the club's English article says it plays in the Eerste Divisie 'following relegation from the Eredivisie in the 2025-26 season'. Not a stale normal-rank tag outvoted - the item's own best statement is the stale one. Emptying the tier cell puts it back at tier 1. CAPACITY LEFT CONTESTED, 2026-10-01: in use 6200 (Wikidata). Not taken: 7384 (the 2026-27 Eerste Divisie stadiums table) and 6984 (StadiumDB, Kras Stadion, and both the ground's and the club's English articles). The table and StadiumDB are 5.7% apart, so no two independent sources agree within 5% and nothing outvotes the map; every figure is written down on purpose",
+   "source": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Eredivisie; https://en.wikipedia.org/wiki/2026%E2%80%9327_Eerste_Divisie; https://en.wikipedia.org/wiki/FC_Volendam; https://fcvolendam.nl/kras-stadion/algemene-informatie/; https://nl.wikipedia.org/wiki/Kras_Stadion",
+   "note": "TIER CORRECTED, 2026-10-01, in the Netherlands pass - the FC Wil shape, reviewable. Wikidata's truthy P118 on Q738060 is a PREFERRED-rank Eredivisie statement dated 2025-2026 (it carries an end date, which the club query does not read), so the club arrived at tier 1. Both 2026-27 division articles are complete (Eredivisie 18 of 18 and Eerste Divisie 20 of 20 resolved to a Q-id, read on a runner 2026-10-01): the Eerste Divisie one lists it and the Eredivisie one does not and names it in its Team changes table, 'Volendam (relegated after one-year in the top flight)'; the club's English article says it plays in the Eerste Divisie 'following relegation from the Eredivisie in the 2025-26 season'. Not a stale normal-rank tag outvoted - the item's own best statement is the stale one. Emptying the tier cell puts it back at tier 1. CAPACITY LEFT CONTESTED, 2026-10-01: in use 6200 (Wikidata). Not taken: 7384 (the 2026-27 Eerste Divisie stadiums table) and 6984 (StadiumDB, Kras Stadion, and both the ground's and the club's English articles). The table and StadiumDB are 5.7% apart, so no two independent sources agree within 5% and nothing outvotes the map; every figure is written down on purpose CAPACITY ADDED TO THIS ROW: CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 6800 (the club's stadium page \"tezamen goed voor een capaciteit van 6.800 toeschouwers\"; nl.wikipedia infobox 6.800, citing that page). Not taken: 6984 (StadiumDB, 2.7 percent higher); 6200 (Wikidata, which the map held until now).",
    "manual": true,
    "competition": "Eerste Divisie"
   },
@@ -501,10 +510,13 @@
    ],
    "tier": 1,
    "venue": "Fortuna Sittard Stadion",
-   "capacity": 12500,
+   "capacity": 12000,
    "lat": 50.991944,
    "lon": 5.843611,
    "city": null,
+   "source": "https://nl.wikipedia.org/wiki/Fortuna_Sittard_Stadion; http://stadiumdb.com/stadiums/ned/fortuna_stadion",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. In use: 12000 (nl.wikipedia and en.wikipedia infobox 12.000; StadiumDB \"Capacity 12 000\"). Not taken: 12500 (Wikidata, which the map held until now). No club or league page was read for it.",
+   "manual": true,
    "competition": "Eredivisie"
   },
   {
@@ -563,10 +575,13 @@
    ],
    "tier": 2,
    "venue": "Jan Louwers Stadion",
-   "capacity": 4500,
+   "capacity": 4200,
    "lat": 51.411667,
    "lon": 5.479444,
    "city": null,
+   "source": "https://fc-eindhoven.nl/de-club/jan-louwers-stadion/; https://nl.wikipedia.org/wiki/Jan_Louwers_Stadion; https://stadiumdb.com/stadiums/ned",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. In use: 4200 (the club's stadium page \"Het stadion heeft 4.200 zitplaatsen\"; nl.wikipedia infobox 4.200; StadiumDB's country table 4200). Not taken: 4500 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Eerste Divisie"
   }
  ]

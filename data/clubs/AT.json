@@ -176,10 +176,13 @@
    ],
    "tier": 1,
    "venue": "Innviertel Arena",
-   "capacity": 7680,
+   "capacity": 7334,
    "lat": 48.207778,
    "lon": 13.478333,
    "city": null,
+   "source": "https://www.bundesliga.at/team/sv-oberbank-ried/6514/stadion; https://stadiumdb.com/stadiums/aut/fill_metallbau_stadion; https://de.wikipedia.org/wiki/BWT_X_Ober%C3%B6sterreichische_Arena",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 7334 (the Austrian Bundesliga's stadium page for the club \"Kapazität 7,334\"; StadiumDB 7336; de.wikipedia infobox 7.300). Not taken: 7680 (en.wikipedia infobox and Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Bundesliga (Austria)"
   },
   {
@@ -346,10 +349,13 @@
    ],
    "tier": 2,
    "venue": "Datenpol Arena",
-   "capacity": 12000,
+   "capacity": 10600,
    "lat": 48.0976,
    "lon": 16.3109,
    "city": null,
+   "source": "https://admirawacker.at/verein/stadion/; https://www.stadionwelt.de/news/20421/admira-bis-2043-in-der-bsfz-arena; https://de.wikipedia.org/wiki/Datenpol_Arena",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 10600 (the club's stadium page \"bietet rund 10.600 Besuchern Platz\"; stadionwelt.de \"Kapazität von 10.600 Zuschauerplätzen\"; de.wikipedia and en.wikipedia infobox 10.600). Not taken: 7010 (StadiumDB); 12000 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "2. Liga (Austria)"
   },
   {

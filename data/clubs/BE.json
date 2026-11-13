@@ -221,10 +221,13 @@
    ],
    "tier": 1,
    "venue": "Stade Maurice Dufrasne",
-   "capacity": 30023,
+   "capacity": 27670,
    "lat": 50.609908,
    "lon": 5.543344,
    "city": null,
+   "source": "https://nl.wikipedia.org/wiki/Maurice_Dufrasnestadion; https://en.wikipedia.org/wiki/Stade_Maurice_Dufrasne; http://stadiumdb.com/stadiums/bel/stade_de_sclessin",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 27670 (nl.wikipedia infobox \"27.670 toeschouwers\"; en.wikipedia infobox \"27,670 (limited capacity), 30,023 (maximum capacity)\"; StadiumDB 27670). Not taken: 30023 (the maximum capacity, Wikidata's figure, which the map held until now). The club's stadium page, the infobox's reference, was opened and gave no figure.",
+   "manual": true,
    "competition": "Belgian Pro League"
   },
   {

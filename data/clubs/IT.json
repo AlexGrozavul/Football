@@ -96,10 +96,13 @@
    ],
    "tier": 2,
    "venue": "Stadio Dino Manuzzi",
-   "capacity": 23860,
+   "capacity": 20194,
    "lat": 44.140556,
    "lon": 12.261944,
    "city": null,
+   "source": "https://www.cesenafc.com/it/society/stadium; https://it.wikipedia.org/wiki/Orogel_Stadium-Dino_Manuzzi; https://stadiumdb.com/stadiums/ita",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. In use: 20194 (the club's stadium page \"con i suoi 20.194 posti a sedere\" and \"Capienza 20.194\"; it.wikipedia infobox \"posti = 20 194\"; en.wikipedia infobox 20,194; StadiumDB's country table 20194). Not taken: 23860 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Serie B"
   },
   {
@@ -110,10 +113,13 @@
    ],
    "tier": 1,
    "venue": "stadio di Bergamo",
-   "capacity": 24950,
+   "capacity": 23439,
    "lat": 45.708889,
    "lon": 9.680833,
    "city": null,
+   "source": "https://it.wikipedia.org/wiki/Stadio_di_Bergamo; https://en.wikipedia.org/wiki/Stadio_di_Bergamo; https://stadiumdb.com/stadiums/ita",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 23439 (it.wikipedia infobox \"posti = 23439\" and en.wikipedia infobox 23,439, both citing Lega Serie A's stadium page for Atalanta, which was opened in a browser and showed no figure; StadiumDB's country table 23439). Not taken: 24950 (Wikidata, which the map held until now). The club's own stadium page (atalanta.it/stadio) was read and states no current capacity. Not confirmed on a club or league page: check it again when one states the figure.",
+   "manual": true,
    "competition": "Serie A"
   },
   {
@@ -464,10 +470,13 @@
    ],
    "tier": 2,
    "venue": "Stadio Cino e Lillo Del Duca",
-   "capacity": 13708,
+   "capacity": 11326,
    "lat": 42.861111,
    "lon": 13.594167,
    "city": null,
+   "source": "https://www.legab.it/news/5-curiosita-sullo-stadio-cino-e-lillo-del-duca-di-ascoli; http://stadiumdb.com/stadiums/ita/stadio_cino_e_lillo_del_duca",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 11326 (Lega B's own article on the ground, undated, \"Attualmente lo Stadio Cino e Lillo Del Duca ha una capienza complessiva di 11.326 spettatori\"; StadiumDB 11326). Not taken: 12461 (en.wikipedia infobox, no reference); 13708 (Wikidata, which the map held until now; it.wikipedia's infobox has no figure of its own and displays Wikidata's).",
+   "manual": true,
    "competition": "Serie B"
   },
   {
@@ -478,10 +487,13 @@
    ],
    "tier": 2,
    "venue": "Stadio Carlo Castellani",
-   "capacity": 19847,
+   "capacity": 16284,
    "lat": 43.726389,
    "lon": 10.955,
    "city": null,
+   "source": "https://it.wikipedia.org/wiki/Stadio_Carlo_Castellani; http://stadiumdb.com/stadiums/ita/stadio_carlo_castellani",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 16284 (it.wikipedia infobox \"posti = 16 284\" and en.wikipedia infobox 16,284, citing an Osservatorio list that did not answer; StadiumDB 16167, 0.7 percent lower). Not taken: 19847 (Wikidata, which the map held until now; it equals StadiumDB's 12 139 seats plus 7 708 standing places). Phase 1c left it as Wikipedia alone; StadiumDB's own page for the ground is the second source.",
+   "manual": true,
    "competition": "Serie B"
   },
   {

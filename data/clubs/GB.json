@@ -397,10 +397,13 @@
    ],
    "tier": 1,
    "venue": "Selhurst Park",
-   "capacity": 26255,
+   "capacity": 25194,
    "lat": 51.398333,
    "lon": -0.085556,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/Selhurst_Park; https://stadiumdb.com/stadiums/eng",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. In use: 25194 (en.wikipedia infobox 25,194, citing a Premier League post that was not opened; StadiumDB's country table 25194). Not taken: 26255 (Wikidata, which the map held until now). No club or league page was read for it.",
+   "manual": true,
    "competition": "Premier League"
   },
   {
@@ -616,10 +619,13 @@
    ],
    "tier": 1,
    "venue": "Stamford Bridge",
-   "capacity": 41875,
+   "capacity": 40044,
    "lat": 51.481667,
    "lon": -0.191111,
    "city": null,
+   "source": "https://en.wikipedia.org/wiki/Stamford_Bridge_(stadium); https://stadiumdb.com/stadiums/eng",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. In use: 40044 (en.wikipedia infobox 40,044 and text \"With a capacity of 40,044\"; StadiumDB's country table 40022, 0.1 percent lower). Not taken: 41875 (Wikidata, which the map held until now). The club's own pages named by the article were opened and gave no figure.",
+   "manual": true,
    "competition": "Premier League"
   },
   {

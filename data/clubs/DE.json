@@ -12,10 +12,13 @@
    ],
    "tier": 2,
    "venue": "Volkswagen Arena",
-   "capacity": 30000,
+   "capacity": 28917,
    "lat": 52.431944,
    "lon": 10.803889,
    "city": null,
+   "source": "https://www.vfl-wolfsburg.de/stadien/volkswagen-arena/stadioninformationen; https://de.wikipedia.org/wiki/Volkswagen_Arena",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 28917 (the club's stadium page \"Zuschauerkapazität: 28.917 Plätze, davon 23.568 Sitzplätze und 5.349 variable Stehplätze\"; de.wikipedia infobox 28.917, citing that page). Not taken: 30000 (en.wikipedia infobox \"League matches\", StadiumDB and Wikidata, which the map held until now); 26155 (international matches).",
+   "manual": true,
    "competition": "2. Bundesliga"
   },
   {
@@ -421,10 +424,13 @@
    ],
    "tier": 2,
    "venue": "Eintracht-Stadion",
-   "capacity": 24406,
+   "capacity": 23325,
    "lat": 52.29,
    "lon": 10.521389,
    "city": null,
+   "source": "https://de.wikipedia.org/wiki/Eintracht-Stadion; https://stadiumdb.com/stadiums/ger/eintracht_stadion",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 23325 (de.wikipedia infobox \"23.325 Plätze (Fußball) 24.406 Plätze (maximal)\"; en.wikipedia infobox \"23,325 (football matches)\"; StadiumDB 23325). Not taken: 24406 (the maximum, Wikidata's figure, which the map held until now).",
+   "manual": true,
    "competition": "2. Bundesliga"
   },
   {

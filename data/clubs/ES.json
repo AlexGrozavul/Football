@@ -231,10 +231,13 @@
    ],
    "tier": 1,
    "venue": "Estadio de la Cerámica",
-   "capacity": 24891,
+   "capacity": 23173,
    "lat": 39.944167,
    "lon": -0.103611,
    "city": null,
+   "source": "https://villarrealcf.es/es/estadio-de-la-ceramica/nuestro-hogar/; https://es.wikipedia.org/wiki/Estadio_de_la_Cer%C3%A1mica",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. CONTESTED CAPACITY. In use: 23173 (the club's stadium page \"tiene un aforo de 23.173 espectadores\"). Not taken: 23500 (es.wikipedia infobox, citing that page); 24000 (en.wikipedia infobox); 21332 (StadiumDB); 24891 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "La Liga"
   },
   {

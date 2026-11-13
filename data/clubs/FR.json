@@ -158,10 +158,13 @@
    ],
    "tier": 1,
    "venue": "Roazhon Park",
-   "capacity": 31127,
+   "capacity": 29778,
    "lat": 48.10743,
    "lon": -1.71282,
    "city": null,
+   "source": "https://www.staderennais.com/le-roazon-park; https://fr.wikipedia.org/wiki/Roazhon_Park; https://stadiumdb.com/stadiums/fra",
+   "note": "CAPACITY FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-capacity.md, phase 1d, PR 213), every page read that day. In use: 29778 (the club's stadium page \"peut accueillir 29 778 supporters\"; fr.wikipedia and en.wikipedia infobox 29778; StadiumDB's country table 29778). Not taken: 31127 (Wikidata, which the map held until now).",
+   "manual": true,
    "competition": "Ligue 1"
   },
   {
