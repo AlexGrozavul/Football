@@ -11,11 +11,14 @@
     "Q13394"
    ],
    "tier": 1,
-   "venue": "stade Charléty",
+   "venue": "Stade Jean-Bouin",
    "capacity": 20000,
-   "lat": 48.81716,
-   "lon": 2.34511,
+   "lat": 48.843319,
+   "lon": 2.252962,
    "city": null,
+   "source": "https://parisfc.fr/; https://en.wikipedia.org/wiki/2026%E2%80%9327_Ligue_1; https://fr.wikipedia.org/wiki/Championnat_de_France_de_football_2026-2027; https://www.openstreetmap.org/way/403524549",
+   "note": "GROUND LEFTOVER 2026-11-13 (docs/claude/audits/2026-11-grounds.md, phase 1e, PR 214), every page read that day. GROUND corrected: Stade Jean-Bouin, not Stade Charléty (Wikidata, which the map held until now). The club's own home page lists the men's home matches at \"Stade Jean Bouin\" (\"Paris FC VS Angers 22/11/2026 15:00 Stade Jean Bouin\"); the stadiums table of en.wikipedia \"2026–27 Ligue 1\" says \"Paris FC | Paris (Paris 16) | Stade Jean-Bouin | 20,000\" and of fr.wikipedia \"Championnat de France de football 2026-2027\" \"Stade Jean-Bouin | 19 607\"; StadiumDB's table had the same ground in phase 1d. POSITION: OpenStreetMap way/403524549 (leisure=stadium, \"Stade Jean-Bouin\", Avenue du Général Sarrail), found through Nominatim, 7346 m from the old map point. CAPACITY not written: the map keeps 20000, which was Wikidata's figure for Charléty and was already disputed in phase 1d; for Jean-Bouin the English table says 20,000 and the French one 19 607, so the figure is left for Alexandru.",
+   "manual": true,
    "competition": "Ligue 1"
   },
   {

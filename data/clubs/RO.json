@@ -872,20 +872,6 @@
    "competition": "Liga a II-a"
   },
   {
-   "id": "Q639046",
-   "name": "Dacia Unirea Brăila",
-   "leagues": [
-    "Q1707697"
-   ],
-   "tier": 3,
-   "venue": "Stadionul Municipal",
-   "capacity": 20000,
-   "lat": 45.258058,
-   "lon": 27.94715,
-   "city": null,
-   "competition": "Liga a III-a"
-  },
-  {
    "id": "Q66424141",
    "name": "CSC 1599 Șelimbăr",
    "leagues": [

@@ -210,23 +210,6 @@
    "competition": null
   },
   {
-   "id": "Q127275134",
-   "name": "VfR Garching",
-   "leagues": [
-    "Q340179"
-   ],
-   "tier": 7,
-   "venue": "Sportplatz Schleißheimer Straße",
-   "capacity": 1700,
-   "lat": 48.251703,
-   "lon": 11.642393,
-   "city": null,
-   "source": "https://www.europlan-online.de/sportplatz-schleissheimer-strasse/stadion-13010.html",
-   "note": "Sportplatz Schleißheimer Straße, Schleißheimer Straße 40, 85748 Garching bei München. Ground and coordinates from europlan-online's own club-to-ground link - the club row on the site's own search, corroborated by the ground page's \"Vereine, die in diesem Stadion spielen\", which names VfR Garching 1921. Not a name match: the site itself says this club plays here. Read 2026-09-19 from a GitHub runner, because this sandbox answers 403 to CONNECT for europlan-online.de. EUROPLAN PUTS THIS CLUB IN BEZIRKSLIGA OBERBAYERN NORD, LEVEL 7, not the Regionalliga that Wikidata still tags it with, which is why no league page held it. TIER CORRECTED TO 7 ON 2026-09-19, now that tier 4 and every deeper tier switch on together at the same zoom - a deep tier no longer removes a club from the map. europlan also lists side pitches for this club at the GARMIN Stadion am See; the first team's own club row points here.",
-   "manual": true,
-   "competition": null
-  },
-  {
    "id": "Q131603",
    "name": "TSV 1860 München",
    "leagues": [
@@ -477,20 +460,6 @@
    "lon": 6.976389,
    "city": null,
    "competition": "3. Liga"
-  },
-  {
-   "id": "Q155452",
-   "name": "TuS Koblenz",
-   "leagues": [
-    "Q322128"
-   ],
-   "tier": 4,
-   "venue": "Stadion Oberwerth",
-   "capacity": 9500,
-   "lat": 50.3305,
-   "lon": 7.58661,
-   "city": null,
-   "competition": "Regionalliga Suedwest"
   },
   {
    "id": "Q155730",
@@ -1038,23 +1007,6 @@
    "competition": "Regionalliga Bayern"
   },
   {
-   "id": "Q176168",
-   "name": "TSG Neustrelitz",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Parkstadion",
-   "capacity": null,
-   "lat": 53.352104,
-   "lon": 13.056247,
-   "city": null,
-   "source": "https://www.openstreetmap.org/way/158277880; https://de.wikipedia.org/wiki/TSG_Neustrelitz; https://en.wikipedia.org/wiki/Parkstadion",
-   "note": "AUDIT 2026-11-11 (docs/claude/audits/2026-11-clubs.md, PR 210): position - capacity. Wikidata's P115 on this club is the Parkstadion in Gelsenkirchen: the fetched point is 452 km from Neustrelitz and 62008 is that ground's figure (en.wikipedia Parkstadion: 62004 for league matches). Position is OpenStreetMap's way 158277880 (Parkstadion - leisure=stadium - 28 m from the coordinates de.wikipedia gives for the Parkstadion Neustrelitz). Capacity cleared: the only figure read is an uncited 7000 in Wikipedia - not written. NOT DECIDED HERE: the club is not in the 2026-27 Regionalliga articles and is listed in de.wikipedia's Oberliga Nordost 2026/27 - the tier is Alexandru's call.",
-   "manual": true,
-   "competition": "Regionalliga Nordost"
-  },
-  {
    "id": "Q1921747",
    "name": "BSG Chemie Leipzig",
    "leagues": [
@@ -1274,23 +1226,6 @@
    "lon": 7.067589,
    "city": null,
    "competition": "Bundesliga"
-  },
-  {
-   "id": "Q324983",
-   "name": "SV Heimstetten",
-   "leagues": [
-    "Q340179"
-   ],
-   "tier": 4,
-   "venue": "Stadion im ATS-Sportpark",
-   "capacity": 2800,
-   "lat": 48.162078,
-   "lon": 11.748226,
-   "city": null,
-   "source": "https://www.europlan-online.de/stadion-im-sportpark-heimstetten/stadion-746.html",
-   "note": "Am Sportpark 2, 85551 Kirchheim bei München. Capacity cross-checked against the club site and Wikipedia, which both say 2800; Soccerway's 3100 is the outlier. Rejects the coordinate-review.csv proposal of Sporttraum München (way/388183624), which is a commercial sports centre, not the club's ground",
-   "manual": true,
-   "competition": "Regionalliga Bayern"
   },
   {
    "id": "Q325270",
@@ -1685,11 +1620,14 @@
     "Q539678"
    ],
    "tier": 4,
-   "venue": "Sportpark Eimsbüttel",
-   "capacity": 2400,
-   "lat": 53.5886,
-   "lon": 9.94418,
+   "venue": "Stadion Hoheluft",
+   "capacity": 4680,
+   "lat": 53.587215,
+   "lon": 9.969698,
    "city": null,
+   "source": "https://www.hsv.de/teams/nachwuchs/spielorte-tickets; https://de.wikipedia.org/wiki/Fu%C3%9Fball-Regionalliga_Nord_2026/27; https://www.openstreetmap.org/way/23815941",
+   "note": "GROUND FULL CHECK 2026-11-13 (docs/claude/audits/2026-11-grounds.md, phase 1e, PR 214), every page read that day. GROUND corrected: Stadion Hoheluft, not Sportpark Eimsbüttel (Wikidata, which the map held until now). The club's own page \"Spielorte & Tickets\": \"Während die U21 ihre Heimspiele im Stadion Hoheluft austrägt, spielen die U17 und U19 in Norderstedt\" and its table \"Stadion Hoheluft | Lokstedter Steindamm 87 22529 Hamburg | U21 | 4.680 Plätze (davon 776 überdachte Sitzplätze)\"; the grounds table of de.wikipedia \"Fußball-Regionalliga Nord 2026/27\" says \"Stadion Hoheluft | Hamburg | Hamburger SV II\". POSITION: OpenStreetMap way/23815941 (leisure=stadium, \"Stadion Hoheluft\"), found through Nominatim, 1691 m from the old map point. CAPACITY 4680 is the club's own figure for this ground; not taken: 5.000 (the de.wikipedia table, whose footnote says the ground is approved for 5,000 of about 8,000) and the figure the map held for Sportpark Eimsbüttel. de.wikipedia's club article says the move was made for 2024/25 and 2025/26 while Sportpark Eimsbüttel was modernised, so this row needs a look when the side moves back.",
+   "manual": true,
    "competition": "Regionalliga Nord"
   },
   {
@@ -1953,20 +1891,6 @@
    "lon": 7.03039,
    "city": null,
    "competition": "3. Liga"
-  },
-  {
-   "id": "Q700029",
-   "name": "VFC Plauen",
-   "leagues": [
-    "Q548937"
-   ],
-   "tier": 4,
-   "venue": "Vogtlandstadion",
-   "capacity": 10490,
-   "lat": 50.5235,
-   "lon": 12.1259,
-   "city": null,
-   "competition": "Regionalliga Nordost"
   },
   {
    "id": "Q702455",
