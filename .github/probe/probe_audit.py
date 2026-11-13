@@ -74,9 +74,10 @@ def http(url, key, gap, timeout=30, maxbytes=4_000_000):
 WAITED = {}
 
 
-def wm(host, params, budget=1500):
+def wm(host, params, budget=None):
     """Wikimedia API call, maxlag=5 always. On a lag refusal: wait and retry inside the run."""
     back = 10
+    budget = budget or (int(os.environ.get("WD_BUDGET", "1500")) if "wikidata" in host else 1500)
     for attempt in range(400):
         p = dict(params)
         p.update(format="json", maxlag="5", formatversion="2")
@@ -227,6 +228,25 @@ def by_name(clubs):
             c["wd"] = {"how": "not found by name (Wikidata lagged)"}
 
 
+def via_club(c):
+    """The ground's article from the ground link of the club's own English infobox, then its language links."""
+    d = wm("en.wikipedia.org", {"action": "parse", "page": c["clubtitle"], "prop": "wikitext", "section": "0", "redirects": "1"})
+    wt = (d or {}).get("parse", {}).get("wikitext", "")
+    m = re.search(r"^\s*\|\s*(?:ground|stadium)\s*=\s*[^\n]*?\[\[([^\]|#]+)", wt, re.I | re.M)
+    if not m:
+        c["wd"] = {"how": f"no ground link in the infobox of en.wikipedia {c['clubtitle']}"}
+        return
+    d = wm("en.wikipedia.org", {"action": "query", "titles": m.group(1).strip(), "redirects": "1", "prop": "langlinks", "lllimit": "500"})
+    pages = (d or {}).get("query", {}).get("pages", [])
+    if pages and not pages[0].get("missing"):
+        c["titles"] = {"en": pages[0]["title"]}
+        for ll in pages[0].get("langlinks", []):
+            c["titles"][ll["lang"]] = ll["title"]
+        c["wd"] = {"how": f"ground link of the club's English infobox ({c['clubtitle']} -> {pages[0]['title']})"}
+    else:
+        c["wd"] = {"how": f"ground link {m.group(1)} has no article"}
+
+
 # ---------- Wikipedia: the capacity line, the sentences, the references ----------
 
 def first_url(s):
@@ -270,7 +290,7 @@ def article(lang, title):
     wt, refs = d["parse"]["wikitext"], []
     wt = mark_refs(re.sub(r"<!--.*?-->", "", wt, flags=re.S), refs)
     out = {"title": d["parse"]["title"], "lines": [], "body": [], "web": ""}
-    head = wt[:12000]
+    head = wt[:60000]
     for m in re.finditer(r"^\s*\|\s*([^=|\n]{0,40}?(?:capac|kapaz|kapac|aforo|posti|capien|χωρητικ|капацитет|pl[aä]tze|lotaç|seating|zuschauer|toeschouw)[^=|\n]{0,30})=([^\n]*(?:\n(?!\s*[|}])[^\n]*){0,6})", head, re.I | re.M):
         val = tidy(m.group(2))
         if re.search(r"\d", val):
@@ -328,11 +348,28 @@ def snippets(text, figs, cap=6):
     return out
 
 
+RENDER = set()
+
+
+def rendered(url):
+    """A page that needs a browser: Chromium through Playwright, the same User-Agent, no clicks."""
+    import subprocess
+    with LOCK:
+        NREQ["rendered"] = NREQ.get("rendered", 0) + 1
+    try:
+        r = subprocess.run(["node", os.path.join(HERE, "render.js"), url], capture_output=True, text=True, timeout=150)
+        d = json.loads(r.stdout.strip().split("\n")[-1])
+        return d.get("status") or "no status", d.get("final") or url, d.get("title", "")[:90], re.sub(r"\s+", " ", d.get("text", "")), d.get("links", [])
+    except Exception as e:
+        return f"render {type(e).__name__}", url, "", "", []
+
+
 class Host:
     def __init__(self, host):
         self.host, self.stop, self.rp, self.txt, self.done = host, "", None, "", False
         self.rootlinks, self.terms = [], ""
         self.lock = threading.RLock()
+        self.render = host.replace("www.", "") in RENDER
 
     def get(self, url):
         try:
@@ -343,14 +380,28 @@ class Host:
         except Exception as e:
             return f"{type(e).__name__}", b"", url, ""
 
+    def read(self, url):
+        """status, final URL, title, text, links - by plain HTTP, or in a browser for the hosts that need one."""
+        if self.render:
+            with self.lock:
+                time.sleep(1.0)
+                return rendered(url)
+        st, body, final, ctype = self.get(url)
+        if st != 200:
+            return st, final, "", "", []
+        if "pdf" in ctype.lower() or body[:4] == b"%PDF":
+            return "200 pdf (not read)", final, "", "", []
+        title, text, links = page_text(body)
+        return st, final, title, text, links
+
     def open(self, scheme):
-        """robots.txt, then the root page and the terms page it links."""
         with self.lock:
             if not self.done:
                 self._open(scheme)
                 self.done = True
 
     def _open(self, scheme):
+        """robots.txt, then the root page and the terms page it links."""
         st, body, _, _ = self.get(f"{scheme}://{self.host}/robots.txt")
         if st in (403, 429, 503) or (not isinstance(st, int)):
             self.stop = f"robots.txt {st}"
@@ -359,21 +410,23 @@ class Host:
             self.txt = body.decode("utf-8", "replace")
             self.rp = urllib.robotparser.RobotFileParser()
             self.rp.parse(self.txt.splitlines())
-        st, body, final, _ = self.get(f"{scheme}://{self.host}/") if self.allowed(f"{scheme}://{self.host}/") else (0, b"", "", "")
+        root = f"{scheme}://{self.host}/"
+        if not self.allowed(root):
+            return
+        st, final, title, text, links = self.read(root)
         if st in (403, 429, 503):
             self.stop = f"root {st}"
             return
         if st == 200:
-            title, text, links = page_text(body)
             if re.search(r"just a moment|attention required|access denied|verify you are human|checking your browser", title + text[:600], re.I):
                 self.stop = "bot challenge on root"
                 return
             self.rootlinks = [(urllib.parse.urljoin(final, h), re.sub(r"<[^>]+>|\s+", " ", x).strip()[:60]) for h, x in links]
             for u, x in self.rootlinks:
                 if urllib.parse.urlparse(u).netloc.endswith(self.host.replace("www.", "")) and TERMS.search(u + " " + x) and self.allowed(u):
-                    s2, b2, _, _ = self.get(u)
+                    s2, _, _, t2, _ = self.read(u)
                     if s2 == 200:
-                        ban = BAN.search(page_text(b2)[1])
+                        ban = BAN.search(t2)
                         self.terms = f"{u} read; " + (f"POSSIBLE BAN: {ban.group(0).strip()[:300]}" if ban else "no automated-access wording found")
                         if ban and self.host not in TERMSOK:
                             self.stop = "terms: " + self.terms[:380]
@@ -388,7 +441,7 @@ class Host:
         agents = ["FootballPlannerBot"] + [a for a in ANTHROPIC if a in low]
         return all(self.rp.can_fetch(a, url) for a in agents)
 
-    def page(self, url, figs, want_links=False):
+    def page(self, url, figs, want_links=False, cap=6):
         res = {"url": url}
         if self.stop:
             res["st"] = "STOP " + self.stop
@@ -396,7 +449,7 @@ class Host:
         if not self.allowed(url):
             res["st"] = "STOP robots.txt disallows"
             return res, []
-        st, body, final, ctype = self.get(url)
+        st, final, title, text, links = self.read(url)
         res["st"] = st
         if st in (403, 429, 503):
             self.stop = f"HTTP {st}"
@@ -408,15 +461,13 @@ class Host:
             if urllib.parse.urlparse(final).netloc.replace("www.", "") != self.host.replace("www.", ""):
                 res["st"] = "STOP redirect to another host"
                 return res, []
-        if "pdf" in ctype.lower() or body[:4] == b"%PDF":
-            res["st"] = "200 pdf (not read)"
-            return res, []
-        title, text, links = page_text(body)
         if re.search(r"just a moment|attention required|verify you are human|checking your browser", title + text[:400], re.I):
             self.stop = "bot challenge"
             res["st"] = "STOP bot challenge"
             return res, []
-        res.update(title=title, chars=len(text), snips=[s[:330] for s in snippets(text, figs)])
+        res.update(title=title, chars=len(text), snips=[s[:420 if cap > 6 else 330] for s in snippets(text, figs, cap)])
+        if self.render:
+            res["rendered"] = 1
         return res, ([(urllib.parse.urljoin(final, h), re.sub(r"<[^>]+>|\s+", " ", x).strip()[:60]) for h, x in links] if want_links else [])
 
 
@@ -447,7 +498,7 @@ def run_host(job):
             continue
         h, scheme = host_of(url)
         h.open(scheme)
-        res, _ = h.page(url, c["figs"])
+        res, _ = h.page(url, c["figs"], cap=14 if why.startswith("added by hand") else 6)
         res["why"] = why
         c["pages"].append(res)
 
@@ -460,8 +511,16 @@ def run_league(job):
     links = list(h.rootlinks)
     if root.rstrip("/").count("/") > 2 and not h.stop:
         _, links = h.page(root, [], want_links=True)
+    if not h.stop:
+        idx = [u for u, x in links if urllib.parse.urlparse(u).netloc.replace("www.", "") == h.host.replace("www.", "")
+               and re.search(r"/(teams?|clubs?|clubes|equipos|squadre|cluburi|echipe|omades|vereine|klubs)/?$", urllib.parse.urlparse(u).path, re.I)]
+        for u in list(dict.fromkeys(idx))[:3]:
+            _, more = h.page(u, [], want_links=True)
+            links += more
+        info["index"] = list(dict.fromkeys(idx))[:3]
+        info["links"] = len(links)
     for c in clubs:
-        toks = tokens(c["name"])
+        toks = c.get("tok") or tokens(c["name"])
         cand = []
         for u, x in links:
             p = urllib.parse.urlparse(u)
@@ -528,10 +587,23 @@ def main():
     if only:
         clubs = [c for c in clubs if c["q"] in only]
     log(f"run {RUN}: {len(clubs)} clubs")
-    ok = wikidata(clubs)
-    log(f"wikidata {'answered' if ok else 'did NOT answer within the waiting budget'}; waited {WAITED.get('www.wikidata.org', 0)} s on lag")
+    RENDER.update(cfg.get("render") or [])
+    for c in clubs:
+        if c.get("titles"):
+            c["wd"] = {"how": c.pop("titlesfrom", "titles given")}
+    ask = [c for c in clubs if not c.get("titles")]
+    ok = wikidata(ask) if ask else True
+    log(f"wikidata asked for {len(ask)} clubs: {'answered' if ok else 'did NOT answer within the waiting budget'}; waited {WAITED.get('www.wikidata.org', 0)} s on lag")
     if not ok:
-        by_name(clubs)
+        for c in ask:
+            c.pop("p115", None)
+            if c.get("clubtitle"):
+                via_club(c)
+            elif c.get("titles2"):
+                c["titles"], c["wd"] = c["titles2"], {"how": "by name on en.wikipedia in run 1 (Wikidata lagged)"}
+        by_name(ask)
+    for c in clubs:
+        c.pop("titles2", None)
     for c in clubs:
         c["wp"], c["pages"], c["figs"] = {}, [], [c["map"]] if c.get("map") else []
         titles = c.get("titles") or {}
@@ -557,7 +629,7 @@ def main():
         agrees = m and any(abs(v - m) <= 0.03 * m for v in linenums)
         c["auto"] = "a number on a capacity line is within 3 percent of the map" if agrees else "no number on the capacity lines within 3 percent"
         todo = [(u, "added by hand for this run") for u in extra.get(c["q"], [])]
-        if not (c["grp"] == "B" and agrees):
+        if not (c["grp"] == "B" and agrees) and not c.get("only_extra"):
             for l, a in c["wp"].items():
                 for u, arch in a["lineref"][:2]:
                     todo.append((u or arch, f"reference on the capacity line of {l}.wikipedia" + ("" if u else " (archive copy named by the reference)")))
