@@ -176,12 +176,22 @@ async function readPage(browser, p) {
   let kwText = hits(lines, p.kw, isPdf ? 2 : 1, 11000);
   if (isPdf) { const k2 = hits(r.raw.split('\n').filter(x => x.trim()), p.kw, 1, 5000); kwText += `\n--- same file, pdftotext -raw ---\n${k2}`; }
   else { const shown = new Set(lines.map(l => l.trim())); const hidden = (r.blocks || []).filter(b => !shown.has(b) && !full.includes(b.slice(0, 60))); const k2 = hits(hidden, p.kw, 0, 5000); if (k2.trim()) kwText += `\n--- in the page's HTML but not displayed (collapsed sections) ---\n${k2}`; }
-  let body = head + `HTTP ${r.status}; final address ${r.final}; title "${r.title}"; ${isPdf ? `PDF, ${r.bytes} bytes, ${r.info}; ` : ''}text ${r.text.length} characters${(!isPdf && full !== r.text) ? ` (posted from <main>, ${full.length})` : ''}\nSeason or date marks in the text: ${seasons(r.text)}\nKey words: ${p.kw.join(' | ')}\n\n#### First 3000 characters\n\`\`\`\n${full.slice(0, 3000)}\n\`\`\`\n#### Paragraphs with a key word\n\`\`\`\n${kwText}\n\`\`\`\n`;
+  let body = head + `HTTP ${r.status}; final address ${r.final}; title "${r.title}"; ${isPdf ? `PDF, ${r.bytes} bytes, ${r.info}; ` : ''}text ${r.text.length} characters${(!isPdf && full !== r.text) ? ` (posted from <main>, ${full.length})` : ''}\nSeason or date marks in the text: ${seasons(r.text)}\nKey words: ${p.kw.join(' | ')}\n\n#### First 3000 characters\n\`\`\`\n${p.nofirst ? '(not posted for this page: press text, key-word paragraphs only)' : full.slice(0, 3000)}\n\`\`\`\n#### Paragraphs with a key word\n\`\`\`\n${kwText}\n\`\`\`\n`;
   if (p.links && r.links) {
     const seen = new Set(); const ls = r.links.filter(([t, h]) => { if (seen.has(h) || !/^https?:/.test(h)) return false; seen.add(h); return new RegExp(p.links === true ? '.' : p.links, 'i').test(t + ' ' + h); }).slice(0, 120);
     body += `#### Links (${ls.length})\n` + ls.map(([t, h]) => `- ${t} : ${h}`).join('\n') + '\n';
   }
   post(body);
+  if (p.follow && r.links) {
+    const fr = new RegExp(p.follow.re, 'i'); const seen = new Set(); let k = 0;
+    for (const [tx, h] of r.links) {
+      if (k >= (p.follow.max || 2)) break;
+      if (seen.has(h) || !fr.test(tx + ' ' + h) || isForbidden(h)) continue; seen.add(h);
+      let hh; try { hh = new URL(h).host; } catch { continue; }
+      if (!robots[hh]) { post(`### PAGE ${p.id}-f${k + 1} (run ${T.run}) ${h}\nSKIPPED: linked from ${p.id}, but its host ${hh} was not gated in this run.`); k++; continue; }
+      await readPage(browser, { id: `${p.id}-f${++k}`, url: h, rows: p.rows, kw: p.follow.kw || p.kw, type: 'pdf' });
+    }
+  }
 }
 (async () => {
   const browser = await chromium.launch();
