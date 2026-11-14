@@ -84,6 +84,7 @@ on:
       - "data/country-ticket-rules.csv"
       - "data/ticket-sources.csv"
       - "tools/check_tickets.py"
+      - "tools/test_check_tickets_aging.py"
       - "data/competitions.csv"
       - "data/competition-info.csv"
       - "data/competition-sources.csv"
@@ -124,6 +125,7 @@ on:
       - "data/country-ticket-rules.csv"
       - "data/ticket-sources.csv"
       - "tools/check_tickets.py"
+      - "tools/test_check_tickets_aging.py"
       - "data/competitions.csv"
       - "data/competition-info.csv"
       - "data/competition-sources.csv"
@@ -293,11 +295,13 @@ jobs:
           python3 tools/check_holidays.py 2>&1 | tee /tmp/test_check_holidays.log
 
       # The page reads the ticket files; their own checker must pass too.
-      - name: Ticket files read back (check_tickets.py exits 0)
+      - name: Ticket files read back (check_tickets.py exits 0, aging fixtures pass)
         if: always()
         run: |
           set -o pipefail
           python3 tools/check_tickets.py 2>&1 | tee /tmp/test_check_tickets.log
+          # The aging-document warning (phase 2b) on fixtures: 11 months no warning, 13 months a warning.
+          python3 tools/test_check_tickets_aging.py 2>&1 | tee -a /tmp/test_check_tickets.log
 
       # The club sheet's Rivalries and Fan friendships sections read these files; their checker must pass too.
       - name: Club culture files read back (check_club_culture.py exits 0)

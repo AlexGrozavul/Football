@@ -203,7 +203,7 @@ Index only. The full per-file and per-tool entries (columns, rules, history) are
 - `tools/check_rosters.py` — the roster check, from the league's side; exports `roster_qids()`
 - `tools/diagnose_p118_rank.py` — which clubs the truthy `wdt:P118` join hides, by rank shape A, B and C
 - `tools/propose_country.py`, `tools/propose_grounds.py`, `tools/test_propose_country.py` — read-only evidence for adding a country; measured accuracy is in files.md
-- `tools/check_tickets.py` — read-back and checks for the ticket files; exits 1 on a problem
+- `tools/check_tickets.py` — read-back and checks for the ticket files; exits 1 on a problem; warns on confirmed rows resting on a dated document over 12 months old (`tools/test_check_tickets_aging.py`)
 - `tools/check_derbies.py`, `tools/check_holidays.py`, `tools/check_competitions.py`, `tools/check_translations.py`, `tools/check_club_culture.py` — read-backs of the hand-written files they name
 - `tools/check_sale_dates.py` — warnings on dated `ticketEvents` entries (rule 8); always exits 0
 - `tools/test_*.js` — headless Chromium tests of the page (pwa, derbies, nearme, routes, zoom, search, coverage, sheet_tickets, layout, legend, tickets_bucket, calendar, me, ksc_tickets, vfb_tickets, competitions)
