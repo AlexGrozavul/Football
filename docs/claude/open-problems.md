@@ -5609,3 +5609,15 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
     - policies.redbull.com, www.zeit.de: robots.txt `Disallow: /` (batch 7).
     - www.werder.de: robots.txt HTTP 429 (batch 9).
     - www.fcstpauli.com: robots.txt names anthropic-ai, ClaudeBot, Claude-Web (batch 9).
+
+- **CI guard for bot commits (2026-11-14).** Found: commits pushed by the
+  build workflows with `GITHUB_TOKEN` start no other workflow, so "Test
+  the page" never ran on them; `test_calendar.js` was red on main from
+  `6781dac` (club rebuild of 2026-11-12) until PR #214, unseen. Fixed by
+  the guard in `docs/claude/conventions.md`, "CI guard": the club,
+  calendar, OpenLigaDB and fixture-link builds now run the suites that
+  read their output before committing, and push nothing when one fails.
+  Still open: (1) `fetch-fuel-prices.yml` has no guard, because no suite
+  reads the real `data/fuel-prices.json`; (2) `test_layout.js` is not in
+  the fixture and link guards, for run time; (3) a guard failure needs a
+  person to notice the red run, as before - nothing is sent anywhere.

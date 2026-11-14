@@ -648,6 +648,10 @@ Moved byte for byte from CLAUDE.md (old lines 148-1007, 2026-10-22). Long new en
   and the absence of any movable day. Never writes. Exits 1 on a rejected
   row. Run by `check-holidays.yml` (push to `main` or pull request
   touching the file, the tool or the workflow) and by `test-pages.yml`.
+- `tools/ci_guard.sh` — added 2026-11-14: runs the named page suites
+  (`test_x`) and checkers (`check_x`) and exits 1 if any fails; called by
+  the build workflows before their commit step. See conventions.md,
+  "CI guard".
 - `.github/workflows/test-pages.yml` — added 2026-10-03: runs
   `test_pwa.js`, `test_derbies.js` and `test_routes.js`, and since the
   same day `test_zoom.js`, `test_search.js`, `test_coverage.js`,

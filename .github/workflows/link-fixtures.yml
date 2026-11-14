@@ -28,18 +28,24 @@ on:
       - "tools/link_fixtures.py"
       - "tools/crosscheck_stadiumdb.py"
       - ".github/workflows/link-fixtures.yml"
+  # CI guard test: on a pull request that changes this file, the build and
+  # the guard run, and the commit step is skipped (docs/claude/conventions.md,
+  # "CI guard").
+  pull_request:
+    paths:
+      - ".github/workflows/link-fixtures.yml"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: link-fixtures
+  group: link-fixtures${{ github.event_name == 'pull_request' && format('-pr-{0}', github.ref) || '' }}
   cancel-in-progress: false
 
 jobs:
   link:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Check out repository
@@ -67,10 +73,33 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
+      # CI guard (docs/claude/conventions.md, "CI guard"): the commit below is
+      # pushed with the Actions token, which starts no other workflow, so
+      # "Test the page" never sees it. The suites that read the rewritten
+      # files (data/clubs/fixture-links.json) run here instead; if one fails, the
+      # commit step is skipped, nothing is pushed and the run is red.
+      - uses: actions/setup-node@v5
+        if: success() || failure()
+        with:
+          node-version: 22
+
+      - name: Install Playwright and Chromium (CI guard)
+        if: success() || failure()
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: CI guard - test the rewritten files before committing
+        id: guard
+        if: success() || failure()
+        run: tools/ci_guard.sh check_derbies test_derbies test_nearme
+
       - name: Commit only if the output changed
         # A rejected hand row still leaves a valid mapping from every
         # other row, so it is committed; the red step above says why.
-        if: success() || failure()
+        if: (success() || failure()) && steps.guard.outcome == 'success' && github.event_name != 'pull_request'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
