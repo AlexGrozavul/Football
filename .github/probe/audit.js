@@ -173,7 +173,7 @@ async function readPage(browser, p) {
     post(head + `HELD: this page is the host's own terms and has bot or automated-access wording; only those lines are posted, a person judges.\n${fl}`); return;
   }
   const lines = full.split('\n').map(x => x.replace(/\s+$/, '')).filter(x => x.trim());
-  let kwText = hits(lines, p.kw, isPdf ? 2 : 1, 11000);
+  let kwText = hits(lines, p.kw, isPdf ? 2 : 1, p.cap || 11000);
   if (isPdf) { const k2 = hits(r.raw.split('\n').filter(x => x.trim()), p.kw, 1, 5000); kwText += `\n--- same file, pdftotext -raw ---\n${k2}`; }
   else { const shown = new Set(lines.map(l => l.trim())); const hidden = (r.blocks || []).filter(b => !shown.has(b) && !full.includes(b.slice(0, 60))); const k2 = hits(hidden, p.kw, 0, 5000); if (k2.trim()) kwText += `\n--- in the page's HTML but not displayed (collapsed sections) ---\n${k2}`; }
   let body = head + `HTTP ${r.status}; final address ${r.final}; title "${r.title}"; ${isPdf ? `PDF, ${r.bytes} bytes, ${r.info}; ` : ''}text ${r.text.length} characters${(!isPdf && full !== r.text) ? ` (posted from <main>, ${full.length})` : ''}\nSeason or date marks in the text: ${seasons(r.text)}\nKey words: ${p.kw.join(' | ')}\n\n#### First 3000 characters\n\`\`\`\n${p.nofirst ? '(not posted for this page: press text, key-word paragraphs only)' : full.slice(0, 3000)}\n\`\`\`\n#### Paragraphs with a key word\n\`\`\`\n${kwText}\n\`\`\`\n`;

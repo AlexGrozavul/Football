@@ -1,237 +1,114 @@
 {
- "run": 2,
+ "run": 3,
  "hosts": {
-  "tickets.schalke04.de": {
+  "www.ksc.de": {
    "gate": "open",
-   "why": "judged after run 1: the terms' bot wording concerns automated buying of tickets (BOT-Käufe), not reading the page"
-  },
-  "stores.eintracht.de": {
-   "gate": "open",
-   "why": "judged after run 1: the terms' bot wording concerns automated buying of tickets (BOT-Käufe), not reading the page"
-  },
-  "shop.fck.de": {
-   "gate": "open",
-   "why": "judged after run 1: the only flagged line is about a season ticket ending automatically"
-  },
-  "www.heidelberg24.de": {
-   "gate": "open",
-   "why": "judged after run 1: robots.txt allows Claude-User; the notice reserves only commercial text and data mining (44b UrhG), this is one article read for a private fact check; key-word paragraphs only"
-  },
-  "www.fcenergie.de": {
-   "landing": "https://www.fcenergie.de/nachrichtenuebersicht.html"
-  },
-  "www.eintracht.com": {
-   "notice": [
-    "https://www.eintracht.com/impressum"
-   ]
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
   },
   "www.vfb.de": {
    "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "stores.eintracht.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "shop.fck.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "tickets.schalke04.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "www.mainz05.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "www.fc-heidenheim.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "www.vfl-bochum.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "1.fc-magdeburg.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "www.bayer04.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "www.borussia.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "www.herthabsc.com": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "www.sv98.de": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "billetterie.rcstrasbourgalsace.fr": {
+   "gate": "open",
+   "why": "gated in run 1 or 2 (robots.txt and notice read; held hosts judged by a person, see the audit file)"
+  },
+  "a.storyblok.com": {
+   "gate": "via:www.ksc.de"
   },
   "service.vfb.de": {
    "gate": "via:www.vfb.de"
   },
-  "www.sv98.de": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
+  "assets.fc-heidenheim.de": {
+   "gate": "via:www.fc-heidenheim.de"
   },
-  "wirlilien.sv98.de": {
-   "gate": "via:www.sv98.de"
+  "res.cloudinary.com": {
+   "gate": "via:www.vfl-bochum.de"
   },
-  "www.inter.it": {
-   "landing": "https://www.inter.it/it"
-  },
-  "ticketing.schalke04.de": {
-   "landing": "https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien"
-  },
-  "billetterie.rcstrasbourgalsace.fr": {
-   "gate": "open",
-   "why": "its terms (RCS8) were read in run 1 and have no bot or automated-access wording"
-  },
-  "www.rcstrasbourgalsace.fr": {},
-  "meinka.de": {},
-  "www.ksc.de": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
-  },
-  "www.fc-union-berlin.de": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
-  },
-  "www.mainz05.de": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
-  },
-  "www.scfreiburg.com": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
-  },
-  "www.herthabsc.com": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
+  "b04-ep-media-prod.azureedge.net": {
+   "gate": "via:www.bayer04.de"
   },
   "content.herthabsc.com": {
    "gate": "via:www.herthabsc.com"
-  },
-  "www.bvb.de": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
-  },
-  "fc.de": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
-  },
-  "assets.ctfassets.net": {
-   "gate": "via:fc.de"
-  },
-  "www.arminia.de": {
-   "gate": "open",
-   "why": "gated in run 1 (robots.txt and notice read, no bot or automated-access wording)"
   }
  },
  "locale": {
-  "www.inter.it": "en-GB",
-  "billetterie.rcstrasbourgalsace.fr": "fr-FR",
-  "www.rcstrasbourgalsace.fr": "fr-FR"
+  "billetterie.rcstrasbourgalsace.fr": "fr-FR"
  },
  "pages": [
   {
-   "id": "F11",
-   "url": "https://stores.eintracht.de/rechtliches/atgb-maenner/",
+   "id": "K1",
+   "url": "https://www.ksc.de/ticketing/tages-dauerkarten/tageskarten",
    "rows": [
-    "rules:106",
-    "rules:109"
+    "prices:82"
    ],
    "kw": [
-    "Lichtbildausweis",
-    "hinterlegt",
-    "weiterleit|Weitergabe",
-    "Fanclub",
-    "Stand",
-    "eBay",
-    "Kleinanzeigen",
-    "viagogo",
-    "Gästefans|Gastfans|Anhänger",
-    "gewerblich",
-    "Lichtbild",
-    "Ausweis|Personalausweis|Reisepass",
-    "Stand|September 2026"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "FCS1",
-   "url": "https://tickets.schalke04.de/agb",
-   "rows": [
-    "rules:543",
-    "price basis"
-   ],
-   "kw": [
-    "Abonnement|Abo\\b",
-    "verlänger",
-    "Kündigung|gekündigt",
-    "Chipkarte|Knappenkarte",
-    "aufgeladen",
-    "Stand",
-    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
-    "inkl\\.|inklusive|zzgl|zuzüglich",
-    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
-    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "FK1",
-   "url": "https://shop.fck.de/Informationen/ATGB/",
-   "rows": [
-    "rules:162"
-   ],
-   "kw": [
-    "Ausweis|Identitätsnachweis|Identifikation",
-    "Ermäßigung",
-    "Durchsuch|Kontrolle",
-    "verlassen",
-    "Stand",
-    "gültig|20\\d\\d"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "K18",
-   "url": "https://www.heidelberg24.de/sport/fussball/news-fussball-derby-ksc-fck-tickets-karlsruhe-fans-zuschauer-verkauf-infos-92205346.html",
-   "rows": [
-    "demand:8"
-   ],
-   "kw": [
-    "vergriffen",
-    "ausverkauft",
-    "Verkaufstag",
-    "Tageskarten"
+    "Preise",
+    "Tageskarte"
    ],
    "type": "html",
-   "nofirst": true
-  },
-  {
-   "id": "K22",
-   "url": "https://meinka.de/polizei-bilanz-zum-ksc-spiel-gegen-kaiserslautern-ausschreitungen-nach-schlusspfiff/",
-   "rows": [
-    "demand:10"
-   ],
-   "kw": [
-    "ausverkauft",
-    "Stunden",
-    "Vorverkauf",
-    "Zuschauer",
-    "Karten|Tickets"
-   ],
-   "type": "html",
-   "nofirst": true
-  },
-  {
-   "id": "FCE1",
-   "url": "https://www.fcenergie.de/ticketpreise-2026-27.html",
-   "rows": [
-    "rules:727"
-   ],
-   "kw": [
-    "Schwerbehindert|Behinder|Beeinträchtig",
-    "schriftlich",
-    "Begleit",
-    "Antrag",
-    "2026"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "EBS8",
-   "url": "https://www.eintracht.com/tickets/sozialtickets",
-   "rows": [
-    "rules:640"
-   ],
-   "kw": [
-    "5 Euro|5,00|fünf Euro",
-    "Bürgergeld",
-    "Wohngeld",
-    "Sozialhilfe",
-    "anmeld|registrier"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "EBS11",
-   "url": "https://www.eintracht.com/fileadmin/Profis/Medien/Dateien/ATGB_Eintracht_Braunschweig_2627.pdf",
-   "rows": [
-    "rules:631"
-   ],
-   "kw": [
-    "2\\.500",
-    "Vertragsstrafe",
-    "fünf Jahre|5 Jahre",
-    "Stand",
-    "Mehrerlös|Gewinn"
-   ],
-   "type": "pdf"
+   "links": "preis|stadionplan|pdf|ticket",
+   "follow": {
+    "re": "Preisliste|Stadionplan.*\\.pdf",
+    "max": 2,
+    "kw": [
+     "70,50",
+     "W2",
+     "W3",
+     "TAGESKARTEN",
+     "26 ?/ ?27",
+     "Tageskarte|TAGESKARTE",
+     "KAT|Kategorie",
+     "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+     "inkl\\.|inklusive|zzgl|zuzüglich",
+     "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+     "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+    ]
+   }
   },
   {
    "id": "V8",
@@ -245,97 +122,71 @@
     "Spiel zu Spiel|variier|unterschiedlich",
     "Sitzplatzauswahl|Platzauswahl"
    ],
-   "type": "html"
-  },
-  {
-   "id": "SVD31",
-   "url": "https://wirlilien.sv98.de/wissen/was-unternimmt-der-sv98-gegen-schwarzmarkthandel-von-eintrittskarten",
-   "rows": [
-    "rules:320"
-   ],
-   "kw": [
-    "Software",
-    "Schwarzmarkt",
-    "Vertragsstrafe",
-    "300",
-    "\\bVB\\b|Verhandlungsbasis"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "I2",
-   "url": "https://www.inter.it/en/news/tickets-inter-milan-derby-serie-a-2025-2026",
-   "rows": [
-    "phases:16",
-    "rules:40"
-   ],
-   "kw": [
-    "INTERISTA",
-    "27 October|October 27|27 ottobre",
-    "12:00|12 ?pm|noon",
-    "Siamo Noi",
-    "tickets per|maximum|max",
-    "authori[sz]ed|official",
-    "resale|secondary|viagogo",
-    "nominative|name",
-    "transfer|change"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "FCS2",
-   "url": "https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien",
-   "rows": [
-    "prices:710"
-   ],
-   "kw": [
-    "58",
-    "Kategorie 1|PK ?1|Preiskategorie 1",
-    "Vollzahler",
-    "2026/2027",
-    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
-    "inkl\\.|inklusive|zzgl|zuzüglich",
-    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
-    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "K1",
-   "url": "https://www.ksc.de/ticketing/tages-dauerkarten/tageskarten",
-   "rows": [
-    "prices:82"
-   ],
-   "kw": [
-    "Preisliste",
-    "Kategorie A|KAT-A",
-    "26 ?/ ?27",
-    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
-    "inkl\\.|inklusive|zzgl|zuzüglich",
-    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
-    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
-   ],
    "type": "html",
-   "links": "preis|pdf|kat",
+   "links": "preis",
    "follow": {
-    "re": "KAT-?A|Kategorie.?A",
-    "max": 2,
+    "re": "Ticketpreise",
+    "max": 1,
     "kw": [
-     "70,50",
-     "W2",
-     "W3",
-     "TAGESKARTEN",
-     "26 ?/ ?27",
-     "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
-     "inkl\\.|inklusive|zzgl|zuzüglich",
-     "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
-     "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+     "Preis",
+     "Tageskarte",
+     "Spiel zu Spiel|variier|unterschiedlich",
+     "Sitzplatzauswahl|Platzauswahl",
+     "Dauerkarte",
+     "Champions"
     ]
    }
   },
   {
-   "id": "RCS6",
-   "url": "https://billetterie.rcstrasbourgalsace.fr/fr/aide/categories/FAQ/preparer-ma-venue",
+   "id": "F11a",
+   "url": "https://stores.eintracht.de/rechtliches/atgb-maenner/",
+   "rows": [
+    "rules:106"
+   ],
+   "kw": [
+    "Lichtbild",
+    "Identifikationsdokument|Personalausweis",
+    "Fanclub|Fan-Club",
+    "10\\.3",
+    "Mitglieder-Dauerkarte"
+   ],
+   "type": "html",
+   "cap": 20000
+  },
+  {
+   "id": "F11b",
+   "url": "https://stores.eintracht.de/rechtliches/atgb-maenner/",
+   "rows": [
+    "rules:109"
+   ],
+   "kw": [
+    "eBay|ebay",
+    "Kleinanzeigen",
+    "viagogo|StubHub",
+    "Gästefans|Fans von Gastclubs|Anhänger",
+    "gewerblich"
+   ],
+   "type": "html",
+   "cap": 20000
+  },
+  {
+   "id": "FK1",
+   "url": "https://shop.fck.de/Informationen/ATGB/",
+   "rows": [
+    "rules:162"
+   ],
+   "kw": [
+    "Identit|Lichtbild",
+    "durchsuch|Durchsuch",
+    "verlassen|Wiedereintritt",
+    "Ermäßigungsnachweis|Berechtigungsnachweis|Ermäßigungsberechtigung"
+   ],
+   "type": "html",
+   "cap": 20000
+  },
+  {
+   "id": "RCS8",
+   "url": "https://billetterie.rcstrasbourgalsace.fr/media/2026/08/cgv_rcsa_billetterie_et_hospitalites_ponctuelles_vf2026_2027.pdf",
    "rows": [
     "rules:270"
    ],
@@ -347,211 +198,125 @@
     "mi-temps",
     "ouverture des portes"
    ],
-   "type": "html"
+   "type": "pdf",
+   "cap": 20000
   },
   {
-   "id": "RCS16",
-   "url": "https://www.rcstrasbourgalsace.fr/tout-sur-les-animations-et-votre-venue-a-la-meinau-pour-racing-as-monaco-j4/",
+   "id": "FCS1v",
+   "url": "https://tickets.schalke04.de/agb",
    "rows": [
-    "rules:270"
+    "price basis"
    ],
    "kw": [
-    "pièce d.identité",
-    "photocopie|capture",
-    "palpation|fouille",
-    "sortie",
-    "mi-temps",
-    "ouverture des portes"
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
    ],
-   "type": "html"
+   "type": "html",
+   "cap": 8000
   },
   {
-   "id": "RCS19",
-   "url": "https://billetterie.rcstrasbourgalsace.fr/fr/MeinauJDM/objets-interdits-consignes",
-   "rows": [
-    "rules:270"
-   ],
-   "kw": [
-    "pièce d.identité",
-    "photocopie|capture",
-    "palpation|fouille",
-    "sortie",
-    "mi-temps",
-    "ouverture des portes"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "FCU6",
-   "url": "https://www.fc-union-berlin.de/de/stadion/besucherinfos-2h5Y",
-   "rows": [
-    "rules:785"
-   ],
-   "kw": [
-    "Block Z",
-    "Sektor 5",
-    "Wuhle",
-    "Tankstelle",
-    "Parkplatz",
-    "Kassenbereich"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "FCU8",
-   "url": "https://www.fc-union-berlin.de/files/d1a330c1-503e-40cd-b47b-a7a6c1a2d19f?ts=1791811694&s=hRlmW0u17nrqgU418Vadn8",
-   "rows": [
-    "rules:785"
-   ],
-   "kw": [
-    "Block Z",
-    "Sektor 5",
-    "Wuhle",
-    "Tankstelle",
-    "Parkplatz",
-    "Kassenbereich",
-    "Stand|20\\d\\d"
-   ],
-   "type": "pdf"
-  },
-  {
-   "id": "MZ7",
+   "id": "MZ7v",
    "url": "https://www.mainz05.de/getmedia/f2802258-3536-4648-9f32-bc5c55b5f322/ATGB-1-FSV-Mainz-05_2026.pdf",
    "rows": [
-    "rules:218"
+    "price basis"
    ],
    "kw": [
-    "Lichtbild",
-    "Ausweis|Personalausweis|Reisepass",
-    "Mai 2026|2026",
-    "Stand:"
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
    ],
-   "type": "pdf"
+   "type": "pdf",
+   "cap": 8000
   },
   {
-   "id": "MZ14",
-   "url": "https://www.mainz05.de/getmedia/249bf2f3-f298-43c9-9ad2-35ab40bd2b35/Stadionordnung-MEWA-ARENA-26_27.pdf",
+   "id": "FCH5v",
+   "url": "https://assets.fc-heidenheim.de/asset/503561443546/document_aloadg588l7s972boriecis97p/?content-disposition=inline",
    "rows": [
-    "rules:218"
+    "price basis"
    ],
    "kw": [
-    "Lichtbild",
-    "Ausweis|Personalausweis|Reisepass",
-    "Stand"
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
    ],
-   "type": "pdf"
+   "type": "pdf",
+   "cap": 8000
   },
   {
-   "id": "SC7",
-   "url": "https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/001_AGBS___ATGBS/ATGB_2026_final.pdf",
+   "id": "BOC2v",
+   "url": "https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1782991876/ATGB_VfL_Bochum_1848_Stand_01.07.2026_jidv8c.pdf",
    "rows": [
-    "rules:201"
+    "price basis"
    ],
    "kw": [
-    "Lichtbild",
-    "Ausweis|Personalausweis|Reisepass",
-    "Juni 2026"
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
    ],
-   "type": "pdf"
+   "type": "pdf",
+   "cap": 8000
   },
   {
-   "id": "BSC8",
+   "id": "FCM12v",
+   "url": "https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/240520_ATGB_FCM.pdf",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
+   ],
+   "type": "pdf",
+   "cap": 8000
+  },
+  {
+   "id": "LEV9v",
+   "url": "https://b04-ep-media-prod.azureedge.net/pickerdocuments/20260505_Bayer04-ATGB-DinA4-2026_882421_original.pdf",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
+   ],
+   "type": "pdf",
+   "cap": 8000
+  },
+  {
+   "id": "BMG9v",
+   "url": "https://www.borussia.de/atgb",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
+   ],
+   "type": "html",
+   "cap": 8000
+  },
+  {
+   "id": "BSC8v",
    "url": "https://content.herthabsc.com/site/binaries/content/assets/fans/herthabsc_atgb-2627.pdf",
    "rows": [
-    "rules:767"
+    "price basis"
    ],
    "kw": [
-    "Aufpreis|Upgrade|Aufwertung|aufgewertet",
-    "Clearing",
-    "10\\.3",
-    "Ermäßigungsberechtig"
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
    ],
-   "type": "pdf"
+   "type": "pdf",
+   "cap": 8000
   },
   {
-   "id": "BSC14",
-   "url": "https://www.herthabsc.com/de/tickets/faq-dauerkarte",
+   "id": "SVD4v",
+   "url": "https://www.sv98.de/shops/ticketinfos/atgbs/",
    "rows": [
-    "rules:767"
+    "price basis"
    ],
    "kw": [
-    "Clearing",
-    "weitergeb|Weitergabe",
-    "übertrag|umschreib",
-    "Aufwertung|Upgrade"
-   ],
-   "type": "html"
-  },
-  {
-   "id": "BVB3",
-   "url": "https://www.bvb.de/de/de/tickets/ticket-informationen/ticket-agb.html",
-   "rows": [
-    "rules:413"
-   ],
-   "kw": [
-    "Kind",
-    "Geburt",
-    "Erwachsen",
-    "Aufsicht",
-    "Doppel",
-    "Stand"
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "Vorverkaufsgebühr|Systemgebühr"
    ],
    "type": "html",
-   "links": "agb|pdf",
-   "follow": {
-    "re": "agb.*\\.pdf|\\.pdf.*agb|ticket.?agb",
-    "max": 3,
-    "kw": [
-     "Kind",
-     "Geburt",
-     "Erwachsen",
-     "Aufsicht",
-     "Doppel",
-     "Stand",
-     "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
-     "inkl\\.|inklusive|zzgl|zuzüglich",
-     "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
-     "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
-    ]
-   }
-  },
-  {
-   "id": "KOE8",
-   "url": "https://assets.ctfassets.net/nurz7nsnha04/4I3WbfdufqvGCZ2hVnMSXF/4c768032cfe7872ead24f0cccbad33d4/20251119_Stadionordnung_RheinEnergieSTADION.pdf",
-   "rows": [
-    "rules:347"
-   ],
-   "kw": [
-    "20\\d\\d",
-    "in Kraft|tritt|gültig|Gültig",
-    "November"
-   ],
-   "type": "pdf"
-  },
-  {
-   "id": "DSC9",
-   "url": "https://www.arminia.de/fileadmin/user_upload/downloads/DSC_Stadionordnung_5._August_2026.pdf",
-   "rows": [
-    "rules:563"
-   ],
-   "kw": [
-    "20\\d\\d",
-    "in Kraft|tritt|gültig|Gültig",
-    "August"
-   ],
-   "type": "pdf"
-  },
-  {
-   "id": "DSC19",
-   "url": "https://www.arminia.de/der-dsc/schueco-arena",
-   "rows": [
-    "rules:563"
-   ],
-   "kw": [
-    "Stadionordnung"
-   ],
-   "type": "html",
-   "links": "stadionordnung|pdf"
+   "cap": 8000
   }
  ]
 }

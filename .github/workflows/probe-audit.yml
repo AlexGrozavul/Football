@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 100
     env:
-      RUN_NUMBER_OF_THE_AUDIT: 2
+      RUN_NUMBER_OF_THE_AUDIT: 3
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
