@@ -13,7 +13,7 @@ further down.
 - **Seed:** `20261114`, Python `random.Random(seed)`. The script is printed
   in full at the end of this section, so the draw can be repeated.
 - **Rules, phases, demand: 60 rows** = 45 tagged `confirmed` + 15 tagged
-  `unverified` (the 11 `inferred` rows are not in the pool). 15 clubs are
+  `unverified` (the 10 `inferred` rows are not in the pool). 15 clubs are
   drawn for one `unverified` row each; every club with a `confirmed` row
   gets one, and the remaining confirmed rows go to clubs drawn at random
   that still have fewer than 3 rows. No club has more than 3 rows.

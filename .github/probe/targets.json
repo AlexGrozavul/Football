@@ -1,0 +1,1353 @@
+{
+ "run": 1,
+ "hosts": {
+  "content.herthabsc.com": {
+   "gate": "via:www.herthabsc.com"
+  },
+  "assets.ctfassets.net": {
+   "gate": "via:fc.de"
+  },
+  "res.cloudinary.com": {
+   "gate": "via:www.vfl-bochum.de"
+  },
+  "www.vfl-bochum.de": {},
+  "assets.fc-heidenheim.de": {
+   "gate": "via:www.fc-heidenheim.de"
+  },
+  "assets.vfb.de": {
+   "gate": "via:www.vfb.de"
+  },
+  "b04-ep-media-prod.azureedge.net": {
+   "gate": "via:www.bayer04.de"
+  },
+  "stores.eintracht.de": {
+   "gate": "self"
+  },
+  "shop.fck.de": {
+   "gate": "self"
+  },
+  "tickets.schalke04.de": {
+   "gate": "self"
+  },
+  "billetterie.rcstrasbourgalsace.fr": {
+   "gate": "self"
+  },
+  "ticketing.schalke04.de": {
+   "gate": "hold"
+  },
+  "de.wikipedia.org": {
+   "gate": "robots",
+   "why": "robots.txt only; Wikipedia was read under its terms in audit phases 1b to 1e"
+  }
+ },
+ "locale": {
+  "sscnapoli.it": "it-IT",
+  "inter.it": "en-GB",
+  "billetterie.rcstrasbourgalsace.fr": "fr-FR",
+  "calciomercato.com": "it-IT",
+  "goal.com": "it-IT"
+ },
+ "pages": [
+  {
+   "id": "WOB3",
+   "url": "https://www.vfl-wolfsburg.de/fans/fan-infos/infos-fuer-fans-mit-behinderungen/volkswagen-arena",
+   "rows": [
+    "rules:703"
+   ],
+   "kw": [
+    "Rollstuhl",
+    "Begleit",
+    "230",
+    "AOK"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "WOB6",
+   "url": "https://www.vfl-wolfsburg.de/allgemeines/agb/agb-woelfeclub",
+   "rows": [
+    "rules:698"
+   ],
+   "kw": [
+    "30[,.]00|30 ?€|30 Euro",
+    "Mitgliedsbeitrag|Beitrag",
+    "VfL-Karte|Mitgliedskarte",
+    "übertragbar|übertragen",
+    "Stand"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "BMG19",
+   "url": "https://www.borussia.de/news/bmgscp-bloecke-6-a-und-7-a-fuer-borussia-fans-freigeschaltet",
+   "rows": [
+    "rules:440"
+   ],
+   "kw": [
+    "6 ?A",
+    "7 ?A",
+    "19",
+    "Kontingent"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "BSC8",
+   "url": "https://content.herthabsc.com/site/binaries/content/assets/fans/herthabsc_atgb-2627.pdf",
+   "rows": [
+    "rules:767",
+    "price basis"
+   ],
+   "kw": [
+    "weitergeb|Weitergabe",
+    "übertrag",
+    "Umsetz|Umplatz|umgesetzt",
+    "Clearing",
+    "Geltungszeitraum",
+    "Ostkurve",
+    "kündig",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "LEV5",
+   "url": "https://www.bayer04.de/de-de/news/bundesliga/tickets-fuer-das-heimduell-gegen-den-vfb-stuttgart",
+   "rows": [
+    "rules:369"
+   ],
+   "kw": [
+    "Mitglied",
+    "F4",
+    "366",
+    "vier Jahre|4 Jahre"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "KOE1",
+   "url": "https://fc.de/service/stadionerlebnis/ticketing",
+   "rows": [
+    "rules:366"
+   ],
+   "kw": [
+    "DERTOUR",
+    "Schiedsrichter",
+    "FVM|Mittelrhein"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "KOE8",
+   "url": "https://assets.ctfassets.net/nurz7nsnha04/4I3WbfdufqvGCZ2hVnMSXF/4c768032cfe7872ead24f0cccbad33d4/20251119_Stadionordnung_RheinEnergieSTADION.pdf",
+   "rows": [
+    "rules:347"
+   ],
+   "kw": [
+    "S ?1 ",
+    "N ?11",
+    "N ?6",
+    "N ?15",
+    "Gästebereich|Gastbereich|Gästeblock",
+    "Provokation|provoz"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "MZ7",
+   "url": "https://www.mainz05.de/getmedia/f2802258-3536-4648-9f32-bc5c55b5f322/ATGB-1-FSV-Mainz-05_2026.pdf",
+   "rows": [
+    "rules:218",
+    "price basis"
+   ],
+   "kw": [
+    "Lichtbildausweis",
+    "Barcode|QR",
+    "Warenkorb",
+    "Stand",
+    "erworben",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "DSC5",
+   "url": "https://www.arminia.de/eintrittskarte/fragen-und-antworten-zur-dauerkarte",
+   "rows": [
+    "rules:570"
+   ],
+   "kw": [
+    "Warteliste",
+    "19\\. ?Juni",
+    "Mitglied",
+    "eine Dauerkarte|nur eine"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "DSC9",
+   "url": "https://www.arminia.de/fileadmin/user_upload/downloads/DSC_Stadionordnung_5._August_2026.pdf",
+   "rows": [
+    "rules:563"
+   ],
+   "kw": [
+    "Eintrittskarte",
+    "Berechtigung",
+    "vorzuzeigen|vorzeigen",
+    "Stadionverbot",
+    "Ausweis",
+    "August"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "K18",
+   "url": "https://www.heidelberg24.de/sport/fussball/news-fussball-derby-ksc-fck-tickets-karlsruhe-fans-zuschauer-verkauf-infos-92205346.html",
+   "rows": [
+    "demand:8"
+   ],
+   "kw": [
+    "vergriffen",
+    "ausverkauft",
+    "Verkaufstag",
+    "Tageskarten"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "K8",
+   "url": "https://www.ksc.de/profis/saison/spielberichte/show/article/default-7e1ffba8403b4123eca0f03d80e04740/",
+   "rows": [
+    "demand:10"
+   ],
+   "kw": [
+    "ausverkauft",
+    "Stunden",
+    "Vorverkauf",
+    "Zuschauer"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "BOC3",
+   "url": "https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1785137469/preisliste-einzeltickets-dina4_2026-27_ijihpj.pdf",
+   "rows": [
+    "rules:472",
+    "prices:695"
+   ],
+   "kw": [
+    "2,50",
+    "passive",
+    "H2",
+    "Umbau|Modernisierung",
+    "entfallen|entfällt",
+    "E1",
+    "Gäste",
+    "17,00",
+    "Kategorie A|Kat\\.? ?A",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "SC1",
+   "url": "https://www.scfreiburg.com/heimtickets/",
+   "rows": [
+    "rules:192",
+    "rules:205"
+   ],
+   "kw": [
+    "Reservix",
+    "Hotline",
+    "0761",
+    "Fax",
+    "per E-Mail",
+    "RVF",
+    "Kombi",
+    "fünf Stunden|5 Stunden",
+    "print@home",
+    "3:00|3 Uhr|Betriebsschluss"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "SC7",
+   "url": "https://www.scfreiburg.com/fileadmin/01_Content/02_PDFs/001_AGBS___ATGBS/ATGB_2026_final.pdf",
+   "rows": [
+    "rules:201"
+   ],
+   "kw": [
+    "Lichtbildausweis",
+    "Barcode|QR",
+    "Warenkorb",
+    "Namen",
+    "Stand"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "FCE1",
+   "url": "https://www.fcenergie.de/ticketpreise-2026-27.html",
+   "rows": [
+    "rules:727"
+   ],
+   "kw": [
+    "Schwerbehindert|Behinder|Beeinträchtig",
+    "schriftlich",
+    "Begleit",
+    "Antrag",
+    "2026"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "RCS8",
+   "url": "https://billetterie.rcstrasbourgalsace.fr/media/2026/08/cgv_rcsa_billetterie_et_hospitalites_ponctuelles_vf2026_2027.pdf",
+   "rows": [
+    "rules:270",
+    "rules:257"
+   ],
+   "kw": [
+    "pièce d.identité",
+    "photocopie|capture",
+    "palpation|fouille",
+    "sortie",
+    "mi-temps",
+    "ouverture des portes",
+    "nominatif",
+    "332-20",
+    "porteur",
+    "attribution"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "SGD6",
+   "url": "https://www.dynamo-dresden.de/aktuelles/news/tickets/vorverkauf-fuer-das-heimspiel-gegen-st-pauli/",
+   "rows": [
+    "rules:674"
+   ],
+   "kw": [
+    "Ticket-Freunde",
+    "PIN",
+    "Meine Freunde",
+    "Vorkaufsrecht"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FCU7",
+   "url": "https://www.fc-union-berlin.de/de/stadion/besucherinfos/information-gaestefans-LKWp",
+   "rows": [
+    "rules:785"
+   ],
+   "kw": [
+    "Block Z",
+    "Sektor 5",
+    "Wuhle",
+    "Tankstelle",
+    "Parkplatz",
+    "Kassenbereich"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FCU19",
+   "url": "https://www.fc-union-berlin.de/de/meldungen/endlich-wieder-alte-foersterei-union-misst-sich-zum-heimauftakt-mit-cagliari-calcio-tCyuks",
+   "rows": [
+    "rules:781"
+   ],
+   "kw": [
+    "Cagliari",
+    "freien Verkauf|Freiverkauf",
+    "Zeughaus",
+    "Tageskasse|Stadionkasse|Kassen"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "GF1",
+   "url": "https://www.sgf1903.de/das-kleeblatt/verein/faq",
+   "rows": [
+    "rules:180"
+   ],
+   "kw": [
+    "Aufnahmegebühr",
+    "Fanmitglied",
+    "Fördermitglied",
+    "anteilig"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "GF3",
+   "url": "https://www.sgf1903.de/news/abseits-des-rasens/tickets-fuer-die-naechsten-partien",
+   "rows": [
+    "rules:177"
+   ],
+   "kw": [
+    "Kiel",
+    "Sportheim",
+    "Franken ?Ticket"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "EBS8",
+   "url": "https://www.eintracht.com/tickets/sozialtickets",
+   "rows": [
+    "rules:640"
+   ],
+   "kw": [
+    "5 Euro|5,00|fünf Euro",
+    "Bürgergeld",
+    "Wohngeld",
+    "Sozialhilfe",
+    "anmeld|registrier"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "EBS11",
+   "url": "https://www.eintracht.com/fileadmin/Profis/Medien/Dateien/ATGB_Eintracht_Braunschweig_2627.pdf",
+   "rows": [
+    "rules:631"
+   ],
+   "kw": [
+    "2\\.500",
+    "Vertragsstrafe",
+    "fünf Jahre|5 Jahre",
+    "Stand",
+    "Mehrerlös|Gewinn"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "FCM12",
+   "url": "https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/240520_ATGB_FCM.pdf",
+   "rows": [
+    "rules:663",
+    "price basis"
+   ],
+   "kw": [
+    "Blöcke 1|Block 1",
+    "13, ?14",
+    "Gästebereich|Gastbereich",
+    "11\\.6",
+    "Stand",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "FCM1",
+   "url": "https://1.fc-magdeburg.de/ticketing/ticketinformationen/tagestickets",
+   "rows": [
+    "rules:653"
+   ],
+   "kw": [
+    "Schwerbehindert",
+    "Merkzeichen",
+    "Hotline",
+    "Aufwertung|Upgrade|Aufzahl",
+    "ermäßigt",
+    "2026/27|26/27"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FCM27",
+   "url": "https://1.fc-magdeburg.de/news/detail/niedersachsen-mit-neuem-coach",
+   "rows": [
+    "demand:39"
+   ],
+   "kw": [
+    "Tageskasse",
+    "Zuschauer",
+    "erwartet",
+    "Hannover"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "KIEL7",
+   "url": "https://www.holstein-kiel.de/news-tickets/ticketinfos-zum-heimspiel-gegen-den-fc-st-pauli-2/",
+   "rows": [
+    "rules:821"
+   ],
+   "kw": [
+    "pro Mitglied",
+    "1 Ticket|ein Ticket|eine Karte",
+    "Kapazität",
+    "Nachfrage",
+    "maximal"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "N7",
+   "url": "https://fcn.de/tickets/heimspiele/",
+   "rows": [
+    "rules:19",
+    "prices:26"
+   ],
+   "kw": [
+    "10 ?%|zehn Prozent",
+    "Kleinanzeigen",
+    "viagogo",
+    "Ticketbörse",
+    "54,50",
+    "Haupttribüne",
+    "Kat",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "N7b",
+   "url": "https://fcn.de/fileadmin/fcn/red/saison_26/Downloads/pdf/Preislisten_26-27.pdf",
+   "rows": [
+    "rules:19",
+    "prices:26"
+   ],
+   "kw": [
+    "10 ?%|zehn Prozent",
+    "Kleinanzeigen",
+    "viagogo",
+    "Ticketbörse",
+    "54,50",
+    "Haupttribüne",
+    "Kat",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "OSN4",
+   "url": "https://www.vfl.de/tickets/gemeinwohltickets",
+   "rows": [
+    "rules:595"
+   ],
+   "kw": [
+    "Gemeinwohl",
+    "Formular",
+    "2021",
+    "Anzahl|Kontingent",
+    "Garantie|Anspruch|Zusage"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "OSN1",
+   "url": "https://www.vfl.de/tickets/",
+   "rows": [
+    "rules:597"
+   ],
+   "kw": [
+    "Auswärts",
+    "Hardcover|Hardticket",
+    "drei bis vier Wochen|3-4 Wochen|Wochen",
+    "Fanbeauftragt",
+    "Kontingent"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "SCP2",
+   "url": "https://www.scp07.de/Tickets-kaufen/",
+   "rows": [
+    "rules:495"
+   ],
+   "kw": [
+    "Verlosung|Losverfahren",
+    "zwei Tickets|2 Tickets|zwei Karten",
+    "Familienmitglied",
+    "vier"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FCH5",
+   "url": "https://assets.fc-heidenheim.de/asset/503561443546/document_aloadg588l7s972boriecis97p/?content-disposition=inline",
+   "rows": [
+    "rules:294",
+    "price basis"
+   ],
+   "kw": [
+    "Kind",
+    "Geburt",
+    "Erwachsen",
+    "Aufsicht",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "SN1",
+   "url": "https://sscnapoli.it/campagna-abbonamenti-2026-27/",
+   "rows": [
+    "rules:138",
+    "prices:216"
+   ],
+   "kw": [
+    "prelazione",
+    "Champions",
+    "Coppa Italia",
+    "sconto",
+    "2026",
+    "Nisida",
+    "900",
+    "Under 30",
+    "Nuovo Abbonato",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "FCS18",
+   "url": "https://schalke04.de/mitglieder-fans/fanbelange/infos-fuer-gaestefans/",
+   "rows": [
+    "rules:538"
+   ],
+   "kw": [
+    "Fahnen",
+    "zwei Meter|2 Meter|2 ?m\\b",
+    "Megafon|Megaphon",
+    "Trommel",
+    "Schlauchschal",
+    "1,6",
+    "Promille"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FCS15",
+   "url": "https://schalke04.de/veltins-arena/tickets/ticket-infos/",
+   "rows": [
+    "rules:545"
+   ],
+   "kw": [
+    "Ticket-News|Ticketnews",
+    "Familienblock",
+    "Ticketbörse|Zweitmarkt",
+    "bekannt"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FCS1",
+   "url": "https://tickets.schalke04.de/agb",
+   "rows": [
+    "rules:543",
+    "price basis"
+   ],
+   "kw": [
+    "Abonnement|Abo\\b",
+    "verlänger",
+    "Kündigung|gekündigt",
+    "Chipkarte|Knappenkarte",
+    "aufgeladen",
+    "Stand",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "HAN13",
+   "url": "https://www.hannover96.de/fans-spieltag/barrierefreies-stadion",
+   "rows": [
+    "rules:619"
+   ],
+   "kw": [
+    "Rollstuhl",
+    "O1|O8",
+    "13",
+    "Blind|sehbehind",
+    "Gehörlos|hörgeschädigt",
+    "Begleit"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "HAN2",
+   "url": "https://www.hannover96.de/tickets/tageskarten",
+   "rows": [
+    "rules:605"
+   ],
+   "kw": [
+    "digital",
+    "Wallet",
+    "PDF",
+    "Fanshop",
+    "Eingang"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "F11",
+   "url": "https://stores.eintracht.de/rechtliches/atgb-maenner/",
+   "rows": [
+    "rules:106",
+    "rules:109"
+   ],
+   "kw": [
+    "Lichtbildausweis",
+    "hinterlegt",
+    "weiterleit|Weitergabe",
+    "Fanclub",
+    "Stand",
+    "eBay",
+    "Kleinanzeigen",
+    "viagogo",
+    "Gästefans|Gastfans|Anhänger",
+    "gewerblich"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "BVB4",
+   "url": "https://www.bvb.de/de/de/tickets.html",
+   "rows": [
+    "demand:28"
+   ],
+   "kw": [
+    "ausverkauft",
+    "nahezu|fast alle",
+    "frühzeitig"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "BVB15",
+   "url": "https://www.bvb.de/de/de/aktuelles/news/news.html/2026/10/23/Schneller-ins-Stadion-NFC-Ticketing-jetzt-auch-fuer-Android.html",
+   "rows": [
+    "rules:409"
+   ],
+   "kw": [
+    "NFC",
+    "Apple Wallet",
+    "Google Wallet",
+    "Frankfurt",
+    "Android",
+    "kontaktlos"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "BVB3",
+   "url": "https://www.bvb.de/de/de/tickets/ticket-informationen/ticket-agb.html",
+   "rows": [
+    "rules:413",
+    "price basis"
+   ],
+   "kw": [
+    "Kind",
+    "Geburt",
+    "Erwachsen",
+    "Aufsicht",
+    "Doppel",
+    "Stand",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "V8",
+   "url": "https://service.vfb.de/categories.html?hl=de&c=2005_18962_18963_",
+   "rows": [
+    "rules:76"
+   ],
+   "kw": [
+    "Preis",
+    "Tageskarte",
+    "Spiel zu Spiel|variier|unterschiedlich",
+    "Sitzplatzauswahl|Platzauswahl"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "V2",
+   "url": "https://www.vfb.de/de/vfb/aktuell/neues/fans/2026/ticket-update-zur-uefa-champions-league-2627/",
+   "rows": [
+    "rules:84"
+   ],
+   "kw": [
+    "Ticket-Update|Ticketupdate",
+    "Eventkalender|Kalender",
+    "E-Mail|Newsletter",
+    "Vorverkauf"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "SVD31",
+   "url": "https://wirlilien.sv98.de/wissen/was-unternimmt-der-sv98-gegen-schwarzmarkthandel-von-eintrittskarten",
+   "rows": [
+    "rules:320"
+   ],
+   "kw": [
+    "Software",
+    "Schwarzmarkt",
+    "Vertragsstrafe",
+    "300",
+    "\\bVB\\b|Verhandlungsbasis"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "SVD13",
+   "url": "https://www.sv98.de/ab-mittwoch-mitglieder-vvk-fuers-erste-heimspiel-gegen-kiel/",
+   "rows": [
+    "rules:309"
+   ],
+   "kw": [
+    "vier Tickets|4 Tickets|vier Karten|maximal|bis zu vier",
+    "Mitglieder-VVK|Mitglied"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "SVD7",
+   "url": "https://www.sv98.de/stadion/stadionbesuch/stadionordnung/",
+   "rows": [
+    "rules:332"
+   ],
+   "kw": [
+    "unaufgefordert",
+    "vorzuzeigen|vorzeigen",
+    "Durchsuch|durchsuch",
+    "Spürhund|Pyrotechnik",
+    "anderen Platz|andere Plätze"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "HSV18",
+   "url": "https://www.hsv.de/tickets/Dauerkarten/auswaertsdauerkarte",
+   "rows": [
+    "rules:809"
+   ],
+   "kw": [
+    "Auswärtsdauerkarte",
+    "HSV-ID",
+    "17",
+    "personengebunden",
+    "Anwesenheit|Teilnahme",
+    "freigeschaltet"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "I2",
+   "url": "https://inter.it/en/news/tickets-inter-milan-derby-serie-a-2025-2026",
+   "rows": [
+    "phases:16",
+    "rules:40"
+   ],
+   "kw": [
+    "INTERISTA",
+    "27 October|October 27|27 ottobre",
+    "12:00|12 ?pm|noon",
+    "Siamo Noi",
+    "tickets per|maximum|max",
+    "authori[sz]ed|official",
+    "resale|secondary|viagogo",
+    "nominative|name",
+    "transfer|change"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "E12",
+   "url": "https://de.wikipedia.org/wiki/Ursapharm-Arena_an_der_Kaiserlinde",
+   "rows": [
+    "rules:128"
+   ],
+   "kw": [
+    "10\\.000",
+    "3\\.?410",
+    "6\\.?320",
+    "15\\.500|15\\.000",
+    "Ausnahmegenehmigung|DFL",
+    "Nordtribüne",
+    "1\\.500"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FK1",
+   "url": "https://shop.fck.de/Informationen/ATGB/",
+   "rows": [
+    "rules:162"
+   ],
+   "kw": [
+    "Ausweis|Identitätsnachweis|Identifikation",
+    "Ermäßigung",
+    "Durchsuch|Kontrolle",
+    "verlassen",
+    "Stand"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FK5",
+   "url": "https://fck.de/blog/faninfos-fckboc2627/",
+   "rows": [
+    "rules:150"
+   ],
+   "kw": [
+    "print@home",
+    "Wallet",
+    "App",
+    "Westkurve",
+    "1er|2er"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "FCA11",
+   "url": "https://www.fcaugsburg.de/media/download/123603",
+   "rows": [
+    "rules:247"
+   ],
+   "kw": [
+    "Schoßkind|Schosskind",
+    "fünf|5 Jahre",
+    "Tageskasse",
+    "Clearing",
+    "14 Jahre|unter 14",
+    "Stand"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "FCA3",
+   "url": "https://www.fcaugsburg.de/article/ticket-vorverkauf-heimspiele-gegen-schalke-und-leverkusen-23287",
+   "rows": [
+    "rules:237"
+   ],
+   "kw": [
+    "vier Tickets|4 Tickets|vier Karten|bis zu vier|maximal",
+    "Mitglied",
+    "Bestandsfans"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "K2",
+   "url": "https://www.ksc.de/fileadmin/Ticketing/Preislisten_Tageskarten_26-27_KAT-A.pdf",
+   "rows": [
+    "prices:82"
+   ],
+   "kw": [
+    "70,50",
+    "W2",
+    "W3",
+    "TAGESKARTEN",
+    "26 ?/ ?27",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "FCB-source",
+   "url": "https://fcbayern.com/de/tickets/info/preise-und-ermaessigungen",
+   "rows": [
+    "prices:8"
+   ],
+   "kw": [
+    "DFB-Pokal",
+    "\\b40\\b",
+    "Kategorie 4|Kat\\. ?4",
+    "2026|26/27",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "BVB1",
+   "url": "https://www.bvb.de/de/de/tickets/ticket-informationen/ticket-preise.html",
+   "rows": [
+    "prices:641"
+   ],
+   "kw": [
+    "120,40",
+    "Stehplatz",
+    "17 Spiele",
+    "Behinder",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "MZ2",
+   "url": "https://www.mainz05.de/getmedia/bb098904-a230-48bf-bf00-fbe4a1918c2d/Tageskarten-Preisubersicht-2026_27_A4_1.pdf",
+   "rows": [
+    "prices:277"
+   ],
+   "kw": [
+    "37,00",
+    "Preisliste 3",
+    "Kategorie 2|Kat\\.? ?2",
+    "Ermäßigt",
+    "2026/2027",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "V14",
+   "url": "https://assets.vfb.de/webasset/src?src=/Contentseiten/Tickets/Dauerkarte_Preise_26_27.pdf",
+   "rows": [
+    "prices:153"
+   ],
+   "kw": [
+    "395",
+    "Kat\\.? ?6|Kategorie 6",
+    "Kurve",
+    "ermäßigt",
+    "26/27",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "HAN5",
+   "url": "https://www.hannover96.de/fileadmin/user_upload/Preisuebersicht_2627.pdf",
+   "rows": [
+    "prices:754"
+   ],
+   "kw": [
+    "15,00",
+    "KIND|Kind",
+    "Kategorie 3|Kat\\.? ?3",
+    "Stand|2026|26/27",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "SVD3",
+   "url": "https://www.sv98.de/shops/ticketinfos/dauerkarten/",
+   "rows": [
+    "prices:539"
+   ],
+   "kw": [
+    "270",
+    "Gegengerade",
+    "G1",
+    "Dauerkartenpreise",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "FCU1",
+   "url": "https://www.fc-union-berlin.de/de/stadion/besucherinfos/ticketpreise-2pVY",
+   "rows": [
+    "prices:968"
+   ],
+   "kw": [
+    "19,00|19 ?€|19 Euro",
+    "Kategorie 3|Kat\\.? ?3",
+    "Kind",
+    "2026/27|26/27",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "FCM9",
+   "url": "https://1.fc-magdeburg.de/fileadmin/user_upload/Website/Tickets/Preisliste_Dauerkarten_2026-27.pdf",
+   "rows": [
+    "prices:897"
+   ],
+   "kw": [
+    "300",
+    "Block 8",
+    "Jugend",
+    "2026",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "FCA1",
+   "url": "https://www.fcaugsburg.de/page/ticket-heimspiele-15",
+   "rows": [
+    "prices:411"
+   ],
+   "kw": [
+    "sichteingeschränkt",
+    "Teen",
+    "Topf B",
+    "2026/27",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "FCS2",
+   "url": "https://ticketing.schalke04.de/de/pages/allgemein/preise-kategorien",
+   "rows": [
+    "prices:710"
+   ],
+   "kw": [
+    "58",
+    "Kategorie 1|PK ?1|Preiskategorie 1",
+    "Vollzahler",
+    "2026/2027",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "FCH4",
+   "url": "https://www.fc-heidenheim.de/tickets-overview/dauerkarten",
+   "rows": [
+    "prices:512"
+   ],
+   "kw": [
+    "180",
+    "Stehplatz",
+    "Dauerkarte",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "BSC14",
+   "url": "https://www.herthabsc.com/de/tickets/faq-dauerkarte",
+   "rows": [
+    "prices:959"
+   ],
+   "kw": [
+    "210",
+    "Ostkurve",
+    "Dauerkarte",
+    "2026/27",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "BMG12",
+   "url": "https://www.borussia.de/news/mitglieder-ticketvorverkauf-fuer-heimspiele-startet-am-25-juli",
+   "rows": [
+    "prices:642"
+   ],
+   "kw": [
+    "\\b17\\b",
+    "Stehplatz",
+    "Preise",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "LEV10",
+   "url": "https://b04-ep-media-prod.azureedge.net/pickerdocuments/Preisgrafik_TK_BL_2627_B_20260430_882357_original.pdf",
+   "rows": [
+    "prices:611"
+   ],
+   "kw": [
+    "\\b14\\b",
+    "VI\\b|Kat",
+    "Ermäßigt",
+    "Preise \\(B\\)",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "E1",
+   "url": "https://sv07elversberg.de/ursapharm-arena/tickets/",
+   "rows": [
+    "prices:174"
+   ],
+   "kw": [
+    "\\b84\\b",
+    "Stehplatz",
+    "Kind",
+    "Dauerkarten",
+    "2026/2027",
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html",
+   "links": "agb|atgb|bedingung|condizioni|termini|terms|preis|prezzi|price|geb(ü|ue)hr"
+  },
+  {
+   "id": "FCM2",
+   "url": "https://1.fc-magdeburg.de/ticketing/ticketinformationen/faq-atg-tagestickets",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "LEV9",
+   "url": "https://b04-ep-media-prod.azureedge.net/pickerdocuments/20260505_Bayer04-ATGB-DinA4-2026_882421_original.pdf",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  },
+  {
+   "id": "BMG9",
+   "url": "https://www.borussia.de/atgb",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "K13",
+   "url": "https://www.ksc.de/ticketing/tages-dauerkarten/dauerkarten/atgb",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "SVD4",
+   "url": "https://www.sv98.de/shops/ticketinfos/atgbs/",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "html"
+  },
+  {
+   "id": "BOC2",
+   "url": "https://res.cloudinary.com/vfl-bochum-1848/image/upload/v1782991876/ATGB_VfL_Bochum_1848_Stand_01.07.2026_jidv8c.pdf",
+   "rows": [
+    "price basis"
+   ],
+   "kw": [
+    "MwSt|Mehrwertsteuer|Umsatzsteuer|\\bUSt\\b",
+    "inkl\\.|inklusive|zzgl|zuzüglich",
+    "Gebühr|Versandkosten|Servicepauschale|Systemgebühr",
+    "\\bIVA\\b|commission|prevendita|\\bTVA\\b|\\bTTC\\b|frais"
+   ],
+   "type": "pdf"
+  }
+ ]
+}
