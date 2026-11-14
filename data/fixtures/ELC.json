@@ -1032,6 +1032,31 @@
    "winner": "AWAY_TEAM"
   },
   {
+   "id": 561803,
+   "utcDate": "2026-09-01T18:45:00Z",
+   "status": "FINISHED",
+   "matchday": 4,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 332,
+    "name": "Birmingham City FC",
+    "shortName": "Birmingham",
+    "tla": "BIR",
+    "crest": "https://crests.football-data.org/332.png"
+   },
+   "away": {
+    "id": 340,
+    "name": "Southampton FC",
+    "shortName": "Southampton",
+    "tla": "SOU",
+    "crest": "https://crests.football-data.org/340.png"
+   },
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
+  },
+  {
    "id": 561804,
    "utcDate": "2026-09-01T18:45:00Z",
    "status": "FINISHED",
@@ -1080,31 +1105,6 @@
    "homeGoals": 1,
    "awayGoals": 0,
    "winner": "HOME_TEAM"
-  },
-  {
-   "id": 561803,
-   "utcDate": "2026-09-01T19:00:00Z",
-   "status": "FINISHED",
-   "matchday": 4,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 332,
-    "name": "Birmingham City FC",
-    "shortName": "Birmingham",
-    "tla": "BIR",
-    "crest": "https://crests.football-data.org/332.png"
-   },
-   "away": {
-    "id": 340,
-    "name": "Southampton FC",
-    "shortName": "Southampton",
-    "tla": "SOU",
-    "crest": "https://crests.football-data.org/340.png"
-   },
-   "homeGoals": 1,
-   "awayGoals": 1,
-   "winner": "DRAW"
   },
   {
    "id": 561806,
