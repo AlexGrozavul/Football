@@ -1491,6 +1491,114 @@ def check_rules_links():
     return problems, notices
 
 
+# ---- aging documents (added 14 Nov 2026, ticket audit phase 2b)
+#
+# A row tagged `confirmed` whose confirmation rests on a DATED document
+# (a "Stand" date, or a "gilt ab" / "valid from" date of a versioned
+# document such as stadium rules or ticket terms) is warned about once
+# that document is more than 12 months old on the day the check runs.
+# The repo has no column for a document date, so it is read from the
+# text where it is already recorded: the `published` field of each
+# source record the row cites, and the row's own note. Only explicit
+# markers count ("Stand: Juni 2025", "Stand 01.06.2025", "gilt ab dem
+# 19.11.2025", "valid from 19 Nov 2025"); a read date ("read 6 Oct
+# 2026") never does. A month-level Stand counts from the month's last
+# day, so it never warns early. A row citing several sources is judged
+# by its NEWEST dated source, including a source whose `published`
+# field simply starts with a date (a dated notice), because one fresh
+# dated page is enough to keep the row current. Warnings only: nothing
+# is rejected and the exit code does not change.
+_DE_MONTHS = {"januar": 1, "jänner": 1, "februar": 2, "märz": 3,
+              "maerz": 3, "april": 4, "mai": 5, "juni": 6, "juli": 7,
+              "august": 8, "september": 9, "oktober": 10,
+              "november": 11, "dezember": 12}
+_EN_MONTHS = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+              "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11,
+              "dec": 12}
+_MONTH_RX = "|".join(sorted(list(_DE_MONTHS)
+                            + [m + "[a-z]*" for m in _EN_MONTHS],
+                            key=len, reverse=True))
+_DATE_RX = (r"(?:(\d{1,2})\.(\d{1,2})\.(\d{4})"
+            r"|(\d{1,2})\.?\s+(" + _MONTH_RX + r")\.?\s+(\d{4})"
+            r"|(" + _MONTH_RX + r")\s+(\d{4}))")
+_MARKED_RX = re.compile(r"\b(?:Stand|gilt ab(?: dem)?|g[üu]ltig ab|"
+                        r"valid from)\s*:?\s*" + _DATE_RX, re.I)
+_LEADING_RX = re.compile(r"\s*" + _DATE_RX + r"\b", re.I)
+
+
+def _month_number(word):
+    word = word.lower().rstrip(".")
+    return _DE_MONTHS.get(word) or _EN_MONTHS.get(word[:3])
+
+
+def _date_from_match(m):
+    """The date a _DATE_RX match names, or None if it is not a date."""
+    try:
+        if m.group(1):
+            return datetime.date(int(m.group(3)), int(m.group(2)),
+                                 int(m.group(1)))
+        if m.group(4):
+            return datetime.date(int(m.group(6)), _month_number(m.group(5)),
+                                 int(m.group(4)))
+        year, month = int(m.group(8)), _month_number(m.group(7))
+        first_of_next = datetime.date(year + (month == 12), month % 12 + 1, 1)
+        return first_of_next - datetime.timedelta(days=1)
+    except (TypeError, ValueError):
+        return None
+
+
+def document_dates(text):
+    """Every (date, wording) a Stand / valid-from marker in text names."""
+    out = []
+    for m in _MARKED_RX.finditer(text or ""):
+        when = _date_from_match(m)
+        if when:
+            out.append((when, m.group(0).strip()))
+    return out
+
+
+def leading_date(text):
+    """The (date, wording) a `published` field starts with, if any."""
+    m = _LEADING_RX.match(text or "")
+    when = _date_from_match(m) if m else None
+    return [(when, m.group(0).strip())] if when else []
+
+
+def twelve_months_before(today):
+    try:
+        return today.replace(year=today.year - 1)
+    except ValueError:          # 29 February
+        return today.replace(year=today.year - 1, day=28)
+
+
+def aging_documents(by_file, sources, today):
+    """(path, line, club, date, wording) for every confirmed row whose
+    newest dated document is more than 12 months old on `today`."""
+    cutoff = twelve_months_before(today)
+    found = []
+    for path, rows in by_file.items():
+        if path == SOURCES_FILE:
+            continue
+        for row in rows:
+            if row.get("confidence") != "confirmed":
+                continue
+            marked = document_dates(row.get("note", ""))
+            other = []
+            for ref in re.split(r"[;,\s]+", row.get("sourceRefs") or ""):
+                record = (sources or {}).get(ref)
+                if record:
+                    marked += document_dates(record.get("published", ""))
+                    other += leading_date(record.get("published", ""))
+            if not marked:
+                continue
+            when, wording = max(marked + other)
+            if when < cutoff:
+                found.append((path, row.get("_line"),
+                              row.get("club") or row.get("country", ""),
+                              when, wording))
+    return found
+
+
 def main():
     full = "--full" in sys.argv
     today = datetime.date.today()
@@ -1508,6 +1616,16 @@ def main():
         all_notices.extend(notices)
         if path == SOURCES_FILE:
             sources = {r["sourceId"]: r for r in rows}
+
+    # ---- confirmed rows resting on a dated document over 12 months old
+    aging = aging_documents(by_file, sources, today)
+    for path, line, club, when, wording in aging:
+        all_notices.append(
+            f"WARNING, aging document: {path} line {line}: {club} is "
+            f"tagged confirmed, and the newest dated document it rests on "
+            f"is dated {when.isoformat()} ('{wording}'), more than 12 "
+            f"months before {today.isoformat()}. Re-read it or lower the "
+            f"tag by hand. Reported, not rejected.")
 
     # ---- cross-file: a row for a club with no ticket row
     known_clubs = {(r["clubQid"], r.get("team", "")) for r in by_file[TICKETS_FILE]}

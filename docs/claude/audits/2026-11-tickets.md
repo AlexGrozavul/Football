@@ -207,8 +207,10 @@ json.dump(sample, open(sys.argv[1], 'w'), ensure_ascii=False, indent=0)
 
 ## 3. Results (written after the pages were read, 14 November 2026)
 
-**No row was wrong, stale or tagged too strongly. 70 of the 80 rows match
-their page; 10 could not be verified, and all 10 belong to group R. No
+**No row was wrong, stale or tagged too strongly. 69 of the 80 rows match
+their page; 11 could not be verified, and all 11 belong to group R
+(recounted in phase 2b, 14 Nov 2026: `demand:8` rested on heidelberg24.de,
+a closed host, and is now "cannot verify (host closed)"). No
 data row was changed.** Three probe runs were used out of eight; the page
 extracts are the comments on PR #216.
 
@@ -229,9 +231,9 @@ taken from the row's note.
 | stratum | rows | correct | wrong | stale | tag too strong | tag too weak | cannot verify | errors | verdict |
 |---|---|---|---|---|---|---|---|---|---|
 | rules, phases, demand tagged `confirmed` | 45 | 40 | 0 | 0 | 0 | 0 | 5 | 0 of 45 (0 %) | **pass** |
-| rules, demand tagged `unverified` | 15 | 14 | 0 | 0 | 0 | 0 | 1 | 0 of 15 (0 %) | **pass** |
+| rules, demand tagged `unverified` | 15 | 13 | 0 | 0 | 0 | 0 | 2 | 0 of 15 (0 %) | **pass** |
 | prices | 20 | 16 | 0 | 0 | 0 | 0 | 4 | 0 of 20 (0 %) | **pass** |
-| group R (rules 24 + prices 9) | 33 | 23 | 0 | 0 | 0 | 0 | 10 | 0 of 33 (0 %) | **pass, with the reservation below** |
+| group R (rules 24 + prices 9) | 33 | 22 | 0 | 0 | 0 | 0 | 11 | 0 of 33 (0 %) | **pass, with the reservation below** |
 | group Q, PRs #172 to #189 (rules 28 + prices 9) | 37 | 37 | 0 | 0 | 0 | 0 | 0 | 0 of 37 (0 %) | **pass** |
 | group Q+, after PR #189 (rules 8 + prices 2) | 10 | 10 | 0 | 0 | 0 | 0 | 0 | 0 of 10 (0 %) | **pass** |
 
@@ -242,12 +244,12 @@ per cent for the 15 unverified rows and about 14 per cent for the 20
 prices.
 
 **Reservation on group R.** The pass rule counts errors only, and group R
-has none. But 10 of its 33 rows (30 per cent) could not be opened at all,
+has none. But 11 of its 33 rows (33 per cent) could not be verified,
 against none of 47 in the queue groups: R holds the clubs researched
 first (Inter, Nürnberg, Bayern, KSC, VfB), whose rows rest on hosts that
 are closed to this reader, on source records with a cut-off address, or
 on ksc.de addresses that no longer exist. For R the result is "nothing
-wrong found in the 23 rows that could be read", not "checked".
+wrong found in the 22 rows that could be read", not "checked".
 
 **No stratum reached 2 errors, so no full check is triggered.** For
 reference, a full check would cover: 612 confirmed rows (rules 543,
@@ -272,7 +274,7 @@ of the source record (see "Shops" in the method).
 | `rules:218` | R | 1. FSV Mainz 05 | confirmed | **correct** | MZ7 | "15. Mai 2026" printed in the PDF; the text says "geeignetes amtliches Identifikationsdokument (z.B. Personalausweis oder Reisepass)", which the row calls a photo ID |
 | `rules:570` | Q | Arminia Bielefeld | confirmed | **correct** | DSC5 | waiting list, membership needed, "am 19.06. geschlossen", reopened at the start of 26/27 |
 | `rules:563` | Q | Arminia Bielefeld | confirmed | **correct** | DSC9, DSC19 | "tritt am 5. August 2026 in Kraft"; linked from the SchücoArena page |
-| `demand:8` | R | Karlsruher SC | unverified | **correct** | K18 | "Bereits nach dem ersten Verkaufstag sind alle Tickets ... vergriffen" (article, Stand 29.04.2023); one press source, unverified fits |
+| `demand:8` | R | Karlsruher SC | unverified | **cannot verify (host closed)** | K18 | heidelberg24.de is a closed host (its robots.txt names Claude crawlers, recorded in the founding pass) and reserves text and data mining under § 44b UrhG; the phase 2a reading ("correct") is withdrawn, phase 2b, 14 Nov 2026 |
 | `demand:10` | R | Karlsruher SC | confirmed | **cannot verify** | K8, K22 | the match-report address now shows a general news page (ksc.de was relaunched); the second source meinka.de answered robots.txt with HTTP 508 and showed no notice, so it was not read |
 | `rules:472` | Q | VfL Bochum | confirmed | **correct** | BOC3 | 2,50 euro for passive members, not block H2; categories may change with the stadium works; list headed 2026|27 |
 | `rules:192` | R | SC Freiburg | confirmed | **correct** | SC1 | online shop, Reservix hotline 0761-888 499 96, no orders by e-mail, fax or letter; page shows 2026/27 |
@@ -433,6 +435,12 @@ Darmstadt in a run of their own).
    under § 44b UrhG; its robots.txt allows Claude-User. One article was
    read for a private fact check and only its key-word paragraphs were
    posted, not the first 3000 characters.
+   **Decided 14 Nov 2026 (phase 2b), overturned:** heidelberg24.de is a
+   closed host (its robots.txt names Claude crawlers) and a written
+   text-and-data-mining reservation now counts as a stop
+   (`docs/claude/conventions.md`). The one row that rested on it,
+   `demand:8`, is "cannot verify (host closed)"; totals recounted to 69
+   correct and 11 cannot verify. The data row (source K18) is unchanged.
 5. **ticketing.schalke04.de** has no start page that is not the shop, so
    its notice links were taken from the price page itself, the notice
    was read, then the page.
