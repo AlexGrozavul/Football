@@ -286,5 +286,73 @@ def main():
     print(f"{len(files)} comment file(s); requests {REQUESTS}")
 
 
+def fetch_old(lang, title, before):
+    """The newest revision at or before a timestamp (same rules as fetch)."""
+    global REQUESTS
+    q = urllib.parse.urlencode({
+        "action": "query", "prop": "revisions", "rvprop": "ids|timestamp|content",
+        "rvslots": "main", "redirects": "1", "titles": title, "format": "json",
+        "formatversion": "2", "maxlag": "5", "rvlimit": "1", "rvstart": before, "rvdir": "older"})
+    url = f"https://{lang}.wikipedia.org/w/api.php?{q}"
+    for attempt in range(8):
+        REQUESTS += 1
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=40) as r:
+                d = json.load(r)
+                retry = r.headers.get("Retry-After")
+        except Exception as e:
+            return {"error": f"{type(e).__name__}: {e}"}
+        if "error" in d:
+            if d["error"].get("code") == "maxlag":
+                time.sleep(min(int(retry or 5), 120) + 1)
+                continue
+            return {"error": json.dumps(d["error"])[:200]}
+        pg = (d.get("query", {}).get("pages") or [{}])[0]
+        rev = (pg.get("revisions") or [{}])[0]
+        return {"revid": rev.get("revid"), "ts": rev.get("timestamp"),
+                "text": rev.get("slots", {}).get("main", {}).get("content", "")}
+    return {"error": "still lagged after 8 tries"}
+
+
+def extras():
+    out = []
+    LIST = "List of association football club rivalries in Europe"
+    cur = fetch("en", LIST); time.sleep(1)
+    old = fetch_old("en", LIST, "2026-10-03T23:59:59Z"); time.sleep(1)
+    for label, pg in (("current", cur), ("as of 2026-10-03", old)):
+        if "error" in pg:
+            out.append(f"### list {label}: ERROR {pg['error']}"); continue
+        out.append(f"### en:{LIST} {label} (rev {pg['revid']}, {pg['ts']})")
+        for line in pg["text"].split("\n"):
+            n = norm(line)
+            if "ticino" in n or "derby of love" in n or "klassik" in n:
+                out.append("  RAW: " + re.sub(r"<ref.*?(</ref>|/>)", "[ref]", line, flags=re.S)[:420])
+    ksc = fetch("de", "Karlsruher SC"); time.sleep(1)
+    if "error" in ksc:
+        out.append(f"### de:Karlsruher SC: ERROR {ksc['error']}")
+    else:
+        body = clean(ksc["text"], refs=False)
+        bn = norm(body)
+        pos = [m.start() for m in re.finditer(r"sudwest|kaiserslautern", bn)]
+        out.append(f"### de:Karlsruher SC (rev {ksc['revid']}, {ksc['ts']}): 'suedwest' {bn.count('sudwest')}, 'kaiserslautern' {bn.count('kaiserslautern')}, 'derby' {bn.count('derby')}")
+        last = -1000
+        shown = 0
+        for p_ in [m.start() for m in re.finditer(r"sudwest", bn)] + [m.start() for m in re.finditer(r"derby", bn)]:
+            if abs(p_ - last) < 200 or shown >= 10:
+                continue
+            last = p_; shown += 1
+            out.append("  ..." + body[max(0, p_ - 230):p_ + 230] + "...")
+    for label, pg in (("current", fetch("en", "South London derby")), ("as of 2026-10-03", fetch_old("en", "South London derby", "2026-10-03T23:59:59Z"))):
+        time.sleep(1)
+        if "error" in pg:
+            out.append(f"### South London derby {label}: ERROR {pg['error']}"); continue
+        lead = clean(re.split(r"\n==[^=]", pg["text"], maxsplit=1)[0], refs=False)
+        out.append(f"### en:South London derby {label} (rev {pg['revid']}, {pg['ts']})\n  lead: {lead[:420]}")
+    out.append(f"requests sent: {REQUESTS}")
+    with open("/tmp/probe-comment-1.md", "w", encoding="utf-8") as f:
+        f.write("Derby audit probe, run 2 (second look at three rows)\n\n```\n" + "\n".join(out) + "\n```\n")
+    print("extras written; requests", REQUESTS)
+
+
 if __name__ == "__main__":
-    main()
+    extras() if len(sys.argv) > 2 and sys.argv[2] == "extras" else main()
