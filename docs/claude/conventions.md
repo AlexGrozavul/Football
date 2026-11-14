@@ -2802,3 +2802,54 @@ Written 2026-10-26 after the DFB-Pokal pass (PR #158); reuse it for the other co
 - **League variant of the checklist**: organiser and its relation to the national association; field size and how it was fixed; points and tie-break order; promotion and relegation places and any play-off; European places by final position (organiser or UEFA only; they are next season's competitions, so last season's UEFA regulations do not answer it); month-level calendar with the winter break; kick-off windows and lead time; broadcasters; league-level ticket rules; history from two independent sources.
 
 ---
+
+## CI guard
+
+Added 2026-11-14. The build workflows commit with the Actions token
+(`GITHUB_TOKEN`), and **a push made with that token starts no other
+workflow**: "Test the page" and the check workflows never ran on a bot
+commit. That is how `test_calendar.js` was red on main from commit
+`6781dac` ("chore: rebuild club layer (2026-11-12)", which put 1. FC
+Schweinfurt 05 into `data/clubs/DE.json`) until PR #214 linked the club
+in `data/bucket-links-manual.csv`, with no red run anywhere.
+
+So each build that rewrites a file the page reads now tests that file
+**before its commit step**, with `tools/ci_guard.sh` (same runner and
+install as `test-pages.yml`: ubuntu-24.04, Node 22, Playwright 1.56.1):
+
+| workflow | rewrites (read by the page) | runs before committing |
+|---|---|---|
+| `build-clubs.yml` | `data/clubs/*.json` | check_tickets, check_derbies, check_club_culture; test_calendar, test_me, test_nearme, test_pwa, test_sheet_tickets, test_zoom, test_coverage, test_search, test_derbies |
+| `build-calendars.yml` | `data/fixtures/*.json` (`calendars/` is not read by the page) | test_derbies, test_nearme |
+| `fetch-openligadb.yml` | `data/fixtures/openligadb-*.json` | test_derbies, test_nearme |
+| `link-fixtures.yml` | `data/clubs/fixture-links.json` | check_derbies, test_derbies, test_nearme |
+
+- **A red build run means nothing was pushed.** If any suite fails, the
+  guard step fails, the commit step is skipped, and main keeps the last
+  good files. The step summary lists what passed and the tail of each
+  failed log. Fix the hand-written file the test names (or the test),
+  then run the workflow again with "Run workflow".
+- `link-fixtures.yml` and `fetch-openligadb.yml` still commit after a
+  failed fetch or linker step (unchanged), but only if the guard passed.
+- Not guarded: `fetch-fuel-prices.yml`. The page reads
+  `data/fuel-prices.json`, but no suite reads the real file
+  (`test_routes.js` serves made-up prices in its place), so a guard there
+  would test nothing. The review-file workflows (roster, capacity,
+  StadiumDB, coordinates, country proposal) write nothing the page reads.
+- Left out for run time: `test_layout.js` (about 5.5 min; it opens club
+  sheets that show fixtures) is not run by the fixture and link builds,
+  which run once or twice a day.
+- **Testing a guard without pushing to main**: each guarded workflow also
+  starts on a pull request that changes its own workflow file. The build
+  and the guard run; the commit step is skipped on `pull_request` (as in
+  `check-rosters.yml`). A pull-request run has its own concurrency group,
+  so it never cancels a pending scheduled run. `build-calendars.yml` uses
+  `FOOTBALL_DATA_TOKEN` there too, which a pull request from a branch of
+  this repository can read (one from a fork could not).
+- `test-pages.yml` now also lists `data/clubs/*.json`,
+  `data/fixtures/*.json`, `data/league-tiers.csv` and `data/attended.json`
+  in its path filters, so a pull request that changes one by hand runs
+  the page tests; `check-derbies.yml`'s pull-request filter now matches
+  its push filter.
+- Adding a suite or a checker to a guard: append its name (`test_x` or
+  `check_x`) to that workflow's `tools/ci_guard.sh` line.

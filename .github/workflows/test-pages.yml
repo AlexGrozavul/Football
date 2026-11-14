@@ -96,6 +96,13 @@ on:
       - "tools/check_club_culture.py"
       - "data/football-rules.json"
       - "data/derbies.csv"
+      # Page data rewritten by the build workflows (their own commits never
+      # start this workflow; the CI guard in each build covers those). Listed
+      # here so a pull request that changes one by hand runs the page tests.
+      - "data/clubs/*.json"
+      - "data/fixtures/*.json"
+      - "data/league-tiers.csv"
+      - "data/attended.json"
       - "data/ro/**"
       - "data/ro-glossary.csv"
       - "tools/check_translations.py"
@@ -129,6 +136,13 @@ on:
       - "tools/check_club_culture.py"
       - "data/football-rules.json"
       - "data/derbies.csv"
+      # Page data rewritten by the build workflows (their own commits never
+      # start this workflow; the CI guard in each build covers those). Listed
+      # here so a pull request that changes one by hand runs the page tests.
+      - "data/clubs/*.json"
+      - "data/fixtures/*.json"
+      - "data/league-tiers.csv"
+      - "data/attended.json"
       - "data/ro/**"
       - "data/ro-glossary.csv"
       - "tools/check_translations.py"

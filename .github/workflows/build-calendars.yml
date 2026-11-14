@@ -19,18 +19,24 @@ on:
       - "tools/check_sale_dates.py"
       - "tools/fetch_fixtures.py"
       - ".github/workflows/build-calendars.yml"
+  # CI guard test: on a pull request that changes this file, the build and
+  # the guard run, and the commit step is skipped (docs/claude/conventions.md,
+  # "CI guard").
+  pull_request:
+    paths:
+      - ".github/workflows/build-calendars.yml"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: build-calendars
+  group: build-calendars${{ github.event_name == 'pull_request' && format('-pr-{0}', github.ref) || '' }}
   cancel-in-progress: false
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Check out repository
@@ -103,7 +109,28 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
+      # CI guard (docs/claude/conventions.md, "CI guard"): the commit below is
+      # pushed with the Actions token, which starts no other workflow, so
+      # "Test the page" never sees it. The suites that read the rewritten
+      # files (data/fixtures/*.json (calendars/ is not read by the page)) run here instead; if one fails, the
+      # commit step is skipped, nothing is pushed and the run is red.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install Playwright and Chromium (CI guard)
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: CI guard - test the rewritten files before committing
+        id: guard
+        run: tools/ci_guard.sh test_derbies test_nearme
+
       - name: Commit only if the output changed
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

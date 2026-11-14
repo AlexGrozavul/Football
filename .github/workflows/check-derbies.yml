@@ -26,7 +26,11 @@ on:
   pull_request:
     paths:
       - "data/derbies.csv"
+      - "data/clubs/*.json"
+      - "data/league-tiers.csv"
+      - "data/football-rules.json"
       - "tools/check_derbies.py"
+      - ".github/workflows/check-derbies.yml"
   workflow_dispatch:
 
 permissions:

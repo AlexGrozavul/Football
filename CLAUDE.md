@@ -208,6 +208,7 @@ Index only. The full per-file and per-tool entries (columns, rules, history) are
 - `tools/check_sale_dates.py` — warnings on dated `ticketEvents` entries (rule 8); always exits 0
 - `tools/test_*.js` — headless Chromium tests of the page (pwa, derbies, nearme, routes, zoom, search, coverage, sheet_tickets, layout, legend, tickets_bucket, calendar, me, ksc_tickets, vfb_tickets, competitions)
 - `.github/workflows/test-pages.yml` — runs the page tests and the checks on a change to the page or its tests
+- `tools/ci_guard.sh` — the CI guard: the build workflows run the suites that read their output before committing (conventions.md, "CI guard")
 
 ## Where the long entries live
 
