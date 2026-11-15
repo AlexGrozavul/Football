@@ -274,8 +274,9 @@ was deleted and no Q-id, source or kind was changed.
 
 1. **A translated or respelt name can sit in rows not sampled.** The one
    error is of that kind. The pass rule does not call for a full check,
-   so none was made; a name-only pass over the 34 list-sourced rows would
-   be small (4 list pages).
+   so none was made. 98 rows rest on a list entry (six list pages and
+   one club article); 24 of them were in the sample, so a name-only pass
+   over the other 74 would be seven pages.
 2. **The citation behind line 4** (the book Geliebter Feind) was cut
    short in the extract, so "Leykam, 2008" in the note was not re-read.
 3. **`check_derbies.py` already reported the Augsburg flag** ("The
