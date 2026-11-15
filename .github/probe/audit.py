@@ -354,5 +354,114 @@ def extras():
     print("extras written; requests", REQUESTS)
 
 
+
+def resolve(lang, titles):
+    """title -> Q-id, 50 titles a request, redirects followed."""
+    global REQUESTS
+    out = {}
+    titles = sorted(set(titles))
+    for i in range(0, len(titles), 50):
+        chunk = titles[i:i + 50]
+        q = urllib.parse.urlencode({
+            "action": "query", "prop": "pageprops", "ppprop": "wikibase_item", "redirects": "1",
+            "titles": "|".join(chunk), "format": "json", "formatversion": "2", "maxlag": "5"})
+        url = f"https://{lang}.wikipedia.org/w/api.php?{q}"
+        d = None
+        for attempt in range(8):
+            REQUESTS += 1
+            try:
+                with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=40) as r:
+                    d = json.load(r)
+                    retry = r.headers.get("Retry-After")
+            except Exception as e:
+                d = {"error": {"code": type(e).__name__}}
+                break
+            if "error" in d and d["error"].get("code") == "maxlag":
+                time.sleep(min(int(retry or 5), 120) + 1)
+                d = None
+                continue
+            break
+        time.sleep(1)
+        if not d or "error" in d:
+            for t_ in chunk:
+                out[t_] = "ERR"
+            continue
+        qd = d.get("query", {})
+        step = {}
+        for k in ("normalized", "redirects"):
+            for x in qd.get(k, []):
+                step[x["from"]] = x["to"]
+        final = {p_["title"]: p_.get("pageprops", {}).get("wikibase_item", "missing" if p_.get("missing") else "no item")
+                 for p_ in qd.get("pages", [])}
+        for t_ in chunk:
+            cur = t_
+            for _ in range(4):
+                if cur in step:
+                    cur = step[cur]
+            out[t_] = (final.get(cur, "?"), cur)
+    return out
+
+
+def links_of(raw):
+    out = []
+    for m in re.finditer(r"\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]*)?\]\]", raw):
+        t_ = m.group(1).strip().replace("_", " ")
+        if t_ and ":" not in t_:
+            out.append(t_[0].upper() + t_[1:])
+    return out
+
+
+def qids():
+    targets = json.load(open(sys.argv[1], encoding="utf-8"))
+    cache, per, want = {}, {}, {}
+    for t in targets:
+        u = urllib.parse.urlparse(t["source"])
+        lang = u.netloc.split(".")[0]
+        title = urllib.parse.unquote(u.path.split("/wiki/", 1)[1]).replace("_", " ")
+        fragment = urllib.parse.unquote(u.fragment)
+        if (lang, title) not in cache:
+            cache[(lang, title)] = fetch(lang, title)
+            time.sleep(1)
+        page = cache[(lang, title)]
+        if "error" in page:
+            per[t["line"]] = (lang, None, page["error"]); continue
+        text = page["text"]
+        if t["mode"] == "article":
+            raw = re.split(r"\n==[^=]", text, maxsplit=1)[0]
+            where = "lead"
+        else:
+            bl = [(sec, r_, norm(clean(r_, refs=False))) for sec, r_ in blocks(text)]
+            frag = norm(fragment.replace("_", " ")) if fragment else ""
+            pool = [b for b in bl if frag and frag in norm(b[0])] or bl
+            both = [b for b in pool if has(b[2], t["a"]) and has(b[2], t["b"])]
+            named = [b for b in both if has(b[2], t["nameNeedles"])] or both
+            raw = re.sub(r"<ref.*?(</ref>|/>)", "", named[0][1], flags=re.S) if named else ""
+            where = "block"
+        ls = links_of(raw)
+        per[t["line"]] = (lang, ls, where)
+        want.setdefault(lang, set()).update(ls)
+    res = {lang: resolve(lang, ts) for lang, ts in want.items()}
+    out = []
+    for t in targets:
+        lang, ls, where = per[t["line"]]
+        if ls is None:
+            out.append(f"L{t['line']} {t['name']}: ERROR {where}"); continue
+        got = {}
+        for l_ in ls:
+            q, final = res[lang].get(l_, ("?", l_)) if not isinstance(res[lang].get(l_), str) else ("ERR", l_)
+            got.setdefault(q, final)
+        a_ok, b_ok = t["qa"] in got, t["qb"] in got
+        line = f"L{t['line']} {t['name']}: {where} links {len(ls)} | A {t['qa']} {'OK ' + got[t['qa']] if a_ok else 'NOT LINKED'} | B {t['qb']} {'OK ' + got[t['qb']] if b_ok else 'NOT LINKED'}"
+        if not (a_ok and b_ok):
+            shown = [f"{l_}->{res[lang][l_][0] if not isinstance(res[lang][l_], str) else 'ERR'}" for l_ in dict.fromkeys(ls)]
+            line += "\n    links: " + "; ".join(shown[:14])[:700]
+        out.append(line)
+    out.append(f"requests sent: {REQUESTS}")
+    with open("/tmp/probe-comment-1.md", "w", encoding="utf-8") as f:
+        f.write("Derby audit probe, run 3 (link targets resolved to Q-ids)\n\n```\n" + "\n".join(out) + "\n```\n")
+    print("qids written; requests", REQUESTS)
+
+
 if __name__ == "__main__":
-    extras() if len(sys.argv) > 2 and sys.argv[2] == "extras" else main()
+    mode = sys.argv[2] if len(sys.argv) > 2 else ""
+    {"extras": extras, "qids": qids}.get(mode, main)()

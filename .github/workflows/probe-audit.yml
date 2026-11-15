@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
-      RUN_NUMBER_OF_THE_AUDIT: 2
+      RUN_NUMBER_OF_THE_AUDIT: 3
     steps:
       - uses: actions/checkout@v5
       - name: Probe
-        run: python3 .github/probe/audit.py .github/probe/targets.json extras
+        run: python3 .github/probe/audit.py .github/probe/targets.json qids
       - name: Post the extracts
         env:
           GH_TOKEN: ${{ github.token }}
