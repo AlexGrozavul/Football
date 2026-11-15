@@ -1493,6 +1493,13 @@ Alexandru's instruction. Two sub-tabs at the top of the Bucket list tab.
   of Germany, the two Romanian ones the first two of Romania. `bucketList`
   now holds 167 entries (166 - 3 + 4).
 
+**`whyStatus`, two values (2026-11-15, phase 3c).** `unverified`: from memory, not read against a page; tag "Not yet verified".
+`checked`: a fact-check session found every factual claim of the entry's texts (an added `whyAssistant` note too)
+supported by a page or corrected from one, or found none; opinions are never checked. Needs `whyCheckedOn` (YYYY-MM-DD,
+the day the page was read, not in the future) and a `whySources` URL, unless `whyBasis` is `no factual claim` (no source).
+Page: no tag; under the text a grey line of links and "Checked on <date>"; a no-claim entry shows nothing extra.
+Checked by `tools/check_bucket_why.py` (exits 1; fixtures `tools/test_check_bucket_why.py`).
+
 **The 160-entry bucket batch, 2026-10-08: undated, in a fixed order, with
 unverified "why" texts.** Added on Alexandru's instruction: 145 new
 `bucketList` entries and 15 existing ones that already covered the same

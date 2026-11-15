@@ -95,6 +95,8 @@ on:
       - "data/club-founding.csv"
       - "data/club-culture-sources.csv"
       - "tools/check_club_culture.py"
+      - "tools/check_bucket_why.py"
+      - "tools/test_check_bucket_why.py"
       - "data/football-rules.json"
       - "data/derbies.csv"
       # Page data rewritten by the build workflows (their own commits never
@@ -136,6 +138,8 @@ on:
       - "data/club-founding.csv"
       - "data/club-culture-sources.csv"
       - "tools/check_club_culture.py"
+      - "tools/check_bucket_why.py"
+      - "tools/test_check_bucket_why.py"
       - "data/football-rules.json"
       - "data/derbies.csv"
       # Page data rewritten by the build workflows (their own commits never
@@ -303,6 +307,15 @@ jobs:
           # The aging-document warning (phase 2b) on fixtures: 11 months no warning, 13 months a warning.
           python3 tools/test_check_tickets_aging.py 2>&1 | tee -a /tmp/test_check_tickets.log
 
+      # The Bucket list draws "Not yet verified" or the checked source line from whyStatus; its checker must pass,
+      # and its fixtures (checked without a date, without a source, a future date) must be rejected.
+      - name: Bucket why status read back (check_bucket_why.py exits 0, fixtures pass)
+        if: always()
+        run: |
+          set -o pipefail
+          python3 tools/check_bucket_why.py 2>&1 | tee /tmp/test_check_bucket_why.log
+          python3 tools/test_check_bucket_why.py 2>&1 | tee -a /tmp/test_check_bucket_why.log
+
       # The club sheet's Rivalries and Fan friendships sections read these files; their checker must pass too.
       - name: Club culture files read back (check_club_culture.py exits 0)
         if: always()
@@ -321,12 +334,12 @@ jobs:
 
       # GitHub refuses a summary over 1024 KB and fails the job (PR #167: 1537 KB, almost all of
       # it the check_tickets.py read-back), so each log is capped at its last 40000 bytes here;
-      # 21 logs x 40000 bytes stays under the limit. The full log is in its own step's output.
+      # 22 logs x 40000 bytes stays under the limit. The full log is in its own step's output.
       - name: Write the run summary
         if: always()
         run: |
           {
-            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets competitions check_tickets check_holidays check_competitions check_club_culture check_translations; do
+            for t in pwa derbies routes zoom search coverage sheet_tickets layout legend nearme tickets_bucket calendar me ksc_tickets vfb_tickets competitions check_tickets check_holidays check_competitions check_club_culture check_bucket_why check_translations; do
               f=/tmp/test_$t.log
               echo "## test_$t.js"
               echo

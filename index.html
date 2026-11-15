@@ -317,6 +317,7 @@ if(m)m.setAttribute("content",t==="light"?"#f6f8fa":"#0d1117")})()</script>
   .tix summary{cursor:pointer;font-size:13.5px;color:var(--ink)}
   .tix summary em{font-style:normal;color:var(--faint);font-size:12px}
   .tix .sub{color:var(--faint);font-size:12px;margin-top:2px}
+  .tix .bwsrc{margin:-4px 0 6px;overflow-wrap:anywhere}
   .tix .unavail{color:var(--dim);font-size:13.5px;font-style:italic;margin:4px 0 0}
   .tix details.why{border:0;padding:0;margin-top:3px}
   .tix details.why summary{font-size:12px;color:var(--faint)}
@@ -6997,9 +6998,26 @@ async function nextMeetingHtml(item, rows){
 
 /* The entry's own fields not shown above, exactly as written. */
 const BUCKET_SHOWN = new Set(['id', 'title', 'type', 'priority', 'status', 'trueDerby', 'why', 'venue', 'date',
-  'group', 'country', 'sortKey', 'whyAssistant', 'whyStatus', 'whySources', 'leagueCheck', 'listOnly',
+  'group', 'country', 'sortKey', 'whyAssistant', 'whyStatus', 'whySources', 'whyCheckedOn', 'whyBasis', 'leagueCheck', 'listOnly',
   'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'distanceKm', 'clubs', 'verified', 'warning',
   'kind', 'countryCode']);
+
+/* A why text marked "checked" (phase 3c, 2026-11-15): the pages that support it and the day they were
+   read, as a small grey line in the style of the founding rows' source line (sourceLine). A text
+   checked with no factual claim (whyBasis) has no page, so nothing is drawn. A Wikipedia link reads
+   as its article's title, any other link as its host. */
+function whyCheckedLine(item){
+  const urls = (Array.isArray(item.whySources) ? item.whySources : []).filter(u => /^https?:\/\//.test(u));
+  if(!urls.length) return '';
+  const label = u => {
+    const w = u.match(/^https?:\/\/[a-z-]+\.wikipedia\.org\/wiki\/([^?#]+)/);
+    if(w){ try{ return decodeURIComponent(w[1]).replace(/_/g, ' '); }catch(e){ return w[1].replace(/_/g, ' '); } }
+    return u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+  };
+  return `<div class="sub bwsrc" data-why="checked">` +
+    urls.map(u => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(label(u))}</a>`).join(' · ') + ' · ' +
+    esc(t('gen.checkedOn', {date: rivDate(item.whyCheckedOn) || t('gen.dateNotRecorded')})) + `</div>`;
+}
 
 /* ONE renderer for a bucket entry's detail; the Bucket list tab uses it
    inside each card, and the next sheet can use it as it is. */
@@ -7016,7 +7034,8 @@ async function bucketDetailHtml(item){
   let h = heldDetailHtml(item.id) +
     (item.why ? `<p class="bwhy"${W.a}>${esc(W.s)}</p>` : '') +
     (item.whyAssistant ? `<p class="bwhy" data-why="added">${esc(t('bk.addedNote'))}${item.whyStatus === 'unverified' ? esc(', ' + t('bk.notVerified')) : ''}: <span data-content${WA.a}>${esc(WA.s)}</span></p>` : '') +
-    (Array.isArray(item.whySources) && item.whySources.length ? `<p class="bwhy" data-why="sources">${esc(t('bk.sourcesNote'))} ` +
+    (item.whyStatus === 'checked' ? whyCheckedLine(item) :
+      Array.isArray(item.whySources) && item.whySources.length ? `<p class="bwhy" data-why="sources">${esc(t('bk.sourcesNote'))} ` +
       item.whySources.filter(u => /^https?:\/\//.test(u)).map(u => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a>`).join(' · ') + `</p>` : '') +
     (unv.length ? `<div class="meta">${UNVERIFIED_TAG}<span class="tag bad">${esc(t('nt.marked'))} ${esc(unv.join('; '))}</span></div>` : '') +
     field(t('bk.what'), item.type ? vocab('btype.', item.type) : item.type) +

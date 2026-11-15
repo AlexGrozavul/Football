@@ -206,6 +206,7 @@ Index only. The full per-file and per-tool entries (columns, rules, history) are
 - `tools/check_tickets.py` — read-back and checks for the ticket files; exits 1 on a problem; warns on confirmed rows resting on a dated document over 12 months old (`tools/test_check_tickets_aging.py`)
 - `tools/check_derbies.py`, `tools/check_holidays.py`, `tools/check_competitions.py`, `tools/check_translations.py`, `tools/check_club_culture.py` — read-backs of the hand-written files they name
 - `tools/check_sale_dates.py` — warnings on dated `ticketEvents` entries (rule 8); always exits 0
+- `tools/check_bucket_why.py` — read-back of the bucket list's `whyStatus` (`unverified` or `checked`); exits 1 on a break (`tools/test_check_bucket_why.py`)
 - `tools/test_*.js` — headless Chromium tests of the page (pwa, derbies, nearme, routes, zoom, search, coverage, sheet_tickets, layout, legend, tickets_bucket, calendar, me, ksc_tickets, vfb_tickets, competitions)
 - `.github/workflows/test-pages.yml` — runs the page tests and the checks on a change to the page or its tests
 - `tools/ci_guard.sh` — the CI guard: the build workflows run the suites that read their output before committing (conventions.md, "CI guard")
