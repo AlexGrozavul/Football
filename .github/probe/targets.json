@@ -6,43 +6,7 @@
 [
 "en",
 "Rosario derby",
-"away (fans|supporters)|visiting (fans|supporters)|visitors",
-3
-],
-[
-"en",
-"Barra brava",
-"away (fans|supporters)|visiting (fans|supporters)",
-3
-]
-]
-},
-{
-"n": 3,
-"id": "anderlecht-v-club-brugge",
-"leads": [
-[
-"en",
-"Belgian Pro League",
-"most successful|most titles|record.{0,30}titles",
-3
-],
-[
-"en",
-"R.S.C. Anderlecht",
-"most successful|league titles|champion.{0,20}record",
-3
-],
-[
-"en",
-"Club Brugge KV",
-"most (successful|decorated)|league titles",
-3
-],
-[
-"en",
-"Anderlecht–Club Brugge rivalry",
-"most successful|biggest|titles",
+"banned|prohib|visiting",
 3
 ]
 ]
@@ -53,177 +17,21 @@
 "leads": [
 [
 "en",
-"Clássico Mineiro",
-"Mineirão|Arena MRV|Independência",
-5
-],
-[
-"en",
 "Mineirão",
-"7[–-]1",
-2
+"Germany|semi-final",
+3
 ],
 [
 "en",
 "Arena MRV",
-"opened|inaugurat|home (stadium|ground)",
+"Atlético|tenants",
 3
-]
-]
-},
-{
-"n": 6,
-"id": "hajduk-split-v-rijeka",
-"leads": [
+],
 [
 "en",
-"Adriatic derby",
-"Adriatic derby|Jadranski derbi",
-2
-]
-]
-},
-{
-"n": 7,
-"id": "al-ahly-v-zamalek-cairo-derby",
-"leads": [
-[
-"en",
-"Cairo derby",
-"Cairo International Stadium|closed doors|without (fans|spectators)|attendance|banned|ban on",
-6
-]
-]
-},
-{
-"n": 8,
-"id": "southampton-v-portsmouth-south-coast-derby",
-"leads": [
-[
-"en",
-"Fratton Park",
-"opened|\\b189\\d\\b|oldest|home (ground|stadium|of)",
-4
-]
-]
-},
-{
-"n": 9,
-"id": "liverpool-v-everton-merseyside-derby",
-"leads": [
-[
-"en",
-"Hill Dickinson Stadium",
-"opened|opening|first competitive",
-4
-]
-]
-},
-{
-"n": 10,
-"id": "newcastle-v-sunderland-tyne-wear-derby",
-"leads": [
-[
-"en",
-"Tyne–Wear derby",
-"2025|2026|promot",
+"Clássico Mineiro",
+"2023|2024|2025|2026",
 5
-],
-[
-"en",
-"2026–27 Premier League",
-"Sunderland|Newcastle United",
-4
-],
-[
-"en",
-"Sunderland A.F.C.",
-"2025.{0,100}(promot|play-off)|promot.{0,100}2025",
-3
-]
-]
-},
-{
-"n": 11,
-"id": "aston-villa-v-birmingham-city-second-city-derby",
-"leads": [
-[
-"en",
-"UEFA Euro 2028",
-"Villa Park",
-2
-],
-[
-"en",
-"Second City derby",
-"Second City derby",
-1
-]
-]
-},
-{
-"n": 12,
-"id": "paris-saint-germain-v-marseille-le-classique",
-"leads": [
-[
-"en",
-"Le Classique",
-"Vélodrome",
-2
-]
-]
-},
-{
-"n": 13,
-"id": "nice-v-monaco",
-"leads": [
-[
-"en",
-"Derby de la Côte d'Azur",
-"Côte d'Azur|Louis II|Allianz Riviera",
-4
-],
-[
-"en",
-"Stade Louis II",
-"capacity|seat",
-2
-]
-]
-},
-{
-"n": 14,
-"id": "rot-weiss-essen-v-rot-weiss-oberhausen",
-"leads": [
-[
-"de",
-"Rot-Weiß Oberhausen",
-"Rot-Weiss Essen|Rot-Weiß Essen|Derby|Rivalität",
-4
-],
-[
-"en",
-"Ruhr",
-"Oberhausen",
-2
-]
-]
-},
-{
-"n": 15,
-"id": "fc-koln-v-borussia-monchengladbach",
-"leads": [
-[
-"de",
-"Rheinisches Derby",
-"Mönchengladbach|Rheinland",
-3
-],
-[
-"en",
-"Borussia Mönchengladbach",
-"1\\. FC Köln|Cologne.{0,60}rival|Rhein(land)? derby|Rhine derby",
-3
 ]
 ]
 },
@@ -233,123 +41,15 @@
 "leads": [
 [
 "en",
-"TSV 1860 Munich",
-"Grünwalder|3\\. Liga|2026",
-5
-],
-[
-"en",
 "Grünwalder Stadion",
-"capacity|opened|built|\\b19[012]\\d\\b",
-4
-],
-[
-"en",
-"2026–27 3. Liga",
-"1860",
+"capacity",
 2
-]
-]
-},
-{
-"n": 17,
-"id": "chemnitzer-fc-v-fsv-zwickau",
-"leads": [
-[
-"km",
-"de",
-"Chemnitz",
-"Zwickau"
-],
-[
-"km",
-"de",
-"Stadion an der Gellertstraße",
-"GGZ-Arena"
 ],
 [
 "en",
-"FSV Zwickau",
-"Saxony|Chemnitz",
-3
-]
-]
-},
-{
-"n": 18,
-"id": "chemnitzer-fc-v-dynamo-dresden",
-"leads": [
-[
-"en",
-"Chemnitzer FC",
-"Saxony|Dynamo Dresden|Zwickau|rival",
-4
-],
-[
-"en",
-"Dynamo Dresden",
-"Saxony",
+"FC Bayern Munich",
+"Allianz Arena",
 1
-]
-]
-},
-{
-"n": 19,
-"id": "rot-weiss-essen-v-msv-duisburg",
-"leads": [
-[
-"en",
-"Rot-Weiss Essen",
-"Duisburg|Oberhausen|rival|Ruhr",
-5
-],
-[
-"en",
-"MSV Duisburg",
-"Ruhr|Rot-Weiss Essen|rival",
-4
-]
-]
-},
-{
-"n": 20,
-"id": "fc-heidenheim-v-vfr-aalen",
-"leads": [
-[
-"de",
-"VfR Aalen",
-"Ostalb|Heidenheim",
-5
-],
-[
-"de",
-"1. FC Heidenheim",
-"Ostalb|Aalen",
-5
-]
-]
-},
-{
-"n": 21,
-"id": "fc-saarbrucken-v-1-fc-kaiserslautern",
-"leads": [
-[
-"en",
-"Ludwigsparkstadion",
-"capacity|1\\. FC Saarbrücken|home",
-3
-],
-[
-"en",
-"1. FC Saarbrücken",
-"Kaiserslautern|rival",
-3
-],
-[
-"en",
-"1. FC Kaiserslautern",
-"Palatinate|Saarbrücken",
-3
 ]
 ]
 },
@@ -358,22 +58,22 @@
 "id": "vfb-stuttgart-v-stuttgarter-kickers",
 "leads": [
 [
-"en",
-"Gazi-Stadion auf der Waldau",
-"Stuttgarter Kickers|Degerloch|capacity|forest|hill|oldest|opened",
-5
-],
-[
-"en",
-"Stuttgarter Kickers",
-"Regionalliga|Oberliga|2026|VfB Stuttgart",
-5
+"de",
+"Waldau (Stuttgart)",
+"Wald|Höhe|Hang|Degerloch",
+4
 ],
 [
 "de",
 "Gazi-Stadion auf der Waldau",
-"Wald|Hang|Degerloch|ältest",
+"steil|bewaldet|Höhenlage|liegt|befindet sich",
 4
+],
+[
+"en",
+"VfB Stuttgart",
+"league\\s*=|plays in the Bundesliga",
+2
 ]
 ]
 },
@@ -383,15 +83,15 @@
 "leads": [
 [
 "en",
-"FC St. Pauli",
-"Hansa Rostock",
+"FC Hansa Rostock",
+"police|security|high-risk",
 4
 ],
 [
 "en",
-"FC Hansa Rostock",
-"St\\. Pauli|right-wing|far-right",
-4
+"FC St. Pauli",
+"police|security|high-risk",
+3
 ]
 ]
 },
@@ -400,64 +100,28 @@
 "id": "karlsruher-sc-v-freiburg",
 "leads": [
 [
-"en",
-"BBBank Wildpark",
-"capacity",
-2
+"de",
+"SC Freiburg",
+"Karlsruher SC|Baden-Derby|Badenderby|badische[ns]? Derby",
+4
 ],
 [
 "en",
-"Europa-Park Stadion",
-"capacity",
-2
-],
-[
-"en",
-"Karlsruher SC",
-"Freiburg|Baden derby",
-3
+"SC Freiburg",
+"Karlsruher|Baden derby|rival",
+4
 ],
 [
 "de",
-"Karlsruher SC",
-"Baden-Derby|Badisches Derby|Badenderby|SC Freiburg",
-4
-]
-]
-},
-{
-"n": 25,
-"id": "union-berlin-v-hertha-bsc-berlin-derby",
-"leads": [
-[
-"en",
-"Stadion An der Alten Försterei",
-"standing|terrac|capacity",
-4
+"Baden-Derby",
+"Karlsruher SC|SC Freiburg",
+2
 ],
 [
-"en",
-"Berlin derby",
-"East|West|Olympiastadion|Alte Försterei",
-4
-]
-]
-},
-{
-"n": 26,
-"id": "ostderby",
-"leads": [
-[
-"en",
-"Dynamo Dresden",
-"East German (champion|title|football champion)|DDR-Oberliga.{0,80}(title|champion|won)|won.{0,80}DDR-Oberliga|league titles",
-3
-],
-[
-"en",
-"FC Hansa Rostock",
-"1990[–-]91|last East German|champions",
-4
+"de",
+"Badisches Derby",
+"Karlsruher SC|SC Freiburg",
+2
 ]
 ]
 },
@@ -466,64 +130,16 @@
 "id": "msv-duisburg-v-rot-weiss-oberhausen",
 "leads": [
 [
-"en",
+"de",
 "Oberhausen",
 "Duisburg",
-3
+4
 ],
 [
 "de",
+"Duisburg",
 "Oberhausen",
-"Nachbar|grenz",
 3
-]
-]
-},
-{
-"n": 28,
-"id": "hannover-96-v-eintracht-braunschweig",
-"leads": [
-[
-"en",
-"Hannover 96",
-"Braunschweig|Lower Saxony derby|rival",
-4
-],
-[
-"de",
-"Niedersachsenderby",
-"Hannover 96|Eintracht Braunschweig",
-2
-]
-]
-},
-{
-"n": 29,
-"id": "viktoria-koln-v-fortuna-koln",
-"leads": [
-[
-"en",
-"FC Viktoria Köln",
-"Sportpark Höhenberg|capacity|Fortuna|Cologne",
-4
-],
-[
-"en",
-"SC Fortuna Köln",
-"Südstadion|capacity|Viktoria|Cologne",
-4
-],
-[
-"en",
-"Sportpark Höhenberg",
-"capacity",
-1
-],
-[
-"en",
-"Südstadion",
-"capacity",
-1
 ]
 ]
 },
@@ -532,88 +148,22 @@
 "id": "frankenderby",
 "leads": [
 [
-"en",
-"Frankenderby",
-"neighbour|first (match|played|game|meeting)|most.{0,20}played|oldest|police|risk|\\b190\\d\\b",
-6
+"de",
+"Fürth",
+"grenz[^\\n]{0,200}Nürnberg|Nürnberg[^\\n]{0,120}(grenz|Nachbar)|Nachbarst[^\\n]{0,200}",
+3
 ],
 [
 "de",
 "Frankenderby",
-"Hochrisiko|Risikospiel|Polizei|Nachbarst|erste[sn]? (Spiel|Derby|Begegnung|Aufeinandertreffen)|ältest|meistgespielt|häufigst",
-6
-]
-]
-},
-{
-"n": 31,
-"id": "eintracht-frankfurt-v-kickers-offenbach",
-"leads": [
-[
-"de",
-"Mainderby",
-"Bieberer Berg|Nachbar|Regionalliga|DFB-Pokal|letzte",
-6
-],
-[
-"en",
-"Kickers Offenbach",
-"Bieberer Berg|Regionalliga|2026|Eintracht Frankfurt",
+"Risiko|Sicherheit|Nachbar",
 5
 ],
 [
 "en",
-"Stadion am Bieberer Berg",
-"opened|rebuilt|demolish|new stadium|2012|closed",
-4
-],
-[
-"en",
-"Sparda-Bank-Hessen-Stadion",
-"opened|rebuilt|demolish|Bieberer Berg|2012",
-4
-]
-]
-},
-{
-"n": 32,
-"id": "ferencvaros-v-ujpest-orokrangado",
-"leads": [
-[
-"en",
-"Groupama Aréna",
-"opened|2014",
-2
-],
-[
-"en",
-"Szusza Ferenc Stadion",
-"opened|built|\\b192\\d\\b|renovat",
-4
-],
-[
-"en",
-"Ferencvárosi TC–Újpest FC rivalry",
-"Budapest|oldest|first",
+"Bavarian football derbies",
+"Fürth",
 3
-],
-[
-"en",
-"Újpest FC",
-"Ferencváros|rival",
-3
-]
-]
-},
-{
-"n": 33,
-"id": "roma-v-lazio-derby-della-capitale",
-"leads": [
-[
-"en",
-"Derby della Capitale",
-"Curva Sud|Curva Nord|Stadio Olimpico",
-4
 ]
 ]
 },
@@ -623,14 +173,20 @@
 "leads": [
 [
 "en",
-"Estadio Azteca",
-"2026 (FIFA )?World Cup|renovat|rebuil|reopen|remodel",
-6
+"Club América",
+"Estadio Azteca|Estadio Banorte|home (stadium|ground|matches)",
+3
 ],
 [
 "en",
-"El Súper Clásico",
-"Estadio Azteca|Estadio Akron|Estadio Banorte|Clásico Nacional",
+"C.D. Guadalajara",
+"Estadio Akron|América|Clásico",
+4
+],
+[
+"en",
+"Estadio Azteca",
+"2024[^\\n]{0,200}(renovat|clos|reopen)|reopened|rebuilt|reconstruct",
 4
 ]
 ]
@@ -641,21 +197,15 @@
 "leads": [
 [
 "en",
-"Tricity Derby",
-"stadium|Stadion|Arena|Baltic",
-5
-],
-[
-"en",
-"Stadion Gdańsk",
-"opened|built|Euro 2012|Lechia",
-3
-],
-[
-"en",
 "Gdańsk",
-"Baltic (coast|Sea)",
-1
+"Baltic",
+2
+],
+[
+"en",
+"Stadion Miejski (Gdynia)",
+"opened|built|renovat",
+3
 ]
 ]
 },
@@ -665,9 +215,27 @@
 "leads": [
 [
 "en",
-"Great Silesian Derby",
-"Silesia|industr",
+"Górnik Zabrze",
+"Ruch Chorzów|Silesia|derby",
 4
+],
+[
+"en",
+"Ruch Chorzów",
+"Górnik|Great Silesian|derby|Upper Silesia",
+4
+],
+[
+"pl",
+"Wielkie Derby Śląska",
+"Górnik Zabrze|Ruch Chorzów|przemys",
+3
+],
+[
+"en",
+"Upper Silesia",
+"industr",
+2
 ]
 ]
 },
@@ -677,21 +245,15 @@
 "leads": [
 [
 "en",
-"Estádio do Dragão",
-"opened|inaugurat",
-2
-],
-[
-"en",
-"Estádio José Alvalade",
-"opened|inaugurat",
-2
+"2025–26 Primeira Liga",
+"champions|runners-up|winners|title",
+5
 ],
 [
 "en",
 "FC Porto–Sporting CP rivalry",
-"Big Three|Três Grandes|top two|champion",
-3
+"Big Three|Três Grandes|rival|three",
+4
 ]
 ]
 },
@@ -701,20 +263,26 @@
 "leads": [
 [
 "en",
-"Stadionul Ion Oblemenco (2017)",
-"attendance|highest|average|record",
+"Stadionul Ion Oblemenco",
+"attendance|average|highest|capacity",
 5
+],
+[
+"ro",
+"Stadionul Ion Oblemenco",
+"spectatori|asisten|medie|capacitate",
+5
+],
+[
+"en",
+"2025–26 Liga I",
+"attendance",
+4
 ],
 [
 "en",
 "CS Universitatea Craiova",
-"attendance|FCSB|Steaua|rival",
-5
-],
-[
-"en",
-"Liga I",
-"attendance",
+"attendance|average",
 4
 ]
 ]
@@ -726,61 +294,13 @@
 [
 "en",
 "FC UTA Arad",
-"champion|titles|insolven|bankrupt|dissol|Timișoara|West(ern)? derby",
-8
-],
-[
-"en",
-"FC Politehnica Timișoara",
-"champion|league title|insolven|bankrupt|dissol|UTA|Arad",
-8
+"2014|insolven|bankrupt|debts|refounded|re-founded",
+5
 ],
 [
 "en",
 "SSU Politehnica Timișoara",
-"champion|insolven|bankrupt|dissol|founded|UTA|Arad",
-6
-]
-]
-},
-{
-"n": 43,
-"id": "valencia-v-levante-valencian-derby",
-"leads": [
-[
-"en",
-"Mestalla Stadium",
-"steep|opened|inaugurat|oldest|Nou Mestalla",
-5
-],
-[
-"en",
-"2026–27 La Liga",
-"Valencia|Levante|Celta|Deportivo",
-6
-]
-]
-},
-{
-"n": 44,
-"id": "celta-vigo-v-deportivo-la-coruna-galician-derby",
-"leads": [
-[
-"en",
-"Galician derby",
-"2026|Segunda|last (met|played)|promot|relegat",
-5
-],
-[
-"en",
-"Deportivo de La Coruña",
-"2026|promot.{0,80}La Liga|2025[–-]26",
-5
-],
-[
-"en",
-"2026–27 Segunda División",
-"Deportivo|Levante",
+"league\\s*=|position\\s*=|currently",
 3
 ]
 ]
@@ -791,9 +311,9 @@
 "leads": [
 [
 "en",
-"Kybunpark",
-"St\\. ?Gallen|capacity",
-3
+"Sitterstadion",
+"tenants|Kybunpark|kybunpark|renamed|known as|sponsor",
+5
 ]
 ]
 },
@@ -804,50 +324,8 @@
 [
 "en",
 "Stadion Schützenwiese",
-"capacity|opened|built|\\b1[89]\\d\\d\\b",
-4
-],
-[
-"en",
-"FC Winterthur",
-"Schützenwiese|canton|Super League|2026",
-5
-],
-[
-"en",
-"Letzigrund",
-"FC Zürich|home",
+"capacity",
 2
-],
-[
-"en",
-"Winterthur",
-"canton of Zürich|Canton of Zürich",
-1
-]
-]
-},
-{
-"n": 47,
-"id": "la-galaxy-v-lafc-el-trafico",
-"leads": [
-[
-"en",
-"El Tráfico",
-"2018|first (match|meeting|game)",
-4
-]
-]
-},
-{
-"n": 48,
-"id": "cardiff-city-v-swansea-city-south-wales-derby",
-"leads": [
-[
-"en",
-"South Wales derby",
-"bubble|away (fans|supporters)|police|policing|allocation|banned",
-6
 ]
 ]
 },
@@ -857,20 +335,8 @@
 "leads": [
 [
 "en",
-"EFL Cup",
-"Wembley|February|March|first (major |domestic |piece of )?(trophy|silverware)",
-6
-],
-[
-"en",
 "2026 EFL Cup final",
-"Wembley|March|February",
-2
-],
-[
-"en",
-"2025 EFL Cup final",
-"Wembley|March|February",
+"\\d+ (March|February) 2026|date\\s*=",
 2
 ]
 ]
@@ -880,16 +346,16 @@
 "id": "bavarian-toto-pokal-final",
 "leads": [
 [
-"en",
-"Bavarian Cup",
-"DFB-Pokal|German Cup|final.{0,80}(venue|played|held|home)|qualif",
-6
-],
-[
 "de",
 "Bayerischer Toto-Pokal",
-"Finale|Endspiel|DFB-Pokal|Heimrecht|Austragungsort",
-6
+"Spielort|Endspielort|Finalort|Finale[^\\n]{0,80}\\b(in|im)\\b|Heimspiel|ein(em)? Spiel",
+8
+],
+[
+"en",
+"Bavarian Cup",
+"Location|Venue|played (at|in)|single",
+4
 ]
 ]
 },
@@ -899,33 +365,9 @@
 "leads": [
 [
 "en",
-"DFB-Pokal",
-"Olympiastadion|since 1985",
-3
-],
-[
-"en",
 "2025 DFB-Pokal final",
-"Arminia Bielefeld|3\\. Liga|third (tier|division)|Olympiastadion",
-5
-]
-]
-},
-{
-"n": 52,
-"id": "westfalenpokal-final",
-"leads": [
-[
-"en",
-"Westphalia Cup",
-"DFB-Pokal|German Cup|final|qualif",
-6
-],
-[
-"de",
-"Westfalenpokal",
-"Finale|Endspiel|DFB-Pokal|Austragungsort|Heimrecht",
-6
+"VfB Stuttgart|third.division|3\\. Liga[^\\n]{0,120}",
+3
 ]
 ]
 },
@@ -935,26 +377,15 @@
 "leads": [
 [
 "en",
-"KNVB Cup",
-"De Kuip|since 1989",
-3
-],
-[
-"en",
 "De Kuip",
-"new stadium|Feyenoord City|cancel|renovat|leave|remain|stay",
-8
-],
-[
-"en",
-"Feyenoord City",
-"cancel|abandon|scrap|2022|not (be )?built",
-4
+"Feyenoord announced that they instead preferred building a new stadium[\\s\\S]{0,1400}",
+1,
+1500
 ],
 [
 "nl",
 "Stadion Feijenoord",
-"nieuw stadion|Feyenoord City|afgeblazen|renovatie|verbouw|blijven",
+"Feyenoord City|nieuwe stadion|2022|2023|2024|2025",
 6
 ]
 ]
@@ -965,20 +396,20 @@
 "leads": [
 [
 "en",
-"Hampden Park",
-"opened|1903|oldest|largest stadium in the world",
-4
-],
-[
-"en",
 "Scottish Cup",
-"Hampden|in May",
-4
+"\\bMay\\b",
+3
 ],
 [
 "en",
 "2026 Scottish Cup final",
-"Hampden|\\d+ May",
+"2026",
+3
+],
+[
+"en",
+"Hampden Park",
+"oldest",
 2
 ]
 ]
@@ -990,8 +421,8 @@
 [
 "en",
 "2027 UEFA Europa League final",
-"Frankfurt|Waldstadion|Deutsche Bank Park|May 2027",
-4
+"\\d+ May|date\\s*=",
+3
 ]
 ]
 },
@@ -1001,27 +432,27 @@
 "leads": [
 [
 "en",
-"UEFA Champions League",
-"final.{0,100}(late May|early June)|neutral|general public",
+"2024 UEFA Champions League final",
+"ticket|general public",
 4
 ],
 [
 "en",
-"2026 UEFA Champions League final",
-"neutral|general public|allocat|tickets|May 2026",
-6
+"2023 UEFA Champions League final",
+"ticket|general public",
+4
 ],
 [
 "en",
 "2027 UEFA Champions League final",
-"selected|appointed|awarded|tickets|(May|June) 2027",
-5
+"ticket|general public",
+3
 ],
 [
 "en",
-"2025 UEFA Champions League final",
-"general public|tickets|allocat",
-4
+"UEFA Champions League",
+"ticket",
+3
 ]
 ]
 },
@@ -1032,15 +463,20 @@
 [
 "en",
 "Argentina–Brazil football rivalry",
-"Superclásico|Superclássico|Superclassic",
+"is a (sports|football|highly)[^\\n]{0,300}|known as[^\\n]{0,200}|Battle of the",
 3
 ],
 [
 "en",
 "Argentina–Brazil football rivalry",
-"World Cup qualif[\\s\\S]{0,200}",
-14,
-260
+"2014 World Cup qualif",
+1
+],
+[
+"en",
+"Superclásico de las Américas",
+"is an? [^\\n]{0,300}",
+2
 ]
 ]
 },
@@ -1051,20 +487,8 @@
 [
 "en",
 "UEFA Euro 2028",
-"24 teams|nine (stadiums|venues)|ten (stadiums|venues)|Casement|final.{0,100}Wembley|Wembley.{0,100}final",
-8
-]
-]
-},
-{
-"n": 60,
-"id": "uefa-euro-2032-italy-and-turkey",
-"leads": [
-[
-"en",
-"UEFA Euro 2032",
-"October 2023|awarded|appointed|confirmed.{0,60}hosts",
-4
+"24 teams|24-team|\\bteams\\s*=\\s*\\d+",
+3
 ]
 ]
 }
