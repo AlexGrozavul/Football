@@ -413,6 +413,8 @@ def links_of(raw):
 
 def qids():
     targets = json.load(open(sys.argv[1], encoding="utf-8"))
+    if len(sys.argv) > 3:
+        targets = [t for t in targets if str(t["line"]) in sys.argv[3].split(",")]
     cache, per, want = {}, {}, {}
     for t in targets:
         u = urllib.parse.urlparse(t["source"])
