@@ -1,0 +1,33 @@
+# TEMPORARY: bucket list audit, phase 3b. Reads the Wikipedia articles
+# named as leads for the sampled "why" texts and posts the matching
+# passages as PR comments. Starts only when this file changes. Removed
+# before the merge.
+name: Probe audit (temporary)
+
+on:
+  pull_request:
+    paths: ['.github/workflows/probe-audit.yml']
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      RUN_NUMBER_OF_THE_AUDIT: 1
+    steps:
+      - uses: actions/checkout@v5
+      - name: Probe
+        run: python3 .github/probe/audit.py .github/probe/targets.json "$RUN_NUMBER_OF_THE_AUDIT"
+      - name: Post the extracts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          for f in /tmp/probe-comment-*.md; do
+            gh pr comment "$PR" --repo "$REPO" --body-file "$f"
+          done
