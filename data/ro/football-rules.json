@@ -1,12 +1,12 @@
 {
  "bucketList:afc-asian-cup-2027-saudi-arabia#why": {
-  "en": "9ced6768",
-  "ro": "24 de echipe la campionatul echipelor naționale din Asia, găzduit de o țară care investește masiv în stadioane. Datele sunt neverificate.",
+  "en": "08063bff",
+  "ro": "24 de echipe la campionatul echipelor naționale din Asia. Datele sunt neverificate.",
   "status": "machine-unchecked"
  },
  "bucketList:africa-cup-of-nations-2027-kenya-tanzania-uganda#why": {
-  "en": "043210d0",
-  "ro": "Prima ediție AFCON din Africa de Est, cu 24 de echipe și trei țări co-gazde. Datele sunt neverificate.",
+  "en": "b0941dcc",
+  "ro": "Prima ediție AFCON cu trei țări co-gazde și prima din Africa de Est (regiunea CECAFA) de când Etiopia a găzduit turneul în 1976, cu 24 de echipe. Datele sunt neverificate.",
   "status": "machine-unchecked"
  },
  "bucketList:uefa-nations-league-finals-2027#why": {
@@ -75,8 +75,8 @@
   "status": "machine-unchecked"
  },
  "bucketList:cupa-romaniei-final#why": {
-  "en": "74ab328f",
-  "ro": "Meciul decisiv al cupei naționale, de obicei între două cluburi care aduc grupuri mari de suporteri. Stadionul este ales în fiecare an.",
+  "en": "ec0d38c1",
+  "ro": "Meciul decisiv al cupei naționale. Stadionul este stabilit dinainte, de regulă în București.",
   "status": "machine-unchecked"
  },
  "bucketList:efl-cup-final#why": {
@@ -90,8 +90,8 @@
   "status": "machine-unchecked"
  },
  "bucketList:fa-community-shield#why": {
-  "en": "4646a1ff",
-  "ro": "Campioana ligii împotriva câștigătoarei FA Cup pe Wembley în august, un meci de deschidere a sezonului, cu bilete de obicei mai ieftine decât la finalele de cupă.",
+  "en": "adc0f6ee",
+  "ro": "Campioana ligii împotriva câștigătoarei FA Cup în august, meciul de deschidere a sezonului, de regulă pe Wembley (ediția din 2026 s-a jucat la Cardiff).",
   "status": "machine-unchecked"
  },
  "bucketList:coupe-de-france-final#why": {
@@ -120,8 +120,8 @@
   "status": "machine-unchecked"
  },
  "bucketList:copa-del-rey-final#why": {
-  "en": "e90bc321",
-  "ro": "Un singur meci primăvara, cu stadionul ales în fiecare an, adesea Barcelona sau Madrid, față în față cu un public basc sau din altă regiune.",
+  "en": "7c4222f7",
+  "ro": "Un singur meci primăvara, pe La Cartuja din Sevilla, stadionul obișnuit al finalei din 2020, adesea cu Barcelona sau un club din Madrid, față în față cu un public basc sau din altă regiune.",
   "status": "machine-unchecked"
  }
 }
