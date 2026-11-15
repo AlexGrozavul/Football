@@ -176,9 +176,11 @@ const server = http.createServer((req, res) => {
   // pokal-first-round is an older, hand-written entry that was flagged listOnly on 2026-10-08; it carries no whyStatus.
   const addedNew = addedL.filter(b => b.id !== 'pokal-first-round');
   const newCards = groupDom.filter(x => x.id && addedNew.some(b => b.id === x.id));
-  check(`All ${addedNew.length} added entries are cards, each undated, each showing its why text and the label "Not yet verified"`,
-    newCards.length === addedNew.length && newCards.every(x => x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why.length > 10),
-    newCards.filter(x => !(x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why.length > 10)).map(x => x.id).join(', '));
+  // Since 2026-11-15 (phase 3c) an entry whose why text a fact check found supported is whyStatus "checked" and has no tag.
+  const tagOk = x => /Not yet verified/.test(x.tags) === (rules.bucketList.find(b => b.id === x.id).whyStatus === 'unverified');
+  check(`All ${addedNew.length} added entries are cards, each undated, each showing its why text, and the label "Not yet verified" exactly on the unverified ones`,
+    newCards.length === addedNew.length && newCards.every(x => x.when === 'Date not set' && tagOk(x) && x.why.length > 10),
+    newCards.filter(x => !(x.when === 'Date not set' && tagOk(x) && x.why.length > 10)).map(x => x.id).join(', '));
   // Removed 2026-10-08, and the Pokal and play-off entries added or moved (their data is in football-rules.json only).
   const GONE = ['vfb-regular', 'away-end-first', 'womens-football'];
   check('Removed entries are absent: vfb-regular, away-end-first, womens-football - from the file, the List and bucket-links-manual.csv',
@@ -205,11 +207,15 @@ const server = http.createServer((req, res) => {
   const NEW_IDS = ["bayern-munchen-v-tsv-1860-munchen-munchner-stadtderby", "spvgg-unterhaching-v-tsv-1860-munchen", "wurzburger-kickers-v-1-fc-schweinfurt-05", "vfb-stuttgart-v-karlsruher-sc", "vfb-stuttgart-v-1-fc-heidenheim", "fc-heidenheim-v-ssv-ulm-1846", "karlsruher-sc-v-waldhof-mannheim", "waldhof-mannheim-v-sv-sandhausen", "vfb-stuttgart-ii-v-stuttgarter-kickers", "fc-heidenheim-v-vfr-aalen", "karlsruher-sc-v-sv-sandhausen", "mainz-05-v-1-fc-kaiserslautern", "fc-saarbrucken-v-1-fc-kaiserslautern", "fc-saarbrucken-v-fc-08-homburg", "darmstadt-98-v-kickers-offenbach", "schalke-04-v-msv-duisburg", "schalke-04-v-rot-weiss-essen", "vfl-bochum-v-rot-weiss-essen", "vfl-bochum-v-borussia-dortmund", "msv-duisburg-v-rot-weiss-oberhausen", "msv-duisburg-v-fortuna-dusseldorf", "borussia-monchengladbach-v-fortuna-dusseldorf", "viktoria-koln-v-fortuna-koln", "rot-weiss-essen-v-rot-weiss-oberhausen", "eintracht-braunschweig-v-vfl-wolfsburg", "hannover-96-v-vfl-wolfsburg", "hamburger-sv-v-hansa-rostock", "fc-st-pauli-v-hansa-rostock", "vfb-lubeck-v-holstein-kiel", "sv-meppen-v-vfl-osnabruck", "dynamo-dresden-v-rb-leipzig", "chemnitzer-fc-v-dynamo-dresden", "chemnitzer-fc-v-fsv-zwickau", "energie-cottbus-v-dynamo-dresden", "finaltag-der-amateure", "wurttemberg-cup-final-wfv-pokal", "bavarian-toto-pokal-final", "westfalenpokal-final", "niederrheinpokal-final", "sachsenpokal-final", "niedersachsenpokal-final", "badischer-verbandspokal-final", "saarlandpokal-final", "fc-basel-v-fc-zurich", "fc-zurich-v-fc-winterthur", "fc-st-gallen-v-fc-basel", "scr-altach-v-sc-austria-lustenau-vorarlberg-derby", "rc-strasbourg-v-fc-mulhouse"];
   const nb = NEW_IDS.map(id => rules.bucketList.find(b => b.id === id));
   const present = nb.every(Boolean) && new Set(NEW_IDS).size === NEW_IDS.length;
-  check(`${NEW_IDS.length} new entries exist once each with group, country name, ISO-2 countryCode, sortKey, why, whyStatus "unverified", listOnly and a kind`,
+  check(`${NEW_IDS.length} new entries exist once each with group, country name, ISO-2 countryCode, sortKey, why, whyStatus "unverified" or (since phase 3c) "checked", listOnly and a kind`,
     present && nb.every(b => b.group && b.country && /^[A-Z]{2}$/.test(b.countryCode) && Number.isInteger(b.sortKey) && b.why && b.why.length > 10 &&
-      b.whyStatus === 'unverified' && b.listOnly === true && ['derby', 'final', 'event'].includes(b.kind)), NEW_IDS.filter(id => !rules.bucketList.some(b => b.id === id)).join(','));
-  const NOT_ALLOWED = ['date', 'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'capacity', 'ticketRoute', 'ticketRoutes', 'ticketNote', 'leadTimeDays', 'trigger', 'clubs', 'venue', 'whySources'];
-  check('No new entry has a date, capacity, ticket rule or sale window field', present && nb.every(b => NOT_ALLOWED.every(k => !(k in b))), nb.filter(b => NOT_ALLOWED.some(k => k in b)).map(b => b.id).join(','));
+      ['unverified', 'checked'].includes(b.whyStatus) && b.listOnly === true && ['derby', 'final', 'event'].includes(b.kind)), NEW_IDS.filter(id => !rules.bucketList.some(b => b.id === id)).join(','));
+  // whySources: these texts were written from memory with nothing read, so the batch was added without sources. Since
+  // phase 3c (2026-11-15) an entry whose text a fact check read against a page ("checked") may cite that page; an
+  // unverified one still may not.
+  const NOT_ALLOWED = ['date', 'kickoff', 'dateSource', 'nextFixture', 'fixtures', 'capacity', 'ticketRoute', 'ticketRoutes', 'ticketNote', 'leadTimeDays', 'trigger', 'clubs', 'venue'];
+  const badField = b => NOT_ALLOWED.some(k => k in b) || (b.whyStatus !== 'checked' && 'whySources' in b);
+  check('No new entry has a date, capacity, ticket rule or sale window field, and only a checked one has whySources', present && !nb.some(badField), nb.filter(badField).map(b => b.id).join(','));
   check('New entries: the nine cup entries are final, except the Finaltag der Amateure (event); every other new entry is a derby; leagueCheck is on every derby and on no cup entry',
     present && nb.every(b => NEW_CUPS.includes(b.id) ? (b.kind === (b.id === 'finaltag-der-amateure' ? 'event' : 'final') && !b.leagueCheck) : (b.kind === 'derby' && b.leagueCheck === true)),
     nb.filter(b => !(NEW_CUPS.includes(b.id) ? !b.leagueCheck : b.leagueCheck === true)).map(b => b.id).join(','));
@@ -231,10 +237,10 @@ const server = http.createServer((req, res) => {
   const runs = otherBlock.filter((cc, i) => cc !== otherBlock[i - 1]);
   check('Order: each non-German country with new entries stays one contiguous block inside "other countries"', ['AT', 'FR', 'CH'].every(cc => runs.filter(x => x === cc).length === 1), runs.join(','));
   const new48Cards = groupDom.filter(x => x.id && NEW_IDS.includes(x.id));
-  check(`All ${NEW_IDS.length} new entries are List cards under their own group heading, undated ("Date not set"), labelled "Not yet verified", showing their why`,
+  check(`All ${NEW_IDS.length} new entries are List cards under their own group heading, undated ("Date not set"), labelled "Not yet verified" exactly when unverified, showing their why`,
     new48Cards.length === NEW_IDS.length && new48Cards.every(x => { const b = rules.bucketList.find(y => y.id === x.id); let h = null;
       for(const g of groupDom){ if(g.head && g.head.startsWith('group:')) h = g.head.slice(6); if(g.id === x.id) break; }
-      return h === b.group && x.when === 'Date not set' && /Not yet verified/.test(x.tags) && x.why === b.why; }), new48Cards.filter(x => x.when !== 'Date not set').map(x => x.id).join(','));
+      return h === b.group && x.when === 'Date not set' && /Not yet verified/.test(x.tags) === (b.whyStatus === 'unverified') && x.why === b.why; }), new48Cards.filter(x => x.when !== 'Date not set').map(x => x.id).join(','));
   // bucket-links-manual.csv: a club is linked only by an exact name match in data/clubs/<country>.json; the host stays empty;
   // a derby with no matched club has no line; nothing else (cups) has one.
   {

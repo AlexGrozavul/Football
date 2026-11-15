@@ -350,6 +350,72 @@ const server = http.createServer((req, res) => {
     check('Bucket list with the filter chip: no sideways scroll at 390 px', s.sw <= s.cw + 1 && s.doc <= W + 1);
   }
 
+  // ---------------------------------------------------------------- whyStatus "checked" (phase 3c, 2026-11-15)
+  // Fixtures only: three entries are added to the served copy of football-rules.json (data/ is not changed).
+  // A checked entry with sources shows a small grey line with its links and "Checked on <date>" and no tag; a checked
+  // entry with no factual claim shows nothing extra; an unverified one keeps the tag and its "Sources for the note".
+  // At 360 px, in English and Romanian: the line wraps and nothing goes past the screen's edge.
+  {
+    const FX_SRC = ['https://en.wikipedia.org/wiki/Bayern_Munich_and_TSV_1860_Munich_rivalry_in_association_football',
+      'https://de.wikipedia.org/wiki/Stadion_an_der_Gr%C3%BCnwalder_Stra%C3%9Fe', 'https://en.wikipedia.org/wiki/2026%E2%80%9327_3._Liga',
+      'https://www.example.org/a/very/long/path/that/must/wrap/somewhere/on/a/small/phone/screen'];
+    const FX = [
+      {id: 'fx-checked-src', type: 'fixture', title: 'Fixture: checked with sources', why: 'A fixture text with a claim the pages support.',
+        whyStatus: 'checked', whyCheckedOn: '2026-11-15', whySources: FX_SRC, listOnly: true},
+      {id: 'fx-checked-noclaim', type: 'fixture', title: 'Fixture: checked, no factual claim', why: 'A fixture text that is only an opinion.',
+        whyStatus: 'checked', whyCheckedOn: '2026-11-15', whyBasis: 'no factual claim', listOnly: true},
+      {id: 'fx-unverified', type: 'fixture', title: 'Fixture: unverified', why: 'A fixture text written from memory.',
+        whyStatus: 'unverified', whySources: ['https://en.wikipedia.org/wiki/Ruhr'], listOnly: true}];
+    const real = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/football-rules.json'), 'utf8'));
+    real.bucketList = real.bucketList.concat(FX);
+    for(const lang of ['en', 'ro']){
+      const W3 = 360;
+      const c3 = await browser.newContext({viewport: {width: W3, height: 780}, isMobile: true, hasTouch: true, deviceScaleFactor: 1, serviceWorkers: 'block'});
+      await c3.route('https://tiles.stadiamaps.com/**', r => r.fulfill({status:200, contentType:'image/png', headers: {'Access-Control-Allow-Origin': '*'}, body: PNG}));
+      await c3.route('https://api.stadiamaps.com/**', r => r.abort());
+      await c3.route('**/data/football-rules.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(real)}));
+      await c3.addInitScript(l => { try{ localStorage.setItem('football-planner-lang', l); }catch(e){} }, lang);
+      const p3 = await c3.newPage();
+      const err3 = []; p3.on('pageerror', e => err3.push(e.message));
+      await p3.goto(BASE);
+      await p3.click('nav button[data-pane=bucket]');
+      await p3.waitForFunction(() => document.querySelector('#bucketBody details.bucket[data-id="fx-unverified"]'), null, {timeout: 20000});
+      await p3.$$eval('#bucketBody details.bucket[data-id^="fx-"]', ds => ds.forEach(d => d.open = true));
+      await p3.waitForFunction(() => [...document.querySelectorAll('#bucketBody details.bucket[data-id^="fx-"] .tix')]
+        .every(t => t.querySelector('.bwhy, .err') && !t.querySelector('.unavail:only-child')), null, {timeout: 30000});
+      const got = await p3.evaluate(() => Object.fromEntries([...document.querySelectorAll('#bucketBody details.bucket[data-id^="fx-"]')].map(d => {
+        const line = d.querySelector('.tix [data-why=checked]');
+        const r = line && line.getBoundingClientRect();
+        return [d.dataset.id, {tags: d.querySelector('.meta').textContent, detail: d.querySelector('.tix').textContent,
+          line: line ? {text: line.textContent, hrefs: [...line.querySelectorAll('a')].map(a => a.href), left: r.left, right: r.right, h: r.height,
+            lh: parseFloat(getComputedStyle(line).lineHeight) || 16, color: getComputedStyle(line).color, size: getComputedStyle(line).fontSize} : null,
+          srcNote: !!d.querySelector('.tix [data-why=sources]'), err: d.querySelector('.tix .err')?.textContent || ''}];
+      })));
+      const L = lang === 'en' ? {tag: 'Not yet verified', on: /Checked on 15 Nov 2026$/, note: 'Sources for the note:'}
+                              : {tag: 'Încă neverificat', on: /Verificat la 15 nov\.? 2026$/, note: 'Surse pentru notă:'};
+      const A = got['fx-checked-src'], B = got['fx-checked-noclaim'], C = got['fx-unverified'];
+      check(`[${lang}] a checked entry with sources has no "${L.tag}" tag`, A && !A.tags.includes(L.tag), A && A.tags);
+      check(`[${lang}] a checked entry with sources shows one grey line with its ${FX_SRC.length} links and the checked date, and no "${L.note}"`,
+        A && A.line && A.line.hrefs.join() === FX_SRC.map(u => new URL(u).href).join() && L.on.test(A.line.text.trim()) && !A.srcNote && A.line.size === '12px' &&
+        /Grünwalder Straße/.test(A.line.text) && /2026–27 3\. Liga/.test(A.line.text) && /example\.org/.test(A.line.text), A && JSON.stringify(A.line));
+      check(`[${lang}] the checked line wraps at ${W3} px and stays inside the screen`, A && A.line && A.line.h > A.line.lh * 1.5 && A.line.left >= 0 && A.line.right <= W3 + 1,
+        A && A.line && `h ${A.line.h}, line ${A.line.lh}, ${A.line.left}-${A.line.right}`);
+      check(`[${lang}] a checked entry with no factual claim shows no tag, no source line and no sources note`,
+        B && !B.tags.includes(L.tag) && !B.line && !B.srcNote && B.detail.includes('only an opinion'), B && B.tags);
+      check(`[${lang}] an unverified entry keeps the "${L.tag}" tag and its "${L.note}" line, and gets no checked line`,
+        C && C.tags.includes(L.tag) && C.srcNote && C.detail.includes(L.note) && !C.line, C && C.tags);
+      const s3 = await p3.evaluate(() => {
+        const el = document.getElementById('pane-bucket');
+        const over = [...el.querySelectorAll('*')].filter(x => { const r = x.getBoundingClientRect(); return r.width > 0 && (r.right > innerWidth + 1 || r.left < -1); });
+        return {sw: el.scrollWidth, cw: el.clientWidth, doc: document.documentElement.scrollWidth, over: over.slice(0, 5).map(x => `${x.tagName}.${x.className}`)};
+      });
+      check(`[${lang}] Bucket list at ${W3} px with the fixtures open: no sideways scroll, nothing past the edge`, s3.sw <= s3.cw + 1 && s3.doc <= W3 + 1 && !s3.over.length, JSON.stringify(s3));
+      check(`[${lang}] no script error with the fixtures`, !err3.length, err3.join(' | '));
+      if(process.env.SHOT_DIR){ await p3.evaluate(() => document.querySelector('#bucketBody details.bucket[data-id="fx-checked-src"]').scrollIntoView()); await p3.screenshot({path: path.join(process.env.SHOT_DIR, `checked-${lang}.png`)}); }
+      await c3.close();
+    }
+  }
+
   check('no script error', !errors.length, errors.join(' | '));
   await browser.close(); server.close();
   const failed = results.filter(x => !x).length;
