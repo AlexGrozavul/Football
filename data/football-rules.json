@@ -345,7 +345,7 @@
     "country": 8
    },
    "trueDerby": true,
-   "why": "Stated as the single most personally invested derby in world football. Two former champions from neighbouring western cities, both wrecked by insolvency, both with supports far above their current level.",
+   "why": "Stated as the single most personally invested derby in world football. A six-time champion (UTA) and a two-time cup winner (Politehnica) from neighbouring western cities, both wrecked by insolvency, both with supports far above their current level.",
    "blockedReason": "Two obstacles. UTA are Superliga, Poli Liga 2 - no league fixture. And although both are in Cupa României Group A, the format gives each club three matches, one per seeding pot, and Poli's pot-one opponent is Rapid.",
    "unblockCondition": [
     "Poli promotion - play-off decided approx mid-May 2027, giving two league meetings from 2027/28.",
@@ -838,6 +838,9 @@
    "sortKey": 50,
    "why": "24 teams in nine stadiums across England, Scotland, Wales and Ireland, with the final at Wembley. Casement Park in Belfast has had construction problems.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/UEFA_Euro_2028"
+   ],
    "listOnly": true,
    "kind": "tournament",
    "countryCode": ""
@@ -864,6 +867,9 @@
    "sortKey": 70,
    "why": "Matches in Italian and Turkish stadiums, awarded in October 2023.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/UEFA_Euro_2032"
+   ],
    "listOnly": true,
    "kind": "tournament",
    "countryCode": ""
@@ -877,6 +883,11 @@
    "sortKey": 80,
    "why": "One match in late May or early June at a neutral venue set years ahead. The finalists get most tickets, with a small public allocation (route unverified).",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/UEFA_Champions_League",
+    "https://en.wikipedia.org/wiki/2027_UEFA_Champions_League_final",
+    "https://en.wikipedia.org/wiki/2023_UEFA_Champions_League_final"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": ""
@@ -942,6 +953,10 @@
    "sortKey": 140,
    "why": "Played at the Olympiastadion Berlin each year, with both fan groups travelling. Underdogs reach it: third-division Bielefeld played VfB in 2025.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/DFB-Pokal",
+    "https://en.wikipedia.org/wiki/2025_DFB-Pokal_final"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "DE"
@@ -981,6 +996,10 @@
    "sortKey": 170,
    "why": "Wembley in February or March, the first major trophy of the English season.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/EFL_Cup",
+    "https://en.wikipedia.org/wiki/2026_EFL_Cup_final"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "GB"
@@ -1044,8 +1063,12 @@
    "group": "Finals and super cups",
    "country": "Netherlands",
    "sortKey": 220,
-   "why": "Usually at De Kuip in Rotterdam, a cup final in a stadium Feyenoord plan to leave.",
+   "why": "Usually at De Kuip in Rotterdam. Feyenoord dropped their plans to leave it for a new stadium in 2022.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/KNVB_Cup",
+    "https://en.wikipedia.org/wiki/De_Kuip"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "NL"
@@ -1072,6 +1095,11 @@
    "sortKey": 240,
    "why": "Hampden Park in May, one of Europe's oldest big stadiums.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Scottish_Cup",
+    "https://en.wikipedia.org/wiki/Hampden_Park",
+    "https://en.wikipedia.org/wiki/2026_Scottish_Cup_final"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "GB"
@@ -1135,8 +1163,12 @@
    "group": "International fixtures",
    "country": "none",
    "sortKey": 290,
-   "why": "The Superclásico das Américas, played in World Cup qualifiers every cycle at the Maracanã or the Monumental in Buenos Aires.",
+   "why": "The South American derby, also called the Superderby of the Americas. They met in qualifiers for the 2002, 2006, 2010, 2018, 2022 and 2026 World Cups; the venue changes (since 2000 the Morumbi, the Mineirão and the Maracanã in Brazil, the Monumental, Rosario and San Juan in Argentina).",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Argentina–Brazil_football_rivalry",
+    "https://en.wikipedia.org/wiki/Superclásico_de_las_Américas"
+   ],
    "listOnly": true,
    "kind": "national-team",
    "countryCode": ""
@@ -1233,6 +1265,11 @@
    "sortKey": 590,
    "why": "Main derby between neighbouring cities, played at the traditional, hostile Bieberer Berg when Offenbach host. Likely cup only.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Mainderby",
+    "https://en.wikipedia.org/wiki/Kickers_Offenbach",
+    "https://en.wikipedia.org/wiki/Stadion_am_Bieberer_Berg_(2012)"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1261,6 +1298,10 @@
    "sortKey": 630,
    "why": "Lower Saxony's main rivalry, with loyal away followings.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Hannover_96",
+    "https://de.wikipedia.org/wiki/Niedersachsenderby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1344,6 +1385,10 @@
    "sortKey": 750,
    "why": "Long, bitter Rhineland rivalry with strong atmospheres at both grounds.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Borussia_Mönchengladbach",
+    "https://de.wikipedia.org/wiki/Rheinisches_Derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1414,6 +1459,10 @@
    "sortKey": 840,
    "why": "Ruhr derby with working-class grounds and a strong ultra presence.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Rot-Weiss_Essen",
+    "https://en.wikipedia.org/wiki/Ruhr"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1442,6 +1491,10 @@
    "sortKey": 940,
    "why": "East against west: Union's mostly standing Alte Försterei against Hertha's Olympiastadion.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Stadion_An_der_Alten_Försterei",
+    "https://en.wikipedia.org/wiki/Berlin_derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1483,6 +1536,11 @@
    "sortKey": 1010,
    "why": "City derby played at the Gazi-Stadion auf der Waldau, a small, steep ground on a wooded hillside. Only possible through the cup.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Gazi-Stadion_auf_der_Waldau",
+    "https://en.wikipedia.org/wiki/Stuttgarter_Kickers",
+    "https://en.wikipedia.org/wiki/2026–27_Bundesliga"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1593,7 +1651,7 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "sortKey": 1190,
-   "why": "Title rivalry at the Ion Oblemenco, the best-attended ground outside Bucharest.",
+   "why": "Title rivalry at the Ion Oblemenco.",
    "whyStatus": "unverified",
    "leagueCheck": true,
    "listOnly": true,
@@ -1635,6 +1693,9 @@
    "sortKey": 1220,
    "why": "Rosario derby, Argentina's most intense outside Buenos Aires. Away fans are usually not allowed in.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Barra_brava"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "AR"
@@ -1702,6 +1763,10 @@
    "sortKey": 1280,
    "why": "Two of Belgium's most successful clubs in the country's biggest fixture.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Belgian_Pro_League",
+    "https://en.wikipedia.org/wiki/Club_Brugge_KV"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "BE"
@@ -1726,8 +1791,14 @@
    "group": "Club fixtures, other countries",
    "country": "Brazil",
    "sortKey": 1300,
-   "why": "Played at the Mineirão, the stadium of Germany's 7-1 win over Brazil in 2014.",
+   "why": "Cruzeiro's home is the Mineirão, the stadium of Germany's 7-1 win over Brazil in 2014; Atlético have played at their own Arena MRV since 2023.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Mineirão",
+    "https://en.wikipedia.org/wiki/Cruzeiro_EC",
+    "https://en.wikipedia.org/wiki/Clube_Atlético_Mineiro",
+    "https://en.wikipedia.org/wiki/Arena_MRV"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "BR"
@@ -1832,6 +1903,9 @@
    "sortKey": 1380,
    "why": "Adriatic derby between two coastal clubs with loud, organised fans.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Adriatic_derby"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "HR"
@@ -1871,6 +1945,9 @@
    "sortKey": 1420,
    "why": "Africa's biggest club rivalry, in the Cairo International Stadium. Attendance is sometimes restricted.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Cairo_derby"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "EG"
@@ -1897,6 +1974,9 @@
    "sortKey": 1440,
    "why": "Birmingham's rivalry. Villa Park is also a Euro 2028 venue.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/UEFA_Euro_2028"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1939,6 +2019,9 @@
    "sortKey": 1470,
    "why": "Anfield against Everton's new Hill Dickinson Stadium, opened 2025.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Hill_Dickinson_Stadium"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1993,6 +2076,9 @@
    "sortKey": 1510,
    "why": "Two of England's loudest grounds, in the same league since Sunderland's 2025 promotion.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Tyne–Wear_derby"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "GB"
@@ -2048,6 +2134,9 @@
    "sortKey": 1550,
    "why": "Fratton Park is a traditional old ground with a loud home end.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Fratton_Park"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2104,6 +2193,10 @@
    "sortKey": 1600,
    "why": "Côte d'Azur derby, with Monaco's compact Stade Louis II against Nice's Allianz Riviera.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Derby_de_la_Côte_d'Azur",
+    "https://en.wikipedia.org/wiki/Stade_Louis_II"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2118,6 +2211,9 @@
    "sortKey": 1610,
    "why": "France's biggest fixture, with the Vélodrome among its loudest stadiums.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Le_Classique"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "FR"
@@ -2158,6 +2254,11 @@
    "sortKey": 1660,
    "why": "Budapest's historic rivalry, between a modern arena and a very traditional ground.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Ferencvárosi_TC–Újpest_FC_rivalry",
+    "https://en.wikipedia.org/wiki/Ferencváros_Stadion",
+    "https://en.wikipedia.org/wiki/Szusza_Ferenc_Stadion"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "HU"
@@ -2252,6 +2353,9 @@
    "sortKey": 1740,
    "why": "One of Europe's most intense ultras atmospheres, with Curva Sud and Curva Nord in the Olimpico.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Derby_della_Capitale"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "IT"
@@ -2292,6 +2396,10 @@
    "sortKey": 1770,
    "why": "Mexico's biggest match, played at the Estadio Azteca, rebuilt for the 2026 World Cup.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Club_América",
+    "https://en.wikipedia.org/wiki/Estadio_Azteca"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "MX"
@@ -2344,6 +2452,11 @@
    "sortKey": 1810,
    "why": "Silesia's industrial region with a strong fan culture and large away followings.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Górnik_Zabrze",
+    "https://en.wikipedia.org/wiki/Upper_Silesia",
+    "https://pl.wikipedia.org/wiki/Derby_Górnego_Śląska_w_piłce_nożnej"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2358,6 +2471,11 @@
    "sortKey": 1820,
    "why": "One of Poland's most heated local derbies, in a modern stadium on the Baltic coast.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Tricity_Derby",
+    "https://en.wikipedia.org/wiki/Gdańsk_Stadium",
+    "https://en.wikipedia.org/wiki/Gdańsk"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2438,6 +2556,11 @@
    "sortKey": 1880,
    "why": "A top-two meeting in Portugal's league, in two modern grounds.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Estádio_do_Dragão",
+    "https://en.wikipedia.org/wiki/Estádio_José_Alvalade",
+    "https://en.wikipedia.org/wiki/2025–26_Primeira_Liga"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "PT"
@@ -2566,8 +2689,13 @@
    "group": "Club fixtures, other countries",
    "country": "Spain",
    "sortKey": 2000,
-   "why": "Two grounds with strong local identity. The clubs may not share a league.",
+   "why": "Two grounds with strong local identity. Both clubs are in La Liga in 2026-27, after Deportivo's promotion in 2026.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/2026–27_La_Liga",
+    "https://en.wikipedia.org/wiki/Deportivo_de_A_Coruña",
+    "https://en.wikipedia.org/wiki/2026–27_Segunda_División"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2608,6 +2736,10 @@
    "sortKey": 2030,
    "why": "Mestalla is one of La Liga's steepest old grounds.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Mestalla_Stadium",
+    "https://en.wikipedia.org/wiki/2026–27_La_Liga"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2674,6 +2806,9 @@
    "sortKey": 2120,
    "why": "The MLS rivalry of Los Angeles since 2018.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/El_Tráfico"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "US"
@@ -2713,6 +2848,9 @@
    "sortKey": 2150,
    "why": "One of the most heated rivalries in Britain, with strict policing and often restricted away allocations.",
    "whyStatus": "unverified",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/South_Wales_derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3262,7 +3400,7 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 520,
-   "why": "Local Saxon derby, about 40 km apart.",
+   "why": "Local Saxon derby, about 33 km apart in a straight line.",
    "whyStatus": "unverified",
    "leagueCheck": true,
    "listOnly": true,
@@ -3435,7 +3573,7 @@
    "group": "Club fixtures, other countries",
    "country": "Switzerland",
    "sortKey": 2070,
-   "why": "St. Gallen's Kybunpark against a large Basel following.",
+   "why": "St. Gallen's Sitterstadion (called Kybunpark until 2026) against a large Basel following.",
    "whyStatus": "unverified",
    "leagueCheck": true,
    "listOnly": true,
