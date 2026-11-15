@@ -4,9 +4,9 @@
 "id": "rosario-central-v-newell-s-old-boys",
 "leads": [
 [
-"en",
-"Rosario derby",
-"banned|prohib|visiting",
+"es",
+"Clásico rosarino",
+"visitante[^\\n]{0,200}",
 3
 ]
 ]
@@ -17,39 +17,15 @@
 "leads": [
 [
 "en",
+"Cruzeiro Esporte Clube",
 "Mineirão",
-"Germany|semi-final",
-3
-],
-[
-"en",
-"Arena MRV",
-"Atlético|tenants",
-3
-],
-[
-"en",
-"Clássico Mineiro",
-"2023|2024|2025|2026",
-5
-]
-]
-},
-{
-"n": 16,
-"id": "bayern-munchen-v-tsv-1860-munchen-munchner-stadtderby",
-"leads": [
-[
-"en",
-"Grünwalder Stadion",
-"capacity",
 2
 ],
 [
 "en",
-"FC Bayern Munich",
-"Allianz Arena",
-1
+"Clube Atlético Mineiro",
+"Arena MRV|Mineirão",
+3
 ]
 ]
 },
@@ -58,39 +34,9 @@
 "id": "vfb-stuttgart-v-stuttgarter-kickers",
 "leads": [
 [
-"de",
-"Waldau (Stuttgart)",
-"Wald|Höhe|Hang|Degerloch",
-4
-],
-[
-"de",
-"Gazi-Stadion auf der Waldau",
-"steil|bewaldet|Höhenlage|liegt|befindet sich",
-4
-],
-[
 "en",
-"VfB Stuttgart",
-"league\\s*=|plays in the Bundesliga",
-2
-]
-]
-},
-{
-"n": 23,
-"id": "fc-st-pauli-v-hansa-rostock",
-"leads": [
-[
-"en",
-"FC Hansa Rostock",
-"police|security|high-risk",
-4
-],
-[
-"en",
-"FC St. Pauli",
-"police|security|high-risk",
+"2026–27 Bundesliga",
+"Stuttgart|Bayern Munich",
 3
 ]
 ]
@@ -101,159 +47,27 @@
 "leads": [
 [
 "de",
-"SC Freiburg",
-"Karlsruher SC|Baden-Derby|Badenderby|badische[ns]? Derby",
-4
-],
-[
-"en",
-"SC Freiburg",
-"Karlsruher|Baden derby|rival",
-4
-],
-[
-"de",
-"Baden-Derby",
-"Karlsruher SC|SC Freiburg",
-2
-],
-[
-"de",
-"Badisches Derby",
-"Karlsruher SC|SC Freiburg",
-2
-]
-]
-},
-{
-"n": 27,
-"id": "msv-duisburg-v-rot-weiss-oberhausen",
-"leads": [
-[
-"de",
-"Oberhausen",
-"Duisburg",
-4
-],
-[
-"de",
-"Duisburg",
-"Oberhausen",
-3
-]
-]
-},
-{
-"n": 30,
-"id": "frankenderby",
-"leads": [
-[
-"de",
-"Fürth",
-"grenz[^\\n]{0,200}Nürnberg|Nürnberg[^\\n]{0,120}(grenz|Nachbar)|Nachbarst[^\\n]{0,200}",
-3
-],
-[
-"de",
-"Frankenderby",
-"Risiko|Sicherheit|Nachbar",
+"Fußballderbys in Deutschland",
+"Karlsruher SC[^\\n]{0,200}|Baden[- ]?[Dd]erby[^\\n]{0,200}",
 5
 ],
 [
 "en",
-"Bavarian football derbies",
-"Fürth",
-3
-]
-]
-},
-{
-"n": 35,
-"id": "america-v-chivas-clasico-nacional",
-"leads": [
-[
-"en",
-"Club América",
-"Estadio Azteca|Estadio Banorte|home (stadium|ground|matches)",
-3
-],
-[
-"en",
-"C.D. Guadalajara",
-"Estadio Akron|América|Clásico",
+"List of association football club rivalries in Europe",
+"Karlsruher[^\\n]{0,160}|Freiburg[^\\n]{0,160}",
 4
 ],
 [
 "en",
-"Estadio Azteca",
-"2024[^\\n]{0,200}(renovat|clos|reopen)|reopened|rebuilt|reconstruct",
-4
-]
-]
-},
-{
-"n": 36,
-"id": "lechia-gdansk-v-arka-gdynia-tri-city-derby",
-"leads": [
-[
-"en",
-"Gdańsk",
-"Baltic",
-2
-],
-[
-"en",
-"Stadion Miejski (Gdynia)",
-"opened|built|renovat",
-3
-]
-]
-},
-{
-"n": 37,
-"id": "gornik-zabrze-v-ruch-chorzow-silesian-derby",
-"leads": [
-[
-"en",
-"Górnik Zabrze",
-"Ruch Chorzów|Silesia|derby",
+"Karlsruher SC",
+"rival[^\\n]{0,200}",
 4
 ],
 [
-"en",
-"Ruch Chorzów",
-"Górnik|Great Silesian|derby|Upper Silesia",
-4
-],
-[
-"pl",
-"Wielkie Derby Śląska",
-"Górnik Zabrze|Ruch Chorzów|przemys",
-3
-],
-[
-"en",
-"Upper Silesia",
-"industr",
-2
-]
-]
-},
-{
-"n": 38,
-"id": "porto-v-sporting",
-"leads": [
-[
-"en",
-"2025–26 Primeira Liga",
-"champions|runners-up|winners|title",
+"de",
+"Karlsruher SC",
+"Rivalität[^\\n]{0,250}|Derby[^\\n]{0,200}",
 5
-],
-[
-"en",
-"FC Porto–Sporting CP rivalry",
-"Big Three|Três Grandes|rival|three",
-4
 ]
 ]
 },
@@ -263,81 +77,15 @@
 "leads": [
 [
 "en",
-"Stadionul Ion Oblemenco",
-"attendance|average|highest|capacity",
-5
-],
-[
-"ro",
-"Stadionul Ion Oblemenco",
-"spectatori|asisten|medie|capacitate",
-5
-],
-[
-"en",
-"2025–26 Liga I",
-"attendance",
+"2024–25 Liga I",
+"attendance[^\\n]{0,160}",
 4
 ],
 [
 "en",
 "CS Universitatea Craiova",
-"attendance|average",
-4
-]
-]
-},
-{
-"n": 40,
-"id": "poli-uta",
-"leads": [
-[
-"en",
-"FC UTA Arad",
-"2014|insolven|bankrupt|debts|refounded|re-founded",
-5
-],
-[
-"en",
-"SSU Politehnica Timișoara",
-"league\\s*=|position\\s*=|currently",
+"support[^\\n]{0,200}",
 3
-]
-]
-},
-{
-"n": 45,
-"id": "fc-st-gallen-v-fc-basel",
-"leads": [
-[
-"en",
-"Sitterstadion",
-"tenants|Kybunpark|kybunpark|renamed|known as|sponsor",
-5
-]
-]
-},
-{
-"n": 46,
-"id": "fc-zurich-v-fc-winterthur",
-"leads": [
-[
-"en",
-"Stadion Schützenwiese",
-"capacity",
-2
-]
-]
-},
-{
-"n": 49,
-"id": "efl-cup-final",
-"leads": [
-[
-"en",
-"2026 EFL Cup final",
-"\\d+ (March|February) 2026|date\\s*=",
-2
 ]
 ]
 },
@@ -348,135 +96,9 @@
 [
 "de",
 "Bayerischer Toto-Pokal",
-"Spielort|Endspielort|Finalort|Finale[^\\n]{0,80}\\b(in|im)\\b|Heimspiel|ein(em)? Spiel",
-8
-],
-[
-"en",
-"Bavarian Cup",
-"Location|Venue|played (at|in)|single",
-4
-]
-]
-},
-{
-"n": 51,
-"id": "dfb-pokal-final",
-"leads": [
-[
-"en",
-"2025 DFB-Pokal final",
-"VfB Stuttgart|third.division|3\\. Liga[^\\n]{0,120}",
-3
-]
-]
-},
-{
-"n": 53,
-"id": "knvb-beker-final",
-"leads": [
-[
-"en",
-"De Kuip",
-"Feyenoord announced that they instead preferred building a new stadium[\\s\\S]{0,1400}",
+"Spielort[\\s\\S]{0,700}",
 1,
-1500
-],
-[
-"nl",
-"Stadion Feijenoord",
-"Feyenoord City|nieuwe stadion|2022|2023|2024|2025",
-6
-]
-]
-},
-{
-"n": 54,
-"id": "scottish-cup-final",
-"leads": [
-[
-"en",
-"Scottish Cup",
-"\\bMay\\b",
-3
-],
-[
-"en",
-"2026 Scottish Cup final",
-"2026",
-3
-],
-[
-"en",
-"Hampden Park",
-"oldest",
-2
-]
-]
-},
-{
-"n": 55,
-"id": "el-final-2027",
-"leads": [
-[
-"en",
-"2027 UEFA Europa League final",
-"\\d+ May|date\\s*=",
-3
-]
-]
-},
-{
-"n": 56,
-"id": "uefa-champions-league-final",
-"leads": [
-[
-"en",
-"2024 UEFA Champions League final",
-"ticket|general public",
-4
-],
-[
-"en",
-"2023 UEFA Champions League final",
-"ticket|general public",
-4
-],
-[
-"en",
-"2027 UEFA Champions League final",
-"ticket|general public",
-3
-],
-[
-"en",
-"UEFA Champions League",
-"ticket",
-3
-]
-]
-},
-{
-"n": 57,
-"id": "brazil-v-argentina",
-"leads": [
-[
-"en",
-"Argentina–Brazil football rivalry",
-"is a (sports|football|highly)[^\\n]{0,300}|known as[^\\n]{0,200}|Battle of the",
-3
-],
-[
-"en",
-"Argentina–Brazil football rivalry",
-"2014 World Cup qualif",
-1
-],
-[
-"en",
-"Superclásico de las Américas",
-"is an? [^\\n]{0,300}",
-2
+800
 ]
 ]
 },
@@ -487,7 +109,7 @@
 [
 "en",
 "UEFA Euro 2028",
-"24 teams|24-team|\\bteams\\s*=\\s*\\d+",
+"num_teams[^\\n]*|twenty-four|24 (national )?teams|24 nations|\\b24\\b[^\\n]{0,80}(teams|nations|finalists)",
 3
 ]
 ]
