@@ -327,7 +327,13 @@
    "country": "Germany",
    "sortKey": 450,
    "whyAssistant": "Germany's top fixture: Bayern's tifo-heavy Südkurve in Munich, and Dortmund's standing Südtribüne in Dortmund.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Der_Klassiker",
+    "https://en.wikipedia.org/wiki/Westfalenstadion",
+    "https://de.wikipedia.org/wiki/Allianz_Arena"
+   ],
    "kind": "derby",
    "countryCode": "DE"
   },
@@ -355,8 +361,18 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "sortKey": 1180,
-   "whyAssistant": "West Romania derby, with Arad's new stadium against Timișoara's large Dan Păltinișanu and its ultra following.",
-   "whyStatus": "unverified",
+   "whyAssistant": "West Romania derby (Derbiul Vestului). Arad's Francisc Neuman stadium opened in 2020; Timișoara's large Dan Păltinișanu was demolished in 2025, with a new stadium planned on the same site, and Politehnica play at the Electrica stadium.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://ro.wikipedia.org/wiki/Derbiul_Vestului",
+    "https://en.wikipedia.org/wiki/FC_UTA_Arad",
+    "https://ro.wikipedia.org/wiki/FC_UTA_Arad",
+    "https://en.wikipedia.org/wiki/FC_Politehnica_Timișoara",
+    "https://ro.wikipedia.org/wiki/Știința_Poli_Timișoara",
+    "https://ro.wikipedia.org/wiki/Stadionul_Dan_Păltinișanu_(1963)",
+    "https://ro.wikipedia.org/wiki/Stadionul_Francisc_von_Neuman_(dezambiguizare)"
+   ],
    "leagueCheck": true,
    "kind": "derby",
    "countryCode": "RO"
@@ -787,8 +803,13 @@
    "group": "Club fixtures, other countries",
    "country": "Czechia",
    "sortKey": 1400,
-   "whyAssistant": "The country's biggest match between two grounds a few kilometres apart, with strong, choreographed support.",
-   "whyStatus": "unverified",
+   "whyAssistant": "The country's biggest match, between its two most successful clubs, played at the Letná Stadium and the Stadion Eden.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Prague_derby",
+    "https://cs.wikipedia.org/wiki/Pražské_derby"
+   ],
    "kind": "derby",
    "countryCode": "CZ"
   },
@@ -847,8 +868,13 @@
    "group": "Tournaments",
    "country": "none",
    "sortKey": 40,
-   "why": "Under-23 tournament with a few older players per squad, held in a World Cup 2026 host region. Venues unverified.",
-   "whyStatus": "unverified",
+   "why": "Under-23 tournament with up to three older players per squad and 12 men's teams, in seven stadiums in Los Angeles and six other US cities; the semi-finals and medal matches are at the Rose Bowl in Pasadena.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Football_at_the_2028_Summer_Olympics",
+    "https://en.wikipedia.org/wiki/Football_at_the_Summer_Olympics"
+   ],
    "listOnly": true,
    "kind": "tournament",
    "countryCode": ""
@@ -877,8 +903,12 @@
    "group": "Tournaments",
    "country": "none",
    "sortKey": 60,
-   "why": "48 teams in Spain, Portugal and Morocco, with opening matches in Uruguay, Argentina and Paraguay. First World Cup on three continents. Final venue unconfirmed.",
-   "whyStatus": "unverified",
+   "why": "48 teams in Spain, Portugal and Morocco, with one centenary match each in Uruguay, Argentina and Paraguay, so matches on three continents. Final venue unconfirmed.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/2030_FIFA_World_Cup"
+   ],
    "listOnly": true,
    "kind": "tournament",
    "countryCode": ""
@@ -969,8 +999,13 @@
    "group": "Finals and super cups",
    "country": "United States",
    "sortKey": 130,
-   "why": "Hosted by the finalist with the better record, in December, with a US stadium and fan culture.",
-   "whyStatus": "unverified",
+   "why": "Hosted by the finalist with the better regular-season record, so far in November or December; the league moves to a summer-to-spring schedule beginning in 2027, so the timing of the final changes. A US stadium and fan culture.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/MLS_Cup",
+    "https://en.wikipedia.org/wiki/Major_League_Soccer"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "US"
@@ -996,7 +1031,7 @@
   {
    "id": "dfl-supercup",
    "type": "event",
-   "title": "DFL-Supercup",
+   "title": "Franz-Beckenbauer-Supercup",
    "group": "Finals and super cups",
    "country": "Germany",
    "sortKey": 150,
@@ -1207,7 +1242,11 @@
    "country": "none",
    "sortKey": 270,
    "why": "A long-running rivalry between two of Europe's football cultures. Scheduling varies.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Germany–Netherlands_football_rivalry"
+   ],
    "listOnly": true,
    "kind": "national-team",
    "countryCode": ""
@@ -1422,8 +1461,16 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 670,
-   "why": "Baltic Sea derby, with Rostock's Ostseestadion among the loudest grounds in the east.",
-   "whyStatus": "unverified",
+   "why": "Two clubs from cities on the Baltic Sea, with Rostock's Ostseestadion among the loudest grounds in the east.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Hansa_Rostock",
+    "https://de.wikipedia.org/wiki/Holstein_Kiel",
+    "https://de.wikipedia.org/wiki/Ostseestadion",
+    "https://de.wikipedia.org/wiki/Kiel",
+    "https://de.wikipedia.org/wiki/Rostock"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1436,8 +1483,16 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 680,
-   "why": "Schleswig-Holstein derby at a small ground on the Baltic with a large travelling Hamburg crowd. Likely cup only.",
-   "whyStatus": "unverified",
+   "why": "North German meeting at Kiel's small Holstein-Stadion (15,034 places) on the Baltic; the two clubs shared every north German title from 1921 to 1933. HSV are in the Bundesliga and Kiel in the 2. Bundesliga in 2026/27, so likely cup only.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Holstein_Kiel",
+    "https://de.wikipedia.org/wiki/Holstein-Stadion",
+    "https://de.wikipedia.org/wiki/Kiel",
+    "https://de.wikipedia.org/wiki/Fußball-Bundesliga_2026/27",
+    "https://de.wikipedia.org/wiki/2._Fußball-Bundesliga_2026/27"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1451,7 +1506,11 @@
    "country": "Germany",
    "sortKey": 690,
    "why": "Two city clubs with opposite cultures, at the Volksparkstadion and the Millerntor, one of Germany's most distinctive grounds.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Hamburger_Stadtderby"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "DE"
@@ -1463,8 +1522,14 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 700,
-   "why": "Baden derby between two stadiums of similar size, with both sets of fans travelling a short distance.",
-   "whyStatus": "unverified",
+   "why": "Often called the Badisches Derby (Baden derby), between two stadiums of similar size (33,180 and 34,700 places), about 119 km apart in a straight line.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/SC_Freiburg",
+    "https://de.wikipedia.org/wiki/Europa-Park-Stadion",
+    "https://de.wikipedia.org/wiki/Wildparkstadion"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1555,7 +1620,14 @@
    "country": "Germany",
    "sortKey": 790,
    "why": "Leipzig city derby in the Regionalliga, with large fan groups, choreography and old grounds that put the crowd at the pitch.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Leipziger_Stadtderby",
+    "https://de.wikipedia.org/wiki/Fußball-Regionalliga_Nordost_2026/27",
+    "https://de.wikipedia.org/wiki/Bruno-Plache-Stadion",
+    "https://de.wikipedia.org/wiki/Alfred-Kunze-Sportpark"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1568,8 +1640,15 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 830,
-   "why": "Westphalia-Lower Saxony derby with large terraces and a big away following.",
-   "whyStatus": "unverified",
+   "why": "Westphalia-Lower Saxony derby between two grounds with standing terraces.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Preußen_Münster",
+    "https://de.wikipedia.org/wiki/VfL_Osnabrück",
+    "https://de.wikipedia.org/wiki/Preußenstadion",
+    "https://de.wikipedia.org/wiki/Bremer_Brücke"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1727,8 +1806,14 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "sortKey": 1140,
-   "why": "The other Bucharest derby, with Rapid's Giulești as a compact, modern ground and a heavy security presence.",
-   "whyStatus": "unverified",
+   "why": "The other Bucharest derby, with Rapid's Giulești as a compact, modern ground (opened 2022, 14,047 seats).",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Rapid-Giulești_Stadium",
+    "https://en.wikipedia.org/wiki/FC_Rapid_București",
+    "https://en.wikipedia.org/wiki/FC_Dinamo_București"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1816,8 +1901,13 @@
    "group": "Club fixtures, other countries",
    "country": "Argentina",
    "sortKey": 1210,
-   "why": "Two big grounds a few hundred metres apart on one street.",
-   "whyStatus": "unverified",
+   "why": "Two big grounds less than 300 metres apart.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Avellaneda_derby",
+    "https://es.wikipedia.org/wiki/Clásico_de_Avellaneda"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "AR"
@@ -1847,7 +1937,12 @@
    "country": "Austria",
    "sortKey": 1230,
    "why": "Linz derby with a loud home end in a modern stadium.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Derby_(Mannschaftssport)",
+    "https://de.wikipedia.org/wiki/Raiffeisen_Arena_(Linz)"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1971,7 +2066,11 @@
    "country": "Brazil",
    "sortKey": 1320,
    "why": "Rio's classic, played at the Maracanã.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Fla–Flu"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "BR"
@@ -1984,7 +2083,13 @@
    "country": "Brazil",
    "sortKey": 1330,
    "why": "Porto Alegre's rivalry between the Arena do Grêmio and the Beira-Rio, a 2014 World Cup venue.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Grenal",
+    "https://en.wikipedia.org/wiki/Estádio_Beira-Rio",
+    "https://en.wikipedia.org/wiki/Arena_do_Grêmio"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "BR"
@@ -1997,7 +2102,11 @@
    "country": "Bulgaria",
    "sortKey": 1340,
    "why": "The Eternal derby, Bulgaria's biggest match, with intense, loud ultras.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Eternal_derby_of_Bulgarian_football"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "BG"
@@ -2043,8 +2152,13 @@
    "group": "Club fixtures, other countries",
    "country": "Croatia",
    "sortKey": 1370,
-   "why": "Croatia's biggest fixture, with Hajduk's Torcida and the Poljud, a modernist stadium.",
-   "whyStatus": "unverified",
+   "why": "Croatia's biggest fixture, with Hajduk's Torcida and the Poljud, designed by the architect Boris Magaš and a protected cultural good.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Eternal_derby_(Croatia)",
+    "https://en.wikipedia.org/wiki/Stadion_Poljud"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "HR"
@@ -2074,7 +2188,13 @@
    "country": "Cyprus",
    "sortKey": 1390,
    "why": "Cyprus's biggest match, with large, organised fan groups sharing one ground in Nicosia.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Nicosia_derby",
+    "https://en.wikipedia.org/wiki/GSP_Stadium",
+    "https://en.wikipedia.org/wiki/AC_Omonia"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "CY"
@@ -2178,7 +2298,11 @@
    "country": "England",
    "sortKey": 1460,
    "why": "Yorkshire against Lancashire, Elland Road against Old Trafford.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Leeds_United_F.C.–Manchester_United_F.C._rivalry"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2210,7 +2334,13 @@
    "country": "England",
    "sortKey": 1480,
    "why": "The two most successful English clubs by league titles, in two of England's biggest grounds.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Liverpool_F.C.–Manchester_United_F.C._rivalry",
+    "https://en.wikipedia.org/wiki/Anfield",
+    "https://en.wikipedia.org/wiki/Old_Trafford"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "GB"
@@ -2223,7 +2353,12 @@
    "country": "England",
    "sortKey": 1490,
    "why": "The Premier League's biggest modern derby, in two huge grounds.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Manchester_derby",
+    "https://en.wikipedia.org/wiki/Etihad_Stadium"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "GB"
@@ -2235,8 +2370,12 @@
    "group": "Club fixtures, other countries",
    "country": "England",
    "sortKey": 1500,
-   "why": "East London rivalry with a hostile reputation at The Den and heavy policing.",
-   "whyStatus": "unverified",
+   "why": "A rivalry that began between dockworkers in East and South East London, with a hostile reputation at The Den and heavy policing.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Millwall_F.C.–West_Ham_United_F.C._rivalry"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2267,7 +2406,11 @@
    "country": "England",
    "sortKey": 1520,
    "why": "East of England derby, with traditional grounds and strong atmospheres.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/East_Anglian_derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2280,8 +2423,14 @@
    "group": "Club fixtures, other countries",
    "country": "England",
    "sortKey": 1530,
-   "why": "Two clubs a short drive apart, at traditional grounds.",
-   "whyStatus": "unverified",
+   "why": "Two clubs about 21 km apart in a straight line, at the City Ground (opened 1898) and Pride Park (opened 1997).",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Derby_County_F.C.–Nottingham_Forest_F.C._rivalry",
+    "https://en.wikipedia.org/wiki/City_Ground",
+    "https://en.wikipedia.org/wiki/Pride_Park_Stadium"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2336,12 +2485,18 @@
   {
    "id": "lyon-v-saint-etienne-derby-du-rhone",
    "type": "fixture",
-   "title": "Lyon v Saint-Étienne (Derby du Rhône)",
+   "title": "Lyon v Saint-Étienne (Derby rhônalpin)",
    "group": "Club fixtures, other countries",
    "country": "France",
    "sortKey": 1580,
    "why": "Historic rivalry, with a loud Geoffroy-Guichard. Saint-Étienne's league status may not line up.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://fr.wikipedia.org/wiki/Olympique_lyonnais_-_AS_Saint-Étienne_en_football",
+    "https://en.wikipedia.org/wiki/Olympique_Lyonnais–AS_Saint-Étienne_rivalry",
+    "https://fr.wikipedia.org/wiki/Championnat_de_France_de_football_2026-2027"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2355,7 +2510,11 @@
    "country": "France",
    "sortKey": 1590,
    "why": "Western derby between two well-supported clubs, with both stadiums known for atmosphere.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://fr.wikipedia.org/wiki/Stade_rennais_FC_-_FC_Nantes_en_football"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2419,7 +2578,12 @@
    "country": "Greece",
    "sortKey": 1650,
    "why": "Thessaloniki derby, with Toumba one of Greece's loudest grounds and the city split along club lines.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Derby_of_Thessaloniki",
+    "https://en.wikipedia.org/wiki/Toumba_Stadium"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "GR"
@@ -2451,7 +2615,13 @@
    "country": "Italy",
    "sortKey": 1670,
    "why": "Two cities on opposite sides of the Apennines. The Franchi is under renovation, so capacity may be reduced.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://it.wikipedia.org/wiki/Derby_dell'Appennino",
+    "https://it.wikipedia.org/wiki/Stadio_Artemio_Franchi",
+    "https://en.wikipedia.org/wiki/Stadio_Artemio_Franchi"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2465,7 +2635,12 @@
    "country": "Italy",
    "sortKey": 1680,
    "why": "Two sets of fans staging choreographies in one shared ground.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Derby_della_Lanterna",
+    "https://it.wikipedia.org/wiki/Derby_di_Genova"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2494,7 +2669,11 @@
    "country": "Italy",
    "sortKey": 1700,
    "why": "Turin's two clubs, with both sets of fans strongly organised.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Derby_della_Mole"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "IT"
@@ -2507,7 +2686,12 @@
    "country": "Italy",
    "sortKey": 1720,
    "why": "Played at the Stadio Diego Armando Maradona, one of Italy's loudest grounds.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Derby_del_Sole",
+    "https://en.wikipedia.org/wiki/Stadio_Diego_Armando_Maradona"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "IT"
@@ -2520,7 +2704,11 @@
    "country": "Italy",
    "sortKey": 1730,
    "why": "Sicily's biggest rivalry, with strong ultras. League status varies.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Derby_di_Sicilia"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2551,7 +2739,11 @@
    "country": "Japan",
    "sortKey": 1750,
    "why": "Japan's top local derby, with some of the J.League's best-organised chants and banners.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Osaka_derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2596,7 +2788,11 @@
    "country": "Morocco",
    "sortKey": 1780,
    "why": "One of Africa's biggest ultras rivalries, with elaborate tifos.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Casablanca_derby"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "MA"
@@ -2680,12 +2876,16 @@
   {
    "id": "legia-warsaw-v-lech-poznan-klasyk",
    "type": "fixture",
-   "title": "Legia Warsaw v Lech Poznań (Klasyk)",
+   "title": "Legia Warsaw v Lech Poznań (Derby of Poland)",
    "group": "Club fixtures, other countries",
    "country": "Poland",
    "sortKey": 1830,
-   "why": "Poland's biggest fixture.",
-   "whyStatus": "unverified",
+   "why": "Known as the Derby of Poland; Lech are one of Legia's biggest rivals.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Legia_Warsaw"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "PL"
@@ -2801,7 +3001,11 @@
    "country": "Scotland",
    "sortKey": 1910,
    "why": "A compact, loud Scottish derby, easier to get into than the Old Firm.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Edinburgh_derby"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "GB"
@@ -2842,7 +3046,12 @@
    "country": "South Africa",
    "sortKey": 1950,
    "why": "South Africa's biggest match, at FNB Stadium, Africa's largest, which hosted the 2010 World Cup final.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Soweto_derby",
+    "https://en.wikipedia.org/wiki/FNB_Stadium"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "ZA"
@@ -3087,8 +3296,13 @@
    "group": "Club fixtures, other countries",
    "country": "Uruguay",
    "sortKey": 2140,
-   "why": "Played at the Estadio Centenario, built for the 1930 World Cup and recognised by FIFA as a historic monument.",
-   "whyStatus": "unverified",
+   "why": "Played at the two clubs' own grounds (Gran Parque Central, Campeón del Siglo) or at the Estadio Centenario, which opened in July 1930, hosted the 1930 World Cup and was declared by FIFA in 1983 the first Historical Monument of World Football.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Uruguayan_Clásico",
+    "https://en.wikipedia.org/wiki/Estadio_Centenario"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "UY"
@@ -3189,7 +3403,7 @@
    },
    "group": "Club fixtures, Romania",
    "country": "Romania",
-   "whyAssistant": "Not a match between Liga 2 and Liga 3 clubs: the runners-up of the Liga 3 play-off groups play single-match semi-finals and a final, with the first semi-final's winner hosting the final, and the winner takes the fifth promotion place to Liga 2. The group winners go up directly. The 2025-26 rules are from the federation's competition system and press; older editions used a different, two-legged format, and the 2026-27 rules were not found. Liga 2's own relegation play-off is between Liga 2 clubs only and is not covered here.",
+   "whyAssistant": "Not a match between Liga 2 and Liga 3 clubs: the runners-up of the four Liga 3 play-off groups play single-match semi-finals and a final, with the first semi-final's winner hosting the final, and the winner takes the fifth promotion place to Liga 2. The group winners go up directly. The 2025-26 rules are from the federation's competition system and press; the 2026-27 rules were not found.",
    "whySources": [
     "https://www.frf.ro/wp-content/uploads/2025/06/Sistem-competitional-Liga-3-cex-iunie-2025.pdf",
     "https://www.sport.ro/fotbal-intern/opt-echipe-lupta-pentru-promovarea-in-liga-2-situatia-din-play-off-ul-ligii-3-cele-18-echipe-retrogradate-la-judeteana.html"
@@ -3303,8 +3517,13 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 730,
-   "why": "Baden derby between the Wildpark and the Carl-Benz-Stadion.",
-   "whyStatus": "unverified",
+   "why": "A rivalry between two Baden clubs, the Wildpark against the Carl-Benz-Stadion.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Karlsruher_SC",
+    "https://de.wikipedia.org/wiki/SV_Waldhof_Mannheim"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3364,8 +3583,14 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 720,
-   "why": "Baden derby between a big ground and a small one.",
-   "whyStatus": "unverified",
+   "why": "A regional meeting between a big ground (Wildpark, 33,180 places) and a small one (Hardtwaldstadion, 15,414), about 39 km apart in a straight line.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Wildparkstadion",
+    "https://de.wikipedia.org/wiki/Hardtwaldstadion",
+    "https://de.wikipedia.org/wiki/SV_Sandhausen"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3379,7 +3604,12 @@
    "country": "Germany",
    "sortKey": 800,
    "why": "Rhineland-Palatinate derby, the Mewa Arena against the Fritz-Walter-Stadion on the Betzenberg hill.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Mewa_Arena",
+    "https://de.wikipedia.org/wiki/Fritz-Walter-Stadion"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3525,7 +3755,12 @@
    "country": "Germany",
    "sortKey": 810,
    "why": "Rhine-Ruhr rivalry over a short distance.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/MSV_Duisburg",
+    "https://de.wikipedia.org/wiki/Fortuna_Düsseldorf"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3616,7 +3851,12 @@
    "country": "Germany",
    "sortKey": 640,
    "why": "Lower Saxony fixture, the Heinz von Heiden Arena against the Volkswagen Arena.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Heinz-von-Heiden-Arena",
+    "https://de.wikipedia.org/wiki/Volkswagen_Arena"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3629,8 +3869,12 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 620,
-   "why": "North-east rivalry with large travelling support.",
-   "whyStatus": "unverified",
+   "why": "Occasionally billed as a Nordderby (north derby), despite the distance between the two cities.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Hansa_Rostock"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3769,8 +4013,12 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 320,
-   "why": "Several regional cup finals are played on the same Saturday in late May and shown on television. Scope unverified. Each winner qualifies for the DFB-Pokal. Venues vary.",
-   "whyStatus": "unverified",
+   "why": "The finals of the 21 regional association cups are almost always all played on one day in late May or early June and shown live by ARD in a conference broadcast. Each winner qualifies for the DFB-Pokal. Venues vary.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Fußball-Verbandspokal"
+   ],
    "listOnly": true,
    "kind": "event",
    "countryCode": "DE"
@@ -3832,7 +4080,11 @@
    "country": "Germany",
    "sortKey": 360,
    "why": "A one-match regional final with a DFB-Pokal place at stake. Venue and finalists vary each year.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Niederrheinpokal"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "DE"
@@ -3857,8 +4109,12 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 380,
-   "why": "A one-match regional final with a DFB-Pokal place at stake. Venue and finalists vary each year.",
-   "whyStatus": "unverified",
+   "why": "Since 2018/19 two separate competitions, one for 3. Liga and Regionalliga Nord clubs and one for amateur clubs, each with its own final and a DFB-Pokal place at stake. Venues and finalists vary each year.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Niedersachsenpokal"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "DE"
