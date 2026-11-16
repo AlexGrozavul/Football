@@ -20,5 +20,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
-          RUN_LABEL: run1
+          RUN_LABEL: run2
         run: python3 .github/probe/probe.py .github/probe/pages.tsv

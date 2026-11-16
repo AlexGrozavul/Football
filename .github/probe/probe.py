@@ -68,7 +68,7 @@ def units(w):
                 out.append(s)
     return out
 
-def snip(u, m, width=270):
+def snip(u, m, width=520):
     if len(u) <= width:
         return u
     a = max(0, m.start() - width // 2)
@@ -138,6 +138,8 @@ def read_url(url):
         import subprocess, tempfile
         f = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False); f.write(body); f.close()
         text = subprocess.run(["pdftotext", "-layout", f.name, "-"], capture_output=True).stdout.decode("utf-8", "replace")
+        text = re.sub(r"[ \t]+", " ", text)
+        text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
         return text, info + "; pdf text %d chars" % len(text)
     h = body.decode("utf-8", "replace")
     if re.search(r"text.and.data.mining|TDM.reserv|44b\s*UrhG", h, re.I):
