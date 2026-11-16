@@ -1,44 +1,10 @@
-fifa-world-cup-2030	en	2030 FIFA World Cup	3@continent ;; 5@final (match )?(will|is|venue|to be|at)|host(ing)? the final|venue for the final|Bernabéu|Hassan II|Camp Nou
-fiorentina-v-bologna-derby-dell-appennino	en	Stadio Artemio Franchi	4@2024|2026|2027|2029|works|reduc|temporar|Fiesole
-fiorentina-v-bologna-derby-dell-appennino	it	Stadio Artemio Franchi	4@lavori|ristruttur|ridott|capienza
-frankenderby	de	Frankenderby	3@Risikospiel|Hochrisiko|Sicherheitsspiel|Hochsicherheit ;; 3@Nachbar|angrenz|benachbar
-frankenderby	de	Fürth	3@Nachbarstadt|Nachbarstädte|grenzt.*Nürnberg|Nürnberg.*grenz|zusammengewachsen
-genoa-v-sampdoria-derby-della-lanterna	it	Derby della Lanterna	4@coreograf|tifoser|spettacol|sciarpat
-hajduk-split-v-dinamo-zagreb	en	Stadion Poljud	4@Magaš|architect|modernis|shell|protected|cultural
-hamburger-sv-v-hansa-rostock	de	Hansa Rostock	3@Dagegen wurden insbesondere|Nordderby|Nord-Derby ;; 3@Holstein Kiel|Ostseederby|Ostsee-Derby|Ostseeduell ;; 4@Ostderby|Ost-Derby|Risikospiel|Sicherheitsspiel|Dresden.*(Rivalit|Feind) ;; 3@Auswärtsfahr|Auswärtsfans|mitgereist|Gästefans|Auswärtsspiel
-hamburger-sv-v-hansa-rostock	de	Nordderby	5@Kiel|Rostock|Hamburger SV
-holstein-kiel-v-hsv	de	Holstein Kiel	4@Nordderby|Derby|Rivalität|Rivalen
-ostderby	de	Dynamo Dresden	5@Ostderby|Ost-Derby|Risikospiel|Rivalität|Feindschaft|Ausschreitungen|Hochsicherheit
-intercontinental-derby	tr	Kıtalararası Derbi	4@deplasman|yasa[kğ]
-intercontinental-derby	en	The Intercontinental Derby (football)	4@visiting|away section|without (away|visiting)|travelling (fans|supporters)|Welcome to Hell|away fan|supporters were not|not allowed
-karlsruher-sc-v-freiburg	de	Karlsruher SC	4@Baden-Derby|Badisches Derby|badische[ns]? Derby|Badenderby|Baden-Duell|badische[rn]? (Rivale|Duell) ;; 3@Die größte Abneigung|Rivalität
-karlsruher-sc-v-freiburg	de	SC Freiburg	4@Baden-Derby|Badisches Derby|badische[ns]? Derby|Badenderby|Baden-Duell|badische[rn]? (Rivale|Duell) ;; 3@Rivalität|Rivalen|Derby
-karlsruher-sc-v-sv-sandhausen	de	SV Sandhausen	4@Baden-Derby|Badisches Derby|badische[ns]? Derby|Badenderby|Rivalität|Rivale|Nachbar
-karlsruher-sc-v-waldhof-mannheim	de	SV Waldhof Mannheim	4@Baden-Derby|Badisches Derby|badische[ns]? Derby|Badenderby|Sie entstand in den 1980er|Rivalität
-karlsruher-sc-v-freiburg	de	Derby (Mannschaftssport)	5@Baden|badisch|Karlsruher SC|Freiburg|Sandhausen|Waldhof
-legia-warsaw-v-lech-poznan-klasyk	pl	Legia Warszawa	4@Lech|klasyk ;; 3@derby Polski|największ
-legia-warsaw-v-lech-poznan-klasyk	pl	Lech Poznań	4@Legi[aąęi]|klasyk|derby Polski
-legia-warsaw-v-lech-poznan-klasyk	en	Lech Poznań	4@Legia|rival
-liverpool-v-manchester-united	en	Anfield	3@capacity|largest
-liverpool-v-manchester-united	en	Old Trafford	3@largest
-men-s-olympic-football-2028-los-angeles	en	Football at the Summer Olympics	4@under-23|over-age|overage|three players
-men-s-olympic-football-2028-los-angeles	en	Football at the 2028 Summer Olympics	4@age|born|12 men|men's tournament|sixteen|twelve ;; 6@New York|Columbus|Nashville|St\. Louis|San Jos|San Diego|Pasadena
-mls-cup	en	Major League Soccer	4@summer.to.spring|fall.to.spring|2027.28|calendar|schedule change
-mls-cup	en	MLS Cup	3@May|2028|sprint|transition
-niedersachsenpokal-final	de	Niedersachsenpokal	3@Wettbewerbsbäumen|Wettbewerbsbaum|zwei Sieger|beide Sieger
-nottingham-forest-v-derby-county-east-midlands-derby	en	Derby County F.C.–Nottingham Forest F.C. rivalry	4@miles|apart|A52|Brian Clough Trophy|East Midlands derby
-old-firm	en	Old Firm	2@tribal ;; 3@agreement being reached|2025|allocation
-omonia-v-apoel	en	Nicosia derby	4@biggest|most (popular|successful|important)|two most|greatest|fans|Gate
-omonia-v-apoel	en	AC Omonia	3@APOEL ;; 3@Gate 9|ultras|supporters
-poli-uta	ro	Stadionul Francisc von Neuman	4@2020|inaugur|capacitate|locuri|demol
-poli-uta	en	FC UTA Arad	5@insolven|bankrupt|debt|financial|dissol|refound|re-found
-poli-uta	ro	FC UTA Arad	5@datori|financiar|desființ|reînființ|insolvență|concordat
-prague-derby	en	Prague derby	5@kilomet|km|miles|Letná|Vršovice|fans|atmosphere|hooligan
-prague-derby	cs	Derby pražských S	5@km|kilometr|choreo|ultras|fanoušc
-preussen-munster-v-vfl-osnabruck	de	Preußenstadion	3@Stehpl
-preussen-munster-v-vfl-osnabruck	de	Stadion an der Bremer Brücke	3@Stehpl
-rapid-bucuresti-v-dinamo-bucuresti	en	FC Rapid București	4@police|security|gendarm|violen|hooligan|clash
-rapid-bucuresti-v-dinamo-bucuresti	en	FC Dinamo București	4@Rapid
-liga3-promotion-tournament	url	https://www.frf.ro/wp-content/uploads/2025/06/Sistem-competitional-Liga-3-cex-iunie-2025.pdf	5@turneul de promovare|singur[ăa] man|locul 2|locurile 2|promova
-liga3-promotion-tournament	ro	Liga a III-a 2024-2025	4@baraj|tur-retur|dublă manșă|promov
-liga3-promotion-tournament	ro	Liga a III-a 2026-2027	4@promov|baraj|turneu
+frankenderby	de	Nürnberg	4@Nachbarst|Fürth.*(grenz|Nachbar|zusammen)|Städteachse|unmittelbar
+frankenderby	en	Fürth	3@Nuremberg
+holstein-kiel-v-hansa-rostock	de	Kiel	2@Ostsee
+holstein-kiel-v-hansa-rostock	de	Rostock	2@Ostsee
+legia-warsaw-v-lech-poznan-klasyk	en	Legia Warsaw	4@Lech Poznań ;; 3@rivalr|derby
+legia-warsaw-v-lech-poznan-klasyk	pl	Legia Warszawa (piłka nożna)	4@Lech Pozna|Lechem|klasyk|derby Polski|Derby Polski
+legia-warsaw-v-lech-poznan-klasyk	pl	Derby Polski (piłka nożna)	4@Lech|Legi|klasyk
+legia-warsaw-v-lech-poznan-klasyk	en	Ekstraklasa	4@Legia.*Lech|Lech.*Legia|Klasyk|classic|biggest
+liga3-promotion-tournament	ro	Liga a II-a 2025-2026	5@baraj|play-out|retrograd
+intercontinental-derby	tr	Fenerbahçe-Galatasaray rekabeti	4@deplasman|yasa[kğ]|seyircisiz
