@@ -59,7 +59,7 @@
   {
    "id": 561763,
    "utcDate": "2026-08-15T14:00:00Z",
-   "status": "FINISHED",
+   "status": "POSTPONED",
    "matchday": 1,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -77,9 +77,9 @@
     "tla": "WBA",
     "crest": "https://crests.football-data.org/74.png"
    },
-   "homeGoals": 1,
-   "awayGoals": 2,
-   "winner": "AWAY_TEAM"
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
   },
   {
    "id": 561764,
@@ -2209,7 +2209,7 @@
   {
    "id": 561848,
    "utcDate": "2026-09-19T14:00:00Z",
-   "status": "FINISHED",
+   "status": "POSTPONED",
    "matchday": 8,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2227,9 +2227,9 @@
     "tla": "DER",
     "crest": "https://crests.football-data.org/342.png"
    },
-   "homeGoals": 1,
-   "awayGoals": 1,
-   "winner": "DRAW"
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
   },
   {
    "id": 561853,
