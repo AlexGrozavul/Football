@@ -98,7 +98,7 @@ deliberate exclusion or a field you still need to fill in.
   - fixtures[0] on 2026-10-31 is in the past
 - **dfb-pokal-final** - DFB-Pokal final
   - no date of any kind
-- **dfl-supercup** - DFL-Supercup
+- **dfl-supercup** - Franz-Beckenbauer-Supercup
   - no date of any kind
 - **dundee-v-dundee-united** - Dundee v Dundee United
   - no date of any kind
@@ -226,7 +226,7 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **leeds-v-manchester-united-roses-derby** - Leeds v Manchester United (Roses derby)
   - no date of any kind
-- **legia-warsaw-v-lech-poznan-klasyk** - Legia Warsaw v Lech Poznań (Klasyk)
+- **legia-warsaw-v-lech-poznan-klasyk** - Legia Warsaw v Lech Poznań (Derby of Poland)
   - no date of any kind
 - **levski-sofia-v-cska-sofia** - Levski Sofia v CSKA Sofia
   - no date of any kind
@@ -240,7 +240,7 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **lok-leipzig-v-chemie-leipzig** - Lok Leipzig v Chemie Leipzig
   - no date of any kind
-- **lyon-v-saint-etienne-derby-du-rhone** - Lyon v Saint-Étienne (Derby du Rhône)
+- **lyon-v-saint-etienne-derby-du-rhone** - Lyon v Saint-Étienne (Derby rhônalpin)
   - no date of any kind
 - **mainz-05-v-1-fc-kaiserslautern** - Mainz 05 v 1. FC Kaiserslautern
   - no date of any kind
