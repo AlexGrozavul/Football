@@ -98,7 +98,7 @@ deliberate exclusion or a field you still need to fill in.
   - fixtures[0] on 2026-10-31 is in the past
 - **dfb-pokal-final** - DFB-Pokal final
   - no date of any kind
-- **dfl-supercup** - Franz-Beckenbauer-Supercup
+- **dfl-supercup** - Franz Beckenbauer Supercup
   - no date of any kind
 - **dundee-v-dundee-united** - Dundee v Dundee United
   - no date of any kind
