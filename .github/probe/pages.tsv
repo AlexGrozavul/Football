@@ -1,18 +1,13 @@
-# run 2: independent sources found in the extlink lists and wikitext references; DFB match pages for club links; group sites (landing, links)
-B2	url	https://www.historisches-lexikon-bayerns.de/Lexikon/FC_Bayern_M%C3%BCnchen	CTX3@700@27\. Februar 1900|Februar 1900|gegründet|Gründung;;LINKS
-H4	url	https://www.marchivum.de/node/33708	CTX3@700@1899|Hoffenheim|Waldhof|1907;;LINKS
-F5	url	http://www.kleeblatt-chronik.de/v3/chronik/	CTX3@700@1903|1906|Gründung|gegründet|Sportfreunde;;LINKS
-I6	url	https://www.fcingolstadt.de/jubilaeumsjahr-zehn-jahre-schanzer-herzschlag/	CTX3@700@2004|Gründung|gegründet
-K8	url	https://www.rheinische-geschichte.lvr.de/Persoenlichkeiten/franz-kremer/DE-2086/lido/57c9399d10ec35.46625923	CTX3@700@1901|1948|Kölner BC|Ballspiel
-K8s	url	https://www.suedkurve.koeln/historie-suedkurve/	CTX3@700@Wilde Horde|1996;;LINKS
-W12	url	https://gruendungsort-werder.info/	CTX3@700@1899|Februar|Gründung;;LINKS
-W12s	url	https://www.spurensuche-bremen.de/werder-und-das-weserstadion/	CTX3@700@1899|Februar 1899|gegründet
-U13	url	https://www.bpb.de/themen/deutschlandarchiv/301246/vom-mauerbluemchen-zum-fussball-leuchtturm/	CTX3@700@1966|Januar 1966|gegründet
-D1	url	https://www.sv98.de/home/fans/fankultur/fanclubs/die-siedler/	CTX3@700@gegründet|Gründung|19[5-9]\d|20[0-2]\d|Siedler
-DFBa	links	https://datencenter.dfb.de/datencenter/bundesliga/1990-1991/19-spieltag/bayern-muenchen-fc-st-pauli-179944	.
-DFBb	links	https://www.dfb.de/datencenter/dfb-pokal/2019-20/1-runde/fc-ingolstadt-1-fc-nuernberg-2276931	.
-GL1	url	https://www.der-betze-brennt.de/fans/ultraszene.php	CTX3@700@Generation Luzifer|1998|größte
-LA2	url	https://archiv.faszination-fankurve.de/index.php?head=Rude-Boys-Aufloesung-nach-Zaunfahnenverlust&folder=sites&site=news_detail&news_id=11555	CTX3@700@Legio|2007|Rude Boys
-CC3	url	https://www.cannstatter-kurve.de/	CTX3@700@1997|gegründet|Gründung;;LINKS
-UB5	url	http://www.ub90.com/main/index.php?rub=histoire&saison=1990-1992	CTX3@700@1990|fond|création;;LINKS
-VC2	url	https://www.vfl.de/2019/09/19/vfl-buendnis-erhaelt-julius-hirsch-preis/	CTX3@700@Violet Crew|gegründet|seit
+# run 3: terms pages, fan-club pages, press pages from the link lists
+HLBt	url	https://www.historisches-lexikon-bayerns.de/Lexikon/HLB:Nutzungshinweise	CTX4@600@zitier|Zitat|kopier|Vervielf|automat|Lizenz|Crawler|Robot|KI|Text- und Data
+HLBaz	links	https://www.historisches-lexikon-bayerns.de/Lexikon/Artikel_A-Z	.
+CCi	url	https://www.cannstatter-kurve.de/impressum/	CTX4@600@1997|Commando|Urheber|Vervielf|Kopie|automat
+SGFf	url	https://www.sgf1903.de/fans.fanbetreuung.fanklubs	CTX3@600@Sportfreunde|Ronhof|gegründet;;LINKS
+RBs	url	https://www.spiegel.de/sport/fussball/rasen-ball-leipzig-red-bull-plant-liga-einstieg-a-627770.html	CTX3@700@19\. Mai|gegründet|Gründung|RasenBall
+SPt	url	https://taz.de/100-Jahre-FC-StPauli/!5142688/	CTX3@700@15\. Mai|1910|gegründet|Gründung
+F95r	url	https://rp-online.de/sport/fussball/fortuna/fortuna-duesseldorf-fans-feiern-120-geburtstag-mit-pyro-show_aid-17600333	CTX3@700@1895|5\. Mai|Geburtstag|gegründet
+VCf	url	https://www.faszination-fankurve.de/news/123895/ultras-aus-osnabrueck-und-stockholm-zelebrieren-15-jahre-freundschaft	CTX3@700@Violet Crew|gegründet|Gründung
+BGv	url	https://www.volksstimme.de/sport/1-fc-magdeburg/fcm-ultra-fans-boykottieren-halle-spiel-1994304	CTX3@700@Blue Generation|gegründet|2000
+WHf	url	https://fc.de/de/fc-info/fans/zesamme/fan-und-fanclubbetreuung/	CTX3@700@Wilde Horde|1996|Ultra
+GLf	url	https://fck.de/de/fans/fanclubs-fanregionen/	CTX3@700@Generation Luzifer|Luzifer|Ultra
+SIf	url	https://www.fcingolstadt.de/fan/fanclubs/	CTX3@700@Supporters|Ultra|größte|führende
