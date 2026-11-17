@@ -161,11 +161,11 @@ def read_url(url):
 
 def main(cfg):
     blocks = []
-    for raw in open(cfg, encoding="utf-8"):
-        raw = raw.rstrip("\n")
-        if not raw.strip() or raw.startswith("#"):
+    for rawline in open(cfg, encoding="utf-8"):
+        rawline = rawline.rstrip("\n")
+        if not rawline.strip() or rawline.startswith("#"):
             continue
-        eid, lang, title, pats = (raw.split("\t") + ["", "", "", ""])[:4]
+        eid, lang, title, pats = (rawline.split("\t") + ["", "", "", ""])[:4]
         lines = []
         if lang == "robots":
             st, hd, body = raw(title)
