@@ -1,11 +1,9 @@
-# run 4: fan-club entry for Sportfreunde Ronhof; club fan pages and link lists for groups; press for Leipzig and St. Pauli
-SGF2	url	https://www.sgf1903.de/fans.fanbetreuung.fanklubs	CTX2@1400@Sportfreunde Ronhof|Sportfreunde
-SGD	url	https://www.dynamo-dresden.de/fans/mitgliedschaft/sgd-mitgliedschaft/	CTX2@600@Ultras Dynamo|Ultras;;LINKS
-VFL	url	https://www.vfl.de/bremer-bruecke/vfl-museum/	CTX2@600@Violet Crew|Ultra;;LINKS
-FCK	url	https://fc.de/de/fc-info/news/detailseite/details/eine-muenze-schreibt-geschichte/	CTX2@600@1901|Kölner BC|Wilde Horde;;LINKS
-FCA	url	https://fcaugsburg.de/wns/fanclubs/augsburger-jungs/	CTX2@600@Legio|Ultra;;LINKS
-LVZ	url	https://www.lvz.de/Sportbuzzer/RB-Leipzig/RB-Archiv/RB-Leipzig-startet-am-Cottaweg-in-das-Unternehmen-Fussball-Bundesliga	CTX2@700@19\. Mai|gegründet|Gründung
-RND	url	http://rund-magazin.de/news/725/76/Themenwoche-100-Jahre-FC-St-Pauli-Interview-Volker-Ippig/	CTX2@700@15\. Mai|1910|gegründet
-FCM	url	https://1.fc-magdeburg.de/fans/fanclubs	CTX2@700@Blue Generation|Ultra
-UBw	wext:fr	Ultra boys 90	.
-UBr	raw:fr	Ultra boys 90	CTX3@900@1990|fond|créé|création
+# run 5: UB90 press and old group site; Dresden and Osnabrück fan pages; club roots for link lists (Köln, Kaiserslautern)
+UBc	url	http://www.culturetribunes.fr/2006/04/05/ultra-boys-90-1990-2005/	CTX3@700@1990|fond|création|naissance|né
+UBo	url	http://ub90.free.fr/main/?rub=histoire&saison=2000-2001	CTX2@600@1990|fond|création;;LINKS
+UBa	url	http://www.lalsace.fr/sport/2010/10/10/les-ub-90-refusent-le-piege-de-la-provocation	CTX2@600@1990|fond|créé|création
+SGDi	url	https://www.dynamo-dresden.de/fans/fanszene/faninitiativen/	CTX3@700@Ultras Dynamo|Ultras|gegründet
+SGDf	url	https://www.dynamo-dresden.de/fans/fanszene/fanclubs/	CTX2@700@Ultras Dynamo|Ultras
+VFLf	url	https://www.vfl.de/fans/	CTX3@600@Violet Crew|Ultra|gegründet;;LINKS
+FCr	links	https://fc.de/	.
+FCKr	links	https://fck.de/	.
