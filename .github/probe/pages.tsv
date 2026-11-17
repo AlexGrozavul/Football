@@ -1,3 +1,10 @@
-union-berlin-weihnachtssingen	de	Weihnachtssingen des 1. FC Union Berlin	5@Rasen|Spielfeld|Ränge|Tribüne|Innenraum ;; 6@Karten|Tickets|verlost|Verlosung|Losverfahren|ausverkauft|Eintritt|Mitglieder ;; 4@Besucher|Teilnehmer|Menschen|Zuschauer ;; 2@2003
-saarlandpokal-final	de	Saarlandpokal	8@\|\|.*(Saarbrücken|Elversberg|Homburg|Neunkirchen|Völklingen|Dillingen|Wendel|Saarlouis|Ottweiler) ;; 5@ausgetragen|Finalort|Hermann-Neuberger|Ludwigspark|Kaiserlinde|Endspielort
-saarbrucken-v-sv-elversberg	de	SV Elversberg	6@2021/22|2022/23|2023/24
+saarlandpokal-final	de	Saarlandpokal	9@^\|\s*(Saarbrücken|Elversberg|Homburg|Neunkirchen|Völklingen|Dillingen|St\. Wendel|Saarlouis|Wiebelskirchen|Spiesen-Elversberg|Saarwellingen|Püttlingen|Ottweiler) ;; 4@Spielort
+scr-altach-v-sc-austria-lustenau-vorarlberg-derby	de	SCR Altach	5@Derby|Lustenau
+seattle-sounders-v-portland-timbers-cascadia-derby	en	Cascadia Cup	4@derby
+seattle-sounders-v-portland-timbers-cascadia-derby	en	Portland Timbers–Seattle Sounders rivalry	4@derby
+waldhof-mannheim-v-sv-sandhausen	de	SV Sandhausen	5@Derby|Rivalität|Rivale
+wurzburger-kickers-v-1-fc-schweinfurt-05	de	1. FC Schweinfurt 05	6@Rivalität|Rivalen|Erzrivale|Mainfranken|Unterfranken-?[Dd]erby|Derby
+schalke-04-v-msv-duisburg	de	MSV Duisburg	6@Rivalität|Rivalen|Erzrivale|Derby|Feindschaft
+saarbrucken-v-sv-elversberg	de	1. FC Saarbrücken	6@Rivalität|Rivalen|Erzrivale|Derby
+sepsi-sfantu-gheorghe-v-csikszereda-miercurea-ciuc	en	FK Csíkszereda Miercurea Ciuc	4@rival|derby
+sepsi-sfantu-gheorghe-v-csikszereda-miercurea-ciuc	en	Sepsi OSK Sfântu Gheorghe	4@rival
