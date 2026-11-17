@@ -198,6 +198,29 @@ def main(cfg):
             blocks.append("### %s | %s:%s | MISSING%s\n" % (eid, lang, title, note))
             continue
         rt, rev, ts, text = got
+        if pats.startswith("CTX"):
+            t2 = re.sub(r"\s+", " ", text if lang == "url" else clean(text))
+            out = ["### %s | %s | rev %s %s %s | %d chars" % (eid, rt, rev, ts[:10], lines_note, len(t2))]
+            for gi, g in enumerate([x.strip() for x in pats[3:].split(";;") if x.strip()], 1):
+                n, w, rxs = g.split("@", 2)
+                n, w = int(n), int(w)
+                try:
+                    rx = re.compile(rxs, re.I)
+                except re.error as e:
+                    out.append("[c%d] BAD REGEX %s" % (gi, e)); continue
+                last, k = -10**9, 0
+                for m in rx.finditer(t2):
+                    if m.start() < last + w:
+                        continue
+                    a = max(0, m.start() - w // 4)
+                    out.append("[c%d] %s" % (gi, t2[a:a + w]))
+                    last, k = m.start(), k + 1
+                    if k >= n:
+                        break
+                if k == 0:
+                    out.append("[c%d] NO MATCH /%s/" % (gi, rxs))
+            blocks.append("\n".join(out) + "\n")
+            continue
         if pats.startswith("FULL"):
             n = int(pats[4:] or 3000)
             t2 = re.sub(r"\s*\n\s*", " / ", text if lang == "url" else clean(text))
