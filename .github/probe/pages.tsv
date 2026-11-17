@@ -1,0 +1,103 @@
+rapid-bucuresti-v-fcsb	en	Rapid-Giulești Stadium	3@rebuil|demolish|new stadium|opened|inaugurat ;; capacity
+rapid-bucuresti-v-fcsb	en	FCSB	4@Arena Națională|home ground|home matches|home games|Steaua Stadium|Ghencea ;; 2@Rapid
+rapid-bucuresti-v-petrolul-ploiesti	en	Primvs derby	3@derby|rival ;; 3@supporter|fans|away|following ;; 2@founded|192[34]
+rapid-wien-v-austria-wien-wiener-derby	en	Vienna derby	3@green|violet|purple ;; 3@biggest|most|important|largest ;; 2@Wiener Derby
+rayo-vallecano-v-atletico-madrid	en	Rayo Vallecano	3@working[- ]class ;; 4@left[- ]wing|anti-?fascis|Bukaneros|politic ;; 2@Vallecas.*(capacity|seat)|capacity
+rayo-vallecano-v-atletico-madrid	en	Campo de Fútbol de Vallecas	3@capacity|smallest|seats|14,
+rc-strasbourg-v-fc-mulhouse	fr	Racing Club de Strasbourg Alsace	4@Mulhouse ;; 3@Ultra Boys|ultras|kop ;; 2@derby
+rc-strasbourg-v-fc-mulhouse	fr	Football Club de Mulhouse	3@Strasbourg|derby ;; 2@National [23]|Régional|2026
+regionalliga-aufstiegsspiele	de	Fußball-Regionalliga 2025/26	5@Aufstiegsspiel|Aufstiegsrunde ;; 3@Würzburg.*Leipzig|Leipzig.*Würzburg|Lok ;; 3@direkt
+regionalliga-aufstiegsspiele	de	Fußball-Regionalliga	4@Aufstiegsspiel ;; 4@Reform|2028|Bundestag|Kompass|vier Staffeln ;; 3@West.*Südwest|Südwest.*West|rotier
+regionalliga-aufstiegsspiele	url	https://www.zdfheute.de/sport/fussball-regionalliga-aufstiegsreform-protest-100.html	4@Aufstiegsspiel|Relegation|direkt ;; 4@2028|Reform|Abstimm|Bundestag|Mehrheit ;; 2@West|Südwest|Nordost
+regionalliga-aufstiegsspiele	url	https://www.diefalsche9.de/aufstiegsspiele-zur-3-liga-moeglicher-gegner-von-lok-leipzig-fix/	4@Würzburg|Kickers ;; 3@Hinspiel|Rückspiel|Termin ;; 3@direkt|Meister
+regionalliga-aufstiegsspiele	url	https://www.dfb.de/news/regionalliga-reform-dfb-praesidium-bereitet-ausserordentlichen-bundestag-vor	5@2028|Reform|Bundestag|Mehrheit|Abstimm|Modell ;; 2@Aufstieg
+relegation	de	Fußball-Bundesliga 2025/26	5@Relegation ;; 3@Wolfsburg.*Paderborn|Paderborn.*Wolfsburg|n\. ?V\.|Verlängerung ;; 3@Absteiger|abgestiegen|Abstieg ;; 3@Aufsteiger|aufgestiegen|Aufstieg
+relegation	de	Relegation zur deutschen Fußball-Bundesliga	3@2008/09|2009|wieder eingeführt|wiedereingeführt ;; 3@Auswärtstor ;; 3@Hinspiel|Rückspiel|Heimrecht ;; 2@2026|2025/26
+relegation	url	https://www.dfb.de/news/detail/von-bundesliga-bis-3-liga-alle-infos-zu-den-relegationen-260997	4@Auswärtstor|Verlängerung|Elfmeterschießen ;; 4@Heimrecht|Hinspiel|Rückspiel ;; 3@16\.|Tabellen-?16|Dritte|Tabellendritte ;; 3@Drittligist|3\. Liga
+zweite-liga-relegation	de	2. Fußball-Bundesliga 2025/26	5@Relegation ;; 3@Essen.*Fürth|Fürth.*Essen ;; 3@Absteiger|abgestiegen|Aufsteiger|aufgestiegen
+zweite-liga-relegation	de	3. Fußball-Liga 2025/26	4@Relegation ;; 3@Essen|Fürth ;; 3@Aufsteiger|aufgestiegen|Absteiger|abgestiegen
+revierderby	de	Revierderby	3@Kilometer|km|Nachbar ;; 4@brisant|Rivalität|bedeutend|größte|Mutter aller|Hass|verfeindet ;; 3@Bergbau|Zeche|Kumpel|Arbeiter ;; 3@laut|Lautstärke|Stimmung|Atmosphäre
+revierderby	en	Revierderby	3@kilomet|miles|\bkm\b ;; 4@fierce|hostil|intense|biggest|most ;; 3@mining|coal|working[- ]class ;; 3@loud|atmosphere|noise
+revierderby	de	Signal Iduna Park	4@Stehplatztribüne|Stehplätze|Südtribüne.*größte|größte.*Tribüne ;; 2@Kapazität|Zuschauer fasst|Plätze
+revierderby	de	Veltins-Arena	4@Nordkurve|Stehplätze|Stehplatz ;; 2@Plätze|Kapazität
+revierderby	de	FC Schalke 04	4@2026|2025/26 ;; 3@Aufstieg in die Bundesliga|Wiederaufstieg|Meister der 2\. Bundesliga|Zweitligameister ;; 2@Bergbau|Knappen|Zeche
+revierderby	de	Borussia Dortmund	3@Bergbau|Zeche|Stahl|Arbeiter|Hoesch ;; 2@Schalke
+romania-national-team-home-match	en	Arena Națională	4@national stadium|national team|Romania national ;; 2@capacity|seats
+romania-national-team-home-match	en	Romania national football team	5@Arena Națională|home stadium|home ground|home matches|home games
+saarbrucken-v-sv-elversberg	de	SV Elversberg	5@Aufstieg|aufgestiegen|stieg.*auf ;; 3@Saarbrücken|Saarderby|Saarland-?Derby|Rival ;; 3@Kaiserlinde|Zuschauer|Plätze|Kapazität
+saarbrucken-v-sv-elversberg	de	1. FC Saarbrücken	3@Elversberg|Saarderby|Saarland-?Derby ;; 3@Gründungsmitglied|Deutscher Vizemeister|Bundesliga 1963|Tradition ;; 2@Ludwigspark.*(Plätze|Zuschauer|Kapazität)|Plätze
+saarlandpokal-final	de	Saarlandpokal	4@DFB-Pokal ;; 5@Endspielort|Austragungsort|Finale.*(in|im) |Endspiel.*(in|im) |neutral|Heimrecht ;; 2@Hin- und Rückspiel|ein Spiel|einem Spiel
+sachsenpokal-final	de	Sachsenpokal	4@DFB-Pokal ;; 5@Endspielort|Austragungsort|Finale.*(in|im) |Endspiel.*(in|im) |neutral|Heimrecht|Losentscheid ;; 2@Hin- und Rückspiel|ein Spiel|einem Spiel
+wurttemberg-cup-final-wfv-pokal	de	WFV-Pokal	4@DFB-Pokal ;; 6@Endspielort|Austragungsort|Waldau|Gazi|Finale.*(in|im) |Endspiel.*(in|im) |neutral ;; 2@Finaltag
+sarajevo-v-zeljeznicar	en	Sarajevo derby	4@Koševo|Kosevo|Grbavica|Asim Ferhatović ;; 4@biggest|largest|most|fierce
+schalke-04-v-msv-duisburg	de	Schauinsland-Reisen-Arena	3@Namens|heißt|umbenannt|Sponsor ;; 2@MSV Duisburg ;; 2@Plätze|Kapazität
+schalke-04-v-msv-duisburg	de	MSV Duisburg	4@Schalke|Revier|Ruhrgebiet|Derby|Rival
+schalke-04-v-rot-weiss-essen	de	Stadion an der Hafenstraße	3@Plätze|Kapazität|Zuschauer|fasst ;; 2@Rot-Weiss Essen ;; 2@Namens|heißt
+schalke-04-v-rot-weiss-essen	de	Rot-Weiss Essen	4@Schalke|Rival|Derby|Erzrivale ;; 4@Arbeiter|Bergbau|Zeche|Bergeborbeck|Kumpel ;; 3@Bochum
+schalke-04-v-rot-weiss-essen	de	Gelsenkirchen	4@Nachbar|grenzt|angrenz|Essen
+scr-altach-v-sc-austria-lustenau-vorarlberg-derby	de	Stadion Schnabelholz	4@Cashpoint|Namens|Sponsor|heißt ;; 2@Plätze|Kapazität|Zuschauer
+scr-altach-v-sc-austria-lustenau-vorarlberg-derby	de	Reichshofstadion	5@Neubau|abgerissen|Abriss|eröffnet|Umbau|2025|2026 ;; 2@Plätze|Kapazität ;; 2@Austria Lustenau
+scr-altach-v-sc-austria-lustenau-vorarlberg-derby	de	SC Austria Lustenau	4@Altach|Derby|Ländle ;; 3@Bregenz|Heimspiele|Ausweich
+seattle-sounders-v-portland-timbers-cascadia-derby	en	Portland Timbers–Seattle Sounders rivalry	3@Cascadia ;; 3@Timbers Army|supporter ;; 2@Providence Park|Lumen
+seattle-sounders-v-portland-timbers-cascadia-derby	en	Timbers Army	3@Providence Park|north end|section ;; 2@atmosphere|known for|renowned
+sepsi-sfantu-gheorghe-v-csikszereda-miercurea-ciuc	en	Sepsi OSK Sfântu Gheorghe	4@Székely|Szekler|Hungarian ;; 4@2026|relegat|promot ;; 2@Csíkszereda|Miercurea Ciuc|derby
+sepsi-sfantu-gheorghe-v-csikszereda-miercurea-ciuc	en	FK Csíkszereda Miercurea Ciuc	4@Székely|Szekler|Hungarian ;; 4@2026|relegat|promot ;; 2@Sepsi|derby
+sepsi-sfantu-gheorghe-v-csikszereda-miercurea-ciuc	en	2026–27 Liga I	3@Sepsi|Csíkszereda ;; 3@promot|relegat
+sevilla-v-real-betis-derbi-sevillano	en	Seville derby	4@atmosphere|passion|intens|fierce|heated ;; 3@divid|split|city|half
+sheffield-united-v-sheffield-wednesday-steel-city-derby	en	Bramall Lane	4@oldest ;; 2@Sheffield United
+sheffield-united-v-sheffield-wednesday-steel-city-derby	en	Steel City derby	3@Hillsborough|Bramall Lane ;; 2@Steel City
+slovan-bratislava-v-spartak-trnava	en	Traditional derby	4@biggest|most|prestigious|important|fiercest ;; 4@fans|supporters|away|ultras|travel
+spvgg-unterhaching-v-tsv-1860-munchen	de	Sportpark Unterhaching	3@Namens|heißt|uhlsport|Alpenbauer ;; 3@Plätze|Kapazität|Zuschauer
+spvgg-unterhaching-v-tsv-1860-munchen	de	Unterhaching	3@südlich|Süden|Landkreis München|grenzt
+spvgg-unterhaching-v-tsv-1860-munchen	de	SpVgg Unterhaching	4@1860|Derby|Löwen|Sechzig
+stockholm-derbies-hammarby-djurgarden-aik	en	Tele2 Arena	4@renamed|3Arena|naming rights|2024 ;; 3@Hammarby|Djurgården
+stockholm-derbies-hammarby-djurgarden-aik	en	Tvillingderbyt	4@biggest|most|attendance|fierce|largest ;; 2@tifo
+stockholm-derbies-hammarby-djurgarden-aik	en	AIK Fotboll	4@Djurgården|Hammarby|derby|rival ;; 2@Strawberry Arena|Friends Arena|Nationalarenan
+strasbourg-v-metz	fr	Football Club de Metz	4@Strasbourg|derby ;; 3@Saint-Symphorien ;; 3@2026|relég|promu|Ligue 2
+strasbourg-v-metz	en	2026–27 Ligue 1	3@Strasbourg|Metz ;; 3@promot|relegat
+sturm-graz-v-gak	de	Grazer Derby	4@Derby|Stadt ;; 3@Fans|Anhänger|Fanszene|Zuschauer
+sudwest-derby	de	Südwestderby	5@Kaiserslautern|Karlsruh ;; 3@Rivalität|brisant|bedeutend|größte
+sudwest-derby	de	Fritz-Walter-Stadion	3@Betzenberg|Berg|Anhöhe|Höhe ;; 2@Kaiserslautern
+sudwest-derby	de	Karlsruher SC	5@Kaiserslautern|Rival|Derby|Stuttgart ;; 2@Wildpark
+supercopa-de-espana	en	Supercopa de España	5@Saudi|Jeddah|Riyadh ;; 3@four|semi-final ;; 3@2021|Andalusia|Seville|La Cartuja ;; 3@most|titles|Barcelona.*Real Madrid
+superliga-relegation-baraj	en	2025–26 Liga I	6@play-off|playoff|play-out ;; 4@Farul|Chindia|Voluntari|Hermannstadt ;; 3@relegat
+superliga-relegation-baraj	url	https://www.fanatik.ro/s-au-stabilit-barajele-de-mentinere-promovare-in-superliga-cand-se-vor-juca-partidele-21473439	5@baraj ;; 4@Farul|Chindia|Voluntari|Hermannstadt ;; 3@locul|locurile|tur|retur
+superliga-relegation-baraj	url	https://tvrinfo.ro/?p=798520	5@Farul|Chindia|penalty|lovituri ;; 3@3-3|1-1|baraj
+superliga-relegation-baraj	url	https://www.g4media.ro/fc-voluntari-a-promovat-in-superliga-dupa-victoria-cu-hermannstadt-la-baraj-sibienii-retrogradeaza-dupa-4-ani.html	5@Voluntari|Hermannstadt ;; 3@3-0|2-3|3-2|baraj
+sv-meppen-v-vfl-osnabruck	de	Stadion an der Bremer Brücke	4@Stehpl|Stehränge|Tribüne ;; 3@Namens|heißt|1933|eröffnet ;; 2@Plätze|Kapazität
+sv-meppen-v-vfl-osnabruck	de	SV Meppen	4@Osnabrück|Derby|Rival|Emsland
+taca-de-portugal-final	en	Taça de Portugal	5@Estádio Nacional|Jamor|Oeiras ;; 3@final.*(held|played)|venue
+uefa-conference-league-final	en	UEFA Conference League	4@final.*(venue|held|played|host)|single match|one-off ;; 3@May|June
+uefa-conference-league-final	en	2027 UEFA Conference League final	4@will be (played|held)|scheduled|June|May ;; 2@Istanbul|Beşiktaş
+uefa-nations-league-finals-2027	en	2027 UEFA Nations League Finals	5@June|host|bid ;; 3@third place|semi-final ;; 2@four
+uefa-super-cup	en	UEFA Super Cup	4@August ;; 3@Europa League|Cup Winners ;; 4@venue|neutral|Monaco|host
+union-berlin-weihnachtssingen	de	Weihnachtssingen	6@Union|Alte Försterei|Försterei ;; 4@Karten|Tickets|verlost|Los|ausverkauft ;; 3@Rasen|Spielfeld|Tribüne|Ränge
+union-berlin-weihnachtssingen	de	1. FC Union Berlin	5@Weihnachtssingen ;; 3@verlost|Verlosung|Losverfahren
+universitatea-craiova-v-fcsb	en	CS Universitatea Craiova	4@Ion Oblemenco ;; 4@2025–26|2026|champion|title ;; 3@FCSB|Steaua|rival
+urawa-reds-home-match	en	Urawa Red Diamonds	5@attendance|supporter|fans|best-supported ;; 2@Saitama Stadium
+urawa-reds-home-match	en	Saitama Stadium 2002	4@largest|biggest|capacity ;; 2@Urawa
+vfb-lubeck-v-holstein-kiel	de	VfB Lübeck	4@Kiel|Derby|Rival|Landesderby
+vfb-lubeck-v-holstein-kiel	de	Holstein Kiel	4@Lübeck|Landesderby|Schleswig-Holstein-Derby|Rival
+vfb-lubeck-v-holstein-kiel	de	Lübeck	2@Ostsee ;; 2@Schleswig-Holstein
+vfb-lubeck-v-holstein-kiel	de	Kiel	2@Ostsee ;; 2@Landeshauptstadt
+vfb-stuttgart-ii-v-stuttgarter-kickers	de	VfB Stuttgart II	5@Stadion|Waldau|Schlienz|Großaspach|Aspach|Heimspiel ;; 3@Kickers|Stadtderby|Derby ;; 3@2026|3\. Liga
+vfb-stuttgart-ii-v-stuttgarter-kickers	de	Stuttgarter Kickers	4@Stadtderby|Derby|VfB Stuttgart II|Rival ;; 3@Waldau.*(Plätze|Zuschauer|Kapazität)|Gazi ;; 2@gegründet|1899
+vfb-stuttgart-v-1-fc-heidenheim	de	Voith-Arena	4@Schlossberg|Schloßberg|Höhe|höchstgelegen ;; 3@Plätze|Kapazität|Zuschauer
+vfb-stuttgart-v-1-fc-heidenheim	de	Heidenheim an der Brenz	3@Einwohner|Große Kreisstadt|Mittelzentrum
+vfb-stuttgart-v-freiburg	en	2026–27 Bundesliga	4@Stuttgart|Freiburg|Schalke|Elversberg ;; 3@promot|relegat
+vfb-stuttgart-v-freiburg	de	Europa-Park-Stadion	3@eröffnet|Eröffnung|2021|Neubau ;; 2@Plätze|Kapazität
+vfb-stuttgart-v-freiburg	de	MHPArena	4@Cannstatter Kurve ;; 2@Namens|heißt|MHP ;; 3@Stehpl|Untertürkheimer
+vfb-stuttgart-v-karlsruher-sc	de	Baden-Württemberg-Derby	5@Derby|Rivalität|Stuttgart|Karlsruh
+vfb-stuttgart-v-karlsruher-sc	de	Wildparkstadion	4@Stehpl|Fankurve|Gegengerade|Südtribüne|Namens|BBBank ;; 2@Plätze|Kapazität
+vfb-stuttgart-v-karlsruher-sc	de	VfB Stuttgart	4@Karlsruh|Derby|Rival ;; 3@Mitglieder ;; 2@größte
+vfl-bochum-v-borussia-dortmund	de	Ruhrstadion	4@Plätze|Kapazität|Zuschauer|eng|Atmosphäre|nah ;; 3@Namens|Vonovia|heißt
+vfl-bochum-v-rot-weiss-essen	de	VfL Bochum	4@Essen|Derby|Rival|Revier ;; 3@Arbeiter|Bergbau|Zeche|Malocher|unabsteigbar
+waldhof-mannheim-v-1-fc-kaiserslautern	de	SV Waldhof Mannheim	5@Kaiserslautern|Rival|Derby|Sandhausen ;; 3@Kurpfalz|Arbeiter
+waldhof-mannheim-v-1-fc-kaiserslautern	de	1. FC Kaiserslautern	4@Waldhof|Rival|Derby|Karlsruh ;; 2@Pfalz
+waldhof-mannheim-v-sv-sandhausen	de	SV Sandhausen	4@Waldhof|Kurpfalz|Derby|Rival ;; 2@Rhein-Neckar
+werder-bremen-v-hsv-nordderby	de	Nordderby	5@Werder|HSV|Hamburger ;; 3@Klassiker|traditionsreich|meistgespielt|häufigste ;; 2@Weserstadion|Volksparkstadion
+west-brom-v-wolves-black-country-derby	en	The Hawthorns	4@highest|altitude|sea level ;; 2@West Bromwich
+west-brom-v-wolves-black-country-derby	en	Black Country derby	3@Black Country|Wolverhampton
+wisla-krakow-v-cracovia-holy-war	en	Holy War (Kraków)	4@fierce|intense|oldest|violent|most ;; 2@Holy War|Święta Wojna
+wurzburger-kickers-v-1-fc-schweinfurt-05	de	Würzburger Kickers	4@Schweinfurt|Derby|unterfränk|Rival ;; 4@2026|Aufstieg|Lok|Leipzig
+wurzburger-kickers-v-1-fc-schweinfurt-05	de	1. FC Schweinfurt 05	4@Würzburg|Derby|unterfränk|Rival|Unterfranken
