@@ -1,9 +1,6 @@
-# run 5: UB90 press and old group site; Dresden and Osnabrück fan pages; club roots for link lists (Köln, Kaiserslautern)
-UBc	url	http://www.culturetribunes.fr/2006/04/05/ultra-boys-90-1990-2005/	CTX3@700@1990|fond|création|naissance|né
-UBo	url	http://ub90.free.fr/main/?rub=histoire&saison=2000-2001	CTX2@600@1990|fond|création;;LINKS
-UBa	url	http://www.lalsace.fr/sport/2010/10/10/les-ub-90-refusent-le-piege-de-la-provocation	CTX2@600@1990|fond|créé|création
-SGDi	url	https://www.dynamo-dresden.de/fans/fanszene/faninitiativen/	CTX3@700@Ultras Dynamo|Ultras|gegründet
-SGDf	url	https://www.dynamo-dresden.de/fans/fanszene/fanclubs/	CTX2@700@Ultras Dynamo|Ultras
-VFLf	url	https://www.vfl.de/fans/	CTX3@600@Violet Crew|Ultra|gegründet;;LINKS
-FCr	links	https://fc.de/	.
-FCKr	links	https://fck.de/	.
+# run 6: the Ultras Dynamo self-description; Kaiserslautern and Osnabrück fan-club pages; DFB club pages for links to other clubs
+SGDu	url	https://www.dynamo-dresden.de/fans/fanszene/faninitiativen/	CTX1@3200@Ultras Dynamo \(UD\)
+FCKf	url	https://fck.de/fans/fans-beim-fck/fanclubs/	CTX3@700@Generation Luzifer|Luzifer|Ultra
+VFLc	url	https://www.vfl.de/fans/fanclubs	CTX3@700@Violet Crew|Ultra
+DFBw	links	https://datencenter.dfb.de/en/clubs/sv-waldhof-mannheim-07-e-v	.
+DFBs	links	https://datencenter.dfb.de/clubs/fc-st-pauli-von-1910-e-v?datacenter_name=datencenter	.
