@@ -1,6 +1,6 @@
 # Entries that produced no calendar event
 
-Generated 2026-11-16 by tools/build_calendars.py.
+Generated 2026-11-17 by tools/build_calendars.py.
 Nothing below is an error in the code. Each line is either a
 deliberate exclusion or a field you still need to fill in.
 
@@ -352,7 +352,7 @@ deliberate exclusion or a field you still need to fill in.
   - no date of any kind
 - **scr-altach-v-sc-austria-lustenau-vorarlberg-derby** - SCR Altach v SC Austria Lustenau (Vorarlberg derby)
   - no date of any kind
-- **seattle-sounders-v-portland-timbers-cascadia-derby** - Seattle Sounders v Portland Timbers (Cascadia derby)
+- **seattle-sounders-v-portland-timbers-cascadia-derby** - Seattle Sounders v Portland Timbers (Cascadia Cup)
   - no date of any kind
 - **sepsi-sfantu-gheorghe-v-csikszereda-miercurea-ciuc** - Sepsi Sfântu Gheorghe v Csíkszereda Miercurea Ciuc
   - no date of any kind

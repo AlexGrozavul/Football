@@ -464,8 +464,14 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 710,
-   "whyAssistant": "Southwest Germany's biggest rivalry, played at the Wildpark or the hilltop Fritz-Walter-Stadion.",
-   "whyStatus": "unverified",
+   "whyAssistant": "Known as the Südwestderby, played at the Wildpark or at the Fritz-Walter-Stadion on the Betzenberg; the grounds are about 65 km apart in a straight line.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Fritz-Walter-Stadion",
+    "https://de.wikipedia.org/wiki/Karlsruher_SC",
+    "https://de.wikipedia.org/wiki/1._FC_Kaiserslautern"
+   ],
    "leagueCheck": true,
    "kind": "derby",
    "countryCode": "DE"
@@ -542,7 +548,7 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 480,
-   "whyAssistant": "Ruhr derby between clubs about 30 km apart, widely seen as Germany's most hostile fixture.",
+   "whyAssistant": "Ruhr derby between clubs whose grounds are about 28 km apart in a straight line, often called \"the mother of all derbies\" in the German media.",
    "whyStatus": "unverified",
    "leagueCheck": true,
    "kind": "derby",
@@ -609,13 +615,14 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "listOnly": true,
-   "whyAssistant": "Two-legged tie between the 16th-placed Bundesliga club and the 3rd-placed 2. Bundesliga club: the aggregate decides, there is no away-goals rule, and extra time and penalties follow if it is level. One top-flight place is at stake. In 2026 the first leg ended 0:0 and Paderborn beat Wolfsburg 2:1 after extra time in the return leg. The two sources agree on the format; the play-offs have been two-legged since 2008/09.",
+   "whyAssistant": "Two-legged tie between the 16th-placed Bundesliga club and the 3rd-placed 2. Bundesliga club: the aggregate decides, there is no away-goals rule, and extra time and penalties follow if it is level. One top-flight place is at stake. In 2026 the first leg ended 0:0 and Paderborn beat Wolfsburg 2:1 after extra time in the return leg. The DFB page and Wikipedia agree on the format; the play-offs have been two-legged since 2008/09.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
    "whySources": [
-    "https://www.dfb.de/news/detail/von-bundesliga-bis-3-liga-alle-infos-zu-den-relegationen-260997",
-    "https://www.bundesliga.com/de/bundesliga/news/relegation-alle-infos-termine-modus-abstieg-aufstieg-3008",
-    "https://www.heidelberg24.de/sport/fussball/relegation-2026-2-bundesliga-3-liga-termine-hinspiel-rueckspiel-wann-stadion-essen-94306757.html"
+    "https://de.wikipedia.org/wiki/Fußball-Bundesliga_2025/26",
+    "https://de.wikipedia.org/wiki/Relegation_zur_deutschen_Fußball-Bundesliga",
+    "https://www.dfb.de/news/detail/von-bundesliga-bis-3-liga-alle-infos-zu-den-relegationen-260997"
    ],
-   "whyStatus": "unverified",
    "sortKey": 410,
    "kind": "playoff",
    "countryCode": "DE"
@@ -855,8 +862,12 @@
    "group": "Tournaments",
    "country": "none",
    "sortKey": 30,
-   "why": "Four national teams play semi-finals, a third-place match and a final in one host country, in June. Host unverified.",
-   "whyStatus": "unverified",
+   "why": "Four national teams play semi-finals, a third-place match and a final in one host country, from 9 to 13 June 2027. The host is not fixed yet: UEFA designates a pair of League A quarter-finalists, and the winner of that tie hosts.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/2027_UEFA_Nations_League_Finals"
+   ],
    "listOnly": true,
    "kind": "tournament",
    "countryCode": ""
@@ -956,8 +967,13 @@
    "group": "Finals and super cups",
    "country": "none",
    "sortKey": 100,
-   "why": "One match in May at a rotating venue, with the lowest prices of the three UEFA finals and a loud travelling crowd.",
-   "whyStatus": "unverified",
+   "why": "One match at a neutral venue, with a loud travelling crowd. The 2027 final is on 2 June 2027 at Beşiktaş Stadium in Istanbul, so not in May.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/UEFA_Conference_League",
+    "https://en.wikipedia.org/wiki/2027_UEFA_Conference_League_final"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": ""
@@ -970,7 +986,11 @@
    "country": "none",
    "sortKey": 110,
    "why": "Champions League winner against Europa League winner in August at a rotating venue. Easier to get into than the finals.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/UEFA_Super_Cup"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": ""
@@ -1178,7 +1198,11 @@
    "country": "Portugal",
    "sortKey": 230,
    "why": "Estádio Nacional in Jamor, a fixed national occasion at a traditional ground with a day-out feel.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Taça_de_Portugal"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "PT"
@@ -1228,8 +1252,12 @@
    "group": "Finals and super cups",
    "country": "Spain",
    "sortKey": 260,
-   "why": "A four-team knockout, played in Saudi Arabia since 2020, often featuring Barcelona and Real Madrid. Host may change.",
-   "whyStatus": "unverified",
+   "why": "A four-team knockout since 2020, played in Saudi Arabia under an agreement that runs until at least 2029; the 2021 edition was held in Spain. Barcelona and Real Madrid met in each of the last four finals. The 2027 edition is to be moved to Istanbul because Saudi Arabia hosts the 2027 Asian Cup.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Supercopa_de_España"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "ES"
@@ -1259,7 +1287,12 @@
    "country": "Romania",
    "sortKey": 280,
    "why": "Matches at the Arena Națională, the national stadium in Bucharest.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Arena_Națională",
+    "https://en.wikipedia.org/wiki/Romania_national_football_team"
+   ],
    "listOnly": true,
    "kind": "national-team",
    "countryCode": "RO"
@@ -1680,8 +1713,13 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 880,
-   "why": "Saarland derby between a traditional club and a smaller rival that rose quickly, in small grounds.",
-   "whyStatus": "unverified",
+   "why": "Two Saarland clubs about 13 km apart in a straight line: 1. FC Saarbrücken, a founding member of the Bundesliga in 1963, and SV Elversberg, who rose from the fourth tier in 2022 to the Bundesliga in 2026, at small grounds (Ludwigspark 16,003 places, Waldstadion Kaiserlinde 10,000).",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/SV_Elversberg",
+    "https://de.wikipedia.org/wiki/1._FC_Saarbrücken"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1713,8 +1751,15 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 950,
-   "why": "Christmas carol event where fans fill the pitch and terraces of the Alte Försterei. Not a match. Ticket allocation by lottery, unverified.",
-   "whyStatus": "unverified",
+   "why": "Christmas carol event, held since 2003, where fans fill the pitch and terraces of the Alte Försterei. Not a match.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/1._FC_Union_Berlin",
+    "https://de.wikipedia.org/wiki/Stadion_An_der_Alten_Försterei",
+    "https://en.wikipedia.org/wiki/1._FC_Union_Berlin",
+    "https://de.wikipedia.org/wiki/Weihnachtssingen_des_1._FC_Union_Berlin"
+   ],
    "listOnly": true,
    "kind": "event",
    "countryCode": "DE"
@@ -1727,7 +1772,13 @@
    "country": "Germany",
    "sortKey": 990,
    "why": "Baden-Württemberg Bundesliga fixture, with VfB's Cannstatter Kurve against Freiburg's modern stadium.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/2026–27_Bundesliga",
+    "https://de.wikipedia.org/wiki/Europa-Park-Stadion",
+    "https://de.wikipedia.org/wiki/MHPArena"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1760,8 +1811,13 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 1050,
-   "why": "Kurpfalz-Pfalz derby between clubs 50 km apart, with large, loud away followings.",
-   "whyStatus": "unverified",
+   "why": "A rivalry that grew in the 1980s, also known as the Südwest-Derby and regarded as one of Germany's hottest derbies; the grounds are about 53 km apart in a straight line.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/SV_Waldhof_Mannheim",
+    "https://de.wikipedia.org/wiki/1._FC_Kaiserslautern"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1775,7 +1831,11 @@
    "country": "Germany",
    "sortKey": 1070,
    "why": "Northern German classic, the Weserstadion against the Volksparkstadion.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Nordderby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1826,8 +1886,13 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "sortKey": 1150,
-   "why": "Rapid's rebuilt Giulești is one of Romania's loudest grounds. FCSB's home venue is unsettled, so verify.",
-   "whyStatus": "unverified",
+   "why": "Rapid's rebuilt Giulești (opened in March 2022, 14,047 places) is one of Romania's loudest grounds. FCSB's own home ground is the Arena Națională.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Rapid-Giulești_Stadium",
+    "https://en.wikipedia.org/wiki/FCSB"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1840,8 +1905,12 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "sortKey": 1160,
-   "why": "Two traditional clubs 60 km apart, with a large away following from Ploiești.",
-   "whyStatus": "unverified",
+   "why": "Two traditional clubs, founded in 1923 and 1924, about 54 km apart in a straight line; the fixture is known as the Primvs derby.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Primvs_derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1854,8 +1923,14 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "sortKey": 1170,
-   "why": "Székely derby between two Hungarian-speaking towns in Transylvania, with a small, tight atmosphere. Both clubs' leagues unverified.",
-   "whyStatus": "unverified",
+   "why": "A meeting of two clubs both nicknamed \"the Székelys\", from Sfântu Gheorghe and Miercurea Ciuc, towns with a Székely majority about 56 km apart in a straight line, with a small, tight atmosphere. Both play in the 2026-27 Liga I, Sepsi after promotion in 2026.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Sepsi_OSK_Sfântu_Gheorghe",
+    "https://en.wikipedia.org/wiki/FK_Csíkszereda_Miercurea_Ciuc",
+    "https://en.wikipedia.org/wiki/2026–27_Liga_I"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1868,8 +1943,13 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "sortKey": 1190,
-   "why": "Title rivalry at the Ion Oblemenco.",
-   "whyStatus": "unverified",
+   "why": "The 2026 champions, with their first league title since 1990-91, against the champions of 2024 and 2025, at the Ion Oblemenco (30,983 places).",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/CS_Universitatea_Craiova",
+    "https://en.wikipedia.org/wiki/FCSB"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -1956,7 +2036,11 @@
    "country": "Austria",
    "sortKey": 1240,
    "why": "Vienna's biggest fixture, green against violet.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Vienna_derby"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "AT"
@@ -1984,7 +2068,11 @@
    "country": "Austria",
    "sortKey": 1270,
    "why": "Graz derby, a city with two clubs and a strong local fan culture.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Grazer_Derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2016,7 +2104,13 @@
    "country": "Bosnia and Herzegovina",
    "sortKey": 1290,
    "why": "Bosnia's biggest rivalry, played at Koševo.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Sarajevo_derby",
+    "https://en.wikipedia.org/wiki/Koševo_City_Stadium",
+    "https://en.wikipedia.org/wiki/Stadion_Grbavica"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "BA"
@@ -2444,7 +2538,12 @@
    "country": "England",
    "sortKey": 1540,
    "why": "Bramall Lane, often called the oldest professional ground in use, against Hillsborough.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Bramall_Lane",
+    "https://en.wikipedia.org/wiki/Steel_City_derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2476,7 +2575,12 @@
    "country": "England",
    "sortKey": 1560,
    "why": "The Hawthorns is the highest ground in English league football.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/The_Hawthorns",
+    "https://en.wikipedia.org/wiki/Black_Country_derby"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2563,8 +2667,13 @@
    "group": "Club fixtures, other countries",
    "country": "France",
    "sortKey": 1630,
-   "why": "Alsace against Lorraine, played at the Meinau or at Saint-Symphorien. Unverified, and the league status of both clubs is unclear.",
-   "whyStatus": "unverified",
+   "why": "Alsace against Lorraine, played at the Meinau or at Saint-Symphorien. Not a league fixture in 2026-27: Strasbourg play in Ligue 1, and Metz were relegated to Ligue 2 in 2026.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://fr.wikipedia.org/wiki/Football_Club_de_Metz",
+    "https://en.wikipedia.org/wiki/2026–27_Ligue_1"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -2756,8 +2865,13 @@
    "group": "Club fixtures, other countries",
    "country": "Japan",
    "sortKey": 1760,
-   "why": "Not a derby: the biggest supporter culture in Japan, at Saitama Stadium, one of Asia's largest football stadiums.",
-   "whyStatus": "unverified",
+   "why": "Not a derby: Urawa Reds at Saitama Stadium, the largest football-specific stadium in Japan (63,700 places) and one of the largest stadiums in Asia.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Urawa_Red_Diamonds",
+    "https://en.wikipedia.org/wiki/Saitama_Stadium_2002"
+   ],
    "listOnly": true,
    "kind": "other",
    "countryCode": "JP"
@@ -2898,7 +3012,11 @@
    "country": "Poland",
    "sortKey": 1840,
    "why": "One of Poland's fiercest rivalries.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Holy_War_(Kraków)"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3017,8 +3135,12 @@
    "group": "Club fixtures, other countries",
    "country": "Slovakia",
    "sortKey": 1930,
-   "why": "Slovakia's biggest match, with a large and active away following.",
-   "whyStatus": "unverified",
+   "why": "Considered the most prestigious match in the Slovak football calendar, between the country's two most successful clubs.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Traditional_derby"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "SK"
@@ -3154,7 +3276,12 @@
    "country": "Spain",
    "sortKey": 2010,
    "why": "An unusually small stadium in a working-class neighbourhood, with a very vocal, political home crowd.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Rayo_Vallecano",
+    "https://en.wikipedia.org/wiki/Vallecas_Stadium"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "ES"
@@ -3166,8 +3293,13 @@
    "group": "Club fixtures, other countries",
    "country": "Spain",
    "sortKey": 2020,
-   "why": "Often cited as one of Spain's best atmospheres, with the whole city split in two.",
-   "whyStatus": "unverified",
+   "why": "Seville's city derby, nicknamed \"el gran derbi\" by both clubs.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Seville_derby",
+    "https://es.wikipedia.org/wiki/Derbi_sevillano"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "ES"
@@ -3198,8 +3330,14 @@
    "group": "Club fixtures, other countries",
    "country": "Sweden",
    "sortKey": 2040,
-   "why": "Sweden's biggest club fixtures, with some of Europe's best tifos. Hammarby and Djurgården share the Tele2 Arena.",
-   "whyStatus": "unverified",
+   "why": "Sweden's biggest club fixtures, with some of Europe's best tifos. Hammarby and Djurgården share 3Arena.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/3Arena_(Stockholm)",
+    "https://en.wikipedia.org/wiki/Tvillingderbyt",
+    "https://en.wikipedia.org/wiki/AIK_Fotboll"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "SE"
@@ -3279,12 +3417,18 @@
   {
    "id": "seattle-sounders-v-portland-timbers-cascadia-derby",
    "type": "fixture",
-   "title": "Seattle Sounders v Portland Timbers (Cascadia derby)",
+   "title": "Seattle Sounders v Portland Timbers (Cascadia Cup)",
    "group": "Club fixtures, other countries",
    "country": "United States",
    "sortKey": 2130,
    "why": "One of MLS's best fan cultures, with Portland's Timbers Army at Providence Park.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://en.wikipedia.org/wiki/Portland_Timbers–Seattle_Sounders_rivalry",
+    "https://en.wikipedia.org/wiki/Timbers_Army",
+    "https://en.wikipedia.org/wiki/Cascadia_Cup"
+   ],
    "listOnly": true,
    "kind": "derby",
    "countryCode": "US"
@@ -3336,13 +3480,14 @@
    },
    "group": "Club fixtures, Germany",
    "country": "Germany",
-   "whyAssistant": "Two-legged tie between the 16th-placed 2. Bundesliga club and the 3rd-placed 3. Liga club, decided on aggregate with no away-goals rule, then extra time and penalties. The winner plays in the 2. Bundesliga next season, the loser in the 3. Liga. In 2026 the third-tier club hosted the first leg because its last matchday came a day earlier; Essen won it 1:0 and Fürth won the return 2:0 at home to stay up. The participants are unknown until the last matchday.",
+   "whyAssistant": "Two-legged tie between the 16th-placed 2. Bundesliga club and the 3rd-placed 3. Liga club, decided on aggregate with no away-goals rule, then extra time and penalties. The winner plays in the 2. Bundesliga next season, the loser in the 3. Liga. In 2026 the third-tier club hosted the first leg - the DFB gives the return leg at home to the club with fewer free days before the first leg; Essen won it 1:0 and Fürth won the return 2:0 at home to stay up. The participants are unknown until the last matchday.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
    "whySources": [
-    "https://www.dfb.de/news/detail/von-bundesliga-bis-3-liga-alle-infos-zu-den-relegationen-260997",
-    "https://www.bundesliga.com/de/bundesliga/news/relegation-alle-infos-termine-modus-abstieg-aufstieg-3008",
-    "https://www.heidelberg24.de/sport/fussball/relegation-2026-2-bundesliga-3-liga-termine-hinspiel-rueckspiel-wann-stadion-essen-94306757.html"
+    "https://de.wikipedia.org/wiki/2._Fußball-Bundesliga_2025/26",
+    "https://de.wikipedia.org/wiki/3._Fußball-Liga_2025/26",
+    "https://www.dfb.de/news/detail/von-bundesliga-bis-3-liga-alle-infos-zu-den-relegationen-260997"
    ],
-   "whyStatus": "unverified",
    "listOnly": true,
    "sortKey": 420,
    "kind": "playoff",
@@ -3357,13 +3502,15 @@
    },
    "group": "Club fixtures, Germany",
    "country": "Germany",
-   "whyAssistant": "Not a 3. Liga club against a Regionalliga club: two Regionalliga champions play home and away for the last promotion place to the 3. Liga, while the other promotion places go to champions directly. The sources describe the model as two direct places (West, Südwest), one rotating direct place for Nord, Nordost or Bayern, and a two-legged play-off between the other two champions. A reform vote in June 2026 produced no clear result and the sources put any change at 2028/29 at the earliest, so the current model is expected to apply in 2026/27 - not confirmed by a DFB statement. Which two champions meet is unknown until the Regionalliga seasons end. In 2026 Würzburger Kickers beat Lok Leipzig in this play-off (the sources give the first leg as 1:0 and the second as 2:1 in Würzburg's favour).",
+   "whyAssistant": "Not a 3. Liga club against a Regionalliga club: two Regionalliga champions play home and away for the last promotion place to the 3. Liga, while the other promotion places go to champions directly. The sources describe the model as two direct places (West, Südwest), one rotating direct place for Nord, Nordost or Bayern, and a two-legged play-off between the other two champions; in 2025/26 the direct places went to Südwest, West and Nord. In the vote at the end of June 2026 no reform model found a majority. The DFB is preparing an extraordinary Bundestag on 18 December 2026 on a model with four instead of five Regionalligen, which would start in 2028/29 with 2027/28 as a qualifying season, so the current model is expected to apply in 2026/27 - not confirmed by a DFB statement. Which two clubs meet is unknown until the Regionalliga seasons end. In 2026 Würzburger Kickers beat Nordost champions Lok Leipzig in this play-off, 1:0 and 2:1; Würzburg took part as runners-up of the Regionalliga Bayern because the champions, 1. FC Nürnberg II, did not take a 3. Liga licence.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
    "whySources": [
+    "https://de.wikipedia.org/wiki/Fußball-Regionalliga_2025/26",
     "https://www.zdfheute.de/sport/fussball-regionalliga-aufstiegsreform-protest-100.html",
     "https://www.diefalsche9.de/aufstiegsspiele-zur-3-liga-moeglicher-gegner-von-lok-leipzig-fix/",
     "https://www.dfb.de/news/regionalliga-reform-dfb-praesidium-bereitet-ausserordentlichen-bundestag-vor"
    ],
-   "whyStatus": "unverified",
    "listOnly": true,
    "sortKey": 430,
    "kind": "playoff",
@@ -3381,12 +3528,14 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "whyAssistant": "In 2025-26 the two Superliga clubs just above the directly relegated 15th and 16th places each met one of the top Liga 2 clubs (the third and fourth placed) in a two-legged tie. In 2026 Farul Constanța drew 3-3 and 1-1 with Chindia Târgoviște and stayed up on penalties; FC Voluntari lost 2-3 at Hermannstadt, then won 3-0 at home and went up. Which clubs meet is unknown until the end of the play-out. The 2026-27 competition rules were not found, so the format may change.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
    "whySources": [
-    "https://www.fanatik.ro/s-au-stabilit-barajele-de-mentinere-promovare-in-superliga-cand-se-vor-juca-partidele-21473439",
-    "https://tvrinfo.ro/?p=798520",
-    "https://www.g4media.ro/fc-voluntari-a-promovat-in-superliga-dupa-victoria-cu-hermannstadt-la-baraj-sibienii-retrogradeaza-dupa-4-ani.html"
+    "https://en.wikipedia.org/wiki/2025–26_Liga_I",
+    "https://www.g4media.ro/fc-voluntari-a-promovat-in-superliga-dupa-victoria-cu-hermannstadt-la-baraj-sibienii-retrogradeaza-dupa-4-ani.html",
+    "https://en.wikipedia.org/wiki/2025–26_Liga_II",
+    "https://ro.wikipedia.org/wiki/SuperLiga_României_2025-2026"
    ],
-   "whyStatus": "unverified",
    "listOnly": true,
    "sortKey": 1100,
    "kind": "playoff",
@@ -3404,11 +3553,12 @@
    "group": "Club fixtures, Romania",
    "country": "Romania",
    "whyAssistant": "Not a match between Liga 2 and Liga 3 clubs: the runners-up of the four Liga 3 play-off groups play single-match semi-finals and a final, with the first semi-final's winner hosting the final, and the winner takes the fifth promotion place to Liga 2. The group winners go up directly. The 2025-26 rules are from the federation's competition system and press; the 2026-27 rules were not found.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-16",
    "whySources": [
     "https://www.frf.ro/wp-content/uploads/2025/06/Sistem-competitional-Liga-3-cex-iunie-2025.pdf",
     "https://www.sport.ro/fotbal-intern/opt-echipe-lupta-pentru-promovarea-in-liga-2-situatia-din-play-off-ul-ligii-3-cele-18-echipe-retrogradate-la-judeteana.html"
    ],
-   "whyStatus": "unverified",
    "listOnly": true,
    "sortKey": 1110,
    "kind": "playoff",
@@ -3442,7 +3592,13 @@
    "country": "Germany",
    "sortKey": 910,
    "why": "Derby south of Munich at the small Sportpark Unterhaching.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Sportpark_Unterhaching",
+    "https://de.wikipedia.org/wiki/Unterhaching",
+    "https://de.wikipedia.org/wiki/SpVgg_Unterhaching"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3455,8 +3611,14 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 1080,
-   "why": "Lower Franconia derby between two nearby cities.",
-   "whyStatus": "unverified",
+   "why": "Known as the Mainfranken-Derby, between two Lower Franconian cities about 37 km apart in a straight line.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Würzburger_Kickers",
+    "https://de.wikipedia.org/wiki/1._FC_Schweinfurt_05",
+    "https://de.wikipedia.org/wiki/Schweinfurt"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3469,8 +3631,14 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 1000,
-   "why": "Baden-Württemberg's two biggest clubs, the MHPArena against the Wildpark, both with large home ends.",
-   "whyStatus": "unverified",
+   "why": "The Baden-Württemberg-Derby: VfB's MHPArena, with 8,100 standing places in the Cannstatter Kurve, against the Wildpark (33,180 places). VfB is the largest club in Baden-Württemberg by members.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Baden-Württemberg-Derby",
+    "https://de.wikipedia.org/wiki/Wildparkstadion",
+    "https://de.wikipedia.org/wiki/VfB_Stuttgart"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3484,7 +3652,12 @@
    "country": "Germany",
    "sortKey": 980,
    "why": "A big-city club against a small-town club at the compact Voith-Arena on the Schlossberg.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Voith-Arena",
+    "https://de.wikipedia.org/wiki/Heidenheim_an_der_Brenz"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3536,8 +3709,12 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 1060,
-   "why": "Kurpfalz derby between clubs a short distance apart.",
-   "whyStatus": "unverified",
+   "why": "Two clubs about 20 km apart in a straight line.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/SV_Sandhausen"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3550,8 +3727,14 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 970,
-   "why": "Stuttgart city derby between VfB's reserve side and a traditional local club, at small grounds.",
-   "whyStatus": "unverified",
+   "why": "The \"small\" Stuttgart city derby between VfB's reserve side and a traditional local club founded in 1899, whose Gazi-Stadion auf der Waldau holds about 11,400.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/VfB_Stuttgart",
+    "https://de.wikipedia.org/wiki/Stuttgarter_Kickers",
+    "https://de.wikipedia.org/wiki/Gazi-Stadion_auf_der_Waldau"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3681,7 +3864,13 @@
    "country": "Germany",
    "sortKey": 890,
    "why": "Ruhr rivalry between the Veltins-Arena and the Schauinsland-Reisen-Arena.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Schauinsland-Reisen-Arena",
+    "https://de.wikipedia.org/wiki/MSV_Duisburg",
+    "https://de.wikipedia.org/wiki/Duisburg"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3695,7 +3884,13 @@
    "country": "Germany",
    "sortKey": 900,
    "why": "A big stadium against Essen's small Stadion an der Hafenstraße, in neighbouring Ruhr cities.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Stadion_an_der_Hafenstraße",
+    "https://de.wikipedia.org/wiki/Rot-Weiss_Essen",
+    "https://de.wikipedia.org/wiki/Gelsenkirchen"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3708,8 +3903,12 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 1030,
-   "why": "Ruhr derby between two working-class clubs, the Ruhrstadion against the Hafenstraße.",
-   "whyStatus": "unverified",
+   "why": "Two Ruhr clubs about 18 km apart in a straight line, the Ruhrstadion (26,000 places) against the Stadion an der Hafenstraße (19,962). Rot-Weiss Essen is described as a former workers' club.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/VfL_Bochum"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3722,8 +3921,12 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 1020,
-   "why": "Ruhr fixture about 20 km apart, at the compact Ruhrstadion.",
-   "whyStatus": "unverified",
+   "why": "Ruhr fixture about 15 km apart in a straight line, at the compact Ruhrstadion (26,000 places).",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Ruhrstadion"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3907,7 +4110,14 @@
    "country": "Germany",
    "sortKey": 960,
    "why": "Schleswig-Holstein derby between two Baltic coast cities.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/VfB_Lübeck",
+    "https://de.wikipedia.org/wiki/Holstein_Kiel",
+    "https://de.wikipedia.org/wiki/Lübeck",
+    "https://de.wikipedia.org/wiki/Kiel"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -3920,8 +4130,13 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 930,
-   "why": "Emsland–Osnabrück derby, with Osnabrück's traditional terraced Bremer Brücke.",
-   "whyStatus": "unverified",
+   "why": "Meppen's supporters count VfL Osnabrück among their two main rivals. The grounds are about 71 km apart in a straight line; Osnabrück's Bremer Brücke, opened in 1933, still has a standing east end.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Bremer_Brücke",
+    "https://de.wikipedia.org/wiki/SV_Meppen"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -4030,8 +4245,12 @@
    "group": "Club fixtures, Germany",
    "country": "Germany",
    "sortKey": 330,
-   "why": "A one-match regional final with a DFB-Pokal place at stake. Venue and finalists vary each year.",
-   "whyStatus": "unverified",
+   "why": "A one-match regional final with a DFB-Pokal place at stake. The final has been played at the Gazi-Stadion auf der Waldau in Stuttgart since 2015; the finalists vary each year.",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/WFV-Pokal"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "DE"
@@ -4097,7 +4316,11 @@
    "country": "Germany",
    "sortKey": 370,
    "why": "A one-match regional final with a DFB-Pokal place at stake. Venue and finalists vary each year.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Sachsenpokal"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "DE"
@@ -4144,7 +4367,11 @@
    "country": "Germany",
    "sortKey": 400,
    "why": "A one-match regional final with a DFB-Pokal place at stake. Venue and finalists vary each year.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Saarlandpokal"
+   ],
    "listOnly": true,
    "kind": "final",
    "countryCode": "DE"
@@ -4214,8 +4441,15 @@
    "group": "Club fixtures, other countries",
    "country": "Austria",
    "sortKey": 1260,
-   "why": "Vorarlberg derby between neighbouring clubs, the Cashpoint Arena against Lustenau's Reichshofstadion.",
-   "whyStatus": "unverified",
+   "why": "Vorarlberg derby between local rivals about 8 km apart in a straight line: Altach's Stadion Schnabelholz (called Cashpoint-Arena until June 2025) against Lustenau's Reichshofstadion (sponsor name SUN MINIMEAL Arena since 2025).",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://de.wikipedia.org/wiki/Stadion_Schnabelholz",
+    "https://de.wikipedia.org/wiki/Reichshofstadion",
+    "https://de.wikipedia.org/wiki/SC_Austria_Lustenau",
+    "https://de.wikipedia.org/wiki/SCR_Altach"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
@@ -4229,7 +4463,12 @@
    "country": "France",
    "sortKey": 1620,
    "why": "Alsace derby, with La Meinau home to Strasbourg's ultra scene.",
-   "whyStatus": "unverified",
+   "whyStatus": "checked",
+   "whyCheckedOn": "2026-11-17",
+   "whySources": [
+    "https://fr.wikipedia.org/wiki/Racing_Club_de_Strasbourg_Alsace",
+    "https://fr.wikipedia.org/wiki/Football_Club_de_Mulhouse"
+   ],
    "leagueCheck": true,
    "listOnly": true,
    "kind": "derby",
