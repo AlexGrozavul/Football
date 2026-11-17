@@ -211,6 +211,9 @@ def main(cfg):
             blocks.append("### %s | %s:%s | MISSING%s\n" % (eid, lang, title, note))
             continue
         rt, rev, ts, text = got
+        WANTLINKS = pats.endswith(";;LINKS")
+        if WANTLINKS:
+            pats = pats[:-7]
         if pats.startswith("CTX"):
             t2 = re.sub(r"\s+", " ", text if (lang == "url" or RAWMODE) else clean(text))
             out = ["### %s | %s | rev %s %s %s | %d chars" % (eid, rt, rev, ts[:10], lines_note, len(t2))]
@@ -232,6 +235,9 @@ def main(cfg):
                         break
                 if k == 0:
                     out.append("[c%d] NO MATCH /%s/" % (gi, rxs))
+            if WANTLINKS and lang == "url":
+                hrefs = sorted(set(re.findall(r'href=["\']([^"\'#]+)', LASTHTML)))
+                out.append("[links %d] %s" % (len(hrefs), " ".join(hrefs)[:8000]))
             blocks.append("\n".join(out) + "\n")
             continue
         if pats.startswith("FULL"):
