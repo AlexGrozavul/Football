@@ -194,8 +194,10 @@ const server = http.createServer((req, res) => {
   check('Pokal and play-off entries: all six are in the List, undated ("Date not set"), listOnly (off the calendar) and carry no date field',
     playB.every(Boolean) && playCards.length === 6 && playCards.every(x => x.when === 'Date not set') &&
     playB.every(b => b.listOnly === true && !b.date && !b.nextFixture && !(b.fixtures || []).length && !b.dateSource), playCards.map(x => x.id + ':' + x.when).join(', '));
-  check('The four new play-off entries are unverified, each with whySources (http links) and no capacity, ticket rule or sale date',
-    playB.slice(2).every(b => b.whyStatus === 'unverified' && Array.isArray(b.whySources) && b.whySources.length >= 2 && b.whySources.every(u => /^https?:\/\//.test(u)) &&
+  // Since 2026-11-17 (phase 3d) a play-off entry may be "checked" like any other entry, when it carries its sources and the date they were read.
+  check('The four new play-off entries are unverified or (since phase 3d) checked with a whyCheckedOn date, each with whySources (http links) and no capacity, ticket rule or sale date',
+    playB.slice(2).every(b => (b.whyStatus === 'unverified' || (b.whyStatus === 'checked' && /^\d{4}-\d{2}-\d{2}$/.test(b.whyCheckedOn || ''))) &&
+      Array.isArray(b.whySources) && b.whySources.length >= 2 && b.whySources.every(u => /^https?:\/\//.test(u)) &&
       !('ticketRoute' in b) && !('ticketRoutes' in b) && !('ticketNote' in b) && !('capacity' in b) && !('leadTimeDays' in b)));
   const firstIn = g => keyed.filter(b => b.group === g).map(b => b.id);
   check('Group order: the Pokal and the three German play-off entries come before any derby in the Germany group (the nine cup entries sit between the Pokal and the play-offs), liga2-playoff (moved there 2026-10-08) and the two Romanian ones open the Romania group, before any derby',
@@ -530,7 +532,10 @@ const server = http.createServer((req, res) => {
     cards: document.querySelectorAll('#bucketBody .evcard').length, text: document.getElementById('bucketBody').textContent}));
   check('List: no Reminders section and no ticket-event card', !rem.h2.some(t => /^Reminders/.test(t)) && rem.cards === 0 && !/Reminders —/.test(rem.text), rem.h2.join(' | '));
   L = await listText('details.bucket[data-id="zweite-liga-relegation"]');
-  check('A play-off entry shows its added note, "not yet verified", and its sources', /Added note, not yet verified/.test(L) && /Sources for the note/.test(L), L.slice(0, 160));
+  const zwl = rules.bucketList.find(b => b.id === 'zweite-liga-relegation');
+  check('A play-off entry shows its added note and its sources: "not yet verified" and "Sources for the note" while unverified, no such tag and "Checked on" once checked (phase 3d)',
+    zwl.whyStatus === 'checked' ? /Added note:/.test(L) && !/not yet verified/.test(L) && /Checked on /.test(L)
+      : /Added note, not yet verified/.test(L) && /Sources for the note/.test(L), L.slice(0, 160));
   L = await listText(`details.bucket[data-id="${mad}"]`);
   check('List: an opened entry has no "Ticket windows (reminders)" block', !/Ticket windows \(reminders\)|No ticket window is linked/.test(L));
   // Leaving the tab closes the sheet.
