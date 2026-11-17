@@ -29,3 +29,58 @@ Written from the CSV on 2026-11-17 before the first probe run. Counts before: cl
 | 19 | Werder Bremen (Q51976) | club |  | 1899-02-04 | unverified | C26 | German Wikipedia only: the infobox gives 4 February 1899 for the Fußball-Verein „Werder“ von 1899 without a reference, the text says early February 1899 (legal: dissolved 10 November 1945 and refounded as TuS Werder 1945, per spurensuche-bremen.de and Wikipedia). werder.de was not read (robots.txt answered HTTP 429); the kicker club profile came back empty (HTTP 202) |
 | 20 | 1. FC Union Berlin (Q141971) | club |  | 1966-01-20 | unverified | C4 | German Wikipedia only: 1. FC Union Berlin founded on 20 January 1966 (infobox, no reference), going back to SC Union Oberschöneweide; first predecessor FC Olympia Oberschöneweide, 17 June 1906. The club pages read (Der 1. FC Union Berlin, Mitglieder, fan pages) give no founding date or tradition date |
 | 21 | FC St. Pauli (Q6463) | club |  | 1910-05-15 | unverified | C779 | DFB data center Gründungsdatum 15.05.1910; German Wikipedia agrees (Als Gründungsdatum gilt der 15. Mai 1910) and cites the club statutes without a link, and fcstpauli.com was not read (its robots.txt names Claude crawlers), so no second independent source. Football department of Hamburg-St. Pauli TV 1862 until 1924, when it was registered as an independent club (Wikipedia) |
+
+## 2. Verdicts per row
+
+Pages were read only through the temporary probe workflow (7 runs of 8; run 1 Wikipedia wikitext with references and the articles' extlink lists through the MediaWiki API, maxlag=5, User-Agent `FootballPlannerBot/1.0`; runs 2 to 7 pages taken from those link lists or from page text). Verdicts: **upgraded** 2, **upgraded to inferred** 1, **conflict (unchanged)** 1, **still unverified** 16, **corrected** 0. No date was changed.
+
+| # | row | verdict | pages read (this session) | change |
+|---|---|---|---|---|
+| 1 | 1. FC Nürnberg (club) 1900-05-04 | still unverified | de:1. FC Nürnberg wikitext (the date's paragraph cites Bausenwein, Kaiser, Siegler: *Die Legende vom Club*, 2006, a book, not openable); extlink list (no independent history page); Historisches Lexikon Bayerns A-Z list (no 1. FC Nürnberg article). fcn.de closed | none |
+| 2 | FC Bayern München (club) 1900-02-27 | **upgraded** | Historisches Lexikon Bayerns, article FC Bayern München (Daniel Baumann): on 27 February 1900 eleven footballers led by Franz John left MTV 1879 and founded FC Bayern in the Gasthaus Gisela. Its terms (HLB:Nutzungshinweise) allow copying only with prior permission and do not ban automated access, so the host is open, no quote | `confirmed`, sourceId C780 (new), quote emptied |
+| 3 | SV Waldhof Mannheim (club) 1907-04-11 | still unverified | de: wikitext (infobox and history give 11 April 1907, no reference on the date); extlink list (no archive or history page; the MARCHIVUM link in the Hoffenheim list is a 2008 chronicle entry). DFB club page has no links to other sources | none |
+| 4 | TSG Hoffenheim (club) 1899-07-01 | still unverified | de: wikitext (no reference on 1 July 1899); marchivum.de/node/33708 (a 2008 entry about the Carl-Benz-Stadion, no founding date). tsg-hoffenheim.de 403 (stop), achtzehn99.de closed | none |
+| 5 | SpVgg Greuther Fürth (club) 1903-09-23 | still unverified | de: wikitext (no reference on either date); kleeblatt-chronik.de (fan chronicle landing page, no date); sgf1903.de fan-club list (a fan club writes it was founded "zum 100. Jubiläum der Spvgg" in 2003, which supports the year 1903, not the day) | none |
+| 6 | FC Ingolstadt 04 (club) 2004-04-05 | conflict (unchanged) | de: wikitext: 5 February 2004 cites a club page of 5 Feb 2014 ("Jubiläumsjahr: Zehn Jahre Schanzer Herzschlag"); that page now answers HTTP 404, so the club's own statement cannot be read. The DFB (5 April 2004) stays as the more primary of the two readable sources | none |
+| 7 | SC Fortuna Köln (club) 1948-02-21 | still unverified | de: wikitext (no reference on the date); extlink list (no independent page). fortuna-koeln.de closed (terms ban automated access) | none |
+| 8 | 1. FC Köln (club) 1901-06-12 | still unverified | de: wikitext (Kölner BC 01 founded 12 June 1901, no reference); LVR Rheinische Geschichte, Franz Kremer biography: the merger founding the 1. FC Köln on 13 February 1948 (the legal date, already in the basis), nothing on 1901; fc.de pages from the link list answered 404 and the root's link list has no history page | none |
+| 9 | MSV Duisburg (club) 1902-06-02 | still unverified | MSV extlink list (no independent page); no DFB club page for MSV is linked from any page read (the DFB club and match pages carry no links to other clubs), so it was not opened | none |
+| 10 | Fortuna Düsseldorf (club) 1895 | still unverified | de: wikitext (5 May 1895 "der Legende nach", 17 August 1895 per a Generalanzeiger article on f95.de); rp-online.de (120th birthday article) STOP, robots.txt reservation. f95.de closed | none |
+| 11 | RB Leipzig (club) 2009-05-19 | still unverified | de: wikitext (the date's reference is zeit.de, closed); spiegel.de (2009 article) STOP and lvz.de STOP, robots.txt reservations | none |
+| 12 | Werder Bremen (club) 1899-02-04 | still unverified | de: wikitext ("Als Gründungsdatum gilt heute der 4. Februar 1899", citing werder.de, closed; no founding minutes exist, the date rests on the first secretary's account of 1961); gruendungsort-werder.info (a video only); spurensuche-bremen.de (the 1945 dissolution and refounding only) | none |
+| 13 | 1. FC Union Berlin (club) 1966-01-20 | **upgraded** | bpb Deutschlandarchiv (Matthias Koch): "Die formale Historie des 1. FC Union beginnt am 20. Januar 1966", out of the football section of TSC Berlin; German Wikipedia agrees. bpb terms not read, so no quote | `confirmed`, sourceId C781 (new), quote emptied |
+| 14 | FC St. Pauli (club) 1910-05-15 | still unverified | de: wikitext (cites the statutes without a link); taz.de (100 years article) STOP, robots.txt reservation; rund-magazin.de interview (no date). fcstpauli.com closed | none |
+| 15 | Generation Luzifer (Kaiserslautern) 1998 | still unverified | de: wikitext (the sentence cites der-betze-brennt.de); der-betze-brennt.de STOP (robots.txt names ClaudeBot); fck.de fan-club page speaks of "den drei führenden Ultragruppen" without naming them (see the note below) | none |
+| 16 | Legio Augusta (Augsburg) 2007 | still unverified | de: wikitext (cites a Faszination Fankurve archive page); that page: the Rude Boys dissolved in October 2007, nothing on Legio Augusta's founding; fcaugsburg.de fan page (no match) | none |
+| 17 | Commando Cannstatt (VfB) 1997 | still unverified (date now has two sources) | the group's own photo site cannstatter-kurve.de: its imprint page (site title and responsible body) names it "Commando Cannstatt 97" (Fördergruppe CC e. V.); German Wikipedia: formed early in 1997. The year is confirmed; the main-group claim rests on Wikipedia alone, so the row stays unverified (the weaker claim) | basis rewritten, sourceId C782 (new) |
+| 18 | Wilde Horde (Köln) 1996 | still unverified | de: wikitext (cites a book, IZDG); suedkurve.koeln history page (no match); fc.de fan page 404 | none |
+| 19 | Ultra Boys 90 (Strasbourg) 1990 | **upgraded to inferred** | the group's own old site ub90.free.fr ("Ultra Boys 90 - Strasbourg", Historique starting with 1990-1992); French Wikipedia: "date de 1990". The year is confirmed; the main group is inferred (single ultras group), so the row is `inferred`. ub90.com 403 (stop); culturetribunes.fr now hosts another site; lalsace.fr STOP (robots.txt names anthropic-ai) | `unverified` to `inferred`, sourceId C783 (new), quote emptied |
+| 20 | Supporters Ingolstadt 2008 | still inferred | fcingolstadt.de fan-club page 404; no source found that calls one group the main one | none |
+| 21 | Blue Generation (Magdeburg) 2000 | still unverified | de: wikitext (no reference); club fan-club list 1.fc-magdeburg.de (Blue Generation is not on it); volksstimme.de STOP, robots.txt reservation | none |
+
+**Weaker-claim rule applied to supporters rows (open to Alexandru's veto):** a supporters row has two claims, that the group is the main one and the date. Where the main-group claim rests on Wikipedia alone, the row stays `unverified` even when the date has the group's own page (Commando Cannstatt, Die Siedler). That is why no supporters row is `confirmed`.
+
+**Note, Kaiserslautern:** the club's fan-club page (fck.de) speaks of "the three leading ultras groups" without naming them in the window read; Wikipedia calls Generation Luzifer the largest. Not a contradiction of "largest", but the row's main-group claim is Wikipedia's alone.
+
+## 3. Group pass
+
+| group (club) | result | pages | row |
+|---|---|---|---|
+| Ultras Dynamo (Dynamo Dresden) | **row written**: 2000-12-03 `inferred` | the group's own first-person text ("Wir, die Ultras Dynamo") on dynamo-dresden.de/fans/fanszene/faninitiativen/: founded on 3 December 2000 from Commando Elbhorde, Eastside Dresden, Yellow Madness, Dynamo Geschwader and individuals; main group inferred (the only ultras group German Wikipedia names). Site forbids copying, no quote | C784 |
+| Die Siedler (SV Darmstadt 98) | **row written**: 2014-11 `unverified` | the fan club's own text on sv98.de: founded in November 2014, 120 members; German Wikipedia: "Der Fanclub mit den meisten Mitgliedern". Judgement call for Alexandru: this is the largest fan club, while Wikipedia calls the ultras of the umbrella Block 1898 "hauptverantwortlich" for the support; batch 1 wrote no row for Darmstadt for that reason | C785 |
+| Sportfreunde Ronhof (Greuther Fürth) | no date, no row | sgf1903.de fan-club list (every listed club has a Gründungsdatum, but Sportfreunde Ronhof has no entry of its own; it is named once by another fan club); Wikipedia's source greuther-fuerth.de is the old host (TLS failure in batch 1) | none |
+| Violet Crew (VfL Osnabrück) | no date, no row | vfl.de fans page and fan-club list (not listed), VfL museum page (named in the Julius-Hirsch-Preis alliance, no date); Faszination Fankurve (friendship with UCS since 2011, no founding date) | none |
+| Castaways Ultras and Clique du Nord (HSV) | not searched, no row | German Wikipedia calls the two of them "die führenden Gruppen". The main-group rule writes no row when a source names several groups without one main one, so a date would not make a row | none |
+
+## 4. Totals
+
+| file part | before | after |
+|---|---|---|
+| club rows | 41 `confirmed`, 14 `unverified` (55) | 43 `confirmed`, 12 `unverified` (55) |
+| supporters rows | 6 `unverified`, 1 `inferred` (7) | 6 `unverified`, 3 `inferred` (9) |
+
+Supporters after: `unverified` Generation Luzifer, Legio Augusta, Commando Cannstatt, Wilde Horde, Blue Generation, Die Siedler; `inferred` Supporters Ingolstadt, Ultra Boys 90, Ultras Dynamo.
+
+**Hosts that stopped the probe this session:** der-betze-brennt.de (robots.txt names ClaudeBot), lalsace.fr (robots.txt names anthropic-ai), spiegel.de, taz.de, rp-online.de, volksstimme.de and lvz.de (robots.txt reservation or bot notice), ub90.com (HTTP 403). Closed hosts were not requested.
+
+**Other changes in this PR:** the probe trigger rule and the consent-terms host rule in `docs/claude/conventions.md`; the bucket entry `dfl-supercup` title "Franz Beckenbauer Supercup" (DFB spelling; the entry has no Romanian title, since bucket titles are names and are not translated), with the review row in `docs/claude/audits/2026-11-bucket.md` noted in place and `calendars/skipped.md` rebuilt.
