@@ -290,7 +290,7 @@ Moved byte for byte from CLAUDE.md (old lines 148-1007, 2026-10-22). Long new en
   `Q2188121` is not a competition and was left out), the football-data.org
   and OpenLigaDB competitions, and the cups, finals, super cups and
   play-offs of the bucket list, deduplicated by name and country: **64
-  competitions**. Nothing refreshes it.
+  competitions**. Nothing refreshes it. **Renamed 2026-11-17 (phase 4a):** `de-dfl-supercup` is named `Franz Beckenbauer Supercup`, as the DFB writes it (DFB news of 6 Nov 2025, DFB-Pokal information page 2026/2027); it was called DFL-Supercup from 2010 to 2024. The id was kept; the file has no note column, so the old name is recorded here.
 - `data/competition-info.csv` — added 2026-10-08. `competitionId`, `topic`
   (closed, in this order: `format`, `qualification`,
   `promotion-relegation`, `season-window`, `schedule-announcement`,

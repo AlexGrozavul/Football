@@ -15,8 +15,8 @@
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C25;C24#basis": {
-  "en": "11c67884",
-  "ro": "O singură sursă, ca la rândul despre istorie: C25 și C24 sunt amândouă pagini DFB, deci contează ca o singură sursă. Lista câștigătorilor (C25) nu are dată Stand, iar pagina principală (C24) arată selectorul de sezon 2026/2027, dar știrile scurte de pe ea sunt datate doar prin conținut. Lista câștigătorilor merge până la 2025/2026.",
+  "en": "17a1b2d3",
+  "ro": "publicat: pagina principală a DFB (C24) arată sezonul 2026/2027, iar știrea ei despre optimi (runda celor 16) numește FC Bayern recordmana și câștigătoarea sezonului trecut (Vorjahresgewinner); dă și finala de 3:0 cu Stuttgart. Lista câștigătoarelor (C25, fără dată Stand) merge până la 2025/2026. Ambele sunt pagini DFB, o singură sursă; eticheta se sprijină pe pagina sezonului.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C20#text": {
@@ -60,8 +60,8 @@
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C22;C31#text": {
-  "en": "f4d3e0bf",
-  "ro": "Calendarul 2026-27, la nivel de lună (pagina de termene DFB pentru 2026/2027 are zilele): tragerea la sorți a primului tur în iunie 2026; primul tur în august 2026 plus două meciuri la începutul lui septembrie 2026, jucate până la data verificării; turul doi la sfârșitul lui octombrie 2026, încă nejucat la data verificării; optimile (turul cu 16 echipe) la începutul lui decembrie 2026; sferturile în februarie 2027 (două perechi de zile de joc); semifinalele în aprilie 2027; finala în mai 2027 la Berlin. Terenul pentru 2027 nu este numit pe paginile citite.",
+  "en": "8ef5fbaa",
+  "ro": "Calendarul 2026-27, la nivel de lună (pagina de date a DFB pentru 2026/2027 are zilele): tragerea pentru primul tur în iunie 2026; primul tur în august 2026, plus două meciuri la începutul lui septembrie 2026; turul al doilea la sfârșitul lui octombrie 2026; tragerea pentru runda celor 16 la începutul lui noiembrie 2026; toate jucate sau ținute până la data verificării. Runda celor 16 la începutul lui decembrie 2026, încă nejucată la data verificării; sferturile în februarie 2027 (două perechi de zile de joc); semifinalele în aprilie 2027; finala în mai 2027, la Berlin. Terenul pentru 2027 nu este numit pe paginile citite.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C22;C31#basis": {
@@ -70,8 +70,8 @@
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C27;C32#text": {
-  "en": "2f26a589",
-  "ro": "Tragerile la sorți și ora de start. Tragerea la sorți a primului tur se fixează la câteva săptămâni după finală, după încheierea cupelor regionale; tragerile pentru turul 2 până la semifinale sunt de regulă în duminica de după tur, cu excepții posibile, transmise în direct de ARD sau ZDF din Muzeul German al Fotbalului din Dortmund. Ora de start exactă a fiecărui meci este publicată pe DFB.de la circa una până la două săptămâni după tragere, stabilite cu cluburile, biroul de informații al poliției (ZIS), DFL și partenerii TV. În 2026-27 tragerea la sorți a turului doi a fost într-o sâmbătă din septembrie 2026, în emisiunea ARD Sportschau.",
+  "en": "3f07b032",
+  "ro": "Tragerile la sorți și ora de start. Tragerea la sorți a primului tur se fixează la câteva săptămâni după finală, după încheierea cupelor regionale; tragerile pentru turul 2 până la semifinale sunt de regulă în duminica de după tur, cu excepții posibile, transmise în direct de ARD sau ZDF din Muzeul German al Fotbalului din Dortmund. Ora de start exactă a fiecărui meci este publicată pe DFB.de la circa una până la două săptămâni după tragere, stabilită cu cluburile, autoritățile de securitate (mai ales biroul de informații al poliției, ZIS) și televiziunile care transmit. În 2026-27 tragerea la sorți a turului doi a fost într-o sâmbătă din septembrie 2026, în emisiunea ARD Sportschau.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C27;C32#basis": {
@@ -87,16 +87,6 @@
  "de-dfb-pokal|other|C23#basis": {
   "en": "4b238531",
   "ro": "publicat: pagina de informații 2026/2027",
-  "status": "machine-unchecked"
- },
- "de-dfb-pokal|other|C23;C21#text": {
-  "en": "5583439d",
-  "ro": "Ce câștigă învingătoarea și premiile în bani. Supercupa 2026-27 s-a jucat între vicecampioana din ligă, Borussia Dortmund, și câștigătoarea eventului, FC Bayern. Un loc european pentru câștigătoarea cupei nu este menționat pe nicio pagină citită. Premiile pe tur nu sunt publicate pe paginile citite; regulamentul spune că 90 % din veniturile din drepturi media și reclamă pe panouri încasate de DFB GmbH & Co. KG se plătesc cluburilor ca taxă de participare și că DFB GmbH & Co. KG păstrează de regulă o treime din venitul net al finalei.",
-  "status": "machine-unchecked"
- },
- "de-dfb-pokal|other|C23;C21#basis": {
-  "en": "f93c0fc7",
-  "ro": "publicat: pagina de informații 2026/2027; Durchführungsbestimmungen §§ 51 și 52",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|other|C21#text": {
@@ -260,8 +250,8 @@
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|schedule-announcement|C22;C32;C27#text": {
-  "en": "f6cd2f60",
-  "ro": "În 2026-27, tragerea la sorți pentru primul tur a fost în iunie 2026, iar cea pentru turul al doilea într-o sâmbătă din septembrie 2026. Pagina DFB despre modul de desfășurare spune că ora de start exactă a meciurilor se publică pe DFB.de la circa una-două săptămâni după tragere, stabilite împreună cu cluburile, biroul de informații al poliției (ZIS), DFL și partenerii TV.",
+  "en": "29db1c3c",
+  "ro": "În 2026-27, tragerea la sorți pentru primul tur a fost în iunie 2026, iar cea pentru turul al doilea într-o sâmbătă din septembrie 2026. Pagina DFB despre modul de desfășurare spune că ora de start exactă a meciurilor se publică pe DFB.de și pe canalele de social media ale cupei la circa una-două săptămâni după tragere, stabilite împreună cu cluburile, autoritățile de securitate (mai ales biroul de informații al poliției, ZIS) și televiziunile care transmit.",
   "status": "machine-unchecked"
  },
  "de-dfb-pokal|schedule-announcement|C22;C32;C27#basis": {
@@ -330,8 +320,8 @@
   "status": "machine-unchecked"
  },
  "it-serie-a|other|C42;C43#text": {
-  "en": "976e704a",
-  "ro": "Identitate. Comunicatul FIGC îl numește Campionato di Serie A; site-ul FIGC listează separat Serie A Women, competiția feminină. Organismul ligii, Lega Calcio Serie A, a propus regulile pentru clasamentul final 2026-27, iar Consiliul Federal al FIGC le-a adoptat în baza art. 27 din statutul federal, ca derogare de la regulile federației (NOIF); site-ul FIGC în engleză listează Lega Calcio Serie A printre ligile și asociațiile sale.",
+  "en": "d8110875",
+  "ro": "Identitate. Comunicatul FIGC îl numește Campionato di Serie A. Organismul ligii, Lega Calcio Serie A, a propus regulile pentru clasamentul final 2026-27, iar Consiliul Federal al FIGC le-a adoptat în baza art. 27 din statutul federal, ca derogare de la regulile federației (NOIF); site-ul FIGC în engleză listează Lega Calcio Serie A printre ligile și asociațiile sale.",
   "status": "machine-unchecked"
  },
  "it-serie-a|other|C42;C43#basis": {
@@ -357,6 +347,116 @@
  "it-serie-a|other|C45;C44#basis": {
   "en": "0306e498",
   "ro": "Articolele Wikipedia în engleză despre ligă și sezon, o singură sursă.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|season-window|C22#text": {
+  "en": "07194428",
+  "ro": "2026-27, la nivel de lună (pagina de date a DFB pentru 2026/2027 are zilele): primul tur în august 2026, cu două meciuri la începutul lui septembrie; turul al doilea în octombrie; optimile (runda celor 16) în decembrie; sferturile în februarie 2027; semifinalele în aprilie; finala în mai, la Berlin.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|season-window|C22#basis": {
+  "en": "f12492bc",
+  "ro": "publicat: pagina de date a DFB (Rahmentermine) pentru 2026/2027, citită la data verificării; înlocuiește rezumatele din rezultatele căutării pe care se baza rândul înainte (C5, C6).",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C23;C21;C20#text": {
+  "en": "02d04703",
+  "ro": "Ce câștigă învingătoarea și premiile în bani. Supercupa 2026-27 (Franz Beckenbauer Supercup) s-a jucat între vicecampioana din ligă, Borussia Dortmund, și câștigătoarea eventului, FC Bayern. Regulamentul DFB privind meciurile (Spielordnung, § 58 nr. 1) dă câștigătoarei Cupei Germaniei, ca și campioanei Germaniei, dreptul de a fi înscrisă de DFB în competițiile UEFA; în ce competiție UEFA și în ce fază nu se spune pe paginile citite. Premiile pe tur nu sunt publicate pe paginile citite; regulamentul spune că 90 % din veniturile din drepturi media și reclamă pe panouri încasate de DFB GmbH & Co. KG se plătesc cluburilor ca taxă de participare și că DFB GmbH & Co. KG păstrează de regulă o treime din venitul net al finalei.",
+  "status": "machine-unchecked"
+ },
+ "de-dfb-pokal|other|C23;C21;C20#basis": {
+  "en": "8f4fd242",
+  "ro": "publicat: pagina de informații 2026/2027; Durchführungsbestimmungen §§ 51 și 52; Spielordnung (Stand 1 iulie 2026) § 58 nr. 1",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|format|C9;C47;C48#text": {
+  "en": "5280c45e",
+  "ro": "Dublă manșă între clubul de pe locul 16 din Bundesliga și clubul de pe locul 3 din 2. Bundesliga, clubul din Bundesliga fiind gazdă în tur; se aplică regulile UEFA pentru meciurile eliminatorii: decide scorul general, golurile din deplasare nu contează, iar la egalitate urmează prelungiri și lovituri de departajare. Este în joc un loc în prima ligă. Barajul se joacă în dublă manșă din 2008/09. În 2026 turul de la Wolfsburg s-a încheiat 0:0, iar Paderborn a învins Wolfsburg cu 2:1 după prelungiri în retur.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|format|C9;C47;C48#basis": {
+  "en": "c3d3aea2",
+  "ro": "Formatul: o știre DFB datată (mai 2024) și Wikipedia (de), două surse independente; regulamentul de joc al DFB trece aceste baraje printre meciurile DFL. Rezultatele din 2026: doar Wikipedia. Înlocuiește sursele din 2026-10-08 C10 (bundesliga.com) și C11 (heidelberg24), gazde închise pentru noi, care nu au fost deschise niciodată.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|season-window|C35#text": {
+  "en": "780fe2f1",
+  "ro": "2026-27: sfârșitul lui mai 2027, după ultima etapă; calendarul-cadru al DFB prevede ca barajele pentru Bundesliga și 2. Bundesliga să se încheie până la începutul lui iunie 2027. Doar la nivel de lună; zilele sunt pe pagina citată.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|season-window|C35#basis": {
+  "en": "c39b6885",
+  "ro": "publicat: știrea DFB din noiembrie 2025 despre calendarul-cadru 2026/2027, adoptat de DFB-Präsidium. Înlocuiește ciclul observat o singură dată din intrarea din bucket list și sursele ei C9 până la C11.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|format|C9;C20;C49;C50#text": {
+  "en": "6a1b6d01",
+  "ro": "Dublă manșă între clubul de pe locul 16 din 2. Bundesliga și clubul de pe locul 3 din 3. Liga, după regulile UEFA pentru meciurile eliminatorii: decide scorul general, golurile din deplasare nu contează, apoi prelungiri și lovituri de departajare. Câștigătoarea joacă sezonul următor în 2. Bundesliga, învinsa în 3. Liga. Regulamentul de joc al DFB dă returul acasă clubului care a avut mai puține zile libere înaintea turului (la egalitate decide tragerea la sorți); în 2024 și 2026 clubul din liga a treia a fost gazdă în tur. În 2026 Essen a câștigat turul cu 1:0 acasă, iar Fürth a câștigat returul cu 2:0 acasă și a rămas în ligă. Participantele nu se cunosc până la ultima etapă.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|format|C9;C20;C49;C50#basis": {
+  "en": "a044214f",
+  "ro": "Formatul: DFB-Spielordnung (Stand 1 iulie 2026), prevederile despre barajele dintre 2. Bundesliga și 3. Liga, citite la data verificării, și o știre DFB datată (mai 2024). Rezultatele din 2026: doar Wikipedia. Înlocuiește C10 (bundesliga.com) și C11 (heidelberg24), gazde închise pentru noi, care nu au fost deschise niciodată.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|season-window|C35#text": {
+  "en": "780fe2f1",
+  "ro": "2026-27: sfârșitul lui mai 2027, după ultima etapă; calendarul-cadru al DFB prevede ca barajele pentru Bundesliga și 2. Bundesliga să se încheie până la începutul lui iunie 2027. Doar la nivel de lună; zilele sunt pe pagina citată.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|season-window|C35#basis": {
+  "en": "c39b6885",
+  "ro": "publicat: știrea DFB din noiembrie 2025 despre calendarul-cadru 2026/2027, adoptat de DFB-Präsidium. Înlocuiește ciclul observat o singură dată din intrarea din bucket list și sursele ei C9 până la C11.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|format|C9;C13;C14;C51#text": {
+  "en": "06eac346",
+  "ro": "Nu este un meci între un club din 3. Liga și unul din Regionalliga: doi reprezentanți din Regionalliga (de regulă campionii) joacă tur-retur pentru ultimul loc de promovare în 3. Liga, după regulile UEFA pentru meciurile eliminatorii, iar ceilalți trei campioni promovează direct; ligile care joacă barajul se schimbă prin rotație (în 2024 Bayern și Nord, în 2026 Bayern și Nordost). O reformă este deschisă: la voturile regionale modelul Kompass (patru serii de Regionalliga, toți campionii promovează) a avut cel mai mare sprijin, dar nu majoritate în toate cele cinci regiuni, iar în septembrie 2026 DFB-Präsidium a început pregătirea unui DFB-Bundestag extraordinar în decembrie 2026, care să decidă; după model, 2027/28 ar fi un sezon de calificare, iar cele patru serii ar începe în 2028/29. Așadar modelul actual ar trebui să se aplice în 2026/27 - neconfirmat de o declarație DFB. În 2026 Würzburger Kickers, reprezentanta Bavariei, a învins Lok Leipzig cu 1:0 și 2:1.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|format|C9;C13;C14;C51#basis": {
+  "en": "1ace2d4e",
+  "ro": "Știri DFB din mai 2024 (format, rotație) și septembrie 2026 (reforma), un articol terț din aprilie 2026 și Wikipedia (de) pentru rezultatele din 2026. Nu s-a găsit nicio declarație DFB pentru 2026/27. C12 (zdfheute.de) a fost scos: condițiile de utilizare ZDF cer acord scris pentru copierea sau stocarea textelor sale, așa că nu a fost citit.",
+  "status": "machine-unchecked"
+ },
+ "ro-superliga-relegation-play-off|format|C15;C16;C17#text": {
+  "en": "91f945a4",
+  "ro": "În 2025-26 cele două cluburi din Superliga aflate imediat deasupra locurilor 15 și 16, retrogradate direct, au întâlnit fiecare câte unul dintre primele cluburi din Liga 2 (locurile trei și patru) în dublă manșă. În 2026 Farul Constanța a terminat 3-3 și 1-1 cu Chindia Târgoviște și a rămas în ligă după lovituri de departajare; FC Voluntari a pierdut cu 2-3 la Hermannstadt, apoi a câștigat cu 3-0 acasă și a promovat. Ce cluburi se întâlnesc nu se știe până la finalul play-out-ului. Regulile competiției 2026-27 nu au fost găsite, deci formatul se poate schimba.",
+  "status": "machine-unchecked"
+ },
+ "ro-superliga-relegation-play-off|format|C15;C16;C17#basis": {
+  "en": "e745ce64",
+  "ro": "C17 (g4media.ro, citit la data verificării) confirmă dubla Voluntari-Hermannstadt: 2-3 la Sibiu, 3-0 acasă, 5-3 la general. Dubla Farul-Chindia și regula de împerechere se bazează doar pe C15 (fanatik.ro) și C16 (tvrinfo.ro): sursă unică pe o gazdă închisă pentru noi. Copiat din nota intrării superliga-relegation-baraj din bucket list (2026-10-08).",
+  "status": "machine-unchecked"
+ },
+ "ro-superliga-relegation-play-off|season-window|C15;C16;C17#text": {
+  "en": "ccc4a5e4",
+  "ro": "Mai până la începutul lui iunie",
+  "status": "machine-unchecked"
+ },
+ "ro-superliga-relegation-play-off|season-window|C15;C16;C17#basis": {
+  "en": "d55d4634",
+  "ro": "C17 (g4media.ro, citit la data verificării) datează returul dublei Voluntari-Hermannstadt la începutul lui iunie 2026; restul se bazează pe C15 și C16: sursă unică pe o gazdă închisă pentru noi. Din intrarea superliga-relegation-baraj din bucket list.",
+  "status": "machine-unchecked"
+ },
+ "ro-liga-3-promotion-tournament|format|C18;C19#text": {
+  "en": "3c4bc506",
+  "ro": "Nu este un meci între cluburi din Liga 2 și Liga 3: ocupantele locului 2 din grupele de play-off ale Ligii 3 joacă semifinale într-o singură manșă și o finală, câștigătoarea primei semifinale fiind gazda finalei, iar câștigătoarea ia al cincilea loc de promovare în Liga 2. Câștigătoarele grupelor promovează direct. Regulile 2025-26 sunt din sistemul competițional al federației și din presă; edițiile mai vechi au folosit un alt format, în dublă manșă, iar regulile 2026-27 nu au fost găsite. Barajul propriu al Ligii 2 se joacă doar între cluburi din Liga 2 și nu este acoperit aici.",
+  "status": "machine-unchecked"
+ },
+ "ro-liga-3-promotion-tournament|format|C18;C19#basis": {
+  "en": "d8463e6b",
+  "ro": "C18, sistemul competițional al federației (FRF) pentru 2025-2026, citit la data verificării, descrie formatul; C19 (sport.ro) concordă. Afirmația despre edițiile mai vechi în dublă manșă nu a fost găsită pe o pagină citită. Nu s-au găsit reguli pentru 2026-27, deci neverificat.",
+  "status": "machine-unchecked"
+ },
+ "ro-liga-3-promotion-tournament|season-window|C18;C19;C52#text": {
+  "en": "e920f785",
+  "ro": "Iunie",
+  "status": "machine-unchecked"
+ },
+ "ro-liga-3-promotion-tournament|season-window|C18;C19;C52#basis": {
+  "en": "69f39669",
+  "ro": "Wikipedia (ro) dă finala din 2026 în iunie 2026; o singură sursă pentru lună. C18 și C19 descriu doar formatul.",
   "status": "machine-unchecked"
  }
 }
