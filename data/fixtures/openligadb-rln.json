@@ -4850,7 +4850,7 @@
   {
    "id": 87169,
    "utcDate": "2026-11-01T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "16. Spieltag",
    "roundOrder": 16,
    "home": {
@@ -4865,9 +4865,20 @@
     "shortName": "VfB Oldenburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/bc/VfB_Oldenburg.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5250,7 +5261,7 @@
   {
    "id": 87185,
    "utcDate": "2026-11-08T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5265,9 +5276,20 @@
     "shortName": "FC St. Pauli II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Fc_st_pauli_logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5350,7 +5372,7 @@
   {
    "id": 87189,
    "utcDate": "2026-11-15T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "18. Spieltag",
    "roundOrder": 18,
    "home": {
@@ -5365,9 +5387,20 @@
     "shortName": "VfB Oldenburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/bc/VfB_Oldenburg.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
