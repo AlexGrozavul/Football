@@ -1,20 +1,44 @@
-# run 1: robots.txt, notices and landing pages only
-r-dfb	robots	https://www.dfb.de/robots.txt
-r-assets	robots	https://assets.dfb.de/robots.txt
-r-datencenter	robots	https://datencenter.dfb.de/robots.txt
-r-figcfiles	robots	https://files.figc.it/robots.txt
-r-figc	robots	https://www.figc.it/robots.txt
-r-frf	robots	https://www.frf.ro/robots.txt
-r-sportro	robots	https://www.sport.ro/robots.txt
-r-g4	robots	https://www.g4media.ro/robots.txt
-r-zdf	robots	https://www.zdfheute.de/robots.txt
-r-df9	robots	https://www.diefalsche9.de/robots.txt
-r-tvr	robots	https://tvrinfo.ro/robots.txt
-r-wpen	robots	https://en.wikipedia.org/robots.txt
-l-dfb	links	https://www.dfb.de/	impressum|nutzung|agb|rechtlich|recht|disclaimer|datenschutz|terms
-l-frf	links	https://www.frf.ro/	termeni|conditii|legal|politica|disclaimer|gdpr|cookies|copyright
-l-sportro	links	https://www.sport.ro/	termeni|conditii|legal|politica|disclaimer|copyright
-l-g4	links	https://www.g4media.ro/	termeni|conditii|legal|politica|disclaimer|copyright|despre
-l-zdf	links	https://www.zdfheute.de/	impressum|nutzung|agb|recht|disclaimer
-l-df9	links	https://www.diefalsche9.de/	impressum|nutzung|agb|recht|disclaimer|datenschutz
-l-figc	links	https://www.figc.it/en	legal|note|terms|privacy|condizioni|disclaimer|copyright
+# run 2: content pages of the rows' sources; Part C (DE1 old URL, C21 2026 edition); Wikipedia for A3 and B
+C20	url	https://assets.dfb.de/uploads/000/336/416/original_Heft_04_Spielordnung_Schiedsrichterordnung_20260701.pdf?1784280450	2@Stand:?\s*\d;;2@Vereinspokal;;2@Fachgruppe Spielbetrieb;;3@[Zz]weite Mannschaft|Amateurmannschaft;;2@Spielgemeinschaft;;2@werbefrei;;3@Verlängerung|Strafstoß|Elfmeter;;4@zuerst gezogen|Lostopf|Topf;;2@verzichtet|Verzicht;;2@Relegationsspiel;;2@Deutsche Meister[^.]{0,160}UEFA|UEFA-Klubwettbewerb
+C21	url	https://assets.dfb.de/uploads/000/337/006/original_Heft_05_Durchfuehrungsbestimmungen_20260701.pdf?1786373160	2@Stand:?\s*\d;;3@90 ?%|90 Prozent;;2@Drittel;;4@10 ?%|10 Prozent|zehn Prozent;;2@Sponsor;;2@600;;2@Dauerkarte;;2@Rollstuhl|behindert;;4@erhöhte[mn]? Risiko;;3@Alkohol;;2@Puffer|Trennung;;2@zwei Wochen|14 Tage;;2@15 ?%|25 ?%
+C34	url	https://assets.dfb.de/uploads/000/328/560/original_Heft_01_Satzung_Geschaeftsordnung_DFB_DFL_Grundlagenvertrag_20251128.pdf?1769517033	2@Stand:?\s*\d;;3@§ ?16a|Lizenz;;2@Auf- und Abstieg|Abstieg;;2@Rahmenterminkalender|Rahmentermin;;2@Vereinseinrichtung;;2@europäische|internationale[n]? Wettbewerb;;2@Deutsche[n]? Meister
+C22	url	https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/rahmentermine	FULL3500
+C23	url	https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/wettbewerbsinformationen	FULL5000
+C24	url	https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/	2@2026/2027|2026/27;;2@Titelverteidiger;;2@Double
+C25	url	https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/statistik/bisherige-sieger	2@2025/2026|2025/26;;2@1934|1935;;2@Stand
+C26	url	https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/statistik/rekordsieger	2@Stand;;3@Bayern|Rekordsieger;;2@Bremen;;2@Olympiastadion|Berlin
+C27	url	https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/modus	2@Stand|Saison;;2@Sonntag;;2@Deutschen Fußballmuseum|Fußballmuseum;;2@Anstoßzeit|zeitgenau|ein bis zwei Wochen;;2@Rückspiel|Hin- und Rückspiel|ein Spiel
+C28	url	https://www.dfb.de/news/neuer-rekord-13-drittligaklubs-im-dfb-pokal-am-start	FULL2500
+C29	url	https://www.dfb.de/news/ticketbewerbungen-fuers-pokalfinale-in-berlin-ab-15-april	FULL2500
+C30	url	https://www.dfb.de/news/pokalfinale-bayern-anhaenger-in-der-ostkurve-vfb-fans-am-marathontor	2@Ostkurve|Marathontor;;2@April|2026|gelost|Los
+C31	url	https://www.dfb.de/maenner/wettbewerbe/dfb-pokal/fan-infos-pokalfinale	FULL1500
+C32	url	https://www.dfb.de/news/schweinsteiger-lost-zweite-dfb-pokalrunde-aus	2@2026|Samstag|Sportschau|ausgelost
+C33	url	https://www.dfb.de/news/fc-bayern-gegen-vfb-hier-gibts-die-fan-infos-zum-pokalfinale-in-berlin	2@Anreise|mitgebracht|Treffpunkt|Fanbeauftragte
+C35	url	https://www.dfb.de/news/rahmenterminkalender-fuer-saison-2026/2027-festgelegt	FULL4500
+C9	url	https://www.dfb.de/news/detail/von-bundesliga-bis-3-liga-alle-infos-zu-den-relegationen-260997	FULL4500
+C14	url	https://www.dfb.de/news/regionalliga-reform-dfb-praesidium-bereitet-ausserordentlichen-bundestag-vor	2@Reform|Bundestag|2028|Aufstieg
+C17	url	https://www.g4media.ro/fc-voluntari-a-promovat-in-superliga-dupa-victoria-cu-hermannstadt-la-baraj-sibienii-retrogradeaza-dupa-4-ani.html	3@baraj|Voluntari|Hermannstadt|3-0|2-3
+C18	url	https://www.frf.ro/wp-content/uploads/2025/06/Sistem-competitional-Liga-3-cex-iunie-2025.pdf	3@baraj|semifinal|finala|turneu|promovare|locul 2|clasat
+C19	url	https://www.sport.ro/fotbal-intern/opt-echipe-lupta-pentru-promovarea-in-liga-2-situatia-din-play-off-ul-ligii-3-cele-18-echipe-retrogradate-la-judeteana.html	3@promov|play-off|turneu|locul
+C42	url	https://files.figc.it/version/c:ZmUzYzk0MzUtMzU0Zi00:YTk3YzZiZGEtYmExYi00/244%20-%20Deroga%20art.%2051%20NOIF%20-%20Determinazione%20classifica%20Campionato%20Serie%20A%20ss%202026%20-%202027.pdf	2@2026|stagione;;3@spareggio|classifica avulsa;;2@tiri di rigore|calci di rigore;;2@supplementari;;2@sorteggio;;2@UEFA;;2@Consiglio Federale|art\. 27
+C43	url	https://www.figc.it/en	2@Serie A|Women|Lega
+DE1	url	https://www.dfb.de/fileadmin/_dfbdam/279659-Heft_05_Durchfuehrungsbestimmungen_20230201.pdf	2@Stand:?\s*\d;;2@erhöhte[mn]? Risiko;;2@10 ?%|10 Prozent
+C36	en	2026–27 Bundesliga	2@defending champions|champions;;3@promoted|relegated;;2@play-off|playoff
+C37	de	Fußball-Bundesliga 2026/27	2@Titelverteidiger|Meister;;3@Aufsteiger|Absteiger|Relegation
+C38	en	Bundesliga	2@34 matchdays|306;;2@three points|3 points;;3@relegation play-off|bottom two|16th
+C44	en	2026–27 Serie A	2@August 2026|May 2027;;3@promoted|relegated;;2@20 teams
+C45	en	Serie A	2@2004–05|20 clubs|20 teams;;2@asymmetric;;2@three points|1994–95;;2@three lowest|relegated to Serie B
+C46	en	Lega Serie A	2@Milan;;2@FIGC;;2@Enilive
+B-sc	de	Franz-Beckenbauer-Supercup	3@Franz-Beckenbauer-Supercup;;2@DFL-Supercup;;2@umbenannt|Umbenennung|benannt
+B-sc-en	en	DFL-Supercup	3@Franz Beckenbauer|Beckenbauer;;2@renamed
+A3-rel	de	Relegation (Fußball)	3@Bundesliga[^.]{0,80}(Sechzehnte|16\.|Dritte|3\.)|Hin- und Rückspiel;;2@Auswärtstor;;2@Verlängerung|Elfmeterschießen;;2@2008/09|seit 2009
+A3-bl2526	de	Fußball-Bundesliga 2025/26	3@Relegation;;2@Paderborn[^.]{0,120}Wolfsburg|Wolfsburg[^.]{0,120}Paderborn
+A3-2bl2526	de	2. Fußball-Bundesliga 2025/26	3@Relegation;;2@Essen[^.]{0,120}Fürth|Fürth[^.]{0,120}Essen
+A3-3l2526	de	3. Fußball-Liga 2025/26	2@Relegation;;2@Aufstiegsspiele|Würzburg
+A24-rl	de	Regionalliga	3@Aufstiegsspiele|Aufstiegsrunde;;2@Reform|2028;;2@direkt|Rotation|rotierend
+A25-ro	ro	Liga I 2025-2026	3@baraj;;2@Voluntari|Hermannstadt;;2@Farul|Chindia
+A27-ro	ro	Liga a III-a 2025-2026	3@baraj|turneu|promovare;;2@semifinal|finală
+n-zdf	url	https://www.zdf.de/nutzungsbedingungen	4@automatis|Robot|Crawler|Scrap|Data.?Mining|Text.?und.?Data|KI|künstliche;;2@vervielfältig
+n-df9	url	https://www.diefalsche9.de/agb/	4@automatis|Robot|Crawler|Scrap|Mining|KI|künstliche;;2@vervielfältig|Urheber
+n-df9i	url	https://www.diefalsche9.de/impressum/	4@automatis|Robot|Crawler|Scrap|Mining|KI|44b;;2@vervielfältig|Urheber
+dfb-ord	links	https://www.dfb.de/ueber-uns/verbandsrecht/satzung-und-ordnungen	Heft|\.pdf|Durchf|Satzung|Spielordnung
