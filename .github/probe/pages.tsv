@@ -1,0 +1,20 @@
+# run 1: robots.txt, notices and landing pages only
+r-dfb	robots	https://www.dfb.de/robots.txt
+r-assets	robots	https://assets.dfb.de/robots.txt
+r-datencenter	robots	https://datencenter.dfb.de/robots.txt
+r-figcfiles	robots	https://files.figc.it/robots.txt
+r-figc	robots	https://www.figc.it/robots.txt
+r-frf	robots	https://www.frf.ro/robots.txt
+r-sportro	robots	https://www.sport.ro/robots.txt
+r-g4	robots	https://www.g4media.ro/robots.txt
+r-zdf	robots	https://www.zdfheute.de/robots.txt
+r-df9	robots	https://www.diefalsche9.de/robots.txt
+r-tvr	robots	https://tvrinfo.ro/robots.txt
+r-wpen	robots	https://en.wikipedia.org/robots.txt
+l-dfb	links	https://www.dfb.de/	impressum|nutzung|agb|rechtlich|recht|disclaimer|datenschutz|terms
+l-frf	links	https://www.frf.ro/	termeni|conditii|legal|politica|disclaimer|gdpr|cookies|copyright
+l-sportro	links	https://www.sport.ro/	termeni|conditii|legal|politica|disclaimer|copyright
+l-g4	links	https://www.g4media.ro/	termeni|conditii|legal|politica|disclaimer|copyright|despre
+l-zdf	links	https://www.zdfheute.de/	impressum|nutzung|agb|recht|disclaimer
+l-df9	links	https://www.diefalsche9.de/	impressum|nutzung|agb|recht|disclaimer|datenschutz
+l-figc	links	https://www.figc.it/en	legal|note|terms|privacy|condizioni|disclaimer|copyright
