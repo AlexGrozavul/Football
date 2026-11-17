@@ -3657,56 +3657,6 @@
    "winner": null
   },
   {
-   "id": 564769,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 559,
-    "name": "Sevilla FC",
-    "shortName": "Sevilla FC",
-    "tla": "SEV",
-    "crest": "https://crests.football-data.org/559.png"
-   },
-   "away": {
-    "id": 84,
-    "name": "Málaga CF",
-    "shortName": "Málaga",
-    "tla": "MAL",
-    "crest": "https://crests.football-data.org/84.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 564771,
-   "utcDate": "2026-12-06T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 78,
-    "name": "Club Atlético de Madrid",
-    "shortName": "Atleti",
-    "tla": "ATL",
-    "crest": "https://crests.football-data.org/78.png"
-   },
-   "away": {
-    "id": 90,
-    "name": "Real Betis Balompié",
-    "shortName": "Real Betis",
-    "tla": "BET",
-    "crest": "https://crests.football-data.org/90.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 564768,
    "utcDate": "2026-12-06T13:00:00Z",
    "status": "TIMED",
@@ -3776,6 +3726,56 @@
     "shortName": "Valencia",
     "tla": "VAL",
     "crest": "https://crests.football-data.org/95.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564771,
+   "utcDate": "2026-12-06T20:00:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 78,
+    "name": "Club Atlético de Madrid",
+    "shortName": "Atleti",
+    "tla": "ATL",
+    "crest": "https://crests.football-data.org/78.png"
+   },
+   "away": {
+    "id": 90,
+    "name": "Real Betis Balompié",
+    "shortName": "Real Betis",
+    "tla": "BET",
+    "crest": "https://crests.football-data.org/90.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 564769,
+   "utcDate": "2026-12-07T20:00:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 559,
+    "name": "Sevilla FC",
+    "shortName": "Sevilla FC",
+    "tla": "SEV",
+    "crest": "https://crests.football-data.org/559.png"
+   },
+   "away": {
+    "id": 84,
+    "name": "Málaga CF",
+    "shortName": "Málaga",
+    "tla": "MAL",
+    "crest": "https://crests.football-data.org/84.png"
    },
    "homeGoals": null,
    "awayGoals": null,
