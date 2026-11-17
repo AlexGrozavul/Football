@@ -1,6 +1,2 @@
-# run 6: the Ultras Dynamo self-description; Kaiserslautern and Osnabrück fan-club pages; DFB club pages for links to other clubs
-SGDu	url	https://www.dynamo-dresden.de/fans/fanszene/faninitiativen/	CTX1@3200@Ultras Dynamo \(UD\)
-FCKf	url	https://fck.de/fans/fans-beim-fck/fanclubs/	CTX3@700@Generation Luzifer|Luzifer|Ultra
-VFLc	url	https://www.vfl.de/fans/fanclubs	CTX3@700@Violet Crew|Ultra
-DFBw	links	https://datencenter.dfb.de/en/clubs/sv-waldhof-mannheim-07-e-v	.
-DFBs	links	https://datencenter.dfb.de/clubs/fc-st-pauli-von-1910-e-v?datacenter_name=datencenter	.
+# run 7: the rest of the Ultras Dynamo chronicle
+SGDu2	url	https://www.dynamo-dresden.de/fans/fanszene/faninitiativen/	CTX1@2600@Schnell wurde allerdings erkannt
