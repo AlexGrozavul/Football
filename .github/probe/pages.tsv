@@ -1,9 +1,0 @@
-# rowid	url	regexA	regexB	mode
-11	https://en.wikipedia.org/wiki/German_football_rivalries	Eintracht(?! Braunschweig)|Frankfurt	Darmstadt|Lilien	ctx
-17	https://en.wikipedia.org/wiki/German_football_rivalries	Bayern	Werder|Bremen	ctx
-23	https://en.wikipedia.org/wiki/German_football_rivalries	Werder|Bremen	Bayern	ctx
-25	https://en.wikipedia.org/wiki/German_football_rivalries	Heidenheim	Aalen	ctx
-26	https://en.wikipedia.org/wiki/German_football_rivalries	Kaiserslautern|\bFCK\b|Lautern	Saarbr[üu]cken	ctx
-29	https://en.wikipedia.org/wiki/German_football_rivalries	Bielefeld|Arminia	M[üu]nster|Preu[ßs]	ctx
-37	https://en.wikipedia.org/wiki/German_football_rivalries	Darmstadt|Lilien	Eintracht(?! Braunschweig)|Frankfurt	ctx
-39	https://en.wikipedia.org/wiki/German_football_rivalries	Osnabr[üu]ck	M[üu]nster|Preu[ßs]	ctx
