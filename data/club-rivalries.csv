@@ -1,12 +1,12 @@
 clubQ,rivalQ,rivalName,class,sourceId,checkedOn,quote
-Q104770,Q101959,Borussia Mönchengladbach,other,R1,2026-10-03
+Q104770,Q101959,Borussia Mönchengladbach,local,R1,2026-11-18,the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach
 Q104770,Q695008,FC Viktoria Köln,other,R2,2026-10-03
 Q104770,Q310608,SC Fortuna Köln,other,R2,2026-10-03
 Q141971,Q159930,BFC Dynamo,other,R2,2026-10-03
 Q141971,Q102720,Hertha BSC,other,R3,2026-10-03
 Q41420,Q15789,FC Bayern München,other,R4,2026-10-03
 Q41420,Q32494,FC Schalke 04,other,R5,2026-10-03
-Q101959,Q104770,1. FC Köln,other,R1,2026-10-03
+Q101959,Q104770,1. FC Köln,local,R1,2026-11-18,the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach
 Q38245,Q157352,FSV Frankfurt,other,R2,2026-10-03
 Q38245,Q479351,SV Darmstadt 98,other,R2,2026-10-03
 Q97905916,Q131603,TSV 1860 München,other,R6,2026-10-03
@@ -48,8 +48,8 @@ Q659780,Q124007617,SK Sturm Graz,other,C64,2026-10-17
 Q124007617,Q659780,Grazer AK,other,C64,2026-10-17
 Q392310,Q457460,SV Ried,other,C64,2026-10-17
 Q457460,Q392310,LASK,other,C64,2026-10-17
-Q696525,Q392310,LASK,other,C64,2026-10-17
-Q392310,Q696525,FC Blau-Weiß Linz,other,C64,2026-10-17
+Q696525,Q392310,LASK,local,C64,2026-11-18,Linz Derby: FC Blau-Weiß Linz vs. LASK Linz
+Q392310,Q696525,FC Blau-Weiß Linz,local,C64,2026-11-18,Linz Derby: FC Blau-Weiß Linz vs. LASK Linz
 Q261813,Q22866,SV Austria Salzburg,other,C64,2026-10-17
 Q22866,Q261813,FC Wacker Innsbruck,other,C64,2026-10-17
 Q694484,,SK Austria Klagenfurt,other,C64,2026-10-17
@@ -65,7 +65,7 @@ Q1322550,,FC Astra Giurgiu,other,C69,2026-10-17
 Q1322550,Q245162,FC Rapid București,other,C70,2026-10-17
 Q245162,Q1322550,FC Petrolul Ploiești,other,C70,2026-10-17
 Q1262822,,ACS Foresta Suceava,other,C71,2026-10-17
-Q1262822,,CSM Politehnica Iași,other,C71,2026-10-17
+Q1262822,,CSM Politehnica Iași,local,C71,2026-11-18,North-East derby: FC Botoşani vs Foresta Suceava vs Politehnica Iași
 Q220863,,Dacia Unirea Brăila,other,C71,2026-10-17
 Q1386940,Q680770,UTA Arad,other,C71,2026-10-17
 Q680770,Q1386940,Bihor Oradea,other,C71,2026-10-17
@@ -110,8 +110,8 @@ Q631,Q1543,AC Milan,other,C79,2026-10-17
 Q1543,Q631,FC Inter,other,C79,2026-10-17
 Q631,Q1422,Juventus FC,other,C80,2026-10-17
 Q1422,Q631,FC Inter,other,C80,2026-10-17
-Q2609,Q2739,AS Roma,other,C81,2026-10-17
-Q2739,Q2609,SS Lazio,other,C81,2026-10-17
+Q2609,Q2739,AS Roma,local,C81,2026-11-18,"is the football local derby in Rome, Italy, between Lazio and Roma"
+Q2739,Q2609,SS Lazio,local,C81,2026-11-18,"is the football local derby in Rome, Italy, between Lazio and Roma"
 Q1422,Q2768,Torino FC,other,C82,2026-10-17
 Q2768,Q1422,Juventus FC,other,C82,2026-10-17
 Q2074,Q1457,UC Sampdoria,other,C83,2026-10-17
@@ -136,8 +136,8 @@ Q2693,,A.C. Reggiana 1919,other,C92,2026-10-17
 Q2674,,Catania FC,other,C93,2026-10-17
 Q7156,Q8682,Real Madrid Club de Fútbol,other,C94,2026-10-17
 Q8682,Q7156,FC Barcelona,other,C94,2026-10-17
-Q8682,Q8701,Atlético Madrid,other,C95,2026-10-17
-Q8701,Q8682,Real Madrid Club de Fútbol,other,C95,2026-10-17
+Q8682,Q8701,Atlético Madrid,local,C95,2026-11-18,"between Atlético Madrid and Real Madrid, both hailing from the Spanish capital city of Madrid"
+Q8701,Q8682,Real Madrid Club de Fútbol,local,C95,2026-11-18,"between Atlético Madrid and Real Madrid, both hailing from the Spanish capital city of Madrid"
 Q7156,Q8780,RCD Espanyol de Barcelona,other,C96,2026-10-17
 Q8780,Q7156,FC Barcelona,other,C96,2026-10-17
 Q10329,Q8723,Real Betis Balompié,other,C97,2026-10-17
@@ -216,7 +216,7 @@ Q19628,Q204888,PAOK FC,other,C133,2026-10-17
 Q204888,Q19628,Olympiacos F.C.,other,C133,2026-10-17
 Q4122219,Q204888,PAOK FC,other,C134,2026-10-17
 Q204888,Q4122219,Panathinaikos F.C.,other,C134,2026-10-17
-Q931704,,Ergotelis F.C.,other,C135,2026-10-17
+Q931704,,Ergotelis F.C.,local,C135,2026-11-18,"an association football rivalry between Ergotelis and OFI, two teams from Heraklion, Crete"
 Q18656,Q50602,Manchester City F.C.,other,C136,2026-10-17
 Q50602,Q18656,Manchester United F.C.,other,C136,2026-10-17
 Q1130849,Q5794,Everton F.C.,other,C137,2026-10-17
@@ -231,8 +231,8 @@ Q18716,Q18661,Middlesbrough F.C.,other,C141,2026-10-17
 Q18661,Q18716,Newcastle United F.C.,other,C141,2026-10-17
 Q18711,Q19444,Birmingham City F.C.,other,C142,2026-10-17
 Q19444,Q18711,Aston Villa F.C.,other,C142,2026-10-17
-Q18711,Q18744,West Bromwich Albion F.C.,other,C143,2026-10-17
-Q18744,Q18711,Aston Villa F.C.,other,C143,2026-10-17
+Q18711,Q18744,West Bromwich Albion F.C.,local,C143,2026-11-18,Albion are two English football clubs from the West Midlands who share a local rivalry
+Q18744,Q18711,Aston Villa F.C.,local,C143,2026-11-18,Albion are two English football clubs from the West Midlands who share a local rivalry
 Q18744,Q19500,Wolverhampton Wanderers F.C.,other,C144,2026-10-17
 Q19500,Q18744,West Bromwich Albion F.C.,other,C144,2026-10-17
 Q19470,Q19490,Nottingham Forest F.C.,other,C145,2026-10-17
@@ -252,7 +252,7 @@ Q19453,Q19467,Crystal Palace F.C.,other,C154,2026-10-17
 Q19467,Q19453,Brighton & Hove Albion F.C.,other,C154,2026-10-17
 Q19456,,Bristol Rovers F.C.,other,C155,2026-10-17
 Q2714,,Luton Town F.C.,other,C156,2026-10-17
-Q19490,,Notts County F.C.,other,C157,2026-10-17
+Q19490,,Notts County F.C.,local,C157,2026-11-18,derby is the name given to football matches contested between Nottingham Forest and Notts County
 Q18736,,Port Vale F.C.,other,C158,2026-10-17
 Q19477,,Grimsby Town F.C.,other,C159,2026-10-17
 Q19477,,Scunthorpe United F.C.,other,C159,2026-10-17
@@ -292,8 +292,8 @@ Q19571,Q9616,Chelsea F.C.,other,C175,2026-10-17
 Q9616,Q19571,Brentford F.C.,other,C175,2026-10-17
 Q19571,Q18708,Fulham F.C.,other,C175,2026-10-17
 Q18708,Q19571,Brentford F.C.,other,C175,2026-10-17
-Q19571,Q18723,Queens Park Rangers F.C.,other,C175,2026-10-17
-Q18723,Q19571,Brentford F.C.,other,C175,2026-10-17
+Q19571,Q18723,Queens Park Rangers F.C.,local,C175,2026-11-18,Brentford vs QPR derby
+Q18723,Q19571,Brentford F.C.,local,C175,2026-11-18,Brentford vs QPR derby
 Q9616,Q18708,Fulham F.C.,other,C175,2026-10-17
 Q18708,Q9616,Chelsea F.C.,other,C175,2026-10-17
 Q9616,Q18723,Queens Park Rangers F.C.,other,C175,2026-10-17
@@ -317,8 +317,8 @@ Q1149034,Q875169,FC Den Bosch,other,C178,2026-10-17
 Q875169,Q1149034,TOP Oss,other,C178,2026-10-17
 Q11938,Q876699,FC Eindhoven,other,C178,2026-10-17
 Q876699,Q11938,PSV Eindhoven,other,C178,2026-10-17
-Q876568,Q854167,Fortuna Sittard,other,C178,2026-10-17
-Q854167,Q876568,MVV Maastricht,other,C178,2026-10-17
+Q876568,Q854167,Fortuna Sittard,local,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
+Q854167,Q876568,MVV Maastricht,local,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
 Q24711,Q1061627,FC Emmen,other,C178,2026-10-17
 Q1061627,Q24711,FC Groningen,other,C178,2026-10-17
 Q200321,Q875120,SC Cambuur,other,C178,2026-10-17
@@ -337,8 +337,8 @@ Q24904,Q1045811,FC Dordrecht,other,C178,2026-10-17
 Q1045811,Q24904,ADO Den Haag,other,C178,2026-10-17
 Q221927,Q318348,N.E.C.,other,C178,2026-10-17
 Q318348,Q221927,De Graafschap,other,C178,2026-10-17
-Q653119,Q738060,FC Volendam,other,C178,2026-10-17
-Q738060,Q653119,Almere City FC,other,C178,2026-10-17
+Q653119,Q738060,FC Volendam,local,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
+Q738060,Q653119,Almere City FC,local,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
 Q24719,Q854167,Fortuna Sittard,other,C178,2026-10-17
 Q854167,Q24719,Roda JC Kerkrade,other,C178,2026-10-17
 Q757754,,Egaleo F.C.,other,C179,2026-10-17
