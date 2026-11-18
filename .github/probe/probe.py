@@ -113,18 +113,43 @@ def sections(txt, frag):
         if keep and len(line) >= 3: out.append((head, line))
     return out
 
+ABBR = re.compile(r"(\b(St|Nr|Dr|ca|bzw|vs|v|No|Jr|Mr|Inc|e\.V|z\.B)|\b\d{1,2})\.$")
+
 def sents(secs):
     out = []
     for head, line in secs:
-        for s in re.split(r"(?<=[.!?])\s+(?=[A-ZÀ-ÝȘȚĂÎÂ0-9\"„«])", line):
-            if s.strip(): out.append((head, s.strip()))
+        parts = [p for p in re.split(r"(?<=[.!?])\s+(?=[A-ZÀ-ÝȘȚĂÎÂ0-9\"„«])", line) if p.strip()]
+        merged = []
+        for p in parts:
+            if merged and ABBR.search(merged[-1]): merged[-1] += " " + p
+            else: merged.append(p)
+        out += [(head, m.strip()) for m in merged]
+    return out
+
+CLS2 = re.compile(r"local derb|city derb|lokalderb|stadtderb|derby cittadin|derby local|main rival|arch-?rival|archrival|biggest rival|greatest rival|"
+                  r"hauptrival|erzrival|principal rival|fiercest|most important rival|ewig", re.I)
+
+def paths(txt, frag):
+    """[(heading path, line)] for the page or the fragment's section."""
+    out, stack, keep, lvl_in = [], {}, frag is None, None
+    want = norm(urllib.parse.unquote(frag or "").replace("_", " ")).lower()
+    for line in txt.split("\n"):
+        line = line.strip()
+        if line.startswith("\u0001"):
+            lvl, h = int(line[1]), line[2:].strip()
+            stack = {k: v for k, v in stack.items() if k < lvl}; stack[lvl] = h
+            if frag is not None:
+                if keep and lvl <= lvl_in: keep = False
+                if not keep and norm(h).lower() == want: keep, lvl_in = True, lvl
+            continue
+        if keep and len(line) >= 3: out.append((" > ".join(stack[k] for k in sorted(stack)) or "(lead)", line))
     return out
 
 def main(cfg):
     rows = [l.rstrip("\n").split("\t") for l in open(cfg, encoding="utf-8") if l.strip() and not l.startswith("#")]
     cache, blocks, seen = {}, [], {}
     for r in rows:
-        rid, url, ta, tb = r[:4]
+        rid, url, ta, tb, mode = r[:5]
         key = url.split("#")[0]
         frag = url.split("#", 1)[1] if "#" in url else None
         if key not in cache:
@@ -133,28 +158,31 @@ def main(cfg):
         if not res:
             blocks.append("**%s** %s: NOT READ (%s)" % (rid, url, err)); continue
         title, revid, txt = res
-        secs = sections(txt, frag)
-        ss = sents(secs)
         ra, rb = re.compile(ta, re.I), re.compile(tb, re.I)
-        both = [(h, u) for h, u in ss if ra.search(u) and rb.search(u)]
-        one = [(h, u) for h, u in ss if (ra.search(u) or rb.search(u)) and CLS.search(u) and (h, u) not in both]
-        lead = []
-        if frag is None and not title.lower().startswith(("list", "german football")):
-            lead = [(h, u) for h, u in ss if CLS.search(u) and (h, u) not in both and (h, u) not in one][:2]
-        sig = (key, frag, tuple(both), tuple(one))
-        line = "**%s** %s%s rev %s | sec lines %d | both %d" % (rid, title, ("#" + frag) if frag else "", revid, len(secs), len(both))
+        ps = paths(txt, frag)
+        out = []
+        if mode == "list":
+            hit = [(h, l) for h, l in ps if (rb.search(l) or rb.search(h.split(" > ")[-1])) and (ra.search(l) or ra.search(h))
+                   and not h.startswith(("References", "Notes", "Further", "External", "See also"))]
+            for h, l in hit[:6]: out.append("[%s] %s" % (h[:80], l[:300]))
+            if not hit:
+                out.append("(no line names both; lines naming B:)")
+                for h, l in [(h, l) for h, l in ps if rb.search(l) and not h.startswith("References")][:3]:
+                    out.append("[%s] %s" % (h[:80], l[:200]))
+        else:
+            ss = sents([(h, l) for h, l in ps if not l.startswith("|") and not h.startswith(("References", "Notes", "Further", "External", "See also"))])
+            prose = [(h, u) for h, u in ss if len(u) > 70]
+            lead = [(h, u) for h, u in prose if h == "(lead)"][:3]
+            both = [(h, u) for h, u in prose if ra.search(u) and rb.search(u) and (h, u) not in lead][:3]
+            cls = [(h, u) for h, u in ss if CLS2.search(u) and (h, u) not in lead + both][:4]
+            for tag, lst in (("lead", lead), ("both", both), ("class", cls)):
+                for h, u in lst: out.append("[%s | %s] %s" % (tag, h[:50], u[:450]))
+        sig = (key, frag, tuple(out))
+        line = "**%s** %s%s rev %s" % (rid, title, ("#" + frag) if frag else "", revid)
         if sig in seen:
-            blocks.append(line + " | same sentences as " + seen[sig]); continue
+            blocks.append(line + " | same as " + seen[sig]); continue
         seen[sig] = rid
-        for h, u in both[:5]:
-            line += "\n> [both | %s] %s" % (h[:50], u[:420])
-        for h, u in one[:3]:
-            line += "\n> [one+class | %s] %s" % (h[:50], u[:300])
-        for h, u in lead:
-            line += "\n> [class | %s] %s" % (h[:50], u[:300])
-        if not both:
-            line += "\n> (no sentence names both clubs)"
-        blocks.append(line)
+        blocks.append(line + "".join("\n> " + o for o in out))
     blocks.append("requests: %d" % REQ)
     post(blocks)
 
