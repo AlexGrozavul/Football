@@ -1,74 +1,9 @@
 # rowid	url	regexA	regexB	mode
-3	https://en.wikipedia.org/wiki/German_football_rivalries	(?<!Viktoria )(?<!Fortuna )(?:1\. )?FC K[öo]ln|Cologne|\bEffzeh	Viktoria	list
-4	https://en.wikipedia.org/wiki/German_football_rivalries	(?<!Viktoria )(?<!Fortuna )(?:1\. )?FC K[öo]ln|Cologne|\bEffzeh	Fortuna	list
-5	https://en.wikipedia.org/wiki/German_football_rivalries	Union	Dynamo|BFC	list
-6	https://en.wikipedia.org/wiki/Berlin_derby	Union	Hertha	page
-7	https://en.wikipedia.org/wiki/Der_Klassiker	Dortmund|\bBVB\b	Bayern	page
-8	https://en.wikipedia.org/wiki/Revierderby	Dortmund|\bBVB\b	Schalke	page
-10	https://en.wikipedia.org/wiki/German_football_rivalries	Eintracht(?! Braunschweig)|Frankfurt	FSV	list
-11	https://en.wikipedia.org/wiki/German_football_rivalries	Eintracht(?! Braunschweig)|Frankfurt	Darmstadt|Lilien	list
-13	https://en.wikipedia.org/wiki/Augsburg_derby	(?<!Schwaben )Augsburg(?! derby)|\bFCA\b	Schwaben	page
-14	https://en.wikipedia.org/wiki/Der_Klassiker	Bayern	Dortmund|\bBVB\b	page
-15	https://en.wikipedia.org/wiki/Bayern_Munich%E2%80%93Real_Madrid_rivalry	Bayern	Real Madrid	page
-17	https://en.wikipedia.org/wiki/German_football_rivalries	Bayern	Werder|Bremen	list
-18	https://en.wikipedia.org/wiki/Revierderby	Schalke	Dortmund|\bBVB\b	page
-20	https://en.wikipedia.org/wiki/Nordderby	Hamburger SV|\bHSV\b|Hamburg(?! derby)	Werder|Bremen	page
-23	https://en.wikipedia.org/wiki/German_football_rivalries	Werder|Bremen	Bayern	list
-24	https://en.wikipedia.org/wiki/Nordderby	Werder|Bremen	Hamburger SV|\bHSV\b|Hamburg(?! derby)	page
-25	https://en.wikipedia.org/wiki/German_football_rivalries	Heidenheim	Aalen	list
-26	https://en.wikipedia.org/wiki/German_football_rivalries	Kaiserslautern|\bFCK\b|Lautern	Saarbr[üu]cken	list
-27	https://de.wikipedia.org/wiki/Karlsruher_SC	Kaiserslautern|\bFCK\b|Lautern	Karlsruhe|\bKSC\b	list
-29	https://en.wikipedia.org/wiki/German_football_rivalries	Bielefeld|Arminia	M[üu]nster|Preu[ßs]	list
-32	https://en.wikipedia.org/wiki/Politisches_derby	Pauli	Hansa|Rostock	page
-34	https://en.wikipedia.org/wiki/Berlin_derby	Hertha	Union	page
-35	https://de.wikipedia.org/wiki/Karlsruher_SC	Karlsruhe|\bKSC\b	Kaiserslautern|\bFCK\b|Lautern	list
-37	https://en.wikipedia.org/wiki/German_football_rivalries	Darmstadt|Lilien	Eintracht(?! Braunschweig)|Frankfurt	list
-39	https://en.wikipedia.org/wiki/German_football_rivalries	Osnabr[üu]ck	M[üu]nster|Preu[ßs]	list
-47	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Grazer|\bGAK\b	Sturm	list
-48	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Sturm	Grazer|\bGAK\b	list
-49	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	LASK	\bRied\b	list
-50	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	\bRied\b	LASK	list
-53	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Wacker|Innsbruck	Salzburg	list
-54	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Salzburg	Wacker|Innsbruck	list
-55	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Wolfsberg|\bWAC\b	Klagenfurt	list
-56	https://en.wikipedia.org/wiki/Eternal_derby_(Romania)	FCSB|Steaua	Dinamo	page
-57	https://en.wikipedia.org/wiki/Eternal_derby_(Romania)	Dinamo	FCSB|Steaua	page
-60	https://en.wikipedia.org/wiki/Cluj_derby	Universitatea|\bU Cluj	CFR	page
-61	https://en.wikipedia.org/wiki/Cluj_derby	CFR	Universitatea|\bU Cluj	page
-69	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	O[țţt]elul|Gala[țţt]i	Dacia Unirea|Br[ăa]ila	list
-70	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	Bihor|Oradea	\bUTA\b|Arad	list
-71	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	\bUTA\b|Arad	Bihor|Oradea	list
-76	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Vojvodina	Spartak|Subotica	list
-77	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Spartak|Subotica	Vojvodina	list
-78	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Novi Pazar	\bRad\b	list
-79	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Radni[čc]ki(?! Ni)|Kragujevac	Smederevo	list
-80	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Smederevo	Radni[čc]ki(?! Ni)|Kragujevac	list
-81	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Dubo[čc]ica	Radni[čc]ki Ni[šs]|Ni[šs]\b	list
-82	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Radni[čc]ki Ni[šs]|Ni[šs]\b	Dubo[čc]ica	list
-83	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Basel|\bFCB\b	Young Boys|\bYB\b	list
-84	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Young Boys|\bYB\b	Basel|\bFCB\b	list
-85	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Basel|\bFCB\b	FC Z[üu]rich|\bFCZ\b	list
-86	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	FC Z[üu]rich|\bFCZ\b	Basel|\bFCB\b	list
-87	https://en.wikipedia.org/wiki/Zurich_derby	Grasshopper|\bGC\b	FC Z[üu]rich|\bFCZ\b	page
-88	https://en.wikipedia.org/wiki/Zurich_derby	FC Z[üu]rich|\bFCZ\b	Grasshopper|\bGC\b	page
-89	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Young Boys|\bYB\b	\bThun\b	list
-90	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	\bThun\b	Young Boys|\bYB\b	list
-91	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Luzern|Lucerne	Kriens	list
-92	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Kriens	Luzern|Lucerne	list
-93	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Gallen	\bWil\b	list
-94	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	\bWil\b	Gallen	list
-95	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Kriens	\bCham\b	list
-96	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Lugano	Chiasso	list
-97	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Lugano	Bellinzona	list
-98	https://en.wikipedia.org/wiki/South_Wales_derby	Swansea	Cardiff	page
-99	https://en.wikipedia.org/wiki/South_Wales_derby	Cardiff	Swansea	page
-100	https://en.wikipedia.org/wiki/Severnside_derby	Cardiff	Bristol	page
-101	https://en.wikipedia.org/wiki/Severnside_derby	Bristol	Cardiff	page
-105	https://en.wikipedia.org/wiki/Politisches_derby	Hansa|Rostock	Pauli	page
-106	https://en.wikipedia.org/wiki/German_football_rivalries	Fortuna	(?<!Viktoria )(?<!Fortuna )(?:1\. )?FC K[öo]ln|Cologne|\bEffzeh	list
-107	https://en.wikipedia.org/wiki/German_football_rivalries	Viktoria	(?<!Viktoria )(?<!Fortuna )(?:1\. )?FC K[öo]ln|Cologne|\bEffzeh	list
-108	https://en.wikipedia.org/wiki/German_football_rivalries	FSV	Eintracht(?! Braunschweig)|Frankfurt	list
-109	https://en.wikipedia.org/wiki/Derby_della_Madonnina	Inter(?!nat|na|est|view|rupt|val|mitt|sect|ior)|Nerazzurri	Milan(?!o)|Rossoneri	page
-110	https://en.wikipedia.org/wiki/Derby_della_Madonnina	Milan(?!o)|Rossoneri	Inter(?!nat|na|est|view|rupt|val|mitt|sect|ior)|Nerazzurri	page
-111	https://en.wikipedia.org/wiki/Derby_d%27Italia	Inter(?!nat|na|est|view|rupt|val|mitt|sect|ior)|Nerazzurri	Juventus|Juve\b	page
-112	https://en.wikipedia.org/wiki/Derby_d%27Italia	Juventus|Juve\b	Inter(?!nat|na|est|view|rupt|val|mitt|sect|ior)|Nerazzurri	page
+11	https://en.wikipedia.org/wiki/German_football_rivalries	Eintracht(?! Braunschweig)|Frankfurt	Darmstadt|Lilien	ctx
+17	https://en.wikipedia.org/wiki/German_football_rivalries	Bayern	Werder|Bremen	ctx
+23	https://en.wikipedia.org/wiki/German_football_rivalries	Werder|Bremen	Bayern	ctx
+25	https://en.wikipedia.org/wiki/German_football_rivalries	Heidenheim	Aalen	ctx
+26	https://en.wikipedia.org/wiki/German_football_rivalries	Kaiserslautern|\bFCK\b|Lautern	Saarbr[üu]cken	ctx
+29	https://en.wikipedia.org/wiki/German_football_rivalries	Bielefeld|Arminia	M[üu]nster|Preu[ßs]	ctx
+37	https://en.wikipedia.org/wiki/German_football_rivalries	Darmstadt|Lilien	Eintracht(?! Braunschweig)|Frankfurt	ctx
+39	https://en.wikipedia.org/wiki/German_football_rivalries	Osnabr[üu]ck	M[üu]nster|Preu[ßs]	ctx

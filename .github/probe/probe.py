@@ -161,7 +161,17 @@ def main(cfg):
         ra, rb = re.compile(ta, re.I), re.compile(tb, re.I)
         ps = paths(txt, frag)
         out = []
-        if mode == "list":
+        if mode == "ctx":
+            ls = [(h, l) for h, l in ps if not h.startswith(("References", "Notes", "Further", "External", "See also"))]
+            n = 0
+            for i, (h, l) in enumerate(ls):
+                if not rb.search(l) or n >= 2: continue
+                win = ls[max(0, i - 4):i + 5]
+                if not any(ra.search(x) for _, x in win): continue
+                n += 1
+                out.append("[%s] window:" % h[:80] + "".join("\n>   %s%s" % ("=> " if j == i - max(0, i - 4) else "", x[:140]) for j, (_, x) in enumerate(win)))
+            if not n: out.append("(no window of 9 lines names both)")
+        elif mode == "list":
             hit = [(h, l) for h, l in ps if (rb.search(l) or rb.search(h.split(" > ")[-1])) and (ra.search(l) or ra.search(h))
                    and not h.startswith(("References", "Notes", "Further", "External", "See also"))]
             for h, l in hit[:6]: out.append("[%s] %s" % (h[:80], l[:300]))
