@@ -903,9 +903,11 @@ line, straight**, not a drive, and the list says so.
 
 **Route fuel cost (2026-10-08) is an estimate** from a fetched country-average diesel price (`data/fuel-prices.json`, EU Weekly Oil Bulletin, written only by `tools/fetch_fuel_prices.py`, never hand-edited, never in calendar events) or a manual entry on the device, over Stadia's own route length; tolls and ferries are not priced.
 
-**Club rivalries: the class of a `club-rivalries.csv` row (coordinator's decision, 18 Nov 2026; replaces the older wording in files.md).** `local`: the page calls the pair a local derby (Lokalderby, Stadtderby, derby local, derby cittadino, derby della città, stadsderby) or lists it under a section headed "Local", OR the page names it a derby and both clubs play in the same city or municipality (the two grounds' places, from the club files, Wikidata venue `P131` or the page).
-`main`: the page names the other club as the club's main rival (principal compétiteur, Hauptrivale, rivale principale, main rival, biggest rival).
-`other`: everything else the page names, including a named derby between clubs of different cities. A row whose page names the pair carries a quote even when it stays `other`; a class change is made on the partner row too, with the same quote and source.
+**Club rivalries: the class of a `club-rivalries.csv` row (coordinator's decision, 18 Nov 2026, prompt version 3; replaces versions 1 and 2 and the older wording in files.md).**
+`local`: the page calls the pair a local derby (Lokalderby, Stadtderby, derby local, derby cittadino, derby della città, stadsderby) or lists it under a section headed "Local"; OR the page names it a derby (any named derby) AND the two grounds are at most 20 km apart in a straight line, from the coordinates in `data/clubs/*.json` (the distance goes in the audit). `local` applies to both rows of the pair.
+`main`: the page names the other club as this club's main, biggest or arch-rival (principal compétiteur, Hauptrivale, Erzrivale, rivale principale, arcirivale, biggest rival). ONE-DIRECTIONAL: only the row of the club the page says it about; the partner row is `main` only if the page says the same of the other side. `main` beats `local` for that one row.
+`other`: everything else the page names. A row whose page names the pair carries a quote even when it stays `other`.
+Every class and quote rests on a page read in a session (through the probe) or a quote already recorded from one; knowledge only gives leads. A rival with no ground in the club files cannot pass the 20 km test.
 
 **Derbies: every row names its source, and the source names the
 derby.** Built 2026-10-03, on Alexandru's instruction, for the twelve
