@@ -1,0 +1,71 @@
+# rows	url	regexA	regexB	mode
+217/218	https://en.wikipedia.org/wiki/Panathinaikos%E2%80%93PAOK_rivalry	Panathinaikos	PAOK
+220/221	https://en.wikipedia.org/wiki/Manchester_derby	Manchester United|Man Utd	Manchester City|Man City
+222/223	https://en.wikipedia.org/wiki/Merseyside_derby	Liverpool	Everton
+224/225	https://en.wikipedia.org/wiki/North_London_derby	Arsenal	Tottenham|Spurs
+226/227	https://en.wikipedia.org/wiki/Tyne%E2%80%93Wear_derby	Newcastle	Sunderland
+228/229	https://en.wikipedia.org/wiki/Tees%E2%80%93Wear_derby	Middlesbrough|Boro	Sunderland
+230/231	https://en.wikipedia.org/wiki/Tyne%E2%80%93Tees_derby	Newcastle	Middlesbrough|Boro
+232/233	https://en.wikipedia.org/wiki/Second_City_derby	Aston Villa|Villa	Birmingham
+236/237	https://en.wikipedia.org/wiki/Black_Country_derby	West Brom|Albion	Wolverhampton|Wolves
+238/239	https://en.wikipedia.org/wiki/Derby_County_F.C.%E2%80%93Nottingham_Forest_F.C._rivalry	Derby County|\bDerby\b(?! derby)	Nottingham Forest|\bForest\b
+240	https://en.wikipedia.org/wiki/Derby_County_F.C.%E2%80%93Leicester_City_F.C._rivalry	Derby County|\bDerby\b(?! derby)	Leicester
+241	https://en.wikipedia.org/wiki/Leicester_City_F.C.%E2%80%93Nottingham_Forest_F.C._rivalry	Nottingham Forest|\bForest\b	Leicester
+242	https://en.wikipedia.org/wiki/M69_derby	Coventry	Leicester
+243	https://en.wikipedia.org/wiki/Steel_City_derby	Sheffield United|Blades	Sheffield Wednesday|\bWednesday\b
+244/245	https://en.wikipedia.org/wiki/East_Anglian_derby	Norwich	Ipswich
+246/247	https://en.wikipedia.org/wiki/East_Lancashire_derby	Blackburn	Burnley
+248	https://en.wikipedia.org/wiki/West_Lancashire_derby	Preston	Blackpool
+249/250	https://en.wikipedia.org/wiki/South_Coast_derby	Southampton|Saints	Portsmouth|Pompey
+251/252	https://en.wikipedia.org/wiki/Brighton_%26_Hove_Albion_F.C.%E2%80%93Crystal_Palace_F.C._rivalry	Brighton	Crystal Palace|\bPalace\b
+253	https://en.wikipedia.org/wiki/Bristol_derby	Bristol City	Bristol Rovers|Rovers
+254	https://en.wikipedia.org/wiki/Luton_Town_F.C.%E2%80%93Watford_F.C._rivalry	Watford	Luton
+256	https://en.wikipedia.org/wiki/Potteries_derby	Stoke	Port Vale|Vale
+257	https://en.wikipedia.org/wiki/Humber_derby	Hull	Grimsby
+258	https://en.wikipedia.org/wiki/Humber_derby	Hull	Scunthorpe
+259	https://en.wikipedia.org/wiki/Lincolnshire_derby	Lincoln	Grimsby
+260	https://en.wikipedia.org/wiki/East_London_derby	West Ham	Leyton Orient|\bOrient\b
+261/262	https://en.wikipedia.org/wiki/Millwall_F.C.%E2%80%93West_Ham_United_F.C._rivalry	Millwall	West Ham
+263/264	https://en.wikipedia.org/wiki/Tottenham_Hotspur_F.C.%E2%80%93West_Ham_United_F.C._rivalry	Tottenham|Spurs	West Ham
+265/266	https://en.wikipedia.org/wiki/Chelsea_F.C.%E2%80%93Tottenham_Hotspur_F.C._rivalry	Chelsea	Tottenham|Spurs
+267/268	https://en.wikipedia.org/wiki/Arsenal_F.C.%E2%80%93Chelsea_F.C._rivalry	Arsenal	Chelsea
+269/270	https://en.wikipedia.org/wiki/Arsenal_F.C.%E2%80%93Manchester_City_F.C._rivalry	Arsenal	Manchester City|Man City
+271/272	https://en.wikipedia.org/wiki/Arsenal_F.C.%E2%80%93Manchester_United_F.C._rivalry	Arsenal	Manchester United|Man Utd
+273/274	https://en.wikipedia.org/wiki/Chelsea_F.C.%E2%80%93Leeds_United_F.C._rivalry	Chelsea	Leeds
+275/276	https://en.wikipedia.org/wiki/Chelsea_F.C.%E2%80%93Liverpool_F.C._rivalry	Chelsea	Liverpool
+277/278	https://en.wikipedia.org/wiki/Leeds_United_F.C.%E2%80%93Manchester_United_F.C._rivalry	Leeds	Manchester United|Man Utd
+279/280	https://en.wikipedia.org/wiki/Leeds_United_F.C.%E2%80%93Millwall_F.C._rivalry	Leeds	Millwall
+281/282	https://en.wikipedia.org/wiki/Liverpool_F.C.%E2%80%93Manchester_United_F.C._rivalry	Liverpool	Manchester United|Man Utd
+283/284	https://en.wikipedia.org/wiki/Liverpool_F.C.%E2%80%93Manchester_City_F.C._rivalry	Liverpool	Manchester City|Man City
+285/286	https://en.wikipedia.org/wiki/South_London_derby	Charlton	Crystal Palace|\bPalace\b
+287/288	https://en.wikipedia.org/wiki/South_London_derby	Charlton	Millwall
+289/290	https://en.wikipedia.org/wiki/South_London_derby	Crystal Palace|\bPalace\b	Millwall
+291/292	https://en.wikipedia.org/wiki/West_London_derby	Brentford	Chelsea
+293/294	https://en.wikipedia.org/wiki/West_London_derby	Brentford	Fulham
+297/298	https://en.wikipedia.org/wiki/West_London_derby	Chelsea	Fulham
+299/300	https://en.wikipedia.org/wiki/West_London_derby	Chelsea	Queens Park Rangers|QPR
+301/302	https://en.wikipedia.org/wiki/West_London_derby	Fulham	Queens Park Rangers|QPR
+303	https://en.wikipedia.org/wiki/Football_rivalries_in_France	Marseille|\bOM\b	Toulon	line
+304	https://en.wikipedia.org/wiki/Football_rivalries_in_France	\bNice\b	Cannes	line
+305/306	https://en.wikipedia.org/wiki/Football_rivalries_in_France	Dijon	Auxerre	line
+307/308	https://en.wikipedia.org/wiki/Football_rivalries_in_Belgium	Anderlecht	Standard	line
+309/310	https://en.wikipedia.org/wiki/Football_rivalries_in_Belgium	RFC Li[eè]ge|FC Li[eé]geois|\bRFC\b	Standard	line
+311	https://en.wikipedia.org/wiki/Football_rivalries_in_Belgium	KV Mechelen|Malinwa	KRC Mechelen|Racing Mechelen	line
+312/313	https://en.wikipedia.org/wiki/Football_rivalries_in_Belgium	Zulte	Kortrijk	line
+314/315	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Willem II	NAC	line
+316/317	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	TOP Oss|\bOss\b	Den Bosch	line
+318/319	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	PSV	FC Eindhoven	line
+322/323	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Groningen	Emmen	line
+324	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Heerenveen	Cambuur	line
+A2/9	https://en.wikipedia.org/wiki/Rhine_derby	Köln|Cologne	Gladbach|Mönchengladbach
+A165	https://en.wikipedia.org/wiki/Palma_derby	Mallorca	Baleares
+A219	https://en.wikipedia.org/wiki/Cretan_derby	OFI	Ergotelis
+A255	https://en.wikipedia.org/wiki/Nottingham_derby	Forest	Notts County|County
+A56/57	https://en.wikipedia.org/wiki/Eternal_derby_(Romania)	FCSB|Steaua	Dinamo
+A60/61	https://en.wikipedia.org/wiki/Cluj_derby	CFR	Universitatea|U Cluj
+A87/88	https://en.wikipedia.org/wiki/Zurich_derby	Grasshopper	Zürich|Zurich
+A141/142	https://en.wikipedia.org/wiki/Derbi_Barcelon%C3%AD	Barcelona|Barça	Espanyol
+A157/158	https://en.wikipedia.org/wiki/South_Madrid_derby	Getafe	Leganés
+A175/176	https://en.wikipedia.org/wiki/Derby_de_la_C%C3%B4te_d%27Azur	Monaco	Nice
+A167/168	https://en.wikipedia.org/wiki/Le_Classique	PSG|Paris Saint-Germain|Parisian	Marseille|OM
+A121/122	https://en.wikipedia.org/wiki/ACF_Fiorentina%E2%80%93Juventus_FC_rivalry	Fiorentina|Viola	Juventus|Juve
