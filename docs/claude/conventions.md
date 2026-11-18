@@ -861,6 +861,19 @@ line, straight**, not a drive, and the list says so.
   file did not load, or one with undated home matches is **kept and
   marked** with the reason. A competition code not in the list is
   treated as a cup, so adding one can never quietly hide clubs.
+  `BSA` is still in `LEAGUE_CODES` but its file is gone since 2026-11-18
+  (see the next point); with no club linked to it, the entry does nothing.
+- **Which football-data.org competitions are fetched.** `COMPETITIONS`
+  in `tools/fetch_fixtures.py` is the only list: BL1, CL, DED, PD, FL1,
+  ELC, PPL, EC, SA, PL. **BSA (Brazilian Série A) and WC (World Cup,
+  finished) were removed on 2026-11-18** at Alexandru's decision of 11 Nov
+  2026, because no club on the map plays in them; `BSA.json`, `WC.json`
+  and their `index.json` keys were deleted. Adding a code back to
+  `COMPETITIONS` is all it takes to fetch it again. `link_fixtures.py`
+  no longer maps BSA to Brazil (a code with no country links no team);
+  `WC` stays in `FD_NATIONAL` as a guard. `propose_country.py` reads
+  `COMPETITIONS` as "the free tier list", so a Brazil proposal would no
+  longer name BSA as available.
 - **A placeholder day, not only a placeholder time.** football-data.org
   puts a whole unscheduled matchday on one day as `SCHEDULED` at 00:00
   UTC - all nine Bundesliga matchday-12 games on Sat 5 Dec 2026, where a

@@ -9,13 +9,6 @@
    "seasonStart": null,
    "seasonEnd": null
   },
-  "BSA": {
-   "name": "Campeonato Brasileiro Série A",
-   "matches": 380,
-   "teams": 20,
-   "seasonStart": null,
-   "seasonEnd": null
-  },
   "CL": {
    "name": "UEFA Champions League",
    "matches": 144,
@@ -76,13 +69,6 @@
    "name": "Serie A",
    "matches": 380,
    "teams": 20,
-   "seasonStart": null,
-   "seasonEnd": null
-  },
-  "WC": {
-   "name": "FIFA World Cup",
-   "matches": 104,
-   "teams": 48,
    "seasonStart": null,
    "seasonEnd": null
   }

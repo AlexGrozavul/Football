@@ -5695,3 +5695,20 @@ Moved byte for byte from CLAUDE.md (old lines 3636-8490, 2026-10-22). Long new e
   reads the real `data/fuel-prices.json`; (2) `test_layout.js` is not in
   the fixture and link guards, for run time; (3) a guard failure needs a
   person to notice the red run, as before - nothing is sent anywhere.
+
+- **BSA and WC fixture files removed, 2026-11-18.** At Alexandru's
+  decision of 11 Nov 2026 (phase 0 of the fact check: no club on the map
+  plays in them), `data/fixtures/BSA.json` (380 matches) and `WC.json`
+  (104, finished) and their `index.json` keys were deleted, and both codes
+  left `COMPETITIONS` in `tools/fetch_fixtures.py`, so the Build calendars
+  run no longer fetches them. No club link, review row, calendar, test,
+  competition row, bucket entry or attended match used either file.
+  Left open: (1) **`index.html` was not changed**, because the brief said
+  "no web pages" while also asking to remove page code - a contradiction,
+  resolved toward the smaller change: `'BSA'` stays in `LEAGUE_CODES` and
+  two comments still name BSA and WC; it does nothing with no club linked.
+  Removing it is a one-line page change plus a `SHELL_VERSION` bump, his
+  call. (2) `propose_country.py` uses `COMPETITIONS` as the free-tier
+  list, so a Brazil proposal would not name BSA. (3) The 2026-10-01
+  midnight-UTC measurement above (BSA and WC counts) describes files that
+  no longer exist; kept as history.
