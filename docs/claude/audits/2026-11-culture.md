@@ -594,3 +594,24 @@ quote 77, not on the page 0, cannot verify 0. Part D: 4 rows kept `local`,
 Running total, phase 5b (sessions 1-2): local 49, main 2 (687, 189), other
 with a quote 151, not on the page 0, cannot verify 0; quote-less `other`
 rows left: 122 (of 323).
+
+### Session 3 (2026-11-18, prompt version 3): batch
+
+Class rule from this session on (coordinator's decision of 18 Nov 2026,
+version 3, replacing versions 1 and 2): `local` where the page calls the
+pair a local derby (or Lokalderby, Stadtderby, derby local, derby
+cittadino, derby della città, stadsderby) or lists it under a section
+headed "Local", **or** where the page names it a derby (any named derby)
+and the two grounds are at most 20 km apart in a straight line, from the
+coordinates in `data/clubs/*.json` (the distance is written per row);
+`local` applies to both rows of the pair. `main` where the page names the
+other club as this club's main, biggest or arch-rival; one-directional, it
+is set only on the row of the club the page says it about, and it beats
+`local` for that row. `other` for everything else the page names. Part A
+re-applies this rule to every row already classified (phase 5 and phase
+5b sessions 1 and 2).
+
+Step 0 recount: 122 quote-less `other` rows (826 rows), as session 2 left.
+
+Batch (100 row ids, lines 217-324; lines 219, 234, 235, 255, 295, 296,
+320, 321 have quotes): 217, 218, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 322, 323, 324.
