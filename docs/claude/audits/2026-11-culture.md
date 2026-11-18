@@ -775,3 +775,75 @@ Notes on the readings:
 Counts, session 3 (100 batch rows): local 47, main 6 (225, 248, 265, 268, 277, 285), other with a quote 47, not on the page 0, cannot verify 0. Part A: 25 to `local`, 3 to `main`, 5 to `other`, 0 partner mains undone. Probe runs used: 2 of 8 (58 requests).
 
 Running total, phase 5b (sessions 1-3, 300 batch rows plus the extras 687 and 112, by class after the version 3 re-check): local 116, main 11, other with a quote 175, not on the page 0, cannot verify 0; quote-less `other` rows left: 22 (of 323).
+
+### Session 4 (2026-11-18, prompt version 4): batch
+
+Class rule: version 3 (conventions.md, "Club rivalries: the class") with the coordinator's additions a to e of 18 Nov 2026 (a: a rival without a ground passes the 20 km test when the page states both clubs are in the same city; b: a main rival only from the page's own words, not from a person it quotes; c: a main-rival sentence on a page read in phase 5b may be applied to the row it is about, that page becoming the row's source; d: a club may keep two `main` rows from two pages; e: an unnamed "derby" counts as naming a derby).
+
+Step 0 recount: 22 quote-less `other` rows (826 rows), as session 3 left. Batch (written before any page was read; 22 row ids, lines 325-348, lines 340 and 341 have quotes): 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 342, 343, 344, 345, 346, 347, 348.
+
+Part A rows (the six fixes): 165, 219, 255 (rule a; each derby has one row only, the rival is not on the map), 248 (rule b), 238, 261, 282 (rule c), 265, 268 (rule d), 267 (rule e), 67, 68 (North-East derby).
+
+### Session 4 (2026-11-18, prompt version 4): results
+
+Pages read in two probe runs on PR #230 (run1, 11 requests; run2, 2 requests; Wikipedia parse API only). Every quote was checked as a substring of the text the probe posted (run1 also checked each recorded Part A quote against the whole page text: all FOUND). Distances are between the two grounds in `data/clubs/*.json`.
+
+**Part A (the six fixes)**, per row: id, club v rival, class before -> after (basis), quote, source.
+
+1. Rule a (one row each: Atlético Baleares, Ergotelis and Notts County are not on the map, so these derbies have no partner row):
+   - 165: RCD Mallorca v CD Atlético Baleares: other -> **local** (the Palma derby; the page puts both in Palma: "The rivalry between RCD Mallorca and CD Atlético Baleares, known as the Palma derby ... is the derby between the main football clubs in Palma de Mallorca"), quote kept "the derby between the main football clubs in Palma de Mallorca", C108.
+   - 219: OFI Crete F.C. v Ergotelis F.C.: other -> **local** (the same sentence names the Cretan derby and "two teams from Heraklion, Crete"), quote kept, C135.
+   - 255: Nottingham Forest F.C. v Notts County F.C.: stays **other**. The page names the Nottingham derby, but none of the sentences posted in run1 (both clubs) or run2 (a club or "clubs/grounds" with a city or distance word) says the two clubs are in one city; the page's title is not a statement. Quote kept, C157.
+2. Rule b: 248 Preston North End F.C. v Blackpool F.C.: main -> **local**. The only "main rivals" sentence is the player Tom Finney quoted by the page; the page's own words are "a local rivalry in English football between Lancashire clubs Blackpool and Preston North End", which is local wording under the class rule (as rows 291-302 in session 3). New quote that phrase, C152. **Departs from the prompt's "back to other"**, written up in open-problems.md.
+3. Rule c (one direction each, partner rows unchanged):
+   - 238: Derby County F.C. v Nottingham Forest F.C.: other -> **main**, "Derby supporters generally consider Nottingham Forest to be their main rivals", source C145 -> **C146** (Derby–Leicester page). Partner 239 stays other (21.3 km, East Midlands Derby).
+   - 261: Millwall F.C. v West Ham United F.C.: local -> **main** (main beats local), "Millwall's main rivalry is with East London club West Ham United", source C162 -> **C174** (South London derby page). Partner 262 stays local (6.3 km, Dockers Derby).
+   - 282: Manchester United F.C. v Liverpool F.C.: other -> **main**, "Manchester United fans consider Liverpool to be their main rivals" (the page's report of a 2003 poll, not a person quoted), source C172 -> **C170** (Leeds–Manchester United page). Partner 281 stays other (44.5 km, Northwest derby).
+4. Rule d: 265 Chelsea v Tottenham, quote "Chelsea fans consider Tottenham to be their main rival" FOUND on C164 (Background, "A 2012 survey has shown ..."); 268 Chelsea v Arsenal, quote "considered Arsenal as their main rival" FOUND on C165 (Background, the December 2003 internet survey). Both stay **main**.
+5. Rule e: 267 Arsenal F.C. v Chelsea F.C. stays **local**: "has been more recently considered an important derby" FOUND on C165; grounds **10.0 km** apart.
+6. North-East derby (67 FC Botoșani v ACS Foresta Suceava, 68 FC Botoșani v CSM Politehnica Iași): stays **other**. No distance can be computed: neither Foresta Suceava nor Politehnica Iași is in `data/clubs/RO.json` (only Botoșani, 47.7483, 26.6519; CSM Cetatea Suceava is a different club). The rows are not a pair of two map clubs, and rule a does not apply (three different cities).
+
+**Part B (the batch, 22 rows)**: id, club v rival, verdict, before -> after (basis), quote, source.
+
+- 325: SC Cambuur v SC Heerenveen: **other**, other -> other (named derby, 29.1 km), "Friese Derby: SC Heerenveen vs. SC Cambuur", C178
+- 326: ADO Den Haag v AFC Ajax: **other**, other -> other (47.3 km), "Hofstad vs. Hoofdstad: ADO Den Haag vs. Ajax", C178
+- 327: AFC Ajax v ADO Den Haag: **other**, same, C178
+- 328: PEC Zwolle v FC Twente: **other** (named derby, 57.7 km), "Overijsselse Derby: PEC Zwolle or Go Ahead Eagles vs. FC Twente or Heracles Almelo", C178
+- 329: FC Twente v PEC Zwolle: **other**, same
+- 330: PEC Zwolle v Heracles Almelo: **other** (named derby, 40.9 km), Overijsselse Derby quote, C178
+- 331: Heracles Almelo v PEC Zwolle: **other**, same
+- 332: Go Ahead Eagles v Heracles Almelo: **other** (named derby, 33.6 km), Overijsselse Derby quote, C178
+- 333: Heracles Almelo v Go Ahead Eagles: **other**, same
+- 334: FC Twente v Go Ahead Eagles: **other** (named derby, 45.3 km), "Derby van het Oosten: FC Twente vs. Go Ahead Eagles", C178
+- 335: Go Ahead Eagles v FC Twente: **other**, same
+- 336: ADO Den Haag v FC Dordrecht: **other** (named derby, 35.8 km), "Zuid-Hollandse Derby: Feyenoord vs. ADO Den Haag vs. SVV vs. FC Dordrecht", C178
+- 337: FC Dordrecht v ADO Den Haag: **other**, same
+- 338: De Graafschap v N.E.C.: **other** (named derby, 35.7 km), "(Kleine)Gelderse Derby: De Graafschap vs. Vitesse or N.E.C.", C178
+- 339: N.E.C. v De Graafschap: **other**, same
+- 342: Roda JC Kerkrade v Fortuna Sittard: **local**, other -> local (named derby, grounds 18.8 km), "Mijnstreekderby: Roda JC Kerkrade vs. Fortuna Sittard", C178
+- 343: Fortuna Sittard v Roda JC Kerkrade: **local**, same
+- 344: Atromitos F.C. v Egaleo F.C.: **other** (named derby; Egaleo has no ground in the club files and the line does not put both in one city), "West Athens derby: Egaleo vs. Atromitos", C179
+- 345: Panionios F.C. v Apollon Smyrnis F.C.: **other** (named derby; no ground for Apollon, no same-city statement), "Smyrna derby: Apollon Smyrnis vs. Panionios", C179
+- 346: Athens Kallithea F.C. v Panionios F.C.: **local**, other -> local (named derby, grounds 2.0 km), "South Athens derby: Athens Kallithea vs. Panionios", C179
+- 347: Panionios F.C. v Athens Kallithea F.C.: **local**, same
+- 348: AEK Athens F.C. v Apollon Smyrnis F.C.: **other** (named rivalry, not a derby; no ground for Apollon), "AEK Athens-Apollon rivalry: Apollon Smyrnis vs. AEK Athens", C179
+
+Notes: run1 read the Greek page with sentence splitting, which cut each list line at "vs."; run2 read those lines whole. "Overijsselse Derby" names four clubs in one line; it is the quote for each of its three pairs on the map. Partner rows: every pair in the batch had both rows in it.
+
+Counts, session 4 (22 batch rows): local 4, main 0, other with a quote 18, not on the page 0, cannot verify 0. Part A: to `local` 3 (165, 219, 248), to `main` 3 (238, 261, 282), kept 6 (255, 265, 267, 268, 67, 68). Probe runs used: 2 of 8 (13 requests). **Quote-less `other` rows left: 0.**
+
+### FINAL SUMMARY: the rivalry fix, phases 5 and 5b (2026-11-18)
+
+Whole `data/club-rivalries.csv` (826 rows both times), before phase 5 (the file at the parent of commit 1085c0a) and after phase 5b session 4:
+
+| | before | after |
+|---|---|---|
+| `local` | 130 | 266 |
+| `main` | 42 | 55 |
+| `other` | 654 | 505 |
+| rows with a quote | 484 | 826 |
+| rows without a quote | 342 | 0 |
+
+- Rows read: phase 5, a seeded sample of 40 rivalry rows (11 wrong, all quote-less, which set off the full check); phase 5b, 322 batch rows in four sessions (100, 100, 100, 22) plus the extras 687 and 112, then the version 3 re-check of every earlier row and the version 4 fixes above.
+- **Rows not on their page: 0** (phase 5: 0 of 40 rivalry rows; phase 5b: 0 in every session). **Rows that could not be verified: 0.**
+- Still Alexandru's calls (open-problems.md): Nottingham derby (255) stays `other` because no sentence puts both clubs in one city; Preston v Blackpool (248) is `local` from the page's own "a local rivalry", not `other` as the prompt said; Chelsea keeps two `main` rows (Tottenham from a 2012 survey, Arsenal from a 2003 survey).
