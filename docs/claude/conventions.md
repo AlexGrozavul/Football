@@ -903,6 +903,10 @@ line, straight**, not a drive, and the list says so.
 
 **Route fuel cost (2026-10-08) is an estimate** from a fetched country-average diesel price (`data/fuel-prices.json`, EU Weekly Oil Bulletin, written only by `tools/fetch_fuel_prices.py`, never hand-edited, never in calendar events) or a manual entry on the device, over Stadia's own route length; tolls and ferries are not priced.
 
+**Club rivalries: the class of a `club-rivalries.csv` row (coordinator's decision, 18 Nov 2026; replaces the older wording in files.md).** `local`: the page calls the pair a local derby (Lokalderby, Stadtderby, derby local, derby cittadino, derby della città, stadsderby) or lists it under a section headed "Local", OR the page names it a derby and both clubs play in the same city or municipality (the two grounds' places, from the club files, Wikidata venue `P131` or the page).
+`main`: the page names the other club as the club's main rival (principal compétiteur, Hauptrivale, rivale principale, main rival, biggest rival).
+`other`: everything else the page names, including a named derby between clubs of different cities. A row whose page names the pair carries a quote even when it stays `other`; a class change is made on the partner row too, with the same quote and source.
+
 **Derbies: every row names its source, and the source names the
 derby.** Built 2026-10-03, on Alexandru's instruction, for the twelve
 countries on the map. Rule 2 applied to rivalries: a derby a person
