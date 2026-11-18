@@ -30,7 +30,7 @@ def api(lang, params):
             time.sleep(10)
     return None
 
-BLOCK = {"p", "li", "tr", "h1", "h2", "h3", "h4", "h5", "h6", "div", "br", "dd", "dt", "td", "th", "caption", "table", "ul", "ol"}
+BLOCK = {"p", "li", "tr", "h1", "h2", "h3", "h4", "h5", "h6", "div", "br", "dd", "dt", "caption", "table", "ul", "ol"}
 
 class Text(HTMLParser):
     def __init__(self):
