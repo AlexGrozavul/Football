@@ -65,7 +65,7 @@ Q1322550,,FC Astra Giurgiu,other,C69,2026-11-18,any match between Romanian clubs
 Q1322550,Q245162,FC Rapid București,other,C70,2026-11-18,a Romanian football derby contested between Liga I clubs Rapid București and Petrolul Ploiești
 Q245162,Q1322550,FC Petrolul Ploiești,other,C70,2026-11-18,a Romanian football derby contested between Liga I clubs Rapid București and Petrolul Ploiești
 Q1262822,,ACS Foresta Suceava,other,C71,2026-11-18,North-East derby: FC Botoşani vs Foresta Suceava vs Politehnica Iași
-Q1262822,,CSM Politehnica Iași,local,C71,2026-11-18,North-East derby: FC Botoşani vs Foresta Suceava vs Politehnica Iași
+Q1262822,,CSM Politehnica Iași,other,C71,2026-11-18,North-East derby: FC Botoşani vs Foresta Suceava vs Politehnica Iași
 Q220863,,Dacia Unirea Brăila,other,C71,2026-11-18,Lower Danube derby: Oțelul Galați vs. Dacia Unirea Brăila or Farul Constanța
 Q1386940,Q680770,UTA Arad,other,C71,2026-11-18,Crișana derby: FC Bihor Oradea vs. UTA Arad
 Q680770,Q1386940,Bihor Oradea,other,C71,2026-11-18,Crișana derby: FC Bihor Oradea vs. UTA Arad
@@ -112,108 +112,108 @@ Q631,Q1422,Juventus FC,other,C80,2026-11-18,the name of the football derby betwe
 Q1422,Q631,FC Inter,other,C80,2026-11-18,the name of the football derby between Internazionale of Milan and Juventus of Turin
 Q2609,Q2739,AS Roma,local,C81,2026-11-18,"is the football local derby in Rome, Italy, between Lazio and Roma"
 Q2739,Q2609,SS Lazio,local,C81,2026-11-18,"is the football local derby in Rome, Italy, between Lazio and Roma"
-Q1422,Q2768,Torino FC,other,C82,2026-10-17
-Q2768,Q1422,Juventus FC,other,C82,2026-10-17
-Q2074,Q1457,UC Sampdoria,other,C83,2026-10-17
-Q1457,Q2074,Genoa CFC,other,C83,2026-10-17
-Q2739,Q2641,SSC Napoli,other,C84,2026-10-17
-Q2641,Q2739,AS Roma,other,C84,2026-10-17
-Q2052,Q1422,Juventus FC,other,C85,2026-10-17
-Q1422,Q2052,ACF Fiorentina,other,C85,2026-10-17
-Q1422,Q1543,AC Milan,other,C86,2026-10-17
-Q1543,Q1422,Juventus FC,other,C86,2026-10-17
-Q1422,Q2641,SSC Napoli,other,C87,2026-10-17
-Q2641,Q1422,Juventus FC,other,C87,2026-10-17
-Q1893,Q2052,ACF Fiorentina,other,C88,2026-10-17
-Q2052,Q1893,Bologna FC 1909,other,C88,2026-10-17
-Q1893,Q2693,Parma Calcio 1913,other,C89,2026-10-17
-Q2693,Q1893,Bologna FC 1909,other,C89,2026-10-17
-Q2641,Q2674,Palermo FC,other,C90,2026-10-17
-Q2674,Q2641,SSC Napoli,other,C90,2026-10-17
-Q1900,Q2674,Palermo FC,other,C91,2026-10-17
-Q2674,Q1900,Cagliari Calcio,other,C91,2026-10-17
-Q2693,,A.C. Reggiana 1919,other,C92,2026-10-17
-Q2674,,Catania FC,other,C93,2026-10-17
-Q7156,Q8682,Real Madrid Club de Fútbol,other,C94,2026-10-17
-Q8682,Q7156,FC Barcelona,other,C94,2026-10-17
+Q1422,Q2768,Torino FC,local,C82,2026-11-18,"the local derby played out between Turin's most prominent football clubs, Juventus and Torino"
+Q2768,Q1422,Juventus FC,local,C82,2026-11-18,"the local derby played out between Turin's most prominent football clubs, Juventus and Torino"
+Q2074,Q1457,UC Sampdoria,local,C83,2026-11-18,"Genoa's local derby, played by Genoa and Sampdoria"
+Q1457,Q2074,Genoa CFC,local,C83,2026-11-18,"Genoa's local derby, played by Genoa and Sampdoria"
+Q2739,Q2641,SSC Napoli,other,C84,2026-11-18,an Italian football derby between Napoli and Roma
+Q2641,Q2739,AS Roma,other,C84,2026-11-18,an Italian football derby between Napoli and Roma
+Q2052,Q1422,Juventus FC,other,C85,2026-11-18,an inter-city football rivalry contested between Florence-based Fiorentina and Turin-based Juventus
+Q1422,Q2052,ACF Fiorentina,other,C85,2026-11-18,an inter-city football rivalry contested between Florence-based Fiorentina and Turin-based Juventus
+Q1422,Q1543,AC Milan,other,C86,2026-11-18,the oldest running italian football rivalry
+Q1543,Q1422,Juventus FC,other,C86,2026-11-18,the oldest running italian football rivalry
+Q1422,Q2641,SSC Napoli,other,C87,2026-11-18,an inter-city football rivalry contested between Turin-based Juventus and Naples-based Napoli
+Q2641,Q1422,Juventus FC,other,C87,2026-11-18,an inter-city football rivalry contested between Turin-based Juventus and Naples-based Napoli
+Q1893,Q2052,ACF Fiorentina,other,C88,2026-11-18,"a derby between Bologna FC 1909 and ACF Fiorentina, two football clubs in Italy"
+Q2052,Q1893,Bologna FC 1909,other,C88,2026-11-18,"a derby between Bologna FC 1909 and ACF Fiorentina, two football clubs in Italy"
+Q1893,Q2693,Parma Calcio 1913,other,C89,2026-11-18,the name given in football to any match between Bologna and Parma
+Q2693,Q1893,Bologna FC 1909,other,C89,2026-11-18,the name given in football to any match between Bologna and Parma
+Q2641,Q2674,Palermo FC,other,C90,2026-11-18,an Italian Serie A derby between the Napoli and Palermo football clubs
+Q2674,Q2641,SSC Napoli,other,C90,2026-11-18,an Italian Serie A derby between the Napoli and Palermo football clubs
+Q1900,Q2674,Palermo FC,other,C91,2026-11-18,an Italian association football rivalry between Cagliari Calcio and Palermo
+Q2674,Q1900,Cagliari Calcio,other,C91,2026-11-18,an Italian association football rivalry between Cagliari Calcio and Palermo
+Q2693,,A.C. Reggiana 1919,other,C92,2026-11-18,a historical rivalry between the cities of Parma and Reggio Emilia
+Q2674,,Catania FC,local,C93,2026-11-18,a local derby between Italian football clubs Catania FC and Palermo FC
+Q7156,Q8682,Real Madrid Club de Fútbol,other,C94,2026-11-18,the name given to any football match between rival clubs Barcelona and Real Madrid
+Q8682,Q7156,FC Barcelona,other,C94,2026-11-18,the name given to any football match between rival clubs Barcelona and Real Madrid
 Q8682,Q8701,Atlético Madrid,local,C95,2026-11-18,"between Atlético Madrid and Real Madrid, both hailing from the Spanish capital city of Madrid"
 Q8701,Q8682,Real Madrid Club de Fútbol,local,C95,2026-11-18,"between Atlético Madrid and Real Madrid, both hailing from the Spanish capital city of Madrid"
-Q7156,Q8780,RCD Espanyol de Barcelona,other,C96,2026-10-17
-Q8780,Q7156,FC Barcelona,other,C96,2026-10-17
-Q10329,Q8723,Real Betis Balompié,other,C97,2026-10-17
-Q8723,Q10329,Sevilla FC,other,C97,2026-10-17
-Q10333,Q8823,Levante UD,other,C98,2026-10-17
-Q8823,Q10333,Valencia CF,other,C98,2026-10-17
-Q8687,Q10315,Real Sociedad,other,C99,2026-10-17
-Q10315,Q8687,Athletic Club,other,C99,2026-10-17
-Q271574,Q12278,Sporting de Gijón,other,C100,2026-10-17
-Q12278,Q271574,Real Oviedo,other,C100,2026-10-17
-Q216661,Q11979,UD Las Palmas,other,C101,2026-10-17
-Q11979,Q216661,C.D. Tenerife,other,C101,2026-10-17
-Q10333,Q12297,Villarreal CF,other,C102,2026-10-17
-Q12297,Q10333,Valencia CF,other,C102,2026-10-17
-Q8812,Q8857,Málaga CF,other,C103,2026-10-17
-Q8857,Q8812,Granada CF,other,C103,2026-10-17
-Q8806,Q856119,CD Leganés,other,C104,2026-10-17
-Q856119,Q8806,Getafe CF,other,C104,2026-10-17
-Q8701,Q7156,FC Barcelona,other,C105,2026-10-17
-Q7156,Q8701,Atlético Madrid,other,C105,2026-10-17
-Q8687,Q8682,Real Madrid Club de Fútbol,other,C106,2026-10-17
-Q8682,Q8687,Athletic Club,other,C106,2026-10-17
-Q8687,Q7156,FC Barcelona,other,C107,2026-10-17
-Q7156,Q8687,Athletic Club,other,C107,2026-10-17
-Q8835,,CD Atlético Baleares,other,C108,2026-10-17
-Q12260,,Terrassa FC,other,C109,2026-10-17
-Q483020,Q132885,Olympique de Marseille,other,C110,2026-10-17
-Q132885,Q483020,Paris Saint-Germain FC,other,C110,2026-10-17
-Q704,Q132885,Olympique de Marseille,other,C111,2026-10-17
-Q132885,Q704,Olympique lyonnais,other,C111,2026-10-17
-Q191843,Q19516,Lille OSC,other,C112,2026-10-17
-Q19516,Q191843,RC Lens,other,C112,2026-10-17
-Q704,Q19521,AS Saint-Étienne,other,C113,2026-10-17
-Q19521,Q704,Olympique lyonnais,other,C113,2026-10-17
-Q180305,Q185163,OGC Nice,other,C114,2026-10-17
-Q185163,Q180305,AS Monaco FC,other,C114,2026-10-17
-Q483020,Q1051013,Paris FC,other,C115,2026-10-17
-Q1051013,Q483020,Paris Saint-Germain FC,other,C115,2026-10-17
-Q19523,Q221525,FC Metz,other,C116,2026-10-17
-Q221525,Q19523,AS Nancy-Lorraine,other,C116,2026-10-17
-Q19518,,FC Girondins de Bordeaux,other,C117,2026-10-17
-Q185163,,SC Bastia,other,C118,2026-10-17
-Q459148,Q48911,FC Lorient,other,C119,2026-10-17
-Q48911,Q459148,En avant Guingamp,other,C119,2026-10-17
-Q459148,Q19509,Stade rennais FC,other,C119,2026-10-17
-Q19509,Q459148,En avant Guingamp,other,C119,2026-10-17
-Q48911,Q19509,Stade rennais FC,other,C119,2026-10-17
-Q19509,Q48911,FC Lorient,other,C119,2026-10-17
-Q81888,Q134241,Feyenoord Rotterdam,other,C120,2026-10-17
-Q134241,Q81888,AFC Ajax,other,C120,2026-10-17
-Q81888,Q11938,PSV Eindhoven,other,C121,2026-10-17
-Q11938,Q81888,AFC Ajax,other,C121,2026-10-17
-Q24711,Q200321,SC Heerenveen,other,C122,2026-10-17
-Q200321,Q24711,FC Groningen,other,C122,2026-10-17
-Q749589,Q269151,PEC Zwolle,other,C123,2026-10-17
-Q269151,Q749589,Go Ahead Eagles,other,C123,2026-10-17
-Q19603,Q11961,Heracles Almelo,other,C124,2026-10-17
-Q11961,Q19603,FC Twente,other,C124,2026-10-17
-Q187528,Q190916,Club Brugge K.V.,other,C125,2026-10-17
-Q190916,Q187528,R.S.C. Anderlecht,other,C125,2026-10-17
-Q190916,Q364698,Cercle Brugge K.S.V.,other,C126,2026-10-17
-Q364698,Q190916,Club Brugge K.V.,other,C126,2026-10-17
-Q509170,Q95183770,KSC Lokeren,other,C127,2026-10-17
-Q95183770,Q509170,SK Beveren,other,C127,2026-10-17
-Q19628,Q4122219,Panathinaikos F.C.,other,C128,2026-10-17
-Q4122219,Q19628,Olympiacos F.C.,other,C128,2026-10-17
-Q201584,Q4122219,Panathinaikos F.C.,other,C129,2026-10-17
-Q4122219,Q201584,AEK Athens F.C.,other,C129,2026-10-17
-Q201584,Q19628,Olympiacos F.C.,other,C130,2026-10-17
-Q19628,Q201584,AEK Athens F.C.,other,C130,2026-10-17
-Q204888,Q219926,Aris Thessaloniki F.C.,other,C131,2026-10-17
-Q219926,Q204888,PAOK FC,other,C131,2026-10-17
-Q201584,Q204888,PAOK FC,other,C132,2026-10-17
-Q204888,Q201584,AEK Athens F.C.,other,C132,2026-10-17
-Q19628,Q204888,PAOK FC,other,C133,2026-10-17
-Q204888,Q19628,Olympiacos F.C.,other,C133,2026-10-17
+Q7156,Q8780,RCD Espanyol de Barcelona,other,C96,2026-11-18,the name given to football matches between FC Barcelona and RCD Espanyol
+Q8780,Q7156,FC Barcelona,other,C96,2026-11-18,the name given to football matches between FC Barcelona and RCD Espanyol
+Q10329,Q8723,Real Betis Balompié,local,C97,2026-11-18,"the name of a local city derby located in Seville, Spain"
+Q8723,Q10329,Sevilla FC,local,C97,2026-11-18,"the name of a local city derby located in Seville, Spain"
+Q10333,Q8823,Levante UD,local,C98,2026-11-18,"the two main clubs in the city of Valencia, Spain"
+Q8823,Q10333,Valencia CF,local,C98,2026-11-18,"the two main clubs in the city of Valencia, Spain"
+Q8687,Q10315,Real Sociedad,local,C99,2026-11-18,the football local derby between Real Sociedad and Athletic Bilbao
+Q10315,Q8687,Athletic Club,local,C99,2026-11-18,the football local derby between Real Sociedad and Athletic Bilbao
+Q271574,Q12278,Sporting de Gijón,other,C100,2026-11-18,any association football match contested between Sporting de Gijón and Real Oviedo
+Q12278,Q271574,Real Oviedo,other,C100,2026-11-18,any association football match contested between Sporting de Gijón and Real Oviedo
+Q216661,Q11979,UD Las Palmas,other,C101,2026-11-18,any football match contested between Spanish sides UD Las Palmas and CD Tenerife
+Q11979,Q216661,C.D. Tenerife,other,C101,2026-11-18,any football match contested between Spanish sides UD Las Palmas and CD Tenerife
+Q10333,Q12297,Villarreal CF,other,C102,2026-11-18,regional football rivalry in Spain between La Liga clubs Valencia CF and Villarreal CF
+Q12297,Q10333,Valencia CF,other,C102,2026-11-18,regional football rivalry in Spain between La Liga clubs Valencia CF and Villarreal CF
+Q8812,Q8857,Málaga CF,other,C103,2026-11-18,a running football club rivalry in the Eastern Andalusia
+Q8857,Q8812,Granada CF,other,C103,2026-11-18,a running football club rivalry in the Eastern Andalusia
+Q8806,Q856119,CD Leganés,other,C104,2026-11-18,any association football match contested between Getafe CF and CD Leganés
+Q856119,Q8806,Getafe CF,other,C104,2026-11-18,any association football match contested between Getafe CF and CD Leganés
+Q8701,Q7156,FC Barcelona,other,C105,2026-11-18,the name given to football matches between Atlético de Madrid and Barcelona
+Q7156,Q8701,Atlético Madrid,other,C105,2026-11-18,the name given to football matches between Atlético de Madrid and Barcelona
+Q8687,Q8682,Real Madrid Club de Fútbol,other,C106,2026-11-18,the name given to any football match between Athletic Bilbao and Real Madrid
+Q8682,Q8687,Athletic Club,other,C106,2026-11-18,the name given to any football match between Athletic Bilbao and Real Madrid
+Q8687,Q7156,FC Barcelona,other,C107,2026-11-18,football matches between Athletic Bilbao and FC Barcelona
+Q7156,Q8687,Athletic Club,other,C107,2026-11-18,football matches between Athletic Bilbao and FC Barcelona
+Q8835,,CD Atlético Baleares,local,C108,2026-11-18,the derby between the main football clubs in Palma de Mallorca
+Q12260,,Terrassa FC,other,C109,2026-11-18,the name given to football matches between CE Sabadell and Terrassa FC
+Q483020,Q132885,Olympique de Marseille,other,C110,2026-11-18,French football rivalry contested between French professional clubs Paris Saint-Germain
+Q132885,Q483020,Paris Saint-Germain FC,other,C110,2026-11-18,French football rivalry contested between French professional clubs Paris Saint-Germain
+Q704,Q132885,Olympique de Marseille,other,C111,2026-11-18,the football rivalry between two major teams in French football
+Q132885,Q704,Olympique lyonnais,other,C111,2026-11-18,the football rivalry between two major teams in French football
+Q191843,Q19516,Lille OSC,other,C112,2026-11-18,"located in different departments, with Lens being in Pas-de-Calais, and Lille in Nord"
+Q19516,Q191843,RC Lens,other,C112,2026-11-18,"located in different departments, with Lens being in Pas-de-Calais, and Lille in Nord"
+Q704,Q19521,AS Saint-Étienne,other,C113,2026-11-18,a football rivalry between French clubs Olympique Lyonnais and AS Saint-Étienne
+Q19521,Q704,Olympique lyonnais,other,C113,2026-11-18,a football rivalry between French clubs Olympique Lyonnais and AS Saint-Étienne
+Q180305,Q185163,OGC Nice,other,C114,2026-11-18,a football match contested between Ligue 1 clubs AS Monaco and OGC Nice
+Q185163,Q180305,AS Monaco FC,other,C114,2026-11-18,a football match contested between Ligue 1 clubs AS Monaco and OGC Nice
+Q483020,Q1051013,Paris FC,local,C115,2026-11-18,"the two largest professional clubs based in Paris, France"
+Q1051013,Q483020,Paris Saint-Germain FC,local,C115,2026-11-18,"the two largest professional clubs based in Paris, France"
+Q19523,Q221525,FC Metz,other,C116,2026-11-18,a football match contested between French clubs Metz and Nancy
+Q221525,Q19523,AS Nancy-Lorraine,other,C116,2026-11-18,a football match contested between French clubs Metz and Nancy
+Q19518,,FC Girondins de Bordeaux,other,C117,2026-11-18,a football match contested between French clubs FC Girondins de Bordeaux and Toulouse FC
+Q185163,,SC Bastia,other,C118,2026-11-18,"football match between Bastia and Nice, first contested in 1968"
+Q459148,Q48911,FC Lorient,other,C119,2026-11-18,"may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois"
+Q48911,Q459148,En avant Guingamp,other,C119,2026-11-18,"may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois"
+Q459148,Q19509,Stade rennais FC,other,C119,2026-11-18,"may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois"
+Q19509,Q459148,En avant Guingamp,other,C119,2026-11-18,"may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois"
+Q48911,Q19509,Stade rennais FC,other,C119,2026-11-18,"may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois"
+Q19509,Q48911,FC Lorient,other,C119,2026-11-18,"may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois"
+Q81888,Q134241,Feyenoord Rotterdam,main,C120,2026-11-18,Ajax fans were outraged that Cruyff had jumped to their biggest rival
+Q134241,Q81888,AFC Ajax,other,C120,2026-11-18,the main football rivalry of the Netherlands
+Q81888,Q11938,PSV Eindhoven,other,C121,2026-11-18,one of the main football rivalries of the Netherlands
+Q11938,Q81888,AFC Ajax,other,C121,2026-11-18,one of the main football rivalries of the Netherlands
+Q24711,Q200321,SC Heerenveen,other,C122,2026-11-18,a match between the Dutch football clubs FC Groningen and SC Heerenveen
+Q200321,Q24711,FC Groningen,other,C122,2026-11-18,a match between the Dutch football clubs FC Groningen and SC Heerenveen
+Q749589,Q269151,PEC Zwolle,other,C123,2026-11-18,"Go Ahead Eagles from Deventer, and PEC Zwolle from Zwolle"
+Q269151,Q749589,Go Ahead Eagles,other,C123,2026-11-18,"Go Ahead Eagles from Deventer, and PEC Zwolle from Zwolle"
+Q19603,Q11961,Heracles Almelo,other,C124,2026-11-18,a Dutch football derby between FC Twente and Heracles Almelo
+Q11961,Q19603,FC Twente,other,C124,2026-11-18,a Dutch football derby between FC Twente and Heracles Almelo
+Q187528,Q190916,Club Brugge K.V.,other,C125,2026-11-18,a football rivalry between two Belgian Pro League clubs Anderlecht and Club Brugge
+Q190916,Q187528,R.S.C. Anderlecht,other,C125,2026-11-18,a football rivalry between two Belgian Pro League clubs Anderlecht and Club Brugge
+Q190916,Q364698,Cercle Brugge K.S.V.,local,C126,2026-11-18,"The Bruges derby (Dutch: Brugse stadsderby, French: derby de Bruges)"
+Q364698,Q190916,Club Brugge K.V.,local,C126,2026-11-18,"The Bruges derby (Dutch: Brugse stadsderby, French: derby de Bruges)"
+Q509170,Q95183770,KSC Lokeren,other,C127,2026-11-18,the supporters of both clubs demanded the derby
+Q95183770,Q509170,SK Beveren,other,C127,2026-11-18,the supporters of both clubs demanded the derby
+Q19628,Q4122219,Panathinaikos F.C.,other,C128,2026-11-18,an association football derby contested between the two most successful clubs of Greece
+Q4122219,Q19628,Olympiacos F.C.,other,C128,2026-11-18,an association football derby contested between the two most successful clubs of Greece
+Q201584,Q4122219,Panathinaikos F.C.,local,C129,2026-11-18,the football local derby in the Athens urban area
+Q4122219,Q201584,AEK Athens F.C.,local,C129,2026-11-18,the football local derby in the Athens urban area
+Q201584,Q19628,Olympiacos F.C.,local,C130,2026-11-18,a football local derby played between AEK Athens and Olympiacos
+Q19628,Q201584,AEK Athens F.C.,local,C130,2026-11-18,a football local derby played between AEK Athens and Olympiacos
+Q204888,Q219926,Aris Thessaloniki F.C.,local,C131,2026-11-18,"local rivalry between Aris and PAOK, both of which are based in Thessaloniki"
+Q219926,Q204888,PAOK FC,local,C131,2026-11-18,"local rivalry between Aris and PAOK, both of which are based in Thessaloniki"
+Q201584,Q204888,PAOK FC,other,C132,2026-11-18,a football derby between AEK Athens and PAOK
+Q204888,Q201584,AEK Athens F.C.,other,C132,2026-11-18,a football derby between AEK Athens and PAOK
+Q19628,Q204888,PAOK FC,other,C133,2026-11-18,the most intense intercity rivalry in Greek football
+Q204888,Q19628,Olympiacos F.C.,other,C133,2026-11-18,the most intense intercity rivalry in Greek football
 Q4122219,Q204888,PAOK FC,other,C134,2026-10-17
 Q204888,Q4122219,Panathinaikos F.C.,other,C134,2026-10-17
 Q931704,,Ergotelis F.C.,local,C135,2026-11-18,"an association football rivalry between Ergotelis and OFI, two teams from Heraklion, Crete"
@@ -292,8 +292,8 @@ Q19571,Q9616,Chelsea F.C.,other,C175,2026-10-17
 Q9616,Q19571,Brentford F.C.,other,C175,2026-10-17
 Q19571,Q18708,Fulham F.C.,other,C175,2026-10-17
 Q18708,Q19571,Brentford F.C.,other,C175,2026-10-17
-Q19571,Q18723,Queens Park Rangers F.C.,local,C175,2026-11-18,Brentford vs QPR derby
-Q18723,Q19571,Brentford F.C.,local,C175,2026-11-18,Brentford vs QPR derby
+Q19571,Q18723,Queens Park Rangers F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry
+Q18723,Q19571,Brentford F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry
 Q9616,Q18708,Fulham F.C.,other,C175,2026-10-17
 Q18708,Q9616,Chelsea F.C.,other,C175,2026-10-17
 Q9616,Q18723,Queens Park Rangers F.C.,other,C175,2026-10-17
@@ -317,8 +317,8 @@ Q1149034,Q875169,FC Den Bosch,other,C178,2026-10-17
 Q875169,Q1149034,TOP Oss,other,C178,2026-10-17
 Q11938,Q876699,FC Eindhoven,other,C178,2026-10-17
 Q876699,Q11938,PSV Eindhoven,other,C178,2026-10-17
-Q876568,Q854167,Fortuna Sittard,local,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
-Q854167,Q876568,MVV Maastricht,local,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
+Q876568,Q854167,Fortuna Sittard,other,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
+Q854167,Q876568,MVV Maastricht,other,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
 Q24711,Q1061627,FC Emmen,other,C178,2026-10-17
 Q1061627,Q24711,FC Groningen,other,C178,2026-10-17
 Q200321,Q875120,SC Cambuur,other,C178,2026-10-17
@@ -337,8 +337,8 @@ Q24904,Q1045811,FC Dordrecht,other,C178,2026-10-17
 Q1045811,Q24904,ADO Den Haag,other,C178,2026-10-17
 Q221927,Q318348,N.E.C.,other,C178,2026-10-17
 Q318348,Q221927,De Graafschap,other,C178,2026-10-17
-Q653119,Q738060,FC Volendam,local,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
-Q738060,Q653119,Almere City FC,local,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
+Q653119,Q738060,FC Volendam,other,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
+Q738060,Q653119,Almere City FC,other,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
 Q24719,Q854167,Fortuna Sittard,other,C178,2026-10-17
 Q854167,Q24719,Roda JC Kerkrade,other,C178,2026-10-17
 Q757754,,Egaleo F.C.,other,C179,2026-10-17

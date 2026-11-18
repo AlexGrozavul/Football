@@ -381,3 +381,216 @@ quote. Probe runs used: 3 of 8.
 Running total, phase 5b (sessions 1): local 27, main 1 (687), other with a
 quote 74, not on the page 0, cannot verify 0; quote-less `other` rows left:
 222 (of 323).
+
+### Session 2 (2026-11-18, prompt version 2): batch
+
+Class rule from this session on (coordinator's decision of 18 Nov 2026, as
+reworded for version 2): `local` where the page calls the pair a local
+derby (Lokalderby, Stadtderby, derby local, derby cittadino, derby della
+città, stadsderby) or lists it under a section headed "Local", **or** where
+the page names it a derby and both clubs play in the same city or
+municipality (the grounds' places: the club files have no city, so the
+places are taken from Wikidata, club `P115` venue -> `P131`, read by the
+probe, or from the page); `main` where the page names the other club the
+main rival; `other` for everything else, including a named derby between
+clubs of different cities. Session 1 used the older wording (a named derby
+alone never `local`); its rows are not re-read here.
+
+Step 0 recount: 222 quote-less `other` rows (826 rows). Row 112 had no quote
+before session 1 (323 then), so 323 - 100 - 1 = 222: the running total of
+session 1 is right and was not changed.
+
+Batch (100 row ids, lines 115-216; lines 139-140 have quotes): 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216.
+
+Part D (first session of version 2): rows 51, 52 (Linz derby), 68
+(North-East derby; Iași is not on the map, no partner row), 295, 296
+(Brentford v QPR), 320, 321 (Derby van het Zuiden), 340, 341
+(Markermeerderby).
+
+### Session 2 (2026-11-18, prompt version 2): results
+
+Per row: id, club v rival, verdict, class before -> after, quote, page (source id). Pages read in four probe runs (run1 6f52208, run2 5751531, run3 f2ee5ad, run4 48d014f; 60 + 32 + 8 + 4 requests, Wikipedia parse API and Wikidata `wbgetentities`). Batch rows first (115-216), then the Part D rows (51-341).
+
+- 115: Juventus FC v Torino FC: **local**, other -> local, "the local derby played out between Turin's most prominent football clubs, Juventus and Torino", C82 https://en.wikipedia.org/wiki/Derby_della_Mole
+- 116: Torino FC v Juventus FC: **local**, other -> local, "the local derby played out between Turin's most prominent football clubs, Juventus and Torino", C82 https://en.wikipedia.org/wiki/Derby_della_Mole
+- 117: Genoa CFC v UC Sampdoria: **local**, other -> local, "Genoa's local derby, played by Genoa and Sampdoria", C83 https://en.wikipedia.org/wiki/Derby_della_Lanterna
+- 118: UC Sampdoria v Genoa CFC: **local**, other -> local, "Genoa's local derby, played by Genoa and Sampdoria", C83 https://en.wikipedia.org/wiki/Derby_della_Lanterna
+- 119: AS Roma v SSC Napoli: **other**, other -> other, "an Italian football derby between Napoli and Roma", C84 https://en.wikipedia.org/wiki/Derby_del_Sole
+- 120: SSC Napoli v AS Roma: **other**, other -> other, "an Italian football derby between Napoli and Roma", C84 https://en.wikipedia.org/wiki/Derby_del_Sole
+- 121: ACF Fiorentina v Juventus FC: **other**, other -> other, "an inter-city football rivalry contested between Florence-based Fiorentina and Turin-based Juventus", C85 https://en.wikipedia.org/wiki/ACF_Fiorentina%E2%80%93Juventus_FC_rivalry
+- 122: Juventus FC v ACF Fiorentina: **other**, other -> other, "an inter-city football rivalry contested between Florence-based Fiorentina and Turin-based Juventus", C85 https://en.wikipedia.org/wiki/ACF_Fiorentina%E2%80%93Juventus_FC_rivalry
+- 123: Juventus FC v AC Milan: **other**, other -> other, "the oldest running italian football rivalry", C86 https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93AC_Milan_rivalry
+- 124: AC Milan v Juventus FC: **other**, other -> other, "the oldest running italian football rivalry", C86 https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93AC_Milan_rivalry
+- 125: Juventus FC v SSC Napoli: **other**, other -> other, "an inter-city football rivalry contested between Turin-based Juventus and Naples-based Napoli", C87 https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93SSC_Napoli_rivalry
+- 126: SSC Napoli v Juventus FC: **other**, other -> other, "an inter-city football rivalry contested between Turin-based Juventus and Naples-based Napoli", C87 https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93SSC_Napoli_rivalry
+- 127: Bologna FC 1909 v ACF Fiorentina: **other**, other -> other, "a derby between Bologna FC 1909 and ACF Fiorentina, two football clubs in Italy", C88 https://en.wikipedia.org/wiki/Derby_dell%27Appennino
+- 128: ACF Fiorentina v Bologna FC 1909: **other**, other -> other, "a derby between Bologna FC 1909 and ACF Fiorentina, two football clubs in Italy", C88 https://en.wikipedia.org/wiki/Derby_dell%27Appennino
+- 129: Bologna FC 1909 v Parma Calcio 1913: **other**, other -> other, "the name given in football to any match between Bologna and Parma", C89 https://en.wikipedia.org/wiki/Derby_dell%27Emilia
+- 130: Parma Calcio 1913 v Bologna FC 1909: **other**, other -> other, "the name given in football to any match between Bologna and Parma", C89 https://en.wikipedia.org/wiki/Derby_dell%27Emilia
+- 131: SSC Napoli v Palermo FC: **other**, other -> other, "an Italian Serie A derby between the Napoli and Palermo football clubs", C90 https://en.wikipedia.org/wiki/Derby_delle_Due_Sicilie
+- 132: Palermo FC v SSC Napoli: **other**, other -> other, "an Italian Serie A derby between the Napoli and Palermo football clubs", C90 https://en.wikipedia.org/wiki/Derby_delle_Due_Sicilie
+- 133: Cagliari Calcio v Palermo FC: **other**, other -> other, "an Italian association football rivalry between Cagliari Calcio and Palermo", C91 https://en.wikipedia.org/wiki/Derby_delle_Isole
+- 134: Palermo FC v Cagliari Calcio: **other**, other -> other, "an Italian association football rivalry between Cagliari Calcio and Palermo", C91 https://en.wikipedia.org/wiki/Derby_delle_Isole
+- 135: Parma Calcio 1913 v A.C. Reggiana 1919: **other**, other -> other, "a historical rivalry between the cities of Parma and Reggio Emilia", C92 https://en.wikipedia.org/wiki/Derby_dell%27Enza
+- 136: Palermo FC v Catania FC: **local**, other -> local, "a local derby between Italian football clubs Catania FC and Palermo FC", C93 https://en.wikipedia.org/wiki/Derby_di_Sicilia
+- 137: FC Barcelona v Real Madrid Club de Fútbol: **other**, other -> other, "the name given to any football match between rival clubs Barcelona and Real Madrid", C94 https://en.wikipedia.org/wiki/El_Cl%C3%A1sico
+- 138: Real Madrid Club de Fútbol v FC Barcelona: **other**, other -> other, "the name given to any football match between rival clubs Barcelona and Real Madrid", C94 https://en.wikipedia.org/wiki/El_Cl%C3%A1sico
+- 141: FC Barcelona v RCD Espanyol de Barcelona: **other**, other -> other, "the name given to football matches between FC Barcelona and RCD Espanyol", C96 https://en.wikipedia.org/wiki/Derbi_Barcelon%C3%AD
+- 142: RCD Espanyol de Barcelona v FC Barcelona: **other**, other -> other, "the name given to football matches between FC Barcelona and RCD Espanyol", C96 https://en.wikipedia.org/wiki/Derbi_Barcelon%C3%AD
+- 143: Sevilla FC v Real Betis Balompié: **local**, other -> local, "the name of a local city derby located in Seville, Spain", C97 https://en.wikipedia.org/wiki/Seville_derby
+- 144: Real Betis Balompié v Sevilla FC: **local**, other -> local, "the name of a local city derby located in Seville, Spain", C97 https://en.wikipedia.org/wiki/Seville_derby
+- 145: Valencia CF v Levante UD: **local**, other -> local, "the two main clubs in the city of Valencia, Spain", C98 https://en.wikipedia.org/wiki/Valencia_derby
+- 146: Levante UD v Valencia CF: **local**, other -> local, "the two main clubs in the city of Valencia, Spain", C98 https://en.wikipedia.org/wiki/Valencia_derby
+- 147: Athletic Club v Real Sociedad: **local**, other -> local, "the football local derby between Real Sociedad and Athletic Bilbao", C99 https://en.wikipedia.org/wiki/Basque_derby
+- 148: Real Sociedad v Athletic Club: **local**, other -> local, "the football local derby between Real Sociedad and Athletic Bilbao", C99 https://en.wikipedia.org/wiki/Basque_derby
+- 149: Real Oviedo v Sporting de Gijón: **other**, other -> other, "any association football match contested between Sporting de Gijón and Real Oviedo", C100 https://en.wikipedia.org/wiki/Asturian_derby
+- 150: Sporting de Gijón v Real Oviedo: **other**, other -> other, "any association football match contested between Sporting de Gijón and Real Oviedo", C100 https://en.wikipedia.org/wiki/Asturian_derby
+- 151: C.D. Tenerife v UD Las Palmas: **other**, other -> other, "any football match contested between Spanish sides UD Las Palmas and CD Tenerife", C101 https://en.wikipedia.org/wiki/Canary_Islands_derby
+- 152: UD Las Palmas v C.D. Tenerife: **other**, other -> other, "any football match contested between Spanish sides UD Las Palmas and CD Tenerife", C101 https://en.wikipedia.org/wiki/Canary_Islands_derby
+- 153: Valencia CF v Villarreal CF: **other**, other -> other, "regional football rivalry in Spain between La Liga clubs Valencia CF and Villarreal CF", C102 https://en.wikipedia.org/wiki/Derbi_de_la_Comunitat
+- 154: Villarreal CF v Valencia CF: **other**, other -> other, "regional football rivalry in Spain between La Liga clubs Valencia CF and Villarreal CF", C102 https://en.wikipedia.org/wiki/Derbi_de_la_Comunitat
+- 155: Granada CF v Málaga CF: **other**, other -> other, "a running football club rivalry in the Eastern Andalusia", C103 https://en.wikipedia.org/wiki/Derby_of_eastern_Andalusia
+- 156: Málaga CF v Granada CF: **other**, other -> other, "a running football club rivalry in the Eastern Andalusia", C103 https://en.wikipedia.org/wiki/Derby_of_eastern_Andalusia
+- 157: Getafe CF v CD Leganés: **other**, other -> other, "any association football match contested between Getafe CF and CD Leganés", C104 https://en.wikipedia.org/wiki/South_Madrid_derby
+- 158: CD Leganés v Getafe CF: **other**, other -> other, "any association football match contested between Getafe CF and CD Leganés", C104 https://en.wikipedia.org/wiki/South_Madrid_derby
+- 159: Atlético Madrid v FC Barcelona: **other**, other -> other, "the name given to football matches between Atlético de Madrid and Barcelona", C105 https://en.wikipedia.org/wiki/El_Otro_Cl%C3%A1sico
+- 160: FC Barcelona v Atlético Madrid: **other**, other -> other, "the name given to football matches between Atlético de Madrid and Barcelona", C105 https://en.wikipedia.org/wiki/El_Otro_Cl%C3%A1sico
+- 161: Athletic Club v Real Madrid Club de Fútbol: **other**, other -> other, "the name given to any football match between Athletic Bilbao and Real Madrid", C106 https://en.wikipedia.org/wiki/El_Viejo_Cl%C3%A1sico
+- 162: Real Madrid Club de Fútbol v Athletic Club: **other**, other -> other, "the name given to any football match between Athletic Bilbao and Real Madrid", C106 https://en.wikipedia.org/wiki/El_Viejo_Cl%C3%A1sico
+- 163: Athletic Club v FC Barcelona: **other**, other -> other, "football matches between Athletic Bilbao and FC Barcelona", C107 https://en.wikipedia.org/wiki/Athletic%E2%80%93Barcelona_cl%C3%A1sico
+- 164: FC Barcelona v Athletic Club: **other**, other -> other, "football matches between Athletic Bilbao and FC Barcelona", C107 https://en.wikipedia.org/wiki/Athletic%E2%80%93Barcelona_cl%C3%A1sico
+- 165: RCD Mallorca v CD Atlético Baleares: **local**, other -> local, "the derby between the main football clubs in Palma de Mallorca", C108 https://en.wikipedia.org/wiki/Palma_derby
+- 166: CE Sabadell FC v Terrassa FC: **other**, other -> other, "the name given to football matches between CE Sabadell and Terrassa FC", C109 https://en.wikipedia.org/wiki/Vall%C3%A8s_derby
+- 167: Paris Saint-Germain FC v Olympique de Marseille: **other**, other -> other, "French football rivalry contested between French professional clubs Paris Saint-Germain", C110 https://en.wikipedia.org/wiki/Le_Classique
+- 168: Olympique de Marseille v Paris Saint-Germain FC: **other**, other -> other, "French football rivalry contested between French professional clubs Paris Saint-Germain", C110 https://en.wikipedia.org/wiki/Le_Classique
+- 169: Olympique lyonnais v Olympique de Marseille: **other**, other -> other, "the football rivalry between two major teams in French football", C111 https://en.wikipedia.org/wiki/Choc_des_Olympiques
+- 170: Olympique de Marseille v Olympique lyonnais: **other**, other -> other, "the football rivalry between two major teams in French football", C111 https://en.wikipedia.org/wiki/Choc_des_Olympiques
+- 171: RC Lens v Lille OSC: **other**, other -> other, "located in different departments, with Lens being in Pas-de-Calais, and Lille in Nord", C112 https://en.wikipedia.org/wiki/Derby_du_Nord
+- 172: Lille OSC v RC Lens: **other**, other -> other, "located in different departments, with Lens being in Pas-de-Calais, and Lille in Nord", C112 https://en.wikipedia.org/wiki/Derby_du_Nord
+- 173: Olympique lyonnais v AS Saint-Étienne: **other**, other -> other, "a football rivalry between French clubs Olympique Lyonnais and AS Saint-Étienne", C113 https://en.wikipedia.org/wiki/Olympique_Lyonnais%E2%80%93AS_Saint-%C3%89tienne_rivalry
+- 174: AS Saint-Étienne v Olympique lyonnais: **other**, other -> other, "a football rivalry between French clubs Olympique Lyonnais and AS Saint-Étienne", C113 https://en.wikipedia.org/wiki/Olympique_Lyonnais%E2%80%93AS_Saint-%C3%89tienne_rivalry
+- 175: AS Monaco FC v OGC Nice: **other**, other -> other, "a football match contested between Ligue 1 clubs AS Monaco and OGC Nice", C114 https://en.wikipedia.org/wiki/Derby_de_la_C%C3%B4te_d%27Azur
+- 176: OGC Nice v AS Monaco FC: **other**, other -> other, "a football match contested between Ligue 1 clubs AS Monaco and OGC Nice", C114 https://en.wikipedia.org/wiki/Derby_de_la_C%C3%B4te_d%27Azur
+- 177: Paris Saint-Germain FC v Paris FC: **local**, other -> local, "the two largest professional clubs based in Paris, France", C115 https://en.wikipedia.org/wiki/Paris_derby
+- 178: Paris FC v Paris Saint-Germain FC: **local**, other -> local, "the two largest professional clubs based in Paris, France", C115 https://en.wikipedia.org/wiki/Paris_derby
+- 179: AS Nancy-Lorraine v FC Metz: **other**, other -> other, "a football match contested between French clubs Metz and Nancy", C116 https://en.wikipedia.org/wiki/Derby_Lorrain
+- 180: FC Metz v AS Nancy-Lorraine: **other**, other -> other, "a football match contested between French clubs Metz and Nancy", C116 https://en.wikipedia.org/wiki/Derby_Lorrain
+- 181: Toulouse FC v FC Girondins de Bordeaux: **other**, other -> other, "a football match contested between French clubs FC Girondins de Bordeaux and Toulouse FC", C117 https://en.wikipedia.org/wiki/Derby_de_la_Garonne
+- 182: OGC Nice v SC Bastia: **other**, other -> other, "football match between Bastia and Nice, first contested in 1968", C118 https://en.wikipedia.org/wiki/Derby_de_la_Mediterran%C3%A9e
+- 183: En avant Guingamp v FC Lorient: **other**, other -> other, "may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois", C119 https://en.wikipedia.org/wiki/Derby_Breton
+- 184: FC Lorient v En avant Guingamp: **other**, other -> other, "may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois", C119 https://en.wikipedia.org/wiki/Derby_Breton
+- 185: En avant Guingamp v Stade rennais FC: **other**, other -> other, "may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois", C119 https://en.wikipedia.org/wiki/Derby_Breton
+- 186: Stade rennais FC v En avant Guingamp: **other**, other -> other, "may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois", C119 https://en.wikipedia.org/wiki/Derby_Breton
+- 187: FC Lorient v Stade rennais FC: **other**, other -> other, "may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois", C119 https://en.wikipedia.org/wiki/Derby_Breton
+- 188: Stade rennais FC v FC Lorient: **other**, other -> other, "may also refer to matches involving FC Lorient, En Avant Guingamp or Stade Brestois", C119 https://en.wikipedia.org/wiki/Derby_Breton
+- 189: AFC Ajax v Feyenoord Rotterdam: **main**, other -> main, "Ajax fans were outraged that Cruyff had jumped to their biggest rival", C120 https://en.wikipedia.org/wiki/De_Klassieker
+- 190: Feyenoord Rotterdam v AFC Ajax: **other**, other -> other, "the main football rivalry of the Netherlands", C120 https://en.wikipedia.org/wiki/De_Klassieker
+- 191: AFC Ajax v PSV Eindhoven: **other**, other -> other, "one of the main football rivalries of the Netherlands", C121 https://en.wikipedia.org/wiki/AFC_Ajax%E2%80%93PSV_Eindhoven_rivalry
+- 192: PSV Eindhoven v AFC Ajax: **other**, other -> other, "one of the main football rivalries of the Netherlands", C121 https://en.wikipedia.org/wiki/AFC_Ajax%E2%80%93PSV_Eindhoven_rivalry
+- 193: FC Groningen v SC Heerenveen: **other**, other -> other, "a match between the Dutch football clubs FC Groningen and SC Heerenveen", C122 https://en.wikipedia.org/wiki/Derby_of_the_North
+- 194: SC Heerenveen v FC Groningen: **other**, other -> other, "a match between the Dutch football clubs FC Groningen and SC Heerenveen", C122 https://en.wikipedia.org/wiki/Derby_of_the_North
+- 195: Go Ahead Eagles v PEC Zwolle: **other**, other -> other, "Go Ahead Eagles from Deventer, and PEC Zwolle from Zwolle", C123 https://en.wikipedia.org/wiki/IJsselderby
+- 196: PEC Zwolle v Go Ahead Eagles: **other**, other -> other, "Go Ahead Eagles from Deventer, and PEC Zwolle from Zwolle", C123 https://en.wikipedia.org/wiki/IJsselderby
+- 197: FC Twente v Heracles Almelo: **other**, other -> other, "a Dutch football derby between FC Twente and Heracles Almelo", C124 https://en.wikipedia.org/wiki/Twentse_derby
+- 198: Heracles Almelo v FC Twente: **other**, other -> other, "a Dutch football derby between FC Twente and Heracles Almelo", C124 https://en.wikipedia.org/wiki/Twentse_derby
+- 199: R.S.C. Anderlecht v Club Brugge K.V.: **other**, other -> other, "a football rivalry between two Belgian Pro League clubs Anderlecht and Club Brugge", C125 https://en.wikipedia.org/wiki/RSC_Anderlecht%E2%80%93Club_Brugge_KV_rivalry
+- 200: Club Brugge K.V. v R.S.C. Anderlecht: **other**, other -> other, "a football rivalry between two Belgian Pro League clubs Anderlecht and Club Brugge", C125 https://en.wikipedia.org/wiki/RSC_Anderlecht%E2%80%93Club_Brugge_KV_rivalry
+- 201: Club Brugge K.V. v Cercle Brugge K.S.V.: **local**, other -> local, "The Bruges derby (Dutch: Brugse stadsderby, French: derby de Bruges)", C126 https://en.wikipedia.org/wiki/Bruges_derby
+- 202: Cercle Brugge K.S.V. v Club Brugge K.V.: **local**, other -> local, "The Bruges derby (Dutch: Brugse stadsderby, French: derby de Bruges)", C126 https://en.wikipedia.org/wiki/Bruges_derby
+- 203: SK Beveren v KSC Lokeren: **other**, other -> other, "the supporters of both clubs demanded the derby", C127 https://en.wikipedia.org/wiki/Waasland_derby
+- 204: KSC Lokeren v SK Beveren: **other**, other -> other, "the supporters of both clubs demanded the derby", C127 https://en.wikipedia.org/wiki/Waasland_derby
+- 205: Olympiacos F.C. v Panathinaikos F.C.: **other**, other -> other, "an association football derby contested between the two most successful clubs of Greece", C128 https://en.wikipedia.org/wiki/Derby_of_the_Eternal_Enemies
+- 206: Panathinaikos F.C. v Olympiacos F.C.: **other**, other -> other, "an association football derby contested between the two most successful clubs of Greece", C128 https://en.wikipedia.org/wiki/Derby_of_the_Eternal_Enemies
+- 207: AEK Athens F.C. v Panathinaikos F.C.: **local**, other -> local, "the football local derby in the Athens urban area", C129 https://en.wikipedia.org/wiki/Athenian_derby
+- 208: Panathinaikos F.C. v AEK Athens F.C.: **local**, other -> local, "the football local derby in the Athens urban area", C129 https://en.wikipedia.org/wiki/Athenian_derby
+- 209: AEK Athens F.C. v Olympiacos F.C.: **local**, other -> local, "a football local derby played between AEK Athens and Olympiacos", C130 https://en.wikipedia.org/wiki/A.E.K.%E2%80%93Olympiacos_rivalry
+- 210: Olympiacos F.C. v AEK Athens F.C.: **local**, other -> local, "a football local derby played between AEK Athens and Olympiacos", C130 https://en.wikipedia.org/wiki/A.E.K.%E2%80%93Olympiacos_rivalry
+- 211: PAOK FC v Aris Thessaloniki F.C.: **local**, other -> local, "local rivalry between Aris and PAOK, both of which are based in Thessaloniki", C131 https://en.wikipedia.org/wiki/Derby_of_Thessaloniki
+- 212: Aris Thessaloniki F.C. v PAOK FC: **local**, other -> local, "local rivalry between Aris and PAOK, both of which are based in Thessaloniki", C131 https://en.wikipedia.org/wiki/Derby_of_Thessaloniki
+- 213: AEK Athens F.C. v PAOK FC: **other**, other -> other, "a football derby between AEK Athens and PAOK", C132 https://en.wikipedia.org/wiki/Double-headed_eagles_derby
+- 214: PAOK FC v AEK Athens F.C.: **other**, other -> other, "a football derby between AEK Athens and PAOK", C132 https://en.wikipedia.org/wiki/Double-headed_eagles_derby
+- 215: Olympiacos F.C. v PAOK FC: **other**, other -> other, "the most intense intercity rivalry in Greek football", C133 https://en.wikipedia.org/wiki/Olympiacos%E2%80%93PAOK_rivalry
+- 216: PAOK FC v Olympiacos F.C.: **other**, other -> other, "the most intense intercity rivalry in Greek football", C133 https://en.wikipedia.org/wiki/Olympiacos%E2%80%93PAOK_rivalry
+
+Part D rows:
+
+- 51: FC Blau-Weiß Linz v LASK: **local**, local -> local, "Linz Derby: FC Blau-Weiß Linz vs. LASK Linz", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 52: LASK v FC Blau-Weiß Linz: **local**, local -> local, "Linz Derby: FC Blau-Weiß Linz vs. LASK Linz", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 68: FC Botoșani v CSM Politehnica Iași: **other**, local -> other, "North-East derby: FC Botoşani vs Foresta Suceava vs Politehnica Iași", C71 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania
+- 295: Brentford F.C. v Queens Park Rangers F.C.: **local**, local -> local, "The West London derby is a local football rivalry", C175 https://en.wikipedia.org/wiki/West_London_derby
+- 296: Queens Park Rangers F.C. v Brentford F.C.: **local**, local -> local, "The West London derby is a local football rivalry", C175 https://en.wikipedia.org/wiki/West_London_derby
+- 320: MVV Maastricht v Fortuna Sittard: **other**, local -> other, "Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard", C178 https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands
+- 321: Fortuna Sittard v MVV Maastricht: **other**, local -> other, "Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard", C178 https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands
+- 340: Almere City FC v FC Volendam: **other**, local -> other, "Markermeerderby: Almere City FC vs. FC Volendam", C178 https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands
+- 341: FC Volendam v Almere City FC: **other**, local -> other, "Markermeerderby: Almere City FC vs. FC Volendam", C178 https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands
+
+Notes on the readings:
+
+- **`local` by the second clause (named derby, same city)**: 145/146
+  (Valencia derby: "the two main clubs in the city of Valencia"; Wikidata
+  `P131` of Mestalla is a disambiguation item, so the city is the page's),
+  165 (Palma derby: "the main football clubs in Palma de Mallorca"), 177/178
+  (Paris derby: "based in Paris"; grounds in the 16th and 13th
+  arrondissements), 211/212 (Derby of Thessaloniki: "both of which are based
+  in Thessaloniki"; both grounds in Thessaloniki Municipality). The quote is
+  the city phrase; the derby is the article's own subject.
+- **`local` by the first clause although the grounds are in different
+  cities**: 136 (Catania v Palermo, "a local derby"), 147/148 (Real Sociedad
+  v Athletic, San Sebastián v Bilbao, "local derby"), 207/208 (AEK in Nea
+  Filadelfeia v Panathinaikos in Athens, "local derby in the Athens urban
+  area"), 209/210 (AEK v Olympiacos of Piraeus, "local derby"). The rule
+  takes the page's words; see open-problems.md.
+- **Named derby, different cities, so `other`**: 205/206 (Olympiacos "from
+  Piraeus" v Panathinaikos; grounds in Piraeus and Athens municipalities),
+  197/198 (Twente's ground in Enschede, Heracles in Almelo; Wikidata labels
+  read in run4), 195/196, 213/214, and every other derby of the batch whose
+  page names two cities. **141/142 (Derbi Barceloní) is `other`** because
+  Espanyol's ground is in Cornellà de Llobregat (Wikidata), not Barcelona;
+  the page calls it the "Barcelonian derby"; no sentence the probe posted
+  calls it a local derby.
+- **189 (Ajax v Feyenoord) `main`** from "Ajax fans were outraged that Cruyff
+  had jumped to their biggest rival". **The partner row 190 was NOT made
+  `main`**: the page says Feyenoord is Ajax's biggest rival, not the
+  reverse, and a class is the stating club's view; 190 got the page's lead
+  phrase and stays `other`. This departs from the partner instruction; it is
+  written up for Alexandru.
+- **Arch-rival wording left `other`**: 121/122 (the Fiorentina page says
+  Fiorentina met "their arch-nemesis Juventus" in the 1990 UEFA Cup final)
+  and 167/168 (PSG and Marseille "emerged as arch-rivals" in the early
+  1990s). The version 2 rule lists "main rival" and "biggest rival", not
+  arch-rival; session 1's method counted arch-rival as `main`.
+- 199/200: the page says Dutch speakers call Anderlecht v Club Brugge "the
+  main derby"; a main derby of a country is not a club's main rival, `other`.
+- 203/204: the page's derby is KSK Beveren v Sporting Lokeren (both gone);
+  the quote is from its sentence on the supporters of SK Beveren and KSC
+  Lokeren-Temse demanding the derby again, which the page says KSK Beveren
+  supporters question.
+- 183-188 (Breton derby, Guingamp, Lorient, Rennes): the page's principal
+  Breton rivalry is Rennes v Nantes (no row in the batch); the three pairs
+  of the batch are "matches involving" the other Breton clubs, `other`.
+- Every class change came with its partner row (all partners were in the
+  batch), except row 190 above. Rows 135, 136, 165, 166, 181, 182 have no
+  rival on the map, so no partner row.
+
+Part D (the five pairs phase 5 made `local` from a named derby):
+
+- Linz derby (51/52): **kept `local`**: "Linz Derby: FC Blau-Weiß Linz vs. LASK
+  Linz", both grounds in Linz (Wikidata).
+- North-East derby (68): **`local` -> `other`**: FC Botoșani v Politehnica
+  Iași, different cities, listed under "Romania", no local wording.
+- Brentford v QPR (295/296): **kept `local`**: the page calls the West London
+  derby "a local football rivalry"; QPR's ground is in London (Wikidata),
+  Brentford's `P115` is still Griffin Park (Brentford, London). The quote was
+  changed from the section heading to that lead phrase.
+- Derby van het Zuiden (320/321): **`local` -> `other`**: MVV Maastricht v
+  Fortuna Sittard, grounds in Maastricht and Sittard-Geleen.
+- Markermeerderby (340/341): **`local` -> `other`**: Almere City FC v FC
+  Volendam, grounds in Almere and Edam-Volendam.
+
+Counts, session 2 (100 batch rows): local 22, main 1 (189), other with a
+quote 77, not on the page 0, cannot verify 0. Part D: 4 rows kept `local`,
+5 rows `local` -> `other`. Probe runs used: 4 of 8.
+
+Running total, phase 5b (sessions 1-2): local 49, main 2 (687, 189), other
+with a quote 151, not on the page 0, cannot verify 0; quote-less `other`
+rows left: 122 (of 323).
