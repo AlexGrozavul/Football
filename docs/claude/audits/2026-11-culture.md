@@ -775,3 +775,11 @@ Notes on the readings:
 Counts, session 3 (100 batch rows): local 47, main 6 (225, 248, 265, 268, 277, 285), other with a quote 47, not on the page 0, cannot verify 0. Part A: 25 to `local`, 3 to `main`, 5 to `other`, 0 partner mains undone. Probe runs used: 2 of 8 (58 requests).
 
 Running total, phase 5b (sessions 1-3, 300 batch rows plus the extras 687 and 112, by class after the version 3 re-check): local 116, main 11, other with a quote 175, not on the page 0, cannot verify 0; quote-less `other` rows left: 22 (of 323).
+
+### Session 4 (2026-11-18, prompt version 4): batch
+
+Class rule: version 3 (conventions.md, "Club rivalries: the class") with the coordinator's additions a to e of 18 Nov 2026 (a: a rival without a ground passes the 20 km test when the page states both clubs are in the same city; b: a main rival only from the page's own words, not from a person it quotes; c: a main-rival sentence on a page read in phase 5b may be applied to the row it is about, that page becoming the row's source; d: a club may keep two `main` rows from two pages; e: an unnamed "derby" counts as naming a derby).
+
+Step 0 recount: 22 quote-less `other` rows (826 rows), as session 3 left. Batch (written before any page was read; 22 row ids, lines 325-348, lines 340 and 341 have quotes): 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 342, 343, 344, 345, 346, 347, 348.
+
+Part A rows (the six fixes): 165, 219, 255 (rule a; each derby has one row only, the rival is not on the map), 248 (rule b), 238, 261, 282 (rule c), 265, 268 (rule d), 267 (rule e), 67, 68 (North-East derby).
