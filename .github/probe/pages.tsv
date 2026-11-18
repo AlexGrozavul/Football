@@ -1,61 +1,11 @@
-# run 1: the 60 sampled culture rows (id, url, club terms, other-side terms, quote)
-S01	https://de.wikipedia.org/wiki/Kickers_Emden	Emden	Oldenburg	sehen den SV Atlas Delmenhorst und den VfB Oldenburg als Hauptrivalen an
-S02	https://ro.wikipedia.org/wiki/FC_Arge%C8%99_Pite%C8%99ti	Argeș|Pitești	Dinamo	Dinamo București a fost, de-a lungul timpului, principalul rival tradițional
-S03	https://de.wikipedia.org/wiki/VfL_Wolfsburg	Wolfsburg	Braunschweig	Spiele der Wolfsburger gegen Hannover 96 und gegen Eintracht Braunschweig als Derbys
-S04	https://de.wikipedia.org/wiki/Rot-Weiss_Essen	Essen	Wuppertal	Weitere Rivalitäten gibt es zu anderen Vereinen aus der Region
-S05	https://es.wikipedia.org/wiki/C%C3%A1diz_Club_de_F%C3%BAtbol	Cádiz	Xerez	Derbi gaditano: El club mantiene una marcada rivalidad con el Xerez Club Deportivo
-S06	https://fr.wikipedia.org/wiki/Stade_lavallois_Mayenne_Football_Club	Laval	Mans	derby contre le Mans est le plus populaire étant considéré comme le derby du Maine
-S07	https://it.wikipedia.org/wiki/Benevento_Calcio	Benevento	Campobasso	Storica l'inimicizia con il Campobasso con cui il Benevento disputa il "derby del Sannio"
-S08	https://en.wikipedia.org/wiki/FCV_Farul_Constan%C8%9Ba	Farul|Constanța	Năvodari	rivalries against teams from nearby cities, such as CS Năvodari, Săgeata Năvodari or Delta Tulcea
-S09	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	LASK	Blau-Wei|Blue-White|BW Linz	
-S10	https://nl.wikipedia.org/wiki/Beerschot_Voetbal_en_Atletiek_Club	Beerschot	Antwerp	sindsdien bestaat een grote rivaliteit tussen beide clubs
-S11	https://en.wikipedia.org/wiki/Rhine_derby	Köln|Cologne	Gladbach	
-S12	https://en.wikipedia.org/wiki/German_football_rivalries	Werder|Bremen	Bayern	
-S13	https://en.wikipedia.org/wiki/Politisches_derby	Hansa|Rostock	Pauli	
-S14	https://de.wikipedia.org/wiki/SV_Waldhof_Mannheim	Waldhof	VfR	Die älteste Rivalität besteht jedoch zum VfR Mannheim
-S15	https://en.wikipedia.org/wiki/Madrid_derby	Real Madrid	Atlético|Atletico	
-S16	https://en.wikipedia.org/wiki/El_Otro_Cl%C3%A1sico	Barcelona|Barça	Atlético|Atletico	
-S17	https://es.wikipedia.org/wiki/Club_Deportivo_Castell%C3%B3n	Castellón	Nàstic|Tarragona	Otras rivalidades de menor importancia son las que mantiene con el Nàstic de Tarragona
-S18	https://en.wikipedia.org/wiki/Derby_de_la_Mediterran%C3%A9e	Nice	Bastia	
-S19	https://fr.wikipedia.org/wiki/Angers_Sporting_Club_de_l'Ouest	Angers|SCO	Nantes	Le principal compétiteur du SCO d'Angers est le FC Nantes
-S20	https://en.wikipedia.org/wiki/Aston_Villa_F.C.%E2%80%93West_Bromwich_Albion_F.C._rivalry	Villa	West Brom|Albion	
-S21	https://en.wikipedia.org/wiki/Nottingham_derby	Forest	Notts County	
-S22	https://en.wikipedia.org/wiki/Chelsea_F.C.%E2%80%93Liverpool_F.C._rivalry	Chelsea	Liverpool	
-S23	https://en.wikipedia.org/wiki/West_London_derby	QPR|Queens Park	Brentford	
-S24	https://en.wikipedia.org/wiki/Bolton_Wanderers_F.C.	Bolton	Preston	traditional rivalries with fellow Lancashire clubs Blackburn Rovers, Burnley and Preston North End
-S25	https://en.wikipedia.org/wiki/Cretan_derby	OFI	Ergotelis	
-S26	https://en.wikipedia.org/wiki/Derby_della_Capitale	Lazio	Roma	
-S27	https://en.wikipedia.org/wiki/Derby_delle_Isole	Cagliari	Palermo	
-S28	https://en.wikipedia.org/wiki/Ascoli_Calcio_1898_FC	Ascoli	Inter\b	Other rivalries include Livorno, Verona, Pescara and Inter.
-S29	https://en.wikipedia.org/wiki/Atalanta_BC	Atalanta	Fiorentina	The rivalry between Atalanta and Fiorentina has intensified
-S30	https://it.wikipedia.org/wiki/Cesena_Football_Club	Cesena	Salernitana	Ulteriori rivalità di discreta importanza oppongono Cesena soprattutto con Hellas Verona, Pescara, Sambenedettese, Sangiustese
-S31	https://it.wikipedia.org/wiki/Virtus_Entella	Entella	Lavagnese	rivali vi sono quelle rappresentanti i capoluoghi delle province liguri - Imperia, Savona e Spezia
-S32	https://it.wikipedia.org/wiki/Unione_Sportiva_Avellino_1912	Avellino	Napoli	in modo particolare alla rivalità con la squadra del Napoli
-S33	https://it.wikipedia.org/wiki/Benevento_Calcio	Benevento	Nocerina	Le rivalità più accese riguardano altre tifoserie campane
-S34	https://it.wikipedia.org/wiki/Unione_Sportiva_Sassuolo_Calcio	Sassuolo	Sansovino	altre rivalità sussistono con le tifoserie di Empoli, Ancona, Grosseto, Sansovino, Savona, Trento, Pro Vercelli,
-S35	https://it.wikipedia.org/wiki/Modena_Football_Club_2018	Modena	Triestina	Altre rivalità minori si hanno con: Atalanta, Brescia, Verona, Vicenza
-S36	https://it.wikipedia.org/wiki/Frosinone_Calcio	Frosinone	Grosseto	Ulteriori rivalità da menzionare sono quelle con le tifoserie di Benevento, Palermo
-S37	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Fortuna	MVV|Maastricht	
-S38	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Volendam	Almere	
-S39	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	Botoșani|Botosani	Iași|Iasi|Poli	
-S40	https://en.wikipedia.org/wiki/Derby_of_Serbia	Vojvodina	Partizan	
-S41	https://de.wikipedia.org/wiki/Borussia_Dortmund	Dortmund|BVB	Celtic	Unterstützt wird diese Fanfreundschaft durch Kontakte zwischen Anhängern der deutschen und der schottischen Fußballnationalmannschaft
-S42	https://de.wikipedia.org/wiki/Hamburger_SV	HSV|Hamburg	Lübeck	Ebenso besteht eine Fanfreundschaft zum VfB Lübeck
-S43	https://de.wikipedia.org/wiki/FC_Augsburg	Augsburg	Lustenau	gibt es freundschaftliche Beziehungen zu der Anhängerschaft des SC Austria Lustenau
-S44	https://de.wikipedia.org/wiki/VfB_Stuttgart	Stuttgart|VfB	Étienne	zum 1. FC Kaiserslautern, sowie international zum AC Cesena und zur AS Saint-Étienne
-S45	https://de.wikipedia.org/wiki/Karlsruher_SC	KSC|Karlsruhe	Straßburg|Strasbourg|Racing	mit den Fans des österreichischen Erstligisten SK Sturm Graz und des französischen Nachbarn Racing Straßburg
-S46	https://de.wikipedia.org/wiki/SpVgg_Greuther_Fürth	Fürth	FSV Frankfurt	Fanfreundschaften bestehen zu Fans der SpVgg Bayreuth, dem 1. FC Heidenheim, des FSV Frankfurt
-S47	https://de.wikipedia.org/wiki/Hannover_96	Hannover	Hamburger SV|HSV	Es besteht eine langjährige Fanfreundschaft mit dem Hamburger SV
-S48	https://de.wikipedia.org/wiki/Rot-Weiss_Essen	Essen	Werder|Bremen	Unter anderem pflegen die Ultras Essen und Wanderers Bremen die Freundschaft
-S49	https://de.wikipedia.org/wiki/SV_Wehen_Wiesbaden	Wehen|Wiesbaden	Ingolstadt	Die aktive Fanszene pflegt eine Fanfreundschaft mit den Fans des FC Ingolstadt 04
-S50	https://de.wikipedia.org/wiki/Preu%C3%9Fen_M%C3%BCnster	Münster|Preußen	Pescara	pflegen darüber hinaus freundschaftliche Kontakte ins Ausland zu Heracles Almelo, Pescara Calcio, Girondins Bordeaux,
-S51	https://fr.wikipedia.org/wiki/Supporters_du_Racing_Club_de_Strasbourg_Alsace	Strasbourg|Racing	Karlsruhe	une amitié avec ceux du Karlsruher SC ainsi que du Hertha Berlin SC
-S52	https://de.wikipedia.org/wiki/1._FSV_Mainz_05	Mainz	Gladbach	kündigten die Gladbacher diese Freundschaft kurzerhand auf
-S53	https://de.wikipedia.org/wiki/Borussia_Dortmund	Dortmund|BVB	Karlsruhe|KSC	In den 1990er Jahren gab es einige lose Fanfreundschaften
-S54	https://de.wikipedia.org/wiki/1._FSV_Mainz_05	Mainz	Jena	Einzelne freundschaftliche Kontakte bestanden auch zur aktiven Fanszene des FC Carl Zeiss Jena
-S55	https://de.wikipedia.org/wiki/1._FC_Kaiserslautern	Kaiserslautern|FCK	Werder|Bremen	längerfristige und von vielen Fans getragene Freundschaft bestand zu den Fans von Werder Bremen
-S56	https://en.wikipedia.org/w/index.php?title=Jong_KAA_Gent&redirect=no	Jong	Gent	
-S57	https://de.wikipedia.org/w/index.php?title=FC_Augsburg_II&redirect=no	II	Augsburg	
-S58	https://de.wikipedia.org/w/index.php?title=TSG_1899_Hoffenheim_II&redirect=no	II	Hoffenheim	
-S59	https://en.wikipedia.org/wiki/RC_Celta_Fortuna	Fortuna	Celta	
-S60	https://en.wikipedia.org/wiki/FC_Porto_B	Porto B	Porto	
+# run 2: whole lines for ten rows
+S09	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	x	x		Linz Derby|Linz derby
+S12	https://en.wikipedia.org/wiki/German_football_rivalries	x	x		Werder|Bremen
+S37	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	x	x		Fortuna Sittard|Limburg
+S38	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	x	x		Almere|Volendam
+S39	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	x	x		Botoşani|Botoșani
+S44	https://de.wikipedia.org/wiki/VfB_Stuttgart	x	x		Saint-Étienne
+S46	https://de.wikipedia.org/wiki/SpVgg_Greuther_Fürth	x	x		Bayreuth
+S53	https://de.wikipedia.org/wiki/Borussia_Dortmund	x	x		lose Fanfreundschaften
+S55	https://de.wikipedia.org/wiki/1._FC_Kaiserslautern	x	x		Freundschaft bestand zu den Fans von Werder
+S19	https://fr.wikipedia.org/wiki/Angers_Sporting_Club_de_l'Ouest	x	x		principal compétiteur

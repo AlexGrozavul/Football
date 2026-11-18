@@ -120,6 +120,15 @@ def main(cfg):
                     hit = [u for u in units(nt) if head in u or tail in u]
                     if hit:
                         line += "\n> nearest: " + hit[0][:400]; break
+        if len(r) > 5 and r[5]:
+            rl = re.compile(r[5])
+            ls = [l.strip() for l in txt.split("\n") if l.strip()]
+            hits = [i for i, l in enumerate(ls) if rl.search(l)][:4]
+            for i in hits:
+                line += "\n> L: " + ls[i][:600] + ("\n>   next: " + ls[i + 1][:300] if i + 1 < len(ls) else "")
+            if not hits:
+                line += "\n> (no line matches)"
+            blocks.append(line); continue
         us = units(txt)
         scored = []
         for i, u in enumerate(us):
