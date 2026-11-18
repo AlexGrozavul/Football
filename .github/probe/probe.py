@@ -69,14 +69,14 @@ def main():
     rows = [l.rstrip('\n').split('\t') for l in open(sys.argv[1]) if l.strip() and not l.startswith('#')]
     cache = {}; out = []
     for r in rows:
-        ids, url, ra, rb = r[:4]; one = len(r) > 4 and r[4] == 'one'
+        ids, url, ra, rb = r[:4]; one = len(r) > 4 and r[4] in ('one', 'line'); line = len(r) > 4 and r[4] == 'line'
         u = url.split('#')[0]
         if u not in cache: cache[u] = page(u)
         bl, title = cache[u]
         if bl is None: out.append(f'## {ids}: CANNOT READ {u} ({title})'); continue
         A, B = re.compile(ra), re.compile(rb); hits = []
         for head, txt in bl:
-            for snt in sentences(txt):
+            for snt in ([txt] if line else sentences(txt)):
                 if A.search(snt) and (one or B.search(snt)): hits.append((0 if CLASSW.search(snt) else (2 if ' | ' in snt else 1), head, snt))
         hits_sorted = sorted(enumerate(hits), key=lambda x: (x[1][0], x[0]))[:8]
         out.append(f'## {ids} [{title}] {len(hits)} sentences name both')
@@ -106,6 +106,13 @@ def main():
     out.append('## Grounds (club P115 venue -> P131)')
     for q in qids:
         out.append(f'- {q} {lab(clubs, q)}: ' + '; '.join(f'{lab(venues, v)} -> ' + ', '.join(lab(places, p) for p in pl.get(v, [])) for v in ven[q]))
+    lp = os.path.join(os.path.dirname(sys.argv[1]), 'labels.txt')
+    if os.path.exists(lp):
+        ids = [l.strip() for l in open(lp) if l.strip()]
+        d = get('https://www.wikidata.org/w/api.php?' + urllib.parse.urlencode({'action': 'wbgetentities', 'ids': '|'.join(ids), 'props': 'labels|descriptions', 'languages': 'en|nl|es|de', 'format': 'json', 'maxlag': 5}))
+        out.append('## Labels')
+        for q, e in ((d or {}).get('entities') or {}).items():
+            out.append(f"- {q}: " + '; '.join(f"{k}={v['value']}" for k, v in e.get('labels', {}).items()) + ' / ' + '; '.join(f"{k}={v['value']}" for k, v in e.get('descriptions', {}).items()))
     out.append(f'requests: {NREQ}')
     body = '\n'.join(out); print(body[:3000])
     label = os.environ.get('RUN_LABEL', 'run')

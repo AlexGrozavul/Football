@@ -1,20 +1,4 @@
 # rows	url	regexA	regexB	mode
-121/122	https://en.wikipedia.org/wiki/ACF_Fiorentina%E2%80%93Juventus_FC_rivalry	Juventus|Juve\b	Fiorentina
-123/124	https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93AC_Milan_rivalry	Juventus|Juve\b	Milan(?!o)
-125/126	https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93SSC_Napoli_rivalry	Juventus|Juve\b	Napoli
-135	https://en.wikipedia.org/wiki/Derby_dell%27Enza	Parma	Reggiana|Reggio
-137/138	https://en.wikipedia.org/wiki/El_Cl%C3%A1sico	Barcelona|Barça	Real Madrid|Madrid
-141/142	https://en.wikipedia.org/wiki/Derbi_Barcelon%C3%AD	Barcelona|Barça	Espanyol
-145/146	https://en.wikipedia.org/wiki/Valencia_derby	Valencia	Levante
-151/152	https://en.wikipedia.org/wiki/Canary_Islands_derby	Tenerife	Las Palmas
-153/154	https://en.wikipedia.org/wiki/Derbi_de_la_Comunitat	Valencia	Villarreal
-163/164	https://en.wikipedia.org/wiki/Athletic%E2%80%93Barcelona_cl%C3%A1sico	Athletic	Barcelona
-189/190	https://en.wikipedia.org/wiki/De_Klassieker	Feyenoord	Ajax
-197/198	https://en.wikipedia.org/wiki/Twentse_derby	Twente|Enschede	Heracles|Almelo
-199/200	https://en.wikipedia.org/wiki/RSC_Anderlecht%E2%80%93Club_Brugge_KV_rivalry	Anderlecht	Brugge|Bruges
-211/212	https://en.wikipedia.org/wiki/Derby_of_Thessaloniki	Aris\b	PAOK
-213/214	https://en.wikipedia.org/wiki/Double-headed_eagles_derby	AEK	PAOK
-215/216	https://en.wikipedia.org/wiki/Olympiacos%E2%80%93PAOK_rivalry	Olympiacos|Olympiakos	PAOK
-51/52	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe	Linz	-	one
-320/321	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Zuiden|Limburg|MVV	-	one
-340/341	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Markermeer|Almere|Volendam	-	one
+51/52	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe	Linz Derby	-	line
+320/321	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Derby van het Zuiden	-	line
+340/341	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Markermeer	-	line
