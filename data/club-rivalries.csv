@@ -1,12 +1,12 @@
 clubQ,rivalQ,rivalName,class,sourceId,checkedOn,quote
-Q104770,Q101959,Borussia Mönchengladbach,local,R1,2026-11-18,the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach
+Q104770,Q101959,Borussia Mönchengladbach,other,R1,2026-11-18,the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach
 Q104770,Q695008,FC Viktoria Köln,local,R2,2026-11-18,Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln
 Q104770,Q310608,SC Fortuna Köln,local,R2,2026-11-18,Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln
 Q141971,Q159930,BFC Dynamo,local,R2,2026-11-18,East Berlin derby: Union Berlin vs. BFC Dynamo
 Q141971,Q102720,Hertha BSC,other,R3,2026-11-18,has more recently referred to the derby between 1. FC Union Berlin and Hertha BSC
 Q41420,Q15789,FC Bayern München,other,R4,2026-11-18,the name given to any football match between Bayern Munich and Borussia Dortmund
 Q41420,Q32494,FC Schalke 04,other,R5,2026-11-18,It is considered the greatest rivalry in German football.
-Q101959,Q104770,1. FC Köln,local,R1,2026-11-18,the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach
+Q101959,Q104770,1. FC Köln,other,R1,2026-11-18,the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach
 Q38245,Q157352,FSV Frankfurt,local,R2,2026-11-18,Frankfurt derby: Eintracht Frankfurt vs. FSV Frankfurt
 Q38245,Q479351,SV Darmstadt 98,other,R2,2026-11-18,Hesse derby
 Q97905916,Q131603,TSV 1860 München,other,R6,2026-11-18,"an association football rivalry in Bavaria, Germany, between FC Augsburg and TSV 1860 Munich"
@@ -22,7 +22,7 @@ Q4512,Q105853,Karlsruher SC,other,R12,2026-11-18,Als Baden-Württemberg-Derby wi
 Q4512,Q170105,Stuttgarter Kickers,local,R13,2026-11-18,Stuttgarter Lokalderby
 Q51976,Q15789,FC Bayern München,other,R2,2026-11-18,Nord-Süd Klassiker ('North-South classic')
 Q51976,Q51974,Hamburger SV,other,R11,2026-11-18,The Nordderby or Northern derby is a match between Hamburger SV and Werder Bremen
-Q162251,Q692586,VfR Aalen,other,R2,2026-11-18,Ostalb-Derby
+Q162251,Q692586,VfR Aalen,local,R2,2026-11-18,Ostalb-Derby
 Q8466,Q157463,1. FC Saarbrücken,other,R2,2026-11-18,Südwest derby ('south-western derby')
 Q8466,Q105853,Karlsruher SC,other,R14,2026-11-18,"Abneigung besteht heutzutage gegenüber den Anhängern des VfB Stuttgart (siehe Baden-Württemberg-Derby), des 1. FC Kaiserslautern"
 Q15786,Q153539,SpVgg Greuther Fürth,local,R15,2026-11-18,Das Frankenderby – auch fränkisches Lokalderby genannt
@@ -44,8 +44,8 @@ Q126334,Q19512,FC Sochaux-Montbéliard,other,C6,2026-10-09,quelques rivalités c
 Q126334,,Bordeaux,other,C7,2026-10-09,il existe une rivalité entre ces deux groupes de supporters
 Q131215,Q131209,FK Austria Wien,local,C63,2026-11-18,local derby match between city rivals FK Austria Wien and SK Rapid Wien
 Q131209,Q131215,SK Rapid Wien,local,C63,2026-11-18,local derby match between city rivals FK Austria Wien and SK Rapid Wien
-Q659780,Q124007617,SK Sturm Graz,other,C64,2026-11-18,Graz Derby: Grazer AK vs. Sturm Graz
-Q124007617,Q659780,Grazer AK,other,C64,2026-11-18,Graz Derby: Grazer AK vs. Sturm Graz
+Q659780,Q124007617,SK Sturm Graz,local,C64,2026-11-18,Graz Derby: Grazer AK vs. Sturm Graz
+Q124007617,Q659780,Grazer AK,local,C64,2026-11-18,Graz Derby: Grazer AK vs. Sturm Graz
 Q392310,Q457460,SV Ried,other,C64,2026-11-18,Upper Austrian Derby : LASK Linz vs. SV Ried
 Q457460,Q392310,LASK,other,C64,2026-11-18,Upper Austrian Derby : LASK Linz vs. SV Ried
 Q696525,Q392310,LASK,local,C64,2026-11-18,Linz Derby: FC Blau-Weiß Linz vs. LASK Linz
@@ -53,12 +53,12 @@ Q392310,Q696525,FC Blau-Weiß Linz,local,C64,2026-11-18,Linz Derby: FC Blau-Wei�
 Q261813,Q22866,SV Austria Salzburg,other,C64,2026-11-18,Western derby: Wacker Innsbruck vs. Austria Salzburg
 Q22866,Q261813,FC Wacker Innsbruck,other,C64,2026-11-18,Western derby: Wacker Innsbruck vs. Austria Salzburg
 Q694484,,SK Austria Klagenfurt,other,C64,2026-11-18,Carinthian derby : Wolfsberger AC vs. SV Austria Klagenfurt
-Q179658,Q204237,Dinamo București,other,C65,2026-11-18,a football match between Bucharest rivals FCSB and Dinamo București
-Q204237,Q179658,FCSB,other,C65,2026-11-18,a football match between Bucharest rivals FCSB and Dinamo București
+Q179658,Q204237,Dinamo București,local,C65,2026-11-18,The Eternal derby (Romanian: Eternul derby)
+Q204237,Q179658,FCSB,local,C65,2026-11-18,The Eternal derby (Romanian: Eternul derby)
 Q179658,Q245162,FC Rapid București,local,C66,2026-11-18,"the football local derby in Bucharest, Romania, between FCSB and FC Rapid București"
 Q245162,Q179658,FCSB,local,C66,2026-11-18,"the football local derby in Bucharest, Romania, between FCSB and FC Rapid București"
-Q753462,Q205998,CFR Cluj,other,C67,2026-11-18,refers to football matches between CFR Cluj and Universitatea Cluj
-Q205998,Q753462,FC Universitatea Cluj,other,C67,2026-11-18,refers to football matches between CFR Cluj and Universitatea Cluj
+Q753462,Q205998,CFR Cluj,local,C67,2026-11-18,The Cluj derby (Romanian: Derbiul Clujului) refers to football matches
+Q205998,Q753462,FC Universitatea Cluj,local,C67,2026-11-18,The Cluj derby (Romanian: Derbiul Clujului) refers to football matches
 Q680770,Q4654417,Știința Poli Timișoara,other,C68,2026-11-18,a match between the fierce rivals SSU Politehnica Timișoara and UTA Arad
 Q4654417,Q680770,UTA Arad,other,C68,2026-11-18,a match between the fierce rivals SSU Politehnica Timișoara and UTA Arad
 Q1322550,,FC Astra Giurgiu,other,C69,2026-11-18,any match between Romanian clubs Petrolul Ploiești and Astra Giurgiu
@@ -84,12 +84,12 @@ Q189671,Q190526,BSC Young Boys,other,C75,2026-11-18,"Die Klassikier rivalry: FC 
 Q190526,Q189671,FC Basel,other,C75,2026-11-18,"Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich"
 Q189671,Q206692,FC Zürich,other,C75,2026-11-18,"Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich"
 Q206692,Q189671,FC Basel,other,C75,2026-11-18,"Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich"
-Q201360,Q206692,FC Zürich,other,C76,2026-11-18,a football match between rivals FC Zürich and Grasshopper Club Zurich
-Q206692,Q201360,Grasshopper Club Zürich,other,C76,2026-11-18,a football match between rivals FC Zürich and Grasshopper Club Zurich
+Q201360,Q206692,FC Zürich,local,C76,2026-11-18,The Zürich derby (German: Zürcher Derby) is a football match
+Q206692,Q201360,Grasshopper Club Zürich,local,C76,2026-11-18,The Zürich derby (German: Zürcher Derby) is a football match
 Q190526,Q464775,FC Thun,other,C75,2026-11-18,Bernese Derby: Young Boys vs. FC Thun
 Q464775,Q190526,BSC Young Boys,other,C75,2026-11-18,Bernese Derby: Young Boys vs. FC Thun
-Q223262,Q671950,SC Kriens,other,C75,2026-11-18,Luzerner Derby: FC Luzern vs. SC Kriens
-Q671950,Q223262,FC Luzern,other,C75,2026-11-18,Luzerner Derby: FC Luzern vs. SC Kriens
+Q223262,Q671950,SC Kriens,local,C75,2026-11-18,Luzerner Derby: FC Luzern vs. SC Kriens
+Q671950,Q223262,FC Luzern,local,C75,2026-11-18,Luzerner Derby: FC Luzern vs. SC Kriens
 Q659212,Q187091,FC Wil,other,C75,2026-11-18,St. Gallen Derby: FC St.Gallen vs. FC Wil
 Q187091,Q659212,FC St. Gallen,other,C75,2026-11-18,St. Gallen Derby: FC St.Gallen vs. FC Wil
 Q671950,,SC Cham,other,C75,2026-11-18,Zentralschweizer Derby: SC Cham vs. SC Kriens
@@ -118,7 +118,7 @@ Q2074,Q1457,UC Sampdoria,local,C83,2026-11-18,"Genoa's local derby, played by Ge
 Q1457,Q2074,Genoa CFC,local,C83,2026-11-18,"Genoa's local derby, played by Genoa and Sampdoria"
 Q2739,Q2641,SSC Napoli,other,C84,2026-11-18,an Italian football derby between Napoli and Roma
 Q2641,Q2739,AS Roma,other,C84,2026-11-18,an Italian football derby between Napoli and Roma
-Q2052,Q1422,Juventus FC,other,C85,2026-11-18,an inter-city football rivalry contested between Florence-based Fiorentina and Turin-based Juventus
+Q2052,Q1422,Juventus FC,main,C85,2026-11-18,against their arch-nemesis Juventus
 Q1422,Q2052,ACF Fiorentina,other,C85,2026-11-18,an inter-city football rivalry contested between Florence-based Fiorentina and Turin-based Juventus
 Q1422,Q1543,AC Milan,other,C86,2026-11-18,the oldest running italian football rivalry
 Q1543,Q1422,Juventus FC,other,C86,2026-11-18,the oldest running italian football rivalry
@@ -138,8 +138,8 @@ Q7156,Q8682,Real Madrid Club de Fútbol,other,C94,2026-11-18,the name given to a
 Q8682,Q7156,FC Barcelona,other,C94,2026-11-18,the name given to any football match between rival clubs Barcelona and Real Madrid
 Q8682,Q8701,Atlético Madrid,local,C95,2026-11-18,"between Atlético Madrid and Real Madrid, both hailing from the Spanish capital city of Madrid"
 Q8701,Q8682,Real Madrid Club de Fútbol,local,C95,2026-11-18,"between Atlético Madrid and Real Madrid, both hailing from the Spanish capital city of Madrid"
-Q7156,Q8780,RCD Espanyol de Barcelona,other,C96,2026-11-18,the name given to football matches between FC Barcelona and RCD Espanyol
-Q8780,Q7156,FC Barcelona,other,C96,2026-11-18,the name given to football matches between FC Barcelona and RCD Espanyol
+Q7156,Q8780,RCD Espanyol de Barcelona,local,C96,2026-11-18,"""Barcelonian derby"") is the name given to football matches between FC Barcelona"
+Q8780,Q7156,FC Barcelona,local,C96,2026-11-18,"""Barcelonian derby"") is the name given to football matches between FC Barcelona"
 Q10329,Q8723,Real Betis Balompié,local,C97,2026-11-18,"the name of a local city derby located in Seville, Spain"
 Q8723,Q10329,Sevilla FC,local,C97,2026-11-18,"the name of a local city derby located in Seville, Spain"
 Q10333,Q8823,Levante UD,local,C98,2026-11-18,"the two main clubs in the city of Valencia, Spain"
@@ -154,26 +154,26 @@ Q10333,Q12297,Villarreal CF,other,C102,2026-11-18,regional football rivalry in S
 Q12297,Q10333,Valencia CF,other,C102,2026-11-18,regional football rivalry in Spain between La Liga clubs Valencia CF and Villarreal CF
 Q8812,Q8857,Málaga CF,other,C103,2026-11-18,a running football club rivalry in the Eastern Andalusia
 Q8857,Q8812,Granada CF,other,C103,2026-11-18,a running football club rivalry in the Eastern Andalusia
-Q8806,Q856119,CD Leganés,other,C104,2026-11-18,any association football match contested between Getafe CF and CD Leganés
-Q856119,Q8806,Getafe CF,other,C104,2026-11-18,any association football match contested between Getafe CF and CD Leganés
+Q8806,Q856119,CD Leganés,local,C104,2026-11-18,"The South Madrid derby (Spanish: Derbi del sur de Madrid), is the name given"
+Q856119,Q8806,Getafe CF,local,C104,2026-11-18,"The South Madrid derby (Spanish: Derbi del sur de Madrid), is the name given"
 Q8701,Q7156,FC Barcelona,other,C105,2026-11-18,the name given to football matches between Atlético de Madrid and Barcelona
 Q7156,Q8701,Atlético Madrid,other,C105,2026-11-18,the name given to football matches between Atlético de Madrid and Barcelona
 Q8687,Q8682,Real Madrid Club de Fútbol,other,C106,2026-11-18,the name given to any football match between Athletic Bilbao and Real Madrid
 Q8682,Q8687,Athletic Club,other,C106,2026-11-18,the name given to any football match between Athletic Bilbao and Real Madrid
 Q8687,Q7156,FC Barcelona,other,C107,2026-11-18,football matches between Athletic Bilbao and FC Barcelona
 Q7156,Q8687,Athletic Club,other,C107,2026-11-18,football matches between Athletic Bilbao and FC Barcelona
-Q8835,,CD Atlético Baleares,local,C108,2026-11-18,the derby between the main football clubs in Palma de Mallorca
+Q8835,,CD Atlético Baleares,other,C108,2026-11-18,the derby between the main football clubs in Palma de Mallorca
 Q12260,,Terrassa FC,other,C109,2026-11-18,the name given to football matches between CE Sabadell and Terrassa FC
-Q483020,Q132885,Olympique de Marseille,other,C110,2026-11-18,French football rivalry contested between French professional clubs Paris Saint-Germain
-Q132885,Q483020,Paris Saint-Germain FC,other,C110,2026-11-18,French football rivalry contested between French professional clubs Paris Saint-Germain
+Q483020,Q132885,Olympique de Marseille,main,C110,2026-11-18,when the clubs emerged as arch-rivals
+Q132885,Q483020,Paris Saint-Germain FC,main,C110,2026-11-18,when the clubs emerged as arch-rivals
 Q704,Q132885,Olympique de Marseille,other,C111,2026-11-18,the football rivalry between two major teams in French football
 Q132885,Q704,Olympique lyonnais,other,C111,2026-11-18,the football rivalry between two major teams in French football
 Q191843,Q19516,Lille OSC,other,C112,2026-11-18,"located in different departments, with Lens being in Pas-de-Calais, and Lille in Nord"
 Q19516,Q191843,RC Lens,other,C112,2026-11-18,"located in different departments, with Lens being in Pas-de-Calais, and Lille in Nord"
 Q704,Q19521,AS Saint-Étienne,other,C113,2026-11-18,a football rivalry between French clubs Olympique Lyonnais and AS Saint-Étienne
 Q19521,Q704,Olympique lyonnais,other,C113,2026-11-18,a football rivalry between French clubs Olympique Lyonnais and AS Saint-Étienne
-Q180305,Q185163,OGC Nice,other,C114,2026-11-18,a football match contested between Ligue 1 clubs AS Monaco and OGC Nice
-Q185163,Q180305,AS Monaco FC,other,C114,2026-11-18,a football match contested between Ligue 1 clubs AS Monaco and OGC Nice
+Q180305,Q185163,OGC Nice,local,C114,2026-11-18,The Derby de la Côte d'Azur is a football match contested between Ligue 1 clubs
+Q185163,Q180305,AS Monaco FC,local,C114,2026-11-18,The Derby de la Côte d'Azur is a football match contested between Ligue 1 clubs
 Q483020,Q1051013,Paris FC,local,C115,2026-11-18,"the two largest professional clubs based in Paris, France"
 Q1051013,Q483020,Paris Saint-Germain FC,local,C115,2026-11-18,"the two largest professional clubs based in Paris, France"
 Q19523,Q221525,FC Metz,other,C116,2026-11-18,a football match contested between French clubs Metz and Nancy
@@ -194,16 +194,16 @@ Q24711,Q200321,SC Heerenveen,other,C122,2026-11-18,a match between the Dutch foo
 Q200321,Q24711,FC Groningen,other,C122,2026-11-18,a match between the Dutch football clubs FC Groningen and SC Heerenveen
 Q749589,Q269151,PEC Zwolle,other,C123,2026-11-18,"Go Ahead Eagles from Deventer, and PEC Zwolle from Zwolle"
 Q269151,Q749589,Go Ahead Eagles,other,C123,2026-11-18,"Go Ahead Eagles from Deventer, and PEC Zwolle from Zwolle"
-Q19603,Q11961,Heracles Almelo,other,C124,2026-11-18,a Dutch football derby between FC Twente and Heracles Almelo
-Q11961,Q19603,FC Twente,other,C124,2026-11-18,a Dutch football derby between FC Twente and Heracles Almelo
+Q19603,Q11961,Heracles Almelo,local,C124,2026-11-18,a Dutch football derby between FC Twente and Heracles Almelo
+Q11961,Q19603,FC Twente,local,C124,2026-11-18,a Dutch football derby between FC Twente and Heracles Almelo
 Q187528,Q190916,Club Brugge K.V.,other,C125,2026-11-18,a football rivalry between two Belgian Pro League clubs Anderlecht and Club Brugge
 Q190916,Q187528,R.S.C. Anderlecht,other,C125,2026-11-18,a football rivalry between two Belgian Pro League clubs Anderlecht and Club Brugge
 Q190916,Q364698,Cercle Brugge K.S.V.,local,C126,2026-11-18,"The Bruges derby (Dutch: Brugse stadsderby, French: derby de Bruges)"
 Q364698,Q190916,Club Brugge K.V.,local,C126,2026-11-18,"The Bruges derby (Dutch: Brugse stadsderby, French: derby de Bruges)"
 Q509170,Q95183770,KSC Lokeren,other,C127,2026-11-18,the supporters of both clubs demanded the derby
 Q95183770,Q509170,SK Beveren,other,C127,2026-11-18,the supporters of both clubs demanded the derby
-Q19628,Q4122219,Panathinaikos F.C.,other,C128,2026-11-18,an association football derby contested between the two most successful clubs of Greece
-Q4122219,Q19628,Olympiacos F.C.,other,C128,2026-11-18,an association football derby contested between the two most successful clubs of Greece
+Q19628,Q4122219,Panathinaikos F.C.,local,C128,2026-11-18,an association football derby contested between the two most successful clubs of Greece
+Q4122219,Q19628,Olympiacos F.C.,local,C128,2026-11-18,an association football derby contested between the two most successful clubs of Greece
 Q201584,Q4122219,Panathinaikos F.C.,local,C129,2026-11-18,the football local derby in the Athens urban area
 Q4122219,Q201584,AEK Athens F.C.,local,C129,2026-11-18,the football local derby in the Athens urban area
 Q201584,Q19628,Olympiacos F.C.,local,C130,2026-11-18,a football local derby played between AEK Athens and Olympiacos
@@ -214,114 +214,114 @@ Q201584,Q204888,PAOK FC,other,C132,2026-11-18,a football derby between AEK Athen
 Q204888,Q201584,AEK Athens F.C.,other,C132,2026-11-18,a football derby between AEK Athens and PAOK
 Q19628,Q204888,PAOK FC,other,C133,2026-11-18,the most intense intercity rivalry in Greek football
 Q204888,Q19628,Olympiacos F.C.,other,C133,2026-11-18,the most intense intercity rivalry in Greek football
-Q4122219,Q204888,PAOK FC,other,C134,2026-10-17
-Q204888,Q4122219,Panathinaikos F.C.,other,C134,2026-10-17
-Q931704,,Ergotelis F.C.,local,C135,2026-11-18,"an association football rivalry between Ergotelis and OFI, two teams from Heraklion, Crete"
-Q18656,Q50602,Manchester City F.C.,other,C136,2026-10-17
-Q50602,Q18656,Manchester United F.C.,other,C136,2026-10-17
-Q1130849,Q5794,Everton F.C.,other,C137,2026-10-17
-Q5794,Q1130849,Liverpool F.C.,other,C137,2026-10-17
-Q9617,Q18741,Tottenham Hotspur F.C.,other,C138,2026-10-17
-Q18741,Q9617,Arsenal F.C.,other,C138,2026-10-17
-Q18716,Q18739,Sunderland A.F.C.,other,C139,2026-10-17
-Q18739,Q18716,Newcastle United F.C.,other,C139,2026-10-17
-Q18661,Q18739,Sunderland A.F.C.,other,C140,2026-10-17
-Q18739,Q18661,Middlesbrough F.C.,other,C140,2026-10-17
-Q18716,Q18661,Middlesbrough F.C.,other,C141,2026-10-17
-Q18661,Q18716,Newcastle United F.C.,other,C141,2026-10-17
-Q18711,Q19444,Birmingham City F.C.,other,C142,2026-10-17
-Q19444,Q18711,Aston Villa F.C.,other,C142,2026-10-17
+Q4122219,Q204888,PAOK FC,other,C134,2026-11-18,The rivalry between Panathinaikos and PAOK is the football rivalry
+Q204888,Q4122219,Panathinaikos F.C.,other,C134,2026-11-18,The rivalry between Panathinaikos and PAOK is the football rivalry
+Q931704,,Ergotelis F.C.,other,C135,2026-11-18,"an association football rivalry between Ergotelis and OFI, two teams from Heraklion, Crete"
+Q18656,Q50602,Manchester City F.C.,local,C136,2026-11-18,The Manchester derby refers to football matches between Manchester City and Manchester United
+Q50602,Q18656,Manchester United F.C.,local,C136,2026-11-18,The Manchester derby refers to football matches between Manchester City and Manchester United
+Q1130849,Q5794,Everton F.C.,local,C137,2026-11-18,"an association football match between Everton and Liverpool, two clubs based in Liverpool"
+Q5794,Q1130849,Liverpool F.C.,local,C137,2026-11-18,"an association football match between Everton and Liverpool, two clubs based in Liverpool"
+Q9617,Q18741,Tottenham Hotspur F.C.,local,C138,2026-11-18,The North London derby is the meeting of the association football clubs Arsenal
+Q18741,Q9617,Arsenal F.C.,main,C138,2026-11-18,Tottenham fans see Arsenal as their main rival
+Q18716,Q18739,Sunderland A.F.C.,local,C139,2026-11-18,is a local derby between the association football clubs Sunderland and Newcastle United
+Q18739,Q18716,Newcastle United F.C.,local,C139,2026-11-18,is a local derby between the association football clubs Sunderland and Newcastle United
+Q18661,Q18739,Sunderland A.F.C.,local,C140,2026-11-18,a football local derby contested between Middlesbrough F.C. and Sunderland A.F.C.
+Q18739,Q18661,Middlesbrough F.C.,local,C140,2026-11-18,a football local derby contested between Middlesbrough F.C. and Sunderland A.F.C.
+Q18716,Q18661,Middlesbrough F.C.,other,C141,2026-11-18,a football match between Newcastle United and Middlesbrough
+Q18661,Q18716,Newcastle United F.C.,other,C141,2026-11-18,a football match between Newcastle United and Middlesbrough
+Q18711,Q19444,Birmingham City F.C.,local,C142,2026-11-18,the local derby between the two major clubs in the city of Birmingham
+Q19444,Q18711,Aston Villa F.C.,local,C142,2026-11-18,the local derby between the two major clubs in the city of Birmingham
 Q18711,Q18744,West Bromwich Albion F.C.,local,C143,2026-11-18,Albion are two English football clubs from the West Midlands who share a local rivalry
 Q18744,Q18711,Aston Villa F.C.,local,C143,2026-11-18,Albion are two English football clubs from the West Midlands who share a local rivalry
-Q18744,Q19500,Wolverhampton Wanderers F.C.,other,C144,2026-10-17
-Q19500,Q18744,West Bromwich Albion F.C.,other,C144,2026-10-17
-Q19470,Q19490,Nottingham Forest F.C.,other,C145,2026-10-17
-Q19490,Q19470,Derby County F.C.,other,C145,2026-10-17
-Q19470,,Leicester City F.C.,other,C146,2026-10-17
-Q19490,,Leicester City F.C.,other,C147,2026-10-17
-Q19580,,Leicester City F.C.,other,C148,2026-10-17
-Q19607,,Sheffield Wednesday F.C.,other,C149,2026-10-17
-Q18721,Q9653,Ipswich Town F.C.,other,C150,2026-10-17
-Q9653,Q18721,Norwich City F.C.,other,C150,2026-10-17
-Q19446,Q19458,Burnley F.C.,other,C151,2026-10-17
-Q19458,Q19446,Blackburn Rovers F.C.,other,C151,2026-10-17
-Q19612,,Blackpool F.C.,other,C152,2026-10-17
-Q18732,Q19604,Portsmouth F.C.,other,C153,2026-10-17
-Q19604,Q18732,Southampton F.C.,other,C153,2026-10-17
-Q19453,Q19467,Crystal Palace F.C.,other,C154,2026-10-17
-Q19467,Q19453,Brighton & Hove Albion F.C.,other,C154,2026-10-17
-Q19456,,Bristol Rovers F.C.,other,C155,2026-10-17
-Q2714,,Luton Town F.C.,other,C156,2026-10-17
-Q19490,,Notts County F.C.,local,C157,2026-11-18,derby is the name given to football matches contested between Nottingham Forest and Notts County
-Q18736,,Port Vale F.C.,other,C158,2026-10-17
-Q19477,,Grimsby Town F.C.,other,C159,2026-10-17
-Q19477,,Scunthorpe United F.C.,other,C159,2026-10-17
-Q18519,,Grimsby Town F.C.,other,C160,2026-10-17
-Q18747,,Leyton Orient F.C.,other,C161,2026-10-17
-Q19487,Q18747,West Ham United F.C.,other,C162,2026-10-17
-Q18747,Q19487,Millwall F.C.,other,C162,2026-10-17
-Q18741,Q18747,West Ham United F.C.,other,C163,2026-10-17
-Q18747,Q18741,Tottenham Hotspur F.C.,other,C163,2026-10-17
-Q9616,Q18741,Tottenham Hotspur F.C.,other,C164,2026-10-17
-Q18741,Q9616,Chelsea F.C.,other,C164,2026-10-17
-Q9617,Q9616,Chelsea F.C.,other,C165,2026-10-17
-Q9616,Q9617,Arsenal F.C.,other,C165,2026-10-17
-Q9617,Q50602,Manchester City F.C.,other,C166,2026-10-17
-Q50602,Q9617,Arsenal F.C.,other,C166,2026-10-17
-Q9617,Q18656,Manchester United F.C.,other,C167,2026-10-17
-Q18656,Q9617,Arsenal F.C.,other,C167,2026-10-17
-Q9616,Q1128631,Leeds United F.C.,other,C168,2026-10-17
-Q1128631,Q9616,Chelsea F.C.,other,C168,2026-10-17
-Q9616,Q1130849,Liverpool F.C.,other,C169,2026-10-17
-Q1130849,Q9616,Chelsea F.C.,other,C169,2026-10-17
-Q1128631,Q18656,Manchester United F.C.,other,C170,2026-10-17
-Q18656,Q1128631,Leeds United F.C.,other,C170,2026-10-17
-Q1128631,Q19487,Millwall F.C.,other,C171,2026-10-17
-Q19487,Q1128631,Leeds United F.C.,other,C171,2026-10-17
-Q1130849,Q18656,Manchester United F.C.,other,C172,2026-10-17
-Q18656,Q1130849,Liverpool F.C.,other,C172,2026-10-17
-Q1130849,Q50602,Manchester City F.C.,other,C173,2026-10-17
-Q50602,Q1130849,Liverpool F.C.,other,C173,2026-10-17
-Q19462,Q19467,Crystal Palace F.C.,other,C174,2026-10-17
-Q19467,Q19462,Charlton Athletic F.C.,other,C174,2026-10-17
-Q19462,Q19487,Millwall F.C.,other,C174,2026-10-17
-Q19487,Q19462,Charlton Athletic F.C.,other,C174,2026-10-17
-Q19467,Q19487,Millwall F.C.,other,C174,2026-10-17
-Q19487,Q19467,Crystal Palace F.C.,other,C174,2026-10-17
-Q19571,Q9616,Chelsea F.C.,other,C175,2026-10-17
-Q9616,Q19571,Brentford F.C.,other,C175,2026-10-17
-Q19571,Q18708,Fulham F.C.,other,C175,2026-10-17
-Q18708,Q19571,Brentford F.C.,other,C175,2026-10-17
+Q18744,Q19500,Wolverhampton Wanderers F.C.,local,C144,2026-11-18,"any local derby between English football teams West Bromwich Albion, Walsall and Wolverhampton Wanderers"
+Q19500,Q18744,West Bromwich Albion F.C.,local,C144,2026-11-18,"any local derby between English football teams West Bromwich Albion, Walsall and Wolverhampton Wanderers"
+Q19470,Q19490,Nottingham Forest F.C.,other,C145,2026-11-18,are often referred to as an 'East Midlands Derby'
+Q19490,Q19470,Derby County F.C.,other,C145,2026-11-18,are often referred to as an 'East Midlands Derby'
+Q19470,,Leicester City F.C.,other,C146,2026-11-18,The fixture between Leicester City and Derby County is a football rivalry
+Q19490,,Leicester City F.C.,other,C147,2026-11-18,often referred to as an East Midlands derby
+Q19580,,Leicester City F.C.,other,C148,2026-11-18,a football match played between Coventry City and Leicester City
+Q19607,,Sheffield Wednesday F.C.,local,C149,2026-11-18,a local derby between Sheffield United and Sheffield Wednesday
+Q18721,Q9653,Ipswich Town F.C.,other,C150,2026-11-18,football matches held between Norwich City and Ipswich Town
+Q9653,Q18721,Norwich City F.C.,other,C150,2026-11-18,football matches held between Norwich City and Ipswich Town
+Q19446,Q19458,Burnley F.C.,local,C151,2026-11-18,"The East Lancashire derby, also known as the Cotton Mills derby"
+Q19458,Q19446,Blackburn Rovers F.C.,local,C151,2026-11-18,"The East Lancashire derby, also known as the Cotton Mills derby"
+Q19612,,Blackpool F.C.,main,C152,2026-11-18,We always saw Blackpool as our main rivals
+Q18732,Q19604,Portsmouth F.C.,local,C153,2026-11-18,the local derby between two clubs on the south coast
+Q19604,Q18732,Southampton F.C.,local,C153,2026-11-18,the local derby between two clubs on the south coast
+Q19453,Q19467,Crystal Palace F.C.,other,C154,2026-11-18,between English football teams Brighton & Hove Albion and Crystal Palace
+Q19467,Q19453,Brighton & Hove Albion F.C.,other,C154,2026-11-18,between English football teams Brighton & Hove Albion and Crystal Palace
+Q19456,,Bristol Rovers F.C.,local,C155,2026-11-18,"football matches played between Bristol City and Bristol Rovers (a ""local derby"")"
+Q2714,,Luton Town F.C.,other,C156,2026-11-18,"a match between the two teams is sometimes called a ""Beds–Herts Derby"""
+Q19490,,Notts County F.C.,other,C157,2026-11-18,derby is the name given to football matches contested between Nottingham Forest and Notts County
+Q18736,,Port Vale F.C.,local,C158,2026-11-18,the local derby between the two major clubs in the city of Stoke-on-Trent
+Q19477,,Grimsby Town F.C.,other,C159,2026-11-18,"an association football rivalry between Grimsby Town, Hull City, and Scunthorpe United"
+Q19477,,Scunthorpe United F.C.,other,C159,2026-11-18,"an association football rivalry between Grimsby Town, Hull City, and Scunthorpe United"
+Q18519,,Grimsby Town F.C.,other,C160,2026-11-18,"Games between the clubs are known as a ""Lincolnshire Derby"""
+Q18747,,Leyton Orient F.C.,other,C161,2026-11-18,"between any two of Dagenham & Redbridge, Leyton Orient and West Ham United"
+Q19487,Q18747,West Ham United F.C.,local,C162,2026-11-18,The match was historically known as the Dockers Derby
+Q18747,Q19487,Millwall F.C.,local,C162,2026-11-18,The match was historically known as the Dockers Derby
+Q18741,Q18747,West Ham United F.C.,other,C163,2026-11-18,a rivalry between London-based professional association football clubs Tottenham Hotspur and West Ham United
+Q18747,Q18741,Tottenham Hotspur F.C.,other,C163,2026-11-18,a rivalry between London-based professional association football clubs Tottenham Hotspur and West Ham United
+Q9616,Q18741,Tottenham Hotspur F.C.,main,C164,2026-11-18,Chelsea fans consider Tottenham to be their main rival
+Q18741,Q9616,Chelsea F.C.,other,C164,2026-11-18,a rivalry between London-based professional association football clubs Chelsea and Tottenham Hotspur
+Q9617,Q9616,Chelsea F.C.,local,C165,2026-11-18,has been more recently considered an important derby
+Q9616,Q9617,Arsenal F.C.,main,C165,2026-11-18,considered Arsenal as their main rival
+Q9617,Q50602,Manchester City F.C.,other,C166,2026-11-18,The rivalry between English professional football clubs Arsenal and Manchester City began in 2008
+Q50602,Q9617,Arsenal F.C.,other,C166,2026-11-18,The rivalry between English professional football clubs Arsenal and Manchester City began in 2008
+Q9617,Q18656,Manchester United F.C.,other,C167,2026-11-18,the rivalry between the two clubs only became a fierce one
+Q18656,Q9617,Arsenal F.C.,other,C167,2026-11-18,the rivalry between the two clubs only became a fierce one
+Q9616,Q1128631,Leeds United F.C.,other,C168,2026-11-18,a football rivalry between London-based club Chelsea and Yorkshire-based Leeds United
+Q1128631,Q9616,Chelsea F.C.,other,C168,2026-11-18,a football rivalry between London-based club Chelsea and Yorkshire-based Leeds United
+Q9616,Q1130849,Liverpool F.C.,other,C169,2026-11-18,a rivalry between English professional football clubs Chelsea and Liverpool
+Q1130849,Q9616,Chelsea F.C.,other,C169,2026-11-18,a rivalry between English professional football clubs Chelsea and Liverpool
+Q1128631,Q18656,Manchester United F.C.,main,C170,2026-11-18,Leeds fans still consider Manchester United to be their main rivals
+Q18656,Q1128631,Leeds United F.C.,other,C170,2026-11-18,"The rivalry between Leeds United and Manchester United, sometimes nicknamed the Roses rivalry"
+Q1128631,Q19487,Millwall F.C.,other,C171,2026-11-18,The rivalry between Leeds United and Millwall is a North–South divide rivalry
+Q19487,Q1128631,Leeds United F.C.,other,C171,2026-11-18,The rivalry between Leeds United and Millwall is a North–South divide rivalry
+Q1130849,Q18656,Manchester United F.C.,other,C172,2026-11-18,sometimes referred to as the Northwest derby
+Q18656,Q1130849,Liverpool F.C.,other,C172,2026-11-18,sometimes referred to as the Northwest derby
+Q1130849,Q50602,Manchester City F.C.,other,C173,2026-11-18,an inter-city rivalry between English professional football clubs Liverpool and Manchester City
+Q50602,Q1130849,Liverpool F.C.,other,C173,2026-11-18,an inter-city rivalry between English professional football clubs Liverpool and Manchester City
+Q19462,Q19467,Crystal Palace F.C.,main,C174,2026-11-18,Charlton considers their main rival to be Crystal Palace
+Q19467,Q19462,Charlton Athletic F.C.,local,C174,2026-11-18,The South London derby is the name given to a football derby
+Q19462,Q19487,Millwall F.C.,local,C174,2026-11-18,The South London derby is the name given to a football derby
+Q19487,Q19462,Charlton Athletic F.C.,local,C174,2026-11-18,The South London derby is the name given to a football derby
+Q19467,Q19487,Millwall F.C.,local,C174,2026-11-18,The South London derby is the name given to a football derby
+Q19487,Q19467,Crystal Palace F.C.,local,C174,2026-11-18,The South London derby is the name given to a football derby
+Q19571,Q9616,Chelsea F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q9616,Q19571,Brentford F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q19571,Q18708,Fulham F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q18708,Q19571,Brentford F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
 Q19571,Q18723,Queens Park Rangers F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry
 Q18723,Q19571,Brentford F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry
-Q9616,Q18708,Fulham F.C.,other,C175,2026-10-17
-Q18708,Q9616,Chelsea F.C.,other,C175,2026-10-17
-Q9616,Q18723,Queens Park Rangers F.C.,other,C175,2026-10-17
-Q18723,Q9616,Chelsea F.C.,other,C175,2026-10-17
-Q18708,Q18723,Queens Park Rangers F.C.,other,C175,2026-10-17
-Q18723,Q18708,Fulham F.C.,other,C175,2026-10-17
-Q132885,,Sporting Toulon Var,other,C176,2026-10-17
-Q185163,,AS Cannes,other,C176,2026-10-17
-Q503317,Q182876,AJ Auxerre,other,C176,2026-10-17
-Q182876,Q503317,Dijon FCO,other,C176,2026-10-17
-Q187528,Q190561,Standard Liège,other,C177,2026-10-17
-Q190561,Q187528,R.S.C. Anderlecht,other,C177,2026-10-17
-Q1347229,Q190561,Standard Liège,other,C177,2026-10-17
-Q190561,Q1347229,RFC Liège,other,C177,2026-10-17
-Q113000,,KRC Mechelen,other,C177,2026-10-17
-Q376635,Q618620,K.V. Kortrijk,other,C177,2026-10-17
-Q618620,Q376635,SV Zulte Waregem,other,C177,2026-10-17
-Q332664,Q332642,NAC Breda,other,C178,2026-10-17
-Q332642,Q332664,Willem II,other,C178,2026-10-17
-Q1149034,Q875169,FC Den Bosch,other,C178,2026-10-17
-Q875169,Q1149034,TOP Oss,other,C178,2026-10-17
-Q11938,Q876699,FC Eindhoven,other,C178,2026-10-17
-Q876699,Q11938,PSV Eindhoven,other,C178,2026-10-17
-Q876568,Q854167,Fortuna Sittard,other,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
-Q854167,Q876568,MVV Maastricht,other,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
-Q24711,Q1061627,FC Emmen,other,C178,2026-10-17
-Q1061627,Q24711,FC Groningen,other,C178,2026-10-17
-Q200321,Q875120,SC Cambuur,other,C178,2026-10-17
+Q9616,Q18708,Fulham F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q18708,Q9616,Chelsea F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q9616,Q18723,Queens Park Rangers F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q18723,Q9616,Chelsea F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q18708,Q18723,Queens Park Rangers F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q18723,Q18708,Fulham F.C.,local,C175,2026-11-18,The West London derby is a local football rivalry in English football
+Q132885,,Sporting Toulon Var,other,C176,2026-11-18,Derby Provençal: Olympique de Marseille vs. Sporting Toulon Var.
+Q185163,,AS Cannes,other,C176,2026-11-18,Derby des Alpes-Maritimes – OGC Nice vs AS Cannes.
+Q503317,Q182876,AJ Auxerre,other,C176,2026-11-18,Derby de Bourgogne: Dijon FCO vs. AJ Auxerre
+Q182876,Q503317,Dijon FCO,other,C176,2026-11-18,Derby de Bourgogne: Dijon FCO vs. AJ Auxerre
+Q187528,Q190561,Standard Liège,other,C177,2026-11-18,The 'Classico': Anderlecht vs. Standard Liège
+Q190561,Q187528,R.S.C. Anderlecht,other,C177,2026-11-18,The 'Classico': Anderlecht vs. Standard Liège
+Q1347229,Q190561,Standard Liège,local,C177,2026-11-18,Liège derby: RFC Liège vs. Standard Liège
+Q190561,Q1347229,RFC Liège,local,C177,2026-11-18,Liège derby: RFC Liège vs. Standard Liège
+Q113000,,KRC Mechelen,local,C177,2026-11-18,Mechelen derby: KV Mechelen vs. Racing Mechelen
+Q376635,Q618620,K.V. Kortrijk,local,C177,2026-11-18,South West Flanders derby: Zulte-Waregem vs. Kortrijk.
+Q618620,Q376635,SV Zulte Waregem,local,C177,2026-11-18,South West Flanders derby: Zulte-Waregem vs. Kortrijk.
+Q332664,Q332642,NAC Breda,other,C178,2026-11-18,Brabantse Derby: Willem II vs. NAC Breda
+Q332642,Q332664,Willem II,other,C178,2026-11-18,Brabantse Derby: Willem II vs. NAC Breda
+Q1149034,Q875169,FC Den Bosch,local,C178,2026-11-18,(Noordoost-)Brabantse Derby: TOP Oss vs. FC Den Bosch
+Q875169,Q1149034,TOP Oss,local,C178,2026-11-18,(Noordoost-)Brabantse Derby: TOP Oss vs. FC Den Bosch
+Q11938,Q876699,FC Eindhoven,local,C178,2026-11-18,(Eindhoven) Lichtstad Derby: PSV Eindhoven vs. FC Eindhoven
+Q876699,Q11938,PSV Eindhoven,local,C178,2026-11-18,(Eindhoven) Lichtstad Derby: PSV Eindhoven vs. FC Eindhoven
+Q876568,Q854167,Fortuna Sittard,local,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
+Q854167,Q876568,MVV Maastricht,local,C178,2026-11-18,Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard
+Q24711,Q1061627,FC Emmen,other,C178,2026-11-18,Drents-Groningse Derby II– FC Groningen vs. FC Emmen
+Q1061627,Q24711,FC Groningen,other,C178,2026-11-18,Drents-Groningse Derby II– FC Groningen vs. FC Emmen
+Q200321,Q875120,SC Cambuur,other,C178,2026-11-18,Friese Derby: SC Heerenveen vs. SC Cambuur
 Q875120,Q200321,SC Heerenveen,other,C178,2026-10-17
 Q24904,Q81888,AFC Ajax,other,C178,2026-10-17
 Q81888,Q24904,ADO Den Haag,other,C178,2026-10-17
@@ -337,8 +337,8 @@ Q24904,Q1045811,FC Dordrecht,other,C178,2026-10-17
 Q1045811,Q24904,ADO Den Haag,other,C178,2026-10-17
 Q221927,Q318348,N.E.C.,other,C178,2026-10-17
 Q318348,Q221927,De Graafschap,other,C178,2026-10-17
-Q653119,Q738060,FC Volendam,other,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
-Q738060,Q653119,Almere City FC,other,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
+Q653119,Q738060,FC Volendam,local,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
+Q738060,Q653119,Almere City FC,local,C178,2026-11-18,Markermeerderby: Almere City FC vs. FC Volendam
 Q24719,Q854167,Fortuna Sittard,other,C178,2026-10-17
 Q854167,Q24719,Roda JC Kerkrade,other,C178,2026-10-17
 Q757754,,Egaleo F.C.,other,C179,2026-10-17

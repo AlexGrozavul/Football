@@ -594,3 +594,184 @@ quote 77, not on the page 0, cannot verify 0. Part D: 4 rows kept `local`,
 Running total, phase 5b (sessions 1-2): local 49, main 2 (687, 189), other
 with a quote 151, not on the page 0, cannot verify 0; quote-less `other`
 rows left: 122 (of 323).
+
+### Session 3 (2026-11-18, prompt version 3): batch
+
+Class rule from this session on (coordinator's decision of 18 Nov 2026,
+version 3, replacing versions 1 and 2): `local` where the page calls the
+pair a local derby (or Lokalderby, Stadtderby, derby local, derby
+cittadino, derby della città, stadsderby) or lists it under a section
+headed "Local", **or** where the page names it a derby (any named derby)
+and the two grounds are at most 20 km apart in a straight line, from the
+coordinates in `data/clubs/*.json` (the distance is written per row);
+`local` applies to both rows of the pair. `main` where the page names the
+other club as this club's main, biggest or arch-rival; one-directional, it
+is set only on the row of the club the page says it about, and it beats
+`local` for that row. `other` for everything else the page names. Part A
+re-applies this rule to every row already classified (phase 5 and phase
+5b sessions 1 and 2).
+
+Step 0 recount: 122 quote-less `other` rows (826 rows), as session 2 left.
+
+Batch (100 row ids, lines 217-324; lines 219, 234, 235, 255, 295, 296,
+320, 321 have quotes): 217, 218, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 322, 323, 324.
+### Session 3 (2026-11-18, prompt version 3): results
+
+Per row: id, club v rival, verdict, class before -> after (basis; the distance is between the two grounds in `data/clubs/*.json`), quote, page (source id). Pages read in two probe runs (run1 5284797, run2 c54075f; 54 + 4 requests, Wikipedia parse API only). Every quote was checked as a substring of the text the probe posted.
+
+- 217: Panathinaikos F.C. v PAOK FC: **other**, other -> other (295.1 km), "The rivalry between Panathinaikos and PAOK is the football rivalry", C134 Panathinaikos–PAOK_rivalry
+- 218: PAOK FC v Panathinaikos F.C.: **other**, other -> other (295.1 km), "The rivalry between Panathinaikos and PAOK is the football rivalry", C134 Panathinaikos–PAOK_rivalry
+- 220: Manchester United F.C. v Manchester City F.C.: **local**, other -> local (named derby, grounds 6.4 km), "The Manchester derby refers to football matches between Manchester City and Manchester United", C136 Manchester_derby
+- 221: Manchester City F.C. v Manchester United F.C.: **local**, other -> local (named derby, grounds 6.4 km), "The Manchester derby refers to football matches between Manchester City and Manchester United", C136 Manchester_derby
+- 222: Liverpool F.C. v Everton F.C.: **local**, other -> local (named derby, grounds 2.9 km), "an association football match between Everton and Liverpool, two clubs based in Liverpool", C137 Merseyside_derby
+- 223: Everton F.C. v Liverpool F.C.: **local**, other -> local (named derby, grounds 2.9 km), "an association football match between Everton and Liverpool, two clubs based in Liverpool", C137 Merseyside_derby
+- 224: Arsenal F.C. v Tottenham Hotspur F.C.: **local**, other -> local (named derby, grounds 6.2 km), "The North London derby is the meeting of the association football clubs Arsenal", C138 North_London_derby
+- 225: Tottenham Hotspur F.C. v Arsenal F.C.: **main**, other -> main (main-rival wording), "Tottenham fans see Arsenal as their main rival", C138 North_London_derby
+- 226: Newcastle United F.C. v Sunderland A.F.C.: **local**, other -> local (local wording), "is a local derby between the association football clubs Sunderland and Newcastle United", C139 Tyne–Wear_derby
+- 227: Sunderland A.F.C. v Newcastle United F.C.: **local**, other -> local (local wording), "is a local derby between the association football clubs Sunderland and Newcastle United", C139 Tyne–Wear_derby
+- 228: Middlesbrough F.C. v Sunderland A.F.C.: **local**, other -> local (local wording), "a football local derby contested between Middlesbrough F.C. and Sunderland A.F.C.", C140 Tees–Wear_derby
+- 229: Sunderland A.F.C. v Middlesbrough F.C.: **local**, other -> local (local wording), "a football local derby contested between Middlesbrough F.C. and Sunderland A.F.C.", C140 Tees–Wear_derby
+- 230: Newcastle United F.C. v Middlesbrough F.C.: **other**, other -> other (51.2 km), "a football match between Newcastle United and Middlesbrough", C141 Tyne–Tees_derby
+- 231: Middlesbrough F.C. v Newcastle United F.C.: **other**, other -> other (51.2 km), "a football match between Newcastle United and Middlesbrough", C141 Tyne–Tees_derby
+- 232: Aston Villa F.C. v Birmingham City F.C.: **local**, other -> local (local wording), "the local derby between the two major clubs in the city of Birmingham", C142 Second_City_derby
+- 233: Birmingham City F.C. v Aston Villa F.C.: **local**, other -> local (local wording), "the local derby between the two major clubs in the city of Birmingham", C142 Second_City_derby
+- 236: West Bromwich Albion F.C. v Wolverhampton Wanderers F.C.: **local**, other -> local (local wording), "any local derby between English football teams West Bromwich Albion, Walsall and Wolverhampton Wanderers", C144 Black_Country_derby
+- 237: Wolverhampton Wanderers F.C. v West Bromwich Albion F.C.: **local**, other -> local (local wording), "any local derby between English football teams West Bromwich Albion, Walsall and Wolverhampton Wanderers", C144 Black_Country_derby
+- 238: Derby County F.C. v Nottingham Forest F.C.: **other**, other -> other (21.3 km), "are often referred to as an 'East Midlands Derby'", C145 Derby_County_F.C.–Nottingham_Forest_F.C._rivalry
+- 239: Nottingham Forest F.C. v Derby County F.C.: **other**, other -> other (21.3 km), "are often referred to as an 'East Midlands Derby'", C145 Derby_County_F.C.–Nottingham_Forest_F.C._rivalry
+- 240: Derby County F.C. v Leicester City F.C.: **other**, other -> other (no ground for the rival in the club files), "The fixture between Leicester City and Derby County is a football rivalry", C146 Derby_County_F.C.–Leicester_City_F.C._rivalry
+- 241: Nottingham Forest F.C. v Leicester City F.C.: **other**, other -> other (no ground for the rival in the club files), "often referred to as an East Midlands derby", C147 Leicester_City_F.C.–Nottingham_Forest_F.C._rivalry
+- 242: Coventry City F.C. v Leicester City F.C.: **other**, other -> other (no ground for the rival in the club files), "a football match played between Coventry City and Leicester City", C148 M69_derby
+- 243: Sheffield United F.C. v Sheffield Wednesday F.C.: **local**, other -> local (local wording), "a local derby between Sheffield United and Sheffield Wednesday", C149 Steel_City_derby
+- 244: Norwich City F.C. v Ipswich Town F.C.: **other**, other -> other (64.0 km), "football matches held between Norwich City and Ipswich Town", C150 East_Anglian_derby
+- 245: Ipswich Town F.C. v Norwich City F.C.: **other**, other -> other (64.0 km), "football matches held between Norwich City and Ipswich Town", C150 East_Anglian_derby
+- 246: Blackburn Rovers F.C. v Burnley F.C.: **local**, other -> local (named derby, grounds 18.3 km), "The East Lancashire derby, also known as the Cotton Mills derby", C151 East_Lancashire_derby
+- 247: Burnley F.C. v Blackburn Rovers F.C.: **local**, other -> local (named derby, grounds 18.3 km), "The East Lancashire derby, also known as the Cotton Mills derby", C151 East_Lancashire_derby
+- 248: Preston North End F.C. v Blackpool F.C.: **main**, other -> main (main-rival wording), "We always saw Blackpool as our main rivals", C152 West_Lancashire_derby
+- 249: Southampton F.C. v Portsmouth F.C.: **local**, other -> local (local wording), "the local derby between two clubs on the south coast", C153 South_Coast_derby
+- 250: Portsmouth F.C. v Southampton F.C.: **local**, other -> local (local wording), "the local derby between two clubs on the south coast", C153 South_Coast_derby
+- 251: Brighton & Hove Albion F.C. v Crystal Palace F.C.: **other**, other -> other (59.7 km), "between English football teams Brighton & Hove Albion and Crystal Palace", C154 Brighton_&_Hove_Albion_F.C.–Crystal_Palace_F.C._rivalry
+- 252: Crystal Palace F.C. v Brighton & Hove Albion F.C.: **other**, other -> other (59.7 km), "between English football teams Brighton & Hove Albion and Crystal Palace", C154 Brighton_&_Hove_Albion_F.C.–Crystal_Palace_F.C._rivalry
+- 253: Bristol City F.C. v Bristol Rovers F.C.: **local**, other -> local (local wording), "football matches played between Bristol City and Bristol Rovers (a "local derby")", C155 Bristol_derby
+- 254: Watford F.C. v Luton Town F.C.: **other**, other -> other (no ground for the rival in the club files), "a match between the two teams is sometimes called a "Beds–Herts Derby"", C156 Luton_Town_F.C.–Watford_F.C._rivalry
+- 256: Stoke City F.C. v Port Vale F.C.: **local**, other -> local (local wording), "the local derby between the two major clubs in the city of Stoke-on-Trent", C158 Potteries_derby
+- 257: Hull City A.F.C. v Grimsby Town F.C.: **other**, other -> other (no ground for the rival in the club files), "an association football rivalry between Grimsby Town, Hull City, and Scunthorpe United", C159 Humber_derby
+- 258: Hull City A.F.C. v Scunthorpe United F.C.: **other**, other -> other (no ground for the rival in the club files), "an association football rivalry between Grimsby Town, Hull City, and Scunthorpe United", C159 Humber_derby
+- 259: Lincoln City F.C. v Grimsby Town F.C.: **other**, other -> other (no ground for the rival in the club files), "Games between the clubs are known as a "Lincolnshire Derby"", C160 Lincolnshire_derby
+- 260: West Ham United F.C. v Leyton Orient F.C.: **other**, other -> other (no ground for the rival in the club files), "between any two of Dagenham & Redbridge, Leyton Orient and West Ham United", C161 East_London_derby
+- 261: Millwall F.C. v West Ham United F.C.: **local**, other -> local (named derby, grounds 6.3 km), "The match was historically known as the Dockers Derby", C162 Millwall_F.C.–West_Ham_United_F.C._rivalry
+- 262: West Ham United F.C. v Millwall F.C.: **local**, other -> local (named derby, grounds 6.3 km), "The match was historically known as the Dockers Derby", C162 Millwall_F.C.–West_Ham_United_F.C._rivalry
+- 263: Tottenham Hotspur F.C. v West Ham United F.C.: **other**, other -> other (8.1 km), "a rivalry between London-based professional association football clubs Tottenham Hotspur and West Ham United", C163 Tottenham_Hotspur_F.C.–West_Ham_United_F.C._rivalry
+- 264: West Ham United F.C. v Tottenham Hotspur F.C.: **other**, other -> other (8.1 km), "a rivalry between London-based professional association football clubs Tottenham Hotspur and West Ham United", C163 Tottenham_Hotspur_F.C.–West_Ham_United_F.C._rivalry
+- 265: Chelsea F.C. v Tottenham Hotspur F.C.: **main**, other -> main (main-rival wording), "Chelsea fans consider Tottenham to be their main rival", C164 Chelsea_F.C.–Tottenham_Hotspur_F.C._rivalry
+- 266: Tottenham Hotspur F.C. v Chelsea F.C.: **other**, other -> other (16.1 km), "a rivalry between London-based professional association football clubs Chelsea and Tottenham Hotspur", C164 Chelsea_F.C.–Tottenham_Hotspur_F.C._rivalry
+- 267: Arsenal F.C. v Chelsea F.C.: **local**, other -> local (named derby, grounds 10.0 km), "has been more recently considered an important derby", C165 Arsenal_F.C.–Chelsea_F.C._rivalry
+- 268: Chelsea F.C. v Arsenal F.C.: **main**, other -> main (main-rival wording), "considered Arsenal as their main rival", C165 Arsenal_F.C.–Chelsea_F.C._rivalry
+- 269: Arsenal F.C. v Manchester City F.C.: **other**, other -> other (256.9 km), "The rivalry between English professional football clubs Arsenal and Manchester City began in 2008", C166 Arsenal_F.C.–Manchester_City_F.C._rivalry
+- 270: Manchester City F.C. v Arsenal F.C.: **other**, other -> other (256.9 km), "The rivalry between English professional football clubs Arsenal and Manchester City began in 2008", C166 Arsenal_F.C.–Manchester_City_F.C._rivalry
+- 271: Arsenal F.C. v Manchester United F.C.: **other**, other -> other (258.5 km), "the rivalry between the two clubs only became a fierce one", C167 Arsenal_F.C.–Manchester_United_F.C._rivalry
+- 272: Manchester United F.C. v Arsenal F.C.: **other**, other -> other (258.5 km), "the rivalry between the two clubs only became a fierce one", C167 Arsenal_F.C.–Manchester_United_F.C._rivalry
+- 273: Chelsea F.C. v Leeds United F.C.: **other**, other -> other (271.8 km), "a football rivalry between London-based club Chelsea and Yorkshire-based Leeds United", C168 Chelsea_F.C.–Leeds_United_F.C._rivalry
+- 274: Leeds United F.C. v Chelsea F.C.: **other**, other -> other (271.8 km), "a football rivalry between London-based club Chelsea and Yorkshire-based Leeds United", C168 Chelsea_F.C.–Leeds_United_F.C._rivalry
+- 275: Chelsea F.C. v Liverpool F.C.: **other**, other -> other (286.7 km), "a rivalry between English professional football clubs Chelsea and Liverpool", C169 Chelsea_F.C.–Liverpool_F.C._rivalry
+- 276: Liverpool F.C. v Chelsea F.C.: **other**, other -> other (286.7 km), "a rivalry between English professional football clubs Chelsea and Liverpool", C169 Chelsea_F.C.–Liverpool_F.C._rivalry
+- 277: Leeds United F.C. v Manchester United F.C.: **main**, other -> main (main-rival wording), "Leeds fans still consider Manchester United to be their main rivals", C170 Leeds_United_F.C.–Manchester_United_F.C._rivalry
+- 278: Manchester United F.C. v Leeds United F.C.: **other**, other -> other (58.9 km), "The rivalry between Leeds United and Manchester United, sometimes nicknamed the Roses rivalry", C170 Leeds_United_F.C.–Manchester_United_F.C._rivalry
+- 279: Leeds United F.C. v Millwall F.C.: **other**, other -> other (274.7 km), "The rivalry between Leeds United and Millwall is a North–South divide rivalry", C171 Leeds_United_F.C.–Millwall_F.C._rivalry
+- 280: Millwall F.C. v Leeds United F.C.: **other**, other -> other (274.7 km), "The rivalry between Leeds United and Millwall is a North–South divide rivalry", C171 Leeds_United_F.C.–Millwall_F.C._rivalry
+- 281: Liverpool F.C. v Manchester United F.C.: **other**, other -> other (44.5 km), "sometimes referred to as the Northwest derby", C172 Liverpool_F.C.–Manchester_United_F.C._rivalry
+- 282: Manchester United F.C. v Liverpool F.C.: **other**, other -> other (44.5 km), "sometimes referred to as the Northwest derby", C172 Liverpool_F.C.–Manchester_United_F.C._rivalry
+- 283: Liverpool F.C. v Manchester City F.C.: **other**, other -> other (50.7 km), "an inter-city rivalry between English professional football clubs Liverpool and Manchester City", C173 Liverpool_F.C.–Manchester_City_F.C._rivalry
+- 284: Manchester City F.C. v Liverpool F.C.: **other**, other -> other (50.7 km), "an inter-city rivalry between English professional football clubs Liverpool and Manchester City", C173 Liverpool_F.C.–Manchester_City_F.C._rivalry
+- 285: Charlton Athletic F.C. v Crystal Palace F.C.: **main**, other -> main (main-rival wording), "Charlton considers their main rival to be Crystal Palace", C174 South_London_derby
+- 286: Crystal Palace F.C. v Charlton Athletic F.C.: **local**, other -> local (named derby, grounds 13.0 km), "The South London derby is the name given to a football derby", C174 South_London_derby
+- 287: Charlton Athletic F.C. v Millwall F.C.: **local**, other -> local (named derby, grounds 6.0 km), "The South London derby is the name given to a football derby", C174 South_London_derby
+- 288: Millwall F.C. v Charlton Athletic F.C.: **local**, other -> local (named derby, grounds 6.0 km), "The South London derby is the name given to a football derby", C174 South_London_derby
+- 289: Crystal Palace F.C. v Millwall F.C.: **local**, other -> local (named derby, grounds 10.0 km), "The South London derby is the name given to a football derby", C174 South_London_derby
+- 290: Millwall F.C. v Crystal Palace F.C.: **local**, other -> local (named derby, grounds 10.0 km), "The South London derby is the name given to a football derby", C174 South_London_derby
+- 291: Brentford F.C. v Chelsea F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 292: Chelsea F.C. v Brentford F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 293: Brentford F.C. v Fulham F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 294: Fulham F.C. v Brentford F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 297: Chelsea F.C. v Fulham F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 298: Fulham F.C. v Chelsea F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 299: Chelsea F.C. v Queens Park Rangers F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 300: Queens Park Rangers F.C. v Chelsea F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 301: Fulham F.C. v Queens Park Rangers F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 302: Queens Park Rangers F.C. v Fulham F.C.: **local**, other -> local (local wording), "The West London derby is a local football rivalry in English football", C175 West_London_derby
+- 303: Olympique de Marseille v Sporting Toulon Var: **other**, other -> other (no ground for the rival in the club files), "Derby Provençal: Olympique de Marseille vs. Sporting Toulon Var.", C176 Football_rivalries_in_France
+- 304: OGC Nice v AS Cannes: **other**, other -> other (no ground for the rival in the club files), "Derby des Alpes-Maritimes – OGC Nice vs AS Cannes.", C176 Football_rivalries_in_France
+- 305: Dijon FCO v AJ Auxerre: **other**, other -> other (122.2 km), "Derby de Bourgogne: Dijon FCO vs. AJ Auxerre", C176 Football_rivalries_in_France
+- 306: AJ Auxerre v Dijon FCO: **other**, other -> other (122.2 km), "Derby de Bourgogne: Dijon FCO vs. AJ Auxerre", C176 Football_rivalries_in_France
+- 307: R.S.C. Anderlecht v Standard Liège: **other**, other -> other (91.1 km), "The 'Classico': Anderlecht vs. Standard Liège", C177 Football_rivalries_in_Belgium
+- 308: Standard Liège v R.S.C. Anderlecht: **other**, other -> other (91.1 km), "The 'Classico': Anderlecht vs. Standard Liège", C177 Football_rivalries_in_Belgium
+- 309: RFC Liège v Standard Liège: **local**, other -> local (listed under "City derbies", grounds 5.6 km), "Liège derby: RFC Liège vs. Standard Liège", C177 Football_rivalries_in_Belgium
+- 310: Standard Liège v RFC Liège: **local**, other -> local (listed under "City derbies", grounds 5.6 km), "Liège derby: RFC Liège vs. Standard Liège", C177 Football_rivalries_in_Belgium
+- 311: KV Mechelen v KRC Mechelen: **local**, other -> local (listed under "City derbies"), "Mechelen derby: KV Mechelen vs. Racing Mechelen", C177 Football_rivalries_in_Belgium
+- 312: SV Zulte Waregem v K.V. Kortrijk: **local**, other -> local (named derby, grounds 13.9 km), "South West Flanders derby: Zulte-Waregem vs. Kortrijk.", C177 Football_rivalries_in_Belgium
+- 313: K.V. Kortrijk v SV Zulte Waregem: **local**, other -> local (named derby, grounds 13.9 km), "South West Flanders derby: Zulte-Waregem vs. Kortrijk.", C177 Football_rivalries_in_Belgium
+- 314: Willem II v NAC Breda: **other**, other -> other (22.7 km), "Brabantse Derby: Willem II vs. NAC Breda", C178 Football_derbies_in_the_Netherlands
+- 315: NAC Breda v Willem II: **other**, other -> other (22.7 km), "Brabantse Derby: Willem II vs. NAC Breda", C178 Football_derbies_in_the_Netherlands
+- 316: TOP Oss v FC Den Bosch: **local**, other -> local (named derby, grounds 14.9 km), "(Noordoost-)Brabantse Derby: TOP Oss vs. FC Den Bosch", C178 Football_derbies_in_the_Netherlands
+- 317: FC Den Bosch v TOP Oss: **local**, other -> local (named derby, grounds 14.9 km), "(Noordoost-)Brabantse Derby: TOP Oss vs. FC Den Bosch", C178 Football_derbies_in_the_Netherlands
+- 318: PSV Eindhoven v FC Eindhoven: **local**, other -> local (named derby, grounds 3.4 km), "(Eindhoven) Lichtstad Derby: PSV Eindhoven vs. FC Eindhoven", C178 Football_derbies_in_the_Netherlands
+- 319: FC Eindhoven v PSV Eindhoven: **local**, other -> local (named derby, grounds 3.4 km), "(Eindhoven) Lichtstad Derby: PSV Eindhoven vs. FC Eindhoven", C178 Football_derbies_in_the_Netherlands
+- 322: FC Groningen v FC Emmen: **other**, other -> other (53.5 km), "Drents-Groningse Derby II– FC Groningen vs. FC Emmen", C178 Football_derbies_in_the_Netherlands
+- 323: FC Emmen v FC Groningen: **other**, other -> other (53.5 km), "Drents-Groningse Derby II– FC Groningen vs. FC Emmen", C178 Football_derbies_in_the_Netherlands
+- 324: SC Heerenveen v SC Cambuur: **other**, other -> other (29.1 km), "Friese Derby: SC Heerenveen vs. SC Cambuur", C178 Football_derbies_in_the_Netherlands
+
+### Phase 5b version 3 re-check
+
+Part A of version 3: every row phase 5 and phase 5b sessions 1 and 2 classified (221 rows with checkedOn 2026-11-18 before this session), plus the pairs the prompt named, re-read against the version 3 rule from the recorded quote and the grounds' distance. Pages read again (run1, 12 pages) only where the recorded quote did not show a derby name or whose rival the page meant, or where a row would drop from `local`. Changes (row, before -> after, reason):
+
+- 25: 1. FC Heidenheim 1846 v VfR Aalen: **local**, other -> local (named derby, grounds 19.8 km), "Ostalb-Derby", R2 German_football_rivalries
+- 47: Grazer AK v SK Sturm Graz: **local**, other -> local (named derby, grounds 0.0 km), "Graz Derby: Grazer AK vs. Sturm Graz", C64 List_of_association_football_club_rivalries_in_Europe#Austria
+- 48: SK Sturm Graz v Grazer AK: **local**, other -> local (named derby, grounds 0.0 km), "Graz Derby: Grazer AK vs. Sturm Graz", C64 List_of_association_football_club_rivalries_in_Europe#Austria
+- 56: FCSB v Dinamo București: **local**, other -> local (named derby, grounds 4.4 km), "The Eternal derby (Romanian: Eternul derby)", C65 Eternal_derby_(Romania)
+- 57: Dinamo București v FCSB: **local**, other -> local (named derby, grounds 4.4 km), "The Eternal derby (Romanian: Eternul derby)", C65 Eternal_derby_(Romania)
+- 60: FC Universitatea Cluj v CFR Cluj: **local**, other -> local (named derby, grounds 1.3 km), "The Cluj derby (Romanian: Derbiul Clujului) refers to football matches", C67 Cluj_derby
+- 61: CFR Cluj v FC Universitatea Cluj: **local**, other -> local (named derby, grounds 1.3 km), "The Cluj derby (Romanian: Derbiul Clujului) refers to football matches", C67 Cluj_derby
+- 87: Grasshopper Club Zürich v FC Zürich: **local**, other -> local (named derby, grounds 0.0 km), "The Zürich derby (German: Zürcher Derby) is a football match", C76 Zurich_derby
+- 88: FC Zürich v Grasshopper Club Zürich: **local**, other -> local (named derby, grounds 0.0 km), "The Zürich derby (German: Zürcher Derby) is a football match", C76 Zurich_derby
+- 91: FC Luzern v SC Kriens: **local**, other -> local (named derby, grounds 1.4 km), "Luzerner Derby: FC Luzern vs. SC Kriens", C75 List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 92: SC Kriens v FC Luzern: **local**, other -> local (named derby, grounds 1.4 km), "Luzerner Derby: FC Luzern vs. SC Kriens", C75 List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 141: FC Barcelona v RCD Espanyol de Barcelona: **local**, other -> local (named derby, grounds 5.4 km), ""Barcelonian derby") is the name given to football matches between FC Barcelona", C96 Derbi_Barceloní
+- 142: RCD Espanyol de Barcelona v FC Barcelona: **local**, other -> local (named derby, grounds 5.4 km), ""Barcelonian derby") is the name given to football matches between FC Barcelona", C96 Derbi_Barceloní
+- 157: Getafe CF v CD Leganés: **local**, other -> local (named derby, grounds 4.2 km), "The South Madrid derby (Spanish: Derbi del sur de Madrid), is the name given", C104 South_Madrid_derby
+- 158: CD Leganés v Getafe CF: **local**, other -> local (named derby, grounds 4.2 km), "The South Madrid derby (Spanish: Derbi del sur de Madrid), is the name given", C104 South_Madrid_derby
+- 175: AS Monaco FC v OGC Nice: **local**, other -> local (named derby, grounds 18.1 km), "The Derby de la Côte d'Azur is a football match contested between Ligue 1 clubs", C114 Derby_de_la_Côte_d'Azur
+- 176: OGC Nice v AS Monaco FC: **local**, other -> local (named derby, grounds 18.1 km), "The Derby de la Côte d'Azur is a football match contested between Ligue 1 clubs", C114 Derby_de_la_Côte_d'Azur
+- 197: FC Twente v Heracles Almelo: **local**, other -> local (named derby, grounds 17.1 km), "a Dutch football derby between FC Twente and Heracles Almelo", C124 Twentse_derby
+- 198: Heracles Almelo v FC Twente: **local**, other -> local (named derby, grounds 17.1 km), "a Dutch football derby between FC Twente and Heracles Almelo", C124 Twentse_derby
+- 205: Olympiacos F.C. v Panathinaikos F.C.: **local**, other -> local (named derby, grounds 14.7 km), "an association football derby contested between the two most successful clubs of Greece", C128 Derby_of_the_Eternal_Enemies
+- 206: Panathinaikos F.C. v Olympiacos F.C.: **local**, other -> local (named derby, grounds 14.7 km), "an association football derby contested between the two most successful clubs of Greece", C128 Derby_of_the_Eternal_Enemies
+- 320: MVV Maastricht v Fortuna Sittard: **local**, other -> local (named derby, grounds 17.4 km), "Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard", C178 Football_derbies_in_the_Netherlands
+- 321: Fortuna Sittard v MVV Maastricht: **local**, other -> local (named derby, grounds 17.4 km), "Derby van het Zuiden: MVV Maastricht vs. Fortuna Sittard", C178 Football_derbies_in_the_Netherlands
+- 340: Almere City FC v FC Volendam: **local**, other -> local (named derby, grounds 16.2 km), "Markermeerderby: Almere City FC vs. FC Volendam", C178 Football_derbies_in_the_Netherlands
+- 341: FC Volendam v Almere City FC: **local**, other -> local (named derby, grounds 16.2 km), "Markermeerderby: Almere City FC vs. FC Volendam", C178 Football_derbies_in_the_Netherlands
+- 2: 1. FC Köln v Borussia Mönchengladbach: **other**, local -> other (43.5 km), "the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach", R1 Rhine_derby
+- 9: Borussia Mönchengladbach v 1. FC Köln: **other**, local -> other (43.5 km), "the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach", R1 Rhine_derby
+- 165: RCD Mallorca v CD Atlético Baleares: **other**, local -> other (no ground for the rival in the club files), "the derby between the main football clubs in Palma de Mallorca", C108 Palma_derby
+- 219: OFI Crete F.C. v Ergotelis F.C.: **other**, local -> other (no ground for the rival in the club files), "an association football rivalry between Ergotelis and OFI, two teams from Heraklion, Crete", C135 Cretan_derby
+- 255: Nottingham Forest F.C. v Notts County F.C.: **other**, local -> other (no ground for the rival in the club files), "derby is the name given to football matches contested between Nottingham Forest and Notts County", C157 Nottingham_derby
+- 121: ACF Fiorentina v Juventus FC: **main**, other -> main (main-rival wording), "against their arch-nemesis Juventus", C85 ACF_Fiorentina–Juventus_FC_rivalry
+- 167: Paris Saint-Germain FC v Olympique de Marseille: **main**, other -> main (main-rival wording), "when the clubs emerged as arch-rivals", C110 Le_Classique
+- 168: Olympique de Marseille v Paris Saint-Germain FC: **main**, other -> main (main-rival wording), "when the clubs emerged as arch-rivals", C110 Le_Classique
+
+Part A counts: to `local` 25 rows (the 20 km clause: 25 Heidenheim v Aalen 19.8 km, Graz 0.0, FCSB v Dinamo 4.4, Cluj 1.3, Zürich 0.0, Luzern v Kriens 1.4, **Barcelona v Espanyol 5.4**, Getafe v Leganés 4.2, Monaco v Nice 18.1, Twente v Heracles 17.1, Olympiacos v Panathinaikos 14.7, **Derby van het Zuiden 17.4**, **Markermeerderby 16.2**); to `main` 3 rows (121 Fiorentina v Juventus, 167/168 PSG v Marseille); back to `other` 5 rows (2/9 Rhine derby, 43.5 km, the page says 55 km, no local wording; 165 Palma derby, 219 Cretan derby, 255 Nottingham derby); partner `main` rows undone: 0 (no partner row had been made `main`: 190 Feyenoord v Ajax was already left `other`). Every other row keeps its class; the North-East derby (67, 68) stays `other` (Foresta Suceava and Politehnica Iași have no ground in the club files).
+
+Notes on the readings:
+
+- **Title-only derbies**: 56/57, 60/61, 87/88, 141/142, 157/158, 175/176 had quotes without the derby's name; run1 read each lead again and the quote is now the derby-name phrase. The Côte d'Azur page itself says the two cities are "separated by only 20 kilometres"; the club files give 18.1 km.
+- **Arch wording**: 121 from "he led Fiorentina to the final ... against their arch-nemesis Juventus" ("their" is Fiorentina's; arch-nemesis read as arch-rival); 122 stays `other`. 167/168 from "when the clubs emerged as arch-rivals", said of both clubs, so both rows.
+- **Same-city derbies dropped to `other` because the rival has no ground in the club files**: 165 (Palma: "the main football clubs in Palma de Mallorca"), 219 (Cretan: "two teams from Heraklion"), 255 (Nottingham). None of the pages calls the pair a local derby in the sentences posted. This is the rule's literal reading; Alexandru's call (open-problems.md).
+- **`main` in the batch**: 225 (Tottenham, "Tottenham fans see Arsenal as their main rival"; Arsenal's row 224 is `local`), 248 (Preston; the page quotes the player Tom Finney: "We always saw Blackpool as our main rivals"), 265 (Chelsea v Tottenham, 2012 survey) and 268 (Chelsea v Arsenal, "the survey"): **two pages each name a different club as Chelsea's main rival** (the Chelsea–Leeds page also names Arsenal); both rows follow their own page, written up for Alexandru. 277 (Leeds v Manchester United; the partner 278 stays `other`, the page says United fans consider Liverpool theirs). 285 (Charlton v Crystal Palace; Palace's row 286 is `local`, the page says Palace's main rival is Brighton).
+- **Named derby within 20 km**: 220/221 6.4 km, 222/223 2.9, 224 6.2, 246/247 18.3, 261/262 6.3 ("Dockers Derby", run2), 267 10.0 ("considered an important derby": read as the page naming it a derby, though without a proper name), 286-290 6.0-13.0, 312/313 13.9, 316/317 14.9, 318/319 3.4. 309/310 and 311 are listed under the heading "City derbies" (taken as the English for Stadtderby).
+- **Named derby over 20 km or without a ground, so `other`**: 230/231 51.2 km, 238/239 21.3 km (East Midlands Derby), 244/245 64.0, 281/282 44.5 (Northwest derby), 305/306 122.2, 314/315 22.7, 322/323 53.5, 324 29.1; 240, 241, 242, 254, 257-260, 303, 304 have no rival ground. 263/264 and 265/266 within 20 km, but run2 found no sentence calling them a derby.
+- **Local wording, any distance**: 226/227, 228/229 (39.0 km, "a football local derby"), 232/233, 236/237, 243, 249/250 (26.0 km), 253, 256; 291-302 "a local football rivalry" (as 295/296 in session 2). 299/300 are `local` though the page adds "Chelsea do not consider QPR rivals".
+- **Leads not applied** (the sentence is on another row's page): Derby County's main rival Nottingham Forest (on the Derby–Leicester page; row 238 cites the Derby–Forest page), Millwall's main rivalry West Ham (on the South London derby page; row 261 cites the Millwall–West Ham page), Manchester United fans and Liverpool (on the Leeds–Manchester United page).
+- Partner rows: every `local` change came with its partner where the partner is on the map (all were in the batch); 324's partner 325 is outside the batch and stays as it is.
+
+Counts, session 3 (100 batch rows): local 47, main 6 (225, 248, 265, 268, 277, 285), other with a quote 47, not on the page 0, cannot verify 0. Part A: 25 to `local`, 3 to `main`, 5 to `other`, 0 partner mains undone. Probe runs used: 2 of 8 (58 requests).
+
+Running total, phase 5b (sessions 1-3, 300 batch rows plus the extras 687 and 112, by class after the version 3 re-check): local 116, main 11, other with a quote 175, not on the page 0, cannot verify 0; quote-less `other` rows left: 22 (of 323).
