@@ -1,11 +1,2 @@
-# run 2: whole lines for ten rows
-S09	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	x	x		Linz Derby|Linz derby
-S12	https://en.wikipedia.org/wiki/German_football_rivalries	x	x		Werder|Bremen
-S37	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	x	x		Fortuna Sittard|Limburg
-S38	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	x	x		Almere|Volendam
-S39	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	x	x		Botoşani|Botoșani
-S44	https://de.wikipedia.org/wiki/VfB_Stuttgart	x	x		Saint-Étienne
-S46	https://de.wikipedia.org/wiki/SpVgg_Greuther_Fürth	x	x		Bayreuth
-S53	https://de.wikipedia.org/wiki/Borussia_Dortmund	x	x		lose Fanfreundschaften
-S55	https://de.wikipedia.org/wiki/1._FC_Kaiserslautern	x	x		Freundschaft bestand zu den Fans von Werder
-S19	https://fr.wikipedia.org/wiki/Angers_Sporting_Club_de_l'Ouest	x	x		principal compétiteur
+# run 3: the lines around Werder Bremen and Bayern on the rivalries page
+S12	https://en.wikipedia.org/wiki/German_football_rivalries	x	x		^\| (Werder Bremen|Bayern Munich)$|Nord|North

@@ -125,7 +125,7 @@ def main(cfg):
             ls = [l.strip() for l in txt.split("\n") if l.strip()]
             hits = [i for i, l in enumerate(ls) if rl.search(l)][:4]
             for i in hits:
-                line += "\n> L: " + ls[i][:600] + ("\n>   next: " + ls[i + 1][:300] if i + 1 < len(ls) else "")
+                line += "".join("\n>   prev: " + ls[j][:200] for j in range(max(0, i - 3), i)) + "\n> L: " + ls[i][:600] + ("\n>   next: " + ls[i + 1][:300] if i + 1 < len(ls) else "")
             if not hits:
                 line += "\n> (no line matches)"
             blocks.append(line); continue
