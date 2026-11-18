@@ -1,24 +1,6 @@
 # rows	url	regexA	regexB	mode	quote
-165	https://en.wikipedia.org/wiki/Palma_derby	Mallorca	Baleares	both	the derby between the main football clubs in Palma de Mallorca
-219	https://en.wikipedia.org/wiki/Cretan_derby	OFI	Ergotelis	both	two teams from Heraklion, Crete
-255	https://en.wikipedia.org/wiki/Nottingham_derby	Forest	County	both	derby is the name given to football matches contested between Nottingham Forest and Notts County
-248	https://en.wikipedia.org/wiki/West_Lancashire_derby	Preston	Blackpool	both	We always saw Blackpool as our main rivals
-238	https://en.wikipedia.org/wiki/Derby_County_F.C.%E2%80%93Leicester_City_F.C._rivalry	Derby	Forest	both
-261	https://en.wikipedia.org/wiki/South_London_derby	Millwall	West Ham	both
-282	https://en.wikipedia.org/wiki/Leeds_United_F.C.%E2%80%93Manchester_United_F.C._rivalry	United	Liverpool	both
-265	https://en.wikipedia.org/wiki/Chelsea_F.C.%E2%80%93Tottenham_Hotspur_F.C._rivalry	Chelsea	Tottenham|Spurs	both	Chelsea fans consider Tottenham to be their main rival
-268	https://en.wikipedia.org/wiki/Arsenal_F.C.%E2%80%93Chelsea_F.C._rivalry	Chelsea	Arsenal	both	considered Arsenal as their main rival
-267	https://en.wikipedia.org/wiki/Arsenal_F.C.%E2%80%93Chelsea_F.C._rivalry	[Dd]erby	-	one	has been more recently considered an important derby
-325	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Cambuur	Heerenveen	line
-326/327	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	ADO	Ajax	line
-328/329	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Zwolle	Twente	line
-330/331	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Zwolle	Heracles	line
-332/333	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Go Ahead	Heracles	line
-334/335	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Twente	Go Ahead	line
-336/337	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	ADO	Dordrecht	line
-338/339	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Graafschap	NEC|N\.E\.C\.|Nijmegen	line
-342/343	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Roda	Fortuna	line
-344	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Atromitos	Egaleo	both
-345	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Panionios	Apollon	both
-346/347	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Kallithea	Panionios	both
-348	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	AEK	Apollon	both
+255	https://en.wikipedia.org/wiki/Nottingham_derby	Forest|County|clubs|teams|grounds|stadiums	[Cc]ity of Nottingham|in Nottingham|Trent|apart|closest|nearest|same city|both	both
+344	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Atromitos	Egaleo	line
+345	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Panionios	Apollon	line
+346/347	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Kallithea	Panionios	line
+348	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	AEK	Apollon	line
