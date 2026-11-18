@@ -316,6 +316,10 @@ Moved byte for byte from CLAUDE.md (old lines 148-1007, 2026-10-22). Long new en
 
 - `calendars/*.ics`, `calendars/skipped.md`, `calendars/.stamps.json`
 - `data/fixtures/*.json` — football-data.org, one file per competition
+  in `COMPETITIONS` of `fetch_fixtures.py`: ten of the twelve on the free
+  tier. **BSA and WC are not fetched** since 2026-11-18 (Alexandru's
+  decision of 11 Nov 2026: no club on the map plays in either); their
+  files and `index.json` keys were deleted
 - `data/fixtures/openligadb-*.json` — OpenLigaDB, one file per
   competition, and `openligadb-index.json` beside them. Kept apart from
   `index.json` because `fetch_fixtures.py` rewrites that one whole
@@ -679,7 +683,9 @@ Moved byte for byte from CLAUDE.md (old lines 148-1007, 2026-10-22). Long new en
   each fixture fetch and club build. Also reads back the Q-id join
   between `club-tickets.csv` and the map. See Conventions.
 - `tools/build_calendars.py` — `.ics` generation
-- `tools/fetch_fixtures.py` — football-data.org
+- `tools/fetch_fixtures.py` — football-data.org; run by
+  `build-calendars.yml`. Fetches BL1, CL, DED, PD, FL1, ELC, PPL, EC, SA
+  and PL; not BSA or WC (removed 2026-11-18, see `data/fixtures/*.json`)
 - `tools/fetch_openligadb.py` — OpenLigaDB: 2. Bundesliga, 3. Liga,
   DFB-Pokal and the Regionalliga divisions it carries. **Never the
   Bundesliga.** Daily, `fetch-openligadb.yml`, no secret. Exits 1 when a

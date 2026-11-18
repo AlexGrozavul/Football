@@ -146,9 +146,10 @@ SOURCES = ("football-data", "openligadb")
 FD_COUNTRY = {
     "BL1": "DE",
     "PL": "GB", "ELC": "GB", "PD": "ES", "SA": "IT", "FL1": "FR",
-    "DED": "NL", "PPL": "PT", "BSA": "BR",
+    "DED": "NL", "PPL": "PT",
 }
-# Competitions between national teams. A country is not a club.
+# Competitions between national teams. A country is not a club. WC is
+# no longer fetched (since 11 Nov 2026) but stays listed as a guard.
 FD_NATIONAL = {"EC", "WC"}
 
 # Every OpenLigaDB competition fetch_openligadb.py names is German - the

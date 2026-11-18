@@ -2,8 +2,8 @@
 """
 fetch_fixtures.py -- step 3, football-data.org half.
 
-Fetches the current season's matches for each competition the free tier
-covers and writes one file per competition to data/fixtures/, plus a
+Fetches the current season's matches for each competition in COMPETITIONS
+(ten of the twelve the free tier covers) and writes one file per competition to data/fixtures/, plus a
 small index.json. One file each keeps the daily commit down to the
 leagues that actually played.
 
@@ -31,13 +31,14 @@ import urllib.request
 OUT_DIR = "data/fixtures"
 API_BASE = "https://api.football-data.org/v4"
 
-# The twelve competitions on the free tier.
+# Ten of the twelve competitions on the free tier. Not fetched, at
+# Alexandru's decision of 11 Nov 2026: BSA (Campeonato Brasileiro Serie
+# A) and WC (FIFA World Cup, finished) - no club on the map plays in
+# either. Adding one back here is all it takes to fetch it again.
 COMPETITIONS = [
-    ("WC",  "FIFA World Cup"),
     ("CL",  "UEFA Champions League"),
     ("BL1", "Bundesliga"),
     ("DED", "Eredivisie"),
-    ("BSA", "Campeonato Brasileiro Serie A"),
     ("PD",  "Primera Division"),
     ("FL1", "Ligue 1"),
     ("ELC", "Championship"),
@@ -48,7 +49,7 @@ COMPETITIONS = [
 ]
 
 # Free tier allows 10 requests per minute. 7s between calls keeps us
-# under it with room to spare; twelve competitions take about 80s.
+# under it with room to spare; ten competitions take about 65s.
 REQUEST_GAP_SECONDS = 7
 TIMEOUT_SECONDS = 30
 MAX_RETRIES = 3
