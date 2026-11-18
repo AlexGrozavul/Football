@@ -908,6 +908,10 @@ line, straight**, not a drive, and the list says so.
 `main`: the page names the other club as this club's main, biggest or arch-rival (principal compétiteur, Hauptrivale, Erzrivale, rivale principale, arcirivale, biggest rival). ONE-DIRECTIONAL: only the row of the club the page says it about; the partner row is `main` only if the page says the same of the other side. `main` beats `local` for that one row.
 `other`: everything else the page names. A row whose page names the pair carries a quote even when it stays `other`.
 Every class and quote rests on a page read in a session (through the probe) or a quote already recorded from one; knowledge only gives leads. A rival with no ground in the club files cannot pass the 20 km test.
+Additions a to e (coordinator, 18 Nov 2026, prompt version 4): (a) a rival with no ground in the club files passes the 20 km test when the page states both clubs are in the same city (a derby's title alone is not a statement);
+(b) `main` only from the page's own words; a main-rival claim the page only quotes from a person (player, coach, fan) does not count, a survey or poll the page reports does;
+(c) a main-rival sentence on a page read in a phase 5b session may be applied to the row it is about, and that page becomes the row's `sourceId` and quote;
+(d) a club may keep two `main` rows when two pages each say so, each row with its own quote; (e) an unnamed "derby" ("an important derby") counts as naming a derby for the 20 km test.
 
 **Derbies: every row names its source, and the source names the
 derby.** Built 2026-10-03, on Alexandru's instruction, for the twelve
