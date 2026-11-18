@@ -381,3 +381,28 @@ quote. Probe runs used: 3 of 8.
 Running total, phase 5b (sessions 1): local 27, main 1 (687), other with a
 quote 74, not on the page 0, cannot verify 0; quote-less `other` rows left:
 222 (of 323).
+
+### Session 2 (2026-11-18, prompt version 2): batch
+
+Class rule from this session on (coordinator's decision of 18 Nov 2026, as
+reworded for version 2): `local` where the page calls the pair a local
+derby (Lokalderby, Stadtderby, derby local, derby cittadino, derby della
+città, stadsderby) or lists it under a section headed "Local", **or** where
+the page names it a derby and both clubs play in the same city or
+municipality (the grounds' places: the club files have no city, so the
+places are taken from Wikidata, club `P115` venue -> `P131`, read by the
+probe, or from the page); `main` where the page names the other club the
+main rival; `other` for everything else, including a named derby between
+clubs of different cities. Session 1 used the older wording (a named derby
+alone never `local`); its rows are not re-read here.
+
+Step 0 recount: 222 quote-less `other` rows (826 rows). Row 112 had no quote
+before session 1 (323 then), so 323 - 100 - 1 = 222: the running total of
+session 1 is right and was not changed.
+
+Batch (100 row ids, lines 115-216; lines 139-140 have quotes): 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216.
+
+Part D (first session of version 2): rows 51, 52 (Linz derby), 68
+(North-East derby; Iași is not on the map, no partner row), 295, 296
+(Brentford v QPR), 320, 321 (Derby van het Zuiden), 340, 341
+(Markermeerderby).
