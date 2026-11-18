@@ -204,3 +204,27 @@ Read on 2026-11-18 through the probe workflow (PR #226, runs 1 to 3; 63 requests
 - Romanian: no changed row has a Romanian text (quotes are shown untranslated); `docs/ro-review.md` has no culture data rows, only the `riv.*` labels (`grep -c 'Q[0-9]' docs/ro-review.md` gives 0 rows with a club id), so nothing to update.
 - `check_club_culture.py`, `check_derbies.py`, `check_translations.py`: exit 0. `test_sheet_tickets.js` and `test_derbies.js` run locally (results in the PR).
 - Probe: 3 runs of 8, none failed before a request. Workflow and script removed in their own commit before the merge.
+
+## Phase 5b: reclassifying the quote-less `other` rows of club-rivalries.csv
+
+Method (written before any page was read): the population is every row of
+`data/club-rivalries.csv` with class `other` and an empty quote, ordered by
+row id (line number, the header is line 1); 323 such rows on 2026-11-18. Each
+session takes the first 100 that have no line in this section yet. Each row's
+source page is read only through the temporary probe workflow (MediaWiki
+parse API, User-Agent `FootballPlannerBot/1.0
+(https://github.com/AlexGrozavul/Football)`, `maxlag=5`), which posts only
+the sentences naming both clubs (plus class words) and their section heading.
+Classes follow the coordinator's decision of 18 Nov 2026: `local` only where
+the page calls the pair a local derby (or the same words in the page's
+language: Lokalderby, derby local, derby cittadino, city derby, Stadtderby);
+`main` where it calls the other club the main rival (or arch-rival, as the
+class table of files.md has it); otherwise `other`. A named derby alone is
+not enough for `local`.
+
+### Session 1 (2026-11-18): batch
+
+Batch (100 row ids): 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 47, 48, 49, 50, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111.
+Extra rows: 687 (Angers SCO v FC Nantes; it has a quote, so it is not in the
+batch: "principal compétiteur" is re-read for the main decision) and 112
+(FC Inter v Juventus, partner of 111, outside the batch).
