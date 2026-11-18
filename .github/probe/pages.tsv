@@ -1,0 +1,103 @@
+# rowid	url	regexA	regexB
+3	https://en.wikipedia.org/wiki/German_football_rivalries	(?<!Viktoria )(?<!Fortuna )(?:1\. )?FC K[öo]ln|Cologne|\bEffzeh	Viktoria
+4	https://en.wikipedia.org/wiki/German_football_rivalries	(?<!Viktoria )(?<!Fortuna )(?:1\. )?FC K[öo]ln|Cologne|\bEffzeh	Fortuna
+5	https://en.wikipedia.org/wiki/German_football_rivalries	Union	Dynamo|BFC
+6	https://en.wikipedia.org/wiki/Berlin_derby	Union	Hertha
+7	https://en.wikipedia.org/wiki/Der_Klassiker	Dortmund|\bBVB\b	Bayern
+8	https://en.wikipedia.org/wiki/Revierderby	Dortmund|\bBVB\b	Schalke
+10	https://en.wikipedia.org/wiki/German_football_rivalries	Eintracht(?! Braunschweig)|Frankfurt	FSV
+11	https://en.wikipedia.org/wiki/German_football_rivalries	Eintracht(?! Braunschweig)|Frankfurt	Darmstadt|Lilien
+12	https://en.wikipedia.org/wiki/FC_Augsburg%E2%80%93TSV_1860_Munich_rivalry	(?<!Schwaben )Augsburg(?! derby)|\bFCA\b	1860|Sechzig|L[öo]wen
+13	https://en.wikipedia.org/wiki/Augsburg_derby	(?<!Schwaben )Augsburg(?! derby)|\bFCA\b	Schwaben
+14	https://en.wikipedia.org/wiki/Der_Klassiker	Bayern	Dortmund|\bBVB\b
+15	https://en.wikipedia.org/wiki/Bayern_Munich%E2%80%93Real_Madrid_rivalry	Bayern	Real Madrid
+16	https://en.wikipedia.org/wiki/Munich_derby	Bayern	1860|Sechzig|L[öo]wen
+17	https://en.wikipedia.org/wiki/German_football_rivalries	Bayern	Werder|Bremen
+18	https://en.wikipedia.org/wiki/Revierderby	Schalke	Dortmund|\bBVB\b
+19	https://en.wikipedia.org/wiki/Hamburg_derby	Hamburger SV|\bHSV\b|Hamburg(?! derby)	Pauli
+20	https://en.wikipedia.org/wiki/Nordderby	Hamburger SV|\bHSV\b|Hamburg(?! derby)	Werder|Bremen
+21	https://de.wikipedia.org/wiki/Baden-W%C3%BCrttemberg-Derby	VfB	Karlsruhe|\bKSC\b
+22	https://en.wikipedia.org/wiki/Stuttgart_derby	VfB	Kickers
+23	https://en.wikipedia.org/wiki/German_football_rivalries	Werder|Bremen	Bayern
+24	https://en.wikipedia.org/wiki/Nordderby	Werder|Bremen	Hamburger SV|\bHSV\b|Hamburg(?! derby)
+25	https://en.wikipedia.org/wiki/German_football_rivalries	Heidenheim	Aalen
+26	https://en.wikipedia.org/wiki/German_football_rivalries	Kaiserslautern|\bFCK\b|Lautern	Saarbr[üu]cken
+27	https://de.wikipedia.org/wiki/Karlsruher_SC	Kaiserslautern|\bFCK\b|Lautern	Karlsruhe|\bKSC\b
+28	https://de.wikipedia.org/wiki/Frankenderby	N[üu]rnberg|Nuremberg|\bClub\b	F[üu]rth
+29	https://en.wikipedia.org/wiki/German_football_rivalries	Bielefeld|Arminia	M[üu]nster|Preu[ßs]
+30	https://en.wikipedia.org/wiki/Lower_Saxony_derby	Braunschweig|Brunswick	Hannover|Hanover
+31	https://en.wikipedia.org/wiki/Hamburg_derby	Pauli	Hamburger SV|\bHSV\b|Hamburg(?! derby)
+32	https://en.wikipedia.org/wiki/Politisches_derby	Pauli	Hansa|Rostock
+33	https://en.wikipedia.org/wiki/Lower_Saxony_derby	Hannover|Hanover	Braunschweig|Brunswick
+34	https://en.wikipedia.org/wiki/Berlin_derby	Hertha	Union
+35	https://de.wikipedia.org/wiki/Karlsruher_SC	Karlsruhe|\bKSC\b	Kaiserslautern|\bFCK\b|Lautern
+36	https://de.wikipedia.org/wiki/Baden-W%C3%BCrttemberg-Derby	Karlsruhe|\bKSC\b	VfB
+37	https://en.wikipedia.org/wiki/German_football_rivalries	Darmstadt|Lilien	Eintracht(?! Braunschweig)|Frankfurt
+38	https://de.wikipedia.org/wiki/Frankenderby	F[üu]rth	N[üu]rnberg|Nuremberg|\bClub\b
+39	https://en.wikipedia.org/wiki/German_football_rivalries	Osnabr[üu]ck	M[üu]nster|Preu[ßs]
+45	https://en.wikipedia.org/wiki/Vienna_derby	Rapid	Austria Wien|Austria Vienna|FK Austria|\bAustria\b
+46	https://en.wikipedia.org/wiki/Vienna_derby	Austria Wien|Austria Vienna|FK Austria|\bAustria\b	Rapid
+47	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Grazer|\bGAK\b	Sturm
+48	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Sturm	Grazer|\bGAK\b
+49	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	LASK	\bRied\b
+50	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	\bRied\b	LASK
+53	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Wacker|Innsbruck	Salzburg
+54	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Salzburg	Wacker|Innsbruck
+55	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria	Wolfsberg|\bWAC\b	Klagenfurt
+56	https://en.wikipedia.org/wiki/Eternal_derby_(Romania)	FCSB|Steaua	Dinamo
+57	https://en.wikipedia.org/wiki/Eternal_derby_(Romania)	Dinamo	FCSB|Steaua
+58	https://en.wikipedia.org/wiki/Derbiul_Bucure%C8%99tiului	FCSB|Steaua	Rapid
+59	https://en.wikipedia.org/wiki/Derbiul_Bucure%C8%99tiului	Rapid	FCSB|Steaua
+60	https://en.wikipedia.org/wiki/Cluj_derby	Universitatea|\bU Cluj	CFR
+61	https://en.wikipedia.org/wiki/Cluj_derby	CFR	Universitatea|\bU Cluj
+62	https://en.wikipedia.org/wiki/West_derby_(Romania)	\bUTA\b|Arad	Poli|Timi[șşs]oara
+63	https://en.wikipedia.org/wiki/West_derby_(Romania)	Poli|Timi[șşs]oara	\bUTA\b|Arad
+64	https://en.wikipedia.org/wiki/Former_Ploie%C8%99ti_derby	Petrolul	Astra
+65	https://en.wikipedia.org/wiki/Primvs_derby	Petrolul	Rapid
+66	https://en.wikipedia.org/wiki/Primvs_derby	Rapid	Petrolul
+67	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	Boto[șşs]ani	Foresta|Suceava
+69	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	O[țţt]elul|Gala[țţt]i	Dacia Unirea|Br[ăa]ila
+70	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	Bihor|Oradea	\bUTA\b|Arad
+71	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania	\bUTA\b|Arad	Bihor|Oradea
+72	https://en.wikipedia.org/wiki/Eternal_derby_(Serbia)	Red Star|Crvena|Zvezda	Partizan
+73	https://en.wikipedia.org/wiki/Eternal_derby_(Serbia)	Partizan	Red Star|Crvena|Zvezda
+74	https://en.wikipedia.org/wiki/Derby_of_Serbia	Vojvodina	Partizan
+75	https://en.wikipedia.org/wiki/Derby_of_Serbia	Partizan	Vojvodina
+76	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Vojvodina	Spartak|Subotica
+77	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Spartak|Subotica	Vojvodina
+78	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Novi Pazar	\bRad\b
+79	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Radni[čc]ki(?! Ni)|Kragujevac	Smederevo
+80	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Smederevo	Radni[čc]ki(?! Ni)|Kragujevac
+81	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Dubo[čc]ica	Radni[čc]ki Ni[šs]|Ni[šs]\b
+82	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia	Radni[čc]ki Ni[šs]|Ni[šs]\b	Dubo[čc]ica
+83	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Basel|\bFCB\b	Young Boys|\bYB\b
+84	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Young Boys|\bYB\b	Basel|\bFCB\b
+85	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Basel|\bFCB\b	FC Z[üu]rich|\bFCZ\b
+86	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	FC Z[üu]rich|\bFCZ\b	Basel|\bFCB\b
+87	https://en.wikipedia.org/wiki/Zurich_derby	Grasshopper|\bGC\b	FC Z[üu]rich|\bFCZ\b
+88	https://en.wikipedia.org/wiki/Zurich_derby	FC Z[üu]rich|\bFCZ\b	Grasshopper|\bGC\b
+89	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Young Boys|\bYB\b	\bThun\b
+90	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	\bThun\b	Young Boys|\bYB\b
+91	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Luzern|Lucerne	Kriens
+92	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Kriens	Luzern|Lucerne
+93	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Gallen	\bWil\b
+94	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	\bWil\b	Gallen
+95	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Kriens	\bCham\b
+96	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Lugano	Chiasso
+97	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland	Lugano	Bellinzona
+98	https://en.wikipedia.org/wiki/South_Wales_derby	Swansea	Cardiff
+99	https://en.wikipedia.org/wiki/South_Wales_derby	Cardiff	Swansea
+100	https://en.wikipedia.org/wiki/Severnside_derby	Cardiff	Bristol
+101	https://en.wikipedia.org/wiki/Severnside_derby	Bristol	Cardiff
+102	https://en.wikipedia.org/wiki/Munich_derby	1860|Sechzig|L[öo]wen	Bayern
+103	https://en.wikipedia.org/wiki/FC_Augsburg%E2%80%93TSV_1860_Munich_rivalry	1860|Sechzig|L[öo]wen	(?<!Schwaben )Augsburg(?! derby)|\bFCA\b
+104	https://en.wikipedia.org/wiki/Stuttgart_derby	Kickers	VfB
+105	https://en.wikipedia.org/wiki/Politisches_derby	Hansa|Rostock	Pauli
+106	https://en.wikipedia.org/wiki/German_football_rivalries	Fortuna	(?<!Viktoria )(?<!Fortuna )(?:1\. )?FC K[öo]ln|Cologne|\bEffzeh
+107	https://en.wikipedia.org/wiki/German_football_rivalries	Viktoria	(?<!Viktoria )(?<!Fortuna )(?:1\. )?FC K[öo]ln|Cologne|\bEffzeh
+108	https://en.wikipedia.org/wiki/German_football_rivalries	FSV	Eintracht(?! Braunschweig)|Frankfurt
+109	https://en.wikipedia.org/wiki/Derby_della_Madonnina	Inter(?!nat|na|est|view|rupt|val|mitt|sect|ior)|Nerazzurri	Milan(?!o)|Rossoneri
+110	https://en.wikipedia.org/wiki/Derby_della_Madonnina	Milan(?!o)|Rossoneri	Inter(?!nat|na|est|view|rupt|val|mitt|sect|ior)|Nerazzurri
+111	https://en.wikipedia.org/wiki/Derby_d%27Italia	Inter(?!nat|na|est|view|rupt|val|mitt|sect|ior)|Nerazzurri	Juventus|Juve\b
+112	https://en.wikipedia.org/wiki/Derby_d%27Italia	Juventus|Juve\b	Inter(?!nat|na|est|view|rupt|val|mitt|sect|ior)|Nerazzurri
+687	https://fr.wikipedia.org/wiki/Angers_Sporting_Club_de_l'Ouest	Angers|\bSCO\b	Nantes
