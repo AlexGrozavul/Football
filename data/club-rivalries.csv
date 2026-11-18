@@ -1,115 +1,115 @@
 clubQ,rivalQ,rivalName,class,sourceId,checkedOn,quote
 Q104770,Q101959,Borussia Mönchengladbach,local,R1,2026-11-18,the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach
-Q104770,Q695008,FC Viktoria Köln,other,R2,2026-10-03
-Q104770,Q310608,SC Fortuna Köln,other,R2,2026-10-03
-Q141971,Q159930,BFC Dynamo,other,R2,2026-10-03
-Q141971,Q102720,Hertha BSC,other,R3,2026-10-03
-Q41420,Q15789,FC Bayern München,other,R4,2026-10-03
-Q41420,Q32494,FC Schalke 04,other,R5,2026-10-03
+Q104770,Q695008,FC Viktoria Köln,local,R2,2026-11-18,Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln
+Q104770,Q310608,SC Fortuna Köln,local,R2,2026-11-18,Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln
+Q141971,Q159930,BFC Dynamo,local,R2,2026-11-18,East Berlin derby: Union Berlin vs. BFC Dynamo
+Q141971,Q102720,Hertha BSC,other,R3,2026-11-18,has more recently referred to the derby between 1. FC Union Berlin and Hertha BSC
+Q41420,Q15789,FC Bayern München,other,R4,2026-11-18,the name given to any football match between Bayern Munich and Borussia Dortmund
+Q41420,Q32494,FC Schalke 04,other,R5,2026-11-18,It is considered the greatest rivalry in German football.
 Q101959,Q104770,1. FC Köln,local,R1,2026-11-18,the term Rhine derby is mostly used for matches between FC Köln and Borussia Mönchengladbach
-Q38245,Q157352,FSV Frankfurt,other,R2,2026-10-03
-Q38245,Q479351,SV Darmstadt 98,other,R2,2026-10-03
-Q97905916,Q131603,TSV 1860 München,other,R6,2026-10-03
-Q97905916,,TSV Schwaben Augsburg,other,R7,2026-10-03
-Q15789,Q41420,Borussia Dortmund,other,R4,2026-10-03
-Q15789,Q8682,Real Madrid Club de Fútbol,other,R9,2026-10-03
-Q15789,Q131603,TSV 1860 München,other,R8,2026-10-03
-Q15789,Q51976,Werder Bremen,other,R2,2026-10-03
-Q32494,Q41420,Borussia Dortmund,other,R5,2026-10-03
-Q51974,Q6463,FC St. Pauli,other,R10,2026-10-03
-Q51974,Q51976,Werder Bremen,other,R11,2026-10-03
-Q4512,Q105853,Karlsruher SC,other,R12,2026-10-03
-Q4512,Q170105,Stuttgarter Kickers,other,R13,2026-10-03
-Q51976,Q15789,FC Bayern München,other,R2,2026-10-03
-Q51976,Q51974,Hamburger SV,other,R11,2026-10-03
-Q162251,Q692586,VfR Aalen,other,R2,2026-10-03
-Q8466,Q157463,1. FC Saarbrücken,other,R2,2026-10-03
-Q8466,Q105853,Karlsruher SC,other,R14,2026-10-03
-Q15786,Q153539,SpVgg Greuther Fürth,other,R15,2026-10-03
-Q105844,Q316865,Preußen Münster,other,R2,2026-10-03
-Q154053,Q33748,Hannover 96,other,R16,2026-10-03
-Q6463,Q51974,Hamburger SV,other,R10,2026-10-03
-Q6463,Q142005,Hansa Rostock,other,R17,2026-10-03
-Q33748,Q154053,Eintracht Braunschweig,other,R16,2026-10-03
-Q102720,Q141971,1. FC Union Berlin,other,R3,2026-10-03
-Q105853,Q8466,1. FC Kaiserslautern,other,R14,2026-10-03
-Q105853,Q4512,VfB Stuttgart,other,R12,2026-10-03
-Q479351,Q38245,Eintracht Frankfurt,other,R2,2026-10-03
-Q153539,Q15786,1. FC Nürnberg,other,R15,2026-10-03
-Q160530,Q316865,Preußen Münster,other,R2,2026-10-03
+Q38245,Q157352,FSV Frankfurt,local,R2,2026-11-18,Frankfurt derby: Eintracht Frankfurt vs. FSV Frankfurt
+Q38245,Q479351,SV Darmstadt 98,other,R2,2026-11-18,Hesse derby
+Q97905916,Q131603,TSV 1860 München,other,R6,2026-11-18,"an association football rivalry in Bavaria, Germany, between FC Augsburg and TSV 1860 Munich"
+Q97905916,,TSV Schwaben Augsburg,other,R7,2026-11-18,"in more recent times, a game between Schwaben Augsburg and FC Augsburg"
+Q15789,Q41420,Borussia Dortmund,other,R4,2026-11-18,the name given to any football match between Bayern Munich and Borussia Dortmund
+Q15789,Q8682,Real Madrid Club de Fútbol,other,R9,2026-11-18,a European club rivalry between Bayern Munich and Real Madrid
+Q15789,Q131603,TSV 1860 München,local,R8,2026-11-18,Münchner Lokalderby
+Q15789,Q51976,Werder Bremen,other,R2,2026-11-18,Nord-Süd Klassiker ('North-South classic')
+Q32494,Q41420,Borussia Dortmund,other,R5,2026-11-18,It is considered the greatest rivalry in German football.
+Q51974,Q6463,FC St. Pauli,local,R10,2026-11-18,The Hamburg derby (German: Hamburger Stadtderby) is a football rivalry between two major Hamburg sides
+Q51974,Q51976,Werder Bremen,other,R11,2026-11-18,The Nordderby or Northern derby is a match between Hamburger SV and Werder Bremen
+Q4512,Q105853,Karlsruher SC,other,R12,2026-11-18,Als Baden-Württemberg-Derby wird das Fußballspiel zwischen dem Karlsruher SC und dem VfB Stuttgart bezeichnet
+Q4512,Q170105,Stuttgarter Kickers,local,R13,2026-11-18,Stuttgarter Lokalderby
+Q51976,Q15789,FC Bayern München,other,R2,2026-11-18,Nord-Süd Klassiker ('North-South classic')
+Q51976,Q51974,Hamburger SV,other,R11,2026-11-18,The Nordderby or Northern derby is a match between Hamburger SV and Werder Bremen
+Q162251,Q692586,VfR Aalen,other,R2,2026-11-18,Ostalb-Derby
+Q8466,Q157463,1. FC Saarbrücken,other,R2,2026-11-18,Südwest derby ('south-western derby')
+Q8466,Q105853,Karlsruher SC,other,R14,2026-11-18,"Abneigung besteht heutzutage gegenüber den Anhängern des VfB Stuttgart (siehe Baden-Württemberg-Derby), des 1. FC Kaiserslautern"
+Q15786,Q153539,SpVgg Greuther Fürth,local,R15,2026-11-18,Das Frankenderby – auch fränkisches Lokalderby genannt
+Q105844,Q316865,Preußen Münster,other,R2,2026-11-18,Westphalian derby
+Q154053,Q33748,Hannover 96,other,R16,2026-11-18,a match between the two Lower Saxonian association football clubs Hannover 96 and Eintracht Braunschweig
+Q6463,Q51974,Hamburger SV,local,R10,2026-11-18,The Hamburg derby (German: Hamburger Stadtderby) is a football rivalry between two major Hamburg sides
+Q6463,Q142005,Hansa Rostock,other,R17,2026-11-18,is an association football rivalry between German clubs FC Hansa Rostock and FC St. Pauli
+Q33748,Q154053,Eintracht Braunschweig,other,R16,2026-11-18,a match between the two Lower Saxonian association football clubs Hannover 96 and Eintracht Braunschweig
+Q102720,Q141971,1. FC Union Berlin,other,R3,2026-11-18,has more recently referred to the derby between 1. FC Union Berlin and Hertha BSC
+Q105853,Q8466,1. FC Kaiserslautern,other,R14,2026-11-18,"Abneigung besteht heutzutage gegenüber den Anhängern des VfB Stuttgart (siehe Baden-Württemberg-Derby), des 1. FC Kaiserslautern"
+Q105853,Q4512,VfB Stuttgart,other,R12,2026-11-18,Als Baden-Württemberg-Derby wird das Fußballspiel zwischen dem Karlsruher SC und dem VfB Stuttgart bezeichnet
+Q479351,Q38245,Eintracht Frankfurt,other,R2,2026-11-18,Hesse derby
+Q153539,Q15786,1. FC Nürnberg,local,R15,2026-11-18,Das Frankenderby – auch fränkisches Lokalderby genannt
+Q160530,Q316865,Preußen Münster,other,R2,2026-11-18,Grenzlandderby ('borderlands derby')
 Q126334,Q221525,FC Metz,main,C568,2026-10-09,Racing Strasbourg's main rival is Metz.
 Q126334,,SR Colmar,local,C6,2026-10-09,le principal derby se joue à nouveau contre le SR Colmar
 Q126334,,FC Mulhouse,local,C6,2026-10-09,le « grand derby alsacien » par 9-1 sur le terrain de Mulhouse
 Q126334,Q19512,FC Sochaux-Montbéliard,other,C6,2026-10-09,quelques rivalités contre leur voisin du FC Sochaux-Montbéliard
 Q126334,,Bordeaux,other,C7,2026-10-09,il existe une rivalité entre ces deux groupes de supporters
-Q131215,Q131209,FK Austria Wien,other,C63,2026-10-17
-Q131209,Q131215,SK Rapid Wien,other,C63,2026-10-17
-Q659780,Q124007617,SK Sturm Graz,other,C64,2026-10-17
-Q124007617,Q659780,Grazer AK,other,C64,2026-10-17
-Q392310,Q457460,SV Ried,other,C64,2026-10-17
-Q457460,Q392310,LASK,other,C64,2026-10-17
+Q131215,Q131209,FK Austria Wien,local,C63,2026-11-18,local derby match between city rivals FK Austria Wien and SK Rapid Wien
+Q131209,Q131215,SK Rapid Wien,local,C63,2026-11-18,local derby match between city rivals FK Austria Wien and SK Rapid Wien
+Q659780,Q124007617,SK Sturm Graz,other,C64,2026-11-18,Graz Derby: Grazer AK vs. Sturm Graz
+Q124007617,Q659780,Grazer AK,other,C64,2026-11-18,Graz Derby: Grazer AK vs. Sturm Graz
+Q392310,Q457460,SV Ried,other,C64,2026-11-18,Upper Austrian Derby : LASK Linz vs. SV Ried
+Q457460,Q392310,LASK,other,C64,2026-11-18,Upper Austrian Derby : LASK Linz vs. SV Ried
 Q696525,Q392310,LASK,local,C64,2026-11-18,Linz Derby: FC Blau-Weiß Linz vs. LASK Linz
 Q392310,Q696525,FC Blau-Weiß Linz,local,C64,2026-11-18,Linz Derby: FC Blau-Weiß Linz vs. LASK Linz
-Q261813,Q22866,SV Austria Salzburg,other,C64,2026-10-17
-Q22866,Q261813,FC Wacker Innsbruck,other,C64,2026-10-17
-Q694484,,SK Austria Klagenfurt,other,C64,2026-10-17
-Q179658,Q204237,Dinamo București,other,C65,2026-10-17
-Q204237,Q179658,FCSB,other,C65,2026-10-17
-Q179658,Q245162,FC Rapid București,other,C66,2026-10-17
-Q245162,Q179658,FCSB,other,C66,2026-10-17
-Q753462,Q205998,CFR Cluj,other,C67,2026-10-17
-Q205998,Q753462,FC Universitatea Cluj,other,C67,2026-10-17
-Q680770,Q4654417,Știința Poli Timișoara,other,C68,2026-10-17
-Q4654417,Q680770,UTA Arad,other,C68,2026-10-17
-Q1322550,,FC Astra Giurgiu,other,C69,2026-10-17
-Q1322550,Q245162,FC Rapid București,other,C70,2026-10-17
-Q245162,Q1322550,FC Petrolul Ploiești,other,C70,2026-10-17
-Q1262822,,ACS Foresta Suceava,other,C71,2026-10-17
+Q261813,Q22866,SV Austria Salzburg,other,C64,2026-11-18,Western derby: Wacker Innsbruck vs. Austria Salzburg
+Q22866,Q261813,FC Wacker Innsbruck,other,C64,2026-11-18,Western derby: Wacker Innsbruck vs. Austria Salzburg
+Q694484,,SK Austria Klagenfurt,other,C64,2026-11-18,Carinthian derby : Wolfsberger AC vs. SV Austria Klagenfurt
+Q179658,Q204237,Dinamo București,other,C65,2026-11-18,a football match between Bucharest rivals FCSB and Dinamo București
+Q204237,Q179658,FCSB,other,C65,2026-11-18,a football match between Bucharest rivals FCSB and Dinamo București
+Q179658,Q245162,FC Rapid București,local,C66,2026-11-18,"the football local derby in Bucharest, Romania, between FCSB and FC Rapid București"
+Q245162,Q179658,FCSB,local,C66,2026-11-18,"the football local derby in Bucharest, Romania, between FCSB and FC Rapid București"
+Q753462,Q205998,CFR Cluj,other,C67,2026-11-18,refers to football matches between CFR Cluj and Universitatea Cluj
+Q205998,Q753462,FC Universitatea Cluj,other,C67,2026-11-18,refers to football matches between CFR Cluj and Universitatea Cluj
+Q680770,Q4654417,Știința Poli Timișoara,other,C68,2026-11-18,a match between the fierce rivals SSU Politehnica Timișoara and UTA Arad
+Q4654417,Q680770,UTA Arad,other,C68,2026-11-18,a match between the fierce rivals SSU Politehnica Timișoara and UTA Arad
+Q1322550,,FC Astra Giurgiu,other,C69,2026-11-18,any match between Romanian clubs Petrolul Ploiești and Astra Giurgiu
+Q1322550,Q245162,FC Rapid București,other,C70,2026-11-18,a Romanian football derby contested between Liga I clubs Rapid București and Petrolul Ploiești
+Q245162,Q1322550,FC Petrolul Ploiești,other,C70,2026-11-18,a Romanian football derby contested between Liga I clubs Rapid București and Petrolul Ploiești
+Q1262822,,ACS Foresta Suceava,other,C71,2026-11-18,North-East derby: FC Botoşani vs Foresta Suceava vs Politehnica Iași
 Q1262822,,CSM Politehnica Iași,local,C71,2026-11-18,North-East derby: FC Botoşani vs Foresta Suceava vs Politehnica Iași
-Q220863,,Dacia Unirea Brăila,other,C71,2026-10-17
-Q1386940,Q680770,UTA Arad,other,C71,2026-10-17
-Q680770,Q1386940,Bihor Oradea,other,C71,2026-10-17
-Q173009,Q188656,FK Partizan,other,C72,2026-10-17
-Q188656,Q173009,FK Crvena zvezda,other,C72,2026-10-17
-Q207501,Q188656,FK Partizan,other,C73,2026-10-17
-Q188656,Q207501,FK Vojvodina,other,C73,2026-10-17
-Q207501,Q94605,FK Spartak Subotica,other,C74,2026-10-17
-Q94605,Q207501,FK Vojvodina,other,C74,2026-10-17
-Q995069,,FK Rad,other,C74,2026-10-17
-Q421665,Q421940,FK Smederevo 1924,other,C74,2026-10-17
-Q421940,Q421665,FK Radnički 1923,other,C74,2026-10-17
-Q5426131,Q1137993,FK Radnički Niš,other,C74,2026-10-17
-Q1137993,Q5426131,GFK Dubočica,other,C74,2026-10-17
-Q189671,Q190526,BSC Young Boys,other,C75,2026-10-17
-Q190526,Q189671,FC Basel,other,C75,2026-10-17
-Q189671,Q206692,FC Zürich,other,C75,2026-10-17
-Q206692,Q189671,FC Basel,other,C75,2026-10-17
-Q201360,Q206692,FC Zürich,other,C76,2026-10-17
-Q206692,Q201360,Grasshopper Club Zürich,other,C76,2026-10-17
-Q190526,Q464775,FC Thun,other,C75,2026-10-17
-Q464775,Q190526,BSC Young Boys,other,C75,2026-10-17
-Q223262,Q671950,SC Kriens,other,C75,2026-10-17
-Q671950,Q223262,FC Luzern,other,C75,2026-10-17
-Q659212,Q187091,FC Wil,other,C75,2026-10-17
-Q187091,Q659212,FC St. Gallen,other,C75,2026-10-17
-Q671950,,SC Cham,other,C75,2026-10-17
-Q633521,,FC Chiasso,other,C75,2026-10-17
-Q633521,,AC Bellinzona,other,C75,2026-10-17
-Q18659,Q18662,Cardiff City F.C.,other,C77,2026-10-17
-Q18662,Q18659,Swansea City A.F.C.,other,C77,2026-10-17
-Q18662,Q19456,Bristol City F.C.,other,C78,2026-10-17
-Q19456,Q18662,Cardiff City F.C.,other,C78,2026-10-17
-Q131603,Q15789,FC Bayern München,other,R8,2026-10-17
-Q131603,Q97905916,FC Augsburg,other,R6,2026-10-17
-Q170105,Q4512,VfB Stuttgart,other,R13,2026-10-17
-Q142005,Q6463,FC St. Pauli,other,R17,2026-10-17
-Q310608,Q104770,1. FC Köln,other,R2,2026-10-17
-Q695008,Q104770,1. FC Köln,other,R2,2026-10-17
-Q157352,Q38245,Eintracht Frankfurt,other,R2,2026-10-17
-Q631,Q1543,AC Milan,other,C79,2026-10-17
-Q1543,Q631,FC Inter,other,C79,2026-10-17
-Q631,Q1422,Juventus FC,other,C80,2026-10-17
-Q1422,Q631,FC Inter,other,C80,2026-10-17
+Q220863,,Dacia Unirea Brăila,other,C71,2026-11-18,Lower Danube derby: Oțelul Galați vs. Dacia Unirea Brăila or Farul Constanța
+Q1386940,Q680770,UTA Arad,other,C71,2026-11-18,Crișana derby: FC Bihor Oradea vs. UTA Arad
+Q680770,Q1386940,Bihor Oradea,other,C71,2026-11-18,Crișana derby: FC Bihor Oradea vs. UTA Arad
+Q173009,Q188656,FK Partizan,local,C72,2026-11-18,is the local derby in Belgrade
+Q188656,Q173009,FK Crvena zvezda,local,C72,2026-11-18,is the local derby in Belgrade
+Q207501,Q188656,FK Partizan,other,C73,2026-11-18,A Serbian derby match must involve Vojvodina and either one of the Belgrade clubs
+Q188656,Q207501,FK Vojvodina,other,C73,2026-11-18,A Serbian derby match must involve Vojvodina and either one of the Belgrade clubs
+Q207501,Q94605,FK Spartak Subotica,other,C74,2026-11-18,Derbi nizije (Lowland derby) or Derbi ravnice (Plain derby): Vojvodina Novi Sad vs. Spartak Subotica
+Q94605,Q207501,FK Vojvodina,other,C74,2026-11-18,Derbi nizije (Lowland derby) or Derbi ravnice (Plain derby): Vojvodina Novi Sad vs. Spartak Subotica
+Q995069,,FK Rad,other,C74,2026-11-18,Political derby: FK Rad vs. FK Novi Pazar
+Q421665,Q421940,FK Smederevo 1924,other,C74,2026-11-18,Šumadija derby: Radnički Kragujevac vs. FK Smederevo
+Q421940,Q421665,FK Radnički 1923,other,C74,2026-11-18,Šumadija derby: Radnički Kragujevac vs. FK Smederevo
+Q5426131,Q1137993,FK Radnički Niš,other,C74,2026-11-18,South Serbian derby: GFK Dubočica vs. Radnički Niš
+Q1137993,Q5426131,GFK Dubočica,other,C74,2026-11-18,South Serbian derby: GFK Dubočica vs. Radnički Niš
+Q189671,Q190526,BSC Young Boys,other,C75,2026-11-18,"Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich"
+Q190526,Q189671,FC Basel,other,C75,2026-11-18,"Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich"
+Q189671,Q206692,FC Zürich,other,C75,2026-11-18,"Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich"
+Q206692,Q189671,FC Basel,other,C75,2026-11-18,"Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich"
+Q201360,Q206692,FC Zürich,other,C76,2026-11-18,a football match between rivals FC Zürich and Grasshopper Club Zurich
+Q206692,Q201360,Grasshopper Club Zürich,other,C76,2026-11-18,a football match between rivals FC Zürich and Grasshopper Club Zurich
+Q190526,Q464775,FC Thun,other,C75,2026-11-18,Bernese Derby: Young Boys vs. FC Thun
+Q464775,Q190526,BSC Young Boys,other,C75,2026-11-18,Bernese Derby: Young Boys vs. FC Thun
+Q223262,Q671950,SC Kriens,other,C75,2026-11-18,Luzerner Derby: FC Luzern vs. SC Kriens
+Q671950,Q223262,FC Luzern,other,C75,2026-11-18,Luzerner Derby: FC Luzern vs. SC Kriens
+Q659212,Q187091,FC Wil,other,C75,2026-11-18,St. Gallen Derby: FC St.Gallen vs. FC Wil
+Q187091,Q659212,FC St. Gallen,other,C75,2026-11-18,St. Gallen Derby: FC St.Gallen vs. FC Wil
+Q671950,,SC Cham,other,C75,2026-11-18,Zentralschweizer Derby: SC Cham vs. SC Kriens
+Q633521,,FC Chiasso,other,C75,2026-11-18,Derby del Ticino : FC Chiasso vs. AC Bellinzona vs. FC Lugano
+Q633521,,AC Bellinzona,other,C75,2026-11-18,Derby del Ticino : FC Chiasso vs. AC Bellinzona vs. FC Lugano
+Q18659,Q18662,Cardiff City F.C.,local,C77,2026-11-18,a local derby between Welsh association football clubs Cardiff City and Swansea City
+Q18662,Q18659,Swansea City A.F.C.,local,C77,2026-11-18,a local derby between Welsh association football clubs Cardiff City and Swansea City
+Q18662,Q19456,Bristol City F.C.,local,C78,2026-11-18,The Severnside derby is a local derby in football in the United Kingdom
+Q19456,Q18662,Cardiff City F.C.,local,C78,2026-11-18,The Severnside derby is a local derby in football in the United Kingdom
+Q131603,Q15789,FC Bayern München,local,R8,2026-11-18,Münchner Lokalderby
+Q131603,Q97905916,FC Augsburg,other,R6,2026-11-18,"an association football rivalry in Bavaria, Germany, between FC Augsburg and TSV 1860 Munich"
+Q170105,Q4512,VfB Stuttgart,local,R13,2026-11-18,Stuttgarter Lokalderby
+Q142005,Q6463,FC St. Pauli,other,R17,2026-11-18,is an association football rivalry between German clubs FC Hansa Rostock and FC St. Pauli
+Q310608,Q104770,1. FC Köln,local,R2,2026-11-18,Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln
+Q695008,Q104770,1. FC Köln,local,R2,2026-11-18,Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln
+Q157352,Q38245,Eintracht Frankfurt,local,R2,2026-11-18,Frankfurt derby: Eintracht Frankfurt vs. FSV Frankfurt
+Q631,Q1543,AC Milan,local,C79,2026-11-18,It is one of the two major crosstown derbies in association football
+Q1543,Q631,FC Inter,local,C79,2026-11-18,It is one of the two major crosstown derbies in association football
+Q631,Q1422,Juventus FC,other,C80,2026-11-18,the name of the football derby between Internazionale of Milan and Juventus of Turin
+Q1422,Q631,FC Inter,other,C80,2026-11-18,the name of the football derby between Internazionale of Milan and Juventus of Turin
 Q2609,Q2739,AS Roma,local,C81,2026-11-18,"is the football local derby in Rome, Italy, between Lazio and Roma"
 Q2739,Q2609,SS Lazio,local,C81,2026-11-18,"is the football local derby in Rome, Italy, between Lazio and Roma"
 Q1422,Q2768,Torino FC,other,C82,2026-10-17
@@ -684,7 +684,7 @@ Q522283,Q483020,Paris Saint-Germain FC,other,C226,2026-10-17,le Red Star entreti
 Q522283,Q1051013,Paris FC,local,C226,2026-10-17,le principal derby est celui opposant le Red Star au Paris Football Club
 Q760736,Q210864,Le Mans Football Club,local,C227,2026-10-17,derby contre le Mans est le plus populaire étant considéré comme le derby du Maine
 Q760736,Q845137,Angers SCO,local,C227,2026-10-17,"Les autres derbies, plus récents, opposent le Stade lavallois au SCO Angers"
-Q845137,Q192071,Football Club de Nantes,other,C228,2026-10-17,Le principal compétiteur du SCO d'Angers est le FC Nantes
+Q845137,Q192071,Football Club de Nantes,main,C228,2026-11-18,Le principal compétiteur du SCO d'Angers est le FC Nantes
 Q845137,Q760736,Stade lavallois,local,C228,2026-10-17,Le derby avec le Stade lavallois est né à la fin des années 1970
 Q18529,,Chester,local,C229,2026-10-17,Wrexham has a fierce rivalry with Chester; the two contest the cross-border derby
 Q18529,,Shrewsbury Town,other,C229,2026-10-17,also have a fierce rivalry with Shrewsbury Town and Tranmere Rovers due to geographical proximity

@@ -204,3 +204,180 @@ Read on 2026-11-18 through the probe workflow (PR #226, runs 1 to 3; 63 requests
 - Romanian: no changed row has a Romanian text (quotes are shown untranslated); `docs/ro-review.md` has no culture data rows, only the `riv.*` labels (`grep -c 'Q[0-9]' docs/ro-review.md` gives 0 rows with a club id), so nothing to update.
 - `check_club_culture.py`, `check_derbies.py`, `check_translations.py`: exit 0. `test_sheet_tickets.js` and `test_derbies.js` run locally (results in the PR).
 - Probe: 3 runs of 8, none failed before a request. Workflow and script removed in their own commit before the merge.
+
+## Phase 5b: reclassifying the quote-less `other` rows of club-rivalries.csv
+
+Method (written before any page was read): the population is every row of
+`data/club-rivalries.csv` with class `other` and an empty quote, ordered by
+row id (line number, the header is line 1); 323 such rows on 2026-11-18. Each
+session takes the first 100 that have no line in this section yet. Each row's
+source page is read only through the temporary probe workflow (MediaWiki
+parse API, User-Agent `FootballPlannerBot/1.0
+(https://github.com/AlexGrozavul/Football)`, `maxlag=5`), which posts only
+the sentences naming both clubs (plus class words) and their section heading.
+Classes follow the coordinator's decision of 18 Nov 2026: `local` only where
+the page calls the pair a local derby (or the same words in the page's
+language: Lokalderby, derby local, derby cittadino, city derby, Stadtderby);
+`main` where it calls the other club the main rival (or arch-rival, as the
+class table of files.md has it); otherwise `other`. A named derby alone is
+not enough for `local`.
+
+### Session 1 (2026-11-18): batch
+
+Batch (100 row ids): 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 45, 46, 47, 48, 49, 50, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111.
+Extra rows: 687 (Angers SCO v FC Nantes; it has a quote, so it is not in the
+batch: "principal compétiteur" is re-read for the main decision) and 112
+(FC Inter v Juventus, partner of 111, outside the batch).
+
+### Session 1 (2026-11-18): results
+
+Per row: id, club v rival, verdict, class before -> after, quote, page (source id). Pages read in three probe runs (run1 1e9f8a3, run2 955ab5a, run3 5602810; 50 requests).
+
+- 3: 1. FC Köln v FC Viktoria Köln: **local**, other -> local, "Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 4: 1. FC Köln v SC Fortuna Köln: **local**, other -> local, "Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 5: 1. FC Union Berlin v BFC Dynamo: **local**, other -> local, "East Berlin derby: Union Berlin vs. BFC Dynamo", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 6: 1. FC Union Berlin v Hertha BSC: **other**, other -> other, "has more recently referred to the derby between 1. FC Union Berlin and Hertha BSC", R3 https://en.wikipedia.org/wiki/Berlin_derby
+- 7: Borussia Dortmund v FC Bayern München: **other**, other -> other, "the name given to any football match between Bayern Munich and Borussia Dortmund", R4 https://en.wikipedia.org/wiki/Der_Klassiker
+- 8: Borussia Dortmund v FC Schalke 04: **other**, other -> other, "It is considered the greatest rivalry in German football.", R5 https://en.wikipedia.org/wiki/Revierderby
+- 10: Eintracht Frankfurt v FSV Frankfurt: **local**, other -> local, "Frankfurt derby: Eintracht Frankfurt vs. FSV Frankfurt", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 11: Eintracht Frankfurt v SV Darmstadt 98: **other**, other -> other, "Hesse derby", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 12: FC Augsburg v TSV 1860 München: **other**, other -> other, "an association football rivalry in Bavaria, Germany, between FC Augsburg and TSV 1860 Munich", R6 https://en.wikipedia.org/wiki/FC_Augsburg%E2%80%93TSV_1860_Munich_rivalry
+- 13: FC Augsburg v TSV Schwaben Augsburg: **other**, other -> other, "in more recent times, a game between Schwaben Augsburg and FC Augsburg", R7 https://en.wikipedia.org/wiki/Augsburg_derby
+- 14: FC Bayern München v Borussia Dortmund: **other**, other -> other, "the name given to any football match between Bayern Munich and Borussia Dortmund", R4 https://en.wikipedia.org/wiki/Der_Klassiker
+- 15: FC Bayern München v Real Madrid Club de Fútbol: **other**, other -> other, "a European club rivalry between Bayern Munich and Real Madrid", R9 https://en.wikipedia.org/wiki/Bayern_Munich%E2%80%93Real_Madrid_rivalry
+- 16: FC Bayern München v TSV 1860 München: **local**, other -> local, "Münchner Lokalderby", R8 https://en.wikipedia.org/wiki/Munich_derby
+- 17: FC Bayern München v Werder Bremen: **other**, other -> other, "Nord-Süd Klassiker ('North-South classic')", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 18: FC Schalke 04 v Borussia Dortmund: **other**, other -> other, "It is considered the greatest rivalry in German football.", R5 https://en.wikipedia.org/wiki/Revierderby
+- 19: Hamburger SV v FC St. Pauli: **local**, other -> local, "The Hamburg derby (German: Hamburger Stadtderby) is a football rivalry between two major Hamburg sides", R10 https://en.wikipedia.org/wiki/Hamburg_derby
+- 20: Hamburger SV v Werder Bremen: **other**, other -> other, "The Nordderby or Northern derby is a match between Hamburger SV and Werder Bremen", R11 https://en.wikipedia.org/wiki/Nordderby
+- 21: VfB Stuttgart v Karlsruher SC: **other**, other -> other, "Als Baden-Württemberg-Derby wird das Fußballspiel zwischen dem Karlsruher SC und dem VfB Stuttgart bezeichnet", R12 https://de.wikipedia.org/wiki/Baden-W%C3%BCrttemberg-Derby
+- 22: VfB Stuttgart v Stuttgarter Kickers: **local**, other -> local, "Stuttgarter Lokalderby", R13 https://en.wikipedia.org/wiki/Stuttgart_derby
+- 23: Werder Bremen v FC Bayern München: **other**, other -> other, "Nord-Süd Klassiker ('North-South classic')", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 24: Werder Bremen v Hamburger SV: **other**, other -> other, "The Nordderby or Northern derby is a match between Hamburger SV and Werder Bremen", R11 https://en.wikipedia.org/wiki/Nordderby
+- 25: 1. FC Heidenheim 1846 v VfR Aalen: **other**, other -> other, "Ostalb-Derby", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 26: 1. FC Kaiserslautern v 1. FC Saarbrücken: **other**, other -> other, "Südwest derby ('south-western derby')", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 27: 1. FC Kaiserslautern v Karlsruher SC: **other**, other -> other, "Abneigung besteht heutzutage gegenüber den Anhängern des VfB Stuttgart (siehe Baden-Württemberg-Derby), des 1. FC Kaiserslautern", R14 https://de.wikipedia.org/wiki/Karlsruher_SC
+- 28: 1. FC Nürnberg v SpVgg Greuther Fürth: **local**, other -> local, "Das Frankenderby – auch fränkisches Lokalderby genannt", R15 https://de.wikipedia.org/wiki/Frankenderby
+- 29: Arminia Bielefeld v Preußen Münster: **other**, other -> other, "Westphalian derby", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 30: Eintracht Braunschweig v Hannover 96: **other**, other -> other, "a match between the two Lower Saxonian association football clubs Hannover 96 and Eintracht Braunschweig", R16 https://en.wikipedia.org/wiki/Lower_Saxony_derby
+- 31: FC St. Pauli v Hamburger SV: **local**, other -> local, "The Hamburg derby (German: Hamburger Stadtderby) is a football rivalry between two major Hamburg sides", R10 https://en.wikipedia.org/wiki/Hamburg_derby
+- 32: FC St. Pauli v Hansa Rostock: **other**, other -> other, "is an association football rivalry between German clubs FC Hansa Rostock and FC St. Pauli", R17 https://en.wikipedia.org/wiki/Politisches_derby
+- 33: Hannover 96 v Eintracht Braunschweig: **other**, other -> other, "a match between the two Lower Saxonian association football clubs Hannover 96 and Eintracht Braunschweig", R16 https://en.wikipedia.org/wiki/Lower_Saxony_derby
+- 34: Hertha BSC v 1. FC Union Berlin: **other**, other -> other, "has more recently referred to the derby between 1. FC Union Berlin and Hertha BSC", R3 https://en.wikipedia.org/wiki/Berlin_derby
+- 35: Karlsruher SC v 1. FC Kaiserslautern: **other**, other -> other, "Abneigung besteht heutzutage gegenüber den Anhängern des VfB Stuttgart (siehe Baden-Württemberg-Derby), des 1. FC Kaiserslautern", R14 https://de.wikipedia.org/wiki/Karlsruher_SC
+- 36: Karlsruher SC v VfB Stuttgart: **other**, other -> other, "Als Baden-Württemberg-Derby wird das Fußballspiel zwischen dem Karlsruher SC und dem VfB Stuttgart bezeichnet", R12 https://de.wikipedia.org/wiki/Baden-W%C3%BCrttemberg-Derby
+- 37: SV Darmstadt 98 v Eintracht Frankfurt: **other**, other -> other, "Hesse derby", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 38: SpVgg Greuther Fürth v 1. FC Nürnberg: **local**, other -> local, "Das Frankenderby – auch fränkisches Lokalderby genannt", R15 https://de.wikipedia.org/wiki/Frankenderby
+- 39: VfL Osnabrück v Preußen Münster: **other**, other -> other, "Grenzlandderby ('borderlands derby')", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 45: SK Rapid Wien v FK Austria Wien: **local**, other -> local, "local derby match between city rivals FK Austria Wien and SK Rapid Wien", C63 https://en.wikipedia.org/wiki/Vienna_derby
+- 46: FK Austria Wien v SK Rapid Wien: **local**, other -> local, "local derby match between city rivals FK Austria Wien and SK Rapid Wien", C63 https://en.wikipedia.org/wiki/Vienna_derby
+- 47: Grazer AK v SK Sturm Graz: **other**, other -> other, "Graz Derby: Grazer AK vs. Sturm Graz", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 48: SK Sturm Graz v Grazer AK: **other**, other -> other, "Graz Derby: Grazer AK vs. Sturm Graz", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 49: LASK v SV Ried: **other**, other -> other, "Upper Austrian Derby : LASK Linz vs. SV Ried", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 50: SV Ried v LASK: **other**, other -> other, "Upper Austrian Derby : LASK Linz vs. SV Ried", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 53: FC Wacker Innsbruck v SV Austria Salzburg: **other**, other -> other, "Western derby: Wacker Innsbruck vs. Austria Salzburg", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 54: SV Austria Salzburg v FC Wacker Innsbruck: **other**, other -> other, "Western derby: Wacker Innsbruck vs. Austria Salzburg", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 55: Wolfsberger AC v SK Austria Klagenfurt: **other**, other -> other, "Carinthian derby : Wolfsberger AC vs. SV Austria Klagenfurt", C64 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Austria
+- 56: FCSB v Dinamo București: **other**, other -> other, "a football match between Bucharest rivals FCSB and Dinamo București", C65 https://en.wikipedia.org/wiki/Eternal_derby_(Romania)
+- 57: Dinamo București v FCSB: **other**, other -> other, "a football match between Bucharest rivals FCSB and Dinamo București", C65 https://en.wikipedia.org/wiki/Eternal_derby_(Romania)
+- 58: FCSB v FC Rapid București: **local**, other -> local, "the football local derby in Bucharest, Romania, between FCSB and FC Rapid București", C66 https://en.wikipedia.org/wiki/Derbiul_Bucure%C8%99tiului
+- 59: FC Rapid București v FCSB: **local**, other -> local, "the football local derby in Bucharest, Romania, between FCSB and FC Rapid București", C66 https://en.wikipedia.org/wiki/Derbiul_Bucure%C8%99tiului
+- 60: FC Universitatea Cluj v CFR Cluj: **other**, other -> other, "refers to football matches between CFR Cluj and Universitatea Cluj", C67 https://en.wikipedia.org/wiki/Cluj_derby
+- 61: CFR Cluj v FC Universitatea Cluj: **other**, other -> other, "refers to football matches between CFR Cluj and Universitatea Cluj", C67 https://en.wikipedia.org/wiki/Cluj_derby
+- 62: UTA Arad v Știința Poli Timișoara: **other**, other -> other, "a match between the fierce rivals SSU Politehnica Timișoara and UTA Arad", C68 https://en.wikipedia.org/wiki/West_derby_(Romania)
+- 63: Știința Poli Timișoara v UTA Arad: **other**, other -> other, "a match between the fierce rivals SSU Politehnica Timișoara and UTA Arad", C68 https://en.wikipedia.org/wiki/West_derby_(Romania)
+- 64: FC Petrolul Ploiești v FC Astra Giurgiu: **other**, other -> other, "any match between Romanian clubs Petrolul Ploiești and Astra Giurgiu", C69 https://en.wikipedia.org/wiki/Former_Ploie%C8%99ti_derby
+- 65: FC Petrolul Ploiești v FC Rapid București: **other**, other -> other, "a Romanian football derby contested between Liga I clubs Rapid București and Petrolul Ploiești", C70 https://en.wikipedia.org/wiki/Primvs_derby
+- 66: FC Rapid București v FC Petrolul Ploiești: **other**, other -> other, "a Romanian football derby contested between Liga I clubs Rapid București and Petrolul Ploiești", C70 https://en.wikipedia.org/wiki/Primvs_derby
+- 67: FC Botoșani v ACS Foresta Suceava: **other**, other -> other, "North-East derby: FC Botoşani vs Foresta Suceava vs Politehnica Iași", C71 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania
+- 69: Oțelul Galați v Dacia Unirea Brăila: **other**, other -> other, "Lower Danube derby: Oțelul Galați vs. Dacia Unirea Brăila or Farul Constanța", C71 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania
+- 70: Bihor Oradea v UTA Arad: **other**, other -> other, "Crișana derby: FC Bihor Oradea vs. UTA Arad", C71 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania
+- 71: UTA Arad v Bihor Oradea: **other**, other -> other, "Crișana derby: FC Bihor Oradea vs. UTA Arad", C71 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Romania
+- 72: FK Crvena zvezda v FK Partizan: **local**, other -> local, "is the local derby in Belgrade", C72 https://en.wikipedia.org/wiki/Eternal_derby_(Serbia)
+- 73: FK Partizan v FK Crvena zvezda: **local**, other -> local, "is the local derby in Belgrade", C72 https://en.wikipedia.org/wiki/Eternal_derby_(Serbia)
+- 74: FK Vojvodina v FK Partizan: **other**, other -> other, "A Serbian derby match must involve Vojvodina and either one of the Belgrade clubs", C73 https://en.wikipedia.org/wiki/Derby_of_Serbia
+- 75: FK Partizan v FK Vojvodina: **other**, other -> other, "A Serbian derby match must involve Vojvodina and either one of the Belgrade clubs", C73 https://en.wikipedia.org/wiki/Derby_of_Serbia
+- 76: FK Vojvodina v FK Spartak Subotica: **other**, other -> other, "Derbi nizije (Lowland derby) or Derbi ravnice (Plain derby): Vojvodina Novi Sad vs. Spartak Subotica", C74 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia
+- 77: FK Spartak Subotica v FK Vojvodina: **other**, other -> other, "Derbi nizije (Lowland derby) or Derbi ravnice (Plain derby): Vojvodina Novi Sad vs. Spartak Subotica", C74 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia
+- 78: FK Novi Pazar v FK Rad: **other**, other -> other, "Political derby: FK Rad vs. FK Novi Pazar", C74 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia
+- 79: FK Radnički 1923 v FK Smederevo 1924: **other**, other -> other, "Šumadija derby: Radnički Kragujevac vs. FK Smederevo", C74 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia
+- 80: FK Smederevo 1924 v FK Radnički 1923: **other**, other -> other, "Šumadija derby: Radnički Kragujevac vs. FK Smederevo", C74 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia
+- 81: GFK Dubočica v FK Radnički Niš: **other**, other -> other, "South Serbian derby: GFK Dubočica vs. Radnički Niš", C74 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia
+- 82: FK Radnički Niš v GFK Dubočica: **other**, other -> other, "South Serbian derby: GFK Dubočica vs. Radnički Niš", C74 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Serbia
+- 83: FC Basel v BSC Young Boys: **other**, other -> other, "Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 84: BSC Young Boys v FC Basel: **other**, other -> other, "Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 85: FC Basel v FC Zürich: **other**, other -> other, "Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 86: FC Zürich v FC Basel: **other**, other -> other, "Die Klassikier rivalry: FC Basel vs. Grasshoppers, Young Boys or FC Zürich", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 87: Grasshopper Club Zürich v FC Zürich: **other**, other -> other, "a football match between rivals FC Zürich and Grasshopper Club Zurich", C76 https://en.wikipedia.org/wiki/Zurich_derby
+- 88: FC Zürich v Grasshopper Club Zürich: **other**, other -> other, "a football match between rivals FC Zürich and Grasshopper Club Zurich", C76 https://en.wikipedia.org/wiki/Zurich_derby
+- 89: BSC Young Boys v FC Thun: **other**, other -> other, "Bernese Derby: Young Boys vs. FC Thun", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 90: FC Thun v BSC Young Boys: **other**, other -> other, "Bernese Derby: Young Boys vs. FC Thun", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 91: FC Luzern v SC Kriens: **other**, other -> other, "Luzerner Derby: FC Luzern vs. SC Kriens", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 92: SC Kriens v FC Luzern: **other**, other -> other, "Luzerner Derby: FC Luzern vs. SC Kriens", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 93: FC St. Gallen v FC Wil: **other**, other -> other, "St. Gallen Derby: FC St.Gallen vs. FC Wil", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 94: FC Wil v FC St. Gallen: **other**, other -> other, "St. Gallen Derby: FC St.Gallen vs. FC Wil", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 95: SC Kriens v SC Cham: **other**, other -> other, "Zentralschweizer Derby: SC Cham vs. SC Kriens", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 96: FC Lugano v FC Chiasso: **other**, other -> other, "Derby del Ticino : FC Chiasso vs. AC Bellinzona vs. FC Lugano", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 97: FC Lugano v AC Bellinzona: **other**, other -> other, "Derby del Ticino : FC Chiasso vs. AC Bellinzona vs. FC Lugano", C75 https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe#Switzerland
+- 98: Swansea City A.F.C. v Cardiff City F.C.: **local**, other -> local, "a local derby between Welsh association football clubs Cardiff City and Swansea City", C77 https://en.wikipedia.org/wiki/South_Wales_derby
+- 99: Cardiff City F.C. v Swansea City A.F.C.: **local**, other -> local, "a local derby between Welsh association football clubs Cardiff City and Swansea City", C77 https://en.wikipedia.org/wiki/South_Wales_derby
+- 100: Cardiff City F.C. v Bristol City F.C.: **local**, other -> local, "The Severnside derby is a local derby in football in the United Kingdom", C78 https://en.wikipedia.org/wiki/Severnside_derby
+- 101: Bristol City F.C. v Cardiff City F.C.: **local**, other -> local, "The Severnside derby is a local derby in football in the United Kingdom", C78 https://en.wikipedia.org/wiki/Severnside_derby
+- 102: TSV 1860 München v FC Bayern München: **local**, other -> local, "Münchner Lokalderby", R8 https://en.wikipedia.org/wiki/Munich_derby
+- 103: TSV 1860 München v FC Augsburg: **other**, other -> other, "an association football rivalry in Bavaria, Germany, between FC Augsburg and TSV 1860 Munich", R6 https://en.wikipedia.org/wiki/FC_Augsburg%E2%80%93TSV_1860_Munich_rivalry
+- 104: Stuttgarter Kickers v VfB Stuttgart: **local**, other -> local, "Stuttgarter Lokalderby", R13 https://en.wikipedia.org/wiki/Stuttgart_derby
+- 105: Hansa Rostock v FC St. Pauli: **other**, other -> other, "is an association football rivalry between German clubs FC Hansa Rostock and FC St. Pauli", R17 https://en.wikipedia.org/wiki/Politisches_derby
+- 106: SC Fortuna Köln v 1. FC Köln: **local**, other -> local, "Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 107: FC Viktoria Köln v 1. FC Köln: **local**, other -> local, "Cologne derby: 1. FC Köln vs. Fortuna Köln vs. Viktoria Köln", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 108: FSV Frankfurt v Eintracht Frankfurt: **local**, other -> local, "Frankfurt derby: Eintracht Frankfurt vs. FSV Frankfurt", R2 https://en.wikipedia.org/wiki/German_football_rivalries
+- 109: FC Inter v AC Milan: **local**, other -> local, "It is one of the two major crosstown derbies in association football", C79 https://en.wikipedia.org/wiki/Derby_della_Madonnina
+- 110: AC Milan v FC Inter: **local**, other -> local, "It is one of the two major crosstown derbies in association football", C79 https://en.wikipedia.org/wiki/Derby_della_Madonnina
+- 111: FC Inter v Juventus FC: **other**, other -> other, "the name of the football derby between Internazionale of Milan and Juventus of Turin", C80 https://en.wikipedia.org/wiki/Derby_d%27Italia
+- 112: Juventus FC v FC Inter: **other**, other -> other, "the name of the football derby between Internazionale of Milan and Juventus of Turin", C80 https://en.wikipedia.org/wiki/Derby_d%27Italia
+- 687: Angers SCO v Football Club de Nantes: **main**, other -> main, "Le principal compétiteur du SCO d'Angers est le FC Nantes", C228 https://fr.wikipedia.org/wiki/Angers_Sporting_Club_de_l'Ouest
+
+Notes on the readings:
+
+- Rows 3, 4, 5, 10 and their partners (106, 107, 108) are `local` from the
+  section heading **Local** of *German football rivalries* ("Domestic club
+  football > Local"), under which the page lists these derbies; the quote is
+  the list line, the heading is the page's class word. Rows 11, 17, 23, 25,
+  26, 29, 37, 39 are table rows under "Regional" or "Inter-regional": the
+  quote is the derby's name from the table, class `other`.
+- Rows 109/110: "crosstown derbies" taken as the English for derby
+  cittadino. Rows 19/31: "Hamburger Stadtderby" and "Hamburg city derby".
+- Rows 8/18 (Dortmund v Schalke) stay `other`: the page says "the greatest
+  rivalry in German football" (marked citation needed), not that either
+  club is the other's main rival, and calls it a local derby only by
+  implication ("A local derby between other Ruhr teams ... is often called a
+  kleines Revierderby").
+- Rows 98/99 (Cardiff v Swansea) are `local` from "a local derby"; the page
+  also says Swansea "regarded Cardiff, Bristol City and Bristol Rovers as
+  their main rivals" (three clubs, so not `main`).
+- Row 13 (FC Augsburg v Schwaben Augsburg): the page's "local derby" is
+  said of BC Augsburg (FC Augsburg's predecessor) v Schwaben; for FC
+  Augsburg it says only "a game between", so `other`.
+- Rows 27/35: the KSC page names Kaiserslautern among three clubs of
+  "größte Abneigung"; not a main rival, `other`.
+- Rows 29 and 39 stay `other` while their partner rows 408 and 409 are
+  `local` from another source (C181); rows with different sources were not
+  aligned.
+- Row 67 (Botoșani v Foresta) is `other` from the same list line that phase 5
+  used to make Iași's row `local`; phase 5 applied the older "derby = local"
+  table, this phase the 18 Nov decision. Rows set `local` in phase 5 from a
+  named derby alone (Linz, North-East, Derby van het Zuiden, Markermeerderby,
+  Brentford v QPR) were not re-read.
+- Row 687 (Angers v Nantes, extra): "Le principal compétiteur du SCO d'Angers
+  est le FC Nantes" read again; `main` by the 18 Nov decision. Nantes has no
+  row of its own for Angers, so no partner row changed.
+- Every class change in the batch came with its partner row; all partners
+  but 112 were in the batch. Row 112 (Juventus v Inter, extra) got the quote
+  of row 111.
+
+Counts, session 1 (100 batch rows): local 27, main 0, other with a quote 73,
+not on the page 0, cannot verify 0. Extras: 687 to `main`, 112 `other` with a
+quote. Probe runs used: 3 of 8.
+
+Running total, phase 5b (sessions 1): local 27, main 1 (687), other with a
+quote 74, not on the page 0, cannot verify 0; quote-less `other` rows left:
+222 (of 323).
