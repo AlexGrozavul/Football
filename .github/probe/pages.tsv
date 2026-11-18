@@ -1,59 +1,20 @@
-# rows	url	regexA	regexB
-115/116	https://en.wikipedia.org/wiki/Derby_della_Mole	Juventus|Juve\b	Torino
-117/118	https://en.wikipedia.org/wiki/Derby_della_Lanterna	Genoa	Sampdoria
-119/120	https://en.wikipedia.org/wiki/Derby_del_Sole	Roma\b	Napoli
-121/122	https://en.wikipedia.org/wiki/ACF_Fiorentina%E2%80%93Juventus_FC_rivalry	Fiorentina	Juventus|Juve\b
-123/124	https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93AC_Milan_rivalry	Milan(?!o)	Juventus|Juve\b
+# rows	url	regexA	regexB	mode
+121/122	https://en.wikipedia.org/wiki/ACF_Fiorentina%E2%80%93Juventus_FC_rivalry	Juventus|Juve\b	Fiorentina
+123/124	https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93AC_Milan_rivalry	Juventus|Juve\b	Milan(?!o)
 125/126	https://en.wikipedia.org/wiki/Juventus_FC%E2%80%93SSC_Napoli_rivalry	Juventus|Juve\b	Napoli
-127/128	https://en.wikipedia.org/wiki/Derby_dell%27Appennino	Fiorentina	Bologna
-129/130	https://en.wikipedia.org/wiki/Derby_dell%27Emilia	Bologna	Parma
-131/132	https://en.wikipedia.org/wiki/Derby_delle_Due_Sicilie	Palermo	Napoli
-133/134	https://en.wikipedia.org/wiki/Derby_delle_Isole	Cagliari	Palermo
-135	https://en.wikipedia.org/wiki/Derby_dell%27Enza	Reggiana	Parma
-136	https://en.wikipedia.org/wiki/Derby_di_Sicilia	Catania	Palermo
-137/138	https://en.wikipedia.org/wiki/El_Cl%C3%A1sico	Barcelona|Barça|Barca\b	Real Madrid
-141/142	https://en.wikipedia.org/wiki/Derbi_Barcelon%C3%AD	Barcelona|Barça|Barca\b	Espanyol
-143/144	https://en.wikipedia.org/wiki/Seville_derby	Betis	Sevilla|Seville\b(?! derby)
-145/146	https://en.wikipedia.org/wiki/Valencia_derby	Levante	Valencia\b(?! derby)
-147/148	https://en.wikipedia.org/wiki/Basque_derby	Athletic	Real Sociedad|Sociedad
-149/150	https://en.wikipedia.org/wiki/Asturian_derby	Oviedo	Sporting
+135	https://en.wikipedia.org/wiki/Derby_dell%27Enza	Parma	Reggiana|Reggio
+137/138	https://en.wikipedia.org/wiki/El_Cl%C3%A1sico	Barcelona|Barça	Real Madrid|Madrid
+141/142	https://en.wikipedia.org/wiki/Derbi_Barcelon%C3%AD	Barcelona|Barça	Espanyol
+145/146	https://en.wikipedia.org/wiki/Valencia_derby	Valencia	Levante
 151/152	https://en.wikipedia.org/wiki/Canary_Islands_derby	Tenerife	Las Palmas
-153/154	https://en.wikipedia.org/wiki/Derbi_de_la_Comunitat	Valencia\b(?! derby)	Villarreal
-155/156	https://en.wikipedia.org/wiki/Derby_of_eastern_Andalusia	Granada	Málaga|Malaga
-157/158	https://en.wikipedia.org/wiki/South_Madrid_derby	Leganés|Leganes	Getafe
-159/160	https://en.wikipedia.org/wiki/El_Otro_Cl%C3%A1sico	Atlético|Atletico	Barcelona|Barça|Barca\b
-161/162	https://en.wikipedia.org/wiki/El_Viejo_Cl%C3%A1sico	Athletic	Real Madrid
-163/164	https://en.wikipedia.org/wiki/Athletic%E2%80%93Barcelona_cl%C3%A1sico	Athletic	Barcelona|Barça|Barca\b
-165	https://en.wikipedia.org/wiki/Palma_derby	Baleares	Mallorca
-166	https://en.wikipedia.org/wiki/Vall%C3%A8s_derby	Sabadell	Terrassa
-167/168	https://en.wikipedia.org/wiki/Le_Classique	Marseille|OM\b	Paris Saint-Germain|PSG
-169/170	https://en.wikipedia.org/wiki/Choc_des_Olympiques	Marseille|OM\b	Lyon|OL\b
-171/172	https://en.wikipedia.org/wiki/Derby_du_Nord	Lille|LOSC	Lens\b
-173/174	https://en.wikipedia.org/wiki/Olympique_Lyonnais%E2%80%93AS_Saint-%C3%89tienne_rivalry	Saint-Étienne|Saint-Etienne|ASSE	Lyon|OL\b
-175/176	https://en.wikipedia.org/wiki/Derby_de_la_C%C3%B4te_d%27Azur	Monaco	Nice\b
-177/178	https://en.wikipedia.org/wiki/Paris_derby	Paris FC	Paris Saint-Germain|PSG
-179/180	https://en.wikipedia.org/wiki/Derby_Lorrain	Nancy	Metz
-181	https://en.wikipedia.org/wiki/Derby_de_la_Garonne	Bordeaux	Toulouse
-182	https://en.wikipedia.org/wiki/Derby_de_la_Mediterran%C3%A9e	Nice\b	Bastia
-183/184	https://en.wikipedia.org/wiki/Derby_Breton	Guingamp	Lorient
-185/186	https://en.wikipedia.org/wiki/Derby_Breton	Guingamp	Rennes|Rennais
-187/188	https://en.wikipedia.org/wiki/Derby_Breton	Lorient	Rennes|Rennais
-189/190	https://en.wikipedia.org/wiki/De_Klassieker	Ajax	Feyenoord
-191/192	https://en.wikipedia.org/wiki/AFC_Ajax%E2%80%93PSV_Eindhoven_rivalry	Ajax	PSV
-193/194	https://en.wikipedia.org/wiki/Derby_of_the_North	Groningen	Heerenveen
-195/196	https://en.wikipedia.org/wiki/IJsselderby	Go Ahead|Eagles	Zwolle
-197/198	https://en.wikipedia.org/wiki/Twentse_derby	Twente	Heracles
-199/200	https://en.wikipedia.org/wiki/RSC_Anderlecht%E2%80%93Club_Brugge_KV_rivalry	Club Brugge|Club Bruges	Anderlecht
-201/202	https://en.wikipedia.org/wiki/Bruges_derby	Cercle	Club Brugge|Club Bruges
-203/204	https://en.wikipedia.org/wiki/Waasland_derby	Lokeren	Beveren
-205/206	https://en.wikipedia.org/wiki/Derby_of_the_Eternal_Enemies	Olympiacos|Olympiakos	Panathinaikos
-207/208	https://en.wikipedia.org/wiki/Athenian_derby	AEK	Panathinaikos
-209/210	https://en.wikipedia.org/wiki/A.E.K.%E2%80%93Olympiacos_rivalry	AEK	Olympiacos|Olympiakos
+153/154	https://en.wikipedia.org/wiki/Derbi_de_la_Comunitat	Valencia	Villarreal
+163/164	https://en.wikipedia.org/wiki/Athletic%E2%80%93Barcelona_cl%C3%A1sico	Athletic	Barcelona
+189/190	https://en.wikipedia.org/wiki/De_Klassieker	Feyenoord	Ajax
+197/198	https://en.wikipedia.org/wiki/Twentse_derby	Twente|Enschede	Heracles|Almelo
+199/200	https://en.wikipedia.org/wiki/RSC_Anderlecht%E2%80%93Club_Brugge_KV_rivalry	Anderlecht	Brugge|Bruges
 211/212	https://en.wikipedia.org/wiki/Derby_of_Thessaloniki	Aris\b	PAOK
 213/214	https://en.wikipedia.org/wiki/Double-headed_eagles_derby	AEK	PAOK
 215/216	https://en.wikipedia.org/wiki/Olympiacos%E2%80%93PAOK_rivalry	Olympiacos|Olympiakos	PAOK
-51/52	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe	LASK	Blau-Wei
-68	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe	Boto	Ia[sș]i
-295/296	https://en.wikipedia.org/wiki/West_London_derby	Brentford	QPR|Queens Park
-320/321	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Fortuna|Sittard	MVV
-340/341	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Almere	Volendam
+51/52	https://en.wikipedia.org/wiki/List_of_association_football_club_rivalries_in_Europe	Linz	-	one
+320/321	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Zuiden|Limburg|MVV	-	one
+340/341	https://en.wikipedia.org/wiki/Football_derbies_in_the_Netherlands	Markermeer|Almere|Volendam	-	one

@@ -33,7 +33,7 @@ class P(HTMLParser):
         s.stack.append(t)
         if s.skip_at is not None: return
         cls = dict(a).get('class') or ''
-        if t in SKIP or any(k in cls for k in ('navbox', 'reflist', 'mw-references', 'mw-editsection', 'metadata')):
+        if t in SKIP or any(k in cls for k in ('navbox', 'reflist', 'mw-references', 'mw-editsection', 'metadata', 'infobox', 'shortdescription')):
             s.skip_at = len(s.stack); return
         if t in ('h2', 'h3', 'h4'): s.flush(); s.inh = True; s.hb = []
         elif t in BLOCK: s.flush()
@@ -68,7 +68,8 @@ def page(url):
 def main():
     rows = [l.rstrip('\n').split('\t') for l in open(sys.argv[1]) if l.strip() and not l.startswith('#')]
     cache = {}; out = []
-    for ids, url, ra, rb in rows:
+    for r in rows:
+        ids, url, ra, rb = r[:4]; one = len(r) > 4 and r[4] == 'one'
         u = url.split('#')[0]
         if u not in cache: cache[u] = page(u)
         bl, title = cache[u]
@@ -76,13 +77,13 @@ def main():
         A, B = re.compile(ra), re.compile(rb); hits = []
         for head, txt in bl:
             for snt in sentences(txt):
-                if A.search(snt) and B.search(snt): hits.append((0 if CLASSW.search(snt) else 1, head, snt))
-        hits_sorted = sorted(enumerate(hits), key=lambda x: (x[1][0], x[0]))[:7]
+                if A.search(snt) and (one or B.search(snt)): hits.append((0 if CLASSW.search(snt) else (2 if ' | ' in snt else 1), head, snt))
+        hits_sorted = sorted(enumerate(hits), key=lambda x: (x[1][0], x[0]))[:8]
         out.append(f'## {ids} [{title}] {len(hits)} sentences name both')
         for _, (c, head, snt) in sorted(hits_sorted):
             out.append(f'- ({head}) {snt[:320]}')
     # grounds' places
-    qids = [l.strip() for l in open(os.path.join(os.path.dirname(sys.argv[1]), 'qids.txt')) if l.strip()]
+    qids = [l.strip() for l in open(os.path.join(os.path.dirname(sys.argv[1]), 'qids.txt')) if l.strip()] if os.path.exists(os.path.join(os.path.dirname(sys.argv[1]), 'qids.txt')) else []
     def ents(ids, props):
         res = {}
         for i in range(0, len(ids), 50):
