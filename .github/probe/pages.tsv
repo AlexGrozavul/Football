@@ -1,6 +1,0 @@
-# rows	url	regexA	regexB	mode	quote
-255	https://en.wikipedia.org/wiki/Nottingham_derby	Forest|County|clubs|teams|grounds|stadiums	[Cc]ity of Nottingham|in Nottingham|Trent|apart|closest|nearest|same city|both	both
-344	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Atromitos	Egaleo	line
-345	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Panionios	Apollon	line
-346/347	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	Kallithea	Panionios	line
-348	https://en.wikipedia.org/wiki/Football_derbies_in_Greece	AEK	Apollon	line
