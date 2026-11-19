@@ -104,3 +104,8 @@ Written before any page was read. 8 probe runs of 8 used.
 
 Left: 7 national competitions, 20 regional cups (2 more blocked), 0 "follow
 only" rows: 27 rows to research, plus the 2 blocked cups.
+
+## Batch 2 (2026-11-19)
+
+Rows 5 to 8: Regionalliga Nordost, Regionalliga Südwest, Regionalliga West,
+Franz Beckenbauer Supercup. Written before any page was read.
