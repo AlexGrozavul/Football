@@ -89,7 +89,7 @@ def read(page, url, legal_scan=False):
     ok, why = allowed(url)
     if not ok:
         emit(f"\n===== PAGE {url}\nNOT READ: {why}"); return []
-    if re.search(r"\.pdf($|\?)", url, re.I):
+    if re.search(r"\.pdf($|\?)", url, re.I) and "viewer.html" not in url:
         st, fu, ct, data = fetch_raw(url)
         t, how = pdf_text(data) if st == 200 else ("", "")
         emit(f"\n===== PDF {url} status={st} final={fu} via={how} chars={len(t)}\n{t}")
