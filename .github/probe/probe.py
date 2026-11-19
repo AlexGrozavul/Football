@@ -1,4 +1,4 @@
-"""Temporary probe (German competitions batch 2). Reads the URLs of pages.tsv
+"""Temporary probe (German competitions batch 3). Reads the URLs of pages.tsv
 and posts each page's text and full link list as PR comments. Removed before merge.
 pages.tsv: one line per entry. 'HOST <url>' = robots.txt, the landing page <url>
 and the legal-notice / terms links found on it; '<url>' = one page."""

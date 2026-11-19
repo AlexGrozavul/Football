@@ -1,5 +1,5 @@
 name: Probe competition (temporary)
-# Temporary, German competitions batch 2. Runs only when the head commit message contains [probe]. Removed before merge.
+# Temporary, German competitions batch 3. Runs only when the head commit message contains [probe]. Removed before merge.
 on:
   pull_request:
 permissions:
