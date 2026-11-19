@@ -2,8 +2,8 @@ id,name,country,level,type,wikidataQ,officialUrl
 de-bundesliga,Bundesliga,DE,1,league,Q82595,
 de-2-bundesliga,2. Bundesliga,DE,2,league,Q152665,
 de-3-liga,3. Liga,DE,3,league,Q154069,
-de-regionalliga-bayern,Regionalliga Bayern,DE,4,league,Q340179,
-de-regionalliga-nord,Regionalliga Nord,DE,4,league,Q539678,
+de-regionalliga-bayern,Regionalliga Bayern,DE,4,league,Q340179,https://www.bfv.de/spielbetrieb-verbandsleben/ligabetrieb/regionalliga-bayern
+de-regionalliga-nord,Regionalliga Nord,DE,4,league,Q539678,https://www.nordfv.de/spielbetrieb/ligen/herren-regionalliga-nord
 de-regionalliga-nordost,Regionalliga Nordost,DE,4,league,Q548937,
 de-regionalliga-suedwest,Regionalliga Suedwest,DE,4,league,Q322128,
 de-regionalliga-west,Regionalliga West,DE,4,league,Q555836,
@@ -63,3 +63,23 @@ int-uefa-conference-league,UEFA Conference League,,,international,,
 int-uefa-europa-league,UEFA Europa League,,,international,,
 int-uefa-european-championship,UEFA European Championship,,,tournament,,
 int-uefa-nations-league,UEFA Nations League,,,tournament,,
+de-verbandspokal-baden,Volksbanken Raiffeisenbanken bfv-Pokal,DE,,cup,,
+de-verbandspokal-suedbaden,Volksbanken Raiffeisenbanken SBFV-Pokal,DE,,cup,,
+de-verbandspokal-wuerttemberg,Volksbanken Raiffeisenbanken WFV-Pokal,DE,,cup,,https://www.wuerttfv.de/spielbetrieb/herren/wfv-pokal/
+de-verbandspokal-bayern,Bayerischer Toto-Pokal,DE,,cup,,https://www.bfv.de/spielbetrieb-verbandsleben/turniere/herren/toto-pokal
+de-verbandspokal-berlin,COSY-WASCH Landespokal,DE,,cup,,
+de-verbandspokal-brandenburg,Herren-Landespokal Brandenburg,DE,,cup,,
+de-verbandspokal-bremen,LOTTO-Pokal,DE,,cup,,
+de-verbandspokal-hamburg,LOTTO Hamburg-Pokal,DE,,cup,,
+de-verbandspokal-mecklenburg-vorpommern,Lübzer Pils Landespokal,DE,,cup,,
+de-verbandspokal-mittelrhein,Bitburger-Pokal,DE,,cup,,
+de-verbandspokal-niederrhein,Niederrheinpokal,DE,,cup,,
+de-verbandspokal-niedersachsen,Niedersachsenpokal 3. Liga und Regionalliga Nord,DE,,cup,,https://www.nfv.de/spielbetrieb/herren/krombacher-niedersachsenpokal
+de-verbandspokal-niedersachsen-amateure,Krombacher-Niedersachsenpokal der Amateure,DE,,cup,,https://www.nfv.de/spielbetrieb/herren/krombacher-niedersachsenpokal
+de-verbandspokal-rheinland,Rheinlandpokal,DE,,cup,,
+de-verbandspokal-saarland,Sparkassen-Pokal Saar,DE,,cup,,
+de-verbandspokal-sachsen,Wernesgrüner Sachsenpokal,DE,,cup,,
+de-verbandspokal-sachsen-anhalt,dachbleche24-Landespokal,DE,,cup,,
+de-verbandspokal-schleswig-holstein,LOTTO Pokal,DE,,cup,,
+de-verbandspokal-suedwest,Bitburger Verbandspokal,DE,,cup,,
+de-verbandspokal-thueringen,Thüringen Pokal,DE,,cup,,

@@ -458,5 +458,245 @@
   "en": "69f39669",
   "ro": "Wikipedia (ro) dă finala din 2026 în iunie 2026; o singură sursă pentru lună. C18 și C19 descriu doar formatul.",
   "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|format|C54#text": {
+  "en": "75b757c4",
+  "ro": "18 cluburi în 2026-27 și 306 meciuri în ligă, deci fiecare club joacă cu fiecare alt club acasă și în deplasare, plus patru meciuri de baraj (două dubluri, câte una la fiecare capăt al clasamentului). Doar din Wikipedia.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|format|C54#basis": {
+  "en": "b1642c58",
+  "ro": "Articolul Wikipedia (de) al sezonului, o singură sursă terță; site-urile ligii și cele ale DFB sunt gazde închise.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|promotion-relegation|C54#text": {
+  "en": "09e3ca8f",
+  "ro": "2026-27, doar din Wikipedia: campioana și vicecampioana promovează în Bundesliga, iar locul 3 joacă un baraj cu locul 16 din Bundesliga. Ultimele două retrogradează în 3. Liga, iar locul 16 joacă un baraj cu locul 3 din 3. Liga.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|promotion-relegation|C54#basis": {
+  "en": "d9fa0b4e",
+  "ro": "Articolul Wikipedia (de) al sezonului, o singură sursă terță.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|season-window|C54#text": {
+  "en": "8a46b197",
+  "ro": "2026-27, la nivel de lună, doar din Wikipedia: a început în august 2026, cu trei săptămâni înaintea Bundesligii; pauza de iarnă urmează etapei 16, în decembrie 2026, iar jocul se reia în ianuarie 2027; ultima etapă este programată pentru mai 2027, cu o săptămână înaintea finalei DFB-Pokal.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|season-window|C54#basis": {
+  "en": "994e22c5",
+  "ro": "Articolul Wikipedia (de) al sezonului, o singură sursă terță; datele la nivel de zi rămân pe pagina citată.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|tracking|C61;C68#text": {
+  "en": "40f3825e",
+  "ro": "Nicio pagină deschisă a organizatorului. Site-urile ligii (dfl.de, bundesliga.com) și cele ale DFB (dfb.de, fussball.de, centrul de date DFB) sunt închise acestei cercetări: condițiile de utilizare ale DFB interzic parcurgerea și extragerea automată a datelor. Site-ul asociației bavareze are în meniu o pagină de rezultate pentru 2. Bundesliga, dar la data verificării arăta încă sezonul 2025/26. Nicio pagină citită nu numește un difuzor pentru 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|tracking|C61;C68#basis": {
+  "en": "e6945521",
+  "ro": "Condițiile de utilizare ale DFB (citite în rularea 1) și pagina de rezultate BFV; nicio pagină a organizatorului nu a putut fi citită.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|other|C54;C55;C60#text": {
+  "en": "91e50eb1",
+  "ro": "Identitate, doar din Wikipedia: al doilea eșalon al fotbalului masculin din Germania; 2026-27 este al 53-lea sezon. Articolul despre DFB descrie Ligaverband (Bundesliga e. V., fost DFL Deutsche Fußball Liga) ca membrul DFB care organizează Bundesliga și 2. Bundesliga.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga|other|C54;C55;C60#basis": {
+  "en": "83a4c5c7",
+  "ro": "Articolele Wikipedia (de) despre ligă, sezon și DFB, o singură sursă terță.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|format|C56#text": {
+  "en": "17896101",
+  "ro": "20 de cluburi în 2026-27 și 380 de meciuri de campionat, deci fiecare club joacă cu fiecare alt club acasă și în deplasare, plus două meciuri de baraj cu locul 16 din 2. Bundesliga. Doar din Wikipedia.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|format|C56#basis": {
+  "en": "c38b4d18",
+  "ro": "Articolul Wikipedia (de) al sezonului, o singură sursă terță; DFB, care organizează liga, are gazde închise.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|qualification|C56;C57#text": {
+  "en": "c02bd0f8",
+  "ro": "Doar din Wikipedia: cele mai bine clasate patru echipe eligibile din 2026-27 se califică în DFB-Pokal 2027-28. Pe lângă locul sportiv, un club trebuie să îndeplinească condițiile economice și tehnico-organizatorice stabilite de DFB-Präsidium, printre ele un stadion cu peste 5,000 de locuri (din 2022-23), nocturnă și încălzire a gazonului.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|qualification|C56;C57#basis": {
+  "en": "fdf3d523",
+  "ro": "Articolele Wikipedia (de) despre ligă și sezon, o singură sursă terță.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|promotion-relegation|C56#text": {
+  "en": "b9cbc263",
+  "ro": "2026-27, doar din Wikipedia: campioana și vicecampioana promovează în 2. Bundesliga, iar locul 3 joacă un baraj cu locul 16 din 2. Bundesliga. Ultimele patru retrogradează în Regionalliga.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|promotion-relegation|C56#basis": {
+  "en": "d9fa0b4e",
+  "ro": "Articolul Wikipedia (de) al sezonului, o singură sursă terță.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|season-window|C56#text": {
+  "en": "c5c04c21",
+  "ro": "2026-27, la nivel de lună, doar din Wikipedia: a început în august 2026, odată cu 2. Bundesliga; pauza de iarnă urmează etapei 18, în decembrie 2026, iar jocul se reia în ianuarie 2027; ultima etapă este programată pentru mai 2027, cu o săptămână înaintea finalei DFB-Pokal.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|season-window|C56#basis": {
+  "en": "994e22c5",
+  "ro": "Articolul Wikipedia (de) al sezonului, o singură sursă terță; datele la nivel de zi rămân pe pagina citată.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|tracking|C61;C69#text": {
+  "en": "53fe6e32",
+  "ro": "Nicio pagină deschisă a organizatorului: DFB organizează liga, iar site-urile DFB (dfb.de, fussball.de, centrul de date DFB) sunt închise acestei cercetări, pentru că condițiile de utilizare ale DFB interzic parcurgerea și extragerea automată a datelor. Site-ul asociației bavareze are în meniu o pagină de rezultate pentru 3. Liga, dar la data verificării arăta încă sezonul 2025/26. Nicio pagină citită nu numește un difuzor pentru 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|tracking|C61;C69#basis": {
+  "en": "e6945521",
+  "ro": "Condițiile de utilizare ale DFB (citite în rularea 1) și pagina de rezultate BFV; nicio pagină a organizatorului nu a putut fi citită.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|other|C56;C57#text": {
+  "en": "329b301a",
+  "ro": "Identitate, doar din Wikipedia: al treilea eșalon al fotbalului masculin din Germania și o ligă profesionistă; 2026-27 este al 19-lea sezon. DFB o organizează.",
+  "status": "machine-unchecked"
+ },
+ "de-3-liga|other|C56;C57#basis": {
+  "en": "fdf3d523",
+  "ro": "Articolele Wikipedia (de) despre ligă și sezon, o singură sursă terță.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|format|C63;C64#text": {
+  "en": "d2d7fbc0",
+  "ro": "19 cluburi în 2026-27, deci calendarul-cadru are 38 de etape. Regulamentul meciurilor al BFV, care stabilește punctele și criteriile de departajare, nu a fost citit.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|format|C63;C64#basis": {
+  "en": "69476d69",
+  "ro": "publicat: regulile BFV de promovare și retrogradare pentru Spieljahr 2026/2027 și calendarul-cadru 2026/2027 (Stand 4 iunie 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|qualification|C62;C58#text": {
+  "en": "fdd84838",
+  "ro": "Cea mai bine clasată echipă de amatori a sezonului devine campioană bavareză a amatorilor (Bayerischer Amateurmeister) și primește un loc în primul tur al următoarei ediții DFB-Pokal: cea din 2025-26, FC Würzburger Kickers, intră în turul unu al DFB-Pokal 2026-27. Wikipedia marchează același loc pentru 2026-27 ca intrare în DFB-Pokal 2027-28.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|qualification|C62;C58#basis": {
+  "en": "027e925e",
+  "ro": "publicat: pagina BFV a Regionalliga Bayern, care arată sezonul 2026/27; Wikipedia (de) este de acord.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|promotion-relegation|C63#text": {
+  "en": "9d13a047",
+  "ro": "2026-27: campioana, dacă îndeplinește criteriile și are licența pentru 3. Liga, joacă două meciuri de promovare, acasă și în deplasare, cu campioana Regionalliga Nord; acestea sunt meciuri DFB, după regulile DFB. De regulă ultimele două retrogradează în Bayernliga, iar un club care nu cere sau nu primește admiterea este considerat retrogradat. Cele două cluburi clasate imediat deasupra celui mai bine clasat retrogradat joacă un tur de baraj cu echipele de baraj din Bayernliga Nord și Süd: dublă manșă, clubul din Bayernliga acasă primul; la egalitate după ambele meciuri, prelungiri de 2 x 15 minute în manșa a doua, apoi lovituri de departajare. Un al doilea tur se joacă doar dacă liga scade sub ținta de 18 cluburi sau o depășește.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|promotion-relegation|C63#basis": {
+  "en": "055d866a",
+  "ro": "publicat: regulile BFV de promovare și retrogradare pentru Spieljahr 2026/2027, secțiunile I până la IV.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|season-window|C64#text": {
+  "en": "3344a25b",
+  "ro": "2026-27, la nivel de lună: a început în iulie 2026; ultima etapă înaintea pauzei de iarnă este în decembrie 2026, iar jocul se reia în februarie 2027; ultima etapă (38) este în mai 2027, iar turul de baraj în iunie 2027. În calendar sunt și tururile Toto-Pokal.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|season-window|C64#basis": {
+  "en": "e7ffddbf",
+  "ro": "publicat: calendarul-cadru BFV 2026/2027 pentru Regionalliga Bayern (Stand 4 iunie 2026); datele la nivel de zi rămân în PDF.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|schedule-announcement|C62;C64#text": {
+  "en": "af9474a1",
+  "ro": "BFV publică un calendar-cadru (Rahmenterminkalender) pentru Regionalliga Bayern pe pagina ligii, ca PDF; cel pentru 2026-27 poartă o dată Stand din iunie 2026, înaintea startului din iulie.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|schedule-announcement|C62;C64#basis": {
+  "en": "78ae428f",
+  "ro": "Dedus (CLAUDE.md regula 9: rândurile de program sunt la nivel de lună și doar deduse; ciclu anterior observat): calendarul-cadru al unui singur sezon, cu data sa Stand.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|tracking|C62;C65;C66;C67;C70#text": {
+  "en": "e5d14757",
+  "ro": "Canalele organizatorului: pagina BFV a Regionalliga Bayern și pagina sa de rezultate (clasament, rezultate, live ticker; la data verificării arăta încă 2025-26). Live: din 2024-25, Bayerische Rundfunk transmite în direct meciul principal al fiecărei etape, ca stream pe BR24Sport, în aplicația BR24 și în ARD Mediathek, și în 2026-27; BFV anunță fiecare meci ca știre. Video: BFV.TV are rezumate ale fiecărui meci pe bfv.tv și pe canalul YouTube al BFV, difuzate și de cele douăsprezece televiziuni locale bavareze. Aplicația BFV are rezultate, știri și notificări, iar BFV are buletine informative. Legate de pe bfv.de, nedeschise: canalul YouTube RegionalligaBayern, un canal WhatsApp, BR24 Sport pe YouTube.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|tracking|C62;C65;C66;C67;C70#basis": {
+  "en": "cf3d5f24",
+  "ro": "publicat: pagina BFV a Regionalliga Bayern, care arată sezonul 2026/27, și știrea BFV din 18 noiembrie 2026; paginile aplicației și video nu arată un sezon.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|other|C62;C58#text": {
+  "en": "c19873d4",
+  "ro": "Identitate și deținătoare: cea mai înaltă ligă a Federației Bavareze de Fotbal (BFV), pe nivelul patru al fotbalului masculin din Germania, organizată de BFV. Campioana 2025-26 a fost 1. FC Nürnberg II, care a renunțat la meciurile de promovare; FC Würzburger Kickers, campioana bavareză a amatorilor, a câștigat meciurile de promovare cu 1. FC Lokomotive Leipzig, campioana din Nordost, și joacă în 3. Liga în 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|other|C62;C58#basis": {
+  "en": "2047e3f1",
+  "ro": "publicat: pagina BFV a Regionalliga Bayern, care arată sezonul 2026/27; Wikipedia (de) pentru nivel.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|other|C58#text": {
+  "en": "868fb533",
+  "ro": "Echipele de rezervă, doar din Wikipedia: echipele a doua ale cluburilor din Bundesliga și 2. Bundesliga pot folosi doar jucători de cel mult 23 de ani pentru tot sezonul, plus trei jucători mai în vârstă pe teren în același timp.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-bayern|other|C58#basis": {
+  "en": "ae9d1df7",
+  "ro": "Articolul Wikipedia (de) al sezonului, o singură sursă terță; regulamentele BFV nu au fost citite.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|format|C73;C59#text": {
+  "en": "75bb5b44",
+  "ro": "18 echipe de regulă (18 în 2026-27). Trei puncte pentru victorie, unul pentru egal. La egalitate de puncte: golaverajul, apoi golurile marcate; dacă egalitatea contează în continuare, un meci de departajare pe teren neutru, cu prelungiri de 2 x 15 minute la bărbați.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|format|C73;C59#basis": {
+  "en": "41908265",
+  "ro": "publicat: NFV Spielordnung (Stand 19 martie 2026) § 5 și § 6; Wikipedia (de) pentru lotul din 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|promotion-relegation|C73;C71;C63;C59#text": {
+  "en": "30b11406",
+  "ro": "De regulă ultimele trei retrogradează în Oberligile celor patru asociații regionale; retrogradează mai multe dacă retrogradările din 3. Liga duc liga peste 18. De regulă promovează trei echipe: campioana Oberliga Niedersachsen direct, plus câștigătoarea și locul doi ale unui tur de promovare între campioanele din Hamburg, Bremen și Schleswig-Holstein și vicecampioana din Niedersachsen. Campioana, dacă este admisă pentru 3. Liga, participă la meciurile de promovare în 3. Liga, organizate de DFB; în 2026-27 joacă acasă și în deplasare cu campioana Regionalliga Bayern. Conflict pentru Alexandru: articolul Wikipedia pentru 2026-27 spune că de regulă retrogradează ultimele două; regulile NFV spun trei.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|promotion-relegation|C73;C71;C63;C59#basis": {
+  "en": "3a9b7ea7",
+  "ro": "publicat: NFV Spielordnung (Stand 19 martie 2026) § 6; pagina ligii a NFV (fără sezon); regulile BFV de promovare pentru 2026/2027 și Wikipedia (de) pentru adversara din 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|season-window|C72;C59#text": {
+  "en": "250488ad",
+  "ro": "2026-27, la nivel de lună: a început la sfârșitul lui iulie 2026. Sfârșitul sezonului nu a fost găsit pe nicio pagină citită.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|season-window|C72;C59#basis": {
+  "en": "71e4fcad",
+  "ro": "publicat: știrea NFV din 5 mai 2026 (startul planificat) și Wikipedia (de) (meciul de deschidere), două surse independente.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|tracking|C74;C71;C75;C76#text": {
+  "en": "e1a0e61c",
+  "ro": "Canalele organizatorului: pagina ligii a NFV și serviciul său de rezultate, care încarcă rezultatele fussball.de doar după un clic de consimțământ (nefăcut, deci necitit); o pagină de abonare la buletinul informativ. Live: site-ul NFV trimite la \"NordFV Live\" (nordfv.tv), care redirecționează spre o pagină de live stream LEAGUES pentru Regionalliga Nord; condițiile acelei gazde nu au fost citite. Legate de pe nordfv.de, nedeschise: canalul YouTube @regionalliganord_offiziell și pagina Facebook RegionalligaNord.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|tracking|C74;C71;C75;C76#basis": {
+  "en": "80316b61",
+  "ro": "Pagina principală, pagina ligii, pagina de rezultate și pagina buletinului informativ ale NFV, niciuna arătând un sezon (standardul Frankfurt).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|other|C71;C59#text": {
+  "en": "758efe5e",
+  "ro": "Identitate și deținătoare: o ligă masculină pe nivelul patru, pentru cluburile din Niedersachsen, Hamburg, Bremen și Schleswig-Holstein; din 2012-13 o organizează Norddeutscher Fußball-Verband (NFV), înainte o organiza DFB. Campioana 2025-26 a fost SV Meppen, care a promovat direct în 3. Liga (în 2026 locul de promovare directă era al campioanei din Nord).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nord|other|C71;C59#basis": {
+  "en": "6cebc6e5",
+  "ro": "publicat: pagina ligii a NFV (fără sezon; listează campioana din 2026) și Wikipedia (de) (SV Meppen în 3. Liga 2026-27), două surse independente.",
+  "status": "machine-unchecked"
  }
 }
