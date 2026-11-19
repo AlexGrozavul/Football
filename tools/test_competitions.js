@@ -157,10 +157,11 @@ const server = http.createServer((req, res) => {
   }else check('there is an unresearched competition to check', false, 'every competition has info rows');
 
   // Added 2026-10-26 (DFB-Pokal research, PR #158; the Bundesliga since PR #159; Serie A since PR #161; Regionalliga Nordost,
-  // Südwest, West and the Supercup since PR #233): the official link
+  // Südwest, West and the Supercup since PR #233; the three play-offs since PR #234): the official link
   // (none for the Bundesliga, whose own site was not opened) and the repeated "other" rows, read from the files.
   for(const id of ['de-dfb-pokal', 'de-bundesliga', 'it-serie-a', 'de-2-bundesliga', 'de-3-liga', 'de-regionalliga-bayern', 'de-regionalliga-nord',
-      'de-regionalliga-nordost', 'de-regionalliga-suedwest', 'de-regionalliga-west', 'de-dfl-supercup']){
+      'de-regionalliga-nordost', 'de-regionalliga-suedwest', 'de-regionalliga-west', 'de-dfl-supercup',
+      'de-bundesliga-relegation-play-off', 'de-2-bundesliga-relegation-play-off', 'de-aufstiegsspiele-zur-3-liga']){
     const comp = comps.find(c => c.id === id), name = comp ? comp.name : id;
     check(`data has a ${name} competition with researched rows`, !!comp && researched.has(id));
     if(!comp) continue;

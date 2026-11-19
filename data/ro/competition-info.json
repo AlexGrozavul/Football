@@ -918,5 +918,135 @@
   "en": "747e6f26",
   "ro": "Doar Wikipedia (de).",
   "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|promotion-relegation|C37;C54#text": {
+  "en": "25863961",
+  "ro": "2026-27: clubul de pe locul 16 din Bundesliga joacă tur-retur cu clubul de pe locul 3 din 2. Bundesliga; câștigătorul joacă în Bundesliga în 2027-28, învinsul în 2. Bundesliga. Ultimele două din Bundesliga retrogradează, iar campioana și vicecampioana din 2. Bundesliga promovează direct. Cele două cluburi se cunosc abia după ultimele etape, la sfârșitul lui mai 2027.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|promotion-relegation|C37;C54#basis": {
+  "en": "c2eee342",
+  "ro": "Articolele de sezon 2026-27 de pe Wikipedia (de) (Bundesliga și 2. Bundesliga), citite în rularea 3 a PR #234. O singură sursă terță: site-urile DFL (robots.txt) și ale DFB (condițiile de utilizare) sunt închise acestei cercetări, deci nicio pagină a organizatorului nu o susține.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|schedule-announcement|C48;C47#text": {
+  "en": "9b96eb00",
+  "ro": "Zilele și orele de start sunt stabilite de partea ligii: Wikipedia numește DFL drept organismul care a readus barajul și îl comercializează, iar site-urile sale sunt închise acestei cercetări, deci nu s-a verificat unde se anunță întâi datele. În 2026 ambele manșe s-au jucat în a doua jumătate a lui mai, în săptămâna de după ultima etapă din Bundesliga, ambele seara. Așteptați același lucru la sfârșitul lui mai 2027 și verificați datele de mână.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|schedule-announcement|C48;C47#basis": {
+  "en": "d1684638",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile de program sunt la nivel de lună și doar deduse; ciclu trecut observat): datele din 2026 din Fußball-Bundesliga 2025/26 de pe Wikipedia (de) și rolul DFL din articolul Wikipedia despre baraj, citite în rularea 2 a PR #234. Un singur ciclu, o singură sursă terță.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|tracking|C47;C48;C37;C114#text": {
+  "en": "34d9deb5",
+  "ro": "Nicio pagină a organizatorului nu a putut fi citită: site-urile DFL (robots.txt) și ale DFB (condițiile de utilizare) sunt închise acestei cercetări. Site-ul Sat.1 redirecționează către joyn.de, care își rezervă extragerea de text și date, deci nici vreo pagină a unui radiodifuzor nu a fost citită. Rezultatele se găsesc în secțiunea Relegation a fiecărui articol de sezon de pe Wikipedia (de) (articolul Bundesliga 2025/26 are dubla din 2026, cel din 2026/27 locul de baraj) și în articolul Wikipedia despre baraj, care listează toate dublele din 1982. Articolul Wikipedia despre Bundesliga spune că Sat.1 a transmis barajul în clar în 2022-23; nicio pagină citită nu numește radiodifuzorul pentru 2026-27, deci verificați de mână. Nu s-a găsit nicio aplicație sau newsletter.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|tracking|C47;C48;C37;C114#basis": {
+  "en": "6556e9cc",
+  "ro": "Doar Wikipedia (de), citită în rulările 2-4 ale PR #234. www.sat1.de a redirecționat către www.joyn.de (rularea 5), a cărui notă legală își rezervă extragerea de text și date conform § 44b UrhG (rularea 6): oprire, nimic de acolo nu este folosit.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|other|C47;C48#text": {
+  "en": "ca69714e",
+  "ro": "Deținător și istorie: SC Paderborn 07 a câștigat dubla din 2026 cu VfL Wolfsburg și a promovat; Wolfsburg a retrogradat. Barajul a fost readus din 2008-09 (hotărât de DFL în octombrie 2007), după dublele dintre locul 16 din Bundesliga și locul 3 din 2. Bundesliga din 1982 până în 1991, când la egalitate se juca un al treilea meci. Din cele 18 duble de după 2009, clubul din Bundesliga a câștigat 14. Avantajul terenului: clubul cu mai multe zile libere înaintea turului, după programul sezonului încheiat, joacă întâi acasă; de regulă acesta a fost clubul din Bundesliga, a cărui ultimă etapă vine înaintea celei din 2. Bundesliga.",
+  "status": "machine-unchecked"
+ },
+ "de-bundesliga-relegation-play-off|other|C47;C48#basis": {
+  "en": "2c98bfae",
+  "ro": "Doar Wikipedia (de) (articolul despre baraj și Fußball-Bundesliga 2025/26), citită în rularea 2 a PR #234.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|promotion-relegation|C54;C56#text": {
+  "en": "830a6611",
+  "ro": "2026-27: clubul de pe locul 16 din 2. Bundesliga joacă tur-retur cu clubul de pe locul 3 din 3. Liga; câștigătorul joacă în 2. Bundesliga în 2027-28, învinsul în 3. Liga. Ultimele două din 2. Bundesliga retrogradează, iar campioana și vicecampioana din 3. Liga promovează direct; ultimele patru din 3. Liga retrogradează în Regionalliga.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|promotion-relegation|C54;C56#basis": {
+  "en": "c9e3eaf4",
+  "ro": "Articolele de sezon 2026-27 de pe Wikipedia (de) (2. Bundesliga și 3. Liga), citite în rularea 3 a PR #234. O singură sursă terță: site-urile DFL (robots.txt) și ale DFB (condițiile de utilizare) sunt închise acestei cercetări, deci nicio pagină a organizatorului nu o susține.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|schedule-announcement|C49;C54;C56#text": {
+  "en": "4e38c245",
+  "ro": "În 2026 ambele manșe s-au jucat în a doua jumătate a lui mai, după ultimele etape din 2. Bundesliga și 3. Liga, ambele seara. În 2026-27 ambele ligi își plănuiesc ultima etapă la sfârșitul lui mai 2027, cu o săptămână înaintea finalei DFB-Pokal, deci barajul este așteptat la sfârșitul lui mai sau începutul lui iunie 2027. Nu s-a verificat cine anunță zilele și orele de start: site-urile DFL și DFB sunt închise acestei cercetări. Verificați datele de mână.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|schedule-announcement|C49;C54;C56#basis": {
+  "en": "7b40ac93",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile de program sunt la nivel de lună și doar deduse; ciclu trecut observat): datele din 2026 din 2. Fußball-Bundesliga 2025/26 de pe Wikipedia (de) și ultimele etape plănuite din articolele 2026/27 ale 2. Bundesliga și 3. Liga, citite în rularea 3 a PR #234. Un singur ciclu, o singură sursă terță.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|tracking|C47;C49;C54;C68;C69#text": {
+  "en": "1877a816",
+  "ro": "Nicio pagină a organizatorului nu a putut fi citită: site-urile DFL (robots.txt) și ale DFB (condițiile de utilizare) sunt închise acestei cercetări, și nicio pagină a unui radiodifuzor nu a fost citită (site-ul Sat.1 redirecționează către joyn.de, care își rezervă extragerea de text și date). Rezultatele se găsesc în secțiunea Relegation a fiecărui articol de sezon al 2. Bundesliga de pe Wikipedia (de) (articolul 2025/26 are dubla din 2026, cel din 2026/27 locurile de baraj) și în articolul Wikipedia despre baraj. Paginile de rezultate ale BFV pentru 2. Bundesliga și 3. Liga (bfv.de) urmăresc cele două ligi ale căror cluburi se întâlnesc; la citire arătau sezonul 2025-26 și nu s-a verificat dacă listează barajul. Nicio pagină citită nu numește radiodifuzorul pentru 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|tracking|C47;C49;C54;C68;C69#basis": {
+  "en": "309df1bb",
+  "ro": "Wikipedia (de), citită în rulările 2 și 3 ale PR #234, și paginile de rezultate ale BFV, citite în rularea 4 (nu arată sezonul curent). Nicio sursă a organizatorului.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|other|C47;C49#text": {
+  "en": "c82848df",
+  "ro": "Deținător și istorie: SpVgg Greuther Fürth și-a păstrat locul în 2. Bundesliga în 2026 împotriva lui Rot-Weiss Essen (1:0 pierdut la Essen, 2:0 câștigat acasă); Essen a rămas în 3. Liga. Se joacă din 2008-09 după aceeași regulă ca barajul pentru Bundesliga; din cele 18 duble, clubul din 3. Liga a câștigat 12. VfL Osnabrück și FC Ingolstadt 04 au participat de câte patru ori, Osnabrück fără nicio victorie.",
+  "status": "machine-unchecked"
+ },
+ "de-2-bundesliga-relegation-play-off|other|C47;C49#basis": {
+  "en": "430450af",
+  "ro": "Doar Wikipedia (de) (articolul despre baraj și 2. Fußball-Bundesliga 2025/26), citită în rulările 2 și 3 ale PR #234.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|promotion-relegation|C63;C85;C62;C71#text": {
+  "en": "aca32b7b",
+  "ro": "2026-27: campioana din Regionalliga Bayern joacă tur-retur cu campioana din Regionalliga Nord pentru un loc în 3. Liga, fiecare doar dacă îndeplinește criteriile de admitere în 3. Liga și are licența. Campioana din Regionalliga Nordost promovează direct în acest sezon (locul direct se rotește între Nord, Nordost și Bayern), iar campioanele din West și Südwest în fiecare sezon. Meciurile sunt meciuri DFB după regulile DFB; DFB supraveghează și organizează turul.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|promotion-relegation|C63;C85;C62;C71#basis": {
+  "en": "b50ecbb5",
+  "ro": "publicat: Auf- und Abstiegsregelung der Regionalliga Bayern a BFV pentru 2026/2027 și pagina Regionalliga Nordost a NOFV care numește 2026/27 (doi organizatori, fiecare pentru sezon), cu pagina ligii a BFV (2026/27) și pagina ligii a NFV (fără sezon) pentru rotație și rolul DFB. Citite în rulările 2 și 3 ale PR #234.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|season-window|C64;C113#text": {
+  "en": "60c00f5d",
+  "ro": "2026-27: de la sfârșitul lui mai până la începutul lui iunie 2027. Meciurile urmează ultimei etape din Regionalliga Bayern, pe care calendarul-cadru o plasează la sfârșitul lui mai 2027; în 2026 turul a fost la sfârșitul lui mai, iar returul la începutul lui iunie. Doar la nivel de lună; zilele vor fi pe paginile organizatorului.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|season-window|C64;C113#basis": {
+  "en": "49aaa3c1",
+  "ro": "Dedus din calendarul-cadru 2026/2027 al BFV pentru Regionalliga Bayern (Stand iunie 2026, citit în rularea 3 a PR #234) și din datele din 2026 din Fußball-Regionalliga 2025/26 de pe Wikipedia (de) (rularea 4; ciclu trecut observat, o singură sursă terță).",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|schedule-announcement|C71;C113#text": {
+  "en": "a35f6c44",
+  "ro": "DFB supraveghează și organizează turul, deci stabilește zilele și orele de start; site-urile sale sunt închise acestei cercetări. În 2026 meciurile au venit la sfârșitul lui mai și începutul lui iunie, după încheierea sezoanelor din Regionalliga. Așteptați același tipar în 2027 și verificați datele de mână.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|schedule-announcement|C71;C113#basis": {
+  "en": "230e27b1",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile de program sunt la nivel de lună și doar deduse; ciclu trecut observat): rolul DFB din pagina ligii a NFV (rularea 3 a PR #234) și datele din 2026 din Fußball-Regionalliga 2025/26 de pe Wikipedia (de) (rularea 4). Un singur ciclu.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|tracking|C62;C70;C66;C115;C67;C71;C75;C76#text": {
+  "en": "1af06220",
+  "ro": "DFB, care organizează turul, are site-urile închise acestei cercetări, deci urmăriți cele două ligi ale căror campioane se întâlnesc în 2027. Bayern (BFV): pagina Regionalliga Bayern și pagina ei de rezultate (care la citire arăta sezonul 2025-26), aplicația BFV (rezultate, știri, notificări pentru ligile și echipele favorite), newsletterul lunar pentru fani al BFV și pagina TV și video a BFV (BFV.TV, transmisii Sporttotal.tv); pagina ligii a BFV are legături către un canal WhatsApp și un canal YouTube (listate, nedeschise). Nord (NFV): pagina Regionalliga Nord, serviciul ei de rezultate (încarcă fussball.de doar după un clic de consimțământ, nefăcut), înscrierea la newsletter și legăturile NordFV Live (nordfv.tv), Facebook, Instagram și YouTube (listate, nedeschise). Nicio pagină citită nu numește un radiodifuzor pentru meciurile din 2027.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|tracking|C62;C70;C66;C115;C67;C71;C75;C76#basis": {
+  "en": "f3f624de",
+  "ro": "Organizatorii celor două ligi care alimentează turul, nu ai turului; paginile lor nu arată niciun sezon, cu excepția paginii ligii a BFV (2026/27) și a paginii de rezultate (2025/26). Citite în rulările 3 și 4 ale PR #234.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|other|C62;C113#text": {
+  "en": "254e7c6e",
+  "ro": "Deținător: în 2026 Würzburger Kickers, din Regionalliga Bayern, a învins-o pe 1. FC Lokomotive Leipzig, campioana din Regionalliga Nordost, și joacă în 3. Liga în 2026-27; campioana bavareză, 1. FC Nürnberg II, renunțase la locul ei în aceste meciuri. Participă echipa cel mai bine clasată care are drept de promovare; dacă o echipă ar fi renunțat sau o ligă n-ar fi avut niciuna, cealaltă parte ar fi primit calificare din oficiu.",
+  "status": "machine-unchecked"
+ },
+ "de-aufstiegsspiele-zur-3-liga|other|C62;C113#basis": {
+  "en": "d5473bbf",
+  "ro": "publicat: pagina Regionalliga Bayern a BFV (care arată 2026/27) și Fußball-Regionalliga 2025/26 de pe Wikipedia (de), două surse independente, citite în rulările 3 și 4 ale PR #234; regula calificării din oficiu este doar din Wikipedia. Scorurile sunt în rândul de format.",
+  "status": "machine-unchecked"
  }
 }
