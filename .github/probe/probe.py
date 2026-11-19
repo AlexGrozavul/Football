@@ -108,6 +108,12 @@ def read(page, url, legal_scan=False):
             page.mouse.wheel(0, 3000); page.wait_for_timeout(400)
         page.evaluate("""() => { for (const e of document.querySelectorAll('[id*=consent i],[class*=consent i],[id*=cookie i],[class*=cookie i],[id*=usercentrics i],#onetrust-consent-sdk,[id^=sp_message],[class*=cmp-] ,[id*=cmp i]')) { if (e !== document.body && e !== document.documentElement) e.remove(); } document.body.style.overflow='auto'; }""")
         text = page.evaluate("() => document.body ? document.body.innerText : ''")
+        if "viewer.html" in url:
+            try:
+                page.wait_for_function("() => window.PDFViewerApplication && window.PDFViewerApplication.pdfDocument", timeout=30000)
+                text = "[pdf.js viewer: text of the document the viewer loaded]\n" + page.evaluate("""async () => { const d = window.PDFViewerApplication.pdfDocument; let o = ''; for (let i = 1; i <= d.numPages; i++) { const p = await d.getPage(i); const c = await p.getTextContent(); let line = ''; let y = null; for (const it of c.items) { const yy = it.transform ? Math.round(it.transform[5]) : y; if (y !== null && yy !== y) { o += line + '\\n'; line = ''; } line += it.str + (it.hasEOL ? '' : ''); y = yy; if (it.hasEOL) { o += line + '\\n'; line=''; } } o += line + '\\n--- page ' + i + ' ---\\n'; } return o; }""")
+            except Exception as e:
+                text += f"\n[pdf.js text extraction failed: {e}]"
         links = page.evaluate("() => Array.from(document.querySelectorAll('a[href]')).map(a => [(a.innerText||a.title||a.getAttribute('aria-label')||'').trim().replace(/\\s+/g,' ').slice(0,120), a.href])")
         title = page.title()
         emit(f"\n===== PAGE {url} status={st} final={page.url} title={title!r}\n{text}\n----- LINKS ({len(links)})")
