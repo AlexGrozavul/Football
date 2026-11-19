@@ -43,9 +43,9 @@ page, as the job prompt asked; that could not be done.
 | 6 | de-regionalliga-suedwest | researched | done (confirmed) | batch 2, PR #233, 2026-11-19 |
 | 7 | de-regionalliga-west | researched | done (confirmed) | batch 2, PR #233, 2026-11-19 |
 | 8 | de-dfl-supercup | researched | done (unverified: the DFL's sites are closed) | batch 2, PR #233, 2026-11-19 |
-| 9 | de-2-bundesliga-relegation-play-off | in batch 3 | missing | batch 3, 2026-11-19 |
-| 10 | de-aufstiegsspiele-zur-3-liga | in batch 3 | missing | batch 3, 2026-11-19 |
-| 11 | de-bundesliga-relegation-play-off | in batch 3 | missing | batch 3, 2026-11-19 |
+| 9 | de-2-bundesliga-relegation-play-off | researched | done (unverified: no open organiser or broadcaster page) | batch 3, PR #234, 2026-11-19 |
+| 10 | de-aufstiegsspiele-zur-3-liga | researched | done (unverified: the feeding leagues' channels; the DFB is closed) | batch 3, PR #234, 2026-11-19 |
+| 11 | de-bundesliga-relegation-play-off | researched | done (unverified: no open organiser or broadcaster page) | batch 3, PR #234, 2026-11-19 |
 
 ## Regional cups (Verbandspokal / Landespokal)
 
@@ -82,8 +82,8 @@ sending a team to the DFB-Pokal (NFV page), so it has two rows.
 | 32 | de-verbandspokal-thueringen | Thüringer FV (thueringerfv.de; tfv-erfurt.de forwards there) | Thüringen Pokal | pending | missing |
 | 33 | — | FLVW Westfalen (flvw.de) | not read: "Bot/Crawler detected", HTTP 400 | blocked | missing |
 
-Next batch: rows 9 to 11 (the three play-offs; their phase 4a rows are kept
-and corrected under the procedure). Then the regional cups from row 12.
+Next batch: the regional cups, rows 12 to 17 (Baden, Südbaden, Württemberg,
+then Bayern, Berlin, Brandenburg).
 
 ## Researched competitions
 
@@ -123,10 +123,23 @@ blocked), 0 "follow only" rows: 23 rows to research, plus the 2 blocked cups.
 
 ## Batch 3 (2026-11-19)
 
-Rows 9 to 11: 2. Bundesliga relegation play-off, Aufstiegsspiele zur 3. Liga,
+Rows 9 to 11 (PR #234): 2. Bundesliga relegation play-off, Aufstiegsspiele zur 3. Liga,
 Bundesliga relegation play-off (the last three national competitions; no
 regional cup is mixed into a national batch). Written before any page was
 read. Their phase 4a rows (PR #224) have a basis other than search-result
 summaries, so under the procedure they are not edited: only blank cells and
 missing topics are filled, and a difference with what is read goes to the
 report as a conflict.
+6 probe runs of 8 used (run 5 and 6 only to settle sat1.de, which forwards to
+joyn.de, closed by a § 44b UrhG reservation).
+
+| id | new rows | confirmed | inferred | unverified | rows in all | follow |
+|---|---|---|---|---|---|---|
+| de-bundesliga-relegation-play-off | 4 | 0 | 1 | 3 | 6 | done (Wikipedia only) |
+| de-2-bundesliga-relegation-play-off | 4 | 0 | 1 | 3 | 6 | done (Wikipedia, BFV results pages) |
+| de-aufstiegsspiele-zur-3-liga | 5 | 2 | 2 | 1 | 6 | done (BFV and NFV channels) |
+
+The phase 4a rows were not edited (their basis is not search summaries);
+differences are in open-problems.md. Left: 0 national competitions, 20
+regional cups (2 more blocked), 0 "follow only" rows: 20 rows to research,
+plus the 2 blocked cups.
