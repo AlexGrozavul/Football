@@ -698,5 +698,225 @@
   "en": "6cebc6e5",
   "ro": "publicat: pagina ligii a NFV (fără sezon; listează campioana din 2026) și Wikipedia (de) (SV Meppen în 3. Liga 2026-27), două surse independente.",
   "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|format|C87;C89;C88#text": {
+  "en": "aff0d204",
+  "ro": "18 echipe de regulă (18 în 2026-27), într-o singură serie; fiecare echipă joacă cu fiecare acasă și în deplasare, 34 de etape. Trei puncte pentru victorie, unul pentru egal. La egalitate de puncte: golaverajul, apoi golurile marcate, apoi rezultatele directe, apoi golurile din deplasare în meciurile directe, apoi toate golurile marcate; dacă egalitatea persistă, meciuri de departajare, iar dacă acestea nu sunt posibile, tragere la sorți. Meciurile de departajare și de baraj se joacă tur-retur: golurile din deplasare, apoi prelungiri de 2 x 15 minute în manșa a doua și penalty-uri. Meciurile se joacă de regulă la sfârșit de săptămână; duminica este ziua obișnuită, iar ora obișnuită de start este 14:00; dorințele televiziunilor au prioritate.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|format|C87;C89;C88#basis": {
+  "en": "b516d7f9",
+  "ro": "publicat: NOFV Durchführungsbestimmungen pentru Regionalliga Nordost 2026/27 (Stand 10 nov. 2025, modificat 26 iunie 2026) § 1, NOFV Spielordnung (Stand 1 iulie 2026) § 9, calendarul-cadru NOFV 2026/27 (34 de etape).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|promotion-relegation|C85;C86;C77#text": {
+  "en": "647236dd",
+  "ro": "În 2026-27 campioana promovează direct în 3. Liga: din 2020-21 West și Südwest au fiecare un loc fix de promovare directă, iar încă un loc direct se rotește între ligile Nord, Nordost și Bayern. Clubul de pe primul loc are dreptul să joace în 3. Liga; dacă renunță sau nu este admis, dreptul trece la următoarea echipă clasată care are drept de promovare. Retrogradare în NOFV-Oberliga: locul 18, iar și locul 17 dacă un club din zona NOFV retrogradează din 3. Liga (Wikipedia numește Hansa Rostock drept singurul astfel de club din 3. Liga în 2026-27). Promovează din NOFV-Oberliga: campioana fiecăreia dintre cele două serii (Nord și Süd).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|promotion-relegation|C85;C86;C77#basis": {
+  "en": "1f34e799",
+  "ro": "publicat: pagina Regionalliga a NOFV (care numește 2026/27) și regulile sale de promovare și retrogradare 2026/27 (Stand 22 iunie 2026); Wikipedia (de) 2026-27 doar pentru clauza Hansa Rostock.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|season-window|C88;C77#text": {
+  "en": "c65f27a2",
+  "ro": "2026-27, la nivel de lună: etapa 1 la sfârșitul lui iulie 2026; ultima etapă înaintea pauzei de iarnă este la mijlocul lui decembrie 2026; ianuarie 2027 are doar date pentru meciuri restante, iar etapele obișnuite se reiau la mijlocul lui februarie 2027; ultima etapă (34) este la sfârșitul lui mai 2027.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|season-window|C88;C77#basis": {
+  "en": "460ecfe1",
+  "ro": "publicat: calendarul-cadru NOFV 2026/27 (Stand 18 feb. 2026), cu Wikipedia (de) pentru deschiderea din iulie 2026; datele exacte rămân în PDF.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|schedule-announcement|C88;C90#text": {
+  "en": "e888e105",
+  "ro": "NOFV publică un calendar-cadru (Rahmenterminplan) ca PDF; cel pentru 2026-27 poartă un Stand din februarie 2026, înaintea startului din iulie. Zilele exacte și ora de start a meciurilor se stabilesc pe blocuri de etape în timpul sezonului și se anunță ca știri NOFV: etapele 19 și 20 au fost anunțate la începutul lui noiembrie 2026, după ce s-a ținut cont de autoritățile de securitate, partenerii TV, datele blocate, stadioanele folosite în comun și lipsa nocturnei.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|schedule-announcement|C88;C90#basis": {
+  "en": "be0cbe4c",
+  "ro": "Dedus (CLAUDE.md regula 9: rândurile de program sunt la nivel de lună și doar deduse; ciclu anterior observat): calendarul-cadru al unui sezon, cu data Stand, și o știre despre ora de start a meciurilor.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|tracking|C85;C87;C84;C91#text": {
+  "en": "4e999653",
+  "ro": "Canalele organizatorului: pagina Regionalliga Nordost a NOFV (cluburile și stadioanele sezonului, etapa curentă și clasamentul) și știrile NOFV, care anunță ora de start a meciurilor. Clubul gazdă trebuie să țină live tickerul DFBnet (cel puțin golurile, începutul și finalul). Video: site-ul NOFV trimite la OSTSPORT.TV (ostsport.tv) printre parteneri; mediateca sa listează meciurile din Regionalliga Nordost pe etape (etapa 16 la data verificării); paginile citite nu spun dacă transmite live sau reluări. Site-ul NOFV trimite și la emisiunea MDR Sport im Osten; mdr.de nu a fost citit (robots.txt-ul său exclude agenții Claude). Paginile NOFV citite nu trimit la niciun cont social, aplicație sau buletin informativ.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|tracking|C85;C87;C84;C91#basis": {
+  "en": "a0f3f9fd",
+  "ro": "publicat: pagina Regionalliga a NOFV, care numește 2026/27, și Durchführungsbestimmungen 2026/27 § 6 (live ticker); pagina principală NOFV pentru linkurile partenerilor; pagina media OSTSPORT.TV (fără sezon afișat).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|other|C85;C87;C112#text": {
+  "en": "f8ee9533",
+  "ro": "Identitate: o ligă masculină la nivelul patru și liga cea mai înaltă a Nordostdeutscher Fußballverband (NOFV); pot participa doar cluburi ale asociațiilor membre ale NOFV. Pentru 2012-13, DFB a transferat responsabilitatea principală pentru Regionalliga celor cinci asociații regionale, iar NOFV o organizează pe aceasta; deține drepturile asupra calendarului-cadru și asupra contractelor TV, radio și internet. 16 echipe din 2012 până în mai 2015, 18 de regulă din 2015-16 (20 pentru o vreme după sezoanele întrerupte 2020-21 și 2021-22). Campioana din 2025-26 nu este scrisă: doar Wikipedia o numește.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-nordost|other|C85;C87;C112#basis": {
+  "en": "a5589a4c",
+  "ro": "publicat: pagina Regionalliga a NOFV (care numește 2026/27), pagina sa de admitere pentru 2026/27 și Durchführungsbestimmungen 2026/27 § 6.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|format|C107;C108;C78#text": {
+  "en": "f7a4feee",
+  "ro": "18 echipe (18 în 2026-27); fiecare echipă joacă cu fiecare acasă și în deplasare. Trei puncte pentru victorie, unul pentru egal. La egalitate de puncte: golaverajul, apoi golurile marcate, apoi scorul general al meciurilor directe, apoi golurile din deplasare în meciurile directe, apoi toate golurile din deplasare; dacă egalitatea persistă și locul contează, un meci de departajare pe teren neutru (trei echipe la egalitate: un singur tur în care fiecare are un meci acasă; patru: două semifinale trase la sorți și un meci decisiv). Clubul gazdă alege sâmbăta sau duminica; meciurile de weekend încep de regulă la 14:00, cele din timpul săptămânii la 19:00; ultimele două etape se joacă simultan, sâmbătă la 14:00; RLSW poate stabili alte ore.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|format|C107;C108;C78#basis": {
+  "en": "14481fe8",
+  "ro": "publicat: RLSW Spielordnung (Stand 1 aug. 2026) § 46 și Durchführungsbestimmungen (Stand 1 aug. 2026) § 13; Wikipedia (de) pentru lotul din 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|promotion-relegation|C107;C103;C85;C78#text": {
+  "en": "ecb948d1",
+  "ro": "Campioana promovează direct în 3. Liga: din 2020-21 Südwest are un loc fix de promovare directă (pagina NOFV); dreptul de promovare urmează regulile DFB pentru 3. Liga. Retrogradează cel puțin ultimele trei în liga următoare a asociației lor, plus încă una pentru fiecare club care retrogradează din 3. Liga în Südwest; cât timp liga are 18 echipe, niciodată mai mult de cinci. Promovează patru: campioanele Hessenliga, Oberliga Rheinland-Pfalz/Saar și Oberliga Baden-Württemberg, dacă au drept de promovare, și câștigătoarea unui turneu între cele trei vicecampioane, un singur tur în care fiecare joacă un meci acasă și unul în deplasare (ordinea primului meci prin rotație; la egalitate de puncte: golaverajul, golurile marcate, meciurile directe cu golurile din deplasare socotite dublu; tragerea la sorți ca ultimă soluție).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|promotion-relegation|C107;C103;C85;C78#basis": {
+  "en": "f43618fb",
+  "ro": "publicat: RLSW Spielordnung (Stand 1 aug. 2026) §§ 47 și 49a, pagina de promovare RLSW (turul din 2026), pagina Regionalliga a NOFV (care numește 2026/27) pentru locul direct fix și Wikipedia (de) 2026-27 (campioana promovează în 2027).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|season-window|C109;C78#text": {
+  "en": "2013ca09",
+  "ro": "2026-27, la nivel de lună: a început la începutul lui august 2026; ultima etapă (34) este într-o sâmbătă de la sfârșitul lui mai 2027. Calendarul-cadru are datele exacte, inclusiv pauza de iarnă, care nu a putut fi citită sigur din tabelul convertit.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|season-window|C109;C78#basis": {
+  "en": "92627e76",
+  "ro": "publicat: calendarul-cadru RLSW 2026/2027 (aprobat pe 8 dec. 2025) și Wikipedia (de) (deschiderea din august 2026), două surse independente; datele exacte rămân în PDF.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|schedule-announcement|C109;C104;C105#text": {
+  "en": "6fc10a67",
+  "ro": "RLSW își publică din timp calendarul-cadru, ca PDF pe site, aliniat cu ligile DFB și DFL (cel pentru 2026-27 a fost aprobat în decembrie 2025). Programul meciurilor spune doar cine cu cine joacă în fiecare etapă; zilele exacte și ora de start a meciurilor se stabilesc în timpul sezonului, de regulă după ce au fost programate etapele din Bundesliga, 2. Bundesliga și 3. Liga, de comun acord cu autoritățile și cluburile. În 2026-27 orele până la etapa 19 au fost publicate la mijlocul lui noiembrie 2026, iar următoarele erau așteptate în ianuarie.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|schedule-announcement|C109;C104;C105#basis": {
+  "en": "baa4926a",
+  "ro": "Dedus (CLAUDE.md regula 9: rândurile de program sunt la nivel de lună și doar deduse; ciclu anterior observat): pagina și PDF-ul calendarului-cadru RLSW, pagina sa de planificare și știrea din noiembrie 2026 (care scrie 'January 2026', o dată dinaintea știrii înseși; rândul păstrează doar luna).",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|tracking|C111;C106;C100#text": {
+  "en": "29764863",
+  "ro": "Canalele organizatorului: pagina de rezultate și clasament a site-ului RLSW (cu titlul 2026/2027) și știrile sale (previzualizări, rezumate, ora de start), plus RLSW TV (portrete de cluburi, rezumate și goluri pe canalul YouTube al RLSW). Live: partenerul media al RLSW este LEAGUES, iar clubul gazdă trebuie să producă un live stream al fiecărui meci de acasă; site-ul RLSW trimite la 'RLSW auf Leagues' (leagues.football), al cărui robots.txt și ale cărui condiții nu au fost citite. De asemenea, o emisiune pe Spotify. Cu link de pe regionalliga-suedwest.de, nedeschise: Facebook rl.suedwest, Instagram rl_suedwest, Threads @rl_suedwest, TikTok @rl.suedwest și canalul YouTube.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|tracking|C111;C106;C100#basis": {
+  "en": "431a1116",
+  "ro": "publicat: pagina de rezultate RLSW (cu titlul 2026/2027), regulile sale media (Stand 1 ian. 2026) și pagina sa principală cu linkurile.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|other|C102;C110;C80#text": {
+  "en": "62530ae5",
+  "ro": "Identitate: o ligă masculină la nivelul patru din 2012-13, pentru cluburi din Baden-Württemberg, Saarland, Rheinland-Pfalz și Hessen (șapte asociații regionale de land și două asociații regionale, care dețin compania ligii). Din 2023-24, RLSW Regionalliga Südwest GmbH, cu sediul la Karlsruhe și formată în decembrie 2022 din fosta Regionalliga Südwest GbR, organizează liga. Prima campioană, în 2012-13, a fost KSV Hessen Kassel. Campioana din 2025-26 nu este scrisă: doar Wikipedia o numește.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-suedwest|other|C102;C110;C80#basis": {
+  "en": "1bc48868",
+  "ro": "publicat: paginile de ligă și de istorie ale RLSW (fără sezon afișat) și Wikipedia (de), două surse independente pentru operatorul din 2023-24.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|format|C95;C98;C79#text": {
+  "en": "dd72133b",
+  "ro": "18 echipe (18 în 2026-27); fiecare echipă joacă cu fiecare acasă și în deplasare. Sâmbăta este ziua obișnuită, ora de start 14:00; vineri la 19:30 și duminică la 14:00 la cererea clubului gazdă, în funcție de poliție; meciurile din timpul săptămânii care nu sunt transmise live la TV încep de regulă la 19:30. Pentru contracte TV sau la ordinul autorităților de securitate, conducătorul ligii poate stabili alte date și ore, ținând cont de datele internaționale și de cele din Bundesliga, 2. Bundesliga și 3. Liga. Toate meciurile din ultima etapă încep simultan. Meciurile de departajare se joacă pe teren neutru, cu prelungiri de 2 x 15 minute și apoi penalty-uri. Ordinea criteriilor de departajare din clasament nu a fost găsită în documentele citite.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|format|C95;C98;C79#basis": {
+  "en": "f93606d3",
+  "ro": "publicat: WDFV Durchführungsbestimmungen pentru Herren-Regionalliga West 2026/2027 (IV) și WDFV Spielordnung (Stand 23 sept. 2026) § 55; Wikipedia (de) pentru lotul din 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|promotion-relegation|C94#text": {
+  "en": "b79f08ab",
+  "ro": "Campioana se califică direct pentru 3. Liga; dacă nu este admisă sau nu aplică, îi ia locul următoarea echipă clasată. Cu 18 echipe, ultimele patru retrogradează în liga cea mai înaltă a asociației lor regionale (nivelul cinci); retrogradează mai puține dacă liga ar scădea sub 18 sau dacă promovează mai puțin de patru echipe. Dacă prima echipă a unui club licențiat retrogradează în 3. Liga sau în Regionalliga West, a doua sa echipă din Regionalliga West retrogradează și se numără printre retrogradate. Promovează până la patru: una din Mittelrhein, una din Niederrhein și două din Westfalen (inclusiv vicecampioana din Westfalen). Echipele secunde ale cluburilor din 3. Liga și echipele a treia ale cluburilor licențiate nu pot participa, iar un club poate avea o singură echipă în ligă.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|promotion-relegation|C94#basis": {
+  "en": "d22c4756",
+  "ro": "publicat: WDFV Auf- und Abstiegsregelung a Herren-Regionalliga West pentru 2026/2027.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|season-window|C96;C93#text": {
+  "en": "3d95db24",
+  "ro": "2026-27, la nivel de lună: etapa 1 la sfârșitul lui iulie 2026; turul se încheie cu etapa 17 în noiembrie 2026; ultima etapă înaintea pauzei de iarnă este la mijlocul lui decembrie 2026, iar jocul se reia la mijlocul lui februarie 2027; ultima etapă (34) este la sfârșitul lui mai 2027.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|season-window|C96;C93#basis": {
+  "en": "5eabfc9c",
+  "ro": "publicat: calendarul-cadru WDFV 2026/2027 (Stand 14 apr. 2026) și pagina ligii WDFV (etapa 17 încheie turul); datele exacte rămân în PDF.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|schedule-announcement|C96;C93;C99#text": {
+  "en": "e773aa38",
+  "ro": "WDFV publică un calendar-cadru pentru Herren-Regionalliga West pe pagina ligii (cel pentru 2026-27 poartă un Stand din aprilie 2026). Conducătorul ligii stabilește ora exactă de start a meciurilor pe blocuri de etape, iar WDFV publică fiecare bloc ca știre și ca PDF pe pagina ligii: în 2026-27 etapele 1 - 3, 4 - 9, 10 și 11, 12 - 18 și 19 și 20, ultimul în noiembrie 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|schedule-announcement|C96;C93;C99#basis": {
+  "en": "cb232fba",
+  "ro": "Dedus (CLAUDE.md regula 9: rândurile de program sunt la nivel de lună și doar deduse; ciclu anterior observat): calendarul-cadru al unui sezon cu data Stand, lista PDF-urilor cu ora de start de pe pagina ligii și știrea din noiembrie 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|tracking|C93;C92;C97#text": {
+  "en": "04b647a4",
+  "ro": "Canalele organizatorului: pagina Herren-Regionalliga West a WDFV (știri, previzualizări, documentele sezonului și PDF-urile cu ora de start) și știrile sale. Pentru clasament și program, pagina trimite la fussball.de, care este închis (condițiile DFB) și nu a fost deschis. Video: site-ul WDFV trimite la un canal YouTube cu rezumate din Herren-Regionalliga West (@WDFV-RLW). WDFV deține drepturile TV și radio; paginile citite nu numesc niciun live stream, partener TV, aplicație sau buletin informativ pentru liga masculină (știrile WDFV numesc o transmisiune live WDR doar pentru Regionalliga feminină). Cu link de pe wdfv.de, nedeschise: canalul YouTube @WDFV-RLW, Facebook herrenregionalligawest și wdfv.de, Instagram wdfv.de.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|tracking|C93;C92;C97#basis": {
+  "en": "3e104d55",
+  "ro": "publicat: pagina ligii WDFV (documente și știri 2026/2027), pagina principală WDFV pentru linkuri și Statut (Stand 17 dec. 2025) § 5 pentru drepturile TV.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|other|C97;C94;C81#text": {
+  "en": "a5b3cc19",
+  "ro": "Identitate: o ligă masculină la nivelul patru, organizată de Westdeutscher Fußballverband (WDFV, Duisburg) pentru cluburile asociațiilor Mittelrhein, Niederrhein și Westfalen; WDFV deține drepturile asupra programelor de meciuri și asupra contractelor TV, radio și internet. Wikipedia adaugă că WDFV a confirmat-o drept ligă profesionistă în martie 2023 (nu apare pe nicio pagină WDFV citită). Campioana din 2025-26 nu este scrisă: doar Wikipedia o numește.",
+  "status": "machine-unchecked"
+ },
+ "de-regionalliga-west|other|C97;C94;C81#basis": {
+  "en": "e2285c6b",
+  "ro": "publicat: Statutul WDFV pentru Regionalliga West (Stand 17 dec. 2025) § 5 și regulile sale de promovare 2026/2027 (cele trei asociații); Wikipedia (de) doar pentru statutul profesionist.",
+  "status": "machine-unchecked"
+ },
+ "de-dfl-supercup|format|C82#text": {
+  "en": "c15d1fbd",
+  "ro": "Un singur meci la începutul sezonului între campioana Germaniei și câștigătoarea DFB-Pokal din sezonul anterior; dacă un club le-a câștigat pe amândouă, joacă în locul ei vicecampioana Bundesligii. Egalitate după 90 de minute: direct penalty-uri, fără prelungiri. Din 2011 până în 2019 s-a jucat pe terenul câștigătoarei cupei (sau al vicecampioanei); de atunci DFL decide care dintre cele două are dreptul de gazdă.",
+  "status": "machine-unchecked"
+ },
+ "de-dfl-supercup|format|C82#basis": {
+  "en": "0397da3d",
+  "ro": "Doar Wikipedia (de): site-urile organizatorului (dfl.de, bundesliga.com) sunt gazde închise.",
+  "status": "machine-unchecked"
+ },
+ "de-dfl-supercup|season-window|C83;C82#text": {
+  "en": "b70328c4",
+  "ro": "Ediția 2026, la nivel de lună: august 2026, la Dortmund, între FC Bayern München (campioană și câștigătoare a cupei) și Borussia Dortmund (vicecampioană), la începutul sezonului. Data și locul ediției 2027 nu au fost găsite.",
+  "status": "machine-unchecked"
+ },
+ "de-dfl-supercup|season-window|C83;C82#basis": {
+  "en": "ea5c4c77",
+  "ro": "Doar Wikipedia (de) (două articole, o singură sursă).",
+  "status": "machine-unchecked"
+ },
+ "de-dfl-supercup|tracking|C82#text": {
+  "en": "68c6b44c",
+  "ro": "Niciun canal al organizatorului nu a putut fi citit: site-urile DFL (dfl.de, bundesliga.com) sunt gazde închise. TV: Wikipedia spune că Sat.1 transmite meciul gratuit și Sky contra cost din 2021; nu a fost citită nicio pagină a unui radiodifuzor, deci niciunul nu este confirmat pentru 2027.",
+  "status": "machine-unchecked"
+ },
+ "de-dfl-supercup|tracking|C82#basis": {
+  "en": "747e6f26",
+  "ro": "Doar Wikipedia (de).",
+  "status": "machine-unchecked"
+ },
+ "de-dfl-supercup|other|C82;C83#text": {
+  "en": "14aa5f59",
+  "ro": "Identitate: o competiție masculină disputată din 1987 la începutul sezonului, sub DFL din 2010: DFB-Supercup între 1987 și 1996, DFL-Supercup între 2010 și 2024, redenumită după Franz Beckenbauer de DFL și DFB în decembrie 2024. Câștigătoarea din 2026 nu este scrisă: doar Wikipedia o numește.",
+  "status": "machine-unchecked"
+ },
+ "de-dfl-supercup|other|C82;C83#basis": {
+  "en": "747e6f26",
+  "ro": "Doar Wikipedia (de).",
+  "status": "machine-unchecked"
  }
 }

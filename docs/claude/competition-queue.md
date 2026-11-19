@@ -39,10 +39,10 @@ page, as the job prompt asked; that could not be done.
 | 2 | de-3-liga | researched | done (unverified: no open organiser page) | batch 1, PR #232, 2026-11-19 |
 | 3 | de-regionalliga-bayern | researched | done (confirmed) | batch 1, PR #232, 2026-11-19 |
 | 4 | de-regionalliga-nord | researched | done (unverified: organiser pages show no season) | batch 1, PR #232, 2026-11-19 |
-| 5 | de-regionalliga-nordost | pending | missing | |
-| 6 | de-regionalliga-suedwest | pending | missing | |
-| 7 | de-regionalliga-west | pending | missing | |
-| 8 | de-dfl-supercup | pending | missing | |
+| 5 | de-regionalliga-nordost | researched | done (confirmed) | batch 2, PR #233, 2026-11-19 |
+| 6 | de-regionalliga-suedwest | researched | done (confirmed) | batch 2, PR #233, 2026-11-19 |
+| 7 | de-regionalliga-west | researched | done (confirmed) | batch 2, PR #233, 2026-11-19 |
+| 8 | de-dfl-supercup | researched | done (unverified: the DFL's sites are closed) | batch 2, PR #233, 2026-11-19 |
 | 9 | de-2-bundesliga-relegation-play-off | pending | missing | |
 | 10 | de-aufstiegsspiele-zur-3-liga | pending | missing | |
 | 11 | de-bundesliga-relegation-play-off | pending | missing | |
@@ -82,8 +82,8 @@ sending a team to the DFB-Pokal (NFV page), so it has two rows.
 | 32 | de-verbandspokal-thueringen | Thüringer FV (thueringerfv.de; tfv-erfurt.de forwards there) | Thüringen Pokal | pending | missing |
 | 33 | — | FLVW Westfalen (flvw.de) | not read: "Bot/Crawler detected", HTTP 400 | blocked | missing |
 
-Next batch: rows 5 to 8 (Regionalliga Nordost, Südwest, West, Franz
-Beckenbauer Supercup). Then the play-offs, then the regional cups from row 12.
+Next batch: rows 9 to 11 (the three play-offs; their phase 4a rows are kept
+and corrected under the procedure). Then the regional cups from row 12.
 
 ## Researched competitions
 
@@ -104,3 +104,19 @@ Written before any page was read. 8 probe runs of 8 used.
 
 Left: 7 national competitions, 20 regional cups (2 more blocked), 0 "follow
 only" rows: 27 rows to research, plus the 2 blocked cups.
+
+## Batch 2 (2026-11-19)
+
+Rows 5 to 8: Regionalliga Nordost, Regionalliga Südwest, Regionalliga West,
+Franz Beckenbauer Supercup. Written before any page was read. 6 probe runs of 8
+used.
+
+| id | rows | confirmed | inferred | unverified | follow |
+|---|---|---|---|---|---|
+| de-regionalliga-nordost | 6 | 5 | 1 | 0 | done |
+| de-regionalliga-suedwest | 6 | 5 | 1 | 0 | done |
+| de-regionalliga-west | 6 | 5 | 1 | 0 | done |
+| de-dfl-supercup | 4 | 0 | 0 | 4 | done (Wikipedia only) |
+
+Left: 3 national competitions (the play-offs), 20 regional cups (2 more
+blocked), 0 "follow only" rows: 23 rows to research, plus the 2 blocked cups.
