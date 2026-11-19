@@ -43,9 +43,9 @@ page, as the job prompt asked; that could not be done.
 | 6 | de-regionalliga-suedwest | researched | done (confirmed) | batch 2, PR #233, 2026-11-19 |
 | 7 | de-regionalliga-west | researched | done (confirmed) | batch 2, PR #233, 2026-11-19 |
 | 8 | de-dfl-supercup | researched | done (unverified: the DFL's sites are closed) | batch 2, PR #233, 2026-11-19 |
-| 9 | de-2-bundesliga-relegation-play-off | pending | missing | |
-| 10 | de-aufstiegsspiele-zur-3-liga | pending | missing | |
-| 11 | de-bundesliga-relegation-play-off | pending | missing | |
+| 9 | de-2-bundesliga-relegation-play-off | in batch 3 | missing | batch 3, 2026-11-19 |
+| 10 | de-aufstiegsspiele-zur-3-liga | in batch 3 | missing | batch 3, 2026-11-19 |
+| 11 | de-bundesliga-relegation-play-off | in batch 3 | missing | batch 3, 2026-11-19 |
 
 ## Regional cups (Verbandspokal / Landespokal)
 
@@ -120,3 +120,13 @@ used.
 
 Left: 3 national competitions (the play-offs), 20 regional cups (2 more
 blocked), 0 "follow only" rows: 23 rows to research, plus the 2 blocked cups.
+
+## Batch 3 (2026-11-19)
+
+Rows 9 to 11: 2. Bundesliga relegation play-off, Aufstiegsspiele zur 3. Liga,
+Bundesliga relegation play-off (the last three national competitions; no
+regional cup is mixed into a national batch). Written before any page was
+read. Their phase 4a rows (PR #224) have a basis other than search-result
+summaries, so under the procedure they are not edited: only blank cells and
+missing topics are filled, and a difference with what is read goes to the
+report as a conflict.
