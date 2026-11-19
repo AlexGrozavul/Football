@@ -15,7 +15,7 @@ robots, stopped = {}, {}
 
 def wait():
     d = time.time() - last[0]
-    if d < 1.1: time.sleep(1.1 - d)
+    if d < 4: time.sleep(4 - d)  # Wikipedia answered 429 at one request per second in run 2
     last[0] = time.time()
 
 def post(body):
