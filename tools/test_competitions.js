@@ -158,7 +158,7 @@ const server = http.createServer((req, res) => {
 
   // Added 2026-10-26 (DFB-Pokal research, PR #158; the Bundesliga since PR #159; Serie A since PR #161): the official link
   // (none for the Bundesliga, whose own site was not opened) and the repeated "other" rows, read from the files.
-  for(const id of ['de-dfb-pokal', 'de-bundesliga', 'it-serie-a']){
+  for(const id of ['de-dfb-pokal', 'de-bundesliga', 'it-serie-a', 'de-2-bundesliga', 'de-3-liga', 'de-regionalliga-bayern', 'de-regionalliga-nord']){
     const comp = comps.find(c => c.id === id), name = comp ? comp.name : id;
     check(`data has a ${name} competition with researched rows`, !!comp && researched.has(id));
     if(!comp) continue;
@@ -171,6 +171,20 @@ const server = http.createServer((req, res) => {
       shown.length === other.length && other.every((r, i) => shown[i].status === r.status && shown[i].text.startsWith(r.text.slice(0, 40))), `${shown.length} shown`);
     const conf = mine.filter(r => r.status === 'confirmed').length;
     check(`${name}: exactly the confirmed rows say "${STATUS.confirmed}" (${conf})`, o.blocks.filter(b => b.label === STATUS.confirmed).length === conf);
+    await close();
+  }
+  // Added 2026-11-19 (German competitions queue, batch 1, PR #232): the regional cups of the DFB's state
+  // associations, read from competitions.csv (ids de-verbandspokal-*), are all in the list under Germany as cups and,
+  // having no info row yet, say "Not researched yet"; the cups with an officialUrl link it in their sheet.
+  const cups = comps.filter(c => c.id.startsWith('de-verbandspokal-'));
+  check('data has the regional cups of the state associations (de-verbandspokal-*)', cups.length > 0 && cups.every(c => c.country === 'DE' && c.type === 'cup'), `${cups.length}`);
+  const cupRows = await page.$$eval("#compBody .comprow", bs => bs.map(b => [b.dataset.id, b.innerText]));
+  const shownCups = cups.filter(c => cupRows.some(([id, t]) => id === c.id && t.includes(c.name) && (researched.has(c.id) || /Not researched yet/.test(t))));
+  check(`every regional cup is listed by its name, unresearched ones as "Not researched yet" (${cups.length})`, shownCups.length === cups.length, `${shownCups.length} of ${cups.length}`);
+  for(const c of cups.filter(c => c.officialUrl)){
+    await open(c.id);
+    const official = await page.$$eval('#csheetBody > p.sub a', as => as.map(a => a.href));
+    check(`${c.name}: the sheet links its officialUrl`, official.includes(new URL(c.officialUrl).href), official.join(' | '));
     await close();
   }
   let allFuture = [];
