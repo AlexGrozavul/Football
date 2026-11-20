@@ -218,3 +218,10 @@ re-read). `officialUrl` filled for Saarland, Sachsen and Sachsen-Anhalt;
 Rheinland (no cup page) and Schleswig-Holstein (a section of the men's page) stay
 blank. Left: 0 national competitions, 2 regional cups (2 more blocked), 0
 "follow only" rows: 2 rows to research, plus the 2 blocked cups.
+
+## Batch 7 (2026-11-20)
+
+Rows 31 and 32: the regional cups of Südwest and Thüringen
+(`de-verbandspokal-suedwest`, `de-verbandspokal-thueringen`), the last two cups
+that are not blocked. Rows 20 and 33 (Hessen, Westfalen) stay blocked. Written
+before any page was read.

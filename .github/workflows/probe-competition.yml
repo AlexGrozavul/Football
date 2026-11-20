@@ -1,0 +1,40 @@
+name: Probe competition (temporary)
+# Temporary, German competitions batch 7. Runs only when the head commit message contains [probe]. Removed before merge.
+on:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.msg.outputs.probe }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+      - id: msg
+        run: |
+          if git log -1 --format=%B | grep -qF '[probe]'; then echo "probe=true" >> "$GITHUB_OUTPUT"; else echo "probe=false" >> "$GITHUB_OUTPUT"; fi
+  probe:
+    needs: gate
+    if: needs.gate.outputs.probe == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Install
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q poppler-utils tesseract-ocr tesseract-ocr-deu
+          pip install -q playwright==1.56.0 && python -m playwright install --with-deps chromium
+      - name: Read pages and post text and links
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: RUN_LABEL="$(git log -1 --format=%s | grep -o 'run[0-9]*' | head -1)" python3 .github/probe/probe.py .github/probe/pages.tsv
