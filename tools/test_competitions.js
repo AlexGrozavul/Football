@@ -167,7 +167,10 @@ const server = http.createServer((req, res) => {
       'de-verbandspokal-berlin', 'de-verbandspokal-brandenburg',
       // Added 2026-11-20 (German competitions queue, batch 5, PR #236): the next six regional cups researched.
       'de-verbandspokal-bremen', 'de-verbandspokal-hamburg', 'de-verbandspokal-mecklenburg-vorpommern',
-      'de-verbandspokal-mittelrhein', 'de-verbandspokal-niederrhein', 'de-verbandspokal-niedersachsen']){
+      'de-verbandspokal-mittelrhein', 'de-verbandspokal-niederrhein', 'de-verbandspokal-niedersachsen',
+      // Added 2026-11-20 (German competitions queue, batch 6, PR #237): the next six regional cups researched.
+      'de-verbandspokal-niedersachsen-amateure', 'de-verbandspokal-rheinland', 'de-verbandspokal-saarland',
+      'de-verbandspokal-sachsen', 'de-verbandspokal-sachsen-anhalt', 'de-verbandspokal-schleswig-holstein']){
     const comp = comps.find(c => c.id === id), name = comp ? comp.name : id;
     check(`data has a ${name} competition with researched rows`, !!comp && researched.has(id));
     if(!comp) continue;
