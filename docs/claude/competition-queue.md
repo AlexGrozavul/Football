@@ -195,3 +195,11 @@ Niedersachsen already had one. Niedersachsen has no season-window or
 schedule-announcement row (no NFV calendar page was found). Left: 0 national
 competitions, 8 regional cups (2 more blocked), 0 "follow only" rows: 8 rows to
 research, plus the 2 blocked cups.
+
+## Batch 6 (2026-11-20)
+
+Rows 25 to 30: the regional cups of Niedersachsen (Amateure), Rheinland,
+Saarland, Sachsen, Sachsen-Anhalt and Schleswig-Holstein
+(`de-verbandspokal-niedersachsen-amateure`, `-rheinland`, `-saarland`,
+`-sachsen`, `-sachsen-anhalt`, `-schleswig-holstein`). Rows 20 and 33 (Hessen,
+Westfalen) stay blocked. Written before any page was read.
