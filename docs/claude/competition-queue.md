@@ -78,13 +78,14 @@ sending a team to the DFB-Pokal (NFV page), so it has two rows.
 | 28 | de-verbandspokal-sachsen | Sächsischer FV (sfv-online.de) | Wernesgrüner Sachsenpokal | researched (batch 6, PR #237, 2026-11-20) | done |
 | 29 | de-verbandspokal-sachsen-anhalt | FV Sachsen-Anhalt (fsa-online.de) | dachbleche24-Landespokal | researched (batch 6, PR #237, 2026-11-20) | done |
 | 30 | de-verbandspokal-schleswig-holstein | Schleswig-Holsteinischer FV (shfv-kiel.de) | LOTTO Pokal | researched (batch 6, PR #237, 2026-11-20) | done |
-| 31 | de-verbandspokal-suedwest | Südwestdeutscher FV (swfv.de) | Bitburger Verbandspokal | pending | missing |
-| 32 | de-verbandspokal-thueringen | Thüringer FV (thueringerfv.de; tfv-erfurt.de forwards there) | Thüringen Pokal | pending | missing |
+| 31 | de-verbandspokal-suedwest | Südwestdeutscher FV (swfv.de) | Bitburger Verbandspokal | researched (batch 7, PR #238, 2026-11-20) | done |
+| 32 | de-verbandspokal-thueringen | Thüringer FV (thueringerfv.de; tfv-erfurt.de forwards there) | Thüringen Pokal | researched (batch 7, PR #238, 2026-11-20) | done |
 | 33 | — | FLVW Westfalen (flvw.de) | not read: "Bot/Crawler detected", HTTP 400 | blocked | missing |
 
-Next batch: the regional cups, rows 31 and 32 (Südwest, Thüringen; rows 20 and
-33, Hessen and Westfalen, stay blocked). After them the queue holds only the two
-blocked cups.
+After batch 7 (PR #238) the queue holds no row that can be researched: only
+rows 20 and 33 (Hessen, Westfalen), blocked because the associations' own sites
+are closed. The next session writes "Queue empty" unless Alexandru decides
+otherwise (open-problems.md, batch 7).
 
 ## Researched competitions
 
@@ -225,3 +226,14 @@ Rows 31 and 32: the regional cups of Südwest and Thüringen
 (`de-verbandspokal-suedwest`, `de-verbandspokal-thueringen`), the last two cups
 that are not blocked. Rows 20 and 33 (Hessen, Westfalen) stay blocked. Written
 before any page was read.
+4 probe runs of 8 used.
+
+| id | rows | confirmed | inferred | unverified | follow |
+|---|---|---|---|---|---|
+| de-verbandspokal-suedwest | 7 | 6 | 1 | 0 | done (cup page with FUSSBALL.DE results links; final-day site; ARD conference and sportschau.de streams for the final; no stream of the earlier rounds named) |
+| de-verbandspokal-thueringen | 7 | 6 | 1 | 0 | done (men's page and cup news; at least one free stream per round on the TFV's YouTube channel; ARD for the final; newsletter) |
+
+14 rows (12 confirmed, 2 inferred, 0 unverified), sources C219-C235.
+`officialUrl` filled for Südwest (its cup page); Thüringen (a section of the
+men's page) stays blank. Left: 0 national competitions, 0 regional cups (2
+blocked), 0 "follow only" rows: Queue empty apart from the 2 blocked cups.
