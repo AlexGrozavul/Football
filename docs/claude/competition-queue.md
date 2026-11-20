@@ -65,13 +65,13 @@ sending a team to the DFB-Pokal (NFV page), so it has two rows.
 | 15 | de-verbandspokal-bayern | Bayerischer FV (bfv.de) | Bayerischer Toto-Pokal (page title "Der bayerische Toto-Pokal-Wettbewerb", menu "TOTO-POKAL") | researched (batch 4, PR #235, 2026-11-20) | done |
 | 16 | de-verbandspokal-berlin | Berliner FV (berliner-fussball.de) | COSY-WASCH Landespokal | researched (batch 4, PR #235, 2026-11-20) | done |
 | 17 | de-verbandspokal-brandenburg | FLB Brandenburg (flb.de) | Herren-Landespokal Brandenburg | researched (batch 4, PR #235, 2026-11-20) | done |
-| 18 | de-verbandspokal-bremen | Bremer FV (bremerfv.de) | LOTTO-Pokal | pending | missing |
-| 19 | de-verbandspokal-hamburg | Hamburger FV (hfv.de) | LOTTO Hamburg-Pokal (the site writes "den LOTTO Hamburg- und HOLSTEN-Pokal"; which of the two sends the DFB-Pokal team is to be checked) | pending | missing |
+| 18 | de-verbandspokal-bremen | Bremer FV (bremerfv.de) | LOTTO-Pokal | researched (batch 5, PR #236, 2026-11-20) | done |
+| 19 | de-verbandspokal-hamburg | Hamburger FV (hfv.de) | LOTTO Hamburg-Pokal (the first teams' cup; the HOLSTEN-Pokal is the second teams', Durchführungsbestimmungen 2026/2027 § 4.7) | researched (batch 5, PR #236, 2026-11-20) | done |
 | 20 | — | Hessischer FV (hfv-online.de) | not read: bot challenge (HTTP 403) | blocked | missing |
-| 21 | de-verbandspokal-mecklenburg-vorpommern | LFV Mecklenburg-Vorpommern (lfvm-v.de) | Lübzer Pils Landespokal | pending | missing |
-| 22 | de-verbandspokal-mittelrhein | FV Mittelrhein (fvm.de) | Bitburger-Pokal | pending | missing |
-| 23 | de-verbandspokal-niederrhein | FV Niederrhein (fvn.de) | Niederrheinpokal | pending | missing |
-| 24 | de-verbandspokal-niedersachsen | Niedersächsischer FV (nfv.de) | Niedersachsenpokal 3. Liga und Regionalliga Nord | pending | missing |
+| 21 | de-verbandspokal-mecklenburg-vorpommern | LFV Mecklenburg-Vorpommern (lfvm-v.de) | Lübzer Pils Landespokal | researched (batch 5, PR #236, 2026-11-20) | done |
+| 22 | de-verbandspokal-mittelrhein | FV Mittelrhein (fvm.de) | Bitburger-Pokal | researched (batch 5, PR #236, 2026-11-20) | done |
+| 23 | de-verbandspokal-niederrhein | FV Niederrhein (fvn.de) | Niederrheinpokal | researched (batch 5, PR #236, 2026-11-20) | done |
+| 24 | de-verbandspokal-niedersachsen | Niedersächsischer FV (nfv.de) | Niedersachsenpokal 3. Liga und Regionalliga Nord | researched (batch 5, PR #236, 2026-11-20) | done |
 | 25 | de-verbandspokal-niedersachsen-amateure | Niedersächsischer FV (nfv.de) | Krombacher-Niedersachsenpokal der Amateure | pending | missing |
 | 26 | de-verbandspokal-rheinland | FV Rheinland (fv-rheinland.de) | Rheinlandpokal | pending | missing |
 | 27 | de-verbandspokal-saarland | Saarländischer FV (saar-fv.de) | Sparkassen-Pokal Saar | pending | missing |
@@ -82,9 +82,10 @@ sending a team to the DFB-Pokal (NFV page), so it has two rows.
 | 32 | de-verbandspokal-thueringen | Thüringer FV (thueringerfv.de; tfv-erfurt.de forwards there) | Thüringen Pokal | pending | missing |
 | 33 | — | FLVW Westfalen (flvw.de) | not read: "Bot/Crawler detected", HTTP 400 | blocked | missing |
 
-Next batch: the regional cups, rows 18, 19 and 21 to 24 (Bremen, Hamburg,
-Mecklenburg-Vorpommern, Mittelrhein, Niederrhein, Niedersachsen; row 20,
-Hessen, stays blocked).
+Next batch: the regional cups, rows 25 to 30 (Niedersachsen Amateure,
+Rheinland, Saarland, Sachsen, Sachsen-Anhalt, Schleswig-Holstein; rows 20 and
+33, Hessen and Westfalen, stay blocked). The NFV's 2026-27 regulation for row
+25 (source C185) was already read in batch 5.
 
 ## Researched competitions
 
@@ -167,3 +168,30 @@ page was read.
 have no cup page of their own (the cup sits on the men's or finals pages), so
 theirs stays blank. Left: 0 national competitions, 14 regional cups (2 more
 blocked), 0 "follow only" rows: 14 rows to research, plus the 2 blocked cups.
+
+## Batch 5 (2026-11-20)
+
+Rows 18, 19 and 21 to 24: the regional cups of Bremen, Hamburg,
+Mecklenburg-Vorpommern, Mittelrhein, Niederrhein and Niedersachsen (3. Liga
+and Regionalliga Nord) (`de-verbandspokal-bremen`, `-hamburg`,
+`-mecklenburg-vorpommern`, `-mittelrhein`, `-niederrhein`,
+`-niedersachsen`). Row 20 (Hessen) stays blocked. Written before any page was
+read.
+4 probe runs of 8 used.
+
+| id | rows | confirmed | inferred | unverified | follow |
+|---|---|---|---|---|---|
+| de-verbandspokal-bremen | 7 | 6 | 1 | 0 | done (ARD and sportschau.de streams for the final) |
+| de-verbandspokal-hamburg | 7 | 6 | 1 | 0 | done (HFV streaming portal; no broadcaster named for the final) |
+| de-verbandspokal-mecklenburg-vorpommern | 7 | 6 | 1 | 0 | done (draws streamed; ARD for the final) |
+| de-verbandspokal-mittelrhein | 6 | 5 | 1 | 0 | done (draws streamed on Facebook and YouTube) |
+| de-verbandspokal-niederrhein | 6 | 5 | 1 | 0 | done (no cup stream and no newsletter named) |
+| de-verbandspokal-niedersachsen | 5 | 5 | 0 | 0 | done (ARD shows one of the two NFV finals, alternating) |
+
+38 rows (33 confirmed, 5 inferred, 0 unverified), sources C150-C186.
+`officialUrl` filled for Bremen, Mecklenburg-Vorpommern, Mittelrhein and
+Niederrhein (their cup pages); Hamburg has no cup page of its own (blank);
+Niedersachsen already had one. Niedersachsen has no season-window or
+schedule-announcement row (no NFV calendar page was found). Left: 0 national
+competitions, 8 regional cups (2 more blocked), 0 "follow only" rows: 8 rows to
+research, plus the 2 blocked cups.

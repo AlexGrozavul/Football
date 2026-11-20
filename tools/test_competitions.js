@@ -164,7 +164,10 @@ const server = http.createServer((req, res) => {
       'de-bundesliga-relegation-play-off', 'de-2-bundesliga-relegation-play-off', 'de-aufstiegsspiele-zur-3-liga',
       // Added 2026-11-20 (German competitions queue, batch 4, PR #235): the first six regional cups researched.
       'de-verbandspokal-baden', 'de-verbandspokal-suedbaden', 'de-verbandspokal-wuerttemberg', 'de-verbandspokal-bayern',
-      'de-verbandspokal-berlin', 'de-verbandspokal-brandenburg']){
+      'de-verbandspokal-berlin', 'de-verbandspokal-brandenburg',
+      // Added 2026-11-20 (German competitions queue, batch 5, PR #236): the next six regional cups researched.
+      'de-verbandspokal-bremen', 'de-verbandspokal-hamburg', 'de-verbandspokal-mecklenburg-vorpommern',
+      'de-verbandspokal-mittelrhein', 'de-verbandspokal-niederrhein', 'de-verbandspokal-niedersachsen']){
     const comp = comps.find(c => c.id === id), name = comp ? comp.name : id;
     check(`data has a ${name} competition with researched rows`, !!comp && researched.has(id));
     if(!comp) continue;
