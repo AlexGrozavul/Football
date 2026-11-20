@@ -1818,5 +1818,375 @@
   "en": "e0b4d806",
   "ro": "publicat: Ausschreibung Herren Krombacher-Niedersachsenpokal 2026/2027 a NFV, secțiunea 11.",
   "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|format|C185;C184#text": {
+  "en": "0a3aee95",
+  "ro": "Cupă eliminatorie, un singur meci pe tur, fără retur; în 2026-27 cinci tururi: tur de calificare, optimi (runda celor 16), sferturi, semifinale și finală. Fiecare tur se trage la sorți, public; tururile libere completează primul tur; până la sferturi echipele sunt împărțite în două urne regionale. Clubul din liga inferioară joacă acasă; între egale, clubul extras primul, iar schimbul e permis prin acord; clubul gazdă care nu poate indica un teren cu nocturnă pierde dreptul de a juca acasă. Egal după 90 de minute: până la sferturi direct penalty-uri; în semifinale și finală 2 x 15 minute prelungiri, apoi penalty-uri. Finala face parte din Finaltag der Amateure, în principiu pe August-Wenzel-Stadion din Barsinghausen; NFV poate stabili alt teren, și pe al unui finalist.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|format|C185;C184#basis": {
+  "en": "969f05b0",
+  "ro": "publicat: Ausschreibung Herren Krombacher-Niedersachsenpokal 2026/2027 a NFV (Barsinghausen, iulie 2026), secțiunile 2 și 9, și pagina sa a cupei.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|qualification|C185;C184#text": {
+  "en": "9bc611a4",
+  "ro": "Câștigătoarea e înscrisă în runda 1 a DFB-Pokal 2027-28; Saxonia Inferioară trimite două echipe, câștigătoarea acestei cupe și câștigătoarea cupei pentru cluburile din 3. Liga și Regionalliga Nord, dacă DFB nu decide altfel.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|qualification|C185;C184#basis": {
+  "en": "7520eefd",
+  "ro": "publicat: Ausschreibung Herren Krombacher-Niedersachsenpokal 2026/2027 a NFV, secțiunea 10, și pagina sa a cupei.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|tracking|C184;C185;C186;C183#text": {
+  "en": "34ab7b76",
+  "ro": "Canalele organizatorului: pagina Krombacher-Niedersachsenpokal a NFV (formatul, regulamentul 2026-27, lista câștigătoarelor). Rezultate și program: publicate prin DFBnet și fussball.de, iar clubul gazdă trebuie să țină live tickerul fussball.de (nedeschis: fussball.de e închis pentru această cercetare); datele tururilor sunt într-un Rahmenspielplan pe nfv.de pe care nicio pagină citită nu îl leagă. Finala: la Finaltag der Amateure una dintre cele două finale ale NFV e transmisă în direct de ARD, alternativ în fiecare an. Newsletter: newsletterul NFV (pagina de înscriere). Social: pagina cupei leagă YouTube, Facebook, Instagram și TikTok (listate, nedeschise).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|tracking|C184;C185;C186;C183#basis": {
+  "en": "85f43cd1",
+  "ro": "publicat: pagina cupei a NFV și Ausschreibung 2026/2027, secțiunile 3, 5 și 9; pagina de newsletter și pagina principală (fără sezon afișat).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|other|C185;C184;C183#text": {
+  "en": "21e51039",
+  "ro": "Identitate și înscriere: cupa Niedersächsischer Fußballverband (NFV) pentru primele echipe ale cluburilor sale din Oberliga Niedersachsen și cele patru câștigătoare ale cupelor de district (Hannover, Braunschweig, Lüneburg, Weser-Ems) din sezonul precedent, condusă de comisia sa pentru meciuri; una dintre cele două cupe ale NFV care trimit fiecare câte o echipă în DFB-Pokal. Înscrierea cere înscrierea în ligă, declarațiile semnate de sponsorizare, media și cesiune, și un teren de iarbă sau sintetic cu nocturnă. Deținătoare: Lüneburger SK Hansa (2026); 2025: SV Atlas Delmenhorst.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|other|C185;C184;C183#basis": {
+  "en": "3a854ccb",
+  "ro": "publicat: Ausschreibung Herren Krombacher-Niedersachsenpokal 2026/2027 a NFV, secțiunile 1 și 2, și pagina sa a cupei (lista câștigătoarelor până în 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|other|C185#text": {
+  "en": "0e1e74a1",
+  "ro": "Bilete: până la semifinale inclusiv clubul gazdă organizează meciul și vinde biletele la prețurile sale locale obișnuite; membrii clubului și deținătorii de abonamente de sezon plătesc prețul întreg. Clubul oaspete primește cel puțin 25 de bilete gratuite, iar 20 % din capacitatea permisă trebuie păstrată pentru suporterii săi. Pentru finale se aplică reguli speciale. Nu se dau date de vânzare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-niedersachsen-amateure|other|C185#basis": {
+  "en": "969f3369",
+  "ro": "publicat: Ausschreibung Herren Krombacher-Niedersachsenpokal 2026/2027 a NFV, secțiunile 9 și 11.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|format|C195;C189;C190;C193#text": {
+  "en": "9293ab87",
+  "ro": "Cupă eliminatorie, un singur meci pe tur. Meciurile și dreptul de a juca acasă se trag la sorți; echipa din liga inferioară joacă în principiu acasă. Egal după 90 de minute: 2 x 15 minute prelungiri, apoi penalty-uri. În 2026-27 runda 1 a avut 52 de meciuri și a fost trasă la sorți în iulie 2026 (deținătoarea și alte cluburi au avut tur liber în 2025-26); în octombrie 2026 optimile (runda celor 16), sferturile și semifinalele au fost trase la sorți dintr-odată, ca tablou până la finală. Din 2015 finala face parte din Finaltag der Amateure; organul competent stabilește locul, care pentru 2027 nu era încă fixat.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|format|C195;C189;C190;C193#basis": {
+  "en": "302e4d85",
+  "ro": "publicat: Spielordnung a FVR (mai 2026), § 38, și știrile sale din iulie, octombrie 2026 și mai 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|qualification|C195;C192#text": {
+  "en": "e9c586e1",
+  "ro": "Cupa stabilește câștigătoarea cupei Rheinland și echipa FVR în DFB-Pokal; câștigătoarea din 2026 a intrat în runda 1 a DFB-Pokal 2026-27.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|qualification|C195;C192#basis": {
+  "en": "403405d0",
+  "ro": "publicat: Spielordnung a FVR (mai 2026), § 38, și știrea sa despre finala din 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|season-window|C189;C190;C191;C192#text": {
+  "en": "18fcd921",
+  "ro": "2026-27, la nivel de lună: runda 1 la trecerea dintre iulie și august 2026, optimile (runda celor 16) în noiembrie 2026, sferturile în martie 2027, semifinalele în aprilie 2027 și finala în mai 2027, la Finaltag der Amateure. Finala 2025-26 a fost în mai 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|season-window|C189;C190;C191;C192#basis": {
+  "en": "61555b2f",
+  "ro": "publicat: știrile FVR din iulie, octombrie și noiembrie 2026 și din mai 2026; datele la nivel de zi rămân pe acele pagini.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|schedule-announcement|C190;C191#text": {
+  "en": "473d762e",
+  "ro": "În octombrie 2026 FVR a tras la sorți toate tururile până la finală într-o singură seară, la sediul sponsorului, și a dat odată cu ele zilele de joc ale optimilor (runda celor 16), sferturilor, semifinalelor și finalei; ora de start și zilele meciurilor unui tur au urmat ca știre cu puțin înainte.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|schedule-announcement|C190;C191#basis": {
+  "en": "14180012",
+  "ro": "Dedus (CLAUDE.md regula 9: rândurile de calendar sunt la nivel de lună și doar deduse; ciclu trecut observat): o tragere la sorți, din știrile FVR din octombrie și noiembrie 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|tracking|C194;C193;C218;C187#text": {
+  "en": "de5839ef",
+  "ro": "Canalele organizatorului: știrile FVR (nu există o pagină proprie a cupei). Finala: în 2026 FVR a transmis-o în direct și gratuit pe canalul său de YouTube, cu semnalul conferinței ARD de la Finaltag der Amateure, care a arătat-o și ea. Trageri la sorți: lista de știri a FVR are articole din 2026-27 care anunță transmisii în direct ale tragerilor (doar titluri, articolele nedeschise). Rezultate: nenumite pe paginile citite. Social: pagina principală leagă Facebook, YouTube și Instagram (listate, nedeschise). Nu s-a găsit newsletter sau aplicație.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|tracking|C194;C193;C218;C187#basis": {
+  "en": "e60b8081",
+  "ro": "publicat: știrile FVR din mai 2026 despre transmisia finalei și despre finală, lista sa de știri și pagina principală (fără sezon afișat).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|other|C195;C192;C188#text": {
+  "en": "6021fe6e",
+  "ro": "Identitate și înscriere: cupa masculină a Fußballverband Rheinland (FVR), Bitburger Rheinlandpokal, condusă de comisia sa pentru meciuri, care stabilește datele. Cluburile din 3. Liga, Regionalliga, Oberliga, Rheinlandliga, Bezirksligen și Kreisligen A și B trebuie să participe la competițiile de cupă; echipele secunde (de rezervă) ale cluburilor care joacă peste nivelul de district nu pot intra în Rheinlandpokal. Deținătoare: SV Eintracht Trier 05, care a învins TuS Koblenz cu 1-0 în finala din mai 2026, pe un Moselstadion sold-out (9.000, record pentru finală), al 16-lea titlu; lista FVR până în 2018-19 arată pe FSV Salmrohr următoarea, cu 9.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|other|C195;C192;C188#basis": {
+  "en": "4758a351",
+  "ro": "publicat: Spielordnung a FVR (mai 2026), § 38, știrea sa despre finala din 2026 și pagina Titelträger (listă până în 2018/19).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|other|C195;C193;C190#text": {
+  "en": "666a55f3",
+  "ro": "Bilete: unde încasările se împart, membrii ambelor cluburi plătesc intrarea întreagă; FVR organizează finala și face decontul ei. La finala din 2026 stadionul a fost sold-out, fără casă de bilete, iar biletul includea transportul public local; FVR numește Vereinsticket drept partenerul său de ticketing cel puțin până în 2029. Nu se dau date de vânzare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-rheinland|other|C195;C193;C190#basis": {
+  "en": "eae79a34",
+  "ro": "publicat: Spielordnung a FVR (mai 2026), § 42, și știrile sale din mai și octombrie 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|format|C199;C197#text": {
+  "en": "47ac3162",
+  "ro": "Cupă eliminatorie, un singur meci pe tur, de la tururile preliminare, intermediare, principale și finale până la finală. Echipa din liga inferioară joacă acasă până la semifinale inclusiv. Egal după 90 de minute: 2 x 15 minute prelungiri, apoi penalty-uri; finala trece direct la penalty-uri. Primele tururi se joacă în districte, apoi la nivelul landului; în 2026-27 cluburile din 3. Liga și Regionalliga au intrat în al doilea tur la nivelul landului, cu 16 meciuri, iar două cluburi din Oberliga au avut tur liber în turul dinainte. Conducerea asociației stabilește locul finalei; finala din 2026 a fost pe Ludwigsparkstadion din Saarbrücken.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|format|C199;C197#basis": {
+  "en": "b27dbabd",
+  "ro": "publicat: Spielordnung a SFV (Stand 06.06.2026), § 31, și pagina sa Sparkassen-Pokal Saar (sezonul 2026/2027).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|qualification|C197;C200#text": {
+  "en": "69db0d54",
+  "ro": "Câștigătoarea se califică în runda 1 a DFB-Pokal din sezonul următor.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|qualification|C197;C200#basis": {
+  "en": "f234bf39",
+  "ro": "publicat: pagina Sparkassen-Pokal Saar a SFV și relatarea sa despre finala din 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|season-window|C197;C198#text": {
+  "en": "f54698f8",
+  "ro": "2026-27, la nivel de lună: al doilea tur la nivelul landului a fost tras la sorți și jucat în noiembrie 2026; optimile (runda celor 16) sunt în februarie 2027 (trase la sorți în noiembrie 2026), sferturile în martie 2027, semifinalele în aprilie 2027 și finala în mai 2027. Finala 2025-26 a făcut parte din Finaltag der Amateure.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|season-window|C197;C198#basis": {
+  "en": "6d8bf317",
+  "ro": "publicat: pagina Sparkassen-Pokal Saar a SFV (sezonul 2026/2027) și pagina sa a finalei din 2026; datele la nivel de zi rămân pe acele pagini.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|schedule-announcement|C197;C198#text": {
+  "en": "6ecf0163",
+  "ro": "În noiembrie 2026 SFV a publicat pe pagina cupei tragerea la sorți a celui de-al doilea tur la nivelul landului, împreună cu datele tuturor tururilor următoare, ale finalei și ale următoarei trageri; pentru finala din 2026 ARD a stabilit ora de start, pentru că meciul făcea parte din conferința Finaltag der Amateure.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|schedule-announcement|C197;C198#basis": {
+  "en": "b2c5fbaa",
+  "ro": "Dedus (CLAUDE.md regula 9: rândurile de calendar sunt la nivel de lună și doar deduse; ciclu trecut observat): un anunț, din pagina cupei a SFV și pagina sa a finalei din 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|tracking|C197;C198;C196#text": {
+  "en": "a9981331",
+  "ro": "Canalele organizatorului: pagina Sparkassen-Pokal Saar a SFV (trageri, date, finala). Rezultate: toate meciurile și rezultatele pe FUSSBALL.DE (numit pe pagina finalei din 2026, nedeschis: fussball.de e închis pentru această cercetare). Finala: parte din conferința ARD de la Finaltag der Amateure. Social: pagina principală leagă Facebook, Instagram, YouTube și un canal WhatsApp (listate, nedeschise). Nu e numit niciun newsletter sau stream al cupei.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|tracking|C197;C198;C196#basis": {
+  "en": "bc041e67",
+  "ro": "publicat: pagina cupei a SFV (sezonul 2026/2027) și pagina sa a finalei din 2026; pagina principală (fără sezon afișat).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|other|C199;C197;C200#text": {
+  "en": "68c3574e",
+  "ro": "Identitate și înscriere: cupa masculină a Saarländischer Fußballverband (SFV), Sparkassen-Pokal Saar. Cluburile de la Verbandsliga în sus trebuie să participe; cluburile din Landesliga, Bezirksliga și Kreisliga se pot înscrie, cu confirmare anuală la înscrierea echipei. Echipele secunde (de rezervă) nu participă, inclusiv cele ale cluburilor din Bundesliga până în Oberliga, iar jucătorii licențiați nu pot juca. Deținătoare: 1. FC Saarbrücken, care a învins FC 08 Homburg cu 4-2 în finala din 2026, în fața a 12.410 spectatori, al 13-lea titlu; din 1975 SV Elversberg are 10, Borussia Neunkirchen 8 și FC 08 Homburg 7.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|other|C199;C197;C200#basis": {
+  "en": "96a55a03",
+  "ro": "publicat: Spielordnung a SFV (Stand 06.06.2026), § 31, pagina sa a cupei și relatarea sa despre finala din 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|other|C199;C198#text": {
+  "en": "d5f8b049",
+  "ro": "Bilete: în primele trei tururi clubul gazdă păstrează încasările; apoi SFV ia 10 %, iar restul se împarte. Prețul unui loc în picioare pentru adulți urmează prețul maxim al clubului din liga superioară, dacă cluburile nu convin altfel, iar conducerea stabilește prețurile finalei. La finala din 2026 SFV a vândut sectoarele neutre doar online, prin Reservix (13 până la 30 de euro, redus 9 până la 26), finalistele și-au vândut singure sectoarele de fani, iar în ziua meciului a existat casă de bilete. Nu se dau date de vânzare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-saarland|other|C199;C198#basis": {
+  "en": "6b9975b6",
+  "ro": "publicat: Spielordnung a SFV (Stand 06.06.2026), §§ 48 și 50, și pagina sa a finalei din 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|format|C205;C202;C203#text": {
+  "en": "56ba8b64",
+  "ro": "Cupă eliminatorie, un singur meci pe tur. Tragerile la sorți sunt publice și libere; runda 1 poate fi împărțită pe regiuni, iar reprezentanții districtelor nu se întâlnesc între ei în ea. Echipa din liga inferioară joacă acasă, și în finală, dacă interesele asociației sau terenul nu o împiedică; între egale, locul finalei se trage la sorți public, iar prezidiul SFV decide. În 2026-27 un meci din turul 3 s-a decis la penalty-uri și unul din optimi (runda celor 16) după prelungiri. În semifinale și finală pot fi trecute până la 9 rezerve.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|format|C205;C202;C203#basis": {
+  "en": "0d71914c",
+  "ro": "publicat: Durchführungsbestimmungen zum SFV-Landespokal der Herren 2026/2027 ale SFV (Fassung 01.07.2026), secțiunile 1.1 și 1.4, pagina sa a cupei și știrile sale din noiembrie 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|qualification|C205;C202#text": {
+  "en": "fa28bd40",
+  "ro": "Câștigătoarea e echipa Saxoniei în DFB-Pokal din sezonul următor. Dacă s-a calificat deja prin locul din ligă, merge finalista învinsă; dacă s-au calificat amândouă, semifinalista învinsă clasată mai sus în sistemul ligilor.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|qualification|C205;C202#basis": {
+  "en": "dfe865c0",
+  "ro": "publicat: Durchführungsbestimmungen 2026/2027 ale SFV, secțiunea 1.3, și pagina sa a cupei.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|season-window|C206;C204#text": {
+  "en": "86b05f16",
+  "ro": "2026-27, la nivel de lună: runda 1 în august 2026 (câștigătoarele cupelor de district, cluburile din Sachsenliga și Sachsenklasse), runda 2 în septembrie 2026 (intră cluburile din Oberliga și Regionalliga), runda 3 în octombrie 2026 (intră cluburile din 3. Liga), optimile (runda celor 16) în noiembrie 2026, sferturile de Paște, în martie 2027, semifinalele la trecerea dintre aprilie și mai 2027 și finala în mai 2027, la Finaltag der Amateure.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|season-window|C206;C204#basis": {
+  "en": "142eb331",
+  "ro": "publicat: Rahmenterminplan Herren 2026/27 al SFV (ședința conducerii din aprilie 2026) și știrile sale din noiembrie 2026; datele la nivel de zi rămân pe acele pagini.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|schedule-announcement|C203;C204;C205#text": {
+  "en": "56d60489",
+  "ro": "În noiembrie 2026 SFV a anunțat tragerea la sorți a sferturilor, cu ziua și ora, în relatarea sa despre optimi (runda celor 16) și a transmis-o în direct; știrea tragerii a dat weekendul turului din Rahmenterminplan; asociația stabilește orele de start după acest plan, pentru meciuri și finală, ținând cont de zilele de joc ale ligilor naționale și de orele convenite cu partenerii media.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|schedule-announcement|C203;C204;C205#basis": {
+  "en": "10abaf88",
+  "ro": "Dedus (CLAUDE.md regula 9: rândurile de calendar sunt la nivel de lună și doar deduse; ciclu trecut observat): o tragere la sorți, din știrile SFV din noiembrie 2026 și Durchführungsbestimmungen 2026/2027, secțiunea 1.5.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|tracking|C203;C204;C205;C206;C201#text": {
+  "en": "b90d908d",
+  "ro": "Canalele organizatorului: pagina Wernesgrüner Sachsenpokal a SFV și știrile sale. Trageri la sorți: tragerea sferturilor din noiembrie 2026 a fost un live stream din Leipzig, anunțat ca livestream MDR (mdr.de e închis pentru această cercetare). Clubul gazdă trebuie să țină live tickerul (regulamentul nu numește portalul). Drepturile TV și media sunt ale SFV. Finala: parte din Finaltag der Amateure. Social: pagina principală leagă Facebook, Instagram și YouTube (listate, nedeschise). Nu s-a găsit newsletter sau aplicație.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|tracking|C203;C204;C205;C206;C201#basis": {
+  "en": "dbbc5364",
+  "ro": "publicat: știrile SFV din noiembrie 2026, Durchführungsbestimmungen 2026/2027 (live ticker, drepturi media) și Rahmenterminplan, și pagina sa principală (fără sezon afișat).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|other|C202;C205;C203#text": {
+  "en": "9281f588",
+  "ro": "Identitate și înscriere: cupa masculină a Sächsischer Fußball-Verband (SFV), SFV-Landespokal der Herren, jucată ca Wernesgrüner Sachsenpokal (berăria e sponsorul de nume din 2005). Intră în jur de 100 de prime echipe din 3. Liga până în Landesklassen, cu cei 13 reprezentanți ai orașelor și districtelor; pot juca doar primele echipe, iar fiecare club semnează un contract de participare. Deținătoare: FC Erzgebirge Aue (2025-26), eliminată în turul 3 în 2026-27. Jucată prima dată în 1990-91; Chemnitzer FC deține recordul cu 11 titluri.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|other|C202;C205;C203#basis": {
+  "en": "8e9d9840",
+  "ro": "publicat: pagina cupei a SFV, Durchführungsbestimmungen 2026/2027, secțiunea 1.3, și știrile sale din noiembrie 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|other|C205#text": {
+  "en": "5b09e86c",
+  "ro": "Bilete: unde comisia de siguranță cere separarea fanilor, clubul gazdă păstrează cel puțin 10 % din capacitate pentru suporterii clubului oaspete, la un preț nu mai mare decât cel pentru suporterii adulți dintr-un sector comparabil; SFV primește 6 % din încasările nete din bilete. Nu se dau date de vânzare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen|other|C205#basis": {
+  "en": "9bb44f34",
+  "ro": "publicat: Durchführungsbestimmungen zum SFV-Landespokal der Herren 2026/2027 ale SFV, secțiunile 1.6.2 și 2.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|format|C210;C211;C209#text": {
+  "en": "e8f11993",
+  "ro": "Cupă eliminatorie, un singur meci pe tur; în 2026-27 optimile (runda celor 16) s-au jucat în octombrie 2026 (un meci mai târziu), sferturile au fost trase la sorți la pauza unui meci din Landesliga, iar un meci din optimi s-a decis la penalty-uri. Finala face parte din Finaltag der Amateure. Regulamentul de cupă 2026-27 al FSA nu e citit (C207), deci regulile de tragere la sorți, dreptul de a juca acasă și regula prelungirilor nu sunt cunoscute din el.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|format|C210;C211;C209#basis": {
+  "en": "276471db",
+  "ro": "Doar știri ale organizatorului (octombrie și noiembrie 2026); regulamentul e în spatele unui Disallow din robots.txt.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|qualification|C208#text": {
+  "en": "72ff1115",
+  "ro": "Cupa e drumul FSA spre DFB-Pokal; pagina cupei spune că dă un loc în DFB-Pokal.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|qualification|C208#basis": {
+  "en": "57a0703d",
+  "ro": "O singură pagină a organizatorului, fără sezon sau dată (pagina cupei); regulamentul nu e citit.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|season-window|C210;C211;C209#text": {
+  "en": "b1c58a10",
+  "ro": "2026-27, la nivel de lună: optimile (runda celor 16) în octombrie 2026, sferturile în noiembrie 2026 (un meci în februarie 2027), tragerea la sorți a semifinalelor în decembrie 2026, semifinalele în martie 2027 și finala în mai 2027, la Finaltag der Amateure.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|season-window|C210;C211;C209#basis": {
+  "en": "a287fa42",
+  "ro": "publicat: știrile FSA din octombrie și noiembrie 2026; datele la nivel de zi rămân pe acele pagini.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|schedule-announcement|C210;C209#text": {
+  "en": "b407978d",
+  "ro": "În octombrie și noiembrie 2026 FSA a anunțat fiecare tragere la sorți dinainte, ca știre, cu locul și ziua, și a dat odată cu ea datele turului următor și ale finalei; tragerea la sorți a semifinalelor e transmisă în direct.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|schedule-announcement|C210;C209#basis": {
+  "en": "5b8d5fb7",
+  "ro": "Dedus (CLAUDE.md regula 9: rândurile de calendar sunt la nivel de lună și doar deduse; ciclu trecut observat): două trageri la sorți, din știrile FSA din octombrie și noiembrie 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|tracking|C209;C212;C208;C207#text": {
+  "en": "797e40ff",
+  "ro": "Canalele organizatorului: pagina dachbleche24-Landespokal a FSA și știrile sale. Trageri la sorți: tragerea semifinalelor din decembrie 2026 e transmisă în mediateca partenerului FSA, Mediengruppe Mitteldeutschland (MGM), al cărei portal de streaming arată și meciuri din Verbandsliga și Landesliga în direct și în reluare. Newsletter: newsletterul FSA (formular de înscriere). Social: pagina principală leagă Facebook, Instagram, TikTok, WhatsApp și YouTube (listate, nedeschise).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|tracking|C209;C212;C208;C207#basis": {
+  "en": "ddb223f4",
+  "ro": "publicat: știrile FSA din noiembrie și din toamna lui 2026, pagina sa a cupei și pagina principală (fără sezon afișat).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|other|C209;C211;C208#text": {
+  "en": "73d03f5a",
+  "ro": "Identitate: cupa oficială a Fußballverband Sachsen-Anhalt (FSA), dachbleche24-Landespokal, deschisă cluburilor din toată Saxonia-Anhalt. Deținătoare: Hallescher FC (Regionalliga), numită deținătoare a titlului în două știri FSA din noiembrie 2026, care numesc VfB Germania Halberstadt finalista învinsă din sezonul trecut. Cine intră din ce ligă nu e citit (C207).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-sachsen-anhalt|other|C209;C211;C208#basis": {
+  "en": "c0a66d8f",
+  "ro": "publicat: știrile FSA din noiembrie 2026 (două articole) și pagina sa a cupei.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|format|C217#text": {
+  "en": "d8d4e499",
+  "ro": "Cupă eliminatorie: echipa învinsă iese. Perechile se trag la sorți; runda 1 poate fi trasă după distanța scurtă de deplasare, iar tururile următoare pe regiuni. Echipa numită prima joacă acasă, dar echipa din liga inferioară are avantajul terenului și poate renunța la el. Un meci egal se decide după § 14 nr. 3 din Spielordnung a SHFV (necitit mai departe). Comisia de competiții stabilește formatul detaliat în norme de aplicare înaintea fiecărui sezon (negăsite).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|format|C217#basis": {
+  "en": "60c1df6e",
+  "ro": "publicat: Satzung und Ordnungen a SHFV (Stand 29.06.2026), Pokalbestimmungen (Stand 28.06.2023) §§ 1, 5 și 6.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|qualification|C217#text": {
+  "en": "75f052dd",
+  "ro": "Echipa SHFV pentru runda 1 a DFB-Pokal vine din cupă; acel club plătește 25 % din câștigurile sale din runda 1 a DFB-Pokal într-un fond împărțit de finalista învinsă (40 %), semifinalistele învinse (câte 20 %) și sfertfinalistele învinse (câte 5 %).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|qualification|C217#basis": {
+  "en": "09f3794d",
+  "ro": "publicat: Satzung und Ordnungen a SHFV (Stand 29.06.2026), Pokalbestimmungen § 1.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|season-window|C216#text": {
+  "en": "cbffd74f",
+  "ro": "2026-27, la nivel de lună: în calendarul SHFV optimile (runda celor 16) și sferturile LOTTO-Pokal cad în iulie 2026, iar semifinalele în Sâmbăta Mare, în martie 2027; ultima sâmbătă din mai 2027, ziua finalei DFB-Pokal, e marcată ca Finaltag der Amateure, cu semn de întrebare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|season-window|C216#basis": {
+  "en": "523338e6",
+  "ro": "publicat: Rahmenterminkalender 2026/27 al SHFV (Stand 26.03.2026); datele la nivel de zi rămân pe el.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|tracking|C214;C216;C215;C213#text": {
+  "en": "037ac118",
+  "ro": "Canalele organizatorului: pagina masculină a SHFV (secțiunea LOTTO-Pokal, cu lista câștigătoarelor și calendarul 2026-27). Newsletter: newsletterul lunar SHFV (pagina de înscriere). Social: pagina principală leagă Facebook, două conturi de Instagram, YouTube și un canal WhatsApp (listate, nedeschise). Pe paginile citite nu s-a găsit pagină de rezultate, stream sau televiziune pentru cupă.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|tracking|C214;C216;C215;C213#basis": {
+  "en": "734a6f4b",
+  "ro": "publicat: pagina masculină a SHFV și Rahmenterminkalender 2026/27; paginile de newsletter și principală (fără sezon afișat).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|other|C217;C214#text": {
+  "en": "0907ba07",
+  "ro": "Identitate și înscriere: cupa Schleswig-Holsteinischer Fußball-Verband (SHFV); peste nivelul de district se joacă drept LOTTO-Pokal. Orice club SHFV își poate înscrie prima echipă; cluburile din 3. Liga, Regionalliga Nord, Oberliga, Landesligen și Verbandsligen trebuie. Cluburile care joacă peste Oberliga nu trebuie să se califice prin cupele de district, cum fac celelalte cluburi. Fiecare participant semnează o declarație de cesiune înainte de runda 1. Deținătoare: 1. FC Phönix Lübeck (2025-26); 2024-25: VfB Lübeck.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-schleswig-holstein|other|C217;C214#basis": {
+  "en": "e121a655",
+  "ro": "publicat: Satzung und Ordnungen a SHFV (Stand 29.06.2026), Pokalbestimmungen §§ 1 și 2, și pagina sa masculină (lista câștigătoarelor până în 2025/26).",
+  "status": "machine-unchecked"
  }
 }
