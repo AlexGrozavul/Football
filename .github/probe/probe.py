@@ -123,6 +123,11 @@ def read(page, url, legal_scan=False):
             seen.add((t, h)); emit(f"{t} -> {h}")
         return links
     except Exception as e:
+        if "Download is starting" in str(e):  # batch 5: lfvm-v.de download links
+            st, fu, ct, data = fetch_raw(url)
+            if data[:4] == b"%PDF" or "pdf" in ct:
+                t, how = pdf_text(data)
+                emit(f"\n===== PDF {url} status={st} final={fu} via={how} (download link) chars={len(t)}\n{t}"); return []
         emit(f"\n===== PAGE {url}\nERROR {e}"); return []
 
 def main():
