@@ -1048,5 +1048,395 @@
   "en": "d5473bbf",
   "ro": "publicat: pagina Regionalliga Bayern a BFV (care arată 2026/27) și Fußball-Regionalliga 2025/26 de pe Wikipedia (de), două surse independente, citite în rulările 3 și 4 ale PR #234; regula calificării din oficiu este doar din Wikipedia. Scorurile sunt în rândul de format.",
   "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|format|C117#text": {
+  "en": "f3d1a0a9",
+  "ro": "Cupă eliminatorie, un singur meci pe dublă: la egalitate după 90 de minute urmează 2 x 15 minute de prelungiri, apoi lovituri de departajare; cinci schimbări. Runda 1 se trage la sorți în trei regiuni (Odenwald, Rhein-Neckar, Mittelbaden), runda 2 după o listă de cap de serie; în ambele, de regulă, clubul din liga inferioară joacă acasă. Din runda 3 (32 de echipe) tragerea acoperă toată asociația, tot cu listă de cap de serie; clubul din liga inferioară păstrează dreptul de gazdă în rundele 3 și 4, iar cluburile din 3. Liga și Regionalliga nu se pot întâlni înainte de sferturi. Sferturile și semifinalele se trag separat: cluburile din Kreisliga și Kreisklasse joacă acasă cu ligile superioare, iar regulamentul inversează și acolo dreptul de gazdă când se întâlnesc două cluburi ale asociației aflate la cel puțin un nivel amator distanță. Pentru finală bfv își poate stabili propriile condiții.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|format|C117#basis": {
+  "en": "b9a904c3",
+  "ro": "publicat: Durchführungsbestimmungen ale bfv pentru cupa masculină 2026/27 (datate 14 septembrie 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|qualification|C117;C120#text": {
+  "en": "6b9fd4d5",
+  "ro": "Câștigătorul primește locul asociației în prima rundă a DFB-Pokal din sezonul următor: SV Waldhof Mannheim, câștigătoarea ediției 2025-26, joacă în runda 1 a DFB-Pokal 2026-27. Câștigătorul varsă 25 % din banii de marketing ai DFB pentru acea rundă (plus TVA) într-un fond de solidaritate pe care bfv îl împarte participanților la cupă; restul veniturilor din DFB-Pokal îi rămân. Dacă cupa nu se poate termina înainte de termenul de înscriere al DFB, conducerea bfv numește participantul la propunerea comisiei de competiții.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|qualification|C117;C120#basis": {
+  "en": "85ca6c41",
+  "ro": "publicat: Durchführungsbestimmungen 2026/27 ale bfv (datate 14 septembrie 2026) și știrea sa despre finala 2025-26 (mai 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|season-window|C119;C118;C121#text": {
+  "en": "2188825d",
+  "ro": "2026-27, la nivel de lună: runda 1 în iulie 2026 (după o tragere la sorți în iunie), runda 2 în weekendul următor, runda 3, cu cluburile din 3. Liga și Regionalliga, la începutul lui august, iar optimile (ultimele 16) în august 2026; din sferturi, datele se stabilesc cu cluburile, iar știrea bfv din octombrie 2026 plasa sferturile în a doua jumătate a lui octombrie. Finala face parte din Finaltag der Amateure, pe care calendarul-cadru al bfv îl pune în ziua finalei DFB-Pokal, în mai 2027.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|season-window|C119;C118;C121#basis": {
+  "en": "92b3bb76",
+  "ro": "publicat: știrile bfv din 1 iulie 2026 și 15 octombrie 2026 și calendarul-cadru 2026/27 (Stand 7 ianuarie 2026); datele la nivel de zi rămân pe acele pagini.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|schedule-announcement|C116;C119;C117#text": {
+  "en": "73e74ad4",
+  "ro": "În 2026, bfv a tras la sorți primele runde la sfârșitul lui iunie, a transmis tragerea pe Instagram și a publicat în știrea despre tragere datele standard pentru rundele 1-3 și optimi (ultimele 16); sferturile și semifinalele se trag separat, iar datele lor se stabilesc cu cluburile.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|schedule-announcement|C116;C119;C117#basis": {
+  "en": "3572a59a",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile de program sunt la nivel de lună și doar deduse; ciclu observat): un singur ciclu, din pagina masculină a bfv, știrea sa din 1 iulie 2026 și Durchführungsbestimmungen 2026/27.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|tracking|C116;C117;C118;C148;C149#text": {
+  "en": "54bb8edd",
+  "ro": "Canalele organizatorului: pagina masculină a bfv (știri despre cupă, regulamentul și calendarul-cadru 2026/27) și știrile bfv. Rezultate: pagina masculină trimite la pagina cupei de pe fussball.de (nedeschisă: fussball.de este închis acestei cercetări), iar clubul gazdă ține live tickerul fussball.de. Live: în 2026-27, cele șase sferturi și semifinale se transmit live, cu comentariu, pe LEAGUES (leagues.football/bfv-pokal), care vinde un abonament pentru tot sezonul de cupă, cu reluări, și marchează meciurile pe care le transmite. Trageri la sorți: tragerea primei runde a fost transmisă pe Instagram. Finala: la Finaltag der Amateure, când Das Erste a transmis în 2026 cele 21 de finale masculine. Newsletter: la cerere prin e-mail către biroul de presă al bfv. Social: conturile de Facebook și Instagram ale bfv (listate, nedeschise).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|tracking|C116;C117;C118;C148;C149#basis": {
+  "en": "e515f524",
+  "ro": "publicat: pagina masculină a bfv, regulamentul 2026/27 (datat 14 septembrie 2026) și știrea din 15 octombrie 2026; pagina cupei pe LEAGUES (fără sezon); pagina de newsletter a bfv (fără sezon).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|other|C117;C119;C120#text": {
+  "en": "5fbb59b6",
+  "ro": "Identitate și participare: cupa masculină a Badischer Fußballverband (bfv), care o organizează; numită Volksbanken Raiffeisenbanken bfv-Pokal din 2026-27 (bfv-Rothaus-Pokal în 2025-26). 116 echipe în 2026-27: 1 din 3. Liga, 3 din Regionalliga, 3 din Oberliga, 11 din Verbandsliga, 48 din Landesliga, 40 din Kreisliga, 9 din Kreisklasse A și 1 din Kreisklasse B; cele nouă districte trimit cote fixe (Karlsruhe 8; Heidelberg, Mannheim și Pforzheim câte 6; celelalte cinci câte 4). Echipele a doua și echipele comune care includ una nu se pot înscrie. Participarea este obligatorie până la optimi (ultimele 16) și voluntară din sferturile de finală, pentru care e nevoie de un acord de participare semnat. Deținătoarea și cluburile din Regionalliga intră în runda 3.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|other|C117;C119;C120#basis": {
+  "en": "d489d051",
+  "ro": "publicat: Durchführungsbestimmungen 2026/27 ale bfv (datate 14 septembrie 2026), știrea sa din 1 iulie 2026 și cea despre finala 2025-26.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|other|C120;C119#text": {
+  "en": "1a5e2c65",
+  "ro": "Deținătoarea la data verificării: SV Waldhof Mannheim (3. Liga), câștigătoarea ediției 2025-26: 3-0 cu VfR Mannheim în finala de la Finaltag der Amateure, în mai 2026, pe Carl-Benz-Stadion din Mannheim, în fața a 16.951 de spectatori; primul trofeu de cupă din 2022.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|other|C120;C119#basis": {
+  "en": "c6846a63",
+  "ro": "publicat: știrea bfv despre finala 2025-26 (mai 2026); știrea bfv din 1 iulie 2026 numește Waldhof deținătoarea titlului.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|other|C117#text": {
+  "en": "5eaafaf9",
+  "ro": "Bilete pentru un meci: clubul gazdă se ocupă de bilete, de casele de bilete și de încasarea intrărilor (clubul oaspete își poate trimite oamenii lui) și trimite echipei oaspete cinci bilete pentru oficialii ei; jucătorii și staff-ul echipei oaspete intră fără bilet. Până la semifinale, asociația ia 10 % din încasările nete, iar clubul pe al cărui teren se joacă primește 20 % pentru costuri; pentru finală bfv poate stabili alte condiții. Nu sunt date de vânzare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-baden|other|C117#basis": {
+  "en": "678140d1",
+  "ro": "publicat: Durchführungsbestimmungen 2026/27 ale bfv (datate 14 septembrie 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|format|C122;C123#text": {
+  "en": "6ffab2d3",
+  "ro": "64 de echipe într-o cupă eliminatorie; finala se joacă la Finaltag der Amateure. Tragerea la sorți, dreptul de gazdă și regula prelungirilor nu au fost găsite: Spielordnung a SBFV (§ 50) lasă detaliile cupei unei Ausführungsbestimmung (AB 2), care nu a fost citită.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|format|C122;C123#basis": {
+  "en": "4717366a",
+  "ro": "publicat: pagina masculină a SBFV (care numește sezonul 2026/2027) și Spielordnung a sa (Stand august 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|qualification|C122;C123#text": {
+  "en": "a1d5e5ca",
+  "ro": "Câștigătorul poate intra în DFB-Pokal din sezonul următor, principala miză a cupei, așa cum o descrie SBFV; Spielordnung a SBFV (§ 35) obligă asociația să-și trimită echipele calificate în competițiile de cupă ale DFB.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|qualification|C122;C123#basis": {
+  "en": "4717366a",
+  "ro": "publicat: pagina masculină a SBFV (care numește sezonul 2026/2027) și Spielordnung a sa (Stand august 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|season-window|C125#text": {
+  "en": "e75e8e56",
+  "ro": "2026-27, la nivel de lună: finala are loc la Finaltag der Amateure, în mai 2027, în ziua finalei DFB-Pokal, după calendarul-cadru al SBFV. Celelalte runde nu au fost citite: coloanele cupei din calendar nu au trecut clar prin conversia PDF.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|season-window|C125#basis": {
+  "en": "ef3ef868",
+  "ro": "publicat: calendarul-cadru masculin 2026/2027 al SBFV (Stand 2 februarie 2026); datele la nivel de zi rămân în PDF.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|tracking|C124;C122;C126#text": {
+  "en": "b805c994",
+  "ro": "Canalele organizatorului: pagina masculină a SBFV și pagina sa Finaltag der Amateure, care listează meciurile și rezultatele sezonului de cupă în curs (Road to Finaltag) și un live ticker. Finala: ARD a transmis live toate finalele cupelor regionale, la TV și în stream, în conferința sa încă de la primul Finaltag; ediția 2026 a fost a unsprezecea. Social: pagina media a SBFV trimite la conturile sale de Instagram, YouTube și Facebook (listate, nedeschise). Pe paginile citite nu s-a găsit nicio aplicație, niciun newsletter și niciun stream al rundelor anterioare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|tracking|C124;C122;C126#basis": {
+  "en": "9e5e4fbe",
+  "ro": "publicat: pagina Finaltag a SBFV (care numește ediția 2026), pagina sa masculină (care numește 2026/2027) și pagina media (fără sezon).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|other|C122;C123#text": {
+  "en": "69d20e69",
+  "ro": "Identitate și participare: cupa masculină a Südbadischer Fußballverband (SBFV), numită Volksbanken Raiffeisenbanken SBFV-Pokal din 2026-27. Participarea este obligatorie pentru cluburile asociației din Regionalliga, Oberliga, Verbandsliga și Landesliga și pentru semifinalistele cupelor districtuale; un club nu poate înscrie o a doua echipă. Meciurile de cupă sunt meciuri obligatorii conform Spielordnung. Câștigătoarea ediției 2025-26, deci deținătoarea, nu apare pe nicio pagină citită: lăsat necompletat.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|other|C122;C123#basis": {
+  "en": "4717366a",
+  "ro": "publicat: pagina masculină a SBFV (care numește sezonul 2026/2027) și Spielordnung a sa (Stand august 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|other|C123#text": {
+  "en": "a9d40e2c",
+  "ro": "Bilete și încasări: regula din Spielordnung pentru meciurile de cupă și de baraj prevede că organismul care conduce meciul stabilește prețurile, fără reducere pentru membrii cluburilor. Pe teren neutru, clubul gazdă păstrează 20 % din încasarea brută după TVA, iar cele două echipe împart restul în mod egal; pe terenul unuia dintre cluburi, încasarea după TVA se împarte la jumătate, iar fiecare își suportă costurile. Nu sunt date de vânzare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-suedbaden|other|C123#basis": {
+  "en": "f588f275",
+  "ro": "publicat: Spielordnung a SBFV (Stand august 2026), § 51a.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|format|C128;C131#text": {
+  "en": "bdefc09a",
+  "ro": "Cupă eliminatorie, un singur meci pe dublă; fiecare rundă se trage la sorți. Clubul din liga inferioară joacă acasă, iar la cluburi de același nivel, cel tras primul; cele două se pot înțelege să schimbe. La egalitate după timpul regulamentar, la nivel de asociație: 2 x 15 minute de prelungiri, apoi lovituri de departajare; până la cinci schimbări. Echipele sunt împărțite în patru grupe geografice până la optimi (ultimele 16), care se trag pe toată asociația. Finala se joacă în principiu pe teren neutru.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|format|C128;C131#basis": {
+  "en": "6c144b7b",
+  "ro": "publicat: Durchführungsbestimmungen ale WFV pentru cupa masculină 2026/2027 (Stand septembrie 2026) și știrea sa din 19 august 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|qualification|C127;C128#text": {
+  "en": "feb1ca04",
+  "ro": "Câștigătorul intră direct în prima rundă a DFB-Pokal. Câștigătoarele cupelor districtuale dintr-un sezon intră în WFV-Pokal la nivel de asociație în sezonul următor (dacă o câștigătoare districtuală promovează în Landesliga, intră și finalista învinsă).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|qualification|C127;C128#basis": {
+  "en": "c9428447",
+  "ro": "publicat: pagina cupei a WFV și Durchführungsbestimmungen 2026/2027 (Stand septembrie 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|season-window|C131;C130;C132#text": {
+  "en": "f8b47802",
+  "ro": "2026-27, la nivel de lună: optimile (ultimele 16) au fost trase la sorți în august 2026, la sediul WFV din Stuttgart. Finala 2025-26 a fost în mai 2026; calendarul-cadru 2026/27 al WFV marchează Finaltag în ziua finalei DFB-Pokal, în mai 2027.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|season-window|C131;C130;C132#basis": {
+  "en": "f31e2684",
+  "ro": "publicat: știrea WFV din 19 august 2026, lista sa de finale și calendarul-cadru masculin 2026/27; datele la nivel de zi rămân pe acele pagini.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|schedule-announcement|C131#text": {
+  "en": "6a68279d",
+  "ro": "În 2026, WFV a tras la sorți optimile (ultimele 16) în august, la sediul său, a transmis tragerea pe canalul său de Instagram și a publicat perechile ca știre în aceeași zi.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|schedule-announcement|C131#basis": {
+  "en": "2a1cd5b5",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile de program sunt la nivel de lună și doar deduse; ciclu observat): o singură tragere, din știrea WFV din 19 august 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|tracking|C127;C130;C131;C133#text": {
+  "en": "e8ed1734",
+  "ro": "Canalele organizatorului: pagina cupei a WFV (regulamentul, lotul participanților și știrile sezonului) și lista tuturor finalelor din 1951, cu linkuri către rezumate video pe YouTube. Rezultate din optimi (ultimele 16): pagina cupei trimite la fussball.de (nedeschis: fussball.de este închis acestei cercetări). Trageri la sorți: transmise pe canalul de Instagram al WFV. Social: pagina principală a WFV trimite la conturile de Facebook, Instagram și YouTube (listate, nedeschise). Pe paginile citite nu este numit niciun stream al meciurilor, niciun post TV, nicio aplicație și niciun newsletter.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|tracking|C127;C130;C131;C133#basis": {
+  "en": "c1923f0e",
+  "ro": "publicat: pagina cupei a WFV, lista finalelor și știrea din 19 august 2026; pagina principală pentru linkurile sociale.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|other|C128;C129;C127#text": {
+  "en": "2532f6cc",
+  "ro": "Identitate și participare: cupa masculină a Württembergischer Fußballverband (WFV), condusă la nivel de asociație de comisia sa de competiții și la nivel districtual de districte; numită Volksbanken Raiffeisenbanken WFV-Pokal din 2026. Participarea este obligatorie. La nivel de asociație, cel mult 128 de echipe: echipele WFV din 3. Liga, Regionalliga Südwest și Oberliga Baden-Württemberg, echipele din Verbandsliga și Landesliga și câștigătoarele cupelor districtuale din sezonul anterior; din sferturile de finală este nevoie de un acord de participare. Lotul 2026-27 are 108 echipe în patru grupe (26, 28, 27 și 27); clubul din 3. Liga și cele patru cluburi din Regionalliga au fost scutite de runda 1. Dacă echipele a doua (de rezervă) se pot înscrie nu s-a găsit în documentele citite.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|other|C128;C129;C127#basis": {
+  "en": "ce944d21",
+  "ro": "publicat: Durchführungsbestimmungen 2026/2027 ale WFV (Stand septembrie 2026), lotul 2026/27 și pagina cupei.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|other|C130;C131#text": {
+  "en": "2fc0d9fc",
+  "ro": "Deținătoare și istorie: SG Sonnenhof Großaspach, câștigătoarea ediției 2025-26: 4-1 cu SV Stuttgarter Kickers în finala din mai 2026 pe GAZi-Stadion auf der Waldau din Stuttgart, în fața a 8.533 de spectatori; a câștigat și ediția 2024-25 (2-0 cu TSG Balingen, pe același teren), iar WFV îi numără trei titluri în total. WFV listează finale din 1950-51; în 1951-52 și 1952-53 competiția nu s-a disputat.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|other|C130;C131#basis": {
+  "en": "81621824",
+  "ro": "publicat: lista finalelor WFV și știrea sa din 19 august 2026, care numește Großaspach deținătoarea.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|other|C128#text": {
+  "en": "bfab09dc",
+  "ro": "Bilete: la nivel de asociație se aplică prețurile locale obișnuite; membrii cluburilor plătesc prețul întreg, biletele de onoare și gratuite nu sunt permise, iar clubul oaspete își poate trimite oamenii să verifice vânzarea biletelor. Pentru finală, comisia de competiții poate stabili alte reguli de decontare. Nu sunt date de vânzare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-wuerttemberg|other|C128#basis": {
+  "en": "85314dd7",
+  "ro": "publicat: Durchführungsbestimmungen 2026/2027 ale WFV (Stand septembrie 2026), secțiunile 8 și 9.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|format|C137;C134#text": {
+  "en": "c4b3f1b7",
+  "ro": "Cupă eliminatorie, un singur meci pe dublă. Clubul din liga inferioară joacă acasă, iar la cluburi de același nivel, cel tras primul. Un meci egal după timpul regulamentar merge direct la lovituri de departajare, fără prelungiri; câștigătorul trebuie să joace runda următoare. Finala și finalele districtuale se pot juca pe terenul unui club participant sau pe teren neutru. Datele Toto-Pokal din calendarul-cadru au prioritate față de meciurile de campionat și pot cădea în timpul săptămânii. 64 de echipe joacă prima rundă principală BFV, între ele cele 22 de câștigătoare districtuale.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|format|C137;C134#basis": {
+  "en": "0373a229",
+  "ro": "publicat: Spielordnung a BFV (Stand 6 iulie 2026), §§ 68 și 69; pagina Toto-Pokal a BFV (fără sezon) pentru cele 64 de echipe.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|qualification|C137;C135;C136#text": {
+  "en": "cc3e44d6",
+  "ro": "Două locuri în prima rundă a DFB-Pokal: unul pentru câștigătoarea Toto-Pokal și unul pentru cel mai bine clasat club amator bavarez din Regionalliga Bayern. În 2026, câștigătoarea, Würzburger Kickers, era deja calificată ca campioană amatoare a Bavariei, iar BFV a scris că finalista învinsă, TSV 1860 München, se putea pregăti și ea pentru DFB-Pokal. BFV estimează banii garantați din DFB-Pokal la circa 210.000 de euro; LOTTO Bayern a plătit câștigătoarei din 2026 7.600 de euro.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|qualification|C137;C135;C136#basis": {
+  "en": "4735cd5a",
+  "ro": "publicat: Spielordnung a BFV (Stand 6 iulie 2026), § 68 nr. 8; știrile sale despre finala 2026 (mai 2026) și despre tragerea semifinalelor 2026-27 (octombrie 2026).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|season-window|C136#text": {
+  "en": "09fae2f8",
+  "ro": "2026-27, la nivel de lună: semifinalele au fost trase la sorți în octombrie 2026 și sunt programate pentru martie sau aprilie 2027 (o sâmbătă din martie este posibilă cu cluburi din 3. Liga sau cu TV); finala are loc la Finaltag der Amateure, în mai 2027. Semifinale: TSV Aubstadt cu SSV Jahn Regensburg și 1. FC Schweinfurt 05 cu FC Ingolstadt 04, clubul din Regionalliga gazdă în ambele.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|season-window|C136#basis": {
+  "en": "051e2ffb",
+  "ro": "publicat: știrea BFV despre tragerea semifinalelor 2026-27 (octombrie 2026); datele la nivel de zi rămân pe acea pagină.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|schedule-announcement|C136#text": {
+  "en": "30c40f84",
+  "ro": "În 2026-27, BFV a tras la sorți semifinalele în octombrie, la Haus des Fußballs din München, a transmis tragerea pe Instagram, a numit două date posibile pentru meciuri și a stabilit apoi orele exacte cu cluburile.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|schedule-announcement|C136#basis": {
+  "en": "0d259f85",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile de program sunt la nivel de lună și doar deduse; ciclu observat): o singură tragere, din știrea BFV din octombrie 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|tracking|C136;C134;C67;C66;C138;C124#text": {
+  "en": "b4047ebb",
+  "ro": "Canalele organizatorului: pagina Toto-Pokal a BFV și știrile sale, plus secțiunea de rezultate (bfv.de/ergebnisse). Trageri la sorți: transmise pe Instagram. Finala: la Finaltag der Amateure, ARD transmite toate finalele regionale într-o conferință, iar Bayerisches Fernsehen transmite integral în stream finala bavareză. Video și aplicație: pagina TV și video a BFV (BFV.TV și YouTube, livestreamuri Sporttotal.tv) și aplicația BFV (știri, rezultate, goluri și eliminări ale meciurilor urmărite ca notificări push). Social: pagina principală a BFV trimite la Facebook, Instagram, TikTok, LinkedIn, YouTube și un canal WhatsApp (listate, nedeschise). Meniul trimite și la newsletterele BFV (nedeschise în această sesiune).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|tracking|C136;C134;C67;C66;C138;C124#basis": {
+  "en": "c2b73ebc",
+  "ro": "publicat: știrea BFV din octombrie 2026 (transmisia tragerii); pagina Toto-Pokal, pagina TV și pagina aplicației (fără sezon); pagina principală pentru linkurile sociale. Conferința ARD din 2026 apare și pe pagina Finaltag a SBFV.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|other|C137;C136;C134#text": {
+  "en": "a5484f24",
+  "ro": "Identitate și participare: cupa masculină a Bayerischer Fußball-Verband (BFV), numită Toto-Pokal după partenerul de lungă durată LOTTO Bayern și jucată din 1998; comisia de competiții a BFV o conduce până la nivelul landului, iar comisiile districtuale conduc rundele districtuale. Se poate înscrie doar prima echipă masculină a unui club membru (sau o echipă comună condusă de una); echipele a doua și următoarele nu. Cluburile din 3. Liga și Regionalliga Bayern sunt obligate să participe. Cluburile din Bayernliga și Landesliga nu intră automat în prima rundă principală: se califică în sezonul de campionat curent pentru prima rundă principală din sezonul următor, prin meciuri sau poziții în clasament stabilite în regulile BFV pentru fiecare sezon. Pentru toate celelalte echipe, cupa districtuală este voluntară.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|other|C137;C136;C134#basis": {
+  "en": "cf19a64d",
+  "ro": "publicat: Spielordnung a BFV (Stand 6 iulie 2026), § 68, și știrea sa din octombrie 2026; pagina Toto-Pokal (fără sezon) pentru 1998.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|other|C135;C136;C134#text": {
+  "en": "856f95b3",
+  "ro": "Deținătoare și istorie: FC Würzburger Kickers (Regionalliga Bayern), câștigătoarea ediției 2025-26: în finala de la Finaltag der Amateure, în mai 2026, pe propriul teren, Stadion am Dallenberg (11.017 spectatori, sold-out), a remizat 1-1 cu TSV 1860 München (3. Liga) și a câștigat cu 5-3 la lovituri de departajare: al patrulea titlu, după 2014, 2016 și 2019. FV Illertissen a câștigat în 2025. În sferturile ediției 2026-27, TSV Aubstadt a eliminat deținătoarea.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-bayern|other|C135;C136;C134#basis": {
+  "en": "d6b69fe0",
+  "ro": "publicat: știrile BFV despre finala 2026 (mai 2026) și despre tragerea semifinalelor 2026-27 (octombrie 2026); pagina Toto-Pokal (fără sezon) pentru 2025.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|format|C141#text": {
+  "en": "e6c7181f",
+  "ro": "Cupă eliminatorie, un singur meci pe dublă, trasă la sorți public după un anunț. Echipa trasă prima joacă acasă, însă până la semifinale joacă acasă echipa din liga inferioară; clubul gazdă organizează și meciul, iar o schimbare are nevoie de acordul oficiului de competiții. Pentru a ajunge la o rundă de 32 sau 64 de echipe, runda 1 poate fi o rundă de calificare cu scutiri pentru echipele cele mai bine plasate. La egalitate după 2 x 15 minute de prelungiri: lovituri de departajare. Pot fi folosiți până la 16 jucători.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|format|C141#basis": {
+  "en": "c6f56007",
+  "ro": "publicat: Spielordnung a Berliner FV (Stand 1 iulie 2026), § 21.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|qualification|C141;C139#text": {
+  "en": "4ed10b8f",
+  "ro": "Câștigătoarea trebuie să joace în DFB-Pokal cu prima echipă; dacă s-a calificat deja prin liga sa, este înscrisă în locul ei finalista învinsă. Din partea stabilită de DFB pentru asociație, finalista învinsă primește 40 %, semifinalistele învinse câte 20 %, iar sfertfinalistele învinse câte 5 %. Finala din 2026 a fost pentru trofeu și pentru un loc în runda 1 a DFB-Pokal.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|qualification|C141;C139#basis": {
+  "en": "d60c355c",
+  "ro": "publicat: Spielordnung a Berliner FV (Stand 1 iulie 2026), § 21, și pagina sa Finaltag der Amateure 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|season-window|C140;C139#text": {
+  "en": "6d4db16b",
+  "ro": "2026-27, la nivel de lună: sferturile cupei primelor echipe se trag la sorți în noiembrie 2026 și se joacă în martie 2027. Finala 2025-26 a fost în mai 2026, la Finaltag der Amateure; nicio pagină citită nu dă finala din 2027.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|season-window|C140;C139#basis": {
+  "en": "e49e35d3",
+  "ro": "publicat: știrea Berliner FV din noiembrie 2026 și pagina sa Finaltag der Amateure 2026; datele la nivel de zi rămân pe acele pagini.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|schedule-announcement|C140;C141#text": {
+  "en": "391504a5",
+  "ro": "Tragerile la sorți sunt publice și anunțate dinainte în organul oficial al asociației; în noiembrie 2026, Berliner FV a anunțat tragerea sferturilor de finală ca știre, cu luna rundei următoare, și a transmis în stream tragerile masculine.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|schedule-announcement|C140;C141#basis": {
+  "en": "c4047c12",
+  "ro": "Dedus (regula 9 din CLAUDE.md: rândurile de program sunt la nivel de lună și doar deduse; ciclu observat): un singur anunț, din știrea Berliner FV din noiembrie 2026 și Spielordnung § 21.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|tracking|C140;C139;C142;C143#text": {
+  "en": "6caf9385",
+  "ro": "Canalele organizatorului: știrile Berliner FV (trageri la sorți și datele rundelor) și paginile sale despre finale. Rezultate și perechi: publicate pe fussball.de (numit, nedeschis: fussball.de este închis acestei cercetări). Trageri la sorți: tragerile masculine sunt transmise în stream (platforma nu e numită pe pagină). Finala: la Finaltag der Amateure, în 2026 transmisă la TV gratuit. Newsletter: pagina de abonare a Berliner FV. Social: pagina principală trimite la Facebook, Instagram, LinkedIn și YouTube (listate, nedeschise).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|tracking|C140;C139;C142;C143#basis": {
+  "en": "9d19ada3",
+  "ro": "publicat: știrea Berliner FV din noiembrie 2026 și pagina sa Finaltag der Amateure 2026; pagina de newsletter (fără sezon); pagina principală pentru linkurile sociale.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|other|C141;C140;C139#text": {
+  "en": "de5298fb",
+  "ro": "Identitate și participare: cupa primelor echipe masculine a Berliner Fußball-Verband, care o organizează și stabilește condițiile finalei; echipele a doua au o cupă proprie. Participarea este obligatorie; câștigătoarea cupei ligii de agrement se poate înscrie; echipele comune (Spielgemeinschaften) nu; un club aflat deja în DFB-Pokal prin liga sa nu poate înscrie o altă echipă. Finala 2025-26, între VSG Altglienicke și BFC Dynamo, în mai 2026, pe Mommsenstadion, apare pe paginile citite fără rezultat, așa că deținătoarea rămâne necompletată.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|other|C141;C140;C139#basis": {
+  "en": "0cdbe0a6",
+  "ro": "publicat: Spielordnung a Berliner FV (Stand 1 iulie 2026), § 21, știrea sa din noiembrie 2026 și pagina Finaltag der Amateure 2026.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|other|C139;C141#text": {
+  "en": "14ea7b88",
+  "ro": "Bilete: pentru finala din 2026 de la Finaltag der Amateure, biletele s-au vândut doar pe platforma proprie de bilete a Berliner FV, inclusiv în ziua meciului. Pentru celelalte runde, clubul gazdă organizează meciul. Nu sunt date de vânzare.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-berlin|other|C139;C141#basis": {
+  "en": "1dabe79e",
+  "ro": "publicat: pagina Finaltag der Amateure 2026 a Berliner FV și Spielordnung a sa (Stand 1 iulie 2026), § 21.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-brandenburg|qualification|C116;C145#text": {
+  "en": "db286ed0",
+  "ro": "Câștigătorul primește un loc în prima rundă a DFB-Pokal: bfv (Baden) descrie Finaltag der Amateure ca ziua celor 21 de finale ale cupelor regionale masculine ale căror câștigătoare se califică în runda 1, iar FLB și-a urat finalistelor din 2026 succes acolo. Regulile proprii ale FLB (Spielordnung) nu au fost citite.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-brandenburg|qualification|C116;C145#basis": {
+  "en": "aa626d8f",
+  "ro": "O singură sursă pentru regulă și nu a organizatorului: pagina masculină a bfv; știrea FLB despre finala din 2026 nu enunță regula. Documentele FLB sunt pe daten2.verwaltungsportal.de, al cărui robots.txt interzice toți roboții.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-brandenburg|tracking|C144;C146;C147#text": {
+  "en": "0163734b",
+  "ro": "Canalele organizatorului: pagina cupei masculine a FLB (deținătoarea, o listă a câștigătoarelor pe sezon și o secțiune de date 2026/2027 care nu s-a redat ca text) și știrile FLB. Live: pentru finala din 2026, pagina cupei trimite la o pagină de livestream rbb24, cu relatări rbb24 despre finalele din 2025 și 2026 (nedeschise: rbb24.de este închis acestei cercetări). Video: FLB TV pe YouTube. Newsletter: FLB NEWS, trimis din februarie 2023. Social: pagina principală trimite la Instagram și TikTok (listate, nedeschise).",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-brandenburg|tracking|C144;C146;C147#basis": {
+  "en": "f72402e1",
+  "ro": "publicat: pagina cupei masculine a FLB (care numește câștigătoarea 2025/26 și o secțiune de date 2026/2027), pagina de newsletter și pagina principală.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-brandenburg|other|C144;C145#text": {
+  "en": "99c80cf6",
+  "ro": "Identitate și deținătoare: cupa masculină a Fußball-Landesverband Brandenburg (FLB), Landespokal Brandenburg der Herren. Deținătoare: VfB 1921 Krieschow (Oberliga), care a învins-o pe FC Energie Cottbus, promovată în 2. Bundesliga, cu 2-1 în finala 2025-26 de la Finaltag der Amateure, pe LEAG Energie Stadion din Cottbus, în fața a 10.336 de spectatori: primul său Landespokal, la a treia finală. RSV Eintracht (Stahnsdorf) a câștigat în 2025. Formatul, regulile de participare și datele 2026-27 nu au fost găsite: Spielordnung a FLB este pe un host închis acestei cercetări, iar secțiunea de date a paginii cupei nu s-a redat.",
+  "status": "machine-unchecked"
+ },
+ "de-verbandspokal-brandenburg|other|C144;C145#basis": {
+  "en": "26569210",
+  "ro": "publicat: pagina cupei masculine a FLB (care numește câștigătoarea 2025/26) și știrea sa despre finala din 2026; câștigătoarea din 2025 din lista de linkuri a paginii cupei.",
+  "status": "machine-unchecked"
  }
 }
