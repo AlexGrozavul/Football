@@ -167,3 +167,12 @@ page was read.
 have no cup page of their own (the cup sits on the men's or finals pages), so
 theirs stays blank. Left: 0 national competitions, 14 regional cups (2 more
 blocked), 0 "follow only" rows: 14 rows to research, plus the 2 blocked cups.
+
+## Batch 5 (2026-11-20)
+
+Rows 18, 19 and 21 to 24: the regional cups of Bremen, Hamburg,
+Mecklenburg-Vorpommern, Mittelrhein, Niederrhein and Niedersachsen (3. Liga
+and Regionalliga Nord) (`de-verbandspokal-bremen`, `-hamburg`,
+`-mecklenburg-vorpommern`, `-mittelrhein`, `-niederrhein`,
+`-niedersachsen`). Row 20 (Hessen) stays blocked. Written before any page was
+read.
