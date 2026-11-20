@@ -161,7 +161,10 @@ const server = http.createServer((req, res) => {
   // (none for the Bundesliga, whose own site was not opened) and the repeated "other" rows, read from the files.
   for(const id of ['de-dfb-pokal', 'de-bundesliga', 'it-serie-a', 'de-2-bundesliga', 'de-3-liga', 'de-regionalliga-bayern', 'de-regionalliga-nord',
       'de-regionalliga-nordost', 'de-regionalliga-suedwest', 'de-regionalliga-west', 'de-dfl-supercup',
-      'de-bundesliga-relegation-play-off', 'de-2-bundesliga-relegation-play-off', 'de-aufstiegsspiele-zur-3-liga']){
+      'de-bundesliga-relegation-play-off', 'de-2-bundesliga-relegation-play-off', 'de-aufstiegsspiele-zur-3-liga',
+      // Added 2026-11-20 (German competitions queue, batch 4, PR #235): the first six regional cups researched.
+      'de-verbandspokal-baden', 'de-verbandspokal-suedbaden', 'de-verbandspokal-wuerttemberg', 'de-verbandspokal-bayern',
+      'de-verbandspokal-berlin', 'de-verbandspokal-brandenburg']){
     const comp = comps.find(c => c.id === id), name = comp ? comp.name : id;
     check(`data has a ${name} competition with researched rows`, !!comp && researched.has(id));
     if(!comp) continue;

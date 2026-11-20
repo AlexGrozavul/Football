@@ -59,12 +59,12 @@ sending a team to the DFB-Pokal (NFV page), so it has two rows.
 
 | # | id | association (site) | name on its own site | status | follow |
 |---|---|---|---|---|---|
-| 12 | de-verbandspokal-baden | Badischer FV (badfv.de) | Volksbanken Raiffeisenbanken bfv-Pokal | pending | missing |
-| 13 | de-verbandspokal-suedbaden | Südbadischer FV (sbfv.de) | Volksbanken Raiffeisenbanken SBFV-Pokal | pending | missing |
-| 14 | de-verbandspokal-wuerttemberg | Württembergischer FV (wuerttfv.de) | Volksbanken Raiffeisenbanken WFV-Pokal | pending | missing |
-| 15 | de-verbandspokal-bayern | Bayerischer FV (bfv.de) | Bayerischer Toto-Pokal (page title "Der bayerische Toto-Pokal-Wettbewerb", menu "TOTO-POKAL") | pending | missing |
-| 16 | de-verbandspokal-berlin | Berliner FV (berliner-fussball.de) | COSY-WASCH Landespokal | pending | missing |
-| 17 | de-verbandspokal-brandenburg | FLB Brandenburg (flb.de) | Herren-Landespokal Brandenburg | pending | missing |
+| 12 | de-verbandspokal-baden | Badischer FV (badfv.de) | Volksbanken Raiffeisenbanken bfv-Pokal | researched (batch 4, PR #235, 2026-11-20) | done |
+| 13 | de-verbandspokal-suedbaden | Südbadischer FV (sbfv.de) | Volksbanken Raiffeisenbanken SBFV-Pokal | researched (batch 4, PR #235, 2026-11-20) | done |
+| 14 | de-verbandspokal-wuerttemberg | Württembergischer FV (wuerttfv.de) | Volksbanken Raiffeisenbanken WFV-Pokal | researched (batch 4, PR #235, 2026-11-20) | done |
+| 15 | de-verbandspokal-bayern | Bayerischer FV (bfv.de) | Bayerischer Toto-Pokal (page title "Der bayerische Toto-Pokal-Wettbewerb", menu "TOTO-POKAL") | researched (batch 4, PR #235, 2026-11-20) | done |
+| 16 | de-verbandspokal-berlin | Berliner FV (berliner-fussball.de) | COSY-WASCH Landespokal | researched (batch 4, PR #235, 2026-11-20) | done |
+| 17 | de-verbandspokal-brandenburg | FLB Brandenburg (flb.de) | Herren-Landespokal Brandenburg | researched (batch 4, PR #235, 2026-11-20) | done |
 | 18 | de-verbandspokal-bremen | Bremer FV (bremerfv.de) | LOTTO-Pokal | pending | missing |
 | 19 | de-verbandspokal-hamburg | Hamburger FV (hfv.de) | LOTTO Hamburg-Pokal (the site writes "den LOTTO Hamburg- und HOLSTEN-Pokal"; which of the two sends the DFB-Pokal team is to be checked) | pending | missing |
 | 20 | — | Hessischer FV (hfv-online.de) | not read: bot challenge (HTTP 403) | blocked | missing |
@@ -82,8 +82,9 @@ sending a team to the DFB-Pokal (NFV page), so it has two rows.
 | 32 | de-verbandspokal-thueringen | Thüringer FV (thueringerfv.de; tfv-erfurt.de forwards there) | Thüringen Pokal | pending | missing |
 | 33 | — | FLVW Westfalen (flvw.de) | not read: "Bot/Crawler detected", HTTP 400 | blocked | missing |
 
-Next batch: the regional cups, rows 12 to 17 (Baden, Südbaden, Württemberg,
-then Bayern, Berlin, Brandenburg).
+Next batch: the regional cups, rows 18, 19 and 21 to 24 (Bremen, Hamburg,
+Mecklenburg-Vorpommern, Mittelrhein, Niederrhein, Niedersachsen; row 20,
+Hessen, stays blocked).
 
 ## Researched competitions
 
@@ -143,3 +144,26 @@ The phase 4a rows were not edited (their basis is not search summaries);
 differences are in open-problems.md. Left: 0 national competitions, 20
 regional cups (2 more blocked), 0 "follow only" rows: 20 rows to research,
 plus the 2 blocked cups.
+
+## Batch 4 (2026-11-20)
+
+Rows 12 to 17: the regional cups of Baden, Südbaden, Württemberg, Bayern,
+Berlin and Brandenburg (`de-verbandspokal-baden`, `-suedbaden`,
+`-wuerttemberg`, `-bayern`, `-berlin`, `-brandenburg`). Written before any
+page was read.
+4 probe runs of 8 used.
+
+| id | rows | confirmed | inferred | unverified | follow |
+|---|---|---|---|---|---|
+| de-verbandspokal-baden | 8 | 7 | 1 | 0 | done (LEAGUES streams the quarter- and semi-finals) |
+| de-verbandspokal-suedbaden | 6 | 6 | 0 | 0 | done (no stream of the earlier rounds named) |
+| de-verbandspokal-wuerttemberg | 8 | 7 | 1 | 0 | done (no stream or broadcaster named) |
+| de-verbandspokal-bayern | 7 | 6 | 1 | 0 | done |
+| de-verbandspokal-berlin | 7 | 6 | 1 | 0 | done (draw stream platform not named) |
+| de-verbandspokal-brandenburg | 3 | 2 | 0 | 1 | done (rbb24.de, which the FLB links for the final, is closed) |
+
+39 rows (34 confirmed, 4 inferred, 1 unverified), sources C116-C149.
+`officialUrl` filled for Brandenburg (its cup page); Baden, Südbaden and Berlin
+have no cup page of their own (the cup sits on the men's or finals pages), so
+theirs stays blank. Left: 0 national competitions, 14 regional cups (2 more
+blocked), 0 "follow only" rows: 14 rows to research, plus the 2 blocked cups.
