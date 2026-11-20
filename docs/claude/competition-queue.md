@@ -72,20 +72,19 @@ sending a team to the DFB-Pokal (NFV page), so it has two rows.
 | 22 | de-verbandspokal-mittelrhein | FV Mittelrhein (fvm.de) | Bitburger-Pokal | researched (batch 5, PR #236, 2026-11-20) | done |
 | 23 | de-verbandspokal-niederrhein | FV Niederrhein (fvn.de) | Niederrheinpokal | researched (batch 5, PR #236, 2026-11-20) | done |
 | 24 | de-verbandspokal-niedersachsen | Niedersächsischer FV (nfv.de) | Niedersachsenpokal 3. Liga und Regionalliga Nord | researched (batch 5, PR #236, 2026-11-20) | done |
-| 25 | de-verbandspokal-niedersachsen-amateure | Niedersächsischer FV (nfv.de) | Krombacher-Niedersachsenpokal der Amateure | pending | missing |
-| 26 | de-verbandspokal-rheinland | FV Rheinland (fv-rheinland.de) | Rheinlandpokal | pending | missing |
-| 27 | de-verbandspokal-saarland | Saarländischer FV (saar-fv.de) | Sparkassen-Pokal Saar | pending | missing |
-| 28 | de-verbandspokal-sachsen | Sächsischer FV (sfv-online.de) | Wernesgrüner Sachsenpokal | pending | missing |
-| 29 | de-verbandspokal-sachsen-anhalt | FV Sachsen-Anhalt (fsa-online.de) | dachbleche24-Landespokal | pending | missing |
-| 30 | de-verbandspokal-schleswig-holstein | Schleswig-Holsteinischer FV (shfv-kiel.de) | LOTTO Pokal | pending | missing |
+| 25 | de-verbandspokal-niedersachsen-amateure | Niedersächsischer FV (nfv.de) | Krombacher-Niedersachsenpokal der Amateure | researched (batch 6, PR #237, 2026-11-20) | done |
+| 26 | de-verbandspokal-rheinland | FV Rheinland (fv-rheinland.de) | Rheinlandpokal (its news: "Bitburger Rheinlandpokal") | researched (batch 6, PR #237, 2026-11-20) | done |
+| 27 | de-verbandspokal-saarland | Saarländischer FV (saar-fv.de) | Sparkassen-Pokal Saar | researched (batch 6, PR #237, 2026-11-20) | done |
+| 28 | de-verbandspokal-sachsen | Sächsischer FV (sfv-online.de) | Wernesgrüner Sachsenpokal | researched (batch 6, PR #237, 2026-11-20) | done |
+| 29 | de-verbandspokal-sachsen-anhalt | FV Sachsen-Anhalt (fsa-online.de) | dachbleche24-Landespokal | researched (batch 6, PR #237, 2026-11-20) | done |
+| 30 | de-verbandspokal-schleswig-holstein | Schleswig-Holsteinischer FV (shfv-kiel.de) | LOTTO Pokal | researched (batch 6, PR #237, 2026-11-20) | done |
 | 31 | de-verbandspokal-suedwest | Südwestdeutscher FV (swfv.de) | Bitburger Verbandspokal | pending | missing |
 | 32 | de-verbandspokal-thueringen | Thüringer FV (thueringerfv.de; tfv-erfurt.de forwards there) | Thüringen Pokal | pending | missing |
 | 33 | — | FLVW Westfalen (flvw.de) | not read: "Bot/Crawler detected", HTTP 400 | blocked | missing |
 
-Next batch: the regional cups, rows 25 to 30 (Niedersachsen Amateure,
-Rheinland, Saarland, Sachsen, Sachsen-Anhalt, Schleswig-Holstein; rows 20 and
-33, Hessen and Westfalen, stay blocked). The NFV's 2026-27 regulation for row
-25 (source C185) was already read in batch 5.
+Next batch: the regional cups, rows 31 and 32 (Südwest, Thüringen; rows 20 and
+33, Hessen and Westfalen, stay blocked). After them the queue holds only the two
+blocked cups.
 
 ## Researched competitions
 
@@ -203,3 +202,19 @@ Saarland, Sachsen, Sachsen-Anhalt and Schleswig-Holstein
 (`de-verbandspokal-niedersachsen-amateure`, `-rheinland`, `-saarland`,
 `-sachsen`, `-sachsen-anhalt`, `-schleswig-holstein`). Rows 20 and 33 (Hessen,
 Westfalen) stay blocked. Written before any page was read.
+4 probe runs of 8 used.
+
+| id | rows | confirmed | inferred | unverified | follow |
+|---|---|---|---|---|---|
+| de-verbandspokal-niedersachsen-amateure | 5 | 5 | 0 | 0 | done (NFV cup page, fussball.de named; ARD shows one NFV final a year, alternating) |
+| de-verbandspokal-rheinland | 7 | 6 | 1 | 0 | done (the FVR streamed the 2026 final free on YouTube; no results page or newsletter named) |
+| de-verbandspokal-saarland | 7 | 6 | 1 | 0 | done (cup page; results on FUSSBALL.DE; final in the ARD conference) |
+| de-verbandspokal-sachsen | 7 | 6 | 1 | 0 | done (draws streamed live, announced as MDR livestream; mdr.de closed) |
+| de-verbandspokal-sachsen-anhalt | 6 | 3 | 1 | 2 | done (semi-final draw streamed in the MGM media library; the regulation is behind a robots.txt Disallow) |
+| de-verbandspokal-schleswig-holstein | 5 | 5 | 0 | 0 | done (men's page and newsletter; no stream, results page or broadcaster named) |
+
+37 rows (31 confirmed, 4 inferred, 2 unverified), sources C187-C218 (C183-C186
+re-read). `officialUrl` filled for Saarland, Sachsen and Sachsen-Anhalt;
+Rheinland (no cup page) and Schleswig-Holstein (a section of the men's page) stay
+blank. Left: 0 national competitions, 2 regional cups (2 more blocked), 0
+"follow only" rows: 2 rows to research, plus the 2 blocked cups.
