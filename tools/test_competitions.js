@@ -133,7 +133,16 @@ const server = http.createServer((req, res) => {
   // ---------------------------------------------------------------- sheets
   const open = async id => {
     await page.click(`#compBody .comprow[data-id="${id}"]`);
-    await page.waitForSelector('#csheet:not([hidden])');
+    await page.waitForSelector('#csheet:not([hidden])', {timeout: 8000}).catch(async e => {
+      // Diagnostic (batch 7, PR #238): what the click hit when a sheet does not open.
+      const d = await page.evaluate(sel => { const b = document.querySelector(sel); const r = b && b.getBoundingClientRect();
+        const hit = r && document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+        return {rect: r && [r.x, r.y, r.width, r.height].map(Math.round), vh: innerHeight, hit: hit && (hit.id || hit.className || hit.tagName),
+          inRow: !!(hit && b.contains(hit)), sheetHidden: document.getElementById('csheet').hidden, open: document.getElementById('csheetBody').dataset.open}; },
+        `#compBody .comprow[data-id="${id}"]`);
+      console.log('DIAG open ' + id + ' ' + JSON.stringify(d) + ' errors=' + JSON.stringify(errors.slice(-3)));
+      throw e;
+    });
     await page.waitForTimeout(350);      // the sheet slides up for 220 ms
     return page.evaluate(() => ({
       text: document.getElementById('csheetBody').innerText,
