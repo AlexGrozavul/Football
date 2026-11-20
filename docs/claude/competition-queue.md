@@ -143,3 +143,11 @@ The phase 4a rows were not edited (their basis is not search summaries);
 differences are in open-problems.md. Left: 0 national competitions, 20
 regional cups (2 more blocked), 0 "follow only" rows: 20 rows to research,
 plus the 2 blocked cups.
+
+## Batch 4 (2026-11-20)
+
+Rows 12 to 17: the regional cups of Baden, Südbaden, Württemberg, Bayern,
+Berlin and Brandenburg (`de-verbandspokal-baden`, `-suedbaden`,
+`-wuerttemberg`, `-bayern`, `-berlin`, `-brandenburg`). Written before any
+page was read.
+
