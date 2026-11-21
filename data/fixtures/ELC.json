@@ -4509,7 +4509,7 @@
   {
    "id": 561944,
    "utcDate": "2026-11-21T12:30:00Z",
-   "status": "SCHEDULED",
+   "status": "IN_PLAY",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4534,7 +4534,7 @@
   {
    "id": 561948,
    "utcDate": "2026-11-21T12:30:00Z",
-   "status": "SCHEDULED",
+   "status": "IN_PLAY",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4559,7 +4559,7 @@
   {
    "id": 561950,
    "utcDate": "2026-11-21T12:30:00Z",
-   "status": "SCHEDULED",
+   "status": "IN_PLAY",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,

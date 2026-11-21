@@ -2509,7 +2509,7 @@
   {
    "id": 560643,
    "utcDate": "2026-11-21T12:30:00Z",
-   "status": "TIMED",
+   "status": "IN_PLAY",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,

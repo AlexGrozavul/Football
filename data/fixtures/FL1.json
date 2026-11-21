@@ -2259,7 +2259,7 @@
   {
    "id": 559622,
    "utcDate": "2026-11-20T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2277,9 +2277,9 @@
     "tla": "HAC",
     "crest": "https://crests.football-data.org/533.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559628,
