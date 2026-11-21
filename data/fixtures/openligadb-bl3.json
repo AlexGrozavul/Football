@@ -4694,7 +4694,7 @@
   {
    "id": 84883,
    "utcDate": "2026-11-20T18:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4709,9 +4709,20 @@
     "shortName": "Viktoria Köln",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/FC_Viktoria_K%C3%B6ln_1904_Logo.svg/960px-FC_Viktoria_K%C3%B6ln_1904_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 6,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 6
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
