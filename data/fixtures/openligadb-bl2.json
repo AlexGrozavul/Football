@@ -3645,7 +3645,7 @@
   {
    "id": 83689,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3681,7 +3681,7 @@
   {
    "id": 83694,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3696,7 +3696,7 @@
     "shortName": "Fürth",
     "crest": "https://i.imgur.com/pwuVbKr.png"
    },
-   "homeGoals": 1,
+   "homeGoals": 2,
    "awayGoals": 1,
    "results": [
     {
@@ -3706,7 +3706,7 @@
     },
     {
      "name": "Endergebnis",
-     "home": 1,
+     "home": 2,
      "away": 1
     }
    ],
@@ -3717,7 +3717,7 @@
   {
    "id": 83699,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3733,7 +3733,7 @@
     "crest": "https://upload.wikimedia.org/wikipedia/de/4/45/Logo_Eintracht_Braunschweig.svg"
    },
    "homeGoals": 1,
-   "awayGoals": 1,
+   "awayGoals": 2,
    "results": [
     {
      "name": "Halbzeit",
@@ -3743,7 +3743,7 @@
     {
      "name": "Endergebnis",
      "home": 1,
-     "away": 1
+     "away": 2
     }
    ],
    "stadium": null,
@@ -3753,7 +3753,7 @@
   {
    "id": 83691,
    "utcDate": "2026-11-21T19:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3768,9 +3768,20 @@
     "shortName": "Bochum",
     "crest": "https://i.imgur.com/5jy3Gfr.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3793,9 +3804,20 @@
     "shortName": "Dresden",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 2
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3818,9 +3840,20 @@
     "shortName": "Osnabrück",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/VfL_Osnabrueck_Logo_2021%E2%80%93.svg/960px-VfL_Osnabrueck_Logo_2021%E2%80%93.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -3843,9 +3876,20 @@
     "shortName": "Hertha",
     "crest": "https://i.imgur.com/apFwbYZ.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

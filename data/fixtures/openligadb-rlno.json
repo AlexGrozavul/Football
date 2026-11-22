@@ -5348,7 +5348,7 @@
   {
    "id": 86358,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5363,9 +5363,20 @@
     "shortName": "Hertha II",
     "crest": "https://storage.fussballdaten.de/source/1/vereinhaupt/279/originale/hertha-bsc_2.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5423,7 +5434,7 @@
   {
    "id": 86361,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5438,8 +5449,8 @@
     "shortName": "Babelsberg",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/e/ee/SV_Babelsberg_03.svg/250px-SV_Babelsberg_03.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": 1,
-   "awayGoals": 0,
+   "homeGoals": 3,
+   "awayGoals": 1,
    "results": [
     {
      "name": "Halbzeit",
@@ -5448,8 +5459,8 @@
     },
     {
      "name": "Endergebnis",
-     "home": 1,
-     "away": 0
+     "home": 3,
+     "away": 1
     }
    ],
    "stadium": null,
@@ -5459,7 +5470,7 @@
   {
    "id": 86362,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5474,9 +5485,20 @@
     "shortName": "Chemnitz",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chemnitzer_FC_Logo.svg/120px-Chemnitzer_FC_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 2,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 2
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
