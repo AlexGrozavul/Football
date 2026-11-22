@@ -2759,7 +2759,7 @@
   {
    "id": 558525,
    "utcDate": "2026-11-21T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2777,14 +2777,14 @@
     "tla": "CAG",
     "crest": "https://crests.football-data.org/104.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558528,
    "utcDate": "2026-11-21T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2802,14 +2802,14 @@
     "tla": "USL",
     "crest": "https://crests.football-data.org/5890.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558526,
    "utcDate": "2026-11-21T17:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2827,14 +2827,14 @@
     "tla": "ROM",
     "crest": "https://crests.football-data.org/100.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 5,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 558527,
    "utcDate": "2026-11-21T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 12,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2852,9 +2852,9 @@
     "tla": "TOR",
     "crest": "https://crests.football-data.org/586.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 558521,

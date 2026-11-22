@@ -2059,7 +2059,7 @@
   {
    "id": 565857,
    "utcDate": "2026-11-21T14:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2077,14 +2077,14 @@
     "tla": "SCP",
     "crest": "https://crests.football-data.org/29.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 565858,
    "utcDate": "2026-11-21T14:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2102,14 +2102,14 @@
     "tla": "RBL",
     "crest": "https://crests.football-data.org/721.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 5,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 565860,
    "utcDate": "2026-11-21T14:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2127,14 +2127,14 @@
     "tla": "SCF",
     "crest": "https://crests.football-data.org/17.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 565862,
    "utcDate": "2026-11-21T14:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2152,14 +2152,14 @@
     "tla": "BVB",
     "crest": "https://crests.football-data.org/4.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 565865,
    "utcDate": "2026-11-21T14:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2177,14 +2177,14 @@
     "tla": "TSG",
     "crest": "https://crests.football-data.org/2.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 565861,
    "utcDate": "2026-11-21T17:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 10,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2202,9 +2202,9 @@
     "tla": "VFB",
     "crest": "https://crests.football-data.org/10.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 0,
+   "winner": "DRAW"
   },
   {
    "id": 565864,
