@@ -929,7 +929,7 @@ const I18N = {
     'st.partial': 'Complete data currently exists for {a} of {b} matches. The figures below count only the completed ones.',
     'st.mostTeam': 'Most-seen team', 'st.mostPlayer': 'Most-seen player',
     'st.noPlayers': 'Calculated from line-ups; none are recorded.',
-    'st.best': 'Best performance seen', 'st.bestLine': '{team} against {opp}', 'st.bestMore': '+{n} more',
+    'st.best': 'Best performance seen', 'st.bestLine': '{team} against {opp}', 'st.bestMore': '+{n} more', 'st.worst': 'Worst performance seen',
     'st.biggest': 'Biggest crowd', 'st.smallest': 'Smallest crowd', 'st.unofficial': '* unofficial figure',
     'st.stadiums': 'Stadiums', 'st.cities': 'Cities', 'st.countries': 'Countries', 'st.comps': 'Competitions',
     'st.noData': 'No data.',
@@ -2240,7 +2240,7 @@ const I18N = {
     'st.partial': 'Datele complete există momentan pentru {a} din {b} meciuri. Cifrele de mai jos numără doar meciurile completate.',
     'st.mostTeam': 'Echipa văzută cel mai des', 'st.mostPlayer': 'Jucătorul văzut cel mai des',
     'st.noPlayers': 'Se calculează din formații; nu este înregistrată niciuna.',
-    'st.best': 'Cea mai bună performanță văzută', 'st.bestLine': '{team} contra {opp}', 'st.bestMore': '+ încă {n}',
+    'st.best': 'Cea mai bună performanță văzută', 'st.bestLine': '{team} contra {opp}', 'st.bestMore': '+ încă {n}', 'st.worst': 'Cea mai slabă evoluție văzută',
     'st.biggest': 'Cea mai mare asistență', 'st.smallest': 'Cea mai mică asistență', 'st.unofficial': '* cifră neoficială',
     'st.stadiums': 'Stadioane', 'st.cities': 'Orașe', 'st.countries': 'Țări', 'st.comps': 'Competiții',
     'st.noData': 'Fără date.',
@@ -4666,9 +4666,9 @@ const FX_TIME = {format: d => dtf({timeZone:'Europe/Berlin', hour:'2-digit', min
 
 /* football-data.org writes a match whose kickoff is not set yet as status
    SCHEDULED at 00:00 UTC - a placeholder, not a time. Confirmed times are
-   TIMED. Midnight UTC alone is NOT the test: Brazilian 21:00 kickoffs are
-   genuinely 00:00 UTC (FINISHED and TIMED rows in BSA and WC), so both the
-   status and the midnight must agree. OpenLigaDB has no such status and
+   TIMED. Midnight UTC alone is NOT the test: a kickoff can genuinely fall
+   at 00:00 UTC (a FINISHED or TIMED row), so both the status and the
+   midnight must agree. OpenLigaDB has no such status and
    leaves utcDate null when it has no time, which is already "date not set". */
 const timeNotSet = m => m.status === 'SCHEDULED' && !!m.utcDate &&
   /T00:00:00(\.0+)?Z$/.test(m.utcDate);
@@ -4705,9 +4705,7 @@ function fxRow(m, teamId){
 
 /* What the fixture sources cover, in plain words: football-data.org's free
    tier and OpenLigaDB, as fetched by tools/fetch_fixtures.py and
-   tools/fetch_openligadb.py. Brazil and the tournaments are
-   fetched too but no club on the map plays in them. Keep in step with
-   those two tools. */
+   tools/fetch_openligadb.py. Keep in step with those two tools. */
 const FIXTURE_COVERAGE = () => t('fx.coverage');
 const COUNTRY_ADJ = labelsOf('adj.', ['RO', 'CH', 'AT', 'RS', 'GR', 'BE']);
 
@@ -5350,7 +5348,7 @@ const ROUTE_ENDS = {from: null, to: null};      // {lat, lon, label}
    say nothing about the other days. A code not listed here is treated
    like a cup - the club is kept and marked, never hidden - so a
    competition added later cannot quietly hide clubs. */
-const LEAGUE_CODES = new Set(['BL1','PL','ELC','PD','SA','FL1','DED','PPL','BSA',
+const LEAGUE_CODES = new Set(['BL1','PL','ELC','PD','SA','FL1','DED','PPL',
                               'bl2','bl3','rln','rlno']);
 const BERLIN_DAY = new Intl.DateTimeFormat('en-CA',
   {timeZone:'Europe/Berlin', year:'numeric', month:'2-digit', day:'2-digit'});
@@ -8662,7 +8660,7 @@ function loadAttended(){
 
 function attStats(d){
   const ms = d.matches, S = {n: ms.length, nReal: 0, goals: 0, goalsShort: 0, goalsShortN: 0, exclGoals: 0, pens: 0, yellow: 0, red: 0, second: 0, cardsOk: 0, luOk: 0,
-    stad: {}, city: {}, ctry: {}, comp: {}, team: {}, plr: {}, best: null, big: null, small: null, rec: {n: 0, w: 0, d: 0, l: 0}};
+    stad: {}, city: {}, ctry: {}, comp: {}, team: {}, plr: {}, best: null, worst: null, big: null, small: null, rec: {n: 0, w: 0, d: 0, l: 0}};
   const inc = (o, k) => { if(k) o[k] = (o[k] || 0) + 1; };
   ms.forEach(m => {
     // Goals are the two numbers of the score; the goals list only feeds the penalty count and the scorer lists.
@@ -8699,11 +8697,13 @@ function attStats(d){
     }
     if(m.lineups){
       S.luOk++;
-      // Best performance seen: only a stored player rating counts (xi rating, a sub's onRating); a team rating, a missing rating and a bench item never do. Compared as numbers.
+      // Best and worst performance seen: only a stored player rating counts (xi rating, a sub's onRating); a team rating, a missing rating and a bench item never do. Compared as numbers. dir 1 keeps the highest value, -1 the lowest; every entry equal to it is kept.
       const rate = (v, name, side) => {
         if(typeof v !== 'number' || !Number.isFinite(v)) return;
-        if(!S.best || v > S.best.v) S.best = {v, list: []}; else if(v < S.best.v) return;
-        S.best.list.push({name, m, side});
+        [['best', 1], ['worst', -1]].forEach(([k, dir]) => {
+          if(!S[k] || (v - S[k].v) * dir > 0) S[k] = {v, list: []}; else if(v !== S[k].v) return;
+          S[k].list.push({name, m, side});
+        });
       };
       ['home', 'away'].forEach(side => {
         const lu = m.lineups[side]; if(!lu) return;
@@ -8715,17 +8715,18 @@ function attStats(d){
   return S;
 }
 
-/* The "Best performance seen" section: the highest stored player rating, every entry at that value (oldest match first, at most 5, then "+N more"). Not drawn at all when no rating is stored. */
+/* The "Best performance seen" and "Worst performance seen" sections: the highest (or lowest) stored player rating, every entry at that value (oldest match first, at most 5, then "+N more"). Not drawn at all when no rating is stored. Rows are plain: tapping one opens nothing. */
 const ATT_BEST_MAX = 5;
-function attBestHtml(best, sec){
+function attBestHtml(best, sec, worst){
+  const key = worst ? 'st.worst' : 'st.best', id = worst ? 'aWorst' : 'aBest';
   const list = best.list.slice().sort((a, b) => a.m.date < b.m.date ? -1 : a.m.date > b.m.date ? 1 : 0);
   const row = e => {
     const o = e.m[e.side === 'home' ? 'away' : 'home'];
     return `<div class="arow abest"><span class="k"><b>${esc(e.name)}</b><span class="abl">${esc(t('st.bestLine', {team: attTeam(e.m[e.side]), opp: attTeam(o)}))}</span>` +
       `<span class="abl">${esc(attJoin([attDate(e.m.date), attL(e.m.competition)]))}</span></span><span class="v">${esc(best.v.toFixed(1))}</span></div>`;
   };
-  return sec('st.best', `<div id="aBest">${list.slice(0, ATT_BEST_MAX).map(row).join('')}` +
-    (list.length > ATT_BEST_MAX ? `<p class="anote" id="aBestMore">${esc(t('st.bestMore', {n: list.length - ATT_BEST_MAX}))}</p>` : '') + `</div>`);
+  return sec(key, `<div id="${id}">${list.slice(0, ATT_BEST_MAX).map(row).join('')}` +
+    (list.length > ATT_BEST_MAX ? `<p class="anote" id="${id}More">${esc(t('st.bestMore', {n: list.length - ATT_BEST_MAX}))}</p>` : '') + `</div>`);
 }
 
 function renderAttStats(d){
@@ -8764,7 +8765,7 @@ function renderAttStats(d){
       `<p class="anote">${esc(t('st.recordHint'))}</p>`) +
     sec('st.mostTeam', topRows(top(S.team))) +
     sec('st.mostPlayer', tp ? topRows(tp) + partial(S.luOk, S.n) : `<p class="anote">${esc(t('st.noPlayers'))}</p>`);
-  if(S.best) h += attBestHtml(S.best, sec);
+  if(S.best) h += attBestHtml(S.best, sec) + attBestHtml(S.worst, sec, true);
   if(S.big) h += sec('st.biggest', crowd(S.big));
   if(S.small) h += sec('st.smallest', crowd(S.small));
   if([S.big, S.small].some(o => o && o.ms.some(m => m.attendance.approx))) h += `<p class="anote">${esc(t('st.unofficial'))}</p>`;

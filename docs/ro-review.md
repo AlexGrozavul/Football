@@ -4,7 +4,7 @@
 
 How to use: read the English and Romanian columns side by side and tell the assistant which rows to change (give the key). Translations of texts that come from the data files are further down, in their own section (they live in `data/ro/*.json`). `{n}`, `{name}` and the like are filled in by the page; keep them as they are.
 
-1409 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
+1410 rows, in the order of the dictionary in `index.html` (`I18N`). Generated from it, so a change to the dictionary should be followed by regenerating this file.
 
 | key | English | Română |
 |---|---|---|
@@ -58,6 +58,7 @@ How to use: read the English and Romanian columns side by side and tell the assi
 | `st.best` | Best performance seen | Cea mai bună performanță văzută |
 | `st.bestLine` | {team} against {opp} | {team} contra {opp} |
 | `st.bestMore` | +{n} more | + încă {n} |
+| `st.worst` | Worst performance seen | Cea mai slabă evoluție văzută |
 | `st.biggest` | Biggest crowd | Cea mai mare asistență |
 | `st.smallest` | Smallest crowd | Cea mai mică asistență |
 | `st.unofficial` | * unofficial figure | * cifră neoficială |

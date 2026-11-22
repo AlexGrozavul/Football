@@ -3212,7 +3212,7 @@ function alarmAt(ev, al){
       competition: {ro: 'Cupa ' + id, en: 'Cup ' + id}, lineups: {home: Object.assign({coach: 'CH'}, lh), away: Object.assign({coach: 'CA'}, la)}}, extra || {}));
     const lang = l => (o => o == null ? '' : typeof o === 'string' ? o : o[l] || o.ro || o.en || '');
     // The same worked-out answer as the page should give: top value over xi ratings and sub onRatings (never teamRating), ties by the number, oldest match first, 5 shown.
-    const expectBest = (all, l) => {
+    const expectBest = (all, l, dir = 1) => {
       const c = [];
       all.forEach(m => ['home', 'away'].forEach(sd => { const lu = m.lineups && m.lineups[sd]; if(!lu) return;
         const tm = x => l === 'en' ? (x.nameEn || x.name) : x.name, other = m[sd === 'home' ? 'away' : 'home'];
@@ -3220,7 +3220,7 @@ function alarmAt(ev, al){
         (lu.subs || []).forEach(q => { if(typeof q.onRating === 'number') c.push({v: q.onRating, name: q.on, team: tm(m[sd]), opp: tm(other), date: m.date, comp: lang(l)(m.competition)}); });
       }));
       if(!c.length) return null;
-      const top = Math.max(...c.map(x => x.v)), t = c.filter(x => x.v === top).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+      const top = (dir < 0 ? Math.min : Math.max)(...c.map(x => x.v)), t = c.filter(x => x.v === top).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
       return {v: top.toFixed(1), rows: t.slice(0, 5), more: Math.max(0, t.length - 5)};
     };
     const bestPage = async (matches, {width = W, raw} = {}) => {
@@ -3234,15 +3234,15 @@ function alarmAt(ev, al){
       await pg.waitForSelector('#meStats .astat');
       return {ctx, pg};
     };
-    const readBest = pg => pg.evaluate(() => {
-      const box = document.getElementById('aBest');
+    const readBest = (pg, id = 'aBest') => pg.evaluate(id => {
+      const box = document.getElementById(id);
       const heads = [...document.querySelectorAll('#meStats .aeye')].map(e => e.textContent.trim());
       return {box: !!box, heads, rows: box ? [...box.querySelectorAll('.abest')].map(r => ({name: r.querySelector('b').textContent, lines: [...r.querySelectorAll('.abl')].map(e => e.textContent), v: r.querySelector('.v').textContent})) : [],
-        more: document.getElementById('aBestMore') ? document.getElementById('aBestMore').textContent.trim() : null, text: document.getElementById('meStats').textContent};
-    });
+        more: document.getElementById(id + 'More') ? document.getElementById(id + 'More').textContent.trim() : null, text: document.getElementById('meStats').textContent};
+    }, id);
     const dateIn = (pg, iso, l) => pg.evaluate(([i, l]) => new Date(i + 'T12:00:00').toLocaleDateString(l === 'en' ? 'en-GB' : 'ro-RO', {day: 'numeric', month: 'long', year: 'numeric'}), [iso, l]);
-    const sameAs = async (pg, exp, l, why) => {
-      const g = await readBest(pg);
+    const sameAs = async (pg, exp, l, why, id) => {
+      const g = await readBest(pg, id);
       const want = await Promise.all(exp.rows.map(async e => ({name: e.name, lines: [`${e.team} ${l === 'en' ? 'against' : 'contra'} ${e.opp}`, `${await dateIn(pg, e.date, l)} · ${e.comp}`], v: exp.v})));
       return {ok: JSON.stringify(g.rows) === JSON.stringify(want) && (exp.more ? g.more === `+${exp.more} more` : g.more === null), g, want};
     };
@@ -3256,6 +3256,9 @@ function alarmAt(ev, al){
       const g = await readBest(pg);
       check('Best performance seen: with no player rating stored (a team rating of 9.9 only) there is no section, no empty heading and no #aBest', expF === null ? (!g.box && !g.heads.includes(HEAD) && !g.text.includes(HEAD)) : (g.box && g.rows.length === expF.rows.length),
         JSON.stringify({expF: !!expF, box: g.box, heads: g.heads.length}));
+      const gw = await readBest(pg, 'aWorst');
+      check('Worst performance seen: with no player rating stored (a team rating of 9.9 only) there is no section, no empty heading and no #aWorst', expF === null ? (!gw.box && !gw.heads.includes('Worst performance seen') && !gw.text.includes('Worst performance seen')) : (gw.box && gw.rows.length === expF.rows.length),
+        JSON.stringify({box: gw.box, heads: gw.heads.length}));
       await ctx.close();
     }
     // 2. A starter with the top rating.
@@ -3267,10 +3270,10 @@ function alarmAt(ev, al){
       const exp = expectBest(all, 'en'), r = await sameAs(pg, exp, 'en');
       check('Best performance seen: a starter has the top rating - one row with his name (as stored), "9.3" with one decimal, his team, the opponent, the date and the competition', r.ok && exp.rows.length >= 1 && exp.rows.some(x => x.name === 'Hs P2' && x.v === 9.3), JSON.stringify(r.g.rows) + ' want ' + JSON.stringify(r.want));
       check('...the teamRating of 9.9 (higher than every player rating) is not shown anywhere in the section, and the section sits between "Most-seen player" and the crowd sections',
-        !JSON.stringify(r.g.rows).includes('9.9') && await pg.evaluate(() => { const h = [...document.querySelectorAll('#meStats .aeye')].map(e => e.textContent.trim()); const i = h.indexOf('Best performance seen'); return i > 0 && h[i - 1] === 'Most-seen player' && (h[i + 1] === 'Biggest crowd' || h[i + 1] === 'Stadiums'); }));
+        !JSON.stringify(r.g.rows).includes('9.9') && await pg.evaluate(() => { const h = [...document.querySelectorAll('#meStats .aeye')].map(e => e.textContent.trim()); const i = h.indexOf('Best performance seen'); return i > 0 && h[i - 1] === 'Most-seen player' && h[i + 1] === 'Worst performance seen' && (h[i + 2] === 'Biggest crowd' || h[i + 2] === 'Stadiums'); }));
       // The rest of the tab is as without the ratings (a match without ratings is unaffected).
       const strip = ms => ms.map(m => JSON.parse(JSON.stringify(m, (k, v) => k === 'rating' || k === 'onRating' ? undefined : v)));
-      const withB = await pg.evaluate(() => { const c = document.getElementById('meStats').cloneNode(true); const b = c.querySelector('#aBest'); if(b){ b.previousElementSibling.remove(); b.remove(); } return c.innerHTML; });
+      const withB = await pg.evaluate(() => { const c = document.getElementById('meStats').cloneNode(true); ['#aWorst', '#aBest'].forEach(q => { const b = c.querySelector(q); if(b){ b.previousElementSibling.remove(); b.remove(); } }); return c.innerHTML; });
       const c2 = await bestPage(strip([m1, m2]));
       const noB = await c2.pg.evaluate(() => document.getElementById('meStats').innerHTML);
       check('Best performance seen: everything else on the Stats tab is identical to the same matches with every rating removed (the matches, the most-seen player, the crowds are untouched)', withB === noB, withB.length + ' vs ' + noB.length);
@@ -3326,6 +3329,88 @@ function alarmAt(ev, al){
       });
       check('Best performance seen at 360 px: long names, team names and competition wrap - the page and the Stats panel do not scroll sideways, every row stays inside the screen, the name never runs under the rating',
         ov.vw === 360 && ov.page <= 360 && ov.stats <= 360 && ov.boxRight <= 360 && ov.rows.length === 1 && ov.rows.every(r => r.r <= 360 && r.sw <= r.cw && r.kr <= r.vl), JSON.stringify(ov));
+      await ctx.close();
+    }
+    // ---- Worst performance seen, 2026-11-22: the lowest player rating, built by the same function as the best section. Expected values worked out from the seeded matches by expectBest(.., -1); the best section is checked against expectBest(.., 1) in every case.
+    const bothSame = async (pg, all, l, why) => {
+      const eb = expectBest(all, l, 1), ew = expectBest(all, l, -1);
+      const rb = await sameAs(pg, eb, l, why, 'aBest'), rw = await sameAs(pg, ew, l, why, 'aWorst');
+      return {eb, ew, rb, rw, ok: rb.ok && rw.ok};
+    };
+    // 7. Exactly one rated player: both sections show him.
+    {
+      const m = bm('w-one-' + TAG, '2025-09-01', {xi: xiB('Ho', [null, 7.7])}, {xi: xiB('Ao', [null])});
+      const {ctx, pg} = await bestPage([m]);
+      const all = ATTF.matches.concat([m]), r = await bothSame(pg, all, 'en');
+      check('Worst performance seen: with one rated player both sections show him ("Ho P2", "7.7")', r.ok && r.ew.rows.some(x => x.name === 'Ho P2') && r.eb.rows.some(x => x.name === 'Ho P2') && r.rw.g.rows.some(x => x.name === 'Ho P2' && x.v === '7.7') && r.rb.g.rows.some(x => x.name === 'Ho P2' && x.v === '7.7'), JSON.stringify({b: r.rb.g.rows, w: r.rw.g.rows}));
+      await ctx.close();
+    }
+    // 8. The lowest from a starter; a teamRating of 1.0 (below every player rating) is not shown; labels in both languages; the rest of the tab is untouched.
+    {
+      const m1 = bm('w-st-' + TAG, '2025-04-01', {xi: xiB('Hs', [7.2, 9.3, 8.1]), subs: [{minute: 60, on: 'H Sub', off: 'Hs P1', onRating: 8.8}], teamRating: 1.0}, {xi: xiB('As', [6.4, 9.2]), subs: [{minute: 70, on: 'A Sub', off: 'As P1', onRating: 7}], teamRating: 1.0});
+      const m2 = bm('w-st2-' + TAG, '2025-04-02', {xi: xiB('Ms', [null, null])}, {xi: xiB('Ns', [null])});
+      const all = ATTF.matches.concat([m1, m2]);
+      const {ctx, pg} = await bestPage([m1, m2]);
+      const r = await bothSame(pg, all, 'en');
+      check('Worst performance seen: a starter has the lowest rating - "As P1", "6.4", his team, the opponent, the date and the competition (as worked out from the seeded matches)', r.ok && r.ew.rows.some(x => x.name === 'As P1' && x.v === 6.4) && r.rw.g.rows.some(x => x.name === 'As P1' && x.v === '6.4'), JSON.stringify(r.rw.g.rows) + ' want ' + JSON.stringify(r.rw.want));
+      check('...a teamRating of 1.0 (lower than every player rating) is NOT shown in either section, and the best section is unchanged ("As P2"/"Hs P2": the top 9.3 by the same worked-out answer)', !JSON.stringify(r.rw.g.rows).includes('1.0') && !JSON.stringify(r.rb.g.rows).includes('1.0') && r.rb.ok && r.rb.g.rows.some(x => x.name === 'Hs P2' && x.v === '9.3'), JSON.stringify(r.rb.g.rows));
+      check('...the heading "Worst performance seen" sits directly after "Best performance seen", and before the crowd sections', await pg.evaluate(() => { const h = [...document.querySelectorAll('#meStats .aeye')].map(e => e.textContent.trim()); const i = h.indexOf('Best performance seen'); return i > 0 && h[i + 1] === 'Worst performance seen' && (h[i + 2] === 'Biggest crowd' || h[i + 2] === 'Stadiums') && h.filter(x => x === 'Worst performance seen').length === 1; }));
+      const strip = ms => ms.map(m => JSON.parse(JSON.stringify(m, (k, v) => k === 'rating' || k === 'onRating' ? undefined : v)));
+      const withW = await pg.evaluate(() => { const c = document.getElementById('meStats').cloneNode(true); ['#aWorst', '#aBest'].forEach(q => { const b = c.querySelector(q); if(b){ b.previousElementSibling.remove(); b.remove(); } }); return c.innerHTML; });
+      const c2 = await bestPage(strip([m1, m2]));
+      const noW = await c2.pg.evaluate(() => document.getElementById('meStats').innerHTML);
+      check('Worst performance seen: everything else on the Stats tab is identical to the same matches with every rating removed', withW === noW, withW.length + ' vs ' + noW.length);
+      await c2.ctx.close();
+      await pg.evaluate(() => setLang('ro'));
+      const rRo = await bothSame(pg, all, 'ro'), gRo = await readBest(pg, 'aWorst');
+      check('Worst performance seen: switching to Romanian shows the heading "Cea mai slabă evoluție văzută" and the Romanian team names, competition and date; the best section too', rRo.ok && gRo.heads.includes('Cea mai slabă evoluție văzută') && gRo.heads.includes('Cea mai bună performanță văzută') && JSON.stringify(rRo.rw.g.rows).includes('Casa w-st-'), JSON.stringify(rRo.rw.g.rows) + ' want ' + JSON.stringify(rRo.rw.want));
+      await pg.evaluate(() => setLang('en'));
+      const rEn = await bothSame(pg, all, 'en');
+      check('...and back to English the English heading and the English team names ("Home ...") return', rEn.ok && JSON.stringify(rEn.rw.g.rows).includes('Away w-st-') && (await readBest(pg, 'aWorst')).heads.includes('Worst performance seen'), JSON.stringify(rEn.rw.g.rows));
+      await ctx.close();
+    }
+    // 9. The lowest from a substitute (onRating), on the away side, in an exhibition match (which counts).
+    {
+      const m = bm('w-sub-' + TAG, '2025-05-02', {xi: xiB('Hq', [8.2, 8.9])}, {xi: xiB('Aq', [7.7]), subs: [{minute: 80, on: 'Sub Low', off: 'Aq P1', onRating: 3.2}]}, {exhibition: true});
+      const {ctx, pg} = await bestPage([m]);
+      const r = await bothSame(pg, ATTF.matches.concat([m]), 'en');
+      check('Worst performance seen: a substitute (onRating) has the lowest rating, in an exhibition match - "Sub Low", "3.2", his team is the AWAY side and the opponent the home side; the best section is unchanged', r.ok && r.ew.rows.some(x => x.name === 'Sub Low' && x.team === 'Away w-sub-' + TAG && x.opp === 'Home w-sub-' + TAG) && r.rw.g.rows.some(x => x.name === 'Sub Low' && x.v === '3.2'), JSON.stringify(r.rw.g.rows));
+      await ctx.close();
+    }
+    // 10. A tie of two in different matches: 6.1 and 6.10 are the same number; 6.14 is not the lowest.
+    {
+      const mA = bm('w-ta-' + TAG, '2025-06-10', {xi: xiB('Ta', [6.1, 8.0])}, {xi: xiB('Tb', [6.14])});
+      const mB = bm('w-tb-' + TAG, '2025-06-01', {xi: xiB('Tc', [777, 7.0])}, {xi: xiB('Td', [9.0])});
+      const raw = JSON.stringify({version: 1, matches: [mA, mB]}).replace('"rating":777', '"rating":6.10');
+      const mBn = JSON.parse(raw).matches[1];
+      const {ctx, pg} = await bestPage([], {raw});
+      const r = await bothSame(pg, ATTF.matches.concat([mA, mBn]), 'en');
+      check('Worst performance seen: 6.1 in one match and 6.10 in another are a tie - both listed (oldest match first), each "6.1"; 6.14 is not listed; the best section is unchanged', r.ok && r.ew.rows.length >= 2 && r.rw.g.rows.length >= 2 && r.rw.g.rows.every(x => x.v === '6.1') && !JSON.stringify(r.rw.g.rows).includes('Tb P1'), JSON.stringify(r.rw.g.rows) + ' want ' + JSON.stringify(r.rw.want));
+      await ctx.close();
+    }
+    // 11. A tie of six: five rows and "+1 more" (and "+ încă 1" in Romanian), with the best section at its own value.
+    {
+      const m = bm('w-six-' + TAG, '2025-07-01', {xi: xiB('H6', [4.5, 4.5, 4.5, 8])}, {xi: xiB('A6', [4.5, 4.5, 7]), subs: [{minute: 80, on: 'Sub6', off: 'A6 P3', onRating: 4.5}]});
+      const {ctx, pg} = await bestPage([m]);
+      const r = await bothSame(pg, ATTF.matches.concat([m]), 'en');
+      check('Worst performance seen: six players tied at the bottom show five rows and "+1 more"', r.ok && r.ew.rows.length === 5 && r.ew.more === 1 && r.rw.g.rows.length === 5 && r.rw.g.more === '+1 more' && r.rb.g.more === null, JSON.stringify({n: r.rw.g.rows.length, more: r.rw.g.more, bestMore: r.rb.g.more}));
+      await pg.evaluate(() => setLang('ro'));
+      check('...and in Romanian the line reads "+ încă 1"', (await readBest(pg, 'aWorst')).more === '+ încă 1');
+      await ctx.close();
+    }
+    // 12. 360 px: both sections, long names wrap, nothing leaves the screen.
+    {
+      const long = (n, c) => (c + ' ').repeat(n).trim();
+      const m = bm('w-w-' + TAG, '2025-08-01', {xi: [{no: 1, name: 'Longgivenname Verylongsurnamewithoutanyspaces' + 'x'.repeat(20), rating: 2.4}, {no: 2, name: 'Top Player', rating: 9.4}]}, {xi: xiB('Aw', [5])},
+        {home: {name: long(3, 'Clubul') + ' ' + 'Sportiv'.repeat(4), nameEn: long(3, 'Clubul') + ' ' + 'Sportiv'.repeat(4)}, competition: {ro: long(3, 'Competiție') + ' ' + 'Lungă'.repeat(6), en: long(3, 'Competition') + ' ' + 'Longname'.repeat(6)}});
+      const {ctx, pg} = await bestPage([m], {width: 360});
+      const ov = await pg.evaluate(() => {
+        const vw = document.documentElement.clientWidth, out = {vw, page: document.documentElement.scrollWidth, stats: document.getElementById('meStats').scrollWidth, boxes: {}};
+        ['aBest', 'aWorst'].forEach(id => { const b = document.getElementById(id); out.boxes[id] = b ? {right: b.getBoundingClientRect().right, rows: [...b.querySelectorAll('.abest')].map(e => ({r: e.getBoundingClientRect().right, sw: e.scrollWidth, cw: e.clientWidth, kr: e.querySelector('.k').getBoundingClientRect().right, vl: e.querySelector('.v').getBoundingClientRect().left}))} : null; });
+        return out;
+      });
+      const okBox = b => b && b.right <= 360 && b.rows.length === 1 && b.rows.every(r => r.r <= 360 && r.sw <= r.cw && r.kr <= r.vl);
+      check('Worst performance seen at 360 px: both sections wrap long names, team names and competition - the page and the Stats panel do not scroll sideways, every row stays inside the screen, the name never runs under the rating', ov.vw === 360 && ov.page <= 360 && ov.stats <= 360 && okBox(ov.boxes.aBest) && okBox(ov.boxes.aWorst), JSON.stringify(ov));
       await ctx.close();
     }
   }
@@ -3455,8 +3540,8 @@ function alarmAt(ev, al){
       const et = (await p.textContent('#meEvents')).replace(/\s+/g, ' ');
       check('Show built-in off: Events says the same for events', await sfCards(p, '#meEvents') === 0 && /No events added yet\. To add one, open “Add an event” above\./.test(et) && /hidden\. You can show them in Settings/.test(et) && !/in the file/.test(et), et.slice(0, 300));
       await sfTab(p, '#meTabStats', '#meStats');
-      const st = await p.evaluate(() => ({tiles: [...document.querySelectorAll('#meStats .astat b')].map(b => b.textContent.trim()), best: !!document.getElementById('aBest'), text: document.getElementById('meStats').textContent.length}));
-      check('Show built-in off: Stats still draws its tiles with zeros, and no Best performance box', st.tiles.length > 0 && st.tiles[0] === '0' && !st.best, JSON.stringify(st));
+      const st = await p.evaluate(() => ({tiles: [...document.querySelectorAll('#meStats .astat b')].map(b => b.textContent.trim()), best: !!document.getElementById('aBest') || !!document.getElementById('aWorst'), text: document.getElementById('meStats').textContent.length}));
+      check('Show built-in off: Stats still draws its tiles with zeros, and no Best or Worst performance box', st.tiles.length > 0 && st.tiles[0] === '0' && !st.best, JSON.stringify(st));
       await sfOpenSettings(p);
       check('Settings: "Show built-in matches and events" is off', (await sfSwitch(p)) === 'false' && /Show built-in matches and events/.test(await p.textContent('#showFileBtn')), '');
       await ctx.close();
