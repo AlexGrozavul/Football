@@ -5248,7 +5248,7 @@
   {
    "id": 86354,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5263,9 +5263,20 @@
     "shortName": "Eintracht",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/c/cf/RSV_Eintracht_1949.png/250px-RSV_Eintracht_1949.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5273,7 +5284,7 @@
   {
    "id": 86355,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5288,9 +5299,20 @@
     "shortName": "Jena",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Logo_FC_Carl_Zeiss_Jena.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5298,7 +5320,7 @@
   {
    "id": 86356,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5313,9 +5335,20 @@
     "shortName": "Halle",
     "crest": "https://derivates.kicker.de/image/fetch/f_webp/w_120%2Ch_120%2Cc_fit%2Cq_auto:best/https://mediadb.kicker.de/2018/fussball/vereine/xxl/4440_20170721710.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 0,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5323,7 +5356,7 @@
   {
    "id": 86357,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5338,9 +5371,20 @@
     "shortName": "Chemie Leipzig",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/0/0b/BSG_Chemie_Leipzig_1997.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5384,7 +5428,7 @@
   {
    "id": 86359,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5399,9 +5443,20 @@
     "shortName": "Zwickau",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/0/01/FSV_Zwickau_Logo.svg/120px-FSV_Zwickau_Logo.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5409,7 +5464,7 @@
   {
    "id": 86360,
    "utcDate": "2026-11-21T12:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "17. Spieltag",
    "roundOrder": 17,
    "home": {
@@ -5424,9 +5479,20 @@
     "shortName": "Altglienicke",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/e/e8/VSG_Altglienicke.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 3,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 3,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

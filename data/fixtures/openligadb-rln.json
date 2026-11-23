@@ -5847,7 +5847,7 @@
   {
    "id": 87197,
    "utcDate": "2026-11-22T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "19. Spieltag",
    "roundOrder": 19,
    "home": {
@@ -5862,9 +5862,20 @@
     "shortName": "Hamburger SV II",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 1
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 3
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5897,7 +5908,7 @@
   {
    "id": 87199,
    "utcDate": "2026-11-22T13:00:00Z",
-   "finished": false,
+   "finished": true,
    "round": "19. Spieltag",
    "roundOrder": 19,
    "home": {
@@ -5912,9 +5923,20 @@
     "shortName": "VfB Oldenburg",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/b/bc/VfB_Oldenburg.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 1,
+   "awayGoals": 4,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 1,
+     "away": 4
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null

@@ -3789,7 +3789,7 @@
   {
    "id": 83698,
    "utcDate": "2026-11-22T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3804,7 +3804,7 @@
     "shortName": "Dresden",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_SG_Dynamo_Dresden_neu.svg/960px-Logo_SG_Dynamo_Dresden_neu.svg.png"
    },
-   "homeGoals": 1,
+   "homeGoals": 2,
    "awayGoals": 2,
    "results": [
     {
@@ -3814,7 +3814,7 @@
     },
     {
      "name": "Endergebnis",
-     "home": 1,
+     "home": 2,
      "away": 2
     }
    ],
@@ -3825,7 +3825,7 @@
   {
    "id": 83702,
    "utcDate": "2026-11-22T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3861,7 +3861,7 @@
   {
    "id": 83706,
    "utcDate": "2026-11-22T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "12. Spieltag",
    "roundOrder": 12,
    "home": {
@@ -3877,7 +3877,7 @@
     "crest": "https://i.imgur.com/apFwbYZ.png"
    },
    "homeGoals": 0,
-   "awayGoals": 1,
+   "awayGoals": 4,
    "results": [
     {
      "name": "Halbzeit",
@@ -3887,7 +3887,7 @@
     {
      "name": "Endergebnis",
      "home": 0,
-     "away": 1
+     "away": 4
     }
    ],
    "stadium": null,

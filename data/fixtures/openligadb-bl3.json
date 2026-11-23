@@ -4946,7 +4946,7 @@
   {
    "id": 84880,
    "utcDate": "2026-11-22T12:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4961,7 +4961,7 @@
     "shortName": "Ingolstadt",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/5/55/FC-Ingolstadt_logo.svg/960px-FC-Ingolstadt_logo.svg.png"
    },
-   "homeGoals": 1,
+   "homeGoals": 5,
    "awayGoals": 0,
    "results": [
     {
@@ -4971,7 +4971,7 @@
     },
     {
      "name": "Endergebnis",
-     "home": 1,
+     "home": 5,
      "away": 0
     }
    ],
@@ -4982,7 +4982,7 @@
   {
    "id": 84881,
    "utcDate": "2026-11-22T15:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -4997,9 +4997,20 @@
     "shortName": "Wiesbaden",
     "crest": "https://upload.wikimedia.org/wikipedia/de/thumb/3/3d/Logo_SV_Wehen_Wiesbaden.svg/250px-Logo_SV_Wehen_Wiesbaden.svg.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 1,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 1
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
@@ -5007,7 +5018,7 @@
   {
    "id": 84877,
    "utcDate": "2026-11-22T18:30:00Z",
-   "finished": false,
+   "finished": true,
    "round": "14. Spieltag",
    "roundOrder": 14,
    "home": {
@@ -5022,9 +5033,20 @@
     "shortName": "Rostock",
     "crest": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/F.C._Hansa_Rostock_Logo.svg/960px-F.C._Hansa_Rostock_Logo.svg.png?utm_source=de.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "results": [],
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "results": [
+    {
+     "name": "Halbzeit",
+     "home": 0,
+     "away": 0
+    },
+    {
+     "name": "Endergebnis",
+     "home": 2,
+     "away": 0
+    }
+   ],
    "stadium": null,
    "city": null,
    "viewers": null
