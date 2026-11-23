@@ -2409,7 +2409,7 @@
   {
    "id": 559625,
    "utcDate": "2026-11-22T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2427,14 +2427,14 @@
     "tla": "ANG",
     "crest": "https://crests.football-data.org/532.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 559626,
    "utcDate": "2026-11-22T16:15:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2452,14 +2452,14 @@
     "tla": "REN",
     "crest": "https://crests.football-data.org/529.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 559629,
    "utcDate": "2026-11-22T19:45:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2477,9 +2477,9 @@
     "tla": "LMF",
     "crest": "https://crests.football-data.org/535.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 559616,

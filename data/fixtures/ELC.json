@@ -4709,7 +4709,7 @@
   {
    "id": 561949,
    "utcDate": "2026-11-21T15:00:00Z",
-   "status": "IN_PLAY",
+   "status": "FINISHED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4727,9 +4727,9 @@
     "tla": "WRE",
     "crest": "https://crests.football-data.org/404.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561951,
@@ -4784,7 +4784,7 @@
   {
    "id": 561947,
    "utcDate": "2026-11-22T12:00:00Z",
-   "status": "IN_PLAY",
+   "status": "FINISHED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4802,9 +4802,9 @@
     "tla": "BLA",
     "crest": "https://crests.football-data.org/59.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 2,
+   "winner": "DRAW"
   },
   {
    "id": 561953,

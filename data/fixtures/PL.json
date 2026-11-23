@@ -2684,7 +2684,7 @@
   {
    "id": 560646,
    "utcDate": "2026-11-22T14:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2702,14 +2702,14 @@
     "tla": "BHA",
     "crest": "https://crests.football-data.org/397.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560645,
    "utcDate": "2026-11-22T16:30:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2727,9 +2727,9 @@
     "tla": "MUN",
     "crest": "https://crests.football-data.org/66.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560649,
