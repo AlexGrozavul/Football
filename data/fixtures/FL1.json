@@ -3257,31 +3257,6 @@
    "winner": null
   },
   {
-   "id": 559591,
-   "utcDate": "2027-01-02T20:00:00Z",
-   "status": "TIMED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1045,
-    "name": "Paris FC",
-    "shortName": "Paris FC",
-    "tla": "PFC",
-    "crest": "https://crests.football-data.org/1045.png"
-   },
-   "away": {
-    "id": 533,
-    "name": "Le Havre AC",
-    "shortName": "Le Havre",
-    "tla": "HAC",
-    "crest": "https://crests.football-data.org/533.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 559592,
    "utcDate": "2027-01-02T20:00:00Z",
    "status": "TIMED",
@@ -3326,6 +3301,31 @@
     "shortName": "Olympique Lyon",
     "tla": "LYO",
     "crest": "https://crests.football-data.org/523.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 559591,
+   "utcDate": "2027-01-03T16:15:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1045,
+    "name": "Paris FC",
+    "shortName": "Paris FC",
+    "tla": "PFC",
+    "crest": "https://crests.football-data.org/1045.png"
+   },
+   "away": {
+    "id": 533,
+    "name": "Le Havre AC",
+    "shortName": "Le Havre",
+    "tla": "HAC",
+    "crest": "https://crests.football-data.org/533.png"
    },
    "homeGoals": null,
    "awayGoals": null,

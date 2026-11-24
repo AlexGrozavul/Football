@@ -2734,7 +2734,7 @@
   {
    "id": 560649,
    "utcDate": "2026-11-23T20:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 11,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -2752,9 +2752,9 @@
     "tla": "EVE",
     "crest": "https://crests.football-data.org/62.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 4,
+   "awayGoals": 0,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 560658,

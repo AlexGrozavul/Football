@@ -3209,7 +3209,7 @@
   {
    "id": 564757,
    "utcDate": "2026-11-23T20:00:00Z",
-   "status": "TIMED",
+   "status": "FINISHED",
    "matchday": 13,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3227,9 +3227,9 @@
     "tla": "ELC",
     "crest": "https://crests.football-data.org/285.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 564765,
