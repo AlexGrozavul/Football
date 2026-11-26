@@ -1032,31 +1032,6 @@
    "winner": "AWAY_TEAM"
   },
   {
-   "id": 561803,
-   "utcDate": "2026-09-01T18:45:00Z",
-   "status": "FINISHED",
-   "matchday": 4,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 332,
-    "name": "Birmingham City FC",
-    "shortName": "Birmingham",
-    "tla": "BIR",
-    "crest": "https://crests.football-data.org/332.png"
-   },
-   "away": {
-    "id": 340,
-    "name": "Southampton FC",
-    "shortName": "Southampton",
-    "tla": "SOU",
-    "crest": "https://crests.football-data.org/340.png"
-   },
-   "homeGoals": 1,
-   "awayGoals": 1,
-   "winner": "DRAW"
-  },
-  {
    "id": 561804,
    "utcDate": "2026-09-01T18:45:00Z",
    "status": "FINISHED",
@@ -1105,6 +1080,31 @@
    "homeGoals": 1,
    "awayGoals": 0,
    "winner": "HOME_TEAM"
+  },
+  {
+   "id": 561803,
+   "utcDate": "2026-09-01T19:00:00Z",
+   "status": "FINISHED",
+   "matchday": 4,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 332,
+    "name": "Birmingham City FC",
+    "shortName": "Birmingham",
+    "tla": "BIR",
+    "crest": "https://crests.football-data.org/332.png"
+   },
+   "away": {
+    "id": 340,
+    "name": "Southampton FC",
+    "shortName": "Southampton",
+    "tla": "SOU",
+    "crest": "https://crests.football-data.org/340.png"
+   },
+   "homeGoals": 1,
+   "awayGoals": 1,
+   "winner": "DRAW"
   },
   {
    "id": 561806,
@@ -5009,7 +5009,7 @@
   {
    "id": 561961,
    "utcDate": "2026-11-25T19:45:00Z",
-   "status": "SCHEDULED",
+   "status": "FINISHED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -5027,14 +5027,14 @@
     "tla": "BLA",
     "crest": "https://crests.football-data.org/59.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 1,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561963,
    "utcDate": "2026-11-25T19:45:00Z",
-   "status": "SCHEDULED",
+   "status": "FINISHED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -5052,14 +5052,14 @@
     "tla": "WBA",
     "crest": "https://crests.football-data.org/74.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 1,
+   "awayGoals": 3,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561964,
    "utcDate": "2026-11-25T19:45:00Z",
-   "status": "SCHEDULED",
+   "status": "FINISHED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -5077,14 +5077,14 @@
     "tla": "BIR",
     "crest": "https://crests.football-data.org/332.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 0,
+   "awayGoals": 2,
+   "winner": "AWAY_TEAM"
   },
   {
    "id": 561962,
    "utcDate": "2026-11-25T20:00:00Z",
-   "status": "SCHEDULED",
+   "status": "FINISHED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -5102,9 +5102,9 @@
     "tla": "MIL",
     "crest": "https://crests.football-data.org/384.png"
    },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
+   "homeGoals": 2,
+   "awayGoals": 1,
+   "winner": "HOME_TEAM"
   },
   {
    "id": 561968,
