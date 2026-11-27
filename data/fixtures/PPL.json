@@ -3132,9 +3132,134 @@
    "winner": null
   },
   {
+   "id": 567388,
+   "utcDate": "2026-12-19T18:00:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 7822,
+    "name": "FC Alverca",
+    "shortName": "Alverca",
+    "tla": "ALV",
+    "crest": "https://crests.football-data.org/7822.png"
+   },
+   "away": {
+    "id": 5533,
+    "name": "Gil Vicente FC",
+    "shortName": "Gil Vicente",
+    "tla": "GIL",
+    "crest": "https://crests.football-data.org/5533.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567391,
+   "utcDate": "2026-12-19T20:30:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 712,
+    "name": "FC Arouca",
+    "shortName": "Arouca",
+    "tla": "FCA",
+    "crest": "https://crests.football-data.org/712.png"
+   },
+   "away": {
+    "id": 6618,
+    "name": "Casa Pia AC",
+    "shortName": "Casa Pia",
+    "tla": "CAS",
+    "crest": "https://crests.football-data.org/6618.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567390,
+   "utcDate": "2026-12-20T15:30:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5529,
+    "name": "CD Nacional",
+    "shortName": "CD Nacional",
+    "tla": "CDN",
+    "crest": "https://crests.football-data.org/5529.png"
+   },
+   "away": {
+    "id": 583,
+    "name": "Moreirense FC",
+    "shortName": "Moreirense",
+    "tla": "MOR",
+    "crest": "https://crests.football-data.org/583.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567386,
+   "utcDate": "2026-12-20T18:00:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 9136,
+    "name": "CF Estrela da Amadora",
+    "shortName": "Amadora",
+    "tla": "AMA",
+    "crest": "https://crests.football-data.org/9136.png"
+   },
+   "away": {
+    "id": 5575,
+    "name": "CS Marítimo",
+    "shortName": "Marítimo",
+    "tla": "CSM",
+    "crest": "https://crests.football-data.org/5575.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567389,
+   "utcDate": "2026-12-20T20:30:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5530,
+    "name": "CD Santa Clara",
+    "shortName": "Santa Clara",
+    "tla": "CD ",
+    "crest": "https://crests.football-data.org/5530.png"
+   },
+   "away": {
+    "id": 5543,
+    "name": "Vitória SC",
+    "shortName": "Vitória SC",
+    "tla": "GUI",
+    "crest": "https://crests.football-data.org/5543.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 567383,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-21T18:45:00Z",
+   "status": "TIMED",
    "matchday": 15,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3157,9 +3282,34 @@
    "winner": null
   },
   {
+   "id": 567387,
+   "utcDate": "2026-12-21T20:45:00Z",
+   "status": "TIMED",
+   "matchday": 15,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5531,
+    "name": "FC Famalicão",
+    "shortName": "Famalicão",
+    "tla": "FAM",
+    "crest": "https://crests.football-data.org/5531.png"
+   },
+   "away": {
+    "id": 503,
+    "name": "FC Porto",
+    "shortName": "Porto",
+    "tla": "FCP",
+    "crest": "https://crests.football-data.org/503.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 567384,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-22T18:45:00Z",
+   "status": "TIMED",
    "matchday": 15,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3183,8 +3333,8 @@
   },
   {
    "id": 567385,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-22T20:45:00Z",
+   "status": "TIMED",
    "matchday": 15,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3207,234 +3357,9 @@
    "winner": null
   },
   {
-   "id": 567386,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 9136,
-    "name": "CF Estrela da Amadora",
-    "shortName": "Amadora",
-    "tla": "AMA",
-    "crest": "https://crests.football-data.org/9136.png"
-   },
-   "away": {
-    "id": 5575,
-    "name": "CS Marítimo",
-    "shortName": "Marítimo",
-    "tla": "CSM",
-    "crest": "https://crests.football-data.org/5575.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567387,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5531,
-    "name": "FC Famalicão",
-    "shortName": "Famalicão",
-    "tla": "FAM",
-    "crest": "https://crests.football-data.org/5531.png"
-   },
-   "away": {
-    "id": 503,
-    "name": "FC Porto",
-    "shortName": "Porto",
-    "tla": "FCP",
-    "crest": "https://crests.football-data.org/503.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567388,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 7822,
-    "name": "FC Alverca",
-    "shortName": "Alverca",
-    "tla": "ALV",
-    "crest": "https://crests.football-data.org/7822.png"
-   },
-   "away": {
-    "id": 5533,
-    "name": "Gil Vicente FC",
-    "shortName": "Gil Vicente",
-    "tla": "GIL",
-    "crest": "https://crests.football-data.org/5533.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567389,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5530,
-    "name": "CD Santa Clara",
-    "shortName": "Santa Clara",
-    "tla": "CD ",
-    "crest": "https://crests.football-data.org/5530.png"
-   },
-   "away": {
-    "id": 5543,
-    "name": "Vitória SC",
-    "shortName": "Vitória SC",
-    "tla": "GUI",
-    "crest": "https://crests.football-data.org/5543.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567390,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5529,
-    "name": "CD Nacional",
-    "shortName": "CD Nacional",
-    "tla": "CDN",
-    "crest": "https://crests.football-data.org/5529.png"
-   },
-   "away": {
-    "id": 583,
-    "name": "Moreirense FC",
-    "shortName": "Moreirense",
-    "tla": "MOR",
-    "crest": "https://crests.football-data.org/583.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567391,
-   "utcDate": "2026-12-20T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 15,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 712,
-    "name": "FC Arouca",
-    "shortName": "Arouca",
-    "tla": "FCA",
-    "crest": "https://crests.football-data.org/712.png"
-   },
-   "away": {
-    "id": 6618,
-    "name": "Casa Pia AC",
-    "shortName": "Casa Pia",
-    "tla": "CAS",
-    "crest": "https://crests.football-data.org/6618.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567392,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5543,
-    "name": "Vitória SC",
-    "shortName": "Vitória SC",
-    "tla": "GUI",
-    "crest": "https://crests.football-data.org/5543.png"
-   },
-   "away": {
-    "id": 496,
-    "name": "Rio Ave FC",
-    "shortName": "Rio Ave",
-    "tla": "RIO",
-    "crest": "https://crests.football-data.org/496.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567393,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 6618,
-    "name": "Casa Pia AC",
-    "shortName": "Casa Pia",
-    "tla": "CAS",
-    "crest": "https://crests.football-data.org/6618.png"
-   },
-   "away": {
-    "id": 5531,
-    "name": "FC Famalicão",
-    "shortName": "Famalicão",
-    "tla": "FAM",
-    "crest": "https://crests.football-data.org/5531.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567394,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 503,
-    "name": "FC Porto",
-    "shortName": "Porto",
-    "tla": "FCP",
-    "crest": "https://crests.football-data.org/503.png"
-   },
-   "away": {
-    "id": 5529,
-    "name": "CD Nacional",
-    "shortName": "CD Nacional",
-    "tla": "CDN",
-    "crest": "https://crests.football-data.org/5529.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 567395,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-27T15:30:00Z",
+   "status": "TIMED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3451,81 +3376,6 @@
     "shortName": "Amadora",
     "tla": "AMA",
     "crest": "https://crests.football-data.org/9136.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567396,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 583,
-    "name": "Moreirense FC",
-    "shortName": "Moreirense",
-    "tla": "MOR",
-    "crest": "https://crests.football-data.org/583.png"
-   },
-   "away": {
-    "id": 5527,
-    "name": "Académico de Viseu FC",
-    "shortName": "Acad. Viseu",
-    "tla": "ACV",
-    "crest": "https://crests.football-data.org/5527.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567397,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 1903,
-    "name": "Sport Lisboa e Benfica",
-    "shortName": "SL Benfica",
-    "tla": "BEN",
-    "crest": "https://crests.football-data.org/1903.png"
-   },
-   "away": {
-    "id": 498,
-    "name": "Sporting Clube de Portugal",
-    "shortName": "Sporting CP",
-    "tla": "SPO",
-    "crest": "https://crests.football-data.org/498.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567398,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 16,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5533,
-    "name": "Gil Vicente FC",
-    "shortName": "Gil Vicente",
-    "tla": "GIL",
-    "crest": "https://crests.football-data.org/5533.png"
-   },
-   "away": {
-    "id": 712,
-    "name": "FC Arouca",
-    "shortName": "Arouca",
-    "tla": "FCA",
-    "crest": "https://crests.football-data.org/712.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -3533,8 +3383,8 @@
   },
   {
    "id": 567399,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-28T18:00:00Z",
+   "status": "TIMED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3557,9 +3407,109 @@
    "winner": null
   },
   {
+   "id": 567398,
+   "utcDate": "2026-12-28T18:45:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5533,
+    "name": "Gil Vicente FC",
+    "shortName": "Gil Vicente",
+    "tla": "GIL",
+    "crest": "https://crests.football-data.org/5533.png"
+   },
+   "away": {
+    "id": 712,
+    "name": "FC Arouca",
+    "shortName": "Arouca",
+    "tla": "FCA",
+    "crest": "https://crests.football-data.org/712.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567394,
+   "utcDate": "2026-12-28T20:45:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 503,
+    "name": "FC Porto",
+    "shortName": "Porto",
+    "tla": "FCP",
+    "crest": "https://crests.football-data.org/503.png"
+   },
+   "away": {
+    "id": 5529,
+    "name": "CD Nacional",
+    "shortName": "CD Nacional",
+    "tla": "CDN",
+    "crest": "https://crests.football-data.org/5529.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567393,
+   "utcDate": "2026-12-29T18:45:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 6618,
+    "name": "Casa Pia AC",
+    "shortName": "Casa Pia",
+    "tla": "CAS",
+    "crest": "https://crests.football-data.org/6618.png"
+   },
+   "away": {
+    "id": 5531,
+    "name": "FC Famalicão",
+    "shortName": "Famalicão",
+    "tla": "FAM",
+    "crest": "https://crests.football-data.org/5531.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567397,
+   "utcDate": "2026-12-29T20:45:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 1903,
+    "name": "Sport Lisboa e Benfica",
+    "shortName": "SL Benfica",
+    "tla": "BEN",
+    "crest": "https://crests.football-data.org/1903.png"
+   },
+   "away": {
+    "id": 498,
+    "name": "Sporting Clube de Portugal",
+    "shortName": "Sporting CP",
+    "tla": "SPO",
+    "crest": "https://crests.football-data.org/498.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 567400,
-   "utcDate": "2026-12-27T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2026-12-30T20:15:00Z",
+   "status": "TIMED",
    "matchday": 16,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3576,6 +3526,81 @@
     "shortName": "Alverca",
     "tla": "ALV",
     "crest": "https://crests.football-data.org/7822.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567409,
+   "utcDate": "2027-01-02T20:30:00Z",
+   "status": "TIMED",
+   "matchday": 17,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 498,
+    "name": "Sporting Clube de Portugal",
+    "shortName": "Sporting CP",
+    "tla": "SPO",
+    "crest": "https://crests.football-data.org/498.png"
+   },
+   "away": {
+    "id": 5530,
+    "name": "CD Santa Clara",
+    "shortName": "Santa Clara",
+    "tla": "CD ",
+    "crest": "https://crests.football-data.org/5530.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567396,
+   "utcDate": "2027-01-03T15:30:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 583,
+    "name": "Moreirense FC",
+    "shortName": "Moreirense",
+    "tla": "MOR",
+    "crest": "https://crests.football-data.org/583.png"
+   },
+   "away": {
+    "id": 5527,
+    "name": "Académico de Viseu FC",
+    "shortName": "Acad. Viseu",
+    "tla": "ACV",
+    "crest": "https://crests.football-data.org/5527.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567392,
+   "utcDate": "2027-01-03T20:30:00Z",
+   "status": "TIMED",
+   "matchday": 16,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5543,
+    "name": "Vitória SC",
+    "shortName": "Vitória SC",
+    "tla": "GUI",
+    "crest": "https://crests.football-data.org/5543.png"
+   },
+   "away": {
+    "id": 496,
+    "name": "Rio Ave FC",
+    "shortName": "Rio Ave",
+    "tla": "RIO",
+    "crest": "https://crests.football-data.org/496.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -3632,81 +3657,6 @@
    "winner": null
   },
   {
-   "id": 567402,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 9136,
-    "name": "CF Estrela da Amadora",
-    "shortName": "Amadora",
-    "tla": "AMA",
-    "crest": "https://crests.football-data.org/9136.png"
-   },
-   "away": {
-    "id": 582,
-    "name": "GD Estoril Praia",
-    "shortName": "Estoril Praia",
-    "tla": "EST",
-    "crest": "https://crests.football-data.org/582.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567403,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5531,
-    "name": "FC Famalicão",
-    "shortName": "Famalicão",
-    "tla": "FAM",
-    "crest": "https://crests.football-data.org/5531.png"
-   },
-   "away": {
-    "id": 5543,
-    "name": "Vitória SC",
-    "shortName": "Vitória SC",
-    "tla": "GUI",
-    "crest": "https://crests.football-data.org/5543.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567404,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 5529,
-    "name": "CD Nacional",
-    "shortName": "CD Nacional",
-    "tla": "CDN",
-    "crest": "https://crests.football-data.org/5529.png"
-   },
-   "away": {
-    "id": 5533,
-    "name": "Gil Vicente FC",
-    "shortName": "Gil Vicente",
-    "tla": "GIL",
-    "crest": "https://crests.football-data.org/5533.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 567405,
    "utcDate": "2027-01-10T00:00:00Z",
    "status": "SCHEDULED",
@@ -3757,31 +3707,6 @@
    "winner": null
   },
   {
-   "id": 567407,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 17,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 7822,
-    "name": "FC Alverca",
-    "shortName": "Alverca",
-    "tla": "ALV",
-    "crest": "https://crests.football-data.org/7822.png"
-   },
-   "away": {
-    "id": 5575,
-    "name": "CS Marítimo",
-    "shortName": "Marítimo",
-    "tla": "CSM",
-    "crest": "https://crests.football-data.org/5575.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 567408,
    "utcDate": "2027-01-10T00:00:00Z",
    "status": "SCHEDULED",
@@ -3807,43 +3732,68 @@
    "winner": null
   },
   {
-   "id": 567409,
-   "utcDate": "2027-01-10T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 567404,
+   "utcDate": "2027-01-10T15:30:00Z",
+   "status": "TIMED",
    "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 498,
-    "name": "Sporting Clube de Portugal",
-    "shortName": "Sporting CP",
-    "tla": "SPO",
-    "crest": "https://crests.football-data.org/498.png"
+    "id": 5529,
+    "name": "CD Nacional",
+    "shortName": "CD Nacional",
+    "tla": "CDN",
+    "crest": "https://crests.football-data.org/5529.png"
    },
    "away": {
-    "id": 5530,
-    "name": "CD Santa Clara",
-    "shortName": "Santa Clara",
-    "tla": "CD ",
-    "crest": "https://crests.football-data.org/5530.png"
+    "id": 5533,
+    "name": "Gil Vicente FC",
+    "shortName": "Gil Vicente",
+    "tla": "GIL",
+    "crest": "https://crests.football-data.org/5533.png"
    },
    "homeGoals": null,
    "awayGoals": null,
    "winner": null
   },
   {
-   "id": 567410,
-   "utcDate": "2027-01-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 18,
+   "id": 567407,
+   "utcDate": "2027-01-10T15:30:00Z",
+   "status": "TIMED",
+   "matchday": 17,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 5531,
-    "name": "FC Famalicão",
-    "shortName": "Famalicão",
-    "tla": "FAM",
-    "crest": "https://crests.football-data.org/5531.png"
+    "id": 7822,
+    "name": "FC Alverca",
+    "shortName": "Alverca",
+    "tla": "ALV",
+    "crest": "https://crests.football-data.org/7822.png"
+   },
+   "away": {
+    "id": 5575,
+    "name": "CS Marítimo",
+    "shortName": "Marítimo",
+    "tla": "CSM",
+    "crest": "https://crests.football-data.org/5575.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567402,
+   "utcDate": "2027-01-11T00:00:00Z",
+   "status": "SCHEDULED",
+   "matchday": 17,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 9136,
+    "name": "CF Estrela da Amadora",
+    "shortName": "Amadora",
+    "tla": "AMA",
+    "crest": "https://crests.football-data.org/9136.png"
    },
    "away": {
     "id": 582,
@@ -3857,25 +3807,50 @@
    "winner": null
   },
   {
-   "id": 567411,
-   "utcDate": "2027-01-17T00:00:00Z",
+   "id": 567403,
+   "utcDate": "2027-01-11T00:00:00Z",
    "status": "SCHEDULED",
+   "matchday": 17,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5531,
+    "name": "FC Famalicão",
+    "shortName": "Famalicão",
+    "tla": "FAM",
+    "crest": "https://crests.football-data.org/5531.png"
+   },
+   "away": {
+    "id": 5543,
+    "name": "Vitória SC",
+    "shortName": "Vitória SC",
+    "tla": "GUI",
+    "crest": "https://crests.football-data.org/5543.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567416,
+   "utcDate": "2027-01-15T20:15:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 498,
-    "name": "Sporting Clube de Portugal",
-    "shortName": "Sporting CP",
-    "tla": "SPO",
-    "crest": "https://crests.football-data.org/498.png"
+    "id": 7822,
+    "name": "FC Alverca",
+    "shortName": "Alverca",
+    "tla": "ALV",
+    "crest": "https://crests.football-data.org/7822.png"
    },
    "away": {
-    "id": 9136,
-    "name": "CF Estrela da Amadora",
-    "shortName": "Amadora",
-    "tla": "AMA",
-    "crest": "https://crests.football-data.org/9136.png"
+    "id": 503,
+    "name": "FC Porto",
+    "shortName": "Porto",
+    "tla": "FCP",
+    "crest": "https://crests.football-data.org/503.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -3883,7 +3858,7 @@
   },
   {
    "id": 567412,
-   "utcDate": "2027-01-17T00:00:00Z",
+   "utcDate": "2027-01-16T00:00:00Z",
    "status": "SCHEDULED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
@@ -3907,59 +3882,9 @@
    "winner": null
   },
   {
-   "id": 567413,
-   "utcDate": "2027-01-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 18,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 496,
-    "name": "Rio Ave FC",
-    "shortName": "Rio Ave",
-    "tla": "RIO",
-    "crest": "https://crests.football-data.org/496.png"
-   },
-   "away": {
-    "id": 5533,
-    "name": "Gil Vicente FC",
-    "shortName": "Gil Vicente",
-    "tla": "GIL",
-    "crest": "https://crests.football-data.org/5533.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
-   "id": 567414,
-   "utcDate": "2027-01-17T00:00:00Z",
-   "status": "SCHEDULED",
-   "matchday": 18,
-   "stage": "REGULAR_SEASON",
-   "group": null,
-   "home": {
-    "id": 6618,
-    "name": "Casa Pia AC",
-    "shortName": "Casa Pia",
-    "tla": "CAS",
-    "crest": "https://crests.football-data.org/6618.png"
-   },
-   "away": {
-    "id": 5575,
-    "name": "CS Marítimo",
-    "shortName": "Marítimo",
-    "tla": "CSM",
-    "crest": "https://crests.football-data.org/5575.png"
-   },
-   "homeGoals": null,
-   "awayGoals": null,
-   "winner": null
-  },
-  {
    "id": 567415,
-   "utcDate": "2027-01-17T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-16T15:30:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -3982,25 +3907,50 @@
    "winner": null
   },
   {
-   "id": 567416,
-   "utcDate": "2027-01-17T00:00:00Z",
-   "status": "SCHEDULED",
+   "id": 567411,
+   "utcDate": "2027-01-16T20:30:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
    "home": {
-    "id": 7822,
-    "name": "FC Alverca",
-    "shortName": "Alverca",
-    "tla": "ALV",
-    "crest": "https://crests.football-data.org/7822.png"
+    "id": 498,
+    "name": "Sporting Clube de Portugal",
+    "shortName": "Sporting CP",
+    "tla": "SPO",
+    "crest": "https://crests.football-data.org/498.png"
    },
    "away": {
-    "id": 503,
-    "name": "FC Porto",
-    "shortName": "Porto",
-    "tla": "FCP",
-    "crest": "https://crests.football-data.org/503.png"
+    "id": 9136,
+    "name": "CF Estrela da Amadora",
+    "shortName": "Amadora",
+    "tla": "AMA",
+    "crest": "https://crests.football-data.org/9136.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567414,
+   "utcDate": "2027-01-17T15:30:00Z",
+   "status": "TIMED",
+   "matchday": 18,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 6618,
+    "name": "Casa Pia AC",
+    "shortName": "Casa Pia",
+    "tla": "CAS",
+    "crest": "https://crests.football-data.org/6618.png"
+   },
+   "away": {
+    "id": 5575,
+    "name": "CS Marítimo",
+    "shortName": "Marítimo",
+    "tla": "CSM",
+    "crest": "https://crests.football-data.org/5575.png"
    },
    "homeGoals": null,
    "awayGoals": null,
@@ -4008,8 +3958,8 @@
   },
   {
    "id": 567417,
-   "utcDate": "2027-01-17T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-17T18:00:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
@@ -4032,9 +3982,59 @@
    "winner": null
   },
   {
+   "id": 567413,
+   "utcDate": "2027-01-17T20:30:00Z",
+   "status": "TIMED",
+   "matchday": 18,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 496,
+    "name": "Rio Ave FC",
+    "shortName": "Rio Ave",
+    "tla": "RIO",
+    "crest": "https://crests.football-data.org/496.png"
+   },
+   "away": {
+    "id": 5533,
+    "name": "Gil Vicente FC",
+    "shortName": "Gil Vicente",
+    "tla": "GIL",
+    "crest": "https://crests.football-data.org/5533.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
+   "id": 567410,
+   "utcDate": "2027-01-18T18:45:00Z",
+   "status": "TIMED",
+   "matchday": 18,
+   "stage": "REGULAR_SEASON",
+   "group": null,
+   "home": {
+    "id": 5531,
+    "name": "FC Famalicão",
+    "shortName": "Famalicão",
+    "tla": "FAM",
+    "crest": "https://crests.football-data.org/5531.png"
+   },
+   "away": {
+    "id": 582,
+    "name": "GD Estoril Praia",
+    "shortName": "Estoril Praia",
+    "tla": "EST",
+    "crest": "https://crests.football-data.org/582.png"
+   },
+   "homeGoals": null,
+   "awayGoals": null,
+   "winner": null
+  },
+  {
    "id": 567418,
-   "utcDate": "2027-01-17T00:00:00Z",
-   "status": "SCHEDULED",
+   "utcDate": "2027-01-18T20:45:00Z",
+   "status": "TIMED",
    "matchday": 18,
    "stage": "REGULAR_SEASON",
    "group": null,
